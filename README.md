@@ -1,28 +1,64 @@
-# Create T3 App
+# Setting up your devtools
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Warning:
 
-## What's next? How do I make an app with this?
+- Do this when you have a good internet connection
+- These will take a bunch of storage space. You won't need this much, but having 50-100GB free should be more than
+  enough.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Windows users only:
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+- Install [Windows Terminal](ms-windows-store://pdp/?ProductId=9N0DX20HK701)
+- Install [Powershell 7](ms-windows-store://pdp/?ProductId=9mz1snwt0n5d)
+    - This is different from the pre-installed version and has really nice features
+- (Optional) Install [WSL](ms-windows-store://pdp/?ProductId=9p9tqf7mrm4r)
+    - This lets you run Linux on Windows, which is incredibly useful
+- (Optional) Install [Ubuntu](ms-windows-store://pdp/?ProductId=9pdxgncfsczv)
+    - Requires WSL
+- Go to your [Windows Update settings](ms-settings:windowsupdate?activationSource=SMC-IA-4027667), click "Check for
+  updates," install any updates
+- Restart your PC, and check for updates again. Repeat these two steps until there's nothing left.
+- Open Windows Terminal
+    - Go to Settings > Startup > Default Profile
+        - Set it to Powershell or Powershell 7
+        - Click save
+        - Open a new tab
+        - Wait for Powershell to load. Make sure it says "Powershell \<version number>."
+            - If the version number is at least 7.0.0, you can continue
+            - If the version number is lower or doesn't show up, you need to change the default profile again to a
+              different Powershell
+        - (Optional) Go to Settings > Defaults > turn on "Run this profile as Administrator"
+            - Windows doesn't have a "sudo" command like Unix/Linux does, so this makes using the terminal more
+              convenient
+- With a Powershell 7 tab open, copy and run these commands:
+  ```
+    winget install -e --id GitHub.GitHubDesktop
+    winget install -e --id Microsoft.VisualStudioCode
+    winget install -e --id JetBrains.Toolbox
+  ```
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Linux/WSL users only:
 
-## Learn More
+- Update and install your packages
+    - On Ubuntu/Debian:
+      ```
+      sudo apt update
+      sudo apt upgrade -y
+      sudo reboot  
+      ```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## MacOS users only:
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- Please update MacOS.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## Install Git
 
-## How do I deploy this?
+- On Windows
+   ```
+     winget install -e --id Git.Git
+   ```
+- [Other platforms](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## Install an IDE
+
+You have 2 (major) options: JetBrains and VSCode.
