@@ -62,8 +62,10 @@
 ## Install an IDE
 
 You have 2 (major) options: JetBrains and VSCode.
+
 * VSCode is very popular, has tons of plugins, and is super easy to set up and use
-* JetBrains has fewer plugins and is harder to use, but has incredibly powerful tools and automation that make coding a lot easier
+* JetBrains has fewer plugins and is harder to use, but has incredibly powerful tools and automation that make coding a
+  lot easier
 * You SHOULD use both!
-  * VSCode is great for small edits and having 1 universal editor
-  * JetBrains' stuff is amazing for going super deep into 1 project with a popular tech stack
+    * VSCode is great for small edits and having 1 universal editor
+    * JetBrains' stuff is amazing for going super deep into 1 project with a popular tech stack
