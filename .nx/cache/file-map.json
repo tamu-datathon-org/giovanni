@@ -1,0 +1,100 @@
+{
+  "version": "6.0",
+  "nxVersion": "18.1.1",
+  "deps": {},
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {},
+    "nonProjectFiles": [
+      {
+        "file": ".gitignore",
+        "hash": "360357494326680942"
+      },
+      {
+        "file": ".idea/.gitignore",
+        "hash": "3659624398435102449"
+      },
+      {
+        "file": ".idea/.name",
+        "hash": "14030598343785753620"
+      },
+      {
+        "file": ".idea/codeStyles/Project.xml",
+        "hash": "7452821929401268236"
+      },
+      {
+        "file": ".idea/codeStyles/codeStyleConfig.xml",
+        "hash": "10911911431176787330"
+      },
+      {
+        "file": ".idea/deployment.xml",
+        "hash": "10351734661909211210"
+      },
+      {
+        "file": ".idea/giovanni.iml",
+        "hash": "12070511472059810131"
+      },
+      {
+        "file": ".idea/inspectionProfiles/Project_Default.xml",
+        "hash": "13758982632720470399"
+      },
+      {
+        "file": ".idea/jsLibraryMappings.xml",
+        "hash": "10776891174152802849"
+      },
+      {
+        "file": ".idea/misc.xml",
+        "hash": "1906115585096831954"
+      },
+      {
+        "file": ".idea/modules.xml",
+        "hash": "15951905388189387578"
+      },
+      {
+        "file": ".idea/vcs.xml",
+        "hash": "13076890194361308264"
+      },
+      {
+        "file": "README.md",
+        "hash": "434452671457594505"
+      },
+      {
+        "file": "giovanni/.editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": "giovanni/.github/workflows/ci.yml",
+        "hash": "10713377867369413601"
+      },
+      {
+        "file": "giovanni/.gitignore",
+        "hash": "16877376182141465221"
+      },
+      {
+        "file": "giovanni/.npmrc",
+        "hash": "1880664178033616490"
+      },
+      {
+        "file": "giovanni/.vscode/extensions.json",
+        "hash": "3833545590435012078"
+      },
+      {
+        "file": "giovanni/README.md",
+        "hash": "18149839328677579639"
+      },
+      {
+        "file": "giovanni/nx.json",
+        "hash": "1166626949039990670"
+      },
+      {
+        "file": "giovanni/package.json",
+        "hash": "9162874456648963654"
+      },
+      {
+        "file": "giovanni/pnpm-lock.yaml",
+        "hash": "9143448214840329202"
+      }
+    ]
+  }
+}
