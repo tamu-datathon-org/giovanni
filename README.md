@@ -69,3 +69,33 @@ You have 2 (major) options: JetBrains and VSCode.
 * You SHOULD use both!
     * VSCode is great for small edits and having 1 universal editor
     * JetBrains' stuff is amazing for going super deep into 1 project with a popular tech stack
+
+## UNFINISHED STUFF:
+
+- [ ] Install pnpm (not npm)
+    - This is a way better package manager than npm or yarn
+    - It will save several GBs of space and make your life easier
+    - [Instructions](https://pnpm.io/installation)
+    - **NOTE**: If you see any tutorials in the future that tell you to use 'npm' or 'npx', replace those instructions
+      with 'pnpm' and 'pnpm dlx' respectively
+- [ ] Install node
+    - [Click here](https://nodejs.org/en/download/)
+- [ ] Get GitHub Desktop
+  - This is a GUI for Git that makes it easier to use 
+  - [Click here](https://desktop.github.com/)
+- [ ] Get JetBrains Toolbox (Optional)
+  - This just makes it easier to install and manage JetBrains IDEs
+    - i.e. it automatically updates them for you and lets you install them with 1 click
+  - [Click here](https://www.jetbrains.com/toolbox-app/download/download-thanks.html)
+- [ ] Get Visual Studio Code
+    - [Click here](https://code.visualstudio.com/)
+- [ ] Install GitHub Copilot
+  - This is an AI that helps you write code
+    - You shouldn't trust it 100%, but it's a great tool to have
+  - You need to be approved for the GitHub Student Developer Pack to use it
+  - [Click here for VSCode](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot)
+  - [Click here for JetBrains](https://plugins.jetbrains.com/plugin/17718-github-copilot)
+- **MAKE SURE YOU INSTALL POPULAR PLUGINS FOR YOUR IDES**
+  - They're popular for a reason
+  - Not all of them will be relevant for what we're doing though
+  - If it looks helpful, install it and try it out
