@@ -8,15 +8,22 @@
 
 ## Windows users only:
 
-- Install [Windows Terminal](ms-windows-store://pdp/?ProductId=9N0DX20HK701)
-- Install [Powershell 7](ms-windows-store://pdp/?ProductId=9mz1snwt0n5d)
-    - This is different from the pre-installed version and has really nice features
-- (Optional) Install [WSL](ms-windows-store://pdp/?ProductId=9p9tqf7mrm4r)
-    - This lets you run Linux on Windows, which is incredibly useful
-- (Optional) Install [Ubuntu](ms-windows-store://pdp/?ProductId=9pdxgncfsczv)
-    - Requires WSL
-- Go to your [Windows Update settings](ms-settings:windowsupdate?activationSource=SMC-IA-4027667), click "Check for
-  updates," install any updates
+- Install  Windows Terminal
+  - ms-windows-store://pdp/?ProductId=9N0DX20HK701
+  - Paste this link into your browser to open the Windows Store
+- Install Powershell 7 
+  - ms-windows-store://pdp/?ProductId=9mz1snwt0n5d
+  - This is different from the pre-installed version and has really nice features
+- (Optional) Install  WSL 
+  - ms-windows-store://pdp/?ProductId=9p9tqf7mrm4r
+  - This lets you run Linux on Windows, which is incredibly useful
+- (Optional) Install Ubuntu
+  - ms-windows-store://pdp/?ProductId=9pdxgncfsczv
+  - Requires WSL
+- Go to your Windows Update settings
+  - ms-settings:windowsupdate?activationSource=SMC-IA-4027667
+  - Click "Check for
+    updates," install any updates
 - Restart your PC, and check for updates again. Repeat these two steps until there's nothing left.
 - Open Windows Terminal
     - Go to Settings > Startup > Default Profile
