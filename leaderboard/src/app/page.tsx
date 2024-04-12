@@ -1,3 +1,5 @@
+/* page.tsx */
+import './styles.css';
 import Link from "next/link";
 
 import { CreatePost } from "~/app/_components/create-post";
@@ -17,7 +19,19 @@ export default async function Home() {
       <div className="p-6 w-1/2 mx-auto bg-white rounded-xl shadow-md flex flex-col items-center space-y-4">
         <ul className="list-decimal list-inside w-full">
           {competitors.map((competitor, index) => (
-            <li key={index} className="p-4 bg-blue-100 rounded-lg mb-4" style={{ width: `${(competitor.score / maxScore) * 100}%` }}>
+            <li key={index} className="p-4 bg-blue-100 rounded-lg mb-4 animate-width" style={{ animationName: `loading-${index}`}}>
+              <style>
+                {`
+                  @keyframes loading-${index} {
+                    0% {
+                      width: 150px;
+                    }
+                    100% {
+                      width: ${(competitor.score / maxScore) * 100}%;
+                    }
+                  }
+                `}
+              </style>
               <h2 className="text-lg font-semibold">{competitor.name}</h2>
               <p className="mt-2">Score: {competitor.score}</p>
             </li>
