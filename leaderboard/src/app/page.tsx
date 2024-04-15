@@ -9,7 +9,7 @@ import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 
-export default function Home() {  
+export default async function Home() {  
 
   const competitors = [
     { name: 'Competitor 1', score: 100 },
