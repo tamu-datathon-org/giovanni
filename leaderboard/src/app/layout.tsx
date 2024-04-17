@@ -4,7 +4,6 @@ import './styles.css';
 import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import { useEffect } from "react";
 
 
 const inter = Inter({
