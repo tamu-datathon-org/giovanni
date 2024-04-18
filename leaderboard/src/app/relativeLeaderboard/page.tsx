@@ -1,50 +1,72 @@
 "use client";
 
 export default function Info() {
-    const competitors = [
-        { name: 'Competitor 1', score: 100 },
-        { name: 'Competitor 2', score: 90 },
-        { name: 'Competitor 3', score: 80 },
-      ];
-      const maxScore = Math.max(...competitors.map(c => c.score));
-      return (
-        <>
-          <h1 className="text-5xl font-bold mb-4 text-center">Leaderboard</h1>
-          <div className="p-6 w-1/2 mx-auto bg-white rounded-xl shadow-md flex flex-col items-center space-y-4">
-            <ul className="list-decimal list-inside w-full">
-              {competitors.map((competitor, index) => (
-                <li key={index} className="p-4 bg-blue-100 rounded-lg mb-4 animate-width" style={{ animationName: `loading-${index}`, backgroundColor: `rgb(51, ${92 + 50 * index}, 255)`}}>
-                  <style>
-                    {`
-                        @keyframes loading-${index} {
-                        0% {
-                          width: 150px;
-                        }
-                        100% {
-                          width: ${(competitor.score / maxScore) * 100}%;
-                        }
-                      }
-                    `}
-                  </style>
-                  <h2 className="text-lg font-semibold">{competitor.name}</h2>
-                  <p className="mt-2">Score: {competitor.score}</p>
-                </li>
-              ))}
-            </ul> 
-            
-        </div>
-        <div></div>
-        <svg className="waves"  viewBox="0 24 150 28" preserveAspectRatio="none" shapeRendering="auto">
-    <defs>
-    <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-    </defs>
-    <g className="parallax">
-    <use href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
-    <use href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
-    <use href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
-    <use href="#gentle-wave" x="48" y="7" fill="#fff" />
-    </g>
-    </svg>
-        </>
-      );
+  const competitors = [
+    { name: 'Competitor 1', score: 95 },
+    { name: 'Competitor 2', score: 90 },
+    { name: 'Competitor 3', score: 80 },
+  ];
+
+  // Assuming the current user is Competitor 2
+  const currentUser = competitors.find(c => c.name === 'Competitor 2');
+  const currentUserIndex = competitors.indexOf(currentUser!);
+  const personBehind = competitors[currentUserIndex + 1]; 
+  const personAhead = competitors[currentUserIndex - 1];
+
+  const pointsBehind = personBehind ? currentUser.score - personBehind.score: 0;
+  const pointsAhead = personAhead ? personAhead.score - currentUser.score : 0;
+
+  const maxScore = Math.max(...competitors.map(c => c.score));
+  const minScore = Math.min(...competitors.map(c => c.score));
+
+  const buffer = 10; // 10% buffer on each side
+  const getPosition = (score: number, isCurrentUser: boolean) => {
+    if (isCurrentUser) {
+      return '50%';
+    } else {
+      return `${buffer + ((score - minScore) / (maxScore - minScore)) * (100 - 2 * buffer)}%`;
     }
+  };
+
+  return (
+    <>
+      <h1 className="text-5xl font-bold mb-4 text-center text-blue-600">Leaderboard</h1>
+      
+      <div className="p-6 w-full h-full mx-auto rounded-xl shadow-md flex flex-col items-center justify-center space-y-4">
+        <div className="flex justify-center space-x-4 w-full items-center">
+          <div className="w-full relative">
+            {personBehind && (
+              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(personBehind.score, false), transform: 'translate(-50%, -50%)'}}>
+                <div className="bg-blue-100 w-8 h-8 rounded-full shadow-lg"></div>
+                <p className="mt-2 text-center text-blue-700">-{pointsBehind} points</p>
+              </div>
+            )}
+            {currentUser && (
+              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(currentUser.score, true), transform: 'translate(-50%, -50%)'}}>
+                <div className="bg-green-100 w-8 h-8 rounded-full shadow-lg"></div>
+                <p className="mt-2 text-center text-green-700">Score: {currentUser.score}</p>
+              </div>
+            )}
+            {personAhead && (
+              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(personAhead.score, false), transform: 'translate(-50%, -50%)'}}>
+                <div className="bg-red-100 w-8 h-8 rounded-full shadow-lg"></div>
+                <p className="mt-2 text-center text-red-700">+{pointsAhead} points</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      <svg className="waves" viewBox="0 24 150 28" preserveAspectRatio="none" shapeRendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g className="parallax">
+          <use href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+          <use href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+          <use href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+          <use href="#gentle-wave" x="48" y="7" fill="#fff" />
+        </g>
+      </svg>
+    </>
+  );
+}
