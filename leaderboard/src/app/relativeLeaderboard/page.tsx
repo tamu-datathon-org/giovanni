@@ -2,9 +2,9 @@
 
 export default function Info() {
   const competitors = [
-    { name: 'Competitor 1', score: 95 },
-    { name: 'Competitor 2', score: 90 },
-    { name: 'Competitor 3', score: 80 },
+    { name: 'Competitor 1', score: 110 },
+    { name: 'Competitor 2', score: 91 },
+    { name: 'Competitor 3', score: 60 },
   ];
 
   // Assuming the current user is Competitor 2
@@ -16,15 +16,19 @@ export default function Info() {
   const pointsBehind = personBehind ? currentUser.score - personBehind.score: 0;
   const pointsAhead = personAhead ? personAhead.score - currentUser.score : 0;
 
-  const maxScore = Math.max(...competitors.map(c => c.score));
-  const minScore = Math.min(...competitors.map(c => c.score));
-
+  const maxPointDifference = pointsAhead + pointsBehind; // Maximum point difference
   const buffer = 10; // 10% buffer on each side
-  const getPosition = (score: number, isCurrentUser: boolean) => {
+
+  const getPosition = (scoreDifference: number, isCurrentUser: boolean, isAhead: boolean) => {
     if (isCurrentUser) {
-      return '50%';
+      return '50%'; // Current user is always at the center
     } else {
-      return `${buffer + ((score - minScore) / (maxScore - minScore)) * (100 - 2 * buffer)}%`;
+      const positionPercentage = (scoreDifference / maxPointDifference) * (40);
+      console.log(positionPercentage);
+      if (positionPercentage > 40) {
+        return isAhead ? `${90}%` : `${10}%`;
+      }
+      return isAhead ? `${50 + positionPercentage}%` : `${50 -positionPercentage}%`;
     }
   };
 
@@ -36,19 +40,19 @@ export default function Info() {
         <div className="flex justify-center space-x-4 w-full items-center">
           <div className="w-full relative">
             {personBehind && (
-              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(personBehind.score, false), transform: 'translate(-50%, -50%)'}}>
+              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(pointsBehind, false, false), transform: 'translate(-50%, -50%)'}}>
                 <div className="bg-blue-100 w-8 h-8 rounded-full shadow-lg"></div>
                 <p className="mt-2 text-center text-blue-700">-{pointsBehind} points</p>
               </div>
             )}
             {currentUser && (
-              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(currentUser.score, true), transform: 'translate(-50%, -50%)'}}>
+              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(0, true, false), transform: 'translate(-50%, -50%)'}}>
                 <div className="bg-green-100 w-8 h-8 rounded-full shadow-lg"></div>
                 <p className="mt-2 text-center text-green-700">Score: {currentUser.score}</p>
               </div>
             )}
             {personAhead && (
-              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(personAhead.score, false), transform: 'translate(-50%, -50%)'}}>
+              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(pointsAhead, false, true), transform: 'translate(-50%, -50%)'}}>
                 <div className="bg-red-100 w-8 h-8 rounded-full shadow-lg"></div>
                 <p className="mt-2 text-center text-red-700">+{pointsAhead} points</p>
               </div>
