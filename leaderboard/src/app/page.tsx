@@ -1,15 +1,10 @@
 /* page.tsx */
 "use client";
-import { useEffect, useRef, useState } from 'react';
 import './styles.css';
 import Link from "next/link";
 
 
-import { CreatePost } from "~/app/_components/create-post";
-import { getServerAuthSession } from "~/server/auth";
-import { api } from "~/trpc/server";
-
-export default async function Home() {  
+export default function Home() {  
 
   const competitors = [
     { name: 'Competitor 1', score: 100 },
@@ -19,6 +14,11 @@ export default async function Home() {
   const maxScore = Math.max(...competitors.map(c => c.score));
   return (
     <>
+      <div className="absolute top-0 right-0 m-4">
+        <Link href="/relativeLeaderboard" className="text-blue-500 hover:underline">
+          Go to Another Page
+        </Link>
+      </div>
       <h1 className="text-5xl font-bold mb-4 text-center">Leaderboard</h1>
       <div className="p-6 w-1/2 mx-auto bg-white rounded-xl shadow-md flex flex-col items-center space-y-4">
         <ul className="list-decimal list-inside w-full">
@@ -44,7 +44,7 @@ export default async function Home() {
         
     </div>
     <div></div>
-    <svg className="waves"  viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+    <svg className="waves"  viewBox="0 24 150 28" preserveAspectRatio="none" shapeRendering="auto">
 <defs>
 <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
 </defs>
