@@ -56,6 +56,7 @@ export default function Info() {
                 <div className="truncate">-{pointsBehind}</div>
               </div>
             )}
+            
             {currentUser && (
               <div className="square-outline flex flex-col justify-center items-center bg-white opacity-80">
                 ?
