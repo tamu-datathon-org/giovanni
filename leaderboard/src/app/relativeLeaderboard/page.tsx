@@ -16,7 +16,7 @@ export default function Info() {
   const pointsBehind = personBehind ? currentUser.score - personBehind.score : 0;
   const pointsAhead = personAhead ? personAhead.score - currentUser.score : 0;
 
-  
+
   //Checks to see if their rank is in top 10;
   const ifTop10 = currentUser.rank <= 10;
 
@@ -41,7 +41,7 @@ export default function Info() {
       <h1 className="text-5xl font-bold mb-4 text-center text-blue-600">Leaderboard</h1>
       <div className="w-full relative">
         {ifTop10 && (
-          <div><h1 className="text-5xl font-bold mb-4 text-center text-blue-600">Rank: {currentUser.rank}</h1></div>
+          <div><h1 className="text-5xl font-bold mb-4 text-center text-blue-600">Rank: {currentUser?.rank}</h1></div>
         )}
       </div>
       <div className="p-10 h-1/2 rounded-xl flex flex-col items-center justify-center space-y-4">
@@ -49,18 +49,22 @@ export default function Info() {
           <div className="w-full relative flex justify-between gap-10">
             {personBehind && (
               <div className="square-outline flex flex-col justify-center items-center bg-red-500 opacity-80">
-                -{pointsBehind}
+                <div className="truncate">{personBehind.name}</div>
+                <div className="truncate">-{pointsBehind}</div>
               </div>
             )}
             {currentUser && (
               <div className="square-outline flex flex-col justify-center items-center bg-white opacity-80">
-                {currentUser.score}
+                ?
               </div>
             )}
             {personAhead && (
               <div className="square-outline flex flex-col justify-center items-center bg-green-500 opacity-80">
-                +{pointsAhead}
+                <div className="truncate">{personAhead.name}</div>
+                <div className="truncate">+{pointsAhead}</div>
               </div>
+
+
             )}
           </div>
 
