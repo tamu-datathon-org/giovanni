@@ -14,14 +14,14 @@ export default function Home() {
   const maxScore = Math.max(...competitors.map(c => c.score));
   return (
     <>
-    
+
       <div className="absolute top-0 right-0 m-4 ">
-        <Link href="/relativeLeaderboard" className="text-blue-500 hover:underline font-semibold">
+        <Link href="/relativeLeaderboard" className="text-white-500 hover:underline font-semibold">
           Go to Personal Leaderboard
         </Link>
       </div>
       <div className="mt-6 mb-6">
-        <h1 className="text-5xl font-bold mb-4 text-center text-white opacity-100">Top 3 Leaderboard</h1>
+        <h1 className="text-5xl font-bold mb-4 text-center text-white opacity-100 text-white-500">Top 3 Leaderboard</h1>
       </div>
       <div className="p-6 w-1/2 mx-auto bg-white rounded-xl shadow-md flex flex-col items-center space-y-4 opacity-95">
         <ul className="list-none list-inside w-full flex flex-col items-left">          {competitors.map((competitor, index) => {

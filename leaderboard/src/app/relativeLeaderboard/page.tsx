@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function Info() {
   const competitors = [
     { name: 'Competitor 1', score: 110, rank: 3 },
@@ -41,10 +43,15 @@ export default function Info() {
 
   return (
     <>
-      <h1 className="text-5xl font-bold mb-4 text-center text-blue-600">Leaderboard</h1>
+      <div className="absolute top-0 right-0 m-4 ">
+        <Link href="/" className="text-white-500 hover:underline font-semibold">
+          Go to Global Leaderboard
+        </Link>
+      </div>
+      <h1 className="text-5xl font-bold mb-4 text-center text-white p-5">Leaderboard</h1>
       <div className="w-full relative">
         {ifTop10 && (
-          <div><h1 className="text-5xl font-bold mb-4 text-center text-blue-600">Rank: {currentUser?.rank}</h1></div>
+          <div><h1 className="text-5xl font-bold mb-4 text-center text-white">Rank: {currentUser?.rank}</h1></div>
         )}
       </div>
       <div className="p-10 h-1/2 rounded-xl flex flex-col items-center justify-center space-y-4">
@@ -56,7 +63,7 @@ export default function Info() {
                 <div className="truncate">-{pointsBehind}</div>
               </div>
             )}
-            
+
             {currentUser && (
               <div className="square-outline flex flex-col justify-center items-center bg-white opacity-80">
                 ?
