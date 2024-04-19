@@ -16,6 +16,7 @@ export default function Info() {
   const pointsBehind = personBehind ? currentUser.score - personBehind.score : 0;
   const pointsAhead = personAhead ? personAhead.score - currentUser.score : 0;
 
+  
   //Checks to see if their rank is in top 10;
   const ifTop10 = currentUser.rank <= 10;
 

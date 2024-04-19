@@ -14,6 +14,7 @@ export default function Home() {
   const maxScore = Math.max(...competitors.map(c => c.score));
   return (
     <>
+    
       <div className="absolute top-0 right-0 m-4 ">
         <Link href="/relativeLeaderboard" className="text-blue-500 hover:underline font-semibold">
           Go to Personal Leaderboard
