@@ -3,7 +3,7 @@
 export default function Info() {
   const competitors = [
     { name: 'Competitor 1', score: 110 },
-    { name: 'Competitor 2', score: 91 },
+    { name: 'Competitor 2', score: 105 },
     { name: 'Competitor 3', score: 60 },
   ];
 
