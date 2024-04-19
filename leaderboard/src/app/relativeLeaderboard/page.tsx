@@ -2,19 +2,22 @@
 
 export default function Info() {
   const competitors = [
-    { name: 'Competitor 1', score: 110 },
-    { name: 'Competitor 2', score: 91 },
-    { name: 'Competitor 3', score: 60 },
+    { name: 'Competitor 1', score: 110, rank: 3 },
+    { name: 'Competitor 2', score: 91, rank: 4 },
+    { name: 'Competitor 3', score: 60, rank: 5 },
   ];
 
   // Assuming the current user is Competitor 2
   const currentUser = competitors.find(c => c.name === 'Competitor 2');
   const currentUserIndex = competitors.indexOf(currentUser!);
-  const personBehind = competitors[currentUserIndex + 1]; 
+  const personBehind = competitors[currentUserIndex + 1];
   const personAhead = competitors[currentUserIndex - 1];
 
-  const pointsBehind = personBehind ? currentUser.score - personBehind.score: 0;
+  const pointsBehind = personBehind ? currentUser.score - personBehind.score : 0;
   const pointsAhead = personAhead ? personAhead.score - currentUser.score : 0;
+
+  //Checks to see if their rank is in top 10;
+  const ifTop10 = currentUser.rank <= 10;
 
   const maxPointDifference = pointsAhead + pointsBehind; // Maximum point difference
   const buffer = 10; // 10% buffer on each side
@@ -28,36 +31,39 @@ export default function Info() {
       if (positionPercentage > 40) {
         return isAhead ? `${90}%` : `${10}%`;
       }
-      return isAhead ? `${50 + positionPercentage}%` : `${50 -positionPercentage}%`;
+      return isAhead ? `${50 + positionPercentage}%` : `${50 - positionPercentage}%`;
     }
   };
 
   return (
     <>
       <h1 className="text-5xl font-bold mb-4 text-center text-blue-600">Leaderboard</h1>
-      
-      <div className="p-6 w-full h-full mx-auto rounded-xl shadow-md flex flex-col items-center justify-center space-y-4">
-        <div className="flex justify-center space-x-4 w-full items-center">
-          <div className="w-full relative">
+      <div className="w-full relative">
+        {ifTop10 && (
+          <div><h1 className="text-5xl font-bold mb-4 text-center text-blue-600">Rank: {currentUser.rank}</h1></div>
+        )}
+      </div>
+      <div className="p-10 h-1/2 rounded-xl flex flex-col items-center justify-center space-y-4">
+        <div className="flex justify-center space-x-4 items-center align-center align-top">
+          <div className="w-full relative flex justify-between gap-10">
             {personBehind && (
-              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(pointsBehind, false, false), transform: 'translate(-50%, -50%)'}}>
-                <div className="bg-blue-100 w-8 h-8 rounded-full shadow-lg"></div>
-                <p className="mt-2 text-center text-blue-700">-{pointsBehind} points</p>
+              <div className="square-outline flex flex-col justify-center items-center bg-red-500 opacity-80">
+                -{pointsBehind}
               </div>
             )}
             {currentUser && (
-              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(0, true, false), transform: 'translate(-50%, -50%)'}}>
-                <div className="bg-green-100 w-8 h-8 rounded-full shadow-lg"></div>
-                <p className="mt-2 text-center text-green-700">Score: {currentUser.score}</p>
+              <div className="square-outline flex flex-col justify-center items-center bg-white opacity-80">
+                {currentUser.score}
               </div>
             )}
             {personAhead && (
-              <div className="absolute flex flex-col items-center justify-center" style={{left: getPosition(pointsAhead, false, true), transform: 'translate(-50%, -50%)'}}>
-                <div className="bg-red-100 w-8 h-8 rounded-full shadow-lg"></div>
-                <p className="mt-2 text-center text-red-700">+{pointsAhead} points</p>
+              <div className="square-outline flex flex-col justify-center items-center bg-green-500 opacity-80">
+                +{pointsAhead}
               </div>
             )}
           </div>
+
+
         </div>
       </div>
       <svg className="waves" viewBox="0 24 150 28" preserveAspectRatio="none" shapeRendering="auto">
