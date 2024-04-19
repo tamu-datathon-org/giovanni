@@ -7,32 +7,38 @@ import {
 } from "~/server/api/trpc";
 
 const schema = z.object({
-    teamId: z.string(),
+    teamId: z.number(),
+    teamName: z.string(),
     points: z.number(),
     rank: z.number()
 })
 
 export const postRouter = createTRPCRouter({
     getTopThree: protectedProcedure
-        .input(z.array(schema))
-        .query(({input}) => {
+        .query(() => {
 
             //TODO get top3 from array of top 10 that is in order
+            const topThree = getTopLeaderboard(3)
+
             return {
-                topThree: input.slice(0,3)
+                topThree
             };
         }),
 
     scoreDiff: publicProcedure
-        .input(z.array(schema))
-        .query(({input}) => {
+        .input(schema)
+        .query(async ({input}) => {
+
+            // RETURN TEAM AHEAD TEAM BEHIND POINT DIFF
+            const teams = await getAdjacentTeams(input.teamId)
+            const teamAhead = teams[2]
+            const curTeam = teams[1]
+            const teamBehind = teams[0]
 
             return {
-                // [team behind, team, team ahead, scores of main team, scores of team behind, scores of team ahead]
-                teamBehind: input[0],
-                teamAhead: input[2],
-                // diffAhead: input[5] - input[3],
-                // diffBehind: input[3] - input[4],
+                teamAhead,
+                curTeam,
+                teamBehind
             };
         })
 });
