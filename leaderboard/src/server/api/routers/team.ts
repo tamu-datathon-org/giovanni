@@ -31,11 +31,10 @@ export const postRouter = createTRPCRouter({
                 // [team behind, team, team ahead, scores of main team, scores of team behind, scores of team ahead]
                 teamBehind: input[0],
                 teamAhead: input[2],
-                diffAhead: input[5] - input[3],
-                diffBehind: input[3] - input[4],
+                // diffAhead: input[5] - input[3],
+                // diffBehind: input[3] - input[4],
             };
         })
-
 });
 
 interface Team {
@@ -43,6 +42,51 @@ interface Team {
     name: string;
     score: number;
     rank: number;
+}
+
+interface DataTeam {
+    id: number;
+    account_url: string;
+    name: string;
+    score: number;
+    bracket_id: number | null;
+    bracket_name: string | null;
+    solves: DataSolve[];
+}
+
+interface DataSolve {
+    challenge_id: number;
+    account_id: number;
+    team_id: number;
+    user_id: number;
+    value: number;
+    date: string;
+}
+
+type DataObject = Record<string, DataTeam>;
+
+interface DataIndividualTeam {
+    secret: null | string;
+    hidden: boolean;
+    created: string;
+    name: string;
+    country: null | string;
+    members: number[];
+    email: null | string;
+    bracket_id: null | string;
+    banned: boolean;
+    website: null | string;
+    captain_id: number;
+    id: number;
+    fields: any[];
+    affiliation: null | string;
+    oauth_id: null | string;
+    place: string;
+    score: number;
+}
+
+interface DataTeamStatistics {
+    registered: number;
 }
 
 async function getTopLeaderboard(count: number) {
@@ -55,15 +99,20 @@ async function getTopLeaderboard(count: number) {
         },
     });
     //returned as {"1" : {id:...}, "2": {id:...}, "3": {id:...}, etc.}
-    const data = await response.json();
-    const teams: Team[] = new Array(data.length);
-    for (let i = 1; i < data.length + 1; i++) {
-        teams[i] = {
-            id: data[i as unknown as string].id,
-            name: data[i as unknown as string].name,
-            score: data[i as unknown as string].score,
-            rank: i,
-        };
+    const teams: Team[] = new Array<Team>(count);
+    let i = 0;
+    const data = await response.json() as DataObject;
+    for(const key in data) {
+        if(Object.prototype.hasOwnProperty.call(data, key)) {
+            if( data[key] === null || data[key] === undefined) continue;
+            teams.push({
+                id: data[key].id,
+                name: data[key].name,
+                score: data[key].score,
+                rank: parseInt(key),
+            });
+            i++;
+        }
     }
 
     return teams;
@@ -82,10 +131,10 @@ async function getAdjacentTeams(teamId: number) {
             "Authorization": `Token ${process.env.CTFD_API_KEY}`
         },
     });
-    const teamData = await teamResponse.json();
-    let placement = teamData.place as string;
+    const teamData = await teamResponse.json() as DataIndividualTeam;
+    const placement = teamData.place;
     //placement is returns as 1st, 2nd, 3rd, 4th, etc.
-    let count = (placement).substring(0, placement.search(/[a-zA-z]/)) as unknown as number;
+    const count = (placement).substring(0, placement.search(/[a-zA-z]/)) as unknown as number;
     console.log(count);
 
     const registeredResponse = await fetch(`https://tamudatathon.ctfd.io/api/v1/statistics/teams`,
@@ -97,8 +146,8 @@ async function getAdjacentTeams(teamId: number) {
         },
     });
     //returned as registered: number
-    const registeredData = await registeredResponse.json();
-    let totalRegistered = registeredData.registered as number;
+    const registeredData = await registeredResponse.json() as DataTeamStatistics;
+    const totalRegistered = registeredData.registered;
 
     const scoreboardResponse = await fetch(`https://tamudatathon.ctfd.io/api/v1/scoreboard/top/${count + 1}`,
     {
@@ -109,21 +158,23 @@ async function getAdjacentTeams(teamId: number) {
         },
     });
     //returned a bunch of objects {"1" : {id:...}, "2": {id:...}, "3": {id:...}, etc.}
-    const scoreboardData = await scoreboardResponse.json();
+    const scoreboardData = await scoreboardResponse.json() as DataObject;
 
     //get the 3 teams based on the placement
-    const teams: (Team | null)[] = new Array(3);
-    let lowerBound = count - 1 as unknown as string;
-    let upperBound = count + 1 as unknown as string;
+    const teams: (Team | null)[] = new Array<Team | null>(3);
+    const lowerBound = count - 1 as unknown as string;
+    const upperBound = count + 1 as unknown as string;
     if(count == 1) {
         teams[0] = null;
     } else {
-        teams[0] = {
-            id: scoreboardData[lowerBound].id,
-            name: scoreboardData[lowerBound].name,
-            score: scoreboardData[lowerBound].score,
-            rank: count - 1,
-        };
+        if(scoreboardData[lowerBound] !== null && scoreboardData[lowerBound] !== undefined) {
+            teams[0] = {
+                id: scoreboardData[lowerBound].id,
+                name: scoreboardData[lowerBound].name,
+                score: scoreboardData[lowerBound].score,
+                rank: count - 1,
+            };
+        }
     }
 
     teams[1] = {
@@ -136,12 +187,14 @@ async function getAdjacentTeams(teamId: number) {
     if(count == totalRegistered) {
         teams[2] = null;
     } else {
-        teams[2] = {
-            id: scoreboardData[upperBound].id,
-            name: scoreboardData[upperBound].name,
-            score: scoreboardData[upperBound].score,
-            rank: count + 1,
-        };
+        if(scoreboardData[upperBound] !== null && scoreboardData[upperBound] !== undefined) {
+            teams[2] = {
+                id: scoreboardData[upperBound].id,
+                name: scoreboardData[upperBound].name,
+                score: scoreboardData[upperBound].score,
+                rank: count + 1,
+            };
+        }
     }
     return teams;
 }
