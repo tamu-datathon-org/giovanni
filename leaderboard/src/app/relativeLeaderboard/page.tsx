@@ -9,7 +9,10 @@ export default function Info() {
 
   // Assuming the current user is Competitor 2
   const currentUser = competitors.find(c => c.name === 'Competitor 2');
-  const currentUserIndex = competitors.indexOf(currentUser!);
+  if (!currentUser) {
+    throw new Error('Current user not found');
+  }
+  const currentUserIndex = competitors.indexOf(currentUser);
   const personBehind = competitors[currentUserIndex + 1];
   const personAhead = competitors[currentUserIndex - 1];
 
