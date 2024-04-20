@@ -2,17 +2,36 @@
 "use client";
 import './styles.css';
 import Link from "next/link";
+import { useState, useEffect} from 'react';
 
-export default function Home() {
 
-  const competitors = [
+interface Team{
+  teamId: number;
+  teamName: string;
+  points: number;
+  rank: number;
+}
+
+export default function Home() {  
+
+
+  /*const competitors = [
     { name: 'Competitor 1', score: 100 },
     { name: 'Competitor 2', score: 90 },
     { name: 'Competitor 3', score: 80 },
-  ];
 
-  // Sort competitors by score in descending order
-  competitors.sort((a, b) => b.score - a.score);
+  ]; */
+
+  const [topThree, setTopThree] = useState<Team[]>([]);
+
+  useEffect(() => {
+    //leaderboard fetching
+    fetch('../api/routers/team/getTopThree')
+      .then(response => response.json())
+      .then(data => setTopThree(data.topThree))
+      .catch(error => console.error('Error fetching top three:', error));
+  }, []);
+  const maxScore = Math.max(...topThree.map(c => c.score));
 
   return (
     <>
@@ -25,6 +44,27 @@ export default function Home() {
       <div className="mt-6 mb-6">
         <h1 className="text-5xl font-bold mb-4 text-center text-white opacity-100 text-white-500">Top 3 Leaderboard</h1>
       </div>
+
+      <h1 className="text-5xl font-bold mb-4 text-center">Leaderboard</h1>
+      <div className="p-6 w-1/2 mx-auto bg-white rounded-xl shadow-md flex flex-col items-center space-y-4">
+        <ul className="list-decimal list-inside w-full">
+          {topThree.map((team, index) => (
+            <li key={index} className="p-4 bg-blue-100 rounded-lg mb-4 animate-width" style={{ animationName: `loading-${index}`, backgroundColor: `rgb(51, ${92 + 50 * index}, 255)`}}>
+              <style>
+                {`
+                    @keyframes loading-${index} {
+                    0% {
+                      width: 150px;
+                    }
+                    100% {
+                      width: ${(team.points / maxScore) * 100}%;
+                    }
+                  }
+                `}
+              </style>
+              <h2 className="text-lg font-semibold">{team.teamName}</h2>
+              <p className="mt-2">Score: {team.points}</p>
+
       <div className="p-6 w-1/2 mx-auto bg-white rounded-xl shadow-md flex flex-col items-center space-y-4 opacity-95">
         <ul className="list-none list-inside w-full flex flex-col items-left">          {competitors.map((competitor, index) => {
           const colors = ['bg-yellow-300', 'bg-gray-400', 'bg-orange-500', 'bg-yellow-500', 'bg-purple-500'];
@@ -49,6 +89,7 @@ export default function Home() {
               <div className={`absolute right-0 top-0 bottom-0 h-full w-8 rounded-lg flex items-center justify-center ${colorClass} z-0`}>
                 <span className="text-white text-lg">{index + 1}</span>
               </div>
+
             </li>
           );
         })}
