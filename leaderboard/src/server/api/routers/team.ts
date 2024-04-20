@@ -10,13 +10,11 @@ const schema = z.object({
 });
 
 export const teamRouter = createTRPCRouter({
-  getTopThree: publicProcedure.query(() => {
+  getTopThree: publicProcedure.query(async () => {
     //TODO get top3 from array of top 10 that is in order
-    const topThree = getTopLeaderboard(3);
+    const topThree = await getTopLeaderboard(3);
 
-    return {
-      topThree,
-    };
+    return topThree;
   }),
 
   scoreDiff: publicProcedure.input(schema).query(async ({ input }) => {
@@ -60,8 +58,6 @@ interface DataSolve {
   date: string;
 }
 
-type DataObject = Record<string, DataTeam>;
-
 interface DataIndividualTeam {
   secret: null | string;
   hidden: boolean;
@@ -98,21 +94,25 @@ async function getTopLeaderboard(count: number) {
     },
   );
   //returned as {"1" : {id:...}, "2": {id:...}, "3": {id:...}, etc.}
-  const teams: Team[] = new Array<Team>(count);
+  const teams: Team[] = [];
   // let i = 0;
-  const data = (await response.json()) as DataObject;
-  for (const key in data) {
-    if (Object.prototype.hasOwnProperty.call(data, key)) {
-      if (data[key] === null || data[key] === undefined) continue;
-      teams.push({
-        id: data[key].id,
-        name: data[key].name,
-        score: data[key].score,
-        rank: parseInt(key),
-      });
-      // i++;
-    }
-  }
+  const data = (await response.json());
+  if (data["success"] === false) return [] 
+
+  const res = data["data"];
+  console.log(res)
+  for (const key in res) {
+    teams.push({
+    id: res[key]!.id,
+    name: res[key]!.name,
+    score: res[key]!.score,
+    rank: parseInt(key),
+  });
+}
+  // i++;
+
+
+  // console.log(teams)
 
   return teams;
   // get_scoreboard_details
@@ -167,7 +167,7 @@ async function getAdjacentTeams(teamId: number) {
     },
   );
   //returned a bunch of objects {"1" : {id:...}, "2": {id:...}, "3": {id:...}, etc.}
-  const scoreboardData = (await scoreboardResponse.json()) as DataObject;
+  const scoreboardData = (await scoreboardResponse.json());
 
   //get the 3 teams based on the placement
   const teams: (Team | null)[] = new Array<Team | null>(3);
@@ -182,11 +182,11 @@ async function getAdjacentTeams(teamId: number) {
     ) {
       teams[0] = {
 
-        id: scoreboardData[lowerBound].id,
+        id: scoreboardData[lowerBound]!.id,
 
-        name: scoreboardData[lowerBound].name,
+        name: scoreboardData[lowerBound]!.name,
 
-        score: scoreboardData[lowerBound].score,
+        score: scoreboardData[lowerBound]!.score,
         rank: count - 1,
       };
     }
@@ -207,9 +207,9 @@ async function getAdjacentTeams(teamId: number) {
       scoreboardData[upperBound] !== undefined
     ) {
       teams[2] = {
-        id: scoreboardData[upperBound].id,
-        name: scoreboardData[upperBound].name,
-        score: scoreboardData[upperBound].score,
+        id: scoreboardData[upperBound]!.id,
+        name: scoreboardData[upperBound]!.name,
+        score: scoreboardData[upperBound]!.score,
         rank: count + 1,
       };
     }
