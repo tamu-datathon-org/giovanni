@@ -3,7 +3,6 @@
 import './styles.css';
 import Link from "next/link";
 
-
 export default function Home() {
 
   const competitors = [
@@ -11,7 +10,10 @@ export default function Home() {
     { name: 'Competitor 2', score: 90 },
     { name: 'Competitor 3', score: 80 },
   ];
-  const maxScore = Math.max(...competitors.map(c => c.score));
+
+  // Sort competitors by score in descending order
+  competitors.sort((a, b) => b.score - a.score);
+
   return (
     <>
 
@@ -19,7 +21,7 @@ export default function Home() {
         <Link href="/relativeLeaderboard" className="text-white-500 hover:underline font-semibold">
           Go to Personal Leaderboard
         </Link>
-      </div>
+
       <div className="mt-6 mb-6">
         <h1 className="text-5xl font-bold mb-4 text-center text-white opacity-100 text-white-500">Top 3 Leaderboard</h1>
       </div>
@@ -67,4 +69,3 @@ export default function Home() {
     </>
   );
 }
-

@@ -2,6 +2,31 @@
   animation: loading 1s ease-in-out forwards;
 }
 
+.podium-1 {
+  bottom: 0;
+  order: 2;
+  height: 200px;
+  border: 1px solid #000;
+  background-color: #f8f9fa;
+  margin: 0 20px;
+}
+
+.podium-2 {
+  order: 3;
+  height: 150px;
+  border: 1px solid #000;
+  background-color: #f8f9fa;
+  margin: 0 20px;
+}
+
+.podium-3 {
+  bottom: 0;
+  order: 1;
+  height: 100px;
+  border: 1px solid #000;
+  background-color: #f8f9fa;
+  margin: 0 20px;
+}
 
 body {
   background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);

@@ -7,6 +7,7 @@ export default function Info() {
     { name: 'Competitor 1', score: 110, rank: 3 },
     { name: 'Competitor 2', score: 91, rank: 4 },
     { name: 'Competitor 3', score: 60, rank: 5 },
+
   ];
 
   // Assuming the current user is Competitor 2
