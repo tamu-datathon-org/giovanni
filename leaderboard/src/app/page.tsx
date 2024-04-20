@@ -2,33 +2,34 @@
 "use client";
 import "./styles.css";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { api } from "~/trpc/react";
+import { type Team } from "~/server/api/routers/team"; // interface Team {
 
-interface Team {
-  teamId: number;
-  teamName: string;
-  points: number;
-  rank: number;
-}
+// interface Team {
+//   teamId: number;
+//   teamName: string;
+//   points: number;
+//   rank: number;
+// }
 
 export default function Home() {
   /*const competitors = [
-    { name: 'Competitor 1', score: 100 },
-    { name: 'Competitor 2', score: 90 },
-    { name: 'Competitor 3', score: 80 },
-
-  ]; */
+                    { name: 'Competitor 1', score: 100 },
+                    { name: 'Competitor 2', score: 90 },
+                    { name: 'Competitor 3', score: 80 },
+                
+                  ]; */
 
   const [topThree, setTopThree] = useState<Team[]>([]);
 
-  useEffect(() => {
-    //leaderboard fetching
-    fetch("../api/routers/team/getTopThree")
-      .then((response) => response.json())
-      .then((data: { topThree: Team[] }) => setTopThree(data.topThree))
-      .catch((error) => console.error("Error fetching top three:", error));
-  }, []);
-  const maxScore = Math.max(...topThree.map((c) => c.points));
+  //leaderboard fetching
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  setTopThree(api.team.getTopThree.useQuery());
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const maxScore = Math.max(...topThree.map((c) => c.score));
 
   return (
     <>
@@ -66,13 +67,13 @@ export default function Home() {
                   width: 150px;
                 }
                 100% {
-                  width: ${(team.points / maxScore) * 100}%;
+                  width: ${(team.score / maxScore) * 100}%;
                 }
               }
             `}
               </style>
-              <h2 className="text-lg font-semibold">{team.teamName}</h2>
-              <p className="mt-2">Score: {team.points}</p>
+              <h2 className="text-lg font-semibold">{team.name}</h2>
+              <p className="mt-2">Score: {team.score}</p>
             </li>
           ))}
         </ul>
@@ -113,7 +114,7 @@ export default function Home() {
               `}
                 </style>
                 <h2 className="absolute inset-0 flex items-center justify-center text-2xl font-semibold text-white">
-                  {competitor.teamName}
+                  {competitor.name}
                 </h2>
                 <div
                   className={`absolute bottom-0 right-0 top-0 flex h-full w-8 items-center justify-center rounded-lg ${colorClass} z-0`}

@@ -34,7 +34,7 @@ export const teamRouter = createTRPCRouter({
   }),
 });
 
-interface Team {
+export interface Team {
   id: number;
   name: string;
   score: number;
@@ -87,13 +87,16 @@ interface DataTeamStatistics {
 }
 
 async function getTopLeaderboard(count: number) {
-  const response = await fetch(`${"http..."}/api/v1/scoreboard/top/${count}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${process.env.CTFD_API_KEY}`,
+  const response = await fetch(
+    `https://tamudatathon.ctfd.io/api/v1/scoreboard/top/${count}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${process.env.CTFD_API_KEY}`,
+      },
     },
-  });
+  );
   //returned as {"1" : {id:...}, "2": {id:...}, "3": {id:...}, etc.}
   const teams: Team[] = new Array<Team>(count);
   // let i = 0;
