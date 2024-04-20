@@ -34,12 +34,12 @@ export default async function Home() {
   return (
     <>
       <div className="absolute right-0 top-0 m-4 ">
-        <Link
+        {/* <Link
           href="/relativeLeaderboard"
           className="text-white-500 font-semibold hover:underline"
         >
           Go to Personal Leaderboard
-        </Link>
+        </Link> */}
       </div>
 
       <div className="mb-6 mt-6">
@@ -49,7 +49,7 @@ export default async function Home() {
       </div>
 
       <h1 className="mb-4 text-center text-5xl font-bold">Leaderboard</h1>
-      <div className="mx-auto flex w-1/2 flex-col items-center space-y-4 rounded-xl bg-white p-6 shadow-md">
+      {/* <div className="mx-auto flex w-1/2 flex-col items-center space-y-4 rounded-xl bg-white p-6 shadow-md">
         <ul className="w-full list-inside list-decimal">
           {topThree.map((team: Team, index: number) => (
             <TopThreeComponent
@@ -60,7 +60,7 @@ export default async function Home() {
             />
           ))}
         </ul>
-      </div>
+      </div> */}
 
       <div className="mx-auto flex w-1/2 flex-col items-center space-y-4 rounded-xl bg-white p-6 opacity-95 shadow-md">
         <ul className="items-left flex w-full list-inside list-none flex-col">
