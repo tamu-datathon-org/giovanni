@@ -29,7 +29,7 @@ export default function Home() {
   // @ts-expect-error
   setTopThree(api.team.getTopThree.useQuery());
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  const maxScore = Math.max(...topThree.map((c) => c.score));
+  const maxScore = topThree[0]?.score;
 
   return (
     <>
