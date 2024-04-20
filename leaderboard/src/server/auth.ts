@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
 // import DiscordProvider from "next-auth/providers/discord";
 import { db } from "~/server/db";
+import { env } from "~/env";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -31,6 +32,7 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  secret: env.NEXTAUTH_SECRET,
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
