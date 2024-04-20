@@ -105,9 +105,8 @@ async function getTopLeaderboard(count: number) {
     if (Object.prototype.hasOwnProperty.call(data, key)) {
       if (data[key] === null || data[key] === undefined) continue;
       teams.push({
-        // @ts-expect-error idk man
-        id: data[key].id, // @ts-expect-error idk man
-        name: data[key].name, // @ts-expect-error idk man
+        id: data[key].id,
+        name: data[key].name,
         score: data[key].score,
         rank: parseInt(key),
       });
@@ -182,11 +181,10 @@ async function getAdjacentTeams(teamId: number) {
       scoreboardData[lowerBound] !== undefined
     ) {
       teams[0] = {
-        // @ts-expect-error idk man
 
-        id: scoreboardData[lowerBound].id, // @ts-expect-error idk man
+        id: scoreboardData[lowerBound].id,
 
-        name: scoreboardData[lowerBound].name, // @ts-expect-error idk man
+        name: scoreboardData[lowerBound].name,
 
         score: scoreboardData[lowerBound].score,
         rank: count - 1,
@@ -209,9 +207,8 @@ async function getAdjacentTeams(teamId: number) {
       scoreboardData[upperBound] !== undefined
     ) {
       teams[2] = {
-        // @ts-expect-error idk man
-        id: scoreboardData[upperBound].id, // @ts-expect-error idk man
-        name: scoreboardData[upperBound].name, // @ts-expect-error idk man
+        id: scoreboardData[upperBound].id,
+        name: scoreboardData[upperBound].name,
         score: scoreboardData[upperBound].score,
         rank: count + 1,
       };
