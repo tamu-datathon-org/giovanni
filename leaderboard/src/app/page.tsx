@@ -31,7 +31,7 @@ export default function Home() {
       .then(data => setTopThree(data.topThree))
       .catch(error => console.error('Error fetching top three:', error));
   }, []);
-  const maxScore = Math.max(...topThree.map(c => c.score));
+  const maxScore = Math.max(...topThree.map(c => c.points));
 
   return (
     <>
