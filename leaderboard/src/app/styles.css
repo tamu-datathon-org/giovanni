@@ -49,6 +49,16 @@ body {
   }
 }
 
+.square-outline {
+  width: 250px; /* Set width to desired size */
+  height: 250px; /* Set height to desired size */
+  border-radius: 10px; /* Make border rounded */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  margin: 50px;
+  font-size: 50px;
+}
 
 .waves {
   position:absolute;
