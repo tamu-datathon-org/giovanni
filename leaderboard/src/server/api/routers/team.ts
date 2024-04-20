@@ -1,10 +1,6 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 const schema = z.object({
   teamId: z.number(),
@@ -14,7 +10,7 @@ const schema = z.object({
 });
 
 export const teamRouter = createTRPCRouter({
-  getTopThree: protectedProcedure.query(() => {
+  getTopThree: publicProcedure.query(() => {
     //TODO get top3 from array of top 10 that is in order
     const topThree = getTopLeaderboard(3);
 
