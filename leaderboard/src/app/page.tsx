@@ -1,10 +1,8 @@
 /* page.tsx */
 import "./styles.css";
-import Link from "next/link";
-import { useState } from "react";
 import { api } from "~/trpc/server";
-import { AdjacentTeamsComponent, TopThreeComponent } from "./components/TopThreeComponent";
-import { type Team } from "~/server/api/routers/team"; // interface Team {
+import { AdjacentTeamsComponent } from "./components/TopThreeComponent";
+import type { Team } from "~/server/api/routers/team"; // interface Team {
 
 // interface Team {
 //   teamId: number;
@@ -15,20 +13,19 @@ import { type Team } from "~/server/api/routers/team"; // interface Team {
 
 export default async function Home() {
   /*const competitors = [
-                    { name: 'Competitor 1', score: 100 },
-                    { name: 'Competitor 2', score: 90 },
-                    { name: 'Competitor 3', score: 80 },
-                
-                  ]; */
+                        { name: 'Competitor 1', score: 100 },
+                        { name: 'Competitor 2', score: 90 },
+                        { name: 'Competitor 3', score: 80 },
+                    
+                      ]; */
 
   // const [topThree, setTopThree] = useState<Team[]>([]);
-  const topThree = await api.team.getTopThree()
+  const topThree: Team[] = await api.team.getTopThree();
 
   //leaderboard fetching
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/ban-ts-comment
   // setTopThree(api.team.getTopThree.useQuery());
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
   // const maxScore = Math.max(...topThree.map((c) => c.score));
 
   return (

@@ -1,14 +1,8 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import {
-  getServerSession,
-  type DefaultSession,
-  type NextAuthOptions,
-} from "next-auth";
-import { type Adapter } from "next-auth/adapters";
+import type { DefaultSession, NextAuthOptions } from "next-auth";
+import { getServerSession } from "next-auth";
+import type { Adapter } from "next-auth/adapters";
 // import DiscordProvider from "next-auth/providers/discord";
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { env } from "~/env";
 import { db } from "~/server/db";
 
 /**
@@ -20,8 +14,7 @@ import { db } from "~/server/db";
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
-      id: string;
-      // ...other properties
+      id: string; // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
   }

@@ -1,4 +1,4 @@
 declare module "vanta/dist/vanta.waves.min" {
-  const waves: any;
+  const waves: never;
   export default waves;
 }

@@ -39,25 +39,6 @@ export interface Team {
   rank: number;
 }
 
-interface DataTeam {
-  id: number;
-  account_url: string;
-  name: string;
-  score: number;
-  bracket_id: number | null;
-  bracket_name: string | null;
-  solves: DataSolve[];
-}
-
-interface DataSolve {
-  challenge_id: number;
-  account_id: number;
-  team_id: number;
-  user_id: number;
-  value: number;
-  date: string;
-}
-
 interface DataIndividualTeam {
   secret: null | string;
   hidden: boolean;
@@ -96,21 +77,24 @@ async function getTopLeaderboard(count: number) {
   //returned as {"1" : {id:...}, "2": {id:...}, "3": {id:...}, etc.}
   const teams: Team[] = [];
   // let i = 0;
-  const data = (await response.json());
-  if (data["success"] === false) return [] 
 
-  const res = data["data"];
-  console.log(res)
+  const data = (await response.json()) as {
+    success: boolean;
+    data: Record<string, DataIndividualTeam>;
+  };
+  if (!data.success) return [];
+
+  const res = data.data;
+  console.log(res);
   for (const key in res) {
     teams.push({
-    id: res[key]!.id,
-    name: res[key]!.name,
-    score: res[key]!.score,
-    rank: parseInt(key),
-  });
-}
+      id: res[key]!.id,
+      name: res[key]!.name,
+      score: res[key]!.score,
+      rank: parseInt(key),
+    });
+  }
   // i++;
-
 
   // console.log(teams)
 
@@ -167,7 +151,10 @@ async function getAdjacentTeams(teamId: number) {
     },
   );
   //returned a bunch of objects {"1" : {id:...}, "2": {id:...}, "3": {id:...}, etc.}
-  const scoreboardData = (await scoreboardResponse.json());
+  const scoreboardData = (await scoreboardResponse.json()) as Record<
+    string,
+    Team
+  >;
 
   //get the 3 teams based on the placement
   const teams: (Team | null)[] = new Array<Team | null>(3);
@@ -181,7 +168,6 @@ async function getAdjacentTeams(teamId: number) {
       scoreboardData[lowerBound] !== undefined
     ) {
       teams[0] = {
-
         id: scoreboardData[lowerBound]!.id,
 
         name: scoreboardData[lowerBound]!.name,
