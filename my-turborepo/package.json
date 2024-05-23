@@ -17,16 +17,18 @@
     "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:ws": "pnpm dlx sherif@latest",
-    "postinstall": "pnpm lint:ws",
+    "postinstall": "pnpm lint:ws && manypkg check",
     "typecheck": "turbo typecheck",
-    "ui-add": "pnpm -F ui ui-add"
+    "ui-add": "pnpm -F ui ui-add",
+    "pkg-fix": "manypkg fix"
   },
-  "devDependencies": {
+  "prettier": "@acme/prettier-config",
+  "dependencies": {
     "@acme/prettier-config": "workspace:*",
+    "@manypkg/cli": "latest",
     "@turbo/gen": "^1.13.2",
     "prettier": "^3.2.5",
     "turbo": "^1.13.2",
     "typescript": "^5.4.4"
-  },
-  "prettier": "@acme/prettier-config"
+  }
 }
