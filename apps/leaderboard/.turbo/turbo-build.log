@@ -1,0 +1,17 @@
+[?25l[2J[m[2;1H> leaderboard@0.1.0 build C:\Users\upads\Documents\escuela_drive\2024Spring\Datathon 2024\giovanni\my-turborepo\apps\leaderboard
+> next build[5;1H]0;C:\Users\upads\AppData\Local\pnpm\pnpm.exe[?25h[?25l  [38;2;173;127;168m[1m▲ Next.js 14.2.3[7;1H[?25h[m [37m[1m [m Creating an optimized production build ...
+Failed to compile.
+
+../../node_modules/@trpc/react-query/dist/shared/hooks/createHooksInternal.mjs
+Attempted import error: 'isAsyncIterable' is not exported from '@trpc/server/unstable-core-do-not-import' (imported as 'isAsyncIterabl
+[7;134Hle').
+
+Import trace for requested module:
+../../node_modules/@trpc/react-query/dist/shared/hooks/createHooksInternal.mjs
+../../node_modules/@trpc/react-query/dist/createTRPCReact.mjs
+../../node_modules/@trpc/react-query/dist/index.mjs
+./src/trpc/react.tsx
+
+
+> Build failed because of webpack errors
+[30m[41m ELIFECYCLE [m [31mCommand failed with exit code 1.[m
