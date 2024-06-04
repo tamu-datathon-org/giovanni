@@ -1,9 +1,0 @@
-[?25l[2J[m[2;1H> leaderboard@0.1.0 lint C:\Users\upads\Documents\escuela_drive\2024Spring\Datathon 2024\giovanni\my-turborepo\apps\leaderboard
-> next lint --fix "--fix" "--cache" "--cache-location" "node_modules/.cache/.eslintcache"[5;1H]0;C:\Users\upads\AppData\Local\pnpm\pnpm.exe[?25hInvalid Options:
-- Unknown options: useEslintrc, extensions, resolvePluginsRelativeTo, rulePaths, ignorePath, reportUnusedDisableDirectives
-- 'extensions' has been removed.
-- 'resolvePluginsRelativeTo' has been removed.
-- 'ignorePath' has been removed.
-- 'rulePaths' has been removed. Please define your rules using plugins.
-- 'reportUnusedDisableDirectives' has been removed. Please use the 'overrideConfig.linterOptions.reportUnusedDisableDirectives' option instead.[30m[41m
- ELIFECYCLE [m [31mCommand failed with exit code 1.[m
