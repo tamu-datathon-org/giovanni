@@ -1,5 +1,5 @@
 {
-  "name": "@vanni/db",
+  "name": "@acme/db",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -37,14 +37,14 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@vanni/eslint-config": "workspace:*",
-    "@vanni/prettier-config": "workspace:*",
-    "@vanni/tsconfig": "workspace:*",
+    "@acme/eslint-config": "workspace:*",
+    "@acme/prettier-config": "workspace:*",
+    "@acme/tsconfig": "workspace:*",
     "dotenv-cli": "^7.4.2",
     "drizzle-kit": "^0.21.1",
     "eslint": "^9.2.0",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5"
   },
-  "prettier": "@vanni/prettier-config"
+  "prettier": "@acme/prettier-config"
 }
