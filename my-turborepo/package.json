@@ -4,7 +4,7 @@
   "engines": {
     "node": ">=20.12.0"
   },
-  "packageManager": "pnpm@9.1.0",
+  "packageManager": "pnpm@8.15.7",
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
@@ -22,10 +22,10 @@
     "ui-add": "pnpm -F ui ui-add"
   },
   "devDependencies": {
-    "@vanni/prettier-config": "workspace:*",
     "@turbo/gen": "^1.13.3",
+    "@vanni/prettier-config": "workspace:*",
     "prettier": "^3.2.5",
-    "turbo": "^1.13.3",
+    "turbo": "^2.0.3",
     "typescript": "^5.4.5"
   },
   "prettier": "@vanni/prettier-config"
