@@ -21,6 +21,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
+        cache-dependency-path: ./my-turborepo
     - name: Install dependencies
       run: pnpm install
     - name: Typecheck
