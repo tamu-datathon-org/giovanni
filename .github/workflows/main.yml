@@ -4,10 +4,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [20]
+    defaults:
+      run:
+        working-directory: ./my-turborepo
     steps:
     - uses: actions/checkout@v4
     - name: Install pnpm
