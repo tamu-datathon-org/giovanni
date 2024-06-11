@@ -8,8 +8,7 @@ jobs:
     strategy:
       matrix:
         node-version: [20]
-    defaults:
-      run:
+    env:
         working-directory: ./my-turborepo
     steps:
     - uses: actions/checkout@v4
