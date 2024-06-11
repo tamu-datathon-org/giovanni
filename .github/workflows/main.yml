@@ -1,9 +1,9 @@
-name: pnpm Example Workflow
+name: Typecheck, lint, format
 on:
   push:
 
 jobs:
-  build:
+  tlf:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -25,9 +25,5 @@ jobs:
         cache-dependency-path: ./my-turborepo
     - name: Install dependencies
       run: pnpm install
-    - name: Typecheck
-      run: pnpm typecheck
-    - name: Lint
-      run: pnpm lint
-    - name: Format
-      run: pnpm format
+    - name: Typecheck, lint, format
+      run: pnpm turbo typecheck lint format
