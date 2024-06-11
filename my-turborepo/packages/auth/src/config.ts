@@ -1,5 +1,6 @@
 import type { DefaultSession, NextAuthConfig } from "next-auth";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import Auth0 from "next-auth/providers/auth0";
 import Discord from "next-auth/providers/discord";
 
 import { db } from "@vanni/db/client";
@@ -19,7 +20,7 @@ export const authConfig = {
     accountsTable: Account,
     sessionsTable: Session,
   }),
-  providers: [Discord],
+  providers: [Discord, Auth0],
   callbacks: {
     session: (opts) => {
       if (!("user" in opts)) throw "unreachable with session strategy";
