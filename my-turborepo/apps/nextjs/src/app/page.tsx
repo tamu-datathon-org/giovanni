@@ -7,6 +7,7 @@ import {
   PostCardSkeleton,
   PostList,
 } from "./_components/posts";
+import Link from "next/link";
 
 export const runtime = "edge";
 
@@ -23,6 +24,13 @@ export default function HomePage() {
         <AuthShowcase />
 
         <CreatePostForm />
+
+        <Link href="/datathonblog/page">
+          <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+            Go to Blog
+          </button>
+        </Link>
+        
         <div className="w-full max-w-2xl overflow-y-scroll">
           <Suspense
             fallback={
