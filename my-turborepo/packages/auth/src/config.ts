@@ -22,7 +22,14 @@ export const authConfig = {
     accountsTable: Account,
     sessionsTable: Session,
   }),
-  providers: [Discord, Auth0],
+  providers: [
+    Discord,
+    Auth0({
+      clientId: env.AUTH_AUTH0_ID,
+      clientSecret: env.AUTH_AUTH0_SECRET,
+      issuer: env.AUTH_AUTH0_DOMAIN,
+    }),
+  ],
   callbacks: {
     session: (opts) => {
       if (!("user" in opts)) throw "unreachable with session strategy";
