@@ -52,9 +52,10 @@ export const VercelInviteUserEmail = ({
       <Head />
       <Preview>{previewText}</Preview>
       <Tailwind>
-        <Heading as="h2">Dear {username}</Heading>
-          <Body className="bg-white my-auto mx-auto font-sans">
-            <Markdown
+        <Heading className="text-black text-[24px] font-normal p-0 my-[30px] mx-2">Dear {username},</Heading>
+        <Body className="bg-white my-auto mx-auto font-sans">
+          <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] w-[465px]">
+          <Markdown
             markdownCustomStyles={{
               h1: { color: "red" },
               h2: { color: "blue" },
@@ -62,10 +63,10 @@ export const VercelInviteUserEmail = ({
             }}
             markdownContainerStyles={{
               padding: "12px",
-              border: "solid 1px black",
             }}
           >{`# Hello, World!`}</Markdown>
-          </Body>
+          </Container>
+        </Body>
       </Tailwind>
     </Html>
   );
