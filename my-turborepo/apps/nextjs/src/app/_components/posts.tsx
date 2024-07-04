@@ -2,9 +2,9 @@
 
 import { use } from "react";
 
-import type { RouterOutputs } from "@acme/api";
-import { cn } from "@acme/ui";
-import { Button } from "@acme/ui/button";
+import type { RouterOutputs } from "@vanni/api";
+import { cn } from "@vanni/ui";
+import { Button } from "@vanni/ui/button";
 import {
   Form,
   FormControl,
@@ -12,10 +12,10 @@ import {
   FormItem,
   FormMessage,
   useForm,
-} from "@acme/ui/form";
-import { Input } from "@acme/ui/input";
-import { toast } from "@acme/ui/toast";
-import { CreatePostSchema } from "@acme/validators";
+} from "@vanni/ui/form";
+import { Input } from "@vanni/ui/input";
+import { toast } from "@vanni/ui/toast";
+import { CreatePostSchema } from "@vanni/validators";
 
 import { api } from "~/trpc/react";
 
