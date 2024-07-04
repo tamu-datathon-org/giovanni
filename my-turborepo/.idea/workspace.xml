@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="223e42a0-cb86-49e3-ba22-ab70c8c90863" name="Changes" comment="Added some Auth0 stuff" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="auth-dev" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "upadsamay387"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/tamu-datathon-org/giovanni.git",
+    "accountId": "73e8719f-809e-4412-8acd-3e5b991439e6"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2ingsMqJWKou5Ij35b7me0Oo1NZ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "d's-world",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "pnpm",
+    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\upads\\Documents\\escuela_drive\\Datathon2024\\giovanni\\my-turborepo\\node_modules\\prettier",
+    "ts.external.directory.path": "C:\\Users\\upads\\Documents\\escuela_drive\\Datathon2024\\giovanni\\my-turborepo\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-eef0733dfcaf-JavaScript-WS-242.19890.18" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="223e42a0-cb86-49e3-ba22-ab70c8c90863" name="Changes" comment="" />
+      <created>1717715489858</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1717715489858</updated>
+      <workItem from="1717715490843" duration="386000" />
+      <workItem from="1717715888405" duration="119000" />
+      <workItem from="1717716018948" duration="1206000" />
+      <workItem from="1717717260220" duration="12549000" />
+      <workItem from="1719277456942" duration="975000" />
+      <workItem from="1719278449481" duration="12385000" />
+      <workItem from="1719517393788" duration="1984000" />
+      <workItem from="1720130657998" duration="884000" />
+      <workItem from="1720131632910" duration="320000" />
+      <workItem from="1720131963587" duration="774000" />
+    </task>
+    <task id="LOCAL-00001" summary="recreated starter code again">
+      <option name="closed" value="true" />
+      <created>1717715904854</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1717715904854</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Renamed app">
+      <option name="closed" value="true" />
+      <created>1717716166943</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1717716166943</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Updated pnpm lock">
+      <option name="closed" value="true" />
+      <created>1717716331564</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1717716331564</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Updated pnpm lock">
+      <option name="closed" value="true" />
+      <created>1717889758365</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1717889758365</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Added some Auth0 stuff">
+      <option name="closed" value="true" />
+      <created>1718125597952</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1718125597952</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added some Auth0 stuff">
+      <option name="closed" value="true" />
+      <created>1719455249218</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1719455249218</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="auth-dev" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
