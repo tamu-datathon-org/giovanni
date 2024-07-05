@@ -22,17 +22,17 @@
     "@vanni/auth": "workspace:*",
     "@vanni/db": "workspace:*",
     "@vanni/validators": "workspace:*",
-    "@trpc/server": "11.0.0-next.320",
+    "@trpc/server": "11.0.0-rc.364",
     "superjson": "2.2.1",
-    "zod": "^3.22.4"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "eslint": "^9.0.0",
+    "eslint": "^9.2.0",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   },
   "prettier": "@vanni/prettier-config"
 }

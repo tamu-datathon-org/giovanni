@@ -3,6 +3,7 @@
 import { use } from "react";
 
 import type { RouterOutputs } from "@vanni/api";
+import { CreatePostSchema } from "@vanni/db/schema";
 import { cn } from "@vanni/ui";
 import { Button } from "@vanni/ui/button";
 import {
@@ -15,7 +16,6 @@ import {
 } from "@vanni/ui/form";
 import { Input } from "@vanni/ui/input";
 import { toast } from "@vanni/ui/toast";
-import { CreatePostSchema } from "@vanni/validators";
 
 import { api } from "~/trpc/react";
 
