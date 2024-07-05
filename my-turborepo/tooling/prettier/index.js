@@ -21,7 +21,7 @@ const config = {
     "^(expo(.*)$)|^(expo$)",
     "<THIRD_PARTY_MODULES>",
     "",
-    "<TYPES>^@vanni",
+    "<TYPES>^@acme",
     "^@vanni/(.*)$",
     "",
     "<TYPES>^[.|..|~]",

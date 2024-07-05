@@ -1,4 +1,4 @@
-import baseConfig, { restrictEnvAccess } from "@vanni/eslint-config/base";
+import baseConfig from "@vanni/eslint-config/base";
 
 /** @type {import('typescript-eslint').Config} */
 export default [
@@ -6,5 +6,4 @@ export default [
     ignores: ["dist/**"],
   },
   ...baseConfig,
-  ...restrictEnvAccess,
 ];

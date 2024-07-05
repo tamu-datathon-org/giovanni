@@ -1,4 +1,4 @@
-import baseConfig, { restrictEnvAccess } from "@vanni/eslint-config/base";
+import baseConfig from "@vanni/eslint-config/base";
 import nextjsConfig from "@vanni/eslint-config/nextjs";
 import reactConfig from "@vanni/eslint-config/react";
 
