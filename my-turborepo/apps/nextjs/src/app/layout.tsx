@@ -39,6 +39,7 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
 };
+console.log('hihi')
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
