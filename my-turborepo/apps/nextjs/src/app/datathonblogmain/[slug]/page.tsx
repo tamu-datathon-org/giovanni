@@ -19,7 +19,7 @@ export const generateStaticParams = async () => {
 }
 
 export async function generateMetadata({params}){
-    //maybe error here lowk
+    //maybe error here lowkey
     const id = params?.slug ? '.' + params?.slug: ''
     return {
         title: `The Daily Datathon ${id.replaceAll('_',' ')}`
