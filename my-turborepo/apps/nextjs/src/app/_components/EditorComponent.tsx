@@ -1,7 +1,28 @@
 "use client";
 
-import { MDXEditor, MDXEditorMethods, headingsPlugin } from "@mdxeditor/editor";
+import {
+    AdmonitionDirectiveDescriptor,
+    MDXEditor,
+    MDXEditorMethods,
+    codeBlockPlugin,
+    codeMirrorPlugin,
+    diffSourcePlugin,
+    directivesPlugin,
+    frontmatterPlugin,
+    headingsPlugin,
+    imagePlugin,
+    linkDialogPlugin,
+    linkPlugin,
+    listsPlugin,
+    markdownShortcutPlugin,
+    quotePlugin,
+    sandpackPlugin,
+    tablePlugin,
+    thematicBreakPlugin,
+    toolbarPlugin,
+} from "@mdxeditor/editor";
 import React, { FC } from "react";
+import { KitchenSinkToolbar } from "./KitchenSinkToolbar";
 
 interface EditorProps {
     markdown: string;
@@ -15,10 +36,43 @@ interface EditorProps {
 const Editor: FC<EditorProps> = ({ markdown, editorRef }) => {
     return (
         <MDXEditor
-            onChange={(e) => console.log(e)}
             ref={editorRef}
             markdown={markdown}
-            plugins={[headingsPlugin()]}
+            contentEditableClassName="prose max-w-full font-sans"
+            plugins={[
+                toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar /> }),
+                listsPlugin(),
+                quotePlugin(),
+                headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
+                linkPlugin(),
+                linkDialogPlugin(),
+                imagePlugin({
+                    imageAutocompleteSuggestions: [
+                        "https://via.placeholder.com/150",
+                        "https://via.placeholder.com/150",
+                    ],
+                    imageUploadHandler: async () =>
+                        Promise.resolve("https://picsum.photos/200/300"),
+                }),
+                tablePlugin(),
+                thematicBreakPlugin(),
+                frontmatterPlugin(),
+                codeBlockPlugin({ defaultCodeBlockLanguage: "" }),
+                codeMirrorPlugin({
+                    codeBlockLanguages: {
+                        js: "JavaScript",
+                        css: "CSS",
+                        txt: "Plain Text",
+                        tsx: "TypeScript",
+                        "": "Unspecified",
+                    },
+                }),
+                directivesPlugin({
+                    directiveDescriptors: [AdmonitionDirectiveDescriptor],
+                }),
+                diffSourcePlugin({ viewMode: "rich-text", diffMarkdown: "boo" }),
+                markdownShortcutPlugin(),
+            ]}
         />
     );
 };
