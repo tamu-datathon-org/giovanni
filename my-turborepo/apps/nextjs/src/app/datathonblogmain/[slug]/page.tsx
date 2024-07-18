@@ -18,7 +18,7 @@ export const generateStaticParams = async () => {
     return posts.map((post) => ({slug: post.slug}))
 }
 
-export async function generateMetadata({params}){
+export async function generateMetadata({ params }: any){
     //maybe error here lowkey
     const id = params?.slug ? '.' + params?.slug: ''
     return {
@@ -30,7 +30,6 @@ export default function mainBlogPage(props: { params: { slug: any } }){
 
     const slug = props.params.slug
     const post = getPostContent(slug)
-    console.log(post)
     return (
         <main>
             <article>
