@@ -7,6 +7,8 @@ import {
   PostCardSkeleton,
   PostList,
 } from "./_components/posts";
+import Link from "next/link";
+import { Button } from "@vanni/ui/button";
 
 export const runtime = "edge";
 
@@ -21,6 +23,11 @@ export default function HomePage() {
           Create <span className="text-primary">T3</span> Turbo
         </h1>
         <AuthShowcase />
+        <Link href='/nextjs-blog/layout'>
+          <Button>
+            Go to blog
+          </Button>
+        </Link>
 
         <CreatePostForm />
         <div className="w-full max-w-2xl overflow-y-scroll">
