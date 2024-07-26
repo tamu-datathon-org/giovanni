@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 lockfileVersion: '6.0'
 
 settings:
@@ -36258,6 +36259,7 @@ snapshots:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: false
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 2482757 (changed pnpm version)
 =======
@@ -36269,3 +36271,7 @@ snapshots:
 >>>>>>> 2482757 (changed pnpm version)
 =======
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+=======
+>>>>>>> d8d25ea (build layout for testing)
+>>>>>>> 3533ad0 (build layout for testing)
