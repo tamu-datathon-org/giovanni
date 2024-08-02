@@ -5,8 +5,8 @@ import utilStyles from '../styles/utils.module.css';
 import Link from 'next/link';
 import React from 'react';
 
-const name = '[Your Name]';
-export const siteTitle = 'Next.js Sample Website';
+const name = 'TAMU Datathon Blog! 🤖';
+export const siteTitle = 'Official TAMU Datathon Blog';
 
 export default function Layout({
   children,
@@ -15,13 +15,15 @@ export default function Layout({
   children: React.ReactNode;
   home?: boolean;
 }) {
+
+  // Should prob switch the favicon from basic vercel icon
   return (
     <div className={styles.container}>
       <Head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/td-logo.png" />
         <meta
-          name="description"
-          content="Learn how to build a personal website using Next.js"
+          name="The offical blog for the TAMU Datathon"
+          content="Find offical solutions to the Datathon challenges here"
         />
         <meta
           property="og:image"
@@ -35,12 +37,15 @@ export default function Layout({
       <header className={styles.header}>
         {home ? (
           <>
+          {// also need to switch this image or remove it alltogether - could put
+          // a datathon bear or sum
+          }
             <Image
               priority
-              src="/images/profile.jpg"
+              src="/images/tdMascotChibi.svg"
               className={utilStyles.borderCircle}
-              height={144}
-              width={144}
+              height={150}
+              width={280}
               alt={name}
             />
             <h1 className={utilStyles.heading2Xl}>{name}</h1>
@@ -68,7 +73,7 @@ export default function Layout({
       <main>{children}</main>
       {!home && (
         <div className={styles.backToHome}>
-          <Link href="/">← Back to home</Link>
+          <Link href="/">← Back to home!</Link>
         </div>
       )}
     </div>
