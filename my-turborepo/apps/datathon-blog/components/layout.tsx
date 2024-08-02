@@ -16,7 +16,6 @@ export default function Layout({
   home?: boolean;
 }) {
 
-  // Should prob switch the favicon from basic vercel icon
   return (
     <div className={styles.container}>
       <Head>
@@ -37,9 +36,6 @@ export default function Layout({
       <header className={styles.header}>
         {home ? (
           <>
-          {// also need to switch this image or remove it alltogether - could put
-          // a datathon bear or sum
-          }
             <Image
               priority
               src="/images/tdMascotChibi.svg"
@@ -55,7 +51,7 @@ export default function Layout({
             <Link href="/">
               <Image
                 priority
-                src="/images/profile.jpg"
+                src="/images/tdMascotChibi.svg"
                 className={utilStyles.borderCircle}
                 height={108}
                 width={108}
