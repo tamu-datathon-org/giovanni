@@ -22,7 +22,7 @@ export default function Home({
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
-        <p>Welcome to the official blog for the Texas A&M Datathon!</p>
+        <p>Welcome to the official blog for the Texas A&M University Datathon!</p>
         <p>
           Here, you'll be able to find our offical solutions to the challenges - Thanks to the challeneges officers!
         </p>
