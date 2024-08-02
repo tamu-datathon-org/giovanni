@@ -9,17 +9,10 @@
     "date-fns": "^3.6.0",
     "gray-matter": "^4.0.3",
     "next": "latest",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1"
   },
   "engines": {
     "node": ">=18"
-  },
-  "devDependencies": {
-    "@types/node": "^20.14.11",
-    "@types/react": "18.3.3",
-    "typescript": "5.5.3"
   }
 }
