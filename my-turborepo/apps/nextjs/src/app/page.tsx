@@ -1,7 +1,4 @@
 import { Suspense } from "react";
-import Link from "next/link";
-
-import { Button } from "@vanni/ui/button";
 
 import { api } from "~/trpc/server";
 import { AuthShowcase } from "./_components/auth-showcase";
