@@ -1,4 +1,4 @@
-import ApplicationForm from "~/app/_components/application-form";
+import { ApplicationForm } from "~/app/_components/application-form";
 
 export default function Page() {
 

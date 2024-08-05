@@ -19,7 +19,7 @@ export default function Page() {
         {/*    <br/>*/}
         {/*    Keep an eye out for an email!*/}
         {/*</div>*/}
-         <button className="editButton"><Link className="dashboardText buttonText" href="/application">Edit your application</Link></button>
+         <button className="editButton"><Link className="dashboardText buttonText" href="/apply/application">Edit your application</Link></button>
       </form>
     </div>
     </>
