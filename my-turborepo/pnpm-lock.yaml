@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      zod-form-data:
+        specifier: ^2.0.2
+        version: 2.0.2(zod@3.23.8)
     devDependencies:
       '@turbo/gen':
         specifier: ^1.13.3
@@ -15071,9 +15075,13 @@ packages:
     resolution: {integrity: sha512-0f8aRfBVL+mpzfBjYfQuLWh2WyAwtJXCRfkPF4UJ5qd2YwrHczsrSzXU4tRMV0OAxR8ZJZWPFn6uhSC56UTsLA==}
     engines: {node: '>=18.17.0'}
 <<<<<<< HEAD
+<<<<<<< HEAD
     hasBin: true
 =======
 >>>>>>> 2482757 (changed pnpm version)
+=======
+    hasBin: true
+>>>>>>> cd83ca7 (update: zod form validation)
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
       '@playwright/test': ^1.41.2
@@ -15227,11 +15235,14 @@ packages:
     resolution: {integrity: sha512-aKXvtNrWkOCMsQbsk4A0qQdBjrJ1ZcvwlTQevI/LAgLWLYc5L7Q/YiYxGLal4ITyNSlzir1Cm1D2ZxnYhmpMEw==}
     engines: {node: ^16.11.0 || >=17.0.0}
     hasBin: true
+<<<<<<< HEAD
 =======
   /nitropack@2.9.7:
     resolution: {integrity: sha512-aKXvtNrWkOCMsQbsk4A0qQdBjrJ1ZcvwlTQevI/LAgLWLYc5L7Q/YiYxGLal4ITyNSlzir1Cm1D2ZxnYhmpMEw==}
     engines: {node: ^16.11.0 || >=17.0.0}
 >>>>>>> 2482757 (changed pnpm version)
+=======
+>>>>>>> cd83ca7 (update: zod form validation)
     peerDependencies:
       xml2js: ^0.6.2
     peerDependenciesMeta:
@@ -17096,7 +17107,11 @@ packages:
   /rollup-plugin-visualizer@5.12.0(rollup@4.19.2):
     resolution: {integrity: sha512-8/NU9jXcHRs7Nnj07PF2o4gjxmm9lXIrZ8r175bT9dK8qoLlvKTwRMArRCMgpMGlq8CTLugRvEmyMeMXIU2pNQ==}
     engines: {node: '>=14'}
+<<<<<<< HEAD
 >>>>>>> 2482757 (changed pnpm version)
+=======
+    hasBin: true
+>>>>>>> cd83ca7 (update: zod form validation)
     peerDependencies:
       rollup: 2.x || 3.x || 4.x
     peerDependenciesMeta:
@@ -18404,7 +18419,11 @@ packages:
 
   /ts-node@10.9.2(@types/node@20.14.13)(typescript@5.5.4):
     resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}
+<<<<<<< HEAD
 >>>>>>> 2482757 (changed pnpm version)
+=======
+    hasBin: true
+>>>>>>> cd83ca7 (update: zod form validation)
     peerDependencies:
       '@swc/core': '>=1.2.50'
       '@swc/wasm': '>=1.2.50'
@@ -19170,9 +19189,13 @@ packages:
   /update-browserslist-db@1.1.0(browserslist@4.23.3):
     resolution: {integrity: sha512-EdRAaAyk2cUE1wOf2DkEhzxqOQvFOoRJFNS6NeyJ01Gp2beMRpBAINjM2iDXE3KCuKhwnvHIQCJm6ThL2Z+HzQ==}
 <<<<<<< HEAD
+<<<<<<< HEAD
     hasBin: true
 =======
 >>>>>>> 2482757 (changed pnpm version)
+=======
+    hasBin: true
+>>>>>>> cd83ca7 (update: zod form validation)
     peerDependencies:
       browserslist: '>= 4.21.0'
     dependencies:
