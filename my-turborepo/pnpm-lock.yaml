@@ -19,10 +19,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      zod-form-data:
-        specifier: ^2.0.2
-        version: 2.0.2(zod@3.23.8)
     devDependencies:
       '@turbo/gen':
         specifier: ^1.13.3
@@ -35259,6 +35255,7 @@ snapshots:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> cd83ca7 (update: zod form validation)
   /zod-form-data@2.0.2(zod@3.23.8):
@@ -35269,6 +35266,8 @@ snapshots:
       zod: 3.23.8
     dev: false
 
+=======
+>>>>>>> bab3e47 (fix: new pnpm lock)
   /zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 =======
