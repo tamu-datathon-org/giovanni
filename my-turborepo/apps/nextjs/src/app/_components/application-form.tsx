@@ -31,6 +31,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export function ApplicationForm() {
     const { register, handleSubmit } = useForm<ApplicationSchema>(
         {
+            mode: "onSubmit",
             defaultValues: {
                 firstName: "",
                 lastName: "",
