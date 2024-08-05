@@ -60411,8 +60411,11 @@ snapshots:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 46a988a (fix: new pnpm lock)
+=======
+>>>>>>> 1c2c035 (fix: installed on subfolder)
 =======
 >>>>>>> cd83ca7 (update: zod form validation)
 <<<<<<< HEAD
@@ -60421,8 +60424,11 @@ snapshots:
 =======
 >>>>>>> 1b8c9e4 (fix: installed on subfolder)
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 73ab0b9 (fix: installed on subfolder)
 =======
+=======
+>>>>>>> bcba60a (fix: installed on subfolder)
 =======
 >>>>>>> ee97b5c (changed pnpm version)
 <<<<<<< HEAD
@@ -60437,7 +60443,12 @@ snapshots:
 =======
 >>>>>>> cd83ca7 (update: zod form validation)
 >>>>>>> b68d662 (update: zod form validation)
+<<<<<<< HEAD
 >>>>>>> 56cf94e (update: zod form validation)
+=======
+=======
+>>>>>>> 1c2c035 (fix: installed on subfolder)
+>>>>>>> bcba60a (fix: installed on subfolder)
   /zod-form-data@2.0.2(zod@3.23.8):
     resolution: {integrity: sha512-sKTi+k0fvkxdakD0V5rq+9WVJA3cuTQUfEmNqvHrTzPLvjfLmkkBLfR0ed3qOi9MScJXTHIDH/jUNnEJ3CBX4g==}
     peerDependencies:
@@ -60448,14 +60459,20 @@ snapshots:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1c2c035 (fix: installed on subfolder)
 =======
 >>>>>>> bab3e47 (fix: new pnpm lock)
 =======
 >>>>>>> 1b8c9e4 (fix: installed on subfolder)
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> bab3e47 (fix: new pnpm lock)
 >>>>>>> 46a988a (fix: new pnpm lock)
+=======
+>>>>>>> 1c2c035 (fix: installed on subfolder)
   /zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 =======
