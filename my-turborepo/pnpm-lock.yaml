@@ -33580,9 +33580,15 @@ snapshots:
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> cd83ca7 (update: zod form validation)
+<<<<<<< HEAD
 >>>>>>> 28bc876 (fix: new pnpm lock)
+=======
+=======
+>>>>>>> 1b8c9e4 (fix: installed on subfolder)
+>>>>>>> 73ab0b9 (fix: installed on subfolder)
   /zod-form-data@2.0.2(zod@3.23.8):
     resolution: {integrity: sha512-sKTi+k0fvkxdakD0V5rq+9WVJA3cuTQUfEmNqvHrTzPLvjfLmkkBLfR0ed3qOi9MScJXTHIDH/jUNnEJ3CBX4g==}
     peerDependencies:
@@ -33591,8 +33597,11 @@ snapshots:
       zod: 3.23.8
     dev: false
 
+<<<<<<< HEAD
 =======
 >>>>>>> bab3e47 (fix: new pnpm lock)
+=======
+>>>>>>> 1b8c9e4 (fix: installed on subfolder)
   /zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 <<<<<<< HEAD
