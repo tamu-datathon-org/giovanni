@@ -1,19 +1,58 @@
-"use client"
-import { useForm } from "react-hook-form"
+"use client";
 
-export interface FormValues {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-}
+import { SubmitHandler, useForm } from "react-hook-form";
+import { applicationSchema, ApplicationSchema } from "../apply/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+// import * as z from "zod";
 
-export default function ApplicationForm() {
-    const { register } = useForm();
-
+/*
+    Fire Name
+    Last Name
+    Age (select 16<, 17...23, 24+)
+    Country (autocomplete)
+    Phone number
+    School (autocomplete)
+    Major (select)
+    Classification (select)
+    Anticipated Grady Year (select)
+    Gender (NA, M, F, NB, X)
+    Race (select)
+    Hackathons Attended (select 0, 1-3, 4-7, 8-10, 10+)
+    Experience Level (select Beginner, Intermediate, Advanced)
+    Event Source (select)
+    Shirt Size (select S, M, L, XL, XXL)
+    Address
+    References (textarea)
+    Joke (textarea)
+    Dietary Restrictions (textarea)
+    Extra Information (textarea)
+    Liability Waiver (checkbox)
+*/
+export function ApplicationForm() {
+    const { register, handleSubmit } = useForm<ApplicationSchema>(
+        {
+            defaultValues: {
+                firstName: "",
+                lastName: "",
+                age: 18
+            },
+            // values
+            resetOptions: {
+                keepDirtyValues: false, // user-interacted input will not be retained
+                keepErrors: true,
+            },
+            resolver: zodResolver(applicationSchema),
+            // match it to an endpoint because it allows async or use values
+        }
+    );
+    const onSubmit: SubmitHandler<ApplicationSchema> = data => console.log(data);
+    
     return (
-        <form>
-            <input {...register("firstName")} type="text" placeholder="First name" />
+        <form onSubmit={handleSubmit(onSubmit)}>
+        <input {...register("firstName", { required: true, maxLength: 20 })} />
+        <input {...register("lastName", { pattern: /^[A-Za-z]+$/i })} />
+        <input type="number" {...register("age", { min: 18, max: 99 })} />
+        <input type="submit" />
         </form>
     );
 }
