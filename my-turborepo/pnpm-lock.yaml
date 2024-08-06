@@ -94,10 +94,10 @@ importers:
         specifier: latest
         version: 2.13.4(next@14.2.5)(nextra@2.13.4)(react-dom@18.3.1)(react@18.3.1)
       react:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1
       react-dom:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@types/node':
@@ -152,10 +152,10 @@ importers:
         specifier: ^14.2.3
         version: 14.2.5(react-dom@18.3.1)(react@18.3.1)
       react:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1
       react-dom:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
       remark:
         specifier: ^15.0.1
@@ -268,10 +268,10 @@ importers:
         specifier: 5.0.0-beta.20
         version: 5.0.0-beta.20(next@14.2.5)(react@18.3.1)
       react:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1
       react-dom:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
       zod:
         specifier: ^3.23.8
@@ -397,7 +397,7 @@ importers:
         specifier: ^3.2.5
         version: 3.3.3
       react:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1
       tailwindcss:
         specifier: ^3.4.3
@@ -9449,7 +9449,7 @@ packages:
   /react-dom@18.3.1(react@18.3.1):
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
-      react: ^18.3.1
+      react: 18.3.1
     dependencies:
       loose-envify: 1.4.0
       react: 18.3.1
