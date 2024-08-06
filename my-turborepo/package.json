@@ -19,13 +19,16 @@
     "lint:ws": "pnpm dlx sherif@latest",
     "postinstall": "pnpm lint:ws",
     "typecheck": "turbo typecheck",
-    "ui-add": "pnpm -F ui ui-add"
+    "ui-add": "pnpm -F ui ui-add",
+    "depcheck": "check-dependency-version-consistency .",
+    "depcheck:fix": "check-dependency-version-consistency . --fix"
   },
   "devDependencies": {
     "@turbo/gen": "^1.13.3",
     "@vanni/prettier-config": "workspace:*",
+    "check-dependency-version-consistency": "^4.1.0",
     "prettier": "^3.2.5",
-    "turbo": "^2.0.3",
+    "turbo": "^2.0.12",
     "typescript": "^5.4.5"
   },
   "prettier": "@vanni/prettier-config"
