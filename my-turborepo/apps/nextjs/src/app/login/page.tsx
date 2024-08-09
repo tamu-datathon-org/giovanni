@@ -1,5 +1,3 @@
-import GoogleButton from "react-google-button";
-
 import { signIn } from "@vanni/auth";
 import { Button } from "@vanni/ui/button";
 
@@ -37,12 +35,13 @@ export default function LoginPage() {
         <form>
           <LoginButton providerId="discord" buttonText="Sign in with Discord" />
           <LoginButton providerId="auth0" buttonText="Sign in with Auth0" />
-          <GoogleButton
+          <Button
+            size="lg"
             onClick={async () => {
               "use server";
               await signIn(
                 "auth0",
-                { redirectTo: "/dashboard" },
+                { redirectTo: "/login" },
                 {
                   connection: "google-oauth2",
                 },
