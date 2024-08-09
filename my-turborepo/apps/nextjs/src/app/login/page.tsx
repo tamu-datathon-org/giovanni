@@ -47,7 +47,9 @@ export default function LoginPage() {
                 },
               );
             }}
-          />
+          >
+            Sign in with Google
+          </Button>
         </form>
       </div>
     </main>
