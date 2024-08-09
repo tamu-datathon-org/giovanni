@@ -1,6 +1,27 @@
-import { AuthShowcase } from "../_components/auth-showcase";
+import { signIn } from "@vanni/auth";
+import { Button } from "@vanni/ui/button";
 
 export const runtime = "edge";
+
+function LoginButton({
+  providerId,
+  buttonText,
+}: {
+  providerId: string;
+  buttonText: string;
+}) {
+  return (
+    <Button
+      size="lg"
+      formAction={async () => {
+        "use server";
+        await signIn(providerId);
+      }}
+    >
+      {buttonText}
+    </Button>
+  );
+}
 
 export default function LoginPage() {
   return (
@@ -9,7 +30,12 @@ export default function LoginPage() {
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           Log In
         </h1>
-        <AuthShowcase />
+        {/*<AuthShowcase />*/}
+
+        <form>
+          <LoginButton providerId="discord" buttonText="Sign in with Discord" />
+          <LoginButton providerId="auth0" buttonText="Sign in with Auth0" />
+        </form>
       </div>
     </main>
   );
