@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 
 import { cn } from "@vanni/ui";
 import { ThemeProvider, ThemeToggle } from "@vanni/ui/theme";
+import '@mdxeditor/editor/style.css';
 import { Toaster } from "@vanni/ui/toast";
 
 import { TRPCReactProvider } from "~/trpc/react";
