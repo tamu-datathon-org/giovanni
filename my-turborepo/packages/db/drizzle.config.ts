@@ -11,4 +11,5 @@ export default {
   dialect: "postgresql",
   dbCredentials: { url: nonPoolingUrl },
   tablesFilter: ["t3turbo_*"],
+  out: "./drizzle",
 } satisfies Config;

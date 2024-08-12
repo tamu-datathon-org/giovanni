@@ -42,6 +42,25 @@ export const User = pgTable("user", {
   image: varchar("image", { length: 255 }),
 });
 
+export const Preregistration = pgTable("preregister", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  email: varchar("email", { length: 255 }).notNull(),
+  registerdAt: timestamp("registered_at", {
+    mode: "date",
+    withTimezone: true,
+  })
+    .defaultNow()
+    .notNull(),
+  expiresAt: timestamp("expires_at", {
+    mode: "date",
+    withTimezone: true,
+  }).$defaultFn(() => {
+    const expires = new Date();
+    expires.setFullYear(expires.getFullYear() + 1);
+    return expires;
+  }),
+});
+
 export const UserRelations = relations(User, ({ many }) => ({
   accounts: many(Account),
 }));
