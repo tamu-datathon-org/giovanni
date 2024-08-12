@@ -549,6 +549,7 @@ importers:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         version: 3.4.7
 =======
         version: 3.4.4(ts-node@10.9.2(@types/node@20.14.2)(typescript@5.4.5))
@@ -559,6 +560,12 @@ importers:
 =======
         version: 3.4.8
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+        version: 3.4.8
+=======
+        version: 3.4.7
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
       typescript:
         specifier: ^5.4.5
         version: 5.5.4
@@ -724,7 +731,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^20.12.9
-        version: 20.14.13
+        version: 20.14.14
       '@vanni/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint
@@ -887,6 +894,7 @@ importers:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         version: 1.0.7(tailwindcss@3.4.7)
 =======
         version: 1.0.7(tailwindcss@3.4.4(ts-node@10.9.2(@types/node@20.14.2)(typescript@5.4.5)))
@@ -897,6 +905,12 @@ importers:
 =======
         version: 1.0.7(tailwindcss@3.4.8)
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+        version: 1.0.7(tailwindcss@3.4.8)
+=======
+        version: 1.0.7(tailwindcss@3.4.7)
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
     devDependencies:
       '@types/react':
         specifier: ^18.3.2
@@ -927,6 +941,7 @@ importers:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         version: 3.4.7
 =======
         version: 3.4.4(ts-node@10.9.2(@types/node@20.14.2)(typescript@5.4.5))
@@ -937,6 +952,12 @@ importers:
 =======
         version: 3.4.8
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+        version: 3.4.8
+=======
+        version: 3.4.7
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
       typescript:
         specifier: ^5.4.5
         version: 5.5.4
@@ -1075,6 +1096,7 @@ importers:
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
       tailwindcss:
         specifier: ^3.4.3
+<<<<<<< HEAD
         version: 3.4.8
       tailwindcss-animate:
         specifier: ^1.0.7
@@ -1083,7 +1105,16 @@ importers:
 >>>>>>> 2482757 (changed pnpm version)
 =======
         version: 1.0.7(tailwindcss@3.4.8)
+<<<<<<< HEAD
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+=======
+        version: 3.4.7
+      tailwindcss-animate:
+        specifier: ^1.0.7
+        version: 1.0.7(tailwindcss@3.4.7)
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
     devDependencies:
       '@vanni/eslint-config':
         specifier: workspace:*
@@ -1470,6 +1501,15 @@ packages:
     dev: true
     optional: true
 
+  /@esbuild/aix-ppc64@0.23.0:
+    resolution: {integrity: sha512-3sG8Zwa5fMcA9bgqB8AfWPQ+HFke6uD3h1s3RIwUNK8EG7a4buxvuFTs3j1IMs2NXAk9F30C/FF4vxRgQCcmoQ==}
+    engines: {node: '>=18'}
+    cpu: [ppc64]
+    os: [aix]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@esbuild/android-arm64@0.18.20:
     resolution: {integrity: sha512-Nz4rJcchGDtENV0eMKUNa6L12zz2zBDXuhj/Vjh18zGqB44Bi7MBMSXjgunJgjRhCmKOjnPuZp4Mb6OKqtMHLQ==}
     engines: {node: '>=12'}
@@ -1495,6 +1535,15 @@ packages:
     os: [android]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@esbuild/android-arm64@0.23.0:
+    resolution: {integrity: sha512-EuHFUYkAVfU4qBdyivULuu03FhJO4IJN9PGuABGrFy4vUuzk91P2d+npxHcFdpUnfYKy0PuV+n6bKIpHOB3prQ==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [android]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@esbuild/android-arm@0.18.20:
@@ -1524,6 +1573,15 @@ packages:
     dev: true
     optional: true
 
+  /@esbuild/android-arm@0.23.0:
+    resolution: {integrity: sha512-+KuOHTKKyIKgEEqKbGTK8W7mPp+hKinbMBeEnNzjJGyFcWsfrXjSTNluJHCY1RqhxFurdD8uNXQDei7qDlR6+g==}
+    engines: {node: '>=18'}
+    cpu: [arm]
+    os: [android]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@esbuild/android-x64@0.18.20:
     resolution: {integrity: sha512-8GDdlePJA8D6zlZYJV/jnrRAi6rOiNaCC/JclcXpB+KIuvfBN4owLtgzY2bsxnx666XjJx2kDPUmnTtR8qKQUg==}
     engines: {node: '>=12'}
@@ -1549,6 +1607,15 @@ packages:
     os: [android]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@esbuild/android-x64@0.23.0:
+    resolution: {integrity: sha512-WRrmKidLoKDl56LsbBMhzTTBxrsVwTKdNbKDalbEZr0tcsBgCLbEtoNthOW6PX942YiYq8HzEnb4yWQMLQuipQ==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [android]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@esbuild/darwin-arm64@0.18.20:
@@ -1578,6 +1645,15 @@ packages:
     dev: true
     optional: true
 
+  /@esbuild/darwin-arm64@0.23.0:
+    resolution: {integrity: sha512-YLntie/IdS31H54Ogdn+v50NuoWF5BDkEUFpiOChVa9UnKpftgwzZRrI4J132ETIi+D8n6xh9IviFV3eXdxfow==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@esbuild/darwin-x64@0.18.20:
     resolution: {integrity: sha512-pc5gxlMDxzm513qPGbCbDukOdsGtKhfxD1zJKXjCCcU7ju50O7MeAZ8c4krSJcOIJGFR+qx21yMMVYwiQvyTyQ==}
     engines: {node: '>=12'}
@@ -1603,6 +1679,15 @@ packages:
     os: [darwin]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@esbuild/darwin-x64@0.23.0:
+    resolution: {integrity: sha512-IMQ6eme4AfznElesHUPDZ+teuGwoRmVuuixu7sv92ZkdQcPbsNHzutd+rAfaBKo8YK3IrBEi9SLLKWJdEvJniQ==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@esbuild/freebsd-arm64@0.18.20:
@@ -1632,6 +1717,15 @@ packages:
     dev: true
     optional: true
 
+  /@esbuild/freebsd-arm64@0.23.0:
+    resolution: {integrity: sha512-0muYWCng5vqaxobq6LB3YNtevDFSAZGlgtLoAc81PjUfiFz36n4KMpwhtAd4he8ToSI3TGyuhyx5xmiWNYZFyw==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [freebsd]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@esbuild/freebsd-x64@0.18.20:
     resolution: {integrity: sha512-tgWRPPuQsd3RmBZwarGVHZQvtzfEBOreNuxEMKFcd5DaDn2PbBxfwLcj4+aenoh7ctXcbXmOQIn8HI6mCSw5MQ==}
     engines: {node: '>=12'}
@@ -1657,6 +1751,15 @@ packages:
     os: [freebsd]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@esbuild/freebsd-x64@0.23.0:
+    resolution: {integrity: sha512-XKDVu8IsD0/q3foBzsXGt/KjD/yTKBCIwOHE1XwiXmrRwrX6Hbnd5Eqn/WvDekddK21tfszBSrE/WMaZh+1buQ==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [freebsd]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@esbuild/linux-arm64@0.18.20:
@@ -1686,6 +1789,15 @@ packages:
     dev: true
     optional: true
 
+  /@esbuild/linux-arm64@0.23.0:
+    resolution: {integrity: sha512-j1t5iG8jE7BhonbsEg5d9qOYcVZv/Rv6tghaXM/Ug9xahM0nX/H2gfu6X6z11QRTMT6+aywOMA8TDkhPo8aCGw==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@esbuild/linux-arm@0.18.20:
     resolution: {integrity: sha512-/5bHkMWnq1EgKr1V+Ybz3s1hWXok7mDFUMQ4cG10AfW3wL02PSZi5kFpYKrptDsgb2WAJIvRcDm+qIvXf/apvg==}
     engines: {node: '>=12'}
@@ -1711,6 +1823,15 @@ packages:
     os: [linux]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@esbuild/linux-arm@0.23.0:
+    resolution: {integrity: sha512-SEELSTEtOFu5LPykzA395Mc+54RMg1EUgXP+iw2SJ72+ooMwVsgfuwXo5Fn0wXNgWZsTVHwY2cg4Vi/bOD88qw==}
+    engines: {node: '>=18'}
+    cpu: [arm]
+    os: [linux]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@esbuild/linux-ia32@0.18.20:
@@ -1740,6 +1861,15 @@ packages:
     dev: true
     optional: true
 
+  /@esbuild/linux-ia32@0.23.0:
+    resolution: {integrity: sha512-P7O5Tkh2NbgIm2R6x1zGJJsnacDzTFcRWZyTTMgFdVit6E98LTxO+v8LCCLWRvPrjdzXHx9FEOA8oAZPyApWUA==}
+    engines: {node: '>=18'}
+    cpu: [ia32]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@esbuild/linux-loong64@0.18.20:
     resolution: {integrity: sha512-nXW8nqBTrOpDLPgPY9uV+/1DjxoQ7DoB2N8eocyq8I9XuqJ7BiAMDMf9n1xZM9TgW0J8zrquIb/A7s3BJv7rjg==}
     engines: {node: '>=12'}
@@ -1765,6 +1895,15 @@ packages:
     os: [linux]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@esbuild/linux-loong64@0.23.0:
+    resolution: {integrity: sha512-InQwepswq6urikQiIC/kkx412fqUZudBO4SYKu0N+tGhXRWUqAx+Q+341tFV6QdBifpjYgUndV1hhMq3WeJi7A==}
+    engines: {node: '>=18'}
+    cpu: [loong64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@esbuild/linux-mips64el@0.18.20:
@@ -1794,6 +1933,15 @@ packages:
     dev: true
     optional: true
 
+  /@esbuild/linux-mips64el@0.23.0:
+    resolution: {integrity: sha512-J9rflLtqdYrxHv2FqXE2i1ELgNjT+JFURt/uDMoPQLcjWQA5wDKgQA4t/dTqGa88ZVECKaD0TctwsUfHbVoi4w==}
+    engines: {node: '>=18'}
+    cpu: [mips64el]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@esbuild/linux-ppc64@0.18.20:
     resolution: {integrity: sha512-WHPyeScRNcmANnLQkq6AfyXRFr5D6N2sKgkFo2FqguP44Nw2eyDlbTdZwd9GYk98DZG9QItIiTlFLHJHjxP3FA==}
     engines: {node: '>=12'}
@@ -1819,6 +1967,15 @@ packages:
     os: [linux]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@esbuild/linux-ppc64@0.23.0:
+    resolution: {integrity: sha512-cShCXtEOVc5GxU0fM+dsFD10qZ5UpcQ8AM22bYj0u/yaAykWnqXJDpd77ublcX6vdDsWLuweeuSNZk4yUxZwtw==}
+    engines: {node: '>=18'}
+    cpu: [ppc64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@esbuild/linux-riscv64@0.18.20:
@@ -1848,6 +2005,15 @@ packages:
     dev: true
     optional: true
 
+  /@esbuild/linux-riscv64@0.23.0:
+    resolution: {integrity: sha512-HEtaN7Y5UB4tZPeQmgz/UhzoEyYftbMXrBCUjINGjh3uil+rB/QzzpMshz3cNUxqXN7Vr93zzVtpIDL99t9aRw==}
+    engines: {node: '>=18'}
+    cpu: [riscv64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@esbuild/linux-s390x@0.18.20:
     resolution: {integrity: sha512-+8231GMs3mAEth6Ja1iK0a1sQ3ohfcpzpRLH8uuc5/KVDFneH6jtAJLFGafpzpMRO6DzJ6AvXKze9LfFMrIHVQ==}
     engines: {node: '>=12'}
@@ -1873,6 +2039,15 @@ packages:
     os: [linux]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@esbuild/linux-s390x@0.23.0:
+    resolution: {integrity: sha512-WDi3+NVAuyjg/Wxi+o5KPqRbZY0QhI9TjrEEm+8dmpY9Xir8+HE/HNx2JoLckhKbFopW0RdO2D72w8trZOV+Wg==}
+    engines: {node: '>=18'}
+    cpu: [s390x]
+    os: [linux]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@esbuild/linux-x64@0.18.20:
@@ -1902,6 +2077,15 @@ packages:
     dev: true
     optional: true
 
+  /@esbuild/linux-x64@0.23.0:
+    resolution: {integrity: sha512-a3pMQhUEJkITgAw6e0bWA+F+vFtCciMjW/LPtoj99MhVt+Mfb6bbL9hu2wmTZgNd994qTAEw+U/r6k3qHWWaOQ==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@esbuild/netbsd-x64@0.18.20:
     resolution: {integrity: sha512-iO1c++VP6xUBUmltHZoMtCUdPlnPGdBom6IrO4gyKPFFVBKioIImVooR5I83nTew5UOYrk3gIJhbZh8X44y06A==}
     engines: {node: '>=12'}
@@ -1927,6 +2111,24 @@ packages:
     os: [netbsd]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@esbuild/netbsd-x64@0.23.0:
+    resolution: {integrity: sha512-cRK+YDem7lFTs2Q5nEv/HHc4LnrfBCbH5+JHu6wm2eP+d8OZNoSMYgPZJq78vqQ9g+9+nMuIsAO7skzphRXHyw==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [netbsd]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@esbuild/openbsd-arm64@0.23.0:
+    resolution: {integrity: sha512-suXjq53gERueVWu0OKxzWqk7NxiUWSUlrxoZK7usiF50C6ipColGR5qie2496iKGYNLhDZkPxBI3erbnYkU0rQ==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [openbsd]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@esbuild/openbsd-x64@0.18.20:
@@ -1956,6 +2158,15 @@ packages:
     dev: true
     optional: true
 
+  /@esbuild/openbsd-x64@0.23.0:
+    resolution: {integrity: sha512-6p3nHpby0DM/v15IFKMjAaayFhqnXV52aEmv1whZHX56pdkK+MEaLoQWj+H42ssFarP1PcomVhbsR4pkz09qBg==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [openbsd]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@esbuild/sunos-x64@0.18.20:
     resolution: {integrity: sha512-kDbFRFp0YpTQVVrqUd5FTYmWo45zGaXe0X8E1G/LKFC0v8x0vWrhOWSLITcCn63lmZIxfOMXtCfti/RxN/0wnQ==}
     engines: {node: '>=12'}
@@ -1981,6 +2192,15 @@ packages:
     os: [sunos]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@esbuild/sunos-x64@0.23.0:
+    resolution: {integrity: sha512-BFelBGfrBwk6LVrmFzCq1u1dZbG4zy/Kp93w2+y83Q5UGYF1d8sCzeLI9NXjKyujjBBniQa8R8PzLFAUrSM9OA==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [sunos]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@esbuild/win32-arm64@0.18.20:
@@ -2010,6 +2230,15 @@ packages:
     dev: true
     optional: true
 
+  /@esbuild/win32-arm64@0.23.0:
+    resolution: {integrity: sha512-lY6AC8p4Cnb7xYHuIxQ6iYPe6MfO2CC43XXKo9nBXDb35krYt7KGhQnOkRGar5psxYkircpCqfbNDB4uJbS2jQ==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@esbuild/win32-ia32@0.18.20:
     resolution: {integrity: sha512-Wv7QBi3ID/rROT08SABTS7eV4hX26sVduqDOTe1MvGMjNd3EjOz4b7zeexIR62GTIEKrfJXKL9LFxTYgkyeu7g==}
     engines: {node: '>=12'}
@@ -2035,6 +2264,15 @@ packages:
     os: [win32]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@esbuild/win32-ia32@0.23.0:
+    resolution: {integrity: sha512-7L1bHlOTcO4ByvI7OXVI5pNN6HSu6pUQq9yodga8izeuB1KcT2UkHaH6118QJwopExPn0rMHIseCTx1CRo/uNA==}
+    engines: {node: '>=18'}
+    cpu: [ia32]
+    os: [win32]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@esbuild/win32-x64@0.18.20:
@@ -2064,6 +2302,18 @@ packages:
     dev: true
     optional: true
 
+<<<<<<< HEAD
+=======
+  /@esbuild/win32-x64@0.23.0:
+    resolution: {integrity: sha512-Arm+WgUFLUATuoxCJcahGuk6Yj9Pzxd6l11Zb/2aAuv5kWWvvfhLFo2fni4uSK5vzlUdCGZ/BdV5tH8klj8p8g==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+>>>>>>> 51d15ee (Remade lockfile)
   /@eslint-community/eslint-utils@4.4.0(eslint@9.8.0):
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -2116,6 +2366,7 @@ packages:
     engines: {node: '>=14'}
     dev: true
 
+<<<<<<< HEAD
   /@floating-ui/core@1.6.7:
     resolution: {integrity: sha512-yDzVT/Lm101nQ5TCVeK65LtdN7Tj4Qpr9RTXJ2vPFLqtLxwOrpoxAHAJI8J3yYWUc40J0BDBheaitK5SJmno2g==}
     dependencies:
@@ -2127,6 +2378,19 @@ packages:
     dependencies:
       '@floating-ui/core': 1.6.7
       '@floating-ui/utils': 0.2.7
+=======
+  /@floating-ui/core@1.6.5:
+    resolution: {integrity: sha512-8GrTWmoFhm5BsMZOTHeGD2/0FLKLQQHvO/ZmQga4tKempYRLz8aqJGqXVuQgisnMObq2YZ2SgkwctN1LOOxcqA==}
+    dependencies:
+      '@floating-ui/utils': 0.2.5
+    dev: false
+
+  /@floating-ui/dom@1.6.8:
+    resolution: {integrity: sha512-kx62rP19VZ767Q653wsP1XZCGIirkE09E0QUGNYTM/ttbbQHqcGPdSfWFxUyyNLc/W6aoJRBajOSXhP6GXjC0Q==}
+    dependencies:
+      '@floating-ui/core': 1.6.5
+      '@floating-ui/utils': 0.2.5
+>>>>>>> 51d15ee (Remade lockfile)
     dev: false
 
   /@floating-ui/react-dom@2.1.1(react-dom@18.3.1)(react@18.3.1):
@@ -2135,13 +2399,22 @@ packages:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
+<<<<<<< HEAD
       '@floating-ui/dom': 1.6.10
+=======
+      '@floating-ui/dom': 1.6.8
+>>>>>>> 51d15ee (Remade lockfile)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     dev: false
 
+<<<<<<< HEAD
   /@floating-ui/utils@0.2.7:
     resolution: {integrity: sha512-X8R8Oj771YRl/w+c1HqAC1szL8zWQRwFvgDwT129k9ACdBoud/+/rX9V0qiMl6LWUdP9voC2nDVZYPMQQsb6eA==}
+=======
+  /@floating-ui/utils@0.2.5:
+    resolution: {integrity: sha512-sTcG+QZ6fdEUObICavU+aB3Mp8HY4n14wYHdxK4fXjPmv3PXZZeY5RaguJmGyeH/CJQhX3fqKUtS4qc1LoHwhQ==}
+>>>>>>> 51d15ee (Remade lockfile)
     dev: false
 
   /@headlessui/react@1.7.19(react-dom@18.3.1)(react@18.3.1):
@@ -3296,7 +3569,15 @@ packages:
       rollup: 4.19.2
       serialize-javascript: 6.0.2
       smob: 1.5.0
+<<<<<<< HEAD
       terser: 5.31.3
+=======
+<<<<<<< HEAD
+      terser: 5.31.4
+=======
+      terser: 5.31.3
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
     dev: true
 
   /@rollup/pluginutils@4.2.1:
@@ -23444,6 +23725,7 @@ snapshots:
 =======
     dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
       caniuse-lite: 1.0.30001646
 >>>>>>> 1643f13 (feat: added toast for confirmation)
       electron-to-chromium: 1.5.4
@@ -23451,6 +23733,14 @@ snapshots:
       caniuse-lite: 1.0.30001650
       electron-to-chromium: 1.5.5
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+      caniuse-lite: 1.0.30001650
+      electron-to-chromium: 1.5.5
+=======
+      caniuse-lite: 1.0.30001649
+      electron-to-chromium: 1.5.4
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
       node-releases: 2.0.18
       update-browserslist-db: 1.1.0(browserslist@4.23.3)
     dev: false
@@ -23557,6 +23847,7 @@ snapshots:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /caniuse-lite@1.0.30001646:
     resolution: {integrity: sha512-dRg00gudiBDDTmUhClSdv3hqRfpbOnU28IpI1T6PBTLWa+kOj0681C8uML3PifYfREuBrVjDGhL3adYpBT6spw==}
 =======
@@ -23573,6 +23864,8 @@ snapshots:
 =======
 =======
 >>>>>>> d229ffd (fix: pnpm lock after merging)
+=======
+>>>>>>> 09ad62b (Remade lockfile)
   /camelize@1.0.1:
 >>>>>>> 1643f13 (feat: added toast for confirmation)
     resolution: {integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==}
@@ -23589,7 +23882,18 @@ snapshots:
   /caniuse-lite@1.0.30001650:
     resolution: {integrity: sha512-fgEc7hP/LB7iicdXHUI9VsBsMZmUmlVJeQP2qqQW+3lkqVhbmjEU8zp+h5stWeilX+G7uXuIUIIlWlDw9jdt8g==}
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+<<<<<<< HEAD
 >>>>>>> d229ffd (fix: pnpm lock after merging)
+=======
+=======
+  /caniuse-lite@1.0.30001650:
+    resolution: {integrity: sha512-fgEc7hP/LB7iicdXHUI9VsBsMZmUmlVJeQP2qqQW+3lkqVhbmjEU8zp+h5stWeilX+G7uXuIUIIlWlDw9jdt8g==}
+=======
+  /caniuse-lite@1.0.30001649:
+    resolution: {integrity: sha512-fJegqZZ0ZX8HOWr6rcafGr72+xcgJKI9oWfDW5DrD7ExUtgZC7a7R7ZYmZqplh7XDocFdGeIFn7roAxhOeYrPQ==}
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
+>>>>>>> 09ad62b (Remade lockfile)
     dev: false
 >>>>>>> 1643f13 (feat: added toast for confirmation)
 
@@ -24026,6 +24330,7 @@ snapshots:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /cytoscape-cose-bilkent@4.1.0(cytoscape@3.30.2):
 =======
   /cytoscape-cose-bilkent@4.1.0(cytoscape@3.30.1):
@@ -24049,12 +24354,18 @@ snapshots:
       cytoscape: ^3.2.0
 >>>>>>> fcc90a4 (made some changes to db file to make sure no errors happen when entering email)
 =======
+=======
+>>>>>>> 09ad62b (Remade lockfile)
   /cytoscape-cose-bilkent@4.1.0(cytoscape@3.30.2):
+=======
+  /cytoscape-cose-bilkent@4.1.0(cytoscape@3.30.1):
+>>>>>>> 51d15ee (Remade lockfile)
     resolution: {integrity: sha512-wgQlVIUJF13Quxiv5e1gstZ08rnZj2XaLHGoFMYXz7SkNfCDOOteKBE6SYRfA9WxxI/iBc3ajfDoc6hb/MRAHQ==}
     peerDependencies:
       cytoscape: ^3.2.0
     dependencies:
       cose-base: 1.0.3
+<<<<<<< HEAD
       cytoscape: 3.30.2
     dev: false
 >>>>>>> 1643f13 (feat: added toast for confirmation)
@@ -24068,6 +24379,7 @@ snapshots:
   /cytoscape@3.30.1:
     resolution: {integrity: sha512-TRJc3HbBPkHd50u9YfJh2FxD1lDLZ+JXnJoyBn5LkncoeuT7fapO/Hq/Ed8TdFclaKshzInge2i30bg7VKeoPQ==}
 >>>>>>> 51d15ee (Remade lockfile)
+<<<<<<< HEAD
 =======
       cytoscape: 3.30.2
     dev: false
@@ -24075,6 +24387,8 @@ snapshots:
   /cytoscape@3.30.2:
     resolution: {integrity: sha512-oICxQsjW8uSaRmn4UK/jkczKOqTrVqt5/1WL0POiJUT2EKNc9STM4hYFHv917yu55aTBMFNRzymlJhVAiWPCxw==}
 >>>>>>> 95a87c4 (fix: typecheck)
+=======
+>>>>>>> 09ad62b (Remade lockfile)
     engines: {node: '>=0.10'}
     dev: false
 
@@ -24842,8 +25156,13 @@ snapshots:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
     dev: true
 
+<<<<<<< HEAD
   /electron-to-chromium@1.5.5:
     resolution: {integrity: sha512-QR7/A7ZkMS8tZuoftC/jfqNkZLQO779SSW3YuZHP4eXpj3EffGLFcB/Xu9AAZQzLccTiCV+EmUo3ha4mQ9wnlA==}
+=======
+  /electron-to-chromium@1.5.4:
+    resolution: {integrity: sha512-orzA81VqLyIGUEA77YkVA1D+N+nNfl2isJVjjmOyrlxuooZ19ynb+dOlaDTqd/idKRS9lDCSBmtzM+kyCsMnkA==}
+>>>>>>> 51d15ee (Remade lockfile)
     dev: false
 
   /elkjs@0.9.3:
@@ -25174,6 +25493,9 @@ snapshots:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b195ff7 (Remade lockfile)
   /esbuild@0.23.0:
     resolution: {integrity: sha512-1lvV17H2bMYda/WaFb2jLPeHU3zml2k4/yagNMG8Q/YtfMjCwEUZa2eXXMgZTVSL5q1n4H7sQ0X6CdJDqqeCFA==}
     engines: {node: '>=18'}
@@ -25768,8 +26090,13 @@ snapshots:
       is-callable: 1.2.7
     dev: false
 
+<<<<<<< HEAD
   /foreground-child@3.3.0:
     resolution: {integrity: sha512-Ld2g8rrAyMYFXBhEqMz8ZAHBi4J4uS1i/CxGMDnjyFWddMXLVcDp051DZfu+t7+ab7Wv6SMqpWmyFIj5UbfFvg==}
+=======
+  /foreground-child@3.2.1:
+    resolution: {integrity: sha512-PXUUyLqrR2XCWICfv6ukppP96sdFwWbNEnfEMt7jNsISjMsvaLNinAHNDYyvkyU+SZG2BTSbT5NjG+vZslfGTA==}
+>>>>>>> 51d15ee (Remade lockfile)
     engines: {node: '>=14'}
     dependencies:
       cross-spawn: 7.0.3
@@ -25925,7 +26252,6 @@ snapshots:
     resolution: {integrity: sha512-ZAqrLlu18NbDdRaHq+AKXzAmqIUPswPWKUchfytdAjiRFnCe5ojG2bstg6mRiZabkKfCoL/e98pbBELIV/YCeA==}
     dependencies:
       resolve-pkg-maps: 1.0.0
-    dev: true
 
   /get-uri@6.0.3:
     resolution: {integrity: sha512-BzUrJBS9EcUb4cFol8r4W3v1cPsSyajLSthNkz5BxbpDcHN5tIrM10E2eNvfnvBn3DaT3DUgx0OpsBKkaOpanw==}
@@ -25996,7 +26322,11 @@ snapshots:
     hasBin: true
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
     dependencies:
+<<<<<<< HEAD
       foreground-child: 3.3.0
+=======
+      foreground-child: 3.2.1
+>>>>>>> 51d15ee (Remade lockfile)
       jackspeak: 2.3.6
       minimatch: 9.0.5
       minipass: 7.1.2
@@ -26022,7 +26352,11 @@ snapshots:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
 >>>>>>> 1643f13 (feat: added toast for confirmation)
     dependencies:
+<<<<<<< HEAD
       foreground-child: 3.3.0
+=======
+      foreground-child: 3.2.1
+>>>>>>> 51d15ee (Remade lockfile)
       jackspeak: 3.4.3
       minimatch: 9.0.5
       minipass: 7.1.2
@@ -27790,16 +28124,22 @@ snapshots:
       '@types/d3-scale-chromatic': 3.0.3
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 09ad62b (Remade lockfile)
       cytoscape: 3.30.2
       cytoscape-cose-bilkent: 4.1.0(cytoscape@3.30.2)
 =======
       cytoscape: 3.30.1
       cytoscape-cose-bilkent: 4.1.0(cytoscape@3.30.1)
 >>>>>>> 51d15ee (Remade lockfile)
+<<<<<<< HEAD
 =======
       cytoscape: 3.30.2
       cytoscape-cose-bilkent: 4.1.0(cytoscape@3.30.2)
 >>>>>>> 95a87c4 (fix: typecheck)
+=======
+>>>>>>> 09ad62b (Remade lockfile)
       d3: 7.9.0
       d3-sankey: 0.12.3
       dagre-d3-es: 7.0.10
@@ -28635,6 +28975,7 @@ snapshots:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       caniuse-lite: 1.0.30001646
 =======
       caniuse-lite: 1.0.30001649
@@ -28645,6 +28986,8 @@ snapshots:
 =======
 =======
 >>>>>>> d229ffd (fix: pnpm lock after merging)
+=======
+>>>>>>> 09ad62b (Remade lockfile)
       caniuse-lite: 1.0.30001646
 =======
 <<<<<<< HEAD
@@ -28659,7 +29002,16 @@ snapshots:
 =======
       caniuse-lite: 1.0.30001650
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+<<<<<<< HEAD
 >>>>>>> d229ffd (fix: pnpm lock after merging)
+=======
+=======
+      caniuse-lite: 1.0.30001650
+=======
+      caniuse-lite: 1.0.30001649
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
+>>>>>>> 09ad62b (Remade lockfile)
       graceful-fs: 4.2.11
       postcss: 8.4.31
       react: 18.3.1
@@ -28817,6 +29169,7 @@ snapshots:
       '@rollup/plugin-terser': 0.4.4(rollup@4.20.0)
       '@rollup/pluginutils': 5.1.0(rollup@4.20.0)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 6962b87 (changed pnpm version)
 >>>>>>> 8c220a1 (changed pnpm version)
@@ -28869,6 +29222,12 @@ snapshots:
 =======
       '@types/http-proxy': 1.17.15
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+      '@types/http-proxy': 1.17.15
+=======
+      '@types/http-proxy': 1.17.14
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
       '@vercel/nft': 0.26.5
       archiver: 7.0.1
       c12: 1.11.1
@@ -30185,6 +30544,7 @@ snapshots:
       xmlbuilder: 15.1.1
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   pngjs@3.4.0: {}
 >>>>>>> d4b9d72 (build layout for testing)
 
@@ -30195,6 +30555,12 @@ snapshots:
 =======
   /postcss-import@15.1.0(postcss@8.4.41):
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+  /postcss-import@15.1.0(postcss@8.4.41):
+=======
+  /postcss-import@15.1.0(postcss@8.4.40):
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -30203,17 +30569,28 @@ snapshots:
   postcss-import@15.1.0(postcss@8.4.38):
 >>>>>>> d4b9d72 (build layout for testing)
     dependencies:
+<<<<<<< HEAD
       postcss: 8.4.41
+=======
+      postcss: 8.4.40
+>>>>>>> 51d15ee (Remade lockfile)
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.8
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /postcss-js@4.0.1(postcss@8.4.40):
 =======
   /postcss-js@4.0.1(postcss@8.4.41):
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+  /postcss-js@4.0.1(postcss@8.4.41):
+=======
+  /postcss-js@4.0.1(postcss@8.4.40):
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
     resolution: {integrity: sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==}
     engines: {node: ^12 || ^14 || >= 16}
     peerDependencies:
@@ -30223,6 +30600,7 @@ snapshots:
 >>>>>>> d4b9d72 (build layout for testing)
     dependencies:
       camelcase-css: 2.0.1
+<<<<<<< HEAD
       postcss: 8.4.41
 
 <<<<<<< HEAD
@@ -30230,7 +30608,15 @@ snapshots:
   /postcss-load-config@4.0.2(postcss@8.4.40):
 =======
   /postcss-load-config@4.0.2(postcss@8.4.41):
+<<<<<<< HEAD
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+=======
+      postcss: 8.4.40
+
+  /postcss-load-config@4.0.2(postcss@8.4.40):
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
     resolution: {integrity: sha512-bSVhyJGL00wMVoPUzAVAnbEoWyqRxkjv64tUl427SKnPrENtq6hJwUojroMz2VB+Q1edmi4IfrAPpami5VVgMQ==}
     engines: {node: '>= 14'}
     peerDependencies:
@@ -30246,6 +30632,7 @@ snapshots:
 >>>>>>> d4b9d72 (build layout for testing)
     dependencies:
       lilconfig: 3.1.2
+<<<<<<< HEAD
       postcss: 8.4.41
       yaml: 2.5.0
 
@@ -30254,7 +30641,16 @@ snapshots:
   /postcss-nested@6.2.0(postcss@8.4.40):
 =======
   /postcss-nested@6.2.0(postcss@8.4.41):
+<<<<<<< HEAD
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+=======
+      postcss: 8.4.40
+      yaml: 2.5.0
+
+  /postcss-nested@6.2.0(postcss@8.4.40):
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
     resolution: {integrity: sha512-HQbt28KulC5AJzG+cZtj9kvKB93CFCdLvog1WFLf1D+xmMvPGlBstkpTEZfK5+AN9hfJocyBFCNiqyS48bpgzQ==}
     engines: {node: '>=12.0'}
     peerDependencies:
@@ -30271,7 +30667,11 @@ snapshots:
   postcss-nested@6.0.1(postcss@8.4.38):
 >>>>>>> d4b9d72 (build layout for testing)
     dependencies:
+<<<<<<< HEAD
       postcss: 8.4.41
+=======
+      postcss: 8.4.40
+>>>>>>> 51d15ee (Remade lockfile)
       postcss-selector-parser: 6.1.1
 
 <<<<<<< HEAD
@@ -30307,6 +30707,7 @@ snapshots:
     dev: false
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /postcss@8.4.38:
     resolution: {integrity: sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==}
     engines: {node: ^10 || ^12 || >=14}
@@ -30328,15 +30729,28 @@ snapshots:
 =======
   postcss@8.4.38:
 >>>>>>> d4b9d72 (build layout for testing)
+=======
+  /postcss@8.4.41:
+    resolution: {integrity: sha512-TesUflQ0WKZqAvg52PWL6kHgLKP6xB6heTOdoYM0Wt2UHyxNa4K25EZZMgKns3BH1RLVbZCREPpLY0rhnNoHVQ==}
+=======
+  /postcss@8.4.40:
+    resolution: {integrity: sha512-YF2kKIUzAofPMpfH6hOi2cGnv/HrUlfucspc7pDyvv7kGdqXrfj8SCl/t8owkEgKEuu8ZcRjSOxFxVLqwChZ2Q==}
+>>>>>>> 51d15ee (Remade lockfile)
+    engines: {node: ^10 || ^12 || >=14}
+>>>>>>> b195ff7 (Remade lockfile)
     dependencies:
       nanoid: 3.3.7
       picocolors: 1.0.1
       source-map-js: 1.2.0
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 =======
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+=======
+
+>>>>>>> b195ff7 (Remade lockfile)
   /postcss@8.4.41:
     resolution: {integrity: sha512-TesUflQ0WKZqAvg52PWL6kHgLKP6xB6heTOdoYM0Wt2UHyxNa4K25EZZMgKns3BH1RLVbZCREPpLY0rhnNoHVQ==}
     engines: {node: ^10 || ^12 || >=14}
@@ -30344,6 +30758,7 @@ snapshots:
       nanoid: 3.3.7
       picocolors: 1.0.1
       source-map-js: 1.2.0
+    dev: false
 
   /postgres-array@2.0.0:
     resolution: {integrity: sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==}
@@ -31508,7 +31923,6 @@ snapshots:
 =======
   /resolve-pkg-maps@1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
-    dev: true
 
   /resolve@1.22.8:
     resolution: {integrity: sha512-oKWePCxqpd6FlLvGV1VU0x7bkPmmCNolxzjMf4NczoDnQcIWrAF+cPtZn5i6n+RfD2d9i0tzpKnG6Yk168yIyw==}
@@ -33183,16 +33597,28 @@ snapshots:
     resolution: {integrity: sha512-49AwoOQNKdqKPd9CViyH5wJoSKsCDjUlzL8DxuGp3P1FsGY36NJDAa18jLZcaHAUUuTj+JB8IAo8zWgBNvBF7A==}
     dev: false
 
+<<<<<<< HEAD
   /tailwindcss-animate@1.0.7(tailwindcss@3.4.8):
+=======
+  /tailwindcss-animate@1.0.7(tailwindcss@3.4.7):
+>>>>>>> 51d15ee (Remade lockfile)
     resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
     dependencies:
+<<<<<<< HEAD
       tailwindcss: 3.4.8
     dev: false
 
   /tailwindcss@3.4.8:
     resolution: {integrity: sha512-GkP17r9GQkxgZ9FKHJQEnjJuKBcbFhMFzKu5slmN6NjlCuFnYJMQ8N4AZ6VrUyiRXlDtPKHkesuQ/MS913Nvdg==}
+=======
+      tailwindcss: 3.4.7
+    dev: false
+
+  /tailwindcss@3.4.7:
+    resolution: {integrity: sha512-rxWZbe87YJb4OcSopb7up2Ba4U82BoiSGUdoDr3Ydrg9ckxFS/YWsvhN323GMcddgU65QRy7JndC7ahhInhvlQ==}
+>>>>>>> 51d15ee (Remade lockfile)
     engines: {node: '>=14.0.0'}
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -33233,11 +33659,19 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.1
+<<<<<<< HEAD
       postcss: 8.4.41
       postcss-import: 15.1.0(postcss@8.4.41)
       postcss-js: 4.0.1(postcss@8.4.41)
       postcss-load-config: 4.0.2(postcss@8.4.41)
       postcss-nested: 6.2.0(postcss@8.4.41)
+=======
+      postcss: 8.4.40
+      postcss-import: 15.1.0(postcss@8.4.40)
+      postcss-js: 4.0.1(postcss@8.4.40)
+      postcss-load-config: 4.0.2(postcss@8.4.40)
+      postcss-nested: 6.2.0(postcss@8.4.40)
+>>>>>>> 51d15ee (Remade lockfile)
       postcss-selector-parser: 6.1.1
       resolve: 1.22.8
       sucrase: 3.35.0
@@ -33308,6 +33742,7 @@ snapshots:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /terser@5.31.3:
     resolution: {integrity: sha512-pAfYn3NIZLyZpa83ZKigvj6Rn9c/vd5KfYGX7cN1mnzqgDcxWvrU5ZtAfIKhEXz9nRecw4z3LXkjaq96/qZqAA==}
     engines: {node: '>=10'}
@@ -33349,8 +33784,14 @@ snapshots:
   terser@5.31.1:
 >>>>>>> d4b9d72 (build layout for testing)
 =======
+=======
+>>>>>>> b195ff7 (Remade lockfile)
   /terser@5.31.4:
     resolution: {integrity: sha512-3OU03GgblDgu0g+sdnsVzhBPxnjV+WJuMmocN1qBBZDQ3ia7jZQSAkePeKbPlYAejGXUTYe1CmSaUeV51mvaIw==}
+=======
+  /terser@5.31.3:
+    resolution: {integrity: sha512-pAfYn3NIZLyZpa83ZKigvj6Rn9c/vd5KfYGX7cN1mnzqgDcxWvrU5ZtAfIKhEXz9nRecw4z3LXkjaq96/qZqAA==}
+>>>>>>> 51d15ee (Remade lockfile)
     engines: {node: '>=10'}
     hasBin: true
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
@@ -33736,16 +34177,27 @@ snapshots:
     hasBin: true
     dependencies:
       esbuild: 0.23.0
-      get-tsconfig: 4.7.5
+      get-tsconfig: 4.7.6
     optionalDependencies:
       fsevents: 2.3.3
     dev: false
 
+<<<<<<< HEAD
   /turbo-darwin-64@2.0.3:
     resolution: {integrity: sha512-v7ztJ8sxdHw3SLfO2MhGFeeU4LQhFii1hIGs9uBiXns/0YTGOvxLeifnfGqhfSrAIIhrCoByXO7nR9wlm10n3Q==}
 >>>>>>> c3d52b9 (feat: added drizzle migration and new schema for preregistration)
+<<<<<<< HEAD
 >>>>>>> 6deed0b (feat: added drizzle migration and new schema for preregistration)
+<<<<<<< HEAD
 >>>>>>> 2ab53d8 (feat: added drizzle migration and new schema for preregistration)
+=======
+=======
+=======
+  /turbo-darwin-64@2.0.12:
+    resolution: {integrity: sha512-NAgfgbXxX/JScWQmmQnGbPuFZq7LIswHfcMk5JwyBXQM/xmklNOxxac7MnGGIOf19Z2f6S3qHy17VIj0SeGfnA==}
+>>>>>>> 51d15ee (Remade lockfile)
+>>>>>>> b195ff7 (Remade lockfile)
+>>>>>>> 09ad62b (Remade lockfile)
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
@@ -34194,7 +34646,11 @@ snapshots:
       estree-walker: 3.0.3
 <<<<<<< HEAD
       magic-string: 0.30.11
+<<<<<<< HEAD
       unplugin: 1.12.1
+=======
+      unplugin: 1.12.0
+>>>>>>> 51d15ee (Remade lockfile)
     dev: true
 
   /undici-types@5.26.5:
@@ -34335,7 +34791,11 @@ snapshots:
       pkg-types: 1.1.3
       scule: 1.3.0
       strip-literal: 2.1.0
+<<<<<<< HEAD
       unplugin: 1.12.1
+=======
+      unplugin: 1.12.0
+>>>>>>> 51d15ee (Remade lockfile)
     transitivePeerDependencies:
       - rollup
 <<<<<<< HEAD
@@ -34476,8 +34936,13 @@ snapshots:
     engines: {node: '>= 10.0.0'}
     dev: true
 
+<<<<<<< HEAD
   /unplugin@1.12.1:
     resolution: {integrity: sha512-aXEH9c5qi3uYZHo0niUtxDlT9ylG/luMW/dZslSCkbtC31wCyFkmM0kyoBBh+Grhn7CL+/kvKLfN61/EdxPxMQ==}
+=======
+  /unplugin@1.12.0:
+    resolution: {integrity: sha512-KeczzHl2sATPQUx1gzo+EnUkmN4VmGBYRRVOZSGvGITE9rGHRDGqft6ONceP3vgXcyJ2XjX5axG5jMWUwNCYLw==}
+>>>>>>> 51d15ee (Remade lockfile)
     engines: {node: '>=14.0.0'}
 =======
 
@@ -34656,7 +35121,11 @@ snapshots:
       pathe: 1.1.2
 <<<<<<< HEAD
       pkg-types: 1.1.3
+<<<<<<< HEAD
       unplugin: 1.12.1
+=======
+      unplugin: 1.12.0
+>>>>>>> 51d15ee (Remade lockfile)
     dev: true
 
   /update-browserslist-db@1.1.0(browserslist@4.23.3):
