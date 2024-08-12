@@ -10947,13 +10947,22 @@ packages:
     hasBin: true
     dependencies:
       esbuild: 0.23.0
+<<<<<<< HEAD
       get-tsconfig: 4.7.6
+=======
+      get-tsconfig: 4.7.5
+>>>>>>> c3d52b9 (feat: added drizzle migration and new schema for preregistration)
     optionalDependencies:
       fsevents: 2.3.3
     dev: false
 
+<<<<<<< HEAD
   /turbo-darwin-64@2.0.12:
     resolution: {integrity: sha512-NAgfgbXxX/JScWQmmQnGbPuFZq7LIswHfcMk5JwyBXQM/xmklNOxxac7MnGGIOf19Z2f6S3qHy17VIj0SeGfnA==}
+=======
+  /turbo-darwin-64@2.0.3:
+    resolution: {integrity: sha512-v7ztJ8sxdHw3SLfO2MhGFeeU4LQhFii1hIGs9uBiXns/0YTGOvxLeifnfGqhfSrAIIhrCoByXO7nR9wlm10n3Q==}
+>>>>>>> c3d52b9 (feat: added drizzle migration and new schema for preregistration)
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
