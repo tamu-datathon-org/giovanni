@@ -45,7 +45,7 @@ export const User = pgTable("user", {
 export const Preregistration = pgTable("preregister", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
   email: varchar("email", { length: 255 }).notNull(),
-  registerdAt: timestamp("registered_at", {
+  registeredAt: timestamp("registered_at", {
     mode: "date",
     withTimezone: true,
   })
@@ -60,6 +60,14 @@ export const Preregistration = pgTable("preregister", {
     return expires;
   }),
 });
+
+export const CreatePreregistrationSchema = createInsertSchema(Preregistration, {
+  email: z.string().max(256),
+}).omit({
+  id: true,
+  registeredAt: true,
+  expiresAt: true,
+})
 
 export const UserRelations = relations(User, ({ many }) => ({
   accounts: many(Account),
