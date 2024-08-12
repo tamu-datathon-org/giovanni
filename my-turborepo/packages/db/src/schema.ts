@@ -48,16 +48,18 @@ export const Preregistration = pgTable("preregister", {
   registerdAt: timestamp("registered_at", {
     mode: "date",
     withTimezone: true,
-  }).defaultNow().notNull(),
+  })
+    .defaultNow()
+    .notNull(),
   expiresAt: timestamp("expires_at", {
     mode: "date",
     withTimezone: true,
   }).$defaultFn(() => {
-    const expires = new Date()
-    expires.setFullYear(expires.getFullYear() + 1)
-    return expires
+    const expires = new Date();
+    expires.setFullYear(expires.getFullYear() + 1);
+    return expires;
   }),
-})
+});
 
 export const UserRelations = relations(User, ({ many }) => ({
   accounts: many(Account),
