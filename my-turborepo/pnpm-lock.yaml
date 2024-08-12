@@ -703,6 +703,7 @@ importers:
       tsx:
         specifier: ^4.17.0
         version: 4.17.0
+<<<<<<< HEAD
 =======
         version: 0.5.1(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@opentelemetry/api@1.9.0)(@types/pg@8.6.6)(@types/react@18.3.3)(@vercel/postgres@0.8.0)(react@18.3.1))(zod@3.23.8)
 >>>>>>> 33e60e3 (build layout for testing)
@@ -715,6 +716,8 @@ importers:
 =======
         version: 0.5.1(drizzle-orm@0.30.10)(zod@3.23.8)
 >>>>>>> 2482757 (changed pnpm version)
+=======
+>>>>>>> 6deed0b (feat: added drizzle migration and new schema for preregistration)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -33717,10 +33720,32 @@ snapshots:
   /tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
+<<<<<<< HEAD
   /turbo-darwin-64@2.0.12:
     resolution: {integrity: sha512-NAgfgbXxX/JScWQmmQnGbPuFZq7LIswHfcMk5JwyBXQM/xmklNOxxac7MnGGIOf19Z2f6S3qHy17VIj0SeGfnA==}
+<<<<<<< HEAD
 >>>>>>> fcdd94d (fix: pnpm lock after merging)
+<<<<<<< HEAD
 >>>>>>> d229ffd (fix: pnpm lock after merging)
+=======
+=======
+=======
+  /tsx@4.17.0:
+    resolution: {integrity: sha512-eN4mnDA5UMKDt4YZixo9tBioibaMBpoxBkD+rIPAjVmYERSG0/dWEY1CEFuV89CgASlKL499q8AhmkMnnjtOJg==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+    dependencies:
+      esbuild: 0.23.0
+      get-tsconfig: 4.7.5
+    optionalDependencies:
+      fsevents: 2.3.3
+    dev: false
+
+  /turbo-darwin-64@2.0.3:
+    resolution: {integrity: sha512-v7ztJ8sxdHw3SLfO2MhGFeeU4LQhFii1hIGs9uBiXns/0YTGOvxLeifnfGqhfSrAIIhrCoByXO7nR9wlm10n3Q==}
+>>>>>>> c3d52b9 (feat: added drizzle migration and new schema for preregistration)
+>>>>>>> 6deed0b (feat: added drizzle migration and new schema for preregistration)
+>>>>>>> 2ab53d8 (feat: added drizzle migration and new schema for preregistration)
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
