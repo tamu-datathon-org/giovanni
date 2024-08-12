@@ -37,6 +37,8 @@ export default function LoginPage() {
         {/*<AuthShowcase />*/}
 
         <form>
+          <LoginButton connectionId="apple" buttonText="Sign in with Apple" />
+          <LoginButton connectionId="github" buttonText="Sign in with GitHub" />
           <LoginButton
             connectionId="google-oauth2"
             buttonText="Sign in with Google"
