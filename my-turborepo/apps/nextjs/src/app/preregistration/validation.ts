@@ -1,4 +1,4 @@
-import zfd from "zod-form-data";
+import { zfd } from "zod-form-data";
 import z from "zod"
 
 export const preregistrationSchema = zfd.formData({

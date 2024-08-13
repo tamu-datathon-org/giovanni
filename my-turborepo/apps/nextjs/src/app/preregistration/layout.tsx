@@ -4,6 +4,8 @@ export default function PreregistrationLayout({
     children: React.ReactNode
 }) {
     return (
-        { children }
+        <>
+            {children}
+        </>
     )
 }
