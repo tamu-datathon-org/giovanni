@@ -17,10 +17,16 @@ export const PreregistrationForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <input {...register("email", { required: true, maxLength: 256 })} />
+        <form onSubmit={handleSubmit(onSubmit)} className="bg-gray-700 rounded flex flex-col justify-center items-center text-center w-1/2 text-lg">
+            <label>
+                <span>Enter Email:</span>
+                <input {...register("email", { required: true, maxLength: 256 })} />
+            </label>
             {errors?.email?.message}
-            <input type="checkbox" value={"on"} {...register("confirmation", { required: true, })} />
+            <label>
+                <input type="checkbox" value={"on"} {...register("confirmation", { required: true, })} />
+                <span>I agree to the terms and conditions.</span>
+            </label>
             {errors?.confirmation?.message}
             <button
                 type="submit"
