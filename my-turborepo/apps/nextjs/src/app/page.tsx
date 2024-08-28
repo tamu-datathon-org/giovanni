@@ -20,7 +20,6 @@ export default function HomePage() {
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           Create <span className="text-primary">T3</span> Turbo
         </h1>
-        <AuthShowcase />
 
         <CreatePostForm />
         <div className="w-full max-w-2xl overflow-y-scroll">
