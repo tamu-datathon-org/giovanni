@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Link from "next/link";
 
 import { api } from "~/trpc/server";
 import {
@@ -20,6 +21,21 @@ export default function HomePage() {
           Create <span className="text-primary">T3</span> Turbo
         </h1>
         <AuthShowcase />
+
+        <nav className="flex flex-col items-center gap-4">
+          <Link href="/login">
+            <a className="text-lg font-semibold text-blue-500">Login/Dashboard</a>
+          </Link>
+          <Link href="/blog">
+            <a className="text-lg font-semibold text-blue-500">Blog</a>
+          </Link>
+          <Link href="/faq">
+            <a className="text-lg font-semibold text-blue-500">FAQ</a>
+          </Link>
+          <Link href="https://tamudatathon.com/">
+            <a className="text-lg font-semibold text-blue-500">Main Datathon Page</a>
+          </Link>
+        </nav>
 
         <CreatePostForm />
         <div className="w-full max-w-2xl overflow-y-scroll">
