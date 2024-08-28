@@ -5,7 +5,7 @@ export default function PreregistrationLayout({
 }) {
     return (
         <>
-            {children}
+            <div className="overflow-hidden max-h-screen-sm">{children}</div>
         </>
     )
 }
