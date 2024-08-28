@@ -23,7 +23,7 @@ export default function HomePage() {
         </h1>
         <AuthShowcase />
 
-        <nav className="flex flex-col items-center gap-4">
+        <nav className="flex flex-row items-center gap-4">
           <Link href="/login">
             <a className="text-lg font-semibold text-blue-500">Login/Dashboard</a>
           </Link>
