@@ -48,7 +48,7 @@ async function MainBody() {
   );
 }
 
-export function DashboardPage() {
+export default function DashboardPage() {
   return (
     //TODO: Add some admin actions and a way to separate them from user actions
     <div className="flex flex-col items-center justify-center gap-4">
