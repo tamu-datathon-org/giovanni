@@ -1,4 +1,6 @@
-import { signIn } from "@vanni/auth";
+import { redirect } from "next/navigation";
+
+import { auth, signIn } from "@vanni/auth";
 import { Button } from "@vanni/ui/button";
 
 export const runtime = "edge";
@@ -27,7 +29,13 @@ function LoginButton({
   );
 }
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const session = await auth();
+
+  if (session) {
+    redirect("/dashboard");
+  }
+
   return (
     <main className="container h-screen py-16">
       <div className="flex flex-col items-center justify-center gap-4">

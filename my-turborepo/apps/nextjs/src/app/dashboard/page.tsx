@@ -1,3 +1,7 @@
+import { redirect } from "next/navigation";
+
+import { auth } from "@vanni/auth";
+
 export const runtime = "edge";
 
 // These will map to buttons on the dashboard
@@ -7,11 +11,11 @@ const pages = [
   { href: "/discord", name: "Link with Discord" },
 ];
 
-function Button({ href, name }: { href: string; name: string }) {
+function DashboardButton({ href, name }: { href: string; name: string }) {
   return (
-    <a href={href} className="rounded-md bg-blue-500 px-4 py-2 text-white">
-      {name}
-    </a>
+    <button className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+      <a href={href}>{name}</a>
+    </button>
   );
 }
 
@@ -21,7 +25,7 @@ function ButtonContainer() {
       <ul>
         {pages.map((page) => (
           <li>
-            <Button href={page.href} name={page.name} />
+            <DashboardButton href={page.href} name={page.name} />
           </li>
         ))}
       </ul>
@@ -29,13 +33,29 @@ function ButtonContainer() {
   );
 }
 
-export default function DashboardPage() {
+async function MainBody() {
+  const session = await auth();
+
+  if (!session) {
+    redirect("/login");
+  }
+
   return (
+    <div>
+      <h2>Welcome, {session.user.id}!</h2>
+      <ButtonContainer />
+    </div>
+  );
+}
+
+export function DashboardPage() {
+  return (
+    //TODO: Add some admin actions and a way to separate them from user actions
     <div className="flex flex-col items-center justify-center gap-4">
       <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
         Dashboard
       </h1>
-      <ButtonContainer />
+      <MainBody />
     </div>
   );
 }
