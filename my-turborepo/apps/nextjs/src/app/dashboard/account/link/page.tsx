@@ -1,3 +1,5 @@
+// NOTE: I couldn't get account linking to work as intended
+
 // import { redirect } from "next/navigation";
 //
 // import { signIn } from "@vanni/auth";
