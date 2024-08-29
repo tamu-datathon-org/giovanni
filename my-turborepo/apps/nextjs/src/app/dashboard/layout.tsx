@@ -33,6 +33,6 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function AccountLayout(props: { children: React.ReactNode }) {
+export default function DashboardLayout(props: { children: React.ReactNode }) {
   return <SessionProvider>{props.children}</SessionProvider>;
 }
