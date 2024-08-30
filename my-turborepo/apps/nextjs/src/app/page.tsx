@@ -20,7 +20,7 @@ export default function HomePage() {
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           TAMU <span className="text-primary">Datathon</span>
         </h1>
-        <AuthShowcase />
+        {/* <AuthShowcase /> */}
 
         <nav className="flex flex-row items-center gap-4">
           <Link href="/login">
