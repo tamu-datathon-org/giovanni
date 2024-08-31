@@ -1,7 +1,7 @@
 {
   "name": "@vanni/eslint-config",
-  "private": true,
   "version": "0.3.0",
+  "private": true,
   "type": "module",
   "exports": {
     "./base": "./base.js",
@@ -13,6 +13,7 @@
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "typecheck": "tsc --noEmit"
   },
+  "prettier": "@vanni/prettier-config",
   "dependencies": {
     "@next/eslint-plugin-next": "^14.2.3",
     "eslint-config-turbo": "^1.13.3",
@@ -28,6 +29,5 @@
     "eslint": "^9.2.0",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5"
-  },
-  "prettier": "@vanni/prettier-config"
+  }
 }
