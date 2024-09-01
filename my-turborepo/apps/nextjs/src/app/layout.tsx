@@ -3,7 +3,7 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
 import { cn } from "@vanni/ui";
-import { ThemeProvider, ThemeToggle } from "@vanni/ui/theme";
+import { ThemeToggle } from "@vanni/ui/theme";
 import { Toaster } from "@vanni/ui/toast";
 
 import { TRPCReactProvider } from "~/trpc/react";
@@ -45,18 +45,16 @@ export default function RootLayout(props: { children: React.ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "overflow-hidden min-h-screen bg-background font-sans text-foreground antialiased",
+          "min-h-screen bg-background font-sans text-foreground antialiased",
           GeistSans.variable,
           GeistMono.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider>{props.children}</TRPCReactProvider>
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <TRPCReactProvider>{props.children}</TRPCReactProvider>
+        <div className="absolute bottom-4 right-4">
+          <ThemeToggle />
+        </div>
+        <Toaster />
       </body>
     </html>
   );

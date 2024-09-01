@@ -8,11 +8,13 @@ export default {
   // those classes are included correctly.
   content: [...baseConfig.content, "../../packages/ui/**/*.{ts,tsx}"],
   presets: [baseConfig],
+    // important: true, // This will add !important to all Tailwind utilities
   theme: {
     extend: {
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
         mono: ["var(--font-geist-mono)", ...fontFamily.mono],
+        XPfont : 'myfont'
       },
     },
   },
