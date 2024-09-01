@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { publicProcedure } from "../trpc";
 import { CreatePreregistrationSchema, Preregistration } from "@vanni/db/schema";
-import { desc, eq, gt } from "@vanni/db";
+import { and, desc, eq, gt } from "@vanni/db";
 import { TRPCError } from "@trpc/server";
 
 export const preregistrationRouter = {
@@ -17,8 +17,10 @@ export const preregistrationRouter = {
         .input(CreatePreregistrationSchema)
         .mutation(async ({ ctx, input }) => {
             const user = await ctx.db.query.Preregistration.findFirst({
-                where: (eq(Preregistration.email, input.email) &&
-                    gt(Preregistration.expiresAt, new Date())),
+                where: (
+                    and(
+                        eq(Preregistration.email, input.email),
+                        gt(Preregistration.expiresAt, new Date()))),
                 orderBy: desc(Preregistration.expiresAt)
             })
             if (user != undefined) {
@@ -50,8 +52,10 @@ export const preregistrationRouter = {
         }))
         .mutation(async ({ ctx, input }) => {
             const user = await ctx.db.query.Preregistration.findFirst({
-                where: (eq(Preregistration.email, input.email) &&
-                    gt(Preregistration.expiresAt, new Date())),
+                where: (
+                    and(
+                        eq(Preregistration.email, input.email),
+                        gt(Preregistration.expiresAt, new Date()))),
                 orderBy: desc(Preregistration.expiresAt)
             })
             if (user == undefined) {
