@@ -33,11 +33,11 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/react": "^18.3.2",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tailwind-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "@types/react": "^18.3.2",
     "eslint": "^9.2.0",
     "prettier": "^3.2.5",
     "react": "18.3.1",
