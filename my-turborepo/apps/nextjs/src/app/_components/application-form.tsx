@@ -1,12 +1,16 @@
 "use client";
 
-import { SubmitHandler, useForm } from "react-hook-form";
-import { applicationSchema, ApplicationSchema } from "../apply/validation";
+import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import type { ApplicationSchema } from "../apply/validation";
+import { applicationSchema } from "../apply/validation";
+
 // import * as z from "zod";
 
 /*
-    Fire Name
+    First Name
     Last Name
     Age (select 16<, 17...23, 24+)
     Country (autocomplete)
@@ -29,31 +33,30 @@ import { zodResolver } from "@hookform/resolvers/zod";
     Liability Waiver (checkbox)
 */
 export function ApplicationForm() {
-    const { register, handleSubmit } = useForm<ApplicationSchema>(
-        {
-            mode: "onSubmit",
-            defaultValues: {
-                firstName: "",
-                lastName: "",
-                age: 18
-            },
-            // values
-            resetOptions: {
-                keepDirtyValues: false, // user-interacted input will not be retained
-                keepErrors: true,
-            },
-            resolver: zodResolver(applicationSchema),
-            // match it to an endpoint because it allows async or use values
-        }
-    );
-    const onSubmit: SubmitHandler<ApplicationSchema> = data => console.log(data);
-    
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-        <input {...register("firstName", { required: true, maxLength: 20 })} />
-        <input {...register("lastName", { pattern: /^[A-Za-z]+$/i })} />
-        <input type="number" {...register("age", { min: 18, max: 99 })} />
-        <input type="submit" />
-        </form>
-    );
+  const { register, handleSubmit } = useForm<ApplicationSchema>({
+    mode: "onSubmit",
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      age: 18,
+    },
+    // values
+    resetOptions: {
+      keepDirtyValues: false, // user-interacted input will not be retained
+      keepErrors: true,
+    },
+    resolver: zodResolver(applicationSchema),
+    // match it to an endpoint because it allows async or use values
+  });
+  const onSubmit: SubmitHandler<ApplicationSchema> = (data) =>
+    console.log(data);
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register("firstName", { required: true, maxLength: 20 })} />
+      <input {...register("lastName", { pattern: /^[A-Za-z]+$/i })} />
+      <input type="number" {...register("age", { min: 18, max: 99 })} />
+      <input type="submit" />
+    </form>
+  );
 }

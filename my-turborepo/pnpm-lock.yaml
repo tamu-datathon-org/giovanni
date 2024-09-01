@@ -834,6 +834,7 @@ importers:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       react-hook-form:
         specifier: ^7.51.4
         version: 7.52.1(react@18.3.1)
@@ -877,6 +878,11 @@ importers:
         version: 7.52.2(react@18.3.1)
 >>>>>>> 93244fc (fix: pnpm lock after merging)
 >>>>>>> 26b77d2 (fix: pnpm lock after merging)
+=======
+      react-hook-form:
+        specifier: ^7.51.4
+        version: 7.52.1(react@18.3.1)
+>>>>>>> 9cc9991 (linting)
       remark:
         specifier: ^15.0.1
         version: 15.0.1
@@ -966,6 +972,9 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9cc9991 (linting)
       zod-form-data:
         specifier: ^2.0.2
         version: 2.0.2(zod@3.23.8)
@@ -65357,6 +65366,7 @@ snapshots:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -65403,6 +65413,8 @@ snapshots:
 =======
 >>>>>>> 1c2c035 (fix: installed on subfolder)
 >>>>>>> bcba60a (fix: installed on subfolder)
+=======
+>>>>>>> 9cc9991 (linting)
   /zod-form-data@2.0.2(zod@3.23.8):
     resolution: {integrity: sha512-sKTi+k0fvkxdakD0V5rq+9WVJA3cuTQUfEmNqvHrTzPLvjfLmkkBLfR0ed3qOi9MScJXTHIDH/jUNnEJ3CBX4g==}
     peerDependencies:
@@ -65411,6 +65423,7 @@ snapshots:
       zod: 3.23.8
     dev: false
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -65427,6 +65440,8 @@ snapshots:
 >>>>>>> 46a988a (fix: new pnpm lock)
 =======
 >>>>>>> 1c2c035 (fix: installed on subfolder)
+=======
+>>>>>>> 9cc9991 (linting)
   /zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 <<<<<<< HEAD

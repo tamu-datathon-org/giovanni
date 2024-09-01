@@ -1,5 +1,5 @@
-import { zfd } from "zod-form-data";
 import { z } from "zod";
+import { zfd } from "zod-form-data";
 
 export const applicationSchema = zfd.formData({
   firstName: zfd.text(z.string().min(2, "Too short").max(20, "Too long")),
