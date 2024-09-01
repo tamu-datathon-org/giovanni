@@ -14,11 +14,11 @@
     "@auth/core": "0.31.0"
   },
   "devDependencies": {
+    "@types/node": "^20.12.9",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tailwind-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "@types/node": "^20.12.9",
     "eslint": "^9.2.0",
     "h3": "^1.11.1",
     "nitropack": "^2.9.6",
