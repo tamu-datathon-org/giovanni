@@ -40,20 +40,42 @@ const SchedulePage = () => {
   const timeLeft = useCountdown(targetDate);
 
   return (
+    <div style={{
+      backgroundImage: 'url(/images/Wallpaper_Blur.png)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      fontFamily:'windows95Font',
+      minHeight:'100vh'
+    }}>
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Event Schedule</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">Datathon Schedule</h1>
       
-      <div className="bg-blue-100 p-6 rounded-lg shadow-md mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-center">Countdown to November 9th, 2024</h2>
-        <div className="flex justify-center space-x-4">
-          {Object.entries(timeLeft).map(([unit, value]) => (
-            <div key={unit} className="text-center">
-              <div className="text-3xl font-bold">{value}</div>
-              <div className="text-sm uppercase">{unit}</div>
+      <div className="mb-8 flex justify-center">
+          <div style={{
+            width: `600px`,
+            height: `350px`,
+            backgroundImage: 'url(/images/bear_with_blank_background.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '80px',
+          }}>
+            <h2 className="text-5xl font-bold text-black text-center mb-8">Countdown to Big D!</h2>
+
+            <div className="flex justify-center space-x-4">
+              {Object.entries(timeLeft).map(([unit, value]) => (
+                <div key={unit} className="text-center">
+                  <div className="text-4xl font-bold text-black">{value}</div>
+                  <div className="text-xl uppercase text-black">{unit}</div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
-      </div>
+
 
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold mb-4">Event List</h2>
@@ -77,6 +99,7 @@ const SchedulePage = () => {
           );
         })}
       </div>
+    </div>
     </div>
   );
 };
