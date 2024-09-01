@@ -42,7 +42,7 @@ export const CreatePreregistrationForm = () => {
                         </div>
                         <Button className="compStyling lg:visible invisible"><AiOutlineClose className="close" /></Button>
                     </div>
-                    <div className="flex flex-col relative items-center lg:bg-[#e4e3e4] w-full mt-3 lg:border-[#585958] lg:border-[1px] border-0">
+                    <div className="flex flex-col relative items-center overflow-hidden lg:bg-[#e4e3e4] w-full mt-3 lg:border-[#585958] lg:border-[1px] border-0">
                         <h1 className="text-6xl p-10 pb-5">
                             <span className="odd:text-teal-400">T</span>
                             <span className="even:text-cyan-700">A</span>
@@ -82,7 +82,7 @@ export const CreatePreregistrationForm = () => {
                                     : "Submit"
                             }
                         </Button>
-                        <Image src="/Pixel_PolarBear.png" className="absolute -bottom-3.5 -right-10 grayscale invisible lg:visible " width={200} height={200} alt="polar bear" />
+                        <Image src="/Pixel_PolarBear.png" className="absolute -bottom-5 -right-5 invisible lg:visible " width={200} height={200} alt="polar bear" />
                     </div>
                 </form>
             </div >
