@@ -26,6 +26,13 @@
     --radius: 0.5rem;
   }
 
+  @font-face {
+    font-family: 'windows95Font';
+    src: url(./_components/w95fa.woff);
+    font-weight: normal;
+    font-style: normal;
+  }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
