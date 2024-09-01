@@ -26,11 +26,11 @@ export const CreatePreregistrationForm = () => {
     }
 
     return (
-        <div className="font-XPfont font-bold">
+        <div className="font-XPfont font-bold bg-large-device bg-cover bg-no-repeat bg-center ">
             <div className="flex h-screen items-center justify-center">
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center text-center w-2/5 text-lg xpBorder">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center text-center w-2/5 text-lg xpBorder ">
                     <div className="flex flex-row w-full items-center justify-center">
-                        <div className="w-full pr-3"> {/**Random Lines */}
+                        <div className="w-full pr-3 lg:visible invisible"> {/**Random Lines */}
                             <div className="horizontal-line"></div>
                             <div className="horizontal-line"></div>
                             <div className="horizontal-line"></div>
@@ -40,15 +40,15 @@ export const CreatePreregistrationForm = () => {
                             <div className="horizontal-line"></div>
                             <div className="horizontal-line"></div>
                         </div>
-                        <Button className="compStyling"><AiOutlineClose className="close" /></Button>
+                        <Button className="compStyling lg:visible invisible"><AiOutlineClose className="close" /></Button>
                     </div>
-                    <div className="flex flex-col    items-center bg-[#e4e3e4] w-full mt-3 border-[#585958] border-[1px]">
+                    <div className="flex flex-col items-center lg:bg-[#e4e3e4] w-full mt-3 lg:border-[#585958] lg:border-[1px] border-0">
                         <h1 className="text-6xl p-10 pb-5">
                             <span className="odd:text-teal-400">T</span>
                             <span className="even:text-cyan-700">A</span>
                             <span className="odd:text-teal-400 ">M</span>
                             <span className="even:text-cyan-700">U</span> Datathon Preregistration</h1>
-                        <label className="flex flex-row justify-center">
+                        <label className="flex flex-row justify-center ">
                             <h1 className="pr-4">Enter Email:  </h1>
                             <div className="flex rounded-sm bg-black p-0.5">
                                 <input {...register("email", { required: true, maxLength: 256 })} className=" border-cyan-600" />
@@ -62,8 +62,8 @@ export const CreatePreregistrationForm = () => {
                             <div className="text-sm text-red-600">
                                 Invalid Email
                             </div>)}
-                        <label>
-                            <input type="checkbox" value={"on"} {...register("confirmation", { required: true, })} />
+                        <label className="lg:text-black text-white ">
+                            <input className="m-1" type="checkbox" value={"on"} {...register("confirmation", { required: true, })} />
                             <span>I agree to the terms and conditions.</span>
                         </label>
                         {errors.confirmation?.message != undefined && (
@@ -72,13 +72,13 @@ export const CreatePreregistrationForm = () => {
                             </div>
                         )}
                         <Button
-                            className="xpBorder text-xl font-extrabold my-4 submitBtn w-fit"
+                            className="xpBorder text-xl font-extrabold my-4 submitBtn w-fit bg-cyan-700"
                             type="submit"
                             disabled={!isDirty || isSubmitting}
                         >
                             {
                                 isSubmitting ?
-                                    <Image src="loading.svg" className="animate-spin w-6 h-6" aria-hidden="true" alt="loading..." />
+                                    <Image src="loading.svg" className="animate-spin" width={24} height={24} aria-hidden="true" alt="loading..." />
                                     : "Submit"
                             }
                         </Button>
