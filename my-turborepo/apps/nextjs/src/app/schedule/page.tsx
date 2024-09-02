@@ -1,10 +1,30 @@
 'use client'
-import React from 'react';
+import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 
-const events = [
-  { id: 1, name: 'Opening Ceremony', date: new Date('2024-11-09T09:00:00') },
-  { id: 5, name: 'Closing Ceremony', date: new Date('2024-11-09T17:00:00') },
+interface Event {
+  id: number;
+  name: string;
+  date: Date;
+  description: string;
+}
+
+// Might gotta edit around some of the markdown styling for this to appear better
+const events: Event[] = [
+  { 
+    id: 1, 
+    name: 'Opening Ceremony', 
+    date: new Date('2024-11-09T09:00:00'),
+    description: '# **Opening Ceremony**\n\nJoin us for the kickoff of our exciting Datathon! This event will include:\n\n- Welcome speech\n- Introduction of judges\n- Overview of the challenge\n- Q&A session'
+  },
+  { 
+    id: 5, 
+    name: 'Closing Ceremony', 
+    date: new Date('2024-11-09T17:00:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
 ];
+
 
 const useCountdown = (targetDate: any) => {
   const [timeLeft, setTimeLeft] = React.useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -35,9 +55,50 @@ const useCountdown = (targetDate: any) => {
   return timeLeft;
 };
 
-const SchedulePage = () => {
+interface EventPopupProps {
+  event: Event;
+  onClose: () => void;
+}
+
+const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <div className="relative max-w-2xl w-full m-4 max-h-[80vh] overflow-hidden">
+        <div style={{
+          width: `610px`,
+          height: `360px`,
+          backgroundImage: 'url(/images/bear_with_blank_background.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          padding: '80px 80px 0 80px',
+          position: 'relative',
+        }}>
+          <button 
+            onClick={onClose} 
+            className="absolute top-2 right-2 text-xl w-8 h-8 flex items-center justify-center"
+            
+          >
+            {/* Can edit the close button and placement later just a placeholder for now*/}
+            &times;
+          </button>
+          <div className="overflow-y-auto h-full w-full">
+            <ReactMarkdown>{event.description}</ReactMarkdown>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+const SchedulePage: React.FC = () => {
   const targetDate = new Date('2024-11-09T00:00:00');
   const timeLeft = useCountdown(targetDate);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   return (
     <div style={{
@@ -47,13 +108,13 @@ const SchedulePage = () => {
       fontFamily:'windows95Font',
       minHeight:'100vh'
     }}>
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Datathon Schedule</h1>
-      
-      <div className="mb-8 flex justify-center">
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold mb-8 text-center">Datathon Schedule</h1>
+        
+        <div className="mb-8 flex justify-center">
           <div style={{
-            width: `600px`,
-            height: `350px`,
+            width: `610px`,
+            height: `360px`,
             backgroundImage: 'url(/images/bear_with_blank_background.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -76,30 +137,33 @@ const SchedulePage = () => {
           </div>
         </div>
 
-
-      <div className="space-y-4">
-        <h2 className="text-2xl font-semibold mb-4">Event List</h2>
-        {events.map((event) => {
-          const isPast = new Date() > event.date;
-          return (
-            <div
-              key={event.id}
-              className={`p-4 rounded-lg shadow ${
-                isPast ? 'bg-gray-200 text-gray-500' : 'bg-white'
-              }`}
-            >
-              <h3 className="text-lg font-semibold">{event.name}</h3>
-              <p className="text-sm">
-                {event.date.toLocaleString('en-US', {
-                  dateStyle: 'medium',
-                  timeStyle: 'short',
-                })}
-              </p>
-            </div>
-          );
-        })}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-semibold mb-4">Event List</h2>
+          {events.map((event) => {
+            const isPast = new Date() > event.date;
+            return (
+              <div
+                key={event.id}
+                className={`p-4 rounded-lg shadow ${
+                  isPast ? 'bg-gray-200 text-gray-500' : 'bg-white'
+                } cursor-pointer hover:bg-gray-100 transition-colors`}
+                onClick={() => setSelectedEvent(event)}
+              >
+                <h3 className="text-lg font-semibold">{event.name}</h3>
+                <p className="text-sm">
+                  {event.date.toLocaleString('en-US', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                  })}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+      {selectedEvent && (
+        <EventPopup event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+      )}
     </div>
   );
 };
