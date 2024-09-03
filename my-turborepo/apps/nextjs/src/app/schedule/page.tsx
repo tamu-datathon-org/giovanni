@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface Event {
@@ -14,7 +14,7 @@ const events: Event[] = [
   { 
     id: 1, 
     name: 'Opening Ceremony', 
-    date: new Date('2024-11-09T09:00:00'),
+    date: new Date(Date.now() + 60000), // Set to 1 minute from now
     description: '# **Opening Ceremony**\n\nJoin us for the kickoff of our exciting Datathon! This event will include:\n\n- Welcome speech\n- Introduction of judges\n- Overview of the challenge\n- Q&A session'
   },
   { 
@@ -94,12 +94,84 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
   );
 };
 
+const EventAlertPopup: React.FC<{ event: Event; onClose: () => void }> = ({ event, onClose }) => {
+  return (
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      onClick={onClose}
+    >
+      <div 
+      style={{
+        width: `610px`,
+        height: `360px`,
+        backgroundImage: 'url(/images/pixel_bear.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        position: 'relative',
+      }}
+        className="rounded-lg p-6 max-w-sm w-full m-4"
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the popup
+      >
+        <h2 className="text-2xl font-bold mb-4">Event Starting!</h2>
+        <p className="mb-4">{event.name} is starting now!</p>
+        <button 
+          onClick={onClose}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
+
 
 const SchedulePage: React.FC = () => {
   const targetDate = new Date('2024-11-09T00:00:00');
   const timeLeft = useCountdown(targetDate);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
 
+  useEffect(() => {
+    const checkForUpcomingEvents = () => {
+      const now = new Date();
+      console.log("Current time:", now.toLocaleString());
+      
+      const upcomingEvent = events.find(event => {
+        const eventTime = new Date(event.date);
+        const timeDifference = eventTime.getTime() - now.getTime();
+        
+        const isUpcoming = timeDifference >= -6000 && timeDifference <= 6000;
+        
+        console.log(`Event: ${event.name}, Time: ${eventTime.toLocaleString()}, Difference: ${timeDifference}ms, Is Upcoming: ${isUpcoming}`);
+        
+        return isUpcoming;
+      });
+
+      if (upcomingEvent) {
+        console.log("Found upcoming event:", upcomingEvent.name);
+        setCurrentEvent(upcomingEvent);
+      } else if (currentEvent) {
+        console.log("No upcoming event, clearing current event");
+        setCurrentEvent(null);
+      }
+    };
+
+    const intervalId = setInterval(checkForUpcomingEvents, 10000); 
+    
+    checkForUpcomingEvents();
+
+    return () => clearInterval(intervalId);
+  }, []); 
+
+  const closeEventAlert = () => {
+    setCurrentEvent(null);
+  };
+  
   return (
     <div style={{
       backgroundImage: 'url(/images/Wallpaper_Blur.png)',
@@ -163,6 +235,9 @@ const SchedulePage: React.FC = () => {
       </div>
       {selectedEvent && (
         <EventPopup event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+      )}
+      {currentEvent && (
+        <EventAlertPopup event={currentEvent} onClose={closeEventAlert} />
       )}
     </div>
   );
