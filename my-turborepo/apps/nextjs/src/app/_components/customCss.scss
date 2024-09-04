@@ -50,16 +50,15 @@ $total: 10;
 }
 
 .xpBorder {
-    @media screen and (min-width: 1025px) {
-        background-image: linear-gradient(to bottom, #b6ddf9, #dfe2e5, #6ba2fe);
-        border-width: 1px;
-        border-style: solid;
-        position: relative;
-        padding: 1rem;
-        border-color: #000;
-        color: inherit;
-        box-shadow: 0 -20px 10px -20px rgba(0, 0, 0, 0.5) inset, 20px 0 10px -20px rgba(0, 0, 0, 0.5) inset;
-    }
+    background-image: linear-gradient(to bottom, #b6ddf9, #dfe2e5, #6ba2fe);
+    border-width: 1px;
+    border-style: solid;
+    position: relative;
+    padding: 1rem;
+    border-color: #000;
+    color: inherit;
+    box-shadow: 0 -20px 10px -20px rgba(0, 0, 0, 0.5) inset, 20px 0 10px -20px rgba(0, 0, 0, 0.5) inset;
+
 }
 
 .horizontal-line {
@@ -74,14 +73,38 @@ $total: 10;
 
 
 .compStyling {
-    @media screen and (min-width: 1025px) {
-        background-color: #e4e3e4;
-        border-color: black;
+    background-color: #e4e3e4;
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+    position: relative;
+    padding: 0.5rem;
+
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0; // equivalent to top: 0; right: 0; bottom: 0; left: 0;
         border-width: 2px;
         border-style: solid;
-        position: relative;
-        padding: 0.5rem;
+        border-right-color: #9c9c9c;
+        border-top-color: #9c9c9c;
+        border-left-color: #fff;
+        border-bottom-color: #fff;
 
+    }
+
+    &:hover {
+        background-color: #e4e3e4;
+    }
+
+    &:focus {
+
+        background-color: #c2c2c2;
+
+        .close {
+            margin-top: 2px;
+        }
 
         &::before {
             content: '';
@@ -89,40 +112,15 @@ $total: 10;
             inset: 0; // equivalent to top: 0; right: 0; bottom: 0; left: 0;
             border-width: 2px;
             border-style: solid;
-            border-right-color: #9c9c9c;
-            border-top-color: #9c9c9c;
-            border-left-color: #fff;
-            border-bottom-color: #fff;
+            border-right-color: #fff;
+            border-top-color: #fff;
+            border-left-color: #797878;
+            border-bottom-color: #797878;
 
-        }
-
-        &:hover {
-            background-color: #e4e3e4;
-        }
-
-        &:focus {
-
-            background-color: #c2c2c2;
-
-            .close {
-                margin-top: 2px;
-            }
-
-            &::before {
-                content: '';
-                position: absolute;
-                inset: 0; // equivalent to top: 0; right: 0; bottom: 0; left: 0;
-                border-width: 2px;
-                border-style: solid;
-                border-right-color: #fff;
-                border-top-color: #fff;
-                border-left-color: #797878;
-                border-bottom-color: #797878;
-
-            }
         }
     }
 }
+
 
 .submitBtn {
     box-shadow: rgb(0, 0, 0) -2px 2px 4px -0.5px;
