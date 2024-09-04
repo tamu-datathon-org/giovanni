@@ -4,8 +4,8 @@
 
 @layer base {
   @font-face {
-    font-family: 'myfont';
-    src: url('./assets/w95fa.woff2') format('woff2');
+    font-family: "myfont";
+    src: url("./assets/w95fa.woff2") format("woff2");
   }
   :root {
     --background: 0 0% 100%;
