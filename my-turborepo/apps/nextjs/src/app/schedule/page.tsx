@@ -68,7 +68,7 @@ interface EventPopupProps {
 const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="relative max-w-2xl w-full m-4 max-h-[80vh] overflow-hidden">
+      <div className="relative shadow-lg max-w-2xl w-full m-4 max-h-[80vh] overflow-hidden">
         <div style={{
           width: `630px`,
           height: `380px`,
@@ -87,7 +87,7 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
             onClick={onClose} 
             className="absolute top-2 right-2 text-xl w-8 h-8 flex items-center justify-center"
           >
-            {/* Keeping this button for mobile - the other one disappears so this is the backup*/}
+            {/* Keeping this button for mobile - easier friendly look  */}
           </button>
           <Button className="compStyling aboslute invisible lg:visible" 
             onClick={onClose}
@@ -130,9 +130,11 @@ const EventAlertPopup: React.FC<EventAlertPopupProps> = ({ event, onClose, onOpe
         className="rounded-lg p-6 max-w-sm w-full m-4 relative"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* remember that this bear needs to be changed but only if idea is signed off on
+            could also have a noise pop up sound to alert user or add pop up to other pages
+        */}
         <img 
           src="/images/wipbear.png" 
-          alt="Event Alert"
           style={{
             width: '530px',
             height: '180px',
@@ -142,12 +144,16 @@ const EventAlertPopup: React.FC<EventAlertPopupProps> = ({ event, onClose, onOpe
           }}
           onClick={() => onOpenDescription(event)}
         />
+
+        {/* lower the size of the words */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <h2 className="text-2xl font-bold mb-4">Event Starting!</h2>
           <p className="mb-4">{event.name} is starting now!</p>
         </div>
 
-        {/* This button prob gotta get changed check later */}
+        {/* This button prob gotta get changed maybe to the other button 
+            tbh the button isnt really needed either click on the bear or click away
+        */}
         <Button 
           onClick={onClose}
           className="absolute top-2 right-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -219,7 +225,7 @@ const SchedulePage: React.FC = () => {
       fontFamily:'windows95Font',
       minHeight:'100vh'
     }}>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container shadow-lg mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-8 text-center">Datathon Schedule</h1>
         
         <div className="mb-8 flex justify-center">
