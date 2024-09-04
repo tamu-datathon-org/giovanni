@@ -28,9 +28,9 @@ export const CreatePreregistrationForm = () => {
     return (
         <div className="font-XPfont font-bold bg-large-device bg-cover bg-no-repeat bg-center ">
             <div className="flex h-screen items-center justify-center">
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center text-center w-2/5 text-lg xpBorder ">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center text-center lg:w-2/5 w-11/12 text-lg xpBorder ">
                     <div className="flex flex-row w-full items-center justify-center">
-                        <div className="w-full pr-3 lg:visible invisible"> {/**Random Lines */}
+                        <div className="w-full pr-3"> {/**Random Lines */}
                             <div className="horizontal-line"></div>
                             <div className="horizontal-line"></div>
                             <div className="horizontal-line"></div>
@@ -40,9 +40,9 @@ export const CreatePreregistrationForm = () => {
                             <div className="horizontal-line"></div>
                             <div className="horizontal-line"></div>
                         </div>
-                        <Button className="compStyling lg:visible invisible"><AiOutlineClose className="close" /></Button>
+                        <Button className="compStyling"><AiOutlineClose className="close" /></Button>
                     </div>
-                    <div className="flex flex-col relative items-center overflow-hidden lg:bg-[#e4e3e4] w-full mt-3 lg:border-[#585958] lg:border-[1px] border-0">
+                    <div className="flex flex-col relative items-center overflow-hidden bg-[#e4e3e4] w-full mt-3 border-[#585958] lg:border-[1px] border-0">
                         <h1 className="text-6xl p-10 pb-5">
                             <span className="odd:text-teal-400">T</span>
                             <span className="even:text-cyan-700">A</span>
@@ -54,15 +54,11 @@ export const CreatePreregistrationForm = () => {
                                 <input {...register("email", { required: true, maxLength: 256 })} className=" border-cyan-600" />
                             </div>
                         </label>
-                        {errors.email?.message == undefined && (
-                            <div className="text-sm text-red-600">
-                                Missing Email
-                            </div>)}
                         {errors.email?.message != undefined && (
                             <div className="text-sm text-red-600">
                                 Invalid Email
                             </div>)}
-                        <label className="lg:text-black text-white ">
+                        <label className="text-blac">
                             <input className="m-1" type="checkbox" value={"on"} {...register("confirmation", { required: true, })} />
                             <span>I agree to the terms and conditions.</span>
                         </label>
@@ -82,7 +78,7 @@ export const CreatePreregistrationForm = () => {
                                     : "Submit"
                             }
                         </Button>
-                        <Image src="/Pixel_PolarBear.png" className="absolute -bottom-5 -right-5 invisible lg:visible " width={200} height={200} alt="polar bear" />
+                        <Image src="/Pixel_PolarBear.png" className="absolute -bottom-5 -right-5 md:size-56 size-32" width={100} height={100} alt="polar bear" />
                     </div>
                 </form>
             </div >
