@@ -1,6 +1,11 @@
 'use client'
+import { Button } from '@vanni/ui/button';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { AiOutlineClose } from "react-icons/ai";
+import "../_components/customCss.scss";
+
+
 
 interface Event {
   id: number;
@@ -14,7 +19,7 @@ const events: Event[] = [
   { 
     id: 1, 
     name: 'Opening Ceremony', 
-    date: new Date(Date.now() + 60000), // Set to 1 minute from now
+    date: new Date(Date.now() + 30000), // Set to 30 seconds but needa be changed
     description: '# **Opening Ceremony**\n\nJoin us for the kickoff of our exciting Datathon! This event will include:\n\n- Welcome speech\n- Introduction of judges\n- Overview of the challenge\n- Q&A session'
   },
   { 
@@ -65,8 +70,8 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
       <div className="relative max-w-2xl w-full m-4 max-h-[80vh] overflow-hidden">
         <div style={{
-          width: `610px`,
-          height: `360px`,
+          width: `630px`,
+          height: `380px`,
           backgroundImage: 'url(/images/bear_with_blank_background.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -77,14 +82,28 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
           padding: '80px 80px 0 80px',
           position: 'relative',
         }}>
-          <button 
+
+    <button 
             onClick={onClose} 
             className="absolute top-2 right-2 text-xl w-8 h-8 flex items-center justify-center"
-            
           >
-            {/* Can edit the close button and placement later just a placeholder for now*/}
-            &times;
+            {/* Keeping this button for mobile - the other one disappears so this is the backup*/}
           </button>
+          <Button className="compStyling aboslute invisible lg:visible" 
+            onClick={onClose}
+            style={{
+            position: 'absolute',
+            width: '22px',
+            height: '22px',
+            top: '9px',
+            right: '7px',
+          }}>
+            <AiOutlineClose className="close" style={{
+            position: 'absolute',
+            width: '8px',
+            height: '8px'
+          }}/>
+          </Button>
           <div className="overflow-y-auto h-full w-full">
             <ReactMarkdown>{event.description}</ReactMarkdown>
           </div>
@@ -94,36 +113,47 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
   );
 };
 
-const EventAlertPopup: React.FC<{ event: Event; onClose: () => void }> = ({ event, onClose }) => {
+interface EventAlertPopupProps {
+  event: Event;
+  onClose: () => void;
+  onOpenDescription: (event: Event) => void;
+}
+
+
+const EventAlertPopup: React.FC<EventAlertPopupProps> = ({ event, onClose, onOpenDescription }) => {
   return (
     <div 
-      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      className="fixed inset-0 flex justify-center items-center z-50"
       onClick={onClose}
     >
       <div 
-      style={{
-        width: `610px`,
-        height: `360px`,
-        backgroundImage: 'url(/images/wipbear.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        position: 'relative',
-      }}
-        className="rounded-lg p-6 max-w-sm w-full m-4"
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the popup
+        className="rounded-lg p-6 max-w-sm w-full m-4 relative"
+        onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-2xl font-bold mb-4">Event Starting!</h2>
-        <p className="mb-4">{event.name} is starting now!</p>
-        <button 
+        <img 
+          src="/images/wipbear.png" 
+          alt="Event Alert"
+          style={{
+            width: '530px',
+            height: '180px',
+            right: '7px',
+            position: 'absolute',
+            objectFit: 'contain',
+          }}
+          onClick={() => onOpenDescription(event)}
+        />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+          <h2 className="text-2xl font-bold mb-4">Event Starting!</h2>
+          <p className="mb-4">{event.name} is starting now!</p>
+        </div>
+
+        {/* This button prob gotta get changed check later */}
+        <Button 
           onClick={onClose}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="absolute top-2 right-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
-          Close
-        </button>
+          <AiOutlineClose />
+        </Button>
       </div>
     </div>
   );
@@ -135,6 +165,8 @@ const SchedulePage: React.FC = () => {
   const timeLeft = useCountdown(targetDate);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
+  const [showEventPopup, setShowEventPopup] = useState<boolean>(false);
+
 
   useEffect(() => {
     const checkForUpcomingEvents = () => {
@@ -171,6 +203,13 @@ const SchedulePage: React.FC = () => {
   const closeEventAlert = () => {
     setCurrentEvent(null);
   };
+
+  const openEventDescription = (event: Event) => {
+    setSelectedEvent(event);
+    setShowEventPopup(true);
+    closeEventAlert();
+  };
+
   
   return (
     <div style={{
@@ -237,7 +276,14 @@ const SchedulePage: React.FC = () => {
         <EventPopup event={selectedEvent} onClose={() => setSelectedEvent(null)} />
       )}
       {currentEvent && (
-        <EventAlertPopup event={currentEvent} onClose={closeEventAlert} />
+        <EventAlertPopup 
+          event={currentEvent} 
+          onClose={closeEventAlert} 
+          onOpenDescription={openEventDescription}
+        />
+      )}
+      {showEventPopup && selectedEvent && (
+        <EventPopup event={selectedEvent} onClose={() => setShowEventPopup(false)} />
       )}
     </div>
   );
