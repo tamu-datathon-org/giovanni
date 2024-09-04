@@ -104,7 +104,7 @@ const EventAlertPopup: React.FC<{ event: Event; onClose: () => void }> = ({ even
       style={{
         width: `610px`,
         height: `360px`,
-        backgroundImage: 'url(/images/pixel_bear.png)',
+        backgroundImage: 'url(/images/wipbear.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',
