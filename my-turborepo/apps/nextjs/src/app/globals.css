@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  @font-face {
+    font-family: 'myfont';
+    src: url('./assets/w95fa.woff2') format('woff2');
+  }
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;

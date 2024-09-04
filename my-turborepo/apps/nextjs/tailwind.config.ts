@@ -10,9 +10,13 @@ export default {
   presets: [baseConfig],
   theme: {
     extend: {
+      backgroundImage:{
+        'large-device': "url('./assets/Wallpaper_CoolColors 1.png')",
+      },
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
         mono: ["var(--font-geist-mono)", ...fontFamily.mono],
+        XPfont : 'myfont'
       },
     },
   },
