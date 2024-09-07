@@ -59,7 +59,7 @@ export default function LoginPage() {
             <span className="odd:text-teal-400">T</span>
             <span className="even:text-cyan-700">A</span>
             <span className="odd:text-teal-400 ">M</span>
-            <span className="even:text-cyan-700">U</span> DATATHON POO4{" "}
+            <span className="even:text-cyan-700">U</span> DATATHON{" "}
           </h1>
           <h1 className="text-5xl tracking-tight">Log In</h1>
           <div className="w-full text-[#9c9c9c]">
