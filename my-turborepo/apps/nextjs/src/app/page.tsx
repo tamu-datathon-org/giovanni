@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-
 import { api } from "~/trpc/server";
 import {
   CreatePostForm,
