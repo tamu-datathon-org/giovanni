@@ -3,14 +3,12 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
 import { cn } from "@vanni/ui";
-import { ThemeToggle } from "@vanni/ui/theme";
-import { Toaster } from "@vanni/ui/toast";
-
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
 
 import { env } from "~/env";
+import { Toaster } from "~/components/ui/toaster";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
