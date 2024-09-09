@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@vanni/ui/button';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { AiOutlineClose } from "react-icons/ai";
 import "../_components/customCss.scss";
@@ -14,7 +14,7 @@ interface Event {
   description: string;
 }
 
-// Might gotta edit around some of the markdown styling for this to appear better
+
 const events: Event[] = [
   { 
     id: 1, 
@@ -68,9 +68,9 @@ interface EventPopupProps {
 const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="relative shadow-lg max-w-2xl w-full m-4 max-h-[80vh] overflow-hidden">
+      <div className="relative max-w-2xl w-full m-4 max-h-[80vh] overflow-hidden">
         <div style={{
-          width: `630px`,
+          width: `650px`,
           height: `380px`,
           backgroundImage: 'url(/images/bear_with_blank_background.png)',
           backgroundSize: 'cover',
@@ -81,22 +81,21 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
           alignItems: 'center',
           padding: '80px 80px 0 80px',
           position: 'relative',
-        }}>
+        }} className='shadow-lg'>
 
     <button 
             onClick={onClose} 
             className="absolute top-2 right-2 text-xl w-8 h-8 flex items-center justify-center"
           >
-            {/* Keeping this button for mobile - easier friendly look  */}
           </button>
           <Button className="compStyling aboslute invisible lg:visible" 
             onClick={onClose}
             style={{
             position: 'absolute',
-            width: '22px',
-            height: '22px',
-            top: '9px',
-            right: '7px',
+            width: '23px',
+            height: '23px',
+            top: '6px',
+            right: '14px',
           }}>
             <AiOutlineClose className="close" style={{
             position: 'absolute',
@@ -225,23 +224,26 @@ const SchedulePage: React.FC = () => {
       fontFamily:'windows95Font',
       minHeight:'100vh'
     }}>
-      <div className="container shadow-lg mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-8 text-center">Datathon Schedule</h1>
         
         <div className="mb-8 flex justify-center">
           <div style={{
-            width: `610px`,
-            height: `360px`,
+            width: `725px`,
+            height: `428px`,
             backgroundImage: 'url(/images/bear_with_blank_background.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             display: 'flex',
+            position:'absolute',
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'center',
+            top:'120px',
+            left:'80px',
             padding: '80px',
-          }}>
-            <h2 className="text-5xl font-bold text-black text-center mb-8">Countdown to Big D!</h2>
+          }} className='shadow-lg'>
+            <h2 className="text-5xl font-bold text-black text-center mb-8">Countdown to Datathon!</h2>
 
             <div className="flex justify-center space-x-4">
               {Object.entries(timeLeft).map(([unit, value]) => (
@@ -254,16 +256,40 @@ const SchedulePage: React.FC = () => {
           </div>
         </div>
 
+
         <div className="space-y-4">
-          <h2 className="text-2xl font-semibold mb-4">Event List</h2>
+        <div className="mb-8 flex justify-center">
+          <div style={{
+        width: `545px`,
+        height: `550px`, 
+        backgroundImage: 'url(/images/brown_window.png)',
+        backgroundSize: '100% 100%', 
+        display: 'flex',
+        position: 'absolute',
+        flexDirection: 'column',
+        alignItems: 'center',
+        top: '180px',
+        right: '120px',
+        padding: '80px',
+      }} 
+      className='shadow-lg'>
+          <h2 className="text-5xl font-semibold mb-4">Event List</h2>
+          
+          {/* We can add a picture to the left of each event just like the previous schedules 
+              Also need to add the button to the top right so it dont look that scrunched
+              Also the cursor pointer can be changed but we almost there
+          */}
+          <div style={{ alignItems: 'flex-start', width: '100%'}}
+               className='space-y-4'
+          >
           {events.map((event) => {
             const isPast = new Date() > event.date;
             return (
               <div
                 key={event.id}
-                className={`p-4 rounded-lg shadow ${
-                  isPast ? 'bg-gray-200 text-gray-500' : 'bg-white'
-                } cursor-pointer hover:bg-gray-100 transition-colors`}
+                className={`p-4 rounded-lg ${
+                  isPast ? 'bg-gray-200 text-gray-500' : 'bg-stone-700/10'
+                } cursor-pointer hover:bg-gray-200`}
                 onClick={() => setSelectedEvent(event)}
               >
                 <h3 className="text-lg font-semibold">{event.name}</h3>
@@ -277,6 +303,11 @@ const SchedulePage: React.FC = () => {
             );
           })}
         </div>
+        </div>
+        </div>
+        </div>
+
+        
       </div>
       {selectedEvent && (
         <EventPopup event={selectedEvent} onClose={() => setSelectedEvent(null)} />
