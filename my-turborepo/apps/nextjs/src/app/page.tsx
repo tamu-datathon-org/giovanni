@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-
 import { api } from "~/trpc/server";
 import { AuthShowcase } from "./_components/auth-showcase";
 import {
@@ -21,7 +20,6 @@ export default function HomePage() {
           Create <span className="text-primary">T3</span> Turbo
         </h1>
         <AuthShowcase />
-
         <CreatePostForm />
         <div className="w-full max-w-2xl overflow-y-scroll">
           <Suspense
@@ -37,6 +35,6 @@ export default function HomePage() {
           </Suspense>
         </div>
       </div>
-    </main>
+    </main >
   );
 }

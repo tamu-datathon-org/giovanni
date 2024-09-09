@@ -15,5 +15,8 @@
     background-repeat: no-repeat;
     background-position: center center;
   }
+  :root {
+    --radius: 0.5rem;
+  }
 }
 

@@ -12,9 +12,14 @@ import './customCss.scss';
 import { AiOutlineClose } from "react-icons/ai";
 import { Button } from "node_modules/@vanni/ui/src/button";
 import Image from "next/image";
+import { useToast } from "~/hooks/use-toast";
+import { TRPCError } from "@trpc/server";
+import { TRPCClientError } from "@trpc/client";
 
 
 export const CreatePreregistrationForm = () => {
+    const { toast } = useToast()
+
     const { handleSubmit, register, formState: { errors, isSubmitting, isDirty } } = useForm<PreregistrationData>({
         resolver: zodResolver(preregistrationSchema)
     })
@@ -22,7 +27,20 @@ export const CreatePreregistrationForm = () => {
     const createPreregistration = api.preregistration.create.useMutation();
 
     const onSubmit: SubmitHandler<PreregistrationData> = async data => {
-        await createPreregistration.mutateAsync({ email: data.email })
+        try {
+            const resp = await createPreregistration.mutateAsync({ email: data.email })
+            toast({
+                title: "Thank you for preregistering",
+                description: "Redirecting to home",
+            })
+        } catch (error) {
+            if (error instanceof TRPCClientError) {
+                toast({
+                    title: error.data.code,
+                    description: error.message,
+                })
+            }
+        }
     }
 
     return (
