@@ -225,7 +225,7 @@ const SchedulePage: React.FC = () => {
       minHeight:'100vh'
     }}>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8 text-center">Datathon Schedule</h1>
+        <h1 className="text-5xl font-bold mb-8 text-center">Datathon Schedule</h1>
         
         <div className="mb-8 flex justify-center">
           <div style={{
