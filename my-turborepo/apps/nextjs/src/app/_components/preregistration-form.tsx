@@ -44,7 +44,7 @@ export const CreatePreregistrationForm = () => {
     }
 
     return (
-        <div className="font-XPfont font-bold bg-large-device bg-cover bg-no-repeat bg-center ">
+        <div className="font-XPfont font-bold">
             <div className="flex h-screen items-center justify-center">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center text-center lg:w-2/5 w-11/12 text-lg xpBorder ">
                     <div className="flex flex-row w-full items-center justify-center">
