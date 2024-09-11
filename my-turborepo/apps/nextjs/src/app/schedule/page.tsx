@@ -146,7 +146,7 @@ const EventAlertPopup: React.FC<EventAlertPopupProps> = ({ event, onClose, onOpe
 
         {/* lower the size of the words */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <h2 className="text-2xl font-bold mb-4">Event Starting!</h2>
+          <h2 className="text-xl font-bold mb-4">Event Starting!</h2>
           <p className="mb-4">{event.name} is starting now!</p>
         </div>
 
@@ -273,7 +273,7 @@ const SchedulePage: React.FC = () => {
         padding: '80px',
       }} 
       className='shadow-lg'>
-          <h2 className="text-5xl font-semibold mb-4">Event List</h2>
+          <h2 className="text-5xl font-semibold mb-4">Events Schedule</h2>
           
           {/* We can add a picture to the left of each event just like the previous schedules 
               Also need to add the button to the top right so it dont look that scrunched
