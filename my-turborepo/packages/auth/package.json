@@ -2,6 +2,7 @@
   "name": "@vanni/auth",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "exports": {
     ".": {
@@ -10,19 +11,19 @@
     },
     "./env": "./env.ts"
   },
-  "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
+  "prettier": "@vanni/prettier-config",
   "dependencies": {
-    "@vanni/db": "workspace:*",
-    "@auth/drizzle-adapter": "^1.1.0",
+    "@auth/drizzle-adapter": "1.4.1",
     "@t3-oss/env-nextjs": "^0.10.1",
-    "next": "^14.2.3",
-    "next-auth": "5.0.0-beta.18",
+    "@vanni/db": "workspace:*",
+    "next": "14.2.3",
+    "next-auth": "5.0.0-beta.20",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "zod": "^3.23.8"
@@ -34,6 +35,5 @@
     "eslint": "^9.2.0",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5"
-  },
-  "prettier": "@vanni/prettier-config"
+  }
 }
