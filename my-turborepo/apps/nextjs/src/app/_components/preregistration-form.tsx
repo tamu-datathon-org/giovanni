@@ -113,8 +113,8 @@ export const CreatePreregistrationForm = () => {
       });
       toast({
         variant: "success",
-        title: "Thank you for preregistering",
-        description: "Redirecting to home",
+        title: "You're on the list!",
+        description: "Thanks for showing interest in the Fall Datathon.",
       });
     } catch (error) {
       if (error instanceof TRPCClientError) {
