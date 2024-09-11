@@ -18,6 +18,9 @@ import { Button } from "node_modules/@vanni/ui/src/button";
 import { AiOutlineClose } from "react-icons/ai";
 
 import { useToast } from "~/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { setTimeout } from "timers";
+import { routeModule } from "next/dist/build/templates/app-page";
 
 // import IconList from "./IconList";
 
@@ -39,10 +42,16 @@ function Lines() {
 }
 
 function ExitButton() {
-  // This button is only there for visual purposes
+  // Redir to the countdown page
+  const route = useRouter();
+
+  const handleClick = () => {
+    route.push('/countdown');
+  };
+
   return (
-    <Button className="compStyling">
-      <AiOutlineClose className="close" />
+    <Button className="compStyling" onClick={handleClick}>
+      <AiOutlineClose className="close"  />
     </Button>
   );
 }
@@ -95,6 +104,7 @@ function TermsAndConditions(props: { register: any; errors: any }) {
 
 export const CreatePreregistrationForm = () => {
   const { toast } = useToast();
+  const routes = useRouter();
 
   const {
     handleSubmit,
@@ -116,6 +126,11 @@ export const CreatePreregistrationForm = () => {
         title: "You're on the list!",
         description: "Thanks for showing interest in the Fall 2024 Datathon.",
       });
+
+      setTimeout(() => {
+        routes.push('/countdown');
+      }, 500);
+
     } catch (error) {
       if (error instanceof TRPCClientError) {
         if (error.data.code === "INTERNAL_SERVER_ERROR") {

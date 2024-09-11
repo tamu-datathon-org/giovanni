@@ -1,11 +1,7 @@
 'use client'
 
-import { Button } from '@vanni/ui/button';
-import React, { useEffect, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import { AiOutlineClose } from "react-icons/ai";
+import React from 'react';
 import "../_components/customCss.scss";
-
 
 const useCountdown = (targetDate: any) => {
   const [timeLeft, setTimeLeft] = React.useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -51,32 +47,35 @@ const SchedulePage: React.FC = () => {
       <div className="container mx-auto px-4 py-8">        
         <div className="mb-8 flex justify-center">
           <div style={{
-            width: `1062px`,
-            height: `628px`,
+            width: '100%',
+            maxWidth: '1062px',
+            height: 'auto',
+            aspectRatio: '1062 / 628',
             backgroundImage: 'url(/images/bear_with_blank_background.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             display: 'flex',
-            position:'absolute',
+            position: 'relative',
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'center',
-            top:'70px',
-            padding: '150px',
+            padding: '7%',
           }} className='shadow-lg'>
-    <h2 className="font-bold text-black text-center mb-12" style={{ fontSize: '4rem' }}>Countdown to Datathon!</h2>
+            <h2 className="font-bold text-black text-center mb-12 text-4xl sm:text-5xl md:text-6xl lg:text-7xl" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}>Countdown to Datathon!</h2>
+            <div>
+                <h2 className="text-black text-center mb-12 text-xl sm:text-2xl md:text-3xl lg:text-4xl" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)' }}>November 9th, 2024</h2>
+            </div>
 
-            <div className="flex justify-center space-x-4">
+            <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4">
               {Object.entries(timeLeft).map(([unit, value]) => (
-                <div key={unit} className="text-center">
-                   <div className="font-bold text-black" style={{ fontSize: '3.5rem' }}>{value}</div>
-          <div className="uppercase text-black" style={{ fontSize: '2rem' }}>{unit}</div>
+                <div key={unit} className="text-center px-2 sm:px-4">
+                   <div className="font-bold text-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl" style={{ fontSize: 'clamp(1.5rem, 4vw, 3.5rem)' }}>{value}</div>
+                   <div className="uppercase text-black text-sm sm:text-base md:text-lg lg:text-xl " style={{ fontSize: 'clamp(0.8rem, 2vw, 2rem)' }}>{unit}</div>
                 </div>
               ))}
             </div>
           </div>
         </div>
-        
       </div>
     </div>
   );
