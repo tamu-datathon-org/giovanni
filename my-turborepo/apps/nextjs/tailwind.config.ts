@@ -14,6 +14,7 @@ export default {
 		extend: {
 			backgroundImage: {
 				'large-device': "url('./assets/wallpaper.jpg')",
+				'mobile-device' : "url('./assets/mobile_wallpaper.png')"
 			},
 			fontFamily: {
 				sans: ["var(--font-geist-sans)", ...fontFamily.sans],
