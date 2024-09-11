@@ -6,10 +6,11 @@
     "build": "nitro build",
     "clean": "rm -rf .turbo node_modules",
     "dev": "nitro dev --port 3001",
-    "lint": "eslint",
     "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
+  "prettier": "@vanni/prettier-config",
   "dependencies": {
     "@auth/core": "0.31.0"
   },
@@ -24,6 +25,5 @@
     "nitropack": "^2.9.6",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5"
-  },
-  "prettier": "@vanni/prettier-config"
+  }
 }

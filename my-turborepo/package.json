@@ -1,28 +1,25 @@
 {
   "name": "create-t3-turbo",
   "private": true,
-  "engines": {
-    "node": ">=20.12.0"
-  },
-  "packageManager": "pnpm@8.15.7",
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo clean",
     "db:push": "pnpm -F db push",
     "db:studio": "pnpm -F db studio",
+    "depcheck": "check-dependency-version-consistency .",
+    "depcheck:fix": "check-dependency-version-consistency . --fix",
     "dev": "turbo dev --parallel",
     "format": "turbo format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
     "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
+    "postinstall": "pnpm lint:ws",
     "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:ws": "pnpm dlx sherif@latest",
-    "postinstall": "pnpm lint:ws",
     "typecheck": "turbo typecheck",
-    "ui-add": "pnpm -F ui ui-add",
-    "depcheck": "check-dependency-version-consistency .",
-    "depcheck:fix": "check-dependency-version-consistency . --fix"
+    "ui-add": "pnpm -F ui ui-add"
   },
+  "prettier": "@vanni/prettier-config",
   "devDependencies": {
     "@turbo/gen": "^1.13.3",
     "@vanni/prettier-config": "workspace:*",
@@ -31,5 +28,8 @@
     "turbo": "^2.0.12",
     "typescript": "^5.4.5"
   },
-  "prettier": "@vanni/prettier-config"
+  "packageManager": "pnpm@8.15.7",
+  "engines": {
+    "node": ">=20.12.0"
+  }
 }

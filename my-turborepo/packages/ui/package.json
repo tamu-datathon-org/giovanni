@@ -1,7 +1,8 @@
 {
   "name": "@vanni/ui",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
@@ -10,7 +11,6 @@
       "./src/*.ts"
     ]
   },
-  "license": "MIT",
   "scripts": {
     "add": "pnpm dlx shadcn-ui add",
     "clean": "rm -rf .turbo node_modules",
@@ -19,6 +19,7 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "ui-add": "pnpm dlx shadcn-ui add && prettier src --write --list-different"
   },
+  "prettier": "@vanni/prettier-config",
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
@@ -48,6 +49,5 @@
   "peerDependencies": {
     "react": "18.3.1",
     "zod": "^3.23.8"
-  },
-  "prettier": "@vanni/prettier-config"
+  }
 }
