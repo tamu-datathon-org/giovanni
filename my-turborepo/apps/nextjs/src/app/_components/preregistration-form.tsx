@@ -64,11 +64,11 @@ function EmailBox(props: { register: any; errors: any }) {
       <label className="flex flex-row justify-center ">
         <h1 className="pr-4">Enter Email: </h1>
         <div className="flex rounded-sm bg-black p-0.5">
-          <input {...props.register} className=" border-cyan-600" />
+          <input {...props.register} className=" border-cyan-600 pl-1" />
         </div>
       </label>
       {props.errors.email?.message != undefined && (
-        <div className="text-sm text-red-600">Invalid Email</div>
+        <div className="text-sm text-red-600 pt-2">Invalid Email</div>
       )}
     </>
   );
