@@ -3,14 +3,12 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
 import { cn } from "@vanni/ui";
-import { ThemeProvider, ThemeToggle } from "@vanni/ui/theme";
-import { Toaster } from "@vanni/ui/toast";
-
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
 
 import { env } from "~/env";
+import { Toaster } from "~/components/ui/toaster";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -50,13 +48,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           GeistMono.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider>{props.children}</TRPCReactProvider>
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <TRPCReactProvider>{props.children}</TRPCReactProvider>
+        <div className="absolute bottom-4 right-4">
+        </div>
+        <Toaster />
       </body>
     </html>
   );
