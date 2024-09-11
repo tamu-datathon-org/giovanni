@@ -114,7 +114,7 @@ export const CreatePreregistrationForm = () => {
       toast({
         variant: "success",
         title: "You're on the list!",
-        description: "Thanks for showing interest in the Fall Datathon.",
+        description: "Thanks for showing interest in the Fall 2024 Datathon.",
       });
     } catch (error) {
       if (error instanceof TRPCClientError) {
