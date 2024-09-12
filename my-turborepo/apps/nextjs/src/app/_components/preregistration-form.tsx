@@ -12,15 +12,15 @@ import { preregistrationSchema } from "../preregistration/validation";
 
 import "./customCss.scss";
 
+import { setTimeout } from "timers";
+import { routeModule } from "next/dist/build/templates/app-page";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { TRPCClientError } from "@trpc/client";
 import { Button } from "node_modules/@vanni/ui/src/button";
 import { AiOutlineClose } from "react-icons/ai";
 
 import { useToast } from "~/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import { setTimeout } from "timers";
-import { routeModule } from "next/dist/build/templates/app-page";
 
 // import IconList from "./IconList";
 
@@ -55,7 +55,7 @@ function ExitButton() {
 
   return (
     <Button className="compStyling" onClick={handleClick}>
-      <AiOutlineClose className="close"  />
+      <AiOutlineClose className="close" />
     </Button>
   );
 }
@@ -81,7 +81,7 @@ function EmailBox(props: { register: any; errors: any }) {
         </div>
       </label>
       {props.errors.email?.message != undefined && (
-        <div className="text-sm text-red-600 pt-2">Invalid Email</div>
+        <div className="pt-2 text-sm text-red-600">Invalid Email</div>
       )}
     </>
   );
@@ -132,9 +132,8 @@ export const CreatePreregistrationForm = () => {
       });
 
       setTimeout(() => {
-        routes.push('/countdown');
+        routes.push("/countdown");
       }, 500);
-
     } catch (error) {
       if (error instanceof TRPCClientError) {
         if (error.data.code === "INTERNAL_SERVER_ERROR") {
