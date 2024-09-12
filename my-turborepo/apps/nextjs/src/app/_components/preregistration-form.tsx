@@ -17,8 +17,8 @@ import { TRPCClientError } from "@trpc/client";
 import { Button } from "node_modules/@vanni/ui/src/button";
 import { AiOutlineClose } from "react-icons/ai";
 
-import { Form } from "@vanni/ui/src/form";
-import { Input } from "@vanni/ui/src/input";
+import { Form } from "@vanni/ui/form";
+import { Input } from "@vanni/ui/input";
 
 import { useToast } from "~/hooks/use-toast";
 
