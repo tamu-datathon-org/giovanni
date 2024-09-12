@@ -134,9 +134,13 @@ export const CreatePreregistrationForm = () => {
     },
   });
   const {
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting, isDirty },
+    // handleSubmit,
+    // register,
+    formState: {
+      // errors,
+      isSubmitting,
+      isDirty,
+    },
   } = form;
 
   const createPreregistration = api.preregistration.create.useMutation();
@@ -181,7 +185,7 @@ export const CreatePreregistrationForm = () => {
           </div>
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
             <TitleText />
-            <Form>
+            <Form {...form}>
               <form
                 className="flex flex-col items-center text-center"
                 onSubmit={form.handleSubmit(onSubmit)}
