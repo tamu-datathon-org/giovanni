@@ -19,7 +19,7 @@ import { TRPCClientError } from "@trpc/client";
 import { Button } from "node_modules/@vanni/ui/src/button";
 import { AiOutlineClose } from "react-icons/ai";
 
-import { Form } from "@vanni/ui/src/form";
+import { Form } from "@vanni/ui/form";
 
 import { useToast } from "~/hooks/use-toast";
 
