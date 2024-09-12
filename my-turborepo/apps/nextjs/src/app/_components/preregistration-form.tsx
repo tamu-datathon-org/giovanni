@@ -19,6 +19,8 @@ import { TRPCClientError } from "@trpc/client";
 import { Button } from "node_modules/@vanni/ui/src/button";
 import { AiOutlineClose } from "react-icons/ai";
 
+import { Form } from "@vanni/ui/src/form";
+
 import { useToast } from "~/hooks/use-toast";
 
 // import IconList from "./IconList";
@@ -115,13 +117,14 @@ function TermsAndConditions(props: {
 export const CreatePreregistrationForm = () => {
   const { toast } = useToast();
 
+  const form = useForm<PreregistrationData>({
+    resolver: zodResolver(preregistrationSchema),
+  });
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting, isDirty },
-  } = useForm<PreregistrationData>({
-    resolver: zodResolver(preregistrationSchema),
-  });
+  } = form;
 
   const createPreregistration = api.preregistration.create.useMutation();
 
@@ -165,28 +168,33 @@ export const CreatePreregistrationForm = () => {
           </div>
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
             <TitleText />
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <EmailBox register={register} errors={errors} />
-              <TermsAndConditions register={register} errors={errors} />
-              <Button
-                className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
-                type="submit"
-                disabled={!isDirty || isSubmitting}
+            <Form>
+              <form
+                className="flex flex-col items-center text-center"
+                onSubmit={handleSubmit(onSubmit)}
               >
-                {isSubmitting ? (
-                  <Image
-                    src="loading.svg"
-                    className="animate-spin"
-                    width={24}
-                    height={24}
-                    aria-hidden="true"
-                    alt="loading..."
-                  />
-                ) : (
-                  "Submit"
-                )}
-              </Button>
-            </form>
+                <EmailBox register={register} errors={errors} />
+                <TermsAndConditions register={register} errors={errors} />
+                <Button
+                  className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
+                  type="submit"
+                  disabled={!isDirty || isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <Image
+                      src="loading.svg"
+                      className="animate-spin"
+                      width={24}
+                      height={24}
+                      aria-hidden="true"
+                      alt="loading..."
+                    />
+                  ) : (
+                    "Submit"
+                  )}
+                </Button>
+              </form>
+            </Form>
             <Image
               src="/Pixel_PolarBear.png"
               className="absolute -bottom-5 -right-5 size-32 md:size-56 lg:size-28 xl:size-44"
