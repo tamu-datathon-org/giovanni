@@ -17,6 +17,9 @@ import { TRPCClientError } from "@trpc/client";
 import { Button } from "node_modules/@vanni/ui/src/button";
 import { AiOutlineClose } from "react-icons/ai";
 
+import { Form } from "@vanni/ui/src/form";
+import { Input } from "@vanni/ui/src/input";
+
 import { useToast } from "~/hooks/use-toast";
 
 // import IconList from "./IconList";
@@ -64,7 +67,7 @@ function EmailBox(props: { register: any; errors: any }) {
       <label className="flex flex-row justify-center ">
         <h1 className="pr-4">Enter Email: </h1>
         <div className="flex rounded-sm bg-black p-0.5">
-          <input {...props.register} className=" border-cyan-600" />
+          <Input {...props.register} className=" border-cyan-600" />
         </div>
       </label>
       {props.errors.email?.message != undefined && (
@@ -78,7 +81,7 @@ function TermsAndConditions(props: { register: any; errors: any }) {
   return (
     <>
       <label className="text-blac">
-        <input
+        <Input
           className="m-1"
           type="checkbox"
           value={"on"}
@@ -138,7 +141,7 @@ export const CreatePreregistrationForm = () => {
   return (
     <div className="font-XPfont font-bold">
       <div className="flex h-screen flex-col items-center justify-center ">
-        <form
+        <Form
           onSubmit={handleSubmit(onSubmit)}
           className="xpBorder m-5 flex w-11/12 flex-col items-center text-center text-lg lg:w-2/5"
         >
@@ -182,7 +185,7 @@ export const CreatePreregistrationForm = () => {
               alt="polar bear"
             />
           </div>
-        </form>
+        </Form>
         {/* <IconList /> */}
       </div>
     </div>
