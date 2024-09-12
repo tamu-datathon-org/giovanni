@@ -42,11 +42,15 @@ function Lines() {
 }
 
 function ExitButton() {
-  // Redir to the countdown page
-  const route = useRouter();
+  // Toast to say the site is under construction
+  const { toast } = useToast();
 
   const handleClick = () => {
-    route.push('/countdown');
+    toast({
+      variant: "success",
+      title: "The site is under construction. Check back soon!",
+      description: "Thanks for showing interest in the Fall 2024 Datathon.",
+    });
   };
 
   return (
