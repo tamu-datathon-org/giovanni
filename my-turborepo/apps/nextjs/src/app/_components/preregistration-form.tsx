@@ -19,7 +19,16 @@ import { TRPCClientError } from "@trpc/client";
 import { Button } from "node_modules/@vanni/ui/src/button";
 import { AiOutlineClose } from "react-icons/ai";
 
-import { Form } from "@vanni/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@vanni/ui/form";
+import { Input } from "@vanni/ui/input";
 
 import { useToast } from "~/hooks/use-toast";
 
@@ -119,6 +128,10 @@ export const CreatePreregistrationForm = () => {
 
   const form = useForm<PreregistrationData>({
     resolver: zodResolver(preregistrationSchema),
+    defaultValues: {
+      email: "",
+      confirmation: false,
+    },
   });
   const {
     handleSubmit,
@@ -171,10 +184,22 @@ export const CreatePreregistrationForm = () => {
             <Form>
               <form
                 className="flex flex-col items-center text-center"
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={form.handleSubmit(onSubmit)}
               >
-                <EmailBox register={register} errors={errors} />
-                <TermsAndConditions register={register} errors={errors} />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter your email" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                {/*<EmailBox register={register} errors={errors} />*/}
+                {/*<TermsAndConditions register={register} errors={errors} />*/}
                 <Button
                   className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
                   type="submit"
