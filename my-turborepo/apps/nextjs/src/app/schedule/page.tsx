@@ -279,6 +279,7 @@ const SchedulePage: React.FC = () => {
               Also need to add the button to the top right so it dont look that scrunched
               Also the cursor pointer can be changed but we almost there
           */}
+          
           <div style={{ alignItems: 'flex-start', width: '100%'}}
                className='space-y-4'
           >
