@@ -15,12 +15,69 @@ interface Event {
 }
 
 
+// Gotta change the buzz word descriptions + this is only a tenative schedule for now
+// Also change the timer from pre event to the end of the event
+// Also add pictures to the pres showing
 const events: Event[] = [
   { 
     id: 1, 
-    name: 'Opening Ceremony', 
-    date: new Date(Date.now() + 30000), // Set to 30 seconds but needa be changed
+    name: 'Doors Open + Check-in', 
+    date: new Date('2024-11-09T10:00:00'),
     description: '# **Opening Ceremony**\n\nJoin us for the kickoff of our exciting Datathon! This event will include:\n\n- Welcome speech\n- Introduction of judges\n- Overview of the challenge\n- Q&A session'
+  },
+  { 
+    id: 2, 
+    name: 'Opening Ceremony', 
+    date: new Date('2024-11-09T11:30:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
+  { 
+    id: 3, 
+    name: 'Hacking Starts', 
+    date: new Date('2024-11-09T13:00:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
+  { 
+    id: 4, 
+    name: 'Lunch, Student Org Fair', 
+    date: new Date('2024-11-09T13:30:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
+  { 
+    id: 5, 
+    name: 'Workshop 1', 
+    date: new Date('2024-11-09T13:30:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
+  { 
+    id: 6, 
+    name: 'Workshop 2', 
+    date: new Date('2024-11-09T15:30:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
+  { 
+    id: 7, 
+    name: 'Dinner', 
+    date: new Date('2024-11-09T18:30:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
+  { 
+    id: 8, 
+    name: 'Closing Ceremony', 
+    date: new Date('2024-11-09T17:00:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
+  { 
+    id: 5, 
+    name: 'Closing Ceremony', 
+    date: new Date('2024-11-09T17:00:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
+  { 
+    id: 5, 
+    name: 'Closing Ceremony', 
+    date: new Date('2024-11-09T17:00:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
   },
   { 
     id: 5, 
@@ -262,7 +319,7 @@ const SchedulePage: React.FC = () => {
           <div style={{
         width: `605px`,
         height: `550px`, 
-        backgroundImage: 'url(/images/brown_window.png)',
+        backgroundImage: 'url(/images/blank_Back.png)',
         backgroundSize: '100% 100%', 
         display: 'flex',
         position: 'absolute',
