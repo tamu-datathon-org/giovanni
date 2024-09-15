@@ -18,6 +18,8 @@ interface Event {
 // Gotta change the buzz word descriptions + this is only a tenative schedule for now
 // Also change the timer from pre event to the end of the event
 // Also add pictures to the pres showing
+
+// also the events seem to go below the page rather than stay in the window and become scrollable so fix that
 const events: Event[] = [
   { 
     id: 1, 
