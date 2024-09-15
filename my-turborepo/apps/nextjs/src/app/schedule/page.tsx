@@ -260,7 +260,7 @@ const SchedulePage: React.FC = () => {
         <div className="space-y-4">
         <div className="mb-8 flex justify-center">
           <div style={{
-        width: `545px`,
+        width: `605px`,
         height: `550px`, 
         backgroundImage: 'url(/images/brown_window.png)',
         backgroundSize: '100% 100%', 
@@ -269,7 +269,7 @@ const SchedulePage: React.FC = () => {
         flexDirection: 'column',
         alignItems: 'center',
         top: '180px',
-        right: '120px',
+        right: '60px',
         padding: '80px',
       }} 
       className='shadow-lg'>
@@ -279,7 +279,7 @@ const SchedulePage: React.FC = () => {
               Also need to add the button to the top right so it dont look that scrunched
               Also the cursor pointer can be changed but we almost there
           */}
-          
+
           <div style={{ alignItems: 'flex-start', width: '100%'}}
                className='space-y-4'
           >
@@ -288,7 +288,7 @@ const SchedulePage: React.FC = () => {
             return (
               <div
                 key={event.id}
-                className={`p-4 rounded-lg ${
+                className={`p-4 rounded-lg compStyling w-full border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] ${
                   isPast ? 'bg-gray-200 text-gray-500' : 'bg-stone-700/10'
                 } cursor-pointer hover:bg-gray-200`}
                 onClick={() => setSelectedEvent(event)}
