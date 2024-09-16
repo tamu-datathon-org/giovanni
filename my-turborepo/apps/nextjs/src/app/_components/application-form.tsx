@@ -59,7 +59,7 @@ interface FormSelectProps {
     register: UseFormRegister<ApplicationSchema>;
     errors: FieldErrors;
     name: keyof ApplicationSchema;
-    options: { value: string; label: string }[];
+    options: { value: string | number; label: string }[];
 }
 
 interface AutocompleteInputProps {
