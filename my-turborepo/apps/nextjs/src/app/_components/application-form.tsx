@@ -53,6 +53,25 @@ interface FormInputProps {
     name: keyof ApplicationSchema;
 }
 
+interface FormSelectProps {
+    id: string;
+    label: string;
+    register: UseFormRegister<ApplicationSchema>;
+    errors: FieldErrors;
+    name: keyof ApplicationSchema;
+    options: { value: string; label: string }[];
+}
+
+interface AutocompleteInputProps {
+    id: string;
+    label: string;
+    name: keyof ApplicationSchema;
+    register: UseFormRegister<ApplicationSchema>;
+    errors: FieldErrors;
+    options: { name: string }[];
+    placeholder?: string;
+}
+
 const FormInput: React.FC<FormInputProps> = ({ id, label, register, errors, name }) => {
     return (
         <div>
@@ -66,15 +85,6 @@ const FormInput: React.FC<FormInputProps> = ({ id, label, register, errors, name
         </div>
     );
 };
-
-interface FormSelectProps {
-    id: string;
-    label: string;
-    register: UseFormRegister<ApplicationSchema>;
-    errors: FieldErrors;
-    name: keyof ApplicationSchema;
-    options: { value: string; label: string }[];
-}
 
 const FormSelect: React.FC<FormSelectProps> = ({ id, label, register, errors, name, options }) => {
     return (
@@ -96,16 +106,6 @@ const FormSelect: React.FC<FormSelectProps> = ({ id, label, register, errors, na
         </div>
     );
 };
-
-interface AutocompleteInputProps {
-    id: string;
-    label: string;
-    name: keyof ApplicationSchema;
-    register: UseFormRegister<ApplicationSchema>;
-    errors: FieldErrors;
-    options: { name: string }[];
-    placeholder?: string;
-}
 
 const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ id, label, name, register, errors, options, placeholder = 'Search...' }) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -166,7 +166,6 @@ export function ApplicationForm() {
         defaultValues: {
             firstName: "",
             lastName: "",
-            age: 18,
         },
         // values
         resetOptions: {
