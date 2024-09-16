@@ -3,6 +3,7 @@
 import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, UseFormRegister, FieldErrors } from "react-hook-form";
+import React, { useState } from 'react';
 
 import type { ApplicationSchema } from "../apply/validation";
 import { applicationSchema } from "../apply/validation";
@@ -96,6 +97,69 @@ const FormSelect: React.FC<FormSelectProps> = ({ id, label, register, errors, na
     );
 };
 
+interface AutocompleteInputProps {
+    id: string;
+    label: string;
+    name: keyof ApplicationSchema;
+    register: UseFormRegister<ApplicationSchema>;
+    errors: FieldErrors;
+    options: { name: string }[];
+    placeholder?: string;
+}
+
+const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ id, label, name, register, errors, options, placeholder = 'Search...' }) => {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [showResults, setShowResults] = useState(false);
+    const [selectedValue, setSelectedValue] = useState('');
+
+    const visibleOptions = options.filter(option =>
+        option.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    return (
+        <div className='input-wrapper'>
+            <label htmlFor={id} className='requiredField'>{label}</label>
+            <div className='helperText'>Currently selected: {selectedValue}</div>
+            <input
+                type='text'
+                id={id}
+                value={searchQuery}
+                onFocus={() => setShowResults(true)}
+                placeholder={placeholder}
+                {...register(name, {
+                    onChange: event => {
+                        event.target.setAttribute('autocomplete', 'off');
+                        setSearchQuery(event.target.value);
+                        setShowResults(true);
+                    },
+                    onBlur: () => setShowResults(false),
+                })}
+            />
+            {showResults && (
+                <ul className="m-0 absolute bg-white w-60 overflow-y-auto max-h-40">
+                    {visibleOptions.map((option, index) => (
+                        <li
+                            key={index}
+                            onMouseDown={() => {
+                                setSelectedValue(option.name);
+                                setSearchQuery(option.name);
+                                setShowResults(false);
+                            }}
+                        >
+                            {option.name}
+                        </li>
+                    ))}
+                </ul>
+            )}
+            {errors[name]?.message && typeof errors[name].message === 'string' && (
+                <div>
+                    {errors[name].message}
+                </div>
+            )}
+        </div>
+    );
+};
+
 export function ApplicationForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<ApplicationSchema>({
         mode: "onSubmit",
@@ -139,16 +203,17 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="age"
-                options={age.options.map((ageOption) => ({ value: ageOption.value, label: ageOption.label }))}
+                options={age.options}
             />
 
-            <FormSelect
+            {/* Special select for country and school */}
+            <AutocompleteInput
                 id="country"
                 label="Country of Residence:"
                 register={register}
                 errors={errors}
                 name="country"
-                options={countries.map((country) => ({ value: country.name, label: country.name }))}
+                options={countries}
             />
 
             <FormInput
@@ -167,13 +232,13 @@ export function ApplicationForm() {
                 name="phoneNumber"
             />
 
-            <FormSelect
+            <AutocompleteInput
                 id="school"
                 label="What school do you go to?"
                 register={register}
                 errors={errors}
                 name="school"
-                options={schools.map((school) => ({ value: school.schoolName, label: school.schoolName }))}
+                options={schools}
             />
 
             <FormSelect
@@ -182,7 +247,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="major"
-                options={major.options.map((major) => ({ value: major.value, label: major.label }))}
+                options={major.options}
             />
 
             <FormSelect
@@ -191,7 +256,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="classification"
-                options={classification.options.map((classificationOption) => ({ value: classificationOption.value, label: classificationOption.label }))}
+                options={classification.options}
             />
 
             <FormSelect
@@ -200,7 +265,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="gradYear"
-                options={gradYear.options.map((gradYearOption) => ({ value: gradYearOption.value, label: gradYearOption.label }))}
+                options={gradYear.options}
             />
 
             <FormSelect
@@ -209,7 +274,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="gender"
-                options={gender.options.map((genderOption) => ({ value: genderOption.value, label: genderOption.label }))}
+                options={gender.options}
             />
 
             <FormSelect
@@ -218,7 +283,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="race"
-                options={race.options.map((raceOption) => ({ value: raceOption.value, label: raceOption.label }))}
+                options={race.options}
             />
 
             <FormSelect
@@ -227,7 +292,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="hackathonsAttended"
-                options={hackathonAttended.options.map((hackathonOption) => ({ value: hackathonOption.value, label: hackathonOption.label }))}
+                options={hackathonAttended.options}
             />
 
             <FormSelect
@@ -236,7 +301,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="experience"
-                options={experience.options.map((experienceOption) => ({ value: experienceOption.value, label: experienceOption.label }))}
+                options={experience.options}
             />
 
             <FormSelect
