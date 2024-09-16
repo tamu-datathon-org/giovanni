@@ -15,6 +15,20 @@
       "when": 1723432196310,
       "tag": "0001_dizzy_fixer",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1726453986211,
+      "tag": "0002_black_bromley",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1726454235671,
+      "tag": "0003_mature_lake",
+      "breakpoints": true
     }
   ]
 }

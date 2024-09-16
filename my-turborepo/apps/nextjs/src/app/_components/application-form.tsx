@@ -17,7 +17,6 @@ import hackathonAttended from "./application-data/hackathonAttended.json";
 import major from "./application-data/major.json";
 import race from "./application-data/race.json";
 import shirtSize from "./application-data/shirtSize.json";
-// import teamStatus from "./application-data/teamStatus.json";
 import eventSource from "./application-data/eventSource.json";
 import classification from "./application-data/classification.json";
 
@@ -357,6 +356,29 @@ export function ApplicationForm() {
             {/* Tell us your best programming joke. */}
             {/* What is the one thing you'd build if you had unlimited resources? */}
             {/* What drives your interest in being a part of TAMU Datathon?  */}
+            <FormInput
+                id="joke"
+                label="Tell us your best programming joke:"
+                register={register}
+                errors={errors}
+                name="interest_one"
+            />
+
+            <FormInput
+                id="unlimitedResources"
+                label="What is the one thing you'd build if you had unlimited resources?"
+                register={register}
+                errors={errors}
+                name="interest_two"
+            />
+
+            <FormInput
+                id="interest"
+                label="What drives your interest in being a part of TAMU Datathon?"
+                register={register}
+                errors={errors}
+                name="interest_three"
+            />
 
             <FormInput
                 id="dietaryRestriction"
