@@ -1,0 +1,25 @@
+{
+    "field": "shirtSize",
+    "options": [
+        {
+            "value": "S",
+            "label": "Unisex S"
+        },
+        {
+            "value": "M",
+            "label": "Unisex M"
+        },
+        {
+            "value": "L",
+            "label": "Unisex L"
+        },
+        {
+            "value": "XL",
+            "label": "Unisex XL"
+        },
+        {
+            "value": "XXL",
+            "label": "Unisex XXL"
+        }
+    ]
+}

@@ -1,0 +1,77 @@
+{
+    "field": "race",
+    "options": [
+        {
+            "value": "Asian Indian",
+            "label": "Asian Indian"
+        },
+        {
+            "value": "Black or African",
+            "label": "Black or African"
+        },
+        {
+            "value": "Chinese",
+            "label": "Chinese"
+        },
+        {
+            "value": "Filipino",
+            "label": "Filipino"
+        },
+        {
+            "value": "Guamanian or Chamorro",
+            "label": "Guamanian or Chamorro"
+        },
+        {
+            "value": "Hispanic / Latino / Spanish Origin",
+            "label": "Hispanic / Latino / Spanish Origin"
+        },
+        {
+            "value": "Japanese",
+            "label": "Japanese"
+        },
+        {
+            "value": "Korean",
+            "label": "Korean"
+        },
+        {
+            "value": "Middle Eastern",
+            "label": "Middle Eastern"
+        },
+        {
+            "value": "Native American or Alaskan Native",
+            "label": "Native American or Alaskan Native"
+        },
+        {
+            "value": "Native Hawaiian",
+            "label": "Native Hawaiian"
+        },
+        {
+            "value": "Samoan",
+            "label": "Samoan"
+        },
+        {
+            "value": "Vietnamese",
+            "label": "Vietnamese"
+        },
+        {
+            "value": "White",
+            "label": "White"
+        },
+        {
+            "value": "Other Asian (Thai, Cambodian, etc)",
+            "label": "Other Asian (Thai, Cambodian, etc)"
+        },
+        {
+            "value": "Other Pacific Islander",
+            "label": "Other Pacific Islander"
+        },
+        {
+            "value": "Other (Please Specify)",
+            "label": "Other (Please Specify)"
+        },
+        {
+            "value": "Prefer Not to Answer",
+            "label": "Prefer Not to Answer"
+        }
+    ]
+}

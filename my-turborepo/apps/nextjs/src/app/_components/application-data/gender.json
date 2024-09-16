@@ -1,0 +1,25 @@
+{
+    "field": "gender",
+    "options": [
+        {
+            "value": "NA",
+            "label": "Prefer not to answer"
+        },
+        {
+            "value": "M",
+            "label": "Male"
+        },
+        {
+            "value": "F",
+            "label": "Female"
+        },
+        {
+            "value": "NB",
+            "label": "Non-binary"
+        },
+        {
+            "value": "X",
+            "label": "Prefer to self-describe"
+        }
+    ]
+}
