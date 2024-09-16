@@ -4,6 +4,8 @@ import { AiOutlineClose } from "react-icons/ai";
 import { signIn } from "@vanni/auth";
 import { Button } from "@vanni/ui/button";
 
+import DraggableComponent from '../_components/DraggableComponent';
+
 import "../_components/customCss.scss";
 
 export const runtime = "edge";
@@ -36,6 +38,7 @@ function LoginButton({
 export default function LoginPage() {
   return (
     <main className="font-XPfont bg-large-device flex h-screen w-screen items-center justify-center bg-cover bg-center bg-no-repeat">
+        <DraggableComponent />
       <div className="xpBorder flex w-2/5 flex-col items-center justify-center p-2">
         <div className="flex w-full flex-row items-center justify-center">
           <div className="invisible w-full pr-2 lg:visible">
