@@ -19,7 +19,6 @@ interface Event {
 // Also change the timer from pre event to the end of the event
 // Also add pictures to the pres showing
 
-// also the events seem to go below the page rather than stay in the window and become scrollable so fix that
 const events: Event[] = [
   { 
     id: 1, 
@@ -41,7 +40,7 @@ const events: Event[] = [
   },
   { 
     id: 4, 
-    name: 'Lunch, Student Org Fair', 
+    name: 'Lunch and Student Org Fair', 
     date: new Date('2024-11-09T13:30:00'),
     description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
   },
@@ -65,26 +64,44 @@ const events: Event[] = [
   },
   { 
     id: 8, 
-    name: 'Closing Ceremony', 
-    date: new Date('2024-11-09T17:00:00'),
+    name: 'Breakfast', 
+    date: new Date('2024-11-10T08:00:00'),
     description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
   },
   { 
-    id: 5, 
-    name: 'Closing Ceremony', 
-    date: new Date('2024-11-09T17:00:00'),
+    id: 9, 
+    name: 'Workshop 3', 
+    date: new Date('2024-11-10T09:00:00'),
     description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
   },
   { 
-    id: 5, 
-    name: 'Closing Ceremony', 
-    date: new Date('2024-11-09T17:00:00'),
+    id: 10, 
+    name: 'Hacking Ends', 
+    date: new Date('2024-11-10T11:30:00'),
     description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
   },
   { 
-    id: 5, 
+    id: 11, 
+    name: 'Judging', 
+    date: new Date('2024-11-10T12:00:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
+  { 
+    id: 12, 
+    name: 'Lunch', 
+    date: new Date('2024-11-10T12:30:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
+  { 
+    id: 13, 
     name: 'Closing Ceremony', 
-    date: new Date('2024-11-09T17:00:00'),
+    date: new Date('2024-11-10T15:00:00'),
+    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+  },
+  { 
+    id: 14, 
+    name: 'Event Ends', 
+    date: new Date('2024-11-10T16:00:00'),
     description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
   },
 ];
@@ -117,6 +134,12 @@ const useCountdown = (targetDate: any) => {
   }, [targetDate]);
 
   return timeLeft;
+};
+
+const getEventsByDay = (events: Event[], day: string) => {
+  return events.filter(event => {
+    return event.date.toLocaleDateString('en-US', { weekday: 'long' }) === day;
+  });
 };
 
 interface EventPopupProps {
@@ -231,6 +254,9 @@ const SchedulePage: React.FC = () => {
   const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
   const [showEventPopup, setShowEventPopup] = useState<boolean>(false);
 
+  const saturdayEvents = getEventsByDay(events, 'Saturday');
+  const sundayEvents = getEventsByDay(events, 'Sunday');
+
 
   useEffect(() => {
     const checkForUpcomingEvents = () => {
@@ -275,31 +301,36 @@ const SchedulePage: React.FC = () => {
   };
 
   
+
+   {/* We can add a picture to the left of each event just like the previous schedules 
+              Also need to add the button to the top right so it dont look that scrunched
+              Also the cursor pointer can be changed but we almost there
+          */}
   return (
     <div style={{
       backgroundImage: 'url(/images/Wallpaper_Blur.png)',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      fontFamily:'windows95Font',
-      minHeight:'100vh'
+      fontFamily: 'windows95Font',
+      minHeight: '100vh'
     }}>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-5xl font-bold mb-8 text-center">Datathon Schedule</h1>
         
         <div className="mb-8 flex justify-center">
           <div style={{
-            width: `725px`,
-            height: `428px`,
+            width: `758px`,
+            height: `448px`,
             backgroundImage: 'url(/images/bear_with_blank_background.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             display: 'flex',
-            position:'absolute',
+            position: 'absolute',
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'center',
-            top:'120px',
-            left:'80px',
+            top: '120px',
+            left: '40px',
             padding: '80px',
           }} className='shadow-lg'>
             <h2 className="text-5xl font-bold text-black text-center mb-8">Countdown to Datathon!</h2>
@@ -315,60 +346,79 @@ const SchedulePage: React.FC = () => {
           </div>
         </div>
 
-
-        <div className="space-y-4">
         <div className="mb-8 flex justify-center">
           <div style={{
-        width: `605px`,
-        height: `550px`, 
-        backgroundImage: 'url(/images/blank_Back.png)',
-        backgroundSize: '100% 100%', 
-        display: 'flex',
-        position: 'absolute',
-        flexDirection: 'column',
-        alignItems: 'center',
-        top: '180px',
-        right: '60px',
-        padding: '80px',
-      }} 
-      className='shadow-lg'>
-          <h2 className="text-5xl font-semibold mb-4">Events Schedule</h2>
-          
-          {/* We can add a picture to the left of each event just like the previous schedules 
-              Also need to add the button to the top right so it dont look that scrunched
-              Also the cursor pointer can be changed but we almost there
-          */}
+            width: `625px`,
+            height: `570px`, 
+            backgroundImage: 'url(/images/blank_Back.png)',
+            backgroundSize: '100% 100%', 
+            display: 'flex',
+            position: 'absolute',
+            flexDirection: 'column',
+            alignItems: 'center',
+            top: '180px',
+            right: '40px',
+            padding: '80px',
+          }} 
+          className='shadow-lg'>
 
-          <div style={{ alignItems: 'flex-start', width: '100%'}}
-               className='space-y-4'
-          >
-          {events.map((event) => {
-            const isPast = new Date() > event.date;
-            return (
-              <div
-                key={event.id}
-                className={`p-4 rounded-lg compStyling w-full border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] ${
-                  isPast ? 'bg-gray-200 text-gray-500' : 'bg-stone-700/10'
-                } cursor-pointer hover:bg-gray-200`}
-                onClick={() => setSelectedEvent(event)}
-              >
-                <h3 className="text-lg font-semibold">{event.name}</h3>
-                <p className="text-sm">
-                  {event.date.toLocaleString('en-US', {
-                    dateStyle: 'medium',
-                    timeStyle: 'short',
-                  })}
-                </p>
-              </div>
-            );
-          })}
+            <h2 className="text-5xl font-semibold mb-4">Events!!!</h2>
+            <div style={{
+              alignItems: 'flex-start',
+              width: '120%',
+              maxHeight: '1680px',
+              overflowY: 'auto',
+              scrollbarWidth: 'none'
+            }}
+            className='space-y-4'
+            >
+              <h2 className="text-4xl font-bold mb-5 text-center">Saturday</h2>
+              {saturdayEvents.map((event) => {
+                const isPast = new Date() > event.date;
+                return (
+                  <div
+                    key={event.id}
+                    className={`p-4 rounded-lg compStyling w-full border border-black ${
+                      isPast ? 'bg-gray-400 text-white' : 'bg-[#f5f5f5] text-black'
+                    } hover:bg-[#e4e3e4] cursor-pointer`}
+                    onClick={() => setSelectedEvent(event)}
+                  >
+                    <h3 className="text-lg font-semibold">{event.name}</h3>
+                    <p className="text-sm">
+                      {event.date.toLocaleString('en-US', {
+                        dateStyle: 'medium',
+                        timeStyle: 'short',
+                      })}
+                    </p>
+                  </div>
+                );
+              })}
+              <h2 className="text-4xl font-bold mb-5 text-center">Sunday</h2>
+              {sundayEvents.map((event) => {
+                const isPast = new Date() > event.date;
+                return (
+                  <div
+                    key={event.id}
+                    className={`p-4 rounded-lg compStyling w-full border border-black ${
+                      isPast ? 'bg-gray-400 text-white' : 'bg-[#f5f5f5] text-black'
+                    } hover:bg-[#e4e3e4] cursor-pointer`}
+                    onClick={() => setSelectedEvent(event)}
+                  >
+                    <h3 className="text-lg font-semibold">{event.name}</h3>
+                    <p className="text-sm">
+                      {event.date.toLocaleString('en-US', {
+                        dateStyle: 'medium',
+                        timeStyle: 'short',
+                      })}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
-        </div>
-        </div>
-        </div>
-
-        
       </div>
+
       {selectedEvent && (
         <EventPopup event={selectedEvent} onClose={() => setSelectedEvent(null)} />
       )}
