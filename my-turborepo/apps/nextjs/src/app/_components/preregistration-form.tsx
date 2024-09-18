@@ -1,80 +1,20 @@
 "use client";
 
-import React, { useRef, useEffect, useCallback } from "react";
-import { useForm, UseFormRegister, FieldErrors } from "react-hook-form";
+import React, { useRef, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { TRPCClientError } from "@trpc/client";
-import Image from "next/image";
 import { Button } from "node_modules/@vanni/ui/src/button";
 import { AiOutlineClose } from "react-icons/ai";
 import { useToast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
-import { preregistrationSchema, PreregistrationData } from "../preregistration/validation";
+import type { PreregistrationData } from "../preregistration/validation";
+import { preregistrationSchema } from "../preregistration/validation";
 
 import "./customCss.scss";
 
-// NativeEmailInput Component
-interface NativeEmailInputProps {
-  register: UseFormRegister<PreregistrationData>;
-  errors: FieldErrors<PreregistrationData>;
-  onChange: (value: string) => void;
-}
-
-const NativeEmailInput: React.FC<NativeEmailInputProps> = ({ register, errors, onChange }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const input = document.createElement('input');
-    input.type = 'email';
-    input.className = 'border-cyan-600 pl-1';
-    
-    const handleInput = (e: Event) => {
-      const target = e.target as HTMLInputElement;
-      if (onChange) {
-        onChange(target.value);
-      }
-    };
-
-    input.addEventListener('input', handleInput);
-    containerRef.current.appendChild(input);
-    inputRef.current = input;
-
-    return () => {
-      input.removeEventListener('input', handleInput);
-      if (containerRef.current && inputRef.current) {
-        containerRef.current.removeChild(inputRef.current);
-      }
-    };
-  }, [onChange]);
-
-  useEffect(() => {
-    if (inputRef.current) {
-      const { ref, ...rest } = register("email", { required: true, maxLength: 256 });
-      Object.assign(inputRef.current, rest);
-      ref(inputRef.current);
-    }
-  }, [register]);
-
-  return (
-    <>
-      <label className="flex flex-row justify-center ">
-        <h1 className="pr-4">Enter Email: </h1>
-        <div className="flex rounded-sm bg-black p-0.5" ref={containerRef}>
-          {/* The native input will be inserted here */}
-        </div>
-      </label>
-      {errors.email?.message && (
-        <div className="pt-2 text-sm text-red-600">{errors.email.message}</div>
-      )}
-    </>
-  );
-};
-
-// Other Components
 function Lines() {
   return (
     <div className="w-full pr-3">
@@ -87,7 +27,6 @@ function Lines() {
 
 function ExitButton() {
   const { toast } = useToast();
-
   const handleClick = () => {
     toast({
       variant: "success",
@@ -95,7 +34,6 @@ function ExitButton() {
       description: "Thanks for showing interest in the Fall 2024 Datathon.",
     });
   };
-
   return (
     <Button className="compStyling" onClick={handleClick}>
       <AiOutlineClose className="close" />
@@ -114,7 +52,33 @@ function TitleText() {
   );
 }
 
-function TermsAndConditions({ register, errors }: { register: UseFormRegister<PreregistrationData>; errors: FieldErrors<PreregistrationData> }) {
+function NativeEmailBox({ register, errors }) {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      const { ref, ...rest } = register("email", { required: true, maxLength: 256 });
+      Object.assign(inputRef.current, rest);
+      ref(inputRef.current);
+    }
+  }, [register]);
+
+  return (
+    <>
+      <label className="flex flex-row justify-center ">
+        <h1 className="pr-4">Enter Email: </h1>
+        <div className="flex rounded-sm bg-black p-0.5">
+          <input ref={inputRef} className="border-cyan-600 pl-1" />
+        </div>
+      </label>
+      {errors.email?.message && (
+        <div className="pt-2 text-sm text-red-600">Invalid Email</div>
+      )}
+    </>
+  );
+}
+
+function TermsAndConditions({ register, errors }) {
   return (
     <>
       <label className="text-black">
@@ -132,25 +96,19 @@ function TermsAndConditions({ register, errors }: { register: UseFormRegister<Pr
   );
 }
 
-// Main CreatePreregistrationForm Component
-export const CreatePreregistrationForm: React.FC = () => {
+export const CreatePreregistrationForm = () => {
   const { toast } = useToast();
   const routes = useRouter();
 
   const {
     handleSubmit,
     register,
-    setValue,
     formState: { errors, isSubmitting, isDirty },
   } = useForm<PreregistrationData>({
     resolver: zodResolver(preregistrationSchema),
   });
 
   const createPreregistration = api.preregistration.create.useMutation();
-
-  const handleEmailChange = useCallback((value: string) => {
-    setValue('email', value, { shouldValidate: true, shouldDirty: true });
-  }, [setValue]);
 
   const onSubmit = async (data: PreregistrationData) => {
     try {
@@ -187,15 +145,8 @@ export const CreatePreregistrationForm: React.FC = () => {
           </div>
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
             <TitleText />
-            <NativeEmailInput
-              register={register}
-              errors={errors}
-              onChange={handleEmailChange}
-            />
-            <TermsAndConditions
-              register={register}
-              errors={errors}
-            />
+            <NativeEmailBox register={register} errors={errors} />
+            <TermsAndConditions register={register} errors={errors} />
             <Button
               className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
               type="submit"
