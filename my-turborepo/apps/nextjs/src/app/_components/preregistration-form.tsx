@@ -2,7 +2,7 @@
 
 import type { MouseEventHandler } from "react";
 import type { SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -21,6 +21,8 @@ import { Button } from "node_modules/@vanni/ui/src/button";
 import { AiOutlineClose } from "react-icons/ai";
 
 import { useToast } from "~/hooks/use-toast";
+import React from "react";
+import { register } from "module";
 
 // import IconList from "./IconList";
 
@@ -71,91 +73,109 @@ function TitleText() {
   );
 }
 
-function EmailBox(props: { register: any; errors: any }) {
+const EmailBox = React.memo(({ value, onChange, error }: { value: string; onChange: (value: string) => void; error?: string }) => {
+  const [localValue, setLocalValue] = useState(value);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      onChange(localValue);
+    }, 10); // Small delay to batch updates
+    return () => clearTimeout(timeoutId);
+  }, [localValue, onChange]);
+
   return (
     <>
-      <label className="flex flex-row justify-center ">
+      <label className="flex flex-row justify-center">
         <h1 className="pr-4">Enter Email: </h1>
         <div className="flex rounded-sm bg-black p-0.5">
-          <input {...props.register} className=" border-cyan-600 pl-1" />
+          <input
+            type="email"
+            value={localValue}
+            onChange={(e) => setLocalValue(e.target.value)}
+            className="border-cyan-600 pl-1"
+            inputMode="email"
+          />
         </div>
       </label>
-      {props.errors.email?.message != undefined && (
-        <div className="pt-2 text-sm text-red-600">Invalid Email</div>
-      )}
+      {error && <div className="pt-2 text-sm text-red-600">{error}</div>}
     </>
   );
-}
+});
 
-function TermsAndConditions(props: { register: any; errors: any }) {
+const TermsAndConditions = React.memo(({ value, onChange, error }: { value: boolean; onChange: (value: boolean) => void; error?: string }) => {
   return (
     <>
-      <label className="text-blac">
+      <label className="text-black">
         <input
-          className="m-1"
           type="checkbox"
-          value={"on"}
-          {...props.register}
+          checked={value}
+          onChange={(e) => onChange(e.target.checked)}
+          className="m-1"
         />
         <span>I agree to the terms and conditions.</span>
       </label>
-      {props.errors.confirmation?.message != undefined && (
-        <div className="text-sm text-red-600">Missing Field</div>
-      )}
+      {error && <div className="text-sm text-red-600">{error}</div>}
     </>
   );
-}
+});
 
 export const CreatePreregistrationForm = () => {
   const { toast } = useToast();
   const routes = useRouter();
+  const [email, setEmail] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const {
     handleSubmit,
-    register,
     formState: { errors, isSubmitting, isDirty },
+    trigger,
+    setError,
+    clearErrors,
   } = useForm<PreregistrationData>({
     resolver: zodResolver(preregistrationSchema),
+    mode: "onChange",
   });
 
   const createPreregistration = api.preregistration.create.useMutation();
 
-  const onSubmit: SubmitHandler<PreregistrationData> = async (data) => {
+  const validateEmail = useCallback(async (email: string) => {
+    const result = await trigger("email");
+    if (!result) {
+      setError("email", { type: "manual", message: "Invalid email" });
+    } else {
+      clearErrors("email");
+    }
+  }, [trigger, setError, clearErrors]);
+
+  useEffect(() => {
+    validateEmail(email);
+  }, [email, validateEmail]);
+
+
+  const onSubmit = useCallback(async (data: PreregistrationData) => {
     try {
-      const resp = await createPreregistration.mutateAsync({
-        email: data.email,
-      });
+      await createPreregistration.mutateAsync({ email: data.email });
       toast({
         variant: "success",
         title: "You're on the list!",
         description: "Thanks for showing interest in the Fall 2024 Datathon.",
       });
-
-      setTimeout(() => {
-        routes.push("/countdown");
-      }, 500);
+      setTimeout(() => routes.push("/countdown"), 500);
     } catch (error) {
       if (error instanceof TRPCClientError) {
-        if (error.data.code === "INTERNAL_SERVER_ERROR") {
-          toast({
-            variant: "destructive",
-            title: "Submission Error",
-            description: "Email already exists",
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            title: error.data.code,
-            description: error.message,
-          });
-        }
+        toast({
+          variant: "destructive",
+          title: error.data.code === "INTERNAL_SERVER_ERROR" ? "Submission Error" : error.data.code,
+          description: error.data.code === "INTERNAL_SERVER_ERROR" ? "Email already exists" : error.message,
+        });
       }
     }
-  };
+  }, [createPreregistration, toast, routes]);
+
 
   return (
     <div className="font-XPfont font-bold">
-      <div className="flex h-screen flex-col items-center justify-center ">
+      <div className="flex h-screen flex-col items-center justify-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="xpBorder m-5 flex w-11/12 flex-col items-center text-center text-lg lg:w-2/5"
@@ -167,17 +187,19 @@ export const CreatePreregistrationForm = () => {
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
             <TitleText />
             <EmailBox
-              register={register("email", { required: true, maxLength: 256 })}
-              errors={errors}
+              value={email}
+              onChange={setEmail}
+              error={errors.email?.message}
             />
             <TermsAndConditions
-              register={register("confirmation", { required: true })}
-              errors={errors}
+              value={termsAccepted}
+              onChange={setTermsAccepted}
+              error={errors.confirmation?.message}
             />
             <Button
               className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
               type="submit"
-              disabled={!isDirty || isSubmitting}
+              disabled={!isDirty || isSubmitting || !email || !termsAccepted}
             >
               {isSubmitting ? (
                 <Image
@@ -201,7 +223,6 @@ export const CreatePreregistrationForm = () => {
             />
           </div>
         </form>
-        {/* <IconList /> */}
       </div>
     </div>
   );
