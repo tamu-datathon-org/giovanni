@@ -2,13 +2,15 @@
 
 import type { MouseEventHandler } from "react";
 import type { SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import type { PreregistrationData } from "../preregistration/validation";
 import { api } from "~/trpc/react";
 import { preregistrationSchema } from "../preregistration/validation";
+import debounce from 'lodash/debounce';
+
 
 import "./customCss.scss";
 
@@ -71,16 +73,20 @@ function TitleText() {
   );
 }
 
-function EmailBox(props: { register: any; errors: any }) {
+function EmailBox({ value, onChange, errors }: { value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; errors: any }) {
   return (
     <>
       <label className="flex flex-row justify-center ">
         <h1 className="pr-4">Enter Email: </h1>
         <div className="flex rounded-sm bg-black p-0.5">
-          <input {...props.register} className=" border-cyan-600 pl-1" />
+          <input 
+            value={value}
+            onChange={onChange}
+            className="border-cyan-600 pl-1" 
+          />
         </div>
       </label>
-      {props.errors.email?.message != undefined && (
+      {errors.email?.message != undefined && (
         <div className="pt-2 text-sm text-red-600">Invalid Email</div>
       )}
     </>
@@ -109,6 +115,8 @@ function TermsAndConditions(props: { register: any; errors: any }) {
 export const CreatePreregistrationForm = () => {
   const { toast } = useToast();
   const routes = useRouter();
+  const [email, setEmail] = useState("");
+
 
   const {
     handleSubmit,
@@ -153,6 +161,20 @@ export const CreatePreregistrationForm = () => {
     }
   };
 
+  const debouncedSetEmail = useCallback(
+    debounce((value: string) => {
+      setEmail(value);
+    }, 300),
+    []
+  );
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    e.persist();
+    debouncedSetEmail(value);
+  };
+
+
   return (
     <div className="font-XPfont font-bold">
       <div className="flex h-screen flex-col items-center justify-center ">
@@ -167,7 +189,8 @@ export const CreatePreregistrationForm = () => {
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
             <TitleText />
             <EmailBox
-              register={register("email", { required: true, maxLength: 256 })}
+              value={email}
+              onChange={handleInputChange}
               errors={errors}
             />
             <TermsAndConditions
