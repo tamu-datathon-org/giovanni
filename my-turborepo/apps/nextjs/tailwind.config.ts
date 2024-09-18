@@ -12,6 +12,10 @@ export default {
 	// important: true, // This will add !important to all Tailwind utilities
 	theme: {
 		extend: {
+            backgroundImage: {
+				'large-device': "url('./assets/wallpaper.jpg')",
+				'mobile-device' : "url('./assets/mobile_wallpaper.jpg')"
+			},
 			fontFamily: {
 				sans: ["var(--font-geist-sans)", ...fontFamily.sans],
 				mono: ["var(--font-geist-mono)", ...fontFamily.mono],
