@@ -1,32 +1,50 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import type { MouseEventHandler } from "react";
+import type { SubmitHandler } from "react-hook-form";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import type { PreregistrationData } from "../preregistration/validation";
+import { api } from "~/trpc/react";
+import { preregistrationSchema } from "../preregistration/validation";
+
+import "./customCss.scss";
+
+import { setTimeout } from "timers";
+import { routeModule } from "next/dist/build/templates/app-page";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { TRPCClientError } from "@trpc/client";
 import { Button } from "node_modules/@vanni/ui/src/button";
 import { AiOutlineClose } from "react-icons/ai";
-import { useToast } from "~/hooks/use-toast";
-import { api } from "~/trpc/react";
-import type { PreregistrationData } from "../preregistration/validation";
-import { preregistrationSchema } from "../preregistration/validation";
 
-import "./customCss.scss";
+import { useToast } from "~/hooks/use-toast";
+
+// import IconList from "./IconList";
 
 function Lines() {
   return (
     <div className="w-full pr-3">
-      {[...Array(8)].map((_, i) => (
-        <div key={i} className="horizontal-line"></div>
-      ))}
+      {" "}
+      {/**Random Lines */}
+      <div className="horizontal-line"></div>
+      <div className="horizontal-line"></div>
+      <div className="horizontal-line"></div>
+      <div className="horizontal-line"></div>
+      <div className="horizontal-line"></div>
+      <div className="horizontal-line"></div>
+      <div className="horizontal-line"></div>
+      <div className="horizontal-line"></div>
     </div>
   );
 }
 
 function ExitButton() {
+  // Toast to say the site is under construction
   const { toast } = useToast();
+
   const handleClick = () => {
     toast({
       variant: "success",
@@ -34,6 +52,7 @@ function ExitButton() {
       description: "Thanks for showing interest in the Fall 2024 Datathon.",
     });
   };
+
   return (
     <Button className="compStyling" onClick={handleClick}>
       <AiOutlineClose className="close" />
@@ -52,44 +71,35 @@ function TitleText() {
   );
 }
 
-function NativeEmailBox({ register, errors }) {
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    if (inputRef.current) {
-      const { ref, ...rest } = register("email", { required: true, maxLength: 256 });
-      Object.assign(inputRef.current, rest);
-      ref(inputRef.current);
-    }
-  }, [register]);
-
+function EmailBox(props: { register: any; errors: any }) {
   return (
     <>
       <label className="flex flex-row justify-center ">
         <h1 className="pr-4">Enter Email: </h1>
         <div className="flex rounded-sm bg-black p-0.5">
-          <input ref={inputRef} className="border-cyan-600 pl-1" />
+          <input {...props.register} className=" border-cyan-600 pl-1" />
         </div>
       </label>
-      {errors.email?.message && (
+      {props.errors.email?.message != undefined && (
         <div className="pt-2 text-sm text-red-600">Invalid Email</div>
       )}
     </>
   );
 }
 
-function TermsAndConditions({ register, errors }) {
+function TermsAndConditions(props: { register: any; errors: any }) {
   return (
     <>
-      <label className="text-black">
+      <label className="text-blac">
         <input
           className="m-1"
           type="checkbox"
-          {...register("confirmation", { required: true })}
+          value={"on"}
+          {...props.register}
         />
         <span>I agree to the terms and conditions.</span>
       </label>
-      {errors.confirmation?.message && (
+      {props.errors.confirmation?.message != undefined && (
         <div className="text-sm text-red-600">Missing Field</div>
       )}
     </>
@@ -110,9 +120,9 @@ export const CreatePreregistrationForm = () => {
 
   const createPreregistration = api.preregistration.create.useMutation();
 
-  const onSubmit = async (data: PreregistrationData) => {
+  const onSubmit: SubmitHandler<PreregistrationData> = async (data) => {
     try {
-      await createPreregistration.mutateAsync({
+      const resp = await createPreregistration.mutateAsync({
         email: data.email,
       });
       toast({
@@ -120,14 +130,25 @@ export const CreatePreregistrationForm = () => {
         title: "You're on the list!",
         description: "Thanks for showing interest in the Fall 2024 Datathon.",
       });
-      setTimeout(() => routes.push("/countdown"), 500);
+
+      setTimeout(() => {
+        routes.push("/countdown");
+      }, 500);
     } catch (error) {
       if (error instanceof TRPCClientError) {
-        toast({
-          variant: "destructive",
-          title: error.data.code === "INTERNAL_SERVER_ERROR" ? "Submission Error" : error.data.code,
-          description: error.data.code === "INTERNAL_SERVER_ERROR" ? "Email already exists" : error.message,
-        });
+        if (error.data.code === "INTERNAL_SERVER_ERROR") {
+          toast({
+            variant: "destructive",
+            title: "Submission Error",
+            description: "Email already exists",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: error.data.code,
+            description: error.message,
+          });
+        }
       }
     }
   };
@@ -145,8 +166,14 @@ export const CreatePreregistrationForm = () => {
           </div>
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
             <TitleText />
-            <NativeEmailBox register={register} errors={errors} />
-            <TermsAndConditions register={register} errors={errors} />
+            <EmailBox
+              register={register("email", { required: true, maxLength: 256 })}
+              errors={errors}
+            />
+            <TermsAndConditions
+              register={register("confirmation", { required: true })}
+              errors={errors}
+            />
             <Button
               className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
               type="submit"
@@ -174,9 +201,51 @@ export const CreatePreregistrationForm = () => {
             />
           </div>
         </form>
+        {/* <IconList /> */}
       </div>
     </div>
   );
 };
 
-export default CreatePreregistrationForm;
+export const DeletePreregistrationForm = () => {
+  interface FormData {
+    email: string;
+  }
+
+  const [formData, setFormData] = useState<FormData>({
+    email: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const deletePreregistration = api.preregistration.delete.useMutation();
+  const handleDelete: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    deletePreregistration.mutate(formData.email);
+  };
+
+  const cancelPreregistration = api.preregistration.cancel.useMutation();
+  const handleCancel: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    cancelPreregistration.mutate(formData);
+  };
+
+  return (
+    <>
+      <form className="bg-grey-700 flex w-1/2 flex-col items-center justify-center rounded text-center text-lg">
+        <label>
+          <span>Enter Email:</span>
+          <input type="text" name="email" onChange={handleChange} />
+        </label>
+        <button onClick={handleDelete}>Delete User</button>
+        <button onClick={handleCancel}>Cancel User</button>
+      </form>
+    </>
+  );
+};
