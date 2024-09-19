@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
 
 import { cn } from "@vanni/ui";
 
+import { w95fa } from "~/app/_components/fonts/fonts";
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
@@ -39,18 +39,13 @@ export const viewport: Viewport = {
   ],
 };
 
-const font = localFont({
-  src: "../../assets/w95fa.woff2",
-  display: "swap",
-});
-
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           "min-h-screen bg-background font-sans text-foreground antialiased",
-          font.className,
+          w95fa.className,
         )}
       >
         <TRPCReactProvider>{props.children}</TRPCReactProvider>
