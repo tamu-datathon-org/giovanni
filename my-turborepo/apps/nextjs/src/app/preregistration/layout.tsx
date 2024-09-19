@@ -8,7 +8,7 @@ export default function PreregistrationLayout({
   return (
     <>
       <Image
-        src="/wallpaper.webp"
+        src="/public/wallpaper.webp"
         alt="Preregistration background"
         fill={true}
         objectFit="cover"
