@@ -40,7 +40,7 @@ export const viewport: Viewport = {
 };
 
 const font = localFont({
-  src: "/assets/w95fa.woff2",
+  src: "../../assets/w95fa.woff2",
   display: "swap",
 });
 
