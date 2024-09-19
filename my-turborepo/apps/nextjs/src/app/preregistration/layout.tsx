@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function PreregistrationLayout({
   children, // will be a page or nested layout
 }: {
@@ -5,6 +7,13 @@ export default function PreregistrationLayout({
 }) {
   return (
     <>
+      <Image
+        src="/wallpaper.webp"
+        alt="Preregistration background"
+        fill={true}
+        objectFit="cover"
+        layout="fill"
+      />
       <div className="max-h-screen-sm overflow-hidden">{children}</div>
     </>
   );
