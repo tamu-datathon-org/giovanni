@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 
 import { cn } from "@vanni/ui";
 
-import { w95fa } from "~/app/_components/fonts/fonts";
+import { w95fa } from "~/app/_components/fonts";
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
