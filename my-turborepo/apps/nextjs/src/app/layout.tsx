@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
+import localFont from "next/font/local";
 
 import { cn } from "@vanni/ui";
 
@@ -40,14 +39,18 @@ export const viewport: Viewport = {
   ],
 };
 
+const font = localFont({
+  src: "/assets/w95fa.woff2",
+  display: "swap",
+});
+
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           "min-h-screen bg-background font-sans text-foreground antialiased",
-          GeistSans.variable,
-          GeistMono.variable,
+          font.className,
         )}
       >
         <TRPCReactProvider>{props.children}</TRPCReactProvider>
