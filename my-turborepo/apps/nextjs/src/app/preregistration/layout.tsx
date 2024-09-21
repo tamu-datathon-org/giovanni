@@ -7,6 +7,7 @@ function BackgroundImage() {
   const common_attributes = {
     alt: "Preregistration background",
     fill: true,
+    sizes: "100vw",
   };
 
   const {
@@ -26,7 +27,7 @@ function BackgroundImage() {
     <picture>
       <source media="(min-width: 1000px)" srcSet={desktop} />
       <source media="(min-width: 500px)" srcSet={mobile} />
-      <img {...rest} style={{ width: "100%", height: "auto" }} />
+      <img {...rest} />
     </picture>
   );
 }
