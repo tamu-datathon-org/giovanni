@@ -19,7 +19,7 @@
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tailwind-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "eslint": "^9.2.0",
+    "eslint": "^9.11.0",
     "h3": "^1.11.1",
     "nitropack": "^2.9.6",
     "prettier": "^3.2.5",

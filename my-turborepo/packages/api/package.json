@@ -2,6 +2,7 @@
   "name": "@vanni/api",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "exports": {
     ".": {
@@ -9,15 +10,15 @@
       "default": "./src/index.ts"
     }
   },
-  "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch",
     "clean": "rm -rf .turbo node_modules",
+    "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
+  "prettier": "@vanni/prettier-config",
   "dependencies": {
     "@trpc/server": "11.0.0-rc.364",
     "@vanni/auth": "workspace:*",
@@ -30,9 +31,11 @@
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "eslint": "^9.2.0",
+    "eslint": "^9.11.0",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-jsx-a11y": "^6.10.0",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.5"
-  },
-  "prettier": "@vanni/prettier-config"
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^8.6.0"
+  }
 }
