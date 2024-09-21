@@ -5,6 +5,7 @@ import {
   PostCardSkeleton,
   PostList,
 } from "./_components/posts";
+import { AuthShowcase } from "./_components/auth-showcase";
 
 export const runtime = "edge";
 

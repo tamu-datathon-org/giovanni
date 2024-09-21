@@ -10,7 +10,6 @@
     src: url('./assets/w95fa.woff2') format('woff2');
   }
   body{
-    background-image: url(./assets/wallpaper.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;

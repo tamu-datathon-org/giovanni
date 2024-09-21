@@ -8,7 +8,14 @@ import type { ApplicationSchema } from "../apply/validation";
 import { applicationSchema } from "../apply/validation";
 import countries from "./application-data/countries.json";
 import schools from "./application-data/schools.json";
-
+import './customCss.scss';
+import { AiOutlineClose } from "react-icons/ai";
+import { Button } from "node_modules/@vanni/ui/src/button";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import GenericDropdown from "./genericDropdown";
+import { AGE, COUNTRIES, EDUCATION_LEVELS, GENDER_OPTIONS, GRADUATION_YEARS, HACKATHON_EXPERIENCE, HEARD_ABOUT_OPTIONS, MAJOR, PROGRAMMING_SKILL_LEVELS, RACE_OPTIONS, SHIRT_SIZES } from "~/lib/dropdownOptions";
+import { Agent } from "https";
 /*
     First Name
     Last Name
@@ -52,282 +59,146 @@ export function ApplicationForm() {
     console.log(data);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="firstName">First Name:</label>
-        <input id="firstName" type="text" {...register("firstName")} />
-        {errors.firstName?.message &&
-          (<div>
-            AJHBDA
-          </div>)
-        }
-      </div>
+    <div className="flex justify-center w-3/5">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg p-5 px-16">
+        <h1 className="text-6xl p-10 pb-3 font-bold text-center">
+          <span className="odd:text-teal-400">H</span>
+          <span className="even:text-cyan-700">A</span>
+          <span className="odd:text-teal-400 ">C</span>
+          <span className="even:text-cyan-700">K</span>
+          <span className="odd:text-teal-400 ">E</span>
+          <span className="even:text-cyan-700">R</span> APPLICATION</h1>
+        <div className="text-gray-500 text-xl pb-4 text-center">Please complete the following sections. Filling out this form should take about 10-15 minutes.</div>
 
-      <div>
-        <label htmlFor="lastName">Last Name:</label>
-        <input id="lastName" type="text" {...register("lastName")} />
-      </div>
+        <div className="flex flex-row w-full">
+          {/* First Name */}
+          <div className="flex flex-col w-1/2 pr-2">
+            <Label htmlFor="firstName" className="text-xl">First Name</Label>
+            <Input id="firstName" type="text" {...register("firstName")} placeholder="John" />
+            {errors.firstName?.message &&
+              (<div>
+                AJHBDA
+              </div>)
+            }
+          </div>
 
-      <div>
-        <label htmlFor="age">Age:</label>
-        <select id="age" {...register("age")}>
-          <option value=''>---------</option>
-          <option value="16-">16 or younger</option>
-          <option value="17">17</option>
-          <option value="18">18</option>
-          <option value="19">19</option>
-          <option value="20">20</option>
-          <option value="21">21</option>
-          <option value="22">22</option>
-          <option value="23">23</option>
-          <option value="24+">24 or older</option>
-        </select>
-      </div>
+          {/* Last Name */}
+          <div className="flex flex-col w-1/2 ">
+            <Label htmlFor="lastName" className="text-xl">Last Name</Label>
+            <Input id="lastName" type="text" {...register("lastName")} placeholder="Doe" />
+          </div>
+        </div>
 
-      <div>
-        <label htmlFor="country">Country of Residence:</label>
-        <select id="country" {...register("country")}>
-          {
-            countries.map((country) => {
-              return (
-                <option value={country.name}>{country.name}</option>
-              )
-            })
-          }
-        </select>
-      </div>
+        {/* Email */}
+        <div className="pt-4">
+          <Label htmlFor="email" className="text-xl">Email:</Label>
+          <Input id="email" type="text" {...register("email")} placeholder="abc123@gmail.com" />
+        </div>
 
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input id="email" type="text" {...register("email")} />
-      </div>
+        {/* Phone Number */}
+        <div className="pt-4">
+          <Label htmlFor="phoneNumber" className="text-xl">Phone Number</Label>
+          <Input id="phoneNumber" type="text" {...register("phoneNumber")} />
+        </div>
 
-      <div>
-        <label htmlFor="phoneNumber">Phone Number</label>
-        <input id="phoneNumber" type="text" {...register("phoneNumber")} />
-      </div>
+        {/* Age */}
+        <GenericDropdown register={register} name={"age"} label={"Age"} options={AGE} />
 
-      <div>
-        <label htmlFor="school">What school do you go to?</label>
-        <select id="school" {...register("school")}>
-          {
-            schools.map((school) => {
-              return (
-                <option value={school.schoolName}>{school.schoolName}</option>
-              )
-            })
-          }
-        </select>
-      </div>
+        {/* Country */}
+        <GenericDropdown register={register} name={"country"} label={"Country of Residence"} options={COUNTRIES} />
 
-      <div>
-        <label htmlFor="major">What's your major?</label>
-        <select id="major" {...register("major")}>
-          <option value=''>---------</option>
-          <option value='Computer science, computer engineering, or software engineering'>
-            Computer science, computer engineering, or software engineering
-          </option>
-          <option value='Another engineering discipline'>
-            Another engineering discipline (such as civil, electrical, mechanical, etc.)
-          </option>
-          <option value='Information systems, information technology, or system administration'>
-            Information systems, information technology, or system administration
-          </option>
-          <option value='A natural science (such as biology, chemistry, physics, etc.)'>
-            A natural science (such as biology, chemistry, physics, etc.)
-          </option>
-          <option value='Mathematics or statistics'>
-            Mathematics or statistics
-          </option>
-          <option value='Web development or web design'>
-            Web development or web design
-          </option>
-          <option value='Business discipline (such as accounting, finance, marketing, etc.)'>
-            Business discipline (such as accounting, finance, marketing, etc.)
-          </option>
-          <option value='Humanities discipline (such as literature, history, philosophy, etc.)'>
-            Humanities discipline (such as literature, history, philosophy, etc.)
-          </option>
-          <option value='Social science (such as anthropology, psychology, political science, etc.)'>
-            Social science (such as anthropology, psychology, political science, etc.)
-          </option>
-          <option value='Fine arts or performing arts (such as graphic design, music, studio art, etc.)'>
-            Fine arts or performing arts (such as graphic design, music, studio art, etc.)
-          </option>
-          <option value='Health science (such as nursing, pharmacy, radiology, etc.)'>
-            Health science (such as nursing, pharmacy, radiology, etc.)
-          </option>
-          <option value='Other (please specify)'>Other (please specify)</option>
-          <option value='Undecided / No Declared Major'>Undecided / No Declared Major</option>
-          <option value='My school does not offer majors / primary areas of study'>My school does not offer majors / primary areas of study</option>
-          <option value='Prefer not to answer'>Prefer not to answer</option>
-        </select>
-      </div>
+        {/* School */}
+        <div>
+          <label htmlFor="school" className="text-xl">What school do you go to?</label>
+          <select id="school" {...register("school")} className="w-1/2">
+            {
+              schools.map((school) => {
+                return (
+                  <option value={school.schoolName}>{school.schoolName}</option>
+                )
+              })
+            }
+          </select>
+        </div>
 
-      <div>
-        <label htmlFor="classification">What classification are you?</label>
-        <select id="classification" {...register("classification")}>
-          <option value='LessThanSecondary'>Less than Secondary / High School</option>
-          <option value='Secondary'>Secondary / High School</option>
-          <option value='Undergrad2Year'>Undergraduate University (2 year - community college or similar)</option>
-          <option value='Undergrad3PlusYear'>Undergraduate University (3+ year)</option>
-          <option value='Graduate'>Graduate University (Masters, Professional, Doctoral, etc)</option>
-          <option value='CodeSchool'>Code School / Bootcamp</option>
-          <option value='Vocational'>Other Vocational / Trade Program or Apprenticeship</option>
-          <option value='PostDoc'>Post Doctorate</option>
-          <option value='Other'>Other</option>
-          <option value='NotStudent'>I’m not currently a student</option>
-          <option value='PreferNotToAnswer'>Prefer not to answer</option>
-        </select>
-      </div>
+        {/* Major */}
+        <GenericDropdown register={register} name={"major"} label={"What's your major?"} options={MAJOR} />
 
-      <div>
-        <label htmlFor="gradYear">What is your anticipated graduation year?</label>
-        <select id="gradYear" {...register("gradYear")}>
-          <option value=''>---------</option>
-          <option value='2023'>2023</option>
-          <option value='2024'>2024</option>
-          <option value='2025'>2025</option>
-          <option value='2026'>2026</option>
-          <option value='2027'>2027</option>
-          <option value='Other'>Other</option>
-        </select>
-      </div>
+        {/* Classification */}
+        <GenericDropdown register={register} name={"classification"} label={"What classification are you?"} options={EDUCATION_LEVELS} />
 
-      <div>
-        <label htmlFor="gender">What's your gender</label>
-        <select id="gender" {...register("gender")}>
-          <option value=''>---------</option>
-          <option value='NA'>Prefer not to answer</option>
-          <option value='M'>Male</option>
-          <option value='F'>Female</option>
-          <option value='NB'>Non-binary</option>
-          <option value='X'>Prefer to self-describe</option>
-        </select>
+        {/* Graduation Year */}
+        <GenericDropdown register={register} name={"gradYear"} label={"What is your anticipated graduation year?"} options={GRADUATION_YEARS} />
 
-        {/* Figure out how to do X */}
-      </div>
+        {/* Gender */}
+        <GenericDropdown register={register} name={"gender"} label={"What's your gender"} options={GENDER_OPTIONS} />
 
-      <div>
-        <label htmlFor="race">What race(s) do you identify with?</label>
-        <select id="race" {...register("race")}>
-          <option value=''>---------</option>
-          <option value='Asian Indian'>Asian Indian</option>
-          <option value='Black or African'>Black or African</option>
-          <option value='Chinese'>Chinese</option>
-          <option value='Filipino'>Filipino</option>
-          <option value='Guamanian or Chamorro'>Guamanian or Chamorro</option>
-          <option value='Hispanic / Latino / Spanish Origin'>Hispanic / Latino / Spanish Origin</option>
-          <option value='Japanese'>Japanese</option>
-          <option value='Korean'>Korean</option>
-          <option value='Middle Eastern'>Middle Eastern</option>
-          <option value='Native American or Alaskan Native'>Native American or Alaskan Native</option>
-          <option value='Native Hawaiian'>Native Hawaiian</option>
-          <option value='Samoan'>Samoan</option>
-          <option value='Vietnamese'>Vietnamese</option>
-          <option value='White'>White</option>
-          <option value='Other Asian (Thai, Cambodian, etc)'>Other Asian (Thai, Cambodian, etc)</option>
-          <option value='Other Pacific Islander'>Other Pacific Islander</option>
-          <option value='Other (Please Specify)'>Other (Please Specify)</option>
-          <option value='Prefer Not to Answer'>Prefer Not to Answer</option>
-        </select>
+        {/* Race */}
+        <GenericDropdown register={register} name={"race"} label={"What race(s) do you identify with?"} options={RACE_OPTIONS} />
 
         {/* Figure out how to do other */}
-      </div>
+        {/* Hackathons Attended */}
+        <GenericDropdown register={register} name={"hackathonsAttended"} label={"How many hackathons have you attended?"} options={HACKATHON_EXPERIENCE} />
 
-      <div>
-        <label htmlFor="hackathonsAttended">How many hackathons have you attended?</label>
-        <select id="hackathonsAttended" {...register("hackathonsAttended")}>
-          <option value=''>---------</option>
-          <option value='0'>This will be my first!</option>
-          <option value='1-3'>1-3</option>
-          <option value='4-7'>4-7</option>
-          <option value='8-10'>8-10</option>
-          <option value='10+'>10+</option>
-        </select>
-      </div>
+        {/* Experience Level */}
+        <GenericDropdown register={register} name={"experience"} label={"What is your experience level in Data Science?"} options={PROGRAMMING_SKILL_LEVELS} />
 
-      <div>
-        <label htmlFor="experience">What is your experience level in Data Science?</label>
-        <select id="experience" {...register("experience")}>
-          <option value=''>---------</option>
-          <option value='Beginner'>Beginner</option>
-          <option value='Intermediate'>Intermediate</option>
-          <option value='Advanced'>Advanced</option>
-        </select>
-      </div>
+        {/* Team */}
+        <GenericDropdown register={register} name={"hasTeam"} label={"Do you have a team?"} options={[{ value: 'No', label: 'I do have a team' }, { value: 'Yes', label: 'I do not have a team' }]} />
 
-      <div>
-        <label htmlFor="hasTeam">Do you have a team?</label>
-        <select id="hasTeam" {...register("hasTeam")}>
-          <option value=''>---------</option>
-          <option value='No'>I do have a team</option>
-          <option value='Yes'>I do not have a team</option>
-        </select>
-      </div>
+        {/* Team Members */}
+        <GenericDropdown register={register} name={"teamMembers"} label={"How many team members do you have?"} options={HEARD_ABOUT_OPTIONS} />
 
-      <div>
-        <label htmlFor="eventSource">How did you hear about the event?</label>
-        <select id="eventSource" {...register("eventSource")}>
-          <option value=''>---------</option>
-          <option value='Friend'>From a friend</option>
-          <option value='Social Media'>Social media</option>
-          <option value='Student Orgs'>Through another student org</option>
-          <option value='TD Organizer'>From a TAMU Datathon organizer</option>
-          <option value='ENGR Newsletter'>From the TAMU Engineering Newsletter</option>
-          <option value='MLH'>Major League Hacking (MLH)</option>
-          <option value='Attended Before'>I've attended TAMU Datathon before</option>
-          <option value='Other'>Other</option>
-        </select>
-      </div>
+        {/* Shirt Size */}
+        <GenericDropdown register={register} name={"shirtSize"} label={"What's your shirt size?"} options={SHIRT_SIZES} />
 
-      <div>
-        <label htmlFor="shirtSize">Shirt Size:</label>
-        <select id="shirtSize" {...register("shirtSize")}>
-          <option value=''>---------</option>
-          <option value='S'>Unisex S</option>
-          <option value='M'>Unisex M</option>
-          <option value='L'>Unisex L</option>
-          <option value='XL'>Unisex XL</option>
-          <option value='XXL'>Unisex XXL</option>
-        </select>
-      </div>
+        {/* Resume */}
+        <div>
+          <Label htmlFor="resume" className="text-xl">Upload Resume (PDF only):</Label>
+          <Input id="resume" type="file" accept="application/pdf" {...register("resume")} />
+        </div>
 
-      <div>
-        <label htmlFor="resume">Upload Resume (PDF only):</label>
-        <input id="resume" type="file" accept="application/pdf" {...register("resume")} />
-      </div>
+        {/* Address */}
+        <div>
+          <Label htmlFor="address" className="text-xl">Address:</Label>
+          <Input id="address" type="text" {...register("address")} />
+        </div>
 
-      <div>
-        <label htmlFor="address">Address:</label>
-        <input id="address" type="text" {...register("address")} />
-      </div>
+        {/* References */}
+        <div>
+          <Label htmlFor="references" className="text-xl">Point us to anything you'd like us to look at while considering your application:</Label>
+          <Input id="references" type="text" {...register("references")} />
+        </div>
 
-      <div>
-        <label htmlFor="references">Point us to anything you'd like us to look at while considering your application:</label>
-        <input id="references" type="text" {...register("references")} />
-      </div>
+        {/* Tell us your best programming joke. */}
+        <div>
+          <label htmlFor="joke">Tell us your best programming joke.</label>
+          <input id="joke" type="text" {...register("joke")} />
+        </div>
+        {/* What is the one thing you'd build if you had unlimited resources? */}
+        {/* What drives your interest in being a part of TAMU Datathon?  */}
 
-      {/* Tell us your best programming joke. */}
-      {/* What is the one thing you'd build if you had unlimited resources? */}
-      {/* What drives your interest in being a part of TAMU Datathon?  */}
+        {/* Dietry Restrictions */}
+        <div>
+          <label htmlFor="dietaryRestriction">Do you require any special accommodations at the event? Please list all dietary restrictions here.</label>
+          <input id="dietaryRestriction" type="text" {...register("dietaryRestriction")} />
+        </div>
 
-      <div>
-        <label htmlFor="dietaryRestriction">Do you require any special accommodations at the event? Please list all dietary restrictions here.</label>
-        <input id="dietaryRestriction" type="text" {...register("dietaryRestriction")} />
-      </div>
+        {/* Extra Info */}
+        <div>
+          <label htmlFor="extraInfo">Anything else you would like us to know?</label>
+          <input id="extraInfo" type="text" {...register("extraInfo")} />
+        </div>
 
-      <div>
-        <label htmlFor="extraInfo">Anything else you would like us to know?</label>
-        <input id="extraInfo" type="text" {...register("extraInfo")} />
-      </div>
+        {/* Liability Waiver */}
+        <div>
+          <label htmlFor="liabilityWaiver">Liability Waiver:</label>
+          <input id="liabilityWaiver" type="checkbox" value={"on"} {...register("liabilityWaiver")} />
+        </div>
 
-      <div>
-        <label htmlFor="liabilityWaiver">Liability Waiver:</label>
-        <input id="liabilityWaiver" type="checkbox" value={"on"} {...register("liabilityWaiver")} />
-      </div>
-
-      <button type="submit">Submit</button>
-    </form>
+        {/* Submit */}
+        <button type="submit">Submit</button>
+      </form >
+    </div >
   );
 }
