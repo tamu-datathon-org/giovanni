@@ -1,4 +1,35 @@
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
+
+// Next doesn't support an easy way of serving separate images
+// for mobile and desktop, so we need this
+// https://nextjs.org/docs/pages/api-reference/components/image#art-direction
+function BackgroundImage() {
+  const common_attributes = {
+    alt: "Preregistration background",
+    fill: true,
+  };
+
+  const {
+    props: { srcSet: desktop },
+  } = getImageProps({
+    ...common_attributes,
+    src: "/assets/wallpaper.png",
+  });
+
+  const {
+    props: { srcSet: mobile, ...rest },
+  } = getImageProps({
+    ...common_attributes,
+    src: "/assets/wallpaper-mobile.png",
+  });
+  return (
+    <picture>
+      <source media="(min-width: 1000px)" srcSet={desktop} />
+      <source media="(min-width: 500px)" srcSet={mobile} />
+      <img {...rest} style={{ width: "100%", height: "auto" }} />
+    </picture>
+  );
+}
 
 export default function PreregistrationLayout({
   children, // will be a page or nested layout
@@ -7,13 +38,7 @@ export default function PreregistrationLayout({
 }) {
   return (
     <>
-      <Image
-        src="/assets/wallpaper.png"
-        alt="Preregistration background"
-        fill={true}
-        objectFit="cover"
-        layout="fill"
-      />
+      <BackgroundImage />
       <div className="max-h-screen-sm overflow-hidden">{children}</div>
     </>
   );
