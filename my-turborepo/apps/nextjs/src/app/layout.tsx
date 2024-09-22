@@ -41,11 +41,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={w95fa.className}>
       <body
         className={cn(
           "min-h-screen bg-background font-sans text-foreground antialiased",
-          w95fa.className,
         )}
       >
         <TRPCReactProvider>{props.children}</TRPCReactProvider>
