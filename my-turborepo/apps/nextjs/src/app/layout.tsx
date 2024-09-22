@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
 
 import { cn } from "@vanni/ui";
 
+import { w95fa } from "~/app/_components/fonts";
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
@@ -42,13 +41,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={w95fa.className}>
       <body
-        className={cn(
-          "min-h-screen bg-background font-sans text-foreground antialiased",
-          GeistSans.variable,
-          GeistMono.variable,
-        )}
+        className={cn("min-h-screen bg-background text-foreground antialiased")}
       >
         <TRPCReactProvider>{props.children}</TRPCReactProvider>
         <div className="absolute bottom-4 right-4"></div>
