@@ -1,4 +1,4 @@
-import Image, { getImageProps } from "next/image";
+import { getImageProps } from "next/image";
 
 // Next doesn't support an easy way of serving separate images
 // for mobile and desktop, so we need this

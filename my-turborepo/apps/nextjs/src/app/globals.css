@@ -2,10 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
-  body{
+  body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -14,4 +12,3 @@
     --radius: 0.5rem;
   }
 }
-
