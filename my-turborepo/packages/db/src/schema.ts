@@ -155,7 +155,7 @@ export const UserRoleRelations = relations(UserRole, ({ one }) => ({
 }));
 
 
-const Application = pgTable("application", {
+export const Application = pgTable("application", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
   userId: uuid("user_id")
     .notNull()
@@ -180,7 +180,7 @@ const Application = pgTable("application", {
   email: varchar("email", { length: 255 }).notNull(),
   age: varchar("age", { length: 255 }).notNull(),
   country: varchar("country", { length: 255 }).notNull(),
-  phoneNumber: varchar("phone_number", { length: 20 }).notNull(),
+  phoneNumber: varchar("phone_number", { length: 25 }).notNull(),
   school: varchar("school", { length: 255 }).notNull(),
   major: varchar("major", { length: 255 }).notNull(),
   classification: varchar("classification", { length: 255 })
@@ -198,10 +198,12 @@ const Application = pgTable("application", {
   shirtSize: varchar("shirt_size", { length: 255 })
     .$type<"S" | "M" | "L" | "XL" | "XXL">()
     .notNull(),
-  resume: varchar("resume", { length: 255 }).notNull(),
+  resume: text("resume").notNull(),
   address: varchar("address", { length: 255 }).notNull(),
   references: varchar("references", { length: 255 }).notNull(),
-  joke: varchar("joke", { length: 255 }).notNull(),
+  interestOne: varchar("interest_one", { length: 500 }).notNull(),
+  interestTwo: varchar("interest_two", { length: 500 }).notNull(),
+  interestThree: varchar("interest_three", { length: 500 }).notNull(),
   dietaryRestriction: varchar("dietary_restriction", { length: 255 }).notNull(),
   extraInfo: varchar("extra_info", { length: 255 }).notNull(),
 });
