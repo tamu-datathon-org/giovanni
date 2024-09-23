@@ -4,11 +4,10 @@ import { Label } from '~/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '~/components/ui/select';
 
 interface DropdownOption {
-    value: string;
-    label: string;
+    schoolName: string;
 }
 
-interface GenericDropdownProps {
+interface SchoolDropdownProps {
     register: UseFormRegister<any>;
     name: string;
     label?: string;
@@ -16,7 +15,7 @@ interface GenericDropdownProps {
     defaultOption?: DropdownOption;
 }
 
-const GenericDropdown: React.FC<GenericDropdownProps> = ({
+const SchoolDropdown: React.FC<SchoolDropdownProps> = ({
     register,
     name,
     label,
@@ -31,7 +30,7 @@ const GenericDropdown: React.FC<GenericDropdownProps> = ({
                 </SelectTrigger>
                 <SelectContent>
                     {options.map((option, index) => (
-                        <SelectItem key={index} value={option.value}>{option.label}</SelectItem>
+                        <SelectItem key={index} value={option.schoolName}>{option.schoolName}</SelectItem>
                     ))}
                 </SelectContent>
             </Select>
@@ -39,4 +38,4 @@ const GenericDropdown: React.FC<GenericDropdownProps> = ({
     );
 };
 
-export default GenericDropdown;
+export default SchoolDropdown;

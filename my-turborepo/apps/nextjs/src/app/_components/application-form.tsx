@@ -6,16 +6,17 @@ import { useForm } from "react-hook-form";
 
 import type { ApplicationSchema } from "../apply/validation";
 import { applicationSchema } from "../apply/validation";
-import countries from "./application-data/countries.json";
 import schools from "./application-data/schools.json";
 import './customCss.scss';
-import { AiOutlineClose } from "react-icons/ai";
-import { Button } from "node_modules/@vanni/ui/src/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import GenericDropdown from "./genericDropdown";
 import { AGE, COUNTRIES, EDUCATION_LEVELS, GENDER_OPTIONS, GRADUATION_YEARS, HACKATHON_EXPERIENCE, HEARD_ABOUT_OPTIONS, MAJOR, PROGRAMMING_SKILL_LEVELS, RACE_OPTIONS, SHIRT_SIZES } from "~/lib/dropdownOptions";
-import { Agent } from "https";
+import { Button } from "~/components/ui/button";
+import { useState } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import SchoolDropdown from "./schoolDropdown";
+import { Checkbox } from "~/components/ui/checkbox";
 /*
     First Name
     Last Name
@@ -55,8 +56,11 @@ export function ApplicationForm() {
     resolver: zodResolver(applicationSchema),
     // match it to an endpoint because it allows async or use values
   });
-  const onSubmit: SubmitHandler<ApplicationSchema> = (data) =>
+  const onSubmit: SubmitHandler<ApplicationSchema> = (data) => {
+    setSubmitting(true);
     console.log(data);
+  };
+  const [submitting, setSubmitting] = useState(false);
 
   return (
     <div className="flex justify-center w-3/5">
@@ -108,18 +112,7 @@ export function ApplicationForm() {
         <GenericDropdown register={register} name={"country"} label={"Country of Residence"} options={COUNTRIES} />
 
         {/* School */}
-        <div>
-          <label htmlFor="school" className="text-xl">What school do you go to?</label>
-          <select id="school" {...register("school")} className="w-1/2">
-            {
-              schools.map((school) => {
-                return (
-                  <option value={school.schoolName}>{school.schoolName}</option>
-                )
-              })
-            }
-          </select>
-        </div>
+        <SchoolDropdown register={register} name={"school"} label={"What school do you go to?"} options={schools} />
 
         {/* Major */}
         <GenericDropdown register={register} name={"major"} label={"What's your major?"} options={MAJOR} />
@@ -153,51 +146,58 @@ export function ApplicationForm() {
         <GenericDropdown register={register} name={"shirtSize"} label={"What's your shirt size?"} options={SHIRT_SIZES} />
 
         {/* Resume */}
-        <div>
+        <div className="pt-4">
           <Label htmlFor="resume" className="text-xl">Upload Resume (PDF only):</Label>
-          <Input id="resume" type="file" accept="application/pdf" {...register("resume")} />
+          <Input id="resume" type="file" accept="application/pdf" className="border" {...register("resume")} />
         </div>
 
         {/* Address */}
-        <div>
+        <div className="pt-4">
           <Label htmlFor="address" className="text-xl">Address:</Label>
           <Input id="address" type="text" {...register("address")} />
         </div>
 
         {/* References */}
-        <div>
+        <div className="pt-4">
           <Label htmlFor="references" className="text-xl">Point us to anything you'd like us to look at while considering your application:</Label>
           <Input id="references" type="text" {...register("references")} />
         </div>
 
         {/* Tell us your best programming joke. */}
-        <div>
-          <label htmlFor="joke">Tell us your best programming joke.</label>
-          <input id="joke" type="text" {...register("joke")} />
+        <div className="pt-4">
+          <Label htmlFor="joke" className="text-xl">Tell us your best programming joke.</Label>
+          <Input id="joke" type="text" {...register("joke")} />
         </div>
         {/* What is the one thing you'd build if you had unlimited resources? */}
         {/* What drives your interest in being a part of TAMU Datathon?  */}
 
         {/* Dietry Restrictions */}
-        <div>
-          <label htmlFor="dietaryRestriction">Do you require any special accommodations at the event? Please list all dietary restrictions here.</label>
-          <input id="dietaryRestriction" type="text" {...register("dietaryRestriction")} />
+        <div className="pt-4">
+          <Label htmlFor="dietaryRestriction" className="text-xl">Do you require any special accommodations at the event? Please list all dietary restrictions here.</Label>
+          <Input id="dietaryRestriction" type="text" {...register("dietaryRestriction")} />
         </div>
 
         {/* Extra Info */}
-        <div>
-          <label htmlFor="extraInfo">Anything else you would like us to know?</label>
-          <input id="extraInfo" type="text" {...register("extraInfo")} />
+        <div className="pt-4">
+          <Label htmlFor="extraInfo" className="text-xl">Anything else you would like us to know?</Label>
+          <Input id="extraInfo" type="text" {...register("extraInfo")} />
         </div>
 
         {/* Liability Waiver */}
-        <div>
-          <label htmlFor="liabilityWaiver">Liability Waiver:</label>
-          <input id="liabilityWaiver" type="checkbox" value={"on"} {...register("liabilityWaiver")} />
+        <div className="pt-4 flex items-center space-x-2">
+          <Checkbox id="liabilityWaiver" {...register("liabilityWaiver")} />
+          <Label htmlFor="liabilityWaiver" className="text-xl">Liability Waiver</Label>
         </div>
 
         {/* Submit */}
-        <button type="submit">Submit</button>
+        <div className="pt-4 text-4xl">
+          {!submitting && <Button type="submit">Submit</Button>}
+          {submitting &&
+            <Button type="submit" disabled> <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+              Please wait ...
+            </Button>
+          }
+        </div>
       </form >
     </div >
   );
