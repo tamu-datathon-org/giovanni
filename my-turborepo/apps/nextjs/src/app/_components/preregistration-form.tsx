@@ -1,6 +1,10 @@
 "use client";
 
-import type { FieldErrors, SubmitHandler, UseFormRegister} from "react-hook-form";
+import type {
+  FieldErrors,
+  SubmitHandler,
+  UseFormRegister,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -56,13 +60,19 @@ function TitleText() {
   );
 }
 
-function EmailBox(props: { register: UseFormRegister<PreregistrationData>; errors: FieldErrors<PreregistrationData> }) {
+function EmailBox(props: {
+  register: UseFormRegister<PreregistrationData>;
+  errors: FieldErrors<PreregistrationData>;
+}) {
   return (
     <>
       <label className="flex flex-row justify-center ">
         <h1 className="pr-4">Enter Email: </h1>
         <div className="flex rounded-sm bg-black p-0.5">
-          <input {...props.register("email")} className=" border-cyan-600 px-1" />
+          <input
+            {...props.register("email")}
+            className=" border-cyan-600 px-1"
+          />
         </div>
       </label>
       {props.errors.email?.message != undefined && (
@@ -72,7 +82,10 @@ function EmailBox(props: { register: UseFormRegister<PreregistrationData>; error
   );
 }
 
-function TermsAndConditions(props: { register: UseFormRegister<PreregistrationData>; errors: FieldErrors<PreregistrationData> }) {
+function TermsAndConditions(props: {
+  register: UseFormRegister<PreregistrationData>;
+  errors: FieldErrors<PreregistrationData>;
+}) {
   return (
     <>
       <label className="text-blac">
@@ -116,7 +129,7 @@ export const CreatePreregistrationForm = () => {
       });
     } catch (error) {
       if (error instanceof TRPCClientError) {
-        const code = (error.data as { code: string }).code
+        const code = (error.data as { code: string }).code;
         if (code === "INTERNAL_SERVER_ERROR") {
           toast({
             variant: "destructive",
@@ -147,14 +160,8 @@ export const CreatePreregistrationForm = () => {
           </div>
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
             <TitleText />
-            <EmailBox
-              register={register}
-              errors={errors}
-            />
-            <TermsAndConditions
-              register={register}
-              errors={errors}
-            />
+            <EmailBox register={register} errors={errors} />
+            <TermsAndConditions register={register} errors={errors} />
             <Button
               className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
               type="submit"
