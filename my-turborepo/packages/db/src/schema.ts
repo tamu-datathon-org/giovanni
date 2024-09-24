@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   integer,
   pgTable,
   primaryKey,
@@ -175,35 +176,95 @@ export const Application = pgTable("application", {
     .$onUpdateFn(() => sql`now()`),
 
   // application inputs
-  firstName: varchar("first_name", { length: 255 }).notNull(),
-  lastName: varchar("last_name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull(),
-  age: varchar("age", { length: 255 }).notNull(),
-  country: varchar("country", { length: 255 }).notNull(),
+  firstName: varchar("first_name", { length: 50 }).notNull(),
+  lastName: varchar("last_name", { length: 50 }).notNull(),
+  email: varchar("email", { length: 50 }).notNull(),
+  age: varchar("age", { length: 50 }).notNull(),
+  country: varchar("country", { length: 50 }).notNull(),
   phoneNumber: varchar("phone_number", { length: 25 }).notNull(),
-  school: varchar("school", { length: 255 }).notNull(),
-  major: varchar("major", { length: 255 }).notNull(),
-  classification: varchar("classification", { length: 255 })
-    .$type<"Highschool" | "Freshman" | "Sophomore" | "Junior" | "Senior+">()
-    .notNull(),
+  school: varchar("school", { length: 50 }).notNull(),
+  major: varchar("major", { length: 50 }).notNull(),
+  classification: varchar("classification", { length: 50 }).notNull(),
   gradYear: integer("grad_year").notNull(),
-  gender: varchar("gender", { length: 255 }).notNull(),
-  hasTeam: varchar("has_team", { length: 255 }).notNull(),
-  race: varchar("race", { length: 255 }).notNull(),
-  hackathonsAttended: varchar("hackathons_attended", { length: 255 }).notNull(),
-  experience: varchar("experience", { length: 255 })
+  gender: varchar("gender", { length: 50 }).notNull(),
+  hasTeam: varchar("has_team", { length: 50 })
+    .$type<"Yes" | "No">()
+    .notNull(),
+  race: varchar("race", { length: 50 }).notNull(),
+  hackathonsAttended: varchar("hackathons_attended", { length: 50 }).notNull(),
+  experience: varchar("experience", { length: 50 })
     .$type<"Beginner" | "Intermediate" | "Advanced">()
     .notNull(),
-  eventSource: varchar("event_source", { length: 255 }).notNull(),
-  shirtSize: varchar("shirt_size", { length: 255 })
+  eventSource: varchar("event_source", { length: 100 }).notNull(),
+  shirtSize: varchar("shirt_size", { length: 25 })
     .$type<"S" | "M" | "L" | "XL" | "XXL">()
     .notNull(),
   resume: text("resume").notNull(),
-  address: varchar("address", { length: 255 }).notNull(),
+  address: varchar("address", { length: 100 }).notNull(),
   references: varchar("references", { length: 255 }).notNull(),
   interestOne: varchar("interest_one", { length: 500 }).notNull(),
   interestTwo: varchar("interest_two", { length: 500 }).notNull(),
   interestThree: varchar("interest_three", { length: 500 }).notNull(),
-  dietaryRestriction: varchar("dietary_restriction", { length: 255 }).notNull(),
-  extraInfo: varchar("extra_info", { length: 255 }).notNull(),
+  dietaryRestriction: varchar("dietary_restriction", { length: 255 }),
+  extraInfo: varchar("extra_info", { length: 255 }),
+});
+
+const phoneRegex = /^([+][0-9]+)?[\s]?([(]?[0-9]{3}[)]?)[-\s]?([0-9]{3})[-\s]?([0-9]{4})$/
+
+export const CreateApplicationSchema = createInsertSchema(Application, {
+  firstName: z.string()
+    .max(50, "First Name is too long"),
+  lastName: z.string()
+    .max(50, "Last Name is too long"),
+  age: z.enum(["16-", "17", "18", "19", "20", "21", "22", "23", "24+"]),
+  country: z.string()
+    .max(50, "Country is too long"),
+  email: z.string()
+    .max(50, "Email is too long")
+    .email(),
+  phoneNumber: z.string()
+    .min(10, "Phone number is too short")
+    .regex(phoneRegex, "Invalid phone number format")
+    .max(25, "Phone number is too long"),
+  school: z.string()
+    .max(50, "School is too long"),
+  major: z.string()
+    .max(100, "Major is too long"),
+  classification: z.string()
+    .max(50, "Classification is too long"),
+  gradYear: z.number(),
+  gender: z.string()
+    .max(50, "Gender is too long"),
+  race: z.string()
+    .max(50, "Race is too long"),
+  hackathonsAttended: z.string()
+    .max(50, "Hackathons Attended is too long"),
+  experience: z.enum(["Beginner", "Intermediate", "Advanced"]),
+  hasTeam: z.enum(["No", "Yes"]),
+  eventSource: z.string()
+    .max(100, "Event Source is too long"),
+  shirtSize: z.enum(["S", "M", "L", "XL", "XXL"]),
+  resume: z.string(),
+  address: z.string()
+    .max(100, "Address is too long"),
+  references: z.string(),
+  interestOne: z.string()
+    .max(500, "Interest One is too long"),
+  interestTwo: z.string()
+    .max(500, "Interest Two is too long"),
+  interestThree: z.string()
+    .max(500, "Interest Three is too long"),
+  dietaryRestriction: z.string()
+    .max(255, "Dietary Restriction is too long")
+    .optional(),
+  extraInfo: z.string()
+    .max(255, "Extra Info is too long")
+    .optional(),
+}).omit({
+  id: true,
+  userId: true,
+  eventId: true,
+  status: true,
+  createdAt: true,
+  updatedAt: true,
 });

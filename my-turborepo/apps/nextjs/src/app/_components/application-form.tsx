@@ -6,7 +6,6 @@ import { useForm, UseFormRegister, FieldErrors } from "react-hook-form";
 import React, { useState } from 'react';
 
 import type { ApplicationSchema } from "../apply/validation";
-import { applicationSchema } from "../apply/validation";
 import countries from "./application-data/countries.json";
 import schools from "./application-data/schools.json";
 import age from "./application-data/age.json";
@@ -19,6 +18,13 @@ import race from "./application-data/race.json";
 import shirtSize from "./application-data/shirtSize.json";
 import eventSource from "./application-data/eventSource.json";
 import classification from "./application-data/classification.json";
+import { Button } from "@vanni/ui/button";
+import Image from "next/image";
+import { toast } from "~/hooks/use-toast";
+import { TRPCClientError } from "@trpc/client";
+import { api } from "~/trpc/react";
+import { applicationSchema } from "../apply/validation";
+import { CreateApplicationSchema } from "@vanni/db/schema";
 
 /*
     First Name
@@ -160,22 +166,119 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ id, label, name, 
 };
 
 export function ApplicationForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm<ApplicationSchema>({
+    const { register, handleSubmit, formState: { errors, isDirty, isSubmitting } } = useForm<ApplicationSchema>({
         mode: "onSubmit",
-        defaultValues: {
-            firstName: "",
-            lastName: "",
-        },
+        // defaultValues: {
+        //     firstName: "",
+        //     lastName: "",
+        //     age: undefined,
+        //     country: "",
+        //     email: "",
+        //     school: "",
+        //     major: "",
+        //     classification: undefined,
+        //     gradYear: undefined,
+        //     gender: "",
+        //     race: "",
+        //     hackathonsAttended: "",
+        //     experience: undefined,
+        //     hasTeam: undefined,
+        //     eventSource: "",
+        //     shirtSize: undefined,
+        //     resume: undefined,
+        //     address: "",
+        //     references: "",
+        //     interest_one: "",
+        //     interest_two: "",
+        //     interest_three: "",
+        //     dietaryRestriction: "",
+        //     extraInfo: "",
+        //     liabilityWaiver: false
+        // },
         // values
         resetOptions: {
-            keepDirtyValues: false, // user-interacted input will not be retained
+            keepDirtyValues: true, // user-interacted input will not be retained
             keepErrors: true,
         },
         resolver: zodResolver(applicationSchema),
         // match it to an endpoint because it allows async or use values
     });
-    const onSubmit: SubmitHandler<ApplicationSchema> = (data) =>
+
+    const createApplication = api.application.create.useMutation();
+
+    const onSubmit: SubmitHandler<ApplicationSchema> = (data) => {
+        console.log("submitted");
         console.log(data);
+        try {
+            // const createApplicationData = {
+            //     eventName: "Datathon",
+            //     ...data,
+            // };
+            const createApplicationData = {
+                eventName: "Datathon",
+                applicationData: {
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    age: data.age,
+                    country: data.country,
+                    email: data.email,
+                    phoneNumber: data.phoneNumber,
+                    school: data.school,
+                    major: data.major,
+                    classification: data.classification,
+                    gradYear: data.gradYear,
+                    gender: data.gender,
+                    race: data.race,
+                    resume: "resume",
+                    hackathonsAttended: data.hackathonsAttended,
+                    experience: data.experience,
+                    hasTeam: data.hasTeam,
+                    eventSource: data.eventSource,
+                    shirtSize: data.shirtSize,
+                    address: data.address,
+                    references: data.references || "",
+                    interestOne: data.interestOne,
+                    interestTwo: data.interestTwo,
+                    interestThree: data.interestThree,
+                    dietaryRestriction: data.dietaryRestriction,
+                    extraInfo: data.extraInfo,
+                }
+            };
+
+            createApplication.mutate(createApplicationData, {
+                onSuccess: () => {
+                    toast({
+                        variant: "success",
+                        title: "Application submitted successfully!",
+                        description: "Your application has been received.",
+                    });
+                },
+                onError: (error) => {
+                    if (error instanceof TRPCClientError) {
+                        toast({
+                            variant: "destructive",
+                            title: "Submission failed",
+                            description: error.message,
+                        });
+                    }
+                },
+            });
+
+            toast({
+                variant: "success",
+                title: "You're on the list!",
+                description: "Thanks for showing interest in the Fall 2024 Datathon.",
+            });
+        } catch (error) {
+            if (error instanceof TRPCClientError) {
+                toast({
+                    variant: "destructive",
+                    title: error.data.code,
+                    description: error.message,
+                });
+            }
+        }
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -204,7 +307,6 @@ export function ApplicationForm() {
                 options={age.options}
             />
 
-            {/* Special select for country and school */}
             <AutocompleteInput
                 id="country"
                 label="Country of Residence:"
@@ -309,8 +411,8 @@ export function ApplicationForm() {
                 errors={errors}
                 name="hasTeam"
                 options={[
-                    { value: 'No', label: 'I do not have a team' },
-                    { value: 'Yes', label: 'I do have a team' }
+                    { value: "No", label: 'I do not have a team' },
+                    { value: "Yes", label: 'I do have a team' }
                 ]}
             />
 
@@ -332,11 +434,6 @@ export function ApplicationForm() {
                 options={shirtSize.options.map((shirtSizeOption) => ({ value: shirtSizeOption.value, label: shirtSizeOption.label }))}
             />
 
-            <div>
-                <label htmlFor="resume">Upload Resume (PDF only):</label>
-                <input id="resume" type="file" accept="application/pdf" {...register("resume")} />
-            </div>
-
             <FormInput
                 id="address"
                 label="Address:"
@@ -353,15 +450,12 @@ export function ApplicationForm() {
                 name="references"
             />
 
-            {/* Tell us your best programming joke. */}
-            {/* What is the one thing you'd build if you had unlimited resources? */}
-            {/* What drives your interest in being a part of TAMU Datathon?  */}
             <FormInput
                 id="joke"
                 label="Tell us your best programming joke:"
                 register={register}
                 errors={errors}
-                name="interest_one"
+                name="interestOne"
             />
 
             <FormInput
@@ -369,7 +463,7 @@ export function ApplicationForm() {
                 label="What is the one thing you'd build if you had unlimited resources?"
                 register={register}
                 errors={errors}
-                name="interest_two"
+                name="interestTwo"
             />
 
             <FormInput
@@ -377,7 +471,7 @@ export function ApplicationForm() {
                 label="What drives your interest in being a part of TAMU Datathon?"
                 register={register}
                 errors={errors}
-                name="interest_three"
+                name="interestThree"
             />
 
             <FormInput
@@ -406,7 +500,24 @@ export function ApplicationForm() {
                 )}
             </div>
 
-            <button type="submit">Submit</button>
+            <Button
+                className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
+                type="submit"
+                disabled={!isDirty || isSubmitting}
+            >
+                {isSubmitting ? (
+                    <Image
+                        src="loading.svg"
+                        className="animate-spin"
+                        width={24}
+                        height={24}
+                        aria-hidden="true"
+                        alt="loading..."
+                    />
+                ) : (
+                    "Submit"
+                )}
+            </Button>
         </form>
     );
 }

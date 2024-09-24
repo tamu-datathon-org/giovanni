@@ -36,6 +36,20 @@
       "when": 1726978562561,
       "tag": "0004_public_ultimates",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1727127589206,
+      "tag": "0005_happy_mastermind",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1727147667462,
+      "tag": "0006_wakeful_skreet",
+      "breakpoints": true
     }
   ]
 }
