@@ -22,4 +22,12 @@ const config = {
   typescript: { ignoreBuildErrors: true },
 };
 
+module.exports = {
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["tamudatathon.com", "*.tamudatathon.com"],
+    },
+  },
+};
+
 export default config;
