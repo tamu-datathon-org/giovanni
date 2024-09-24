@@ -8,6 +8,12 @@ createJiti(fileURLToPath(import.meta.url))("./src/env");
 const config = {
   reactStrictMode: true,
 
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["tamudatathon.com", "*.tamudatathon.com"],
+    },
+  },
+
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
     "@vanni/api",
@@ -20,14 +26,6 @@ const config = {
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
-};
-
-module.exports = {
-  experimental: {
-    serverActions: {
-      allowedOrigins: ["tamudatathon.com", "*.tamudatathon.com"],
-    },
-  },
 };
 
 export default config;
