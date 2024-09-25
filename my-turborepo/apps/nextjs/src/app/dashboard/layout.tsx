@@ -15,13 +15,9 @@ export default async function PreregistrationLayout({
     "use server";
     await signIn();
   }
+
   return (
     <>
-      <BackgroundImage
-        desktop_src={"/assets/wallpaper.png"}
-        mobile_src={"/assets/wallpaper-mobile.png"}
-        alt={"Dashboard background"}
-      />
       <div className="max-h-screen-sm overflow-hidden">{children}</div>
     </>
   );

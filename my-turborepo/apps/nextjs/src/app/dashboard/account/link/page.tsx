@@ -10,6 +10,7 @@ export default function LoginPage() {
           Log In
         </h1>
         <form>
+          <LoginButton connectionId="discord" buttonText="Sign in with Discord" />
           <LoginButton connectionId="github" buttonText="Sign in with GitHub" />
           <LoginButton
             connectionId="google-oauth2"
