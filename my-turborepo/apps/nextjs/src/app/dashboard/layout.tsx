@@ -1,10 +1,20 @@
+import { redirect } from "next/navigation";
+
+import { auth, signIn } from "@vanni/auth";
+
 import BackgroundImage from "~/app/_components/images/background";
 
-export default function PreregistrationLayout({
+export default async function PreregistrationLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+
+  if (!session) {
+    "use server";
+    await signIn();
+  }
   return (
     <>
       <BackgroundImage
