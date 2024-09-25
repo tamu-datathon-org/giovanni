@@ -14,9 +14,9 @@ export default eventHandler(async (event) =>
         clientSecret: process.env.AUTH_DISCORD_SECRET,
       }),
       Auth0({
-        clientId: env.AUTH_AUTH0_ID,
-        clientSecret: env.AUTH_AUTH0_SECRET,
-        issuer: env.AUTH_AUTH0_DOMAIN,
+        clientId: process.env.AUTH_AUTH0_ID,
+        clientSecret: process.env.AUTH_AUTH0_SECRET,
+        issuer: process.env.AUTH_AUTH0_DOMAIN,
       }),
     ],
   }),
