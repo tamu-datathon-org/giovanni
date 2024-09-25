@@ -19,5 +19,6 @@ export default eventHandler(async (event) =>
         issuer: process.env.AUTH_AUTH0_DOMAIN,
       }),
     ],
+      basePath: "/",
   }),
 );
