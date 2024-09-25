@@ -268,17 +268,13 @@ const SchedulePage: React.FC = () => {
         const timeDifference = eventTime.getTime() - now.getTime();
         
         const isUpcoming = timeDifference >= -6000 && timeDifference <= 6000;
-        
-        console.log(`Event: ${event.name}, Time: ${eventTime.toLocaleString()}, Difference: ${timeDifference}ms, Is Upcoming: ${isUpcoming}`);
-        
+                
         return isUpcoming;
       });
 
       if (upcomingEvent) {
-        console.log("Found upcoming event:", upcomingEvent.name);
         setCurrentEvent(upcomingEvent);
       } else if (currentEvent) {
-        console.log("No upcoming event, clearing current event");
         setCurrentEvent(null);
       }
     };
@@ -308,14 +304,16 @@ const SchedulePage: React.FC = () => {
           */}
   return (
     <div style={{
-      backgroundImage: 'url(/images/Wallpaper_Blur.png)',
+      backgroundImage: 'url(/images/wallpapernoblur.png)',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       fontFamily: 'windows95Font',
       minHeight: '100vh'
     }}>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-5xl font-bold mb-8 text-center">Datathon Schedule</h1>
+        <h1 className="text-5xl font-bold mb-8 text-center"
+        style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+        >Datathon Schedule</h1>
         
         <div className="mb-8 flex justify-center">
           <div style={{
@@ -330,10 +328,10 @@ const SchedulePage: React.FC = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             top: '120px',
-            left: '40px',
+            left: '60px',
             padding: '80px',
           }} className='shadow-lg'>
-            <h2 className="text-5xl font-bold text-black text-center mb-8">Countdown to Datathon!</h2>
+            <h2 className="text-5xl font-bold text-black text-center mb-5">Countdown to Datathon!</h2>
 
             <div className="flex justify-center space-x-4">
               {Object.entries(timeLeft).map(([unit, value]) => (
@@ -348,16 +346,16 @@ const SchedulePage: React.FC = () => {
 
         <div className="mb-8 flex justify-center">
           <div style={{
-            width: `625px`,
-            height: `570px`, 
-            backgroundImage: 'url(/images/blank_Back.png)',
+            width: `420px`,
+            height: `580px`, 
+            backgroundImage: 'url(/images/windows95window.png)',
             backgroundSize: '100% 100%', 
             display: 'flex',
             position: 'absolute',
             flexDirection: 'column',
             alignItems: 'center',
-            top: '180px',
-            right: '40px',
+            top: '150px',
+            right: '60px',
             padding: '80px',
           }} 
           className='shadow-lg'>
@@ -366,7 +364,7 @@ const SchedulePage: React.FC = () => {
             <div style={{
               alignItems: 'flex-start',
               width: '120%',
-              maxHeight: '1680px',
+              maxHeight: '590px',
               overflowY: 'auto',
               scrollbarWidth: 'none'
             }}
