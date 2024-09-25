@@ -5,7 +5,6 @@
   "scripts": {
     "build": "nitro build",
     "clean": "rm -rf .turbo node_modules",
-    "dev": "nitro dev --port 3001",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
