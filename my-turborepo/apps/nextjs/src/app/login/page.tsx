@@ -1,31 +1,7 @@
-import { signIn } from "@vanni/auth";
-import { Button } from "@vanni/ui/button";
+import LoginButton from "~/app/_components/auth/login_button";
+
 
 export const runtime = "edge";
-
-function LoginButton({
-  connectionId,
-  redirectUri,
-  buttonText,
-}: {
-  connectionId: string;
-  redirectUri?: string;
-  buttonText: string;
-}) {
-  return (
-    <Button
-      size="lg"
-      formAction={async () => {
-        "use server";
-        await signIn("auth0", redirectUri ? { redirectTo: redirectUri } : {}, {
-          connection: connectionId,
-        });
-      }}
-    >
-      {buttonText}
-    </Button>
-  );
-}
 
 export default function LoginPage() {
   return (
@@ -34,8 +10,6 @@ export default function LoginPage() {
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           Log In
         </h1>
-        {/*<AuthShowcase />*/}
-
         <form>
           <LoginButton connectionId="github" buttonText="Sign in with GitHub" />
           <LoginButton
