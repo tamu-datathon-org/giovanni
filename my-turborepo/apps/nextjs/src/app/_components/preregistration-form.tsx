@@ -18,6 +18,7 @@ import { Button } from "node_modules/@vanni/ui/src/button";
 import { AiOutlineClose } from "react-icons/ai";
 
 import { useToast } from "~/hooks/use-toast";
+import FormContainer from "./FormContainer";
 
 // import IconList from "./IconList";
 
@@ -136,56 +137,17 @@ export const CreatePreregistrationForm = () => {
   };
 
   return (
-    <div className="font-XPfont font-bold">
-      <div className="flex h-screen flex-col items-center justify-center ">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="xpBorder m-5 flex w-11/12 flex-col items-center text-center text-lg lg:w-2/5"
-        >
-          <div className="flex w-full flex-row items-center justify-center">
-            <Lines />
-            <ExitButton />
-          </div>
-          <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
-            <TitleText />
-            <EmailBox
-              register={register("email", { required: true, maxLength: 256 })}
-              errors={errors}
-            />
-            <TermsAndConditions
-              register={register("confirmation", { required: true })}
-              errors={errors}
-            />
-            <Button
-              className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
-              type="submit"
-              disabled={!isDirty || isSubmitting}
-            >
-              {isSubmitting ? (
-                <Image
-                  src="loading.svg"
-                  className="animate-spin"
-                  width={24}
-                  height={24}
-                  aria-hidden="true"
-                  alt="loading..."
-                />
-              ) : (
-                "Submit"
-              )}
-            </Button>
-            <Image
-              src="/Pixel_PolarBear.png"
-              className="absolute -bottom-5 -right-5 size-32 md:size-56 lg:size-28 xl:size-44"
-              width={100}
-              height={100}
-              alt="polar bear"
-            />
-          </div>
-        </form>
-        {/* <IconList /> */}
+    <FormContainer onSubmit={handleSubmit(onSubmit)} isSubmitting={isSubmitting} isDirty={isDirty}>
+      <div className="flex w-full flex-row items-center justify-between">
+        <Lines />
+        <ExitButton />
       </div>
-    </div>
+      <TitleText />
+      <div className="w-full px-4">
+        <EmailBox register={register("email", { required: true, maxLength: 256 })} errors={errors} />
+        <TermsAndConditions register={register("confirmation", { required: true })} errors={errors} />
+      </div>
+    </FormContainer>
   );
 };
 
