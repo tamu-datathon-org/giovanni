@@ -50,6 +50,13 @@
       "when": 1727147667462,
       "tag": "0006_wakeful_skreet",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1727274660243,
+      "tag": "0007_wooden_marvel_zombies",
+      "breakpoints": true
     }
   ]
 }

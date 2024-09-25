@@ -173,18 +173,18 @@ export const Application = pgTable("application", {
   updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
     .defaultNow()
     .notNull()
-    .$onUpdateFn(() => sql`now()`),
+    .$onUpdateFn(() => new Date()),
 
   // application inputs
   firstName: varchar("first_name", { length: 50 }).notNull(),
   lastName: varchar("last_name", { length: 50 }).notNull(),
   email: varchar("email", { length: 50 }).notNull(),
   age: varchar("age", { length: 50 }).notNull(),
-  country: varchar("country", { length: 50 }).notNull(),
+  country: varchar("country", { length: 100 }).notNull(),
   phoneNumber: varchar("phone_number", { length: 25 }).notNull(),
-  school: varchar("school", { length: 50 }).notNull(),
-  major: varchar("major", { length: 50 }).notNull(),
-  classification: varchar("classification", { length: 50 }).notNull(),
+  school: varchar("school", { length: 100 }).notNull(),
+  major: varchar("major", { length: 100 }).notNull(),
+  classification: varchar("classification", { length: 100 }).notNull(),
   gradYear: integer("grad_year").notNull(),
   gender: varchar("gender", { length: 50 }).notNull(),
   hasTeam: varchar("has_team", { length: 50 })
@@ -227,11 +227,11 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .regex(phoneRegex, "Invalid phone number format")
     .max(25, "Phone number is too long"),
   school: z.string()
-    .max(50, "School is too long"),
+    .max(100, "School is too long"),
   major: z.string()
     .max(100, "Major is too long"),
   classification: z.string()
-    .max(50, "Classification is too long"),
+    .max(100, "Classification is too long"),
   gradYear: z.number(),
   gender: z.string()
     .max(50, "Gender is too long"),

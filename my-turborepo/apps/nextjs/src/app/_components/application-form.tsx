@@ -24,7 +24,6 @@ import { toast } from "~/hooks/use-toast";
 import { TRPCClientError } from "@trpc/client";
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
-import { CreateApplicationSchema } from "@vanni/db/schema";
 
 /*
     First Name
@@ -75,6 +74,7 @@ interface AutocompleteInputProps {
     errors: FieldErrors;
     options: { name: string }[];
     placeholder?: string;
+    initQuery: string | undefined;
 }
 
 const FormInput: React.FC<FormInputProps> = ({ id, label, register, errors, name }) => {
@@ -112,14 +112,14 @@ const FormSelect: React.FC<FormSelectProps> = ({ id, label, register, errors, na
     );
 };
 
-const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ id, label, name, register, errors, options, placeholder = 'Search...' }) => {
-    const [searchQuery, setSearchQuery] = useState('');
+const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ id, label, name, register, errors, options, placeholder = 'Search...', initQuery = '' }) => {
+    const [searchQuery, setSearchQuery] = useState(initQuery);
     const [showResults, setShowResults] = useState(false);
-    const [selectedValue, setSelectedValue] = useState('');
+    const [selectedValue, setSelectedValue] = useState(initQuery);
 
     const visibleOptions = options.filter(option =>
         option.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    ).slice(0, 5);
 
     return (
         <div className='input-wrapper'>
@@ -133,7 +133,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ id, label, name, 
                 placeholder={placeholder}
                 {...register(name, {
                     onChange: event => {
-                        event.target.setAttribute('autocomplete', 'off');
+                        event.target.setAttribute('autocomplete', 'on');
                         setSearchQuery(event.target.value);
                         setShowResults(true);
                     },
@@ -165,110 +165,93 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ id, label, name, 
     );
 };
 
+const Loading = () => {
+    return (<div>
+        Hello, Loading
+    </div>);
+}
+
 export function ApplicationForm() {
+    const { data: importedValues, isLoading } = api.application.getApplicationByEventName.useQuery({ eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" });
+
     const { register, handleSubmit, formState: { errors, isDirty, isSubmitting } } = useForm<ApplicationSchema>({
         mode: "onSubmit",
-        // defaultValues: {
-        //     firstName: "",
-        //     lastName: "",
-        //     age: undefined,
-        //     country: "",
-        //     email: "",
-        //     school: "",
-        //     major: "",
-        //     classification: undefined,
-        //     gradYear: undefined,
-        //     gender: "",
-        //     race: "",
-        //     hackathonsAttended: "",
-        //     experience: undefined,
-        //     hasTeam: undefined,
-        //     eventSource: "",
-        //     shirtSize: undefined,
-        //     resume: undefined,
-        //     address: "",
-        //     references: "",
-        //     interest_one: "",
-        //     interest_two: "",
-        //     interest_three: "",
-        //     dietaryRestriction: "",
-        //     extraInfo: "",
-        //     liabilityWaiver: false
-        // },
-        // values
+        defaultValues: {
+            resume: "resume",
+        },
+        values: importedValues ? {
+            ...importedValues,
+            age: importedValues.age as ApplicationSchema['age'],
+            liabilityWaiver: false,
+        } : undefined,
         resetOptions: {
             keepDirtyValues: true, // user-interacted input will not be retained
             keepErrors: true,
         },
         resolver: zodResolver(applicationSchema),
-        // match it to an endpoint because it allows async or use values
     });
 
     const createApplication = api.application.create.useMutation();
+    const updateApplication = api.application.update.useMutation();
 
     const onSubmit: SubmitHandler<ApplicationSchema> = (data) => {
-        console.log("submitted");
         console.log(data);
         try {
-            // const createApplicationData = {
-            //     eventName: "Datathon",
-            //     ...data,
-            // };
-            const createApplicationData = {
-                eventName: "Datathon",
-                applicationData: {
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    age: data.age,
-                    country: data.country,
-                    email: data.email,
-                    phoneNumber: data.phoneNumber,
-                    school: data.school,
-                    major: data.major,
-                    classification: data.classification,
-                    gradYear: data.gradYear,
-                    gender: data.gender,
-                    race: data.race,
-                    resume: "resume",
-                    hackathonsAttended: data.hackathonsAttended,
-                    experience: data.experience,
-                    hasTeam: data.hasTeam,
-                    eventSource: data.eventSource,
-                    shirtSize: data.shirtSize,
-                    address: data.address,
-                    references: data.references || "",
-                    interestOne: data.interestOne,
-                    interestTwo: data.interestTwo,
-                    interestThree: data.interestThree,
-                    dietaryRestriction: data.dietaryRestriction,
-                    extraInfo: data.extraInfo,
-                }
-            };
+            if (!importedValues) {
+                const createApplicationData = {
+                    eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
+                    applicationData: {
+                        ...data,
+                    },
+                };
 
-            createApplication.mutate(createApplicationData, {
-                onSuccess: () => {
-                    toast({
-                        variant: "success",
-                        title: "Application submitted successfully!",
-                        description: "Your application has been received.",
-                    });
-                },
-                onError: (error) => {
-                    if (error instanceof TRPCClientError) {
+                createApplication.mutate(createApplicationData, {
+                    onSuccess: () => {
                         toast({
-                            variant: "destructive",
-                            title: "Submission failed",
-                            description: error.message,
+                            variant: "success",
+                            title: "Application submitted successfully!",
+                            description: "Your application has been received.",
                         });
-                    }
-                },
-            });
-
-            toast({
-                variant: "success",
-                title: "You're on the list!",
-                description: "Thanks for showing interest in the Fall 2024 Datathon.",
-            });
+                    },
+                    onError: (error) => {
+                        if (error instanceof TRPCClientError) {
+                            toast({
+                                variant: "destructive",
+                                title: "Submission failed",
+                                description: error.message,
+                            });
+                        }
+                    },
+                });
+            } else {
+                console.log("Updating")
+                const updateApplicationData = {
+                    id: importedValues.id,
+                    userId: importedValues.userId,
+                    eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
+                    application: {
+                        ...data,
+                    },
+                };
+                updateApplication.mutate(updateApplicationData, {
+                    onSuccess: () => {
+                        toast({
+                            variant: "success",
+                            title: "Application updated successfully!",
+                            description: "Your application has been received.",
+                        });
+                    },
+                    onError: (error) => {
+                        if (error instanceof TRPCClientError) {
+                            toast({
+                                variant: "destructive",
+                                title: "Update failed",
+                                description: error.message,
+                            });
+                        }
+                    },
+                });
+            }
         } catch (error) {
             if (error instanceof TRPCClientError) {
                 toast({
@@ -278,6 +261,10 @@ export function ApplicationForm() {
                 });
             }
         }
+    }
+
+    if (isLoading) {
+        return (<Loading />)
     }
 
     return (
@@ -314,6 +301,7 @@ export function ApplicationForm() {
                 errors={errors}
                 name="country"
                 options={countries}
+                initQuery={importedValues?.country}
             />
 
             <FormInput
@@ -339,6 +327,7 @@ export function ApplicationForm() {
                 errors={errors}
                 name="school"
                 options={schools}
+                initQuery={importedValues?.school}
             />
 
             <FormSelect

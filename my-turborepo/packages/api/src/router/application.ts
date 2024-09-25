@@ -6,6 +6,7 @@ import { Event } from "@vanni/db/schema";
 import { TRPCError } from "@trpc/server";
 import { and, eq } from "@vanni/db";
 
+
 export const applicationRouter = {
     create: publicProcedure
         .input(z.object({
@@ -44,12 +45,13 @@ export const applicationRouter = {
         .input(
             z.object({
                 id: z.string(),
+                userId: z.string(),
                 eventName: z.string(),
-                CreateApplicationSchema,
+                application: CreateApplicationSchema,
             })
         )
         .mutation(async ({ ctx, input }) => {
-            const { id, eventName, CreateApplicationSchema: data } = input;
+            const { id, userId, eventName, application } = input;
 
             if (ctx.session?.user == undefined) {
                 throw new TRPCError({
@@ -58,18 +60,18 @@ export const applicationRouter = {
                 });
             }
 
-            const application = await ctx.db.query.Application.findFirst({
-                where: eq(Application.id, id),
-            });
+            // const queryApplication = await ctx.db.query.Application.findFirst({
+            //     where: eq(Application.id, id),
+            // });
 
-            if (application == undefined) {
-                throw new TRPCError({
-                    code: "NOT_FOUND",
-                    message: "Application not found"
-                });
-            }
+            // if (application == undefined) {
+            //     throw new TRPCError({
+            //         code: "NOT_FOUND",
+            //         message: "Application not found"
+            //     });
+            // }
 
-            if (application.userId !== ctx.session.user.id) {
+            if (userId !== ctx.session.user.id) {
                 throw new TRPCError({
                     code: "FORBIDDEN",
                     message: "User does not have permission to update this application"
@@ -86,8 +88,9 @@ export const applicationRouter = {
                     message: "Event query was not successful"
                 });
             }
+            console.log(application);
 
-            return await ctx.db.update(Application).set(data).where(eq(Application.id, id));
+            return await ctx.db.update(Application).set(application).where(eq(Application.id, id));
         }),
     getApplicationByEventName: publicProcedure
         .input(z.object({ eventName: z.string() }))
