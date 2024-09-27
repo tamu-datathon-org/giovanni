@@ -39,7 +39,7 @@ export default function LoginPage() {
   return (
     <main className="font-XPfont bg-large-device flex h-screen w-screen items-center justify-center bg-cover bg-center bg-no-repeat">
         <DraggableComponent />
-      <div className="xpBorder flex w-2/5 flex-col items-center justify-center p-2">
+      <div className="flex flex-col xpBorder items-center justify-center p-2">
         <div className="flex w-full flex-row items-center justify-center">
           <div className="invisible w-full pr-2 lg:visible">
             {" "}
@@ -65,10 +65,10 @@ export default function LoginPage() {
             <span className="even:text-cyan-700">U</span> DATATHON{" "}
           </h1>
           <h1 className="text-5xl tracking-tight">Log In</h1>
-          <div className="w-full text-[#9c9c9c]">
-            <text className="">Post version 202.4</text>
-            <hr className="absolute left-0 h-0.5 w-2/5 rounded border-0 bg-[#9c9c9c] dark:bg-[#e4e3e4]"></hr>
-          </div>
+          {/*<div className="w-full text-[#9c9c9c]">*/}
+          {/*  <text className="">Post version 202.4</text>*/}
+          {/*  <hr className="absolute left-0 h-0.5 w-2/5 rounded border-0 bg-[#9c9c9c] dark:bg-[#e4e3e4]"></hr>*/}
+          {/*</div>*/}
           {/*<AuthShowcase />*/}
 
           <div className="w-1/2 pt-4">
