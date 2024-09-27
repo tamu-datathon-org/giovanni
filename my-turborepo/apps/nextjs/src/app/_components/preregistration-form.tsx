@@ -151,45 +151,45 @@ export const CreatePreregistrationForm = () => {
   );
 };
 
-export const DeletePreregistrationForm = () => {
-  interface FormData {
-    email: string;
-  }
+// export const DeletePreregistrationForm = () => {
+//   interface FormData {
+//     email: string;
+//   }
 
-  const [formData, setFormData] = useState<FormData>({
-    email: "",
-  });
+//   const [formData, setFormData] = useState<FormData>({
+//     email: "",
+//   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const { name, value } = e.target;
+//     setFormData((prevState) => ({
+//       ...prevState,
+//       [name]: value,
+//     }));
+//   };
 
-  const deletePreregistration = api.preregistration.delete.useMutation();
-  const handleDelete: MouseEventHandler<HTMLButtonElement> = (event) => {
-    event.preventDefault();
-    deletePreregistration.mutate(formData.email);
-  };
+//   const deletePreregistration = api.preregistration.delete.useMutation();
+//   const handleDelete: MouseEventHandler<HTMLButtonElement> = (event) => {
+//     event.preventDefault();
+//     deletePreregistration.mutate(formData.email);
+//   };
 
-  const cancelPreregistration = api.preregistration.cancel.useMutation();
-  const handleCancel: MouseEventHandler<HTMLButtonElement> = (event) => {
-    event.preventDefault();
-    cancelPreregistration.mutate(formData);
-  };
+//   const cancelPreregistration = api.preregistration.cancel.useMutation();
+//   const handleCancel: MouseEventHandler<HTMLButtonElement> = (event) => {
+//     event.preventDefault();
+//     cancelPreregistration.mutate(formData);
+//   };
 
-  return (
-    <>
-      <form className="bg-grey-700 flex w-1/2 flex-col items-center justify-center rounded text-center text-lg">
-        <label>
-          <span>Enter Email:</span>
-          <input type="text" name="email" onChange={handleChange} />
-        </label>
-        <button onClick={handleDelete}>Delete User</button>
-        <button onClick={handleCancel}>Cancel User</button>
-      </form>
-    </>
-  );
-};
+//   return (
+//     <>
+//       <form className="bg-grey-700 flex w-1/2 flex-col items-center justify-center rounded text-center text-lg">
+//         <label>
+//           <span>Enter Email:</span>
+//           <input type="text" name="email" onChange={handleChange} />
+//         </label>
+//         <button onClick={handleDelete}>Delete User</button>
+//         <button onClick={handleCancel}>Cancel User</button>
+//       </form>
+//     </>
+//   );
+// };
