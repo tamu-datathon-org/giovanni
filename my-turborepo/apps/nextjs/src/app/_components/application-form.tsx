@@ -17,6 +17,7 @@ import { useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import SchoolDropdown from "./schoolDropdown";
 import { Checkbox } from "~/components/ui/checkbox";
+import Title from "./title";
 /*
     First Name
     Last Name
@@ -111,7 +112,14 @@ export function ApplicationForm() {
         {/* Country */}
         <GenericDropdown register={register} name={"country"} label={"Country of Residence"} options={COUNTRIES} />
 
+        {/* Gender */}
+        <GenericDropdown register={register} name={"gender"} label={"What's your gender"} options={GENDER_OPTIONS} />
+
+        {/* Race */}
+        <GenericDropdown register={register} name={"race"} label={"What ethnicity do you identify with?"} options={RACE_OPTIONS} />
+
         {/* School */}
+        <Title text="School Info" className="m-1" />
         <SchoolDropdown register={register} name={"school"} label={"What school do you go to?"} options={schools} />
 
         {/* Major */}
@@ -123,14 +131,9 @@ export function ApplicationForm() {
         {/* Graduation Year */}
         <GenericDropdown register={register} name={"gradYear"} label={"What is your anticipated graduation year?"} options={GRADUATION_YEARS} />
 
-        {/* Gender */}
-        <GenericDropdown register={register} name={"gender"} label={"What's your gender"} options={GENDER_OPTIONS} />
-
-        {/* Race */}
-        <GenericDropdown register={register} name={"race"} label={"What race(s) do you identify with?"} options={RACE_OPTIONS} />
-
         {/* Figure out how to do other */}
         {/* Hackathons Attended */}
+        <Title text="Experience" className="m-1" />
         <GenericDropdown register={register} name={"hackathonsAttended"} label={"How many hackathons have you attended?"} options={HACKATHON_EXPERIENCE} />
 
         {/* Experience Level */}
@@ -152,11 +155,12 @@ export function ApplicationForm() {
         </div>
 
         {/* Address */}
-        <div className="pt-4">
+        {/* <div className="pt-4">
           <Label htmlFor="address" className="text-xl">Address:</Label>
           <Input id="address" type="text" {...register("address")} />
-        </div>
+        </div> */}
 
+        <Title text="General Info" className="m-1" />
         {/* References */}
         <div className="pt-4">
           <Label htmlFor="references" className="text-xl">Point us to anything you'd like us to look at while considering your application:</Label>
