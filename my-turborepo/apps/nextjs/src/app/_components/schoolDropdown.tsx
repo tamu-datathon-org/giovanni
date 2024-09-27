@@ -12,6 +12,10 @@ interface DropdownOption {
     schoolName: string;
 }
 
+
+function filter20Items(arr, query) {
+  return arr.filter((el) => el.toLowerCase().includes(query.toLowerCase())).slice(0,20);
+}
 interface SchoolDropdownProps {
     register: UseFormRegister<any>;
     name: string;
@@ -54,7 +58,7 @@ const SchoolDropdown: React.FC<SchoolDropdownProps> = ({
                         className="justify-between"
                     >
                         {value
-                            ? options.find((option) => option.schoolName === value)?.schoolName
+                            ? options.find((option) => option === value)
                             : "Select ..."}
                         <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -63,12 +67,12 @@ const SchoolDropdown: React.FC<SchoolDropdownProps> = ({
                     <Command>
                         <CommandInput placeholder={`Search ${name}...`} {...register(name)} />
                         <CommandList>
-                            <CommandEmpty>No framework found.</CommandEmpty>
+                            <CommandEmpty>School not found.</CommandEmpty>
                             <CommandGroup>
-                                {options.map((option, index) => (
+                                {filter20Items(options, value).map((option, index) => (
                                     <CommandItem
-                                        key={option.schoolName}
-                                        value={option.schoolName}
+                                        key={option}
+                                        value={option}
                                         onSelect={(currentValue) => {
                                             setValue(currentValue === value ? "" : currentValue)
                                             setOpen(false)
@@ -77,10 +81,10 @@ const SchoolDropdown: React.FC<SchoolDropdownProps> = ({
                                         <AiOutlineCheck
                                             className={cn(
                                                 "mr-2 h-4 w-4",
-                                                value === option.schoolName ? "opacity-100" : "opacity-0"
+                                                value === option ? "opacity-100" : "opacity-0"
                                             )}
                                         />
-                                        {option.schoolName}
+                                        {option}
                                     </CommandItem>
                                 ))}
                             </CommandGroup>

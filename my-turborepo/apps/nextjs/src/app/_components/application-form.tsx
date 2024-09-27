@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 import type { ApplicationSchema } from "../apply/validation";
 import { applicationSchema } from "../apply/validation";
-import schools from "./application-data/schools.json";
+import schoolsJson from "./application-data/schools.json";
 import './customCss.scss';
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -63,6 +63,7 @@ export function ApplicationForm() {
   };
   const [submitting, setSubmitting] = useState(false);
 
+  const schools = schoolsJson.map((entry, index) => (entry?.schoolName))
   return (
     <div className="flex justify-center w-3/5">
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg p-5 px-16">
