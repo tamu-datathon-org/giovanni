@@ -1,11 +1,12 @@
 import { Suspense } from "react";
+
 import { api } from "~/trpc/server";
+import { AuthShowcase } from "./_components/auth-showcase";
 import {
   CreatePostForm,
   PostCardSkeleton,
   PostList,
 } from "./_components/posts";
-import { AuthShowcase } from "./_components/auth-showcase";
 
 export const runtime = "edge";
 
@@ -35,6 +36,6 @@ export default function HomePage() {
           </Suspense>
         </div>
       </div>
-    </main >
+    </main>
   );
 }

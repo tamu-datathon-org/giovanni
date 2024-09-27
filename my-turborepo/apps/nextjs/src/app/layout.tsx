@@ -3,12 +3,13 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
 import { cn } from "@vanni/ui";
+
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
 
-import { env } from "~/env";
 import { Toaster } from "~/components/ui/toaster";
+import { env } from "~/env";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -49,8 +50,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         )}
       >
         <TRPCReactProvider>{props.children}</TRPCReactProvider>
-        <div className="absolute bottom-4 right-4">
-        </div>
+        <div className="absolute bottom-4 right-4"></div>
         <Toaster />
       </body>
     </html>
