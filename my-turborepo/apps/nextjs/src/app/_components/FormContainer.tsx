@@ -3,9 +3,9 @@ import { Button } from "@vanni/ui/button";
 import Image from "next/image";
 
 interface FormContainerProps {
-  onSubmit: React.FormEventHandler<HTMLFormElement>;
-  isSubmitting: boolean;
-  isDirty: boolean;
+  onSubmit?: React.FormEventHandler<HTMLFormElement>;
+  isSubmitting?: boolean;
+  isDirty?: boolean;
   children: React.ReactNode;
 }
 

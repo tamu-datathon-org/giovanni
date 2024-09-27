@@ -22,7 +22,7 @@ import FormContainer from "./FormContainer";
 
 // import IconList from "./IconList";
 
-function Lines() {
+export function Lines() {
   return (
     <div className="w-full pr-3">
       {" "}
@@ -39,7 +39,7 @@ function Lines() {
   );
 }
 
-function ExitButton() {
+export function ExitButton() {
   // This button is only there for visual purposes
   return (
     <Button className="compStyling">
@@ -48,7 +48,18 @@ function ExitButton() {
   );
 }
 
-function TitleText() {
+export function TAMUy2k() {
+  return (
+    <h1 className="p-10 pb-5 text-5xl md:text-6xl">
+      <span className="odd:text-teal-400">T</span>
+      <span className="even:text-cyan-700">A</span>
+      <span className="odd:text-teal-400 ">M</span>
+      <span className="even:text-cyan-700">U</span> Datathon
+    </h1>
+  );
+}
+
+export function TitleText() {
   return (
     <h1 className="p-10 pb-5 text-5xl md:text-6xl">
       <span className="odd:text-teal-400">T</span>
