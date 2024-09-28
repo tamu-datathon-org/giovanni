@@ -18,8 +18,8 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@vanni/ui/src/form";
+  FormMessage,Form,
+} from "@vanni/ui/form";
 
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
@@ -39,8 +39,10 @@ import {
   SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
 import GenericCombobox from "./genericCombobox";
-import SchoolDropdown from "./schoolDropdown";
+import SchoolCombobox from "./schoolDropdown";
 import Title from "./title";
+
+
 
 /*
     First Name
@@ -87,7 +89,7 @@ export function ApplicationForm() {
   };
   const [submitting, setSubmitting] = useState(false);
 
-  const schools = schoolsJson.map((entry, index) => entry.schoolName);
+  const SCHOOL_OPTIONS = schoolsJson.map((entry, index) => ({value: entry.schoolName, label:entry.schoolName}));
   return (
     <div className="flex w-3/5 justify-center">
       {/*TODO: Add shadcn form component so that the code looks nicer*/}
@@ -205,11 +207,11 @@ export function ApplicationForm() {
 
           {/* School */}
           <Title text="School Info" className="m-1" />
-          <SchoolDropdown
-            watch={watch}
+          <GenericCombobox
             name={"school"}
             label={"What school do you go to?"}
-            options={schools}
+            options={SCHOOL_OPTIONS}
+            filter
           />
 
           {/* Major */}
@@ -273,86 +275,86 @@ export function ApplicationForm() {
             options={SHIRT_SIZES}
           />
 
-          {/* Resume */}
-          <div className="pt-4">
-            <Label htmlFor="resume" className="text-xl">
-              Upload Resume (PDF only):
-            </Label>
-            <Input
-              id="resume"
-              type="file"
-              accept="application/pdf"
-              className="border"
-              {...register("resume")}
-            />
-          </div>
+        {/*  /!* Resume *!/*/}
+        {/*  <div className="pt-4">*/}
+        {/*    <Label htmlFor="resume" className="text-xl">*/}
+        {/*      Upload Resume (PDF only):*/}
+        {/*    </Label>*/}
+        {/*    <Input*/}
+        {/*      id="resume"*/}
+        {/*      type="file"*/}
+        {/*      accept="application/pdf"*/}
+        {/*      className="border"*/}
+        {/*      {...register("resume")}*/}
+        {/*    />*/}
+        {/*  </div>*/}
 
-          {/* Address */}
-          {/* <div className="pt-4">
-          <Label htmlFor="address" className="text-xl">Address:</Label>
-          <Input id="address" type="text" {...register("address")} />
-        </div> */}
+        {/*  /!* Address *!/*/}
+        {/*  /!* <div className="pt-4">*/}
+        {/*  <Label htmlFor="address" className="text-xl">Address:</Label>*/}
+        {/*  <Input id="address" type="text" {...register("address")} />*/}
+        {/*</div> *!/*/}
 
-          <Title text="General Info" className="m-1" />
-          {/* References */}
-          <div className="pt-4">
-            <Label htmlFor="references" className="text-xl">
-              Point us to anything you'd like us to look at while considering
-              your application:
-            </Label>
-            <Input id="references" type="text" {...register("references")} />
-          </div>
+        {/*  <Title text="General Info" className="m-1" />*/}
+        {/*  /!* References *!/*/}
+        {/*  <div className="pt-4">*/}
+        {/*    <Label htmlFor="references" className="text-xl">*/}
+        {/*      Point us to anything you'd like us to look at while considering*/}
+        {/*      your application:*/}
+        {/*    </Label>*/}
+        {/*    <Input id="references" type="text" {...register("references")} />*/}
+        {/*  </div>*/}
 
-          {/* Tell us your best programming joke. */}
-          <div className="pt-4">
-            <Label htmlFor="joke" className="text-xl">
-              Tell us your best programming joke.
-            </Label>
-            <Input id="joke" type="text" {...register("joke")} />
-          </div>
-          {/* What is the one thing you'd build if you had unlimited resources? */}
-          {/* What drives your interest in being a part of TAMU Datathon?  */}
+        {/*  /!* Tell us your best programming joke. *!/*/}
+        {/*  <div className="pt-4">*/}
+        {/*    <Label htmlFor="joke" className="text-xl">*/}
+        {/*      Tell us your best programming joke.*/}
+        {/*    </Label>*/}
+        {/*    <Input id="joke" type="text" {...register("joke")} />*/}
+        {/*  </div>*/}
+        {/*  /!* What is the one thing you'd build if you had unlimited resources? *!/*/}
+        {/*  /!* What drives your interest in being a part of TAMU Datathon?  *!/*/}
 
-          {/* Dietry Restrictions */}
-          <div className="pt-4">
-            <Label htmlFor="dietaryRestriction" className="text-xl">
-              Do you require any special accommodations at the event? Please
-              list all dietary restrictions here.
-            </Label>
-            <Input
-              id="dietaryRestriction"
-              type="text"
-              {...register("dietaryRestriction")}
-            />
-          </div>
+        {/*  /!* Dietry Restrictions *!/*/}
+        {/*  <div className="pt-4">*/}
+        {/*    <Label htmlFor="dietaryRestriction" className="text-xl">*/}
+        {/*      Do you require any special accommodations at the event? Please*/}
+        {/*      list all dietary restrictions here.*/}
+        {/*    </Label>*/}
+        {/*    <Input*/}
+        {/*      id="dietaryRestriction"*/}
+        {/*      type="text"*/}
+        {/*      {...register("dietaryRestriction")}*/}
+        {/*    />*/}
+        {/*  </div>*/}
 
-          {/* Extra Info */}
-          <div className="pt-4">
-            <Label htmlFor="extraInfo" className="text-xl">
-              Anything else you would like us to know?
-            </Label>
-            <Input id="extraInfo" type="text" {...register("extraInfo")} />
-          </div>
+        {/*  /!* Extra Info *!/*/}
+        {/*  <div className="pt-4">*/}
+        {/*    <Label htmlFor="extraInfo" className="text-xl">*/}
+        {/*      Anything else you would like us to know?*/}
+        {/*    </Label>*/}
+        {/*    <Input id="extraInfo" type="text" {...register("extraInfo")} />*/}
+        {/*  </div>*/}
 
-          {/* Liability Waiver */}
-          <div className="flex items-center space-x-2 pt-4">
-            <Checkbox id="liabilityWaiver" {...register("liabilityWaiver")} />
-            <Label htmlFor="liabilityWaiver" className="text-xl">
-              Liability Waiver
-            </Label>
-          </div>
+        {/*  /!* Liability Waiver *!/*/}
+        {/*  <div className="flex items-center space-x-2 pt-4">*/}
+        {/*    <Checkbox id="liabilityWaiver" {...register("liabilityWaiver")} />*/}
+        {/*    <Label htmlFor="liabilityWaiver" className="text-xl">*/}
+        {/*      Liability Waiver*/}
+        {/*    </Label>*/}
+        {/*  </div>*/}
 
-          {/* Submit */}
-          <div className="pt-4 text-4xl">
-            {!submitting && <Button type="submit">Submit</Button>}
-            {submitting && (
-              <Button type="submit" disabled>
-                {" "}
-                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                Please wait ...
-              </Button>
-            )}
-          </div>
+        {/*  /!* Submit *!/*/}
+        {/*  <div className="pt-4 text-4xl">*/}
+        {/*    {!submitting && <Button type="submit">Submit</Button>}*/}
+        {/*    {submitting && (*/}
+        {/*      <Button type="submit" disabled>*/}
+        {/*        {" "}*/}
+        {/*        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />*/}
+        {/*        Please wait ...*/}
+        {/*      </Button>*/}
+        {/*    )}*/}
+        {/*  </div>*/}
         </form>
       </Form>
     </div>

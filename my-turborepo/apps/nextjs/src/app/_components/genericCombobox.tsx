@@ -1,5 +1,5 @@
 import type { UseFormRegister } from "react-hook-form";
-import React from "react";
+import React, {ElementRef, useMemo, useRef} from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BsChevronExpand } from "react-icons/bs";
@@ -10,7 +10,8 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "@vanni/ui/src/form";
+    FormLabel,
+} from "@vanni/ui/form";
 
 import type { ApplicationSchema } from "~/app/apply/validation";
 import { Button } from "~/components/ui/button";
@@ -44,19 +45,33 @@ interface DropdownOption {
 }
 
 interface GenericDropdownProps {
-  register: UseFormRegister<any>;
-  name: string;
+  name: keyof ApplicationSchema;
   label?: string;
   options: DropdownOption[];
   defaultOption?: DropdownOption;
+  filter?: boolean;
 }
 
 const GenericCombobox: React.FC<GenericDropdownProps> = ({
   name,
   label,
   options,
+    filter,
 }) => {
   const form = useFormContext<ApplicationSchema>();
+  const commandInputRef = useRef<ElementRef<typeof CommandInput>>(null);
+
+  const filter20Items = useMemo(() => {
+  const query = commandInputRef.current?.value;
+  console.log(query);
+
+  if(filter) {
+  return options
+    .filter(({value}) => value.toLowerCase().includes(query ? query.toLowerCase() : ""))
+    .slice(0, 20);}
+  return options;
+  }, [commandInputRef.current?.value, options]
+)
   return (
     //Basic Dropdown
     // <div className='flex flex-col'>
@@ -87,7 +102,6 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                 <Button
                   variant="outline"
                   role="combobox"
-                  aria-expanded={open}
                   className="justify-between"
                 >
                   {field.value
@@ -100,17 +114,17 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
             </PopoverTrigger>
             <PopoverContent className=" w-fit p-0">
               <Command>
-                <CommandInput placeholder={`Search ${name}...`} />
+                <CommandInput placeholder={`Search ${name}...`} ref={commandInputRef} />
                 <CommandList>
                   {/*TODO: Change the line below*/}
                   <CommandEmpty>No framework found.</CommandEmpty>
                   <CommandGroup>
-                    {options.map((option) => (
+                    {filter20Items.map((option) => (
                       <CommandItem
                         key={option.value}
                         value={option.value}
                         onSelect={(currentValue) => {
-                          form.setValue(
+                          form.setValue(name,
                             currentValue === field.value ? "" : currentValue,
                           );
                           // setOpen(false);
