@@ -263,8 +263,8 @@ export function ApplicationForm() {
 
           {/* Team Members */}
           <GenericCombobox
-            name={"teamMembers"}
-            label={"How many team members do you have?"}
+            name={"eventSource"}
+            label={"How did you hear about TAMU Datathon?"}
             options={HEARD_ABOUT_OPTIONS}
           />
 

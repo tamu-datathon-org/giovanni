@@ -61,17 +61,17 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   const form = useFormContext<ApplicationSchema>();
   const commandInputRef = useRef<ElementRef<typeof CommandInput>>(null);
 
-  const filter20Items = useMemo(() => {
-  const query = commandInputRef.current?.value;
-  console.log(query);
+  function filter20Items() {
+    const query = commandInputRef.current?.value;
+    console.log("thing: ", query);
 
-  if(filter) {
-  return options
-    .filter(({value}) => value.toLowerCase().includes(query ? query.toLowerCase() : ""))
-    .slice(0, 20);}
-  return options;
-  }, [commandInputRef.current?.value, options]
-)
+    if(filter) {
+    return options
+      .filter(({value}) => value.toLowerCase().includes(query ? query.toLowerCase() : ""))
+      .slice(0, 20);}
+    return options;
+  }
+
   return (
     //Basic Dropdown
     // <div className='flex flex-col'>
@@ -119,7 +119,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                   {/*TODO: Change the line below*/}
                   <CommandEmpty>No framework found.</CommandEmpty>
                   <CommandGroup>
-                    {filter20Items.map((option) => (
+                    {filter20Items().map((option) => (
                       <CommandItem
                         key={option.value}
                         value={option.value}
