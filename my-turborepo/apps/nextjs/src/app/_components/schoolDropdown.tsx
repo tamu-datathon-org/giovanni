@@ -43,7 +43,7 @@ const SchoolDropdown: React.FC<SchoolDropdownProps> = ({
         //     </Select>
         // </div>
 
-        <div className='flex flex-col'>
+        <div className='flex flex-col relative'>
             {label && <Label htmlFor={name} className='text-xl pt-4'>{label}</Label>}
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
@@ -59,7 +59,7 @@ const SchoolDropdown: React.FC<SchoolDropdownProps> = ({
                         <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className=" w-fit p-0">
+                <PopoverContent className="w-fit p-0 top-0" align='start'>
                     <Command>
                         <CommandInput placeholder={`Search ${name}...`} {...register(name)} />
                         <CommandList>
