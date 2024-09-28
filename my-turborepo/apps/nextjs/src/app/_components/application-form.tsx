@@ -24,6 +24,8 @@ import { toast } from "~/hooks/use-toast";
 import { TRPCClientError } from "@trpc/client";
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
+import { upload } from '@vercel/blob/client';
+
 
 /*
     First Name
@@ -55,6 +57,7 @@ interface FormInputProps {
     register: UseFormRegister<ApplicationSchema>;
     errors: FieldErrors;
     name: keyof ApplicationSchema;
+    defaultValue?: string;
 }
 
 interface FormSelectProps {
@@ -64,6 +67,7 @@ interface FormSelectProps {
     errors: FieldErrors;
     name: keyof ApplicationSchema;
     options: { value: string | number; label: string }[];
+    defaultValue?: string;
 }
 
 interface AutocompleteInputProps {
@@ -77,11 +81,11 @@ interface AutocompleteInputProps {
     initQuery: string | undefined;
 }
 
-const FormInput: React.FC<FormInputProps> = ({ id, label, register, errors, name }) => {
+const FormInput: React.FC<FormInputProps> = ({ id, label, register, errors, name, defaultValue }) => {
     return (
         <div>
             <label htmlFor={id}>{label}</label>
-            <input id={id} type="text" {...register(name)} />
+            <input defaultValue={defaultValue} id={id} type="text" {...register(name)} />
             {errors[name]?.message && typeof errors[name].message === 'string' && (
                 <div>
                     {errors[name].message}
@@ -91,11 +95,11 @@ const FormInput: React.FC<FormInputProps> = ({ id, label, register, errors, name
     );
 };
 
-const FormSelect: React.FC<FormSelectProps> = ({ id, label, register, errors, name, options }) => {
+const FormSelect: React.FC<FormSelectProps> = ({ id, label, register, errors, name, options, defaultValue }) => {
     return (
         <div>
             <label htmlFor={id}>{label}</label>
-            <select id={id} {...register(name)}>
+            <select id={id} {...register(name)} defaultValue={defaultValue}>
                 <option value=''>---------</option>
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -172,18 +176,22 @@ const Loading = () => {
 }
 
 export function ApplicationForm() {
-    const { data: importedValues, isLoading } = api.application.getApplicationByEventName.useQuery({ eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" });
+    const { data: importedValues, isLoading } = api.application.getApplicationByEventName.useQuery(
+        { eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" },
+        {
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+            retry: 1, // Retry failed requests once
+        }
+    );
 
     const { register, handleSubmit, formState: { errors, isDirty, isSubmitting } } = useForm<ApplicationSchema>({
         mode: "onSubmit",
         defaultValues: {
-            resume: "resume",
-        },
-        values: importedValues ? {
-            ...importedValues,
-            age: importedValues.age as ApplicationSchema['age'],
+            resumeFile: null,
             liabilityWaiver: false,
-        } : undefined,
+        },
+        ...importedValues?.app,
         resetOptions: {
             keepDirtyValues: true, // user-interacted input will not be retained
             keepErrors: true,
@@ -194,72 +202,82 @@ export function ApplicationForm() {
     const createApplication = api.application.create.useMutation();
     const updateApplication = api.application.update.useMutation();
 
-    const onSubmit: SubmitHandler<ApplicationSchema> = (data) => {
-        console.log(data);
-        try {
-            if (!importedValues) {
-                const createApplicationData = {
-                    eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
-                    applicationData: {
-                        ...data,
-                    },
-                };
+    const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
+        let newBlob = null;
+        if (data.resumeFile) {
+            newBlob = await upload(data.resumeFile.name, data.resumeFile, {
+                access: 'public',
+                contentType: 'application/pdf',
+                handleUploadUrl: '/api/resume'
+            });
+        }
 
-                createApplication.mutate(createApplicationData, {
-                    onSuccess: () => {
-                        toast({
-                            variant: "success",
-                            title: "Application submitted successfully!",
-                            description: "Your application has been received.",
-                        });
-                    },
-                    onError: (error) => {
-                        if (error instanceof TRPCClientError) {
-                            toast({
-                                variant: "destructive",
-                                title: "Submission failed",
-                                description: error.message,
-                            });
-                        }
-                    },
-                });
-            } else {
-                console.log("Updating")
-                const updateApplicationData = {
-                    id: importedValues.id,
-                    userId: importedValues.userId,
-                    eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
-                    application: {
-                        ...data,
-                    },
-                };
-                updateApplication.mutate(updateApplicationData, {
-                    onSuccess: () => {
-                        toast({
-                            variant: "success",
-                            title: "Application updated successfully!",
-                            description: "Your application has been received.",
-                        });
-                    },
-                    onError: (error) => {
-                        if (error instanceof TRPCClientError) {
-                            toast({
-                                variant: "destructive",
-                                title: "Update failed",
-                                description: error.message,
-                            });
-                        }
-                    },
-                });
-            }
-        } catch (error) {
-            if (error instanceof TRPCClientError) {
+        console.log(data);
+        if (!importedValues?.app) {
+            if (newBlob == null) {
                 toast({
                     variant: "destructive",
-                    title: error.data.code,
-                    description: error.message,
+                    title: "Submission failed",
+                    description: "Resume file is required.",
                 });
             }
+            const createApplicationData = {
+                eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
+                resumeUrl: newBlob?.url as string,
+                applicationData: {
+                    ...data,
+                },
+            };
+
+            await createApplication.mutateAsync(createApplicationData, {
+                onSuccess: () => {
+                    toast({
+                        variant: "success",
+                        title: "Application submitted successfully!",
+                        description: "Your application has been received.",
+                    });
+                },
+                onError: (error) => {
+                    if (error instanceof TRPCClientError) {
+                        toast({
+                            variant: "destructive",
+                            title: "Submission failed",
+                            description: error.message,
+                        });
+                    }
+                },
+            });
+        } else {
+            console.log("Updating")
+
+            const updateApplicationData = {
+                id: importedValues.app.id,
+                userId: importedValues.app.userId,
+                resumeUrl: newBlob?.url as string | null,
+                eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
+                application: {
+                    ...data,
+                },
+            };
+
+            await updateApplication.mutateAsync(updateApplicationData, {
+                onSuccess: () => {
+                    toast({
+                        variant: "success",
+                        title: "Application updated successfully!",
+                        description: "Your application has been received.",
+                    });
+                },
+                onError: (error) => {
+                    if (error instanceof TRPCClientError) {
+                        toast({
+                            variant: "destructive",
+                            title: "Update failed",
+                            description: error.message,
+                        });
+                    }
+                },
+            });
         }
     }
 
@@ -274,6 +292,7 @@ export function ApplicationForm() {
                 label="First Name:"
                 register={register}
                 errors={errors}
+                defaultValue={importedValues?.app?.firstName}
                 name="firstName"
             />
 
@@ -282,6 +301,7 @@ export function ApplicationForm() {
                 label="Last Name:"
                 register={register}
                 errors={errors}
+                defaultValue={importedValues?.app?.lastName}
                 name="lastName"
             />
 
@@ -291,6 +311,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="age"
+                defaultValue={importedValues?.app?.age}
                 options={age.options}
             />
 
@@ -301,7 +322,7 @@ export function ApplicationForm() {
                 errors={errors}
                 name="country"
                 options={countries}
-                initQuery={importedValues?.country}
+                initQuery={importedValues?.app?.country}
             />
 
             <FormInput
@@ -309,6 +330,7 @@ export function ApplicationForm() {
                 label="Email:"
                 register={register}
                 errors={errors}
+                defaultValue={importedValues?.app?.email}
                 name="email"
             />
 
@@ -317,6 +339,7 @@ export function ApplicationForm() {
                 label="Phone Number:"
                 register={register}
                 errors={errors}
+                defaultValue={importedValues?.app?.phoneNumber}
                 name="phoneNumber"
             />
 
@@ -327,7 +350,7 @@ export function ApplicationForm() {
                 errors={errors}
                 name="school"
                 options={schools}
-                initQuery={importedValues?.school}
+                initQuery={importedValues?.app?.school}
             />
 
             <FormSelect
@@ -336,6 +359,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="major"
+                defaultValue={importedValues?.app?.major}
                 options={major.options}
             />
 
@@ -345,6 +369,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="classification"
+                defaultValue={importedValues?.app?.classification}
                 options={classification.options}
             />
 
@@ -354,6 +379,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="gradYear"
+                defaultValue={importedValues?.app?.gradYear as unknown as string}
                 options={gradYear.options}
             />
 
@@ -363,6 +389,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="gender"
+                defaultValue={importedValues?.app?.gender}
                 options={gender.options}
             />
 
@@ -372,6 +399,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="race"
+                defaultValue={importedValues?.app?.race}
                 options={race.options}
             />
 
@@ -381,6 +409,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="hackathonsAttended"
+                defaultValue={importedValues?.app?.hackathonsAttended}
                 options={hackathonAttended.options}
             />
 
@@ -390,6 +419,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="experience"
+                defaultValue={importedValues?.app?.experience}
                 options={experience.options}
             />
 
@@ -399,6 +429,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="hasTeam"
+                defaultValue={importedValues?.app?.hasTeam}
                 options={[
                     { value: "No", label: 'I do not have a team' },
                     { value: "Yes", label: 'I do have a team' }
@@ -411,6 +442,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="eventSource"
+                defaultValue={importedValues?.app?.eventSource}
                 options={eventSource.options.map((eventSourceOption) => ({ value: eventSourceOption.value, label: eventSourceOption.label }))}
             />
 
@@ -420,6 +452,7 @@ export function ApplicationForm() {
                 register={register}
                 errors={errors}
                 name="shirtSize"
+                defaultValue={importedValues?.app?.shirtSize}
                 options={shirtSize.options.map((shirtSizeOption) => ({ value: shirtSizeOption.value, label: shirtSizeOption.label }))}
             />
 
@@ -428,14 +461,31 @@ export function ApplicationForm() {
                 label="Address:"
                 register={register}
                 errors={errors}
+                defaultValue={importedValues?.app?.address}
                 name="address"
             />
+
+            <input
+                type="file"
+                {...register("resumeFile", {
+                    onChange: (e) => {
+                        const file = e.target.files ? e.target.files[0] : null;
+                    },
+                })}
+            />
+
+            {errors.resumeFile?.message && typeof errors.resumeFile.message === 'string' && (
+                <div>
+                    {errors.resumeFile.message}
+                </div>
+            )}
 
             <FormInput
                 id="references"
                 label="Point us to anything you'd like us to look at while considering your application:"
                 register={register}
                 errors={errors}
+                defaultValue={importedValues?.app?.references}
                 name="references"
             />
 
@@ -444,6 +494,7 @@ export function ApplicationForm() {
                 label="Tell us your best programming joke:"
                 register={register}
                 errors={errors}
+                defaultValue={importedValues?.app?.interestOne}
                 name="interestOne"
             />
 
@@ -452,6 +503,7 @@ export function ApplicationForm() {
                 label="What is the one thing you'd build if you had unlimited resources?"
                 register={register}
                 errors={errors}
+                defaultValue={importedValues?.app?.interestTwo}
                 name="interestTwo"
             />
 
@@ -460,6 +512,7 @@ export function ApplicationForm() {
                 label="What drives your interest in being a part of TAMU Datathon?"
                 register={register}
                 errors={errors}
+                defaultValue={importedValues?.app?.interestThree}
                 name="interestThree"
             />
 
@@ -468,6 +521,7 @@ export function ApplicationForm() {
                 label="Do you require any special accommodations at the event? Please list all dietary restrictions here."
                 register={register}
                 errors={errors}
+                defaultValue={importedValues?.app?.dietaryRestriction ?? undefined}
                 name="dietaryRestriction"
             />
 
@@ -476,6 +530,7 @@ export function ApplicationForm() {
                 label="Anything else you would like us to know?"
                 register={register}
                 errors={errors}
+                defaultValue={importedValues?.app?.extraInfo ?? undefined}
                 name="extraInfo"
             />
 

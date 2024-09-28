@@ -70,10 +70,6 @@ export const CreatePreregistrationSchema = createInsertSchema(Preregistration, {
   expiresAt: true,
 })
 
-export const UserRelations = relations(User, ({ many }) => ({
-  accounts: many(Account),
-}));
-
 export const Account = pgTable(
   "account",
   {
@@ -155,7 +151,6 @@ export const UserRoleRelations = relations(UserRole, ({ one }) => ({
   role: one(Role, { fields: [UserRole.roleId], references: [Role.id] }),
 }));
 
-
 export const Application = pgTable("application", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
   userId: uuid("user_id")
@@ -179,7 +174,9 @@ export const Application = pgTable("application", {
   firstName: varchar("first_name", { length: 50 }).notNull(),
   lastName: varchar("last_name", { length: 50 }).notNull(),
   email: varchar("email", { length: 50 }).notNull(),
-  age: varchar("age", { length: 50 }).notNull(),
+  age: varchar("age", { length: 50 })
+    // .$type<"16-" | "17" | "18" | "19" | "20" | "21" | "22" | "23" | "24+" | "">()
+    .notNull(),
   country: varchar("country", { length: 100 }).notNull(),
   phoneNumber: varchar("phone_number", { length: 25 }).notNull(),
   school: varchar("school", { length: 100 }).notNull(),
@@ -188,18 +185,17 @@ export const Application = pgTable("application", {
   gradYear: integer("grad_year").notNull(),
   gender: varchar("gender", { length: 50 }).notNull(),
   hasTeam: varchar("has_team", { length: 50 })
-    .$type<"Yes" | "No">()
+    // .$type<"Yes" | "No">()
     .notNull(),
   race: varchar("race", { length: 50 }).notNull(),
   hackathonsAttended: varchar("hackathons_attended", { length: 50 }).notNull(),
   experience: varchar("experience", { length: 50 })
-    .$type<"Beginner" | "Intermediate" | "Advanced">()
+    // .$type<"Beginner" | "Intermediate" | "Advanced">()
     .notNull(),
   eventSource: varchar("event_source", { length: 100 }).notNull(),
   shirtSize: varchar("shirt_size", { length: 25 })
-    .$type<"S" | "M" | "L" | "XL" | "XXL">()
+    // .$type<"S" | "M" | "L" | "XL" | "XXL">()
     .notNull(),
-  resume: text("resume").notNull(),
   address: varchar("address", { length: 100 }).notNull(),
   references: varchar("references", { length: 255 }).notNull(),
   interestOne: varchar("interest_one", { length: 500 }).notNull(),
@@ -209,6 +205,23 @@ export const Application = pgTable("application", {
   extraInfo: varchar("extra_info", { length: 255 }),
 });
 
+export const UserResume = pgTable("user_resume", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => User.id, { onDelete: "cascade" }),
+  resumeUrl: text("resume_url").notNull(),
+});
+
+export const UserRelations = relations(User, ({ many, one }) => ({
+  accounts: many(Account),
+  userResume: one(UserResume, { fields: [User.id], references: [UserResume.userId] }),
+}));
+
+export const UserResumeRelations = relations(UserResume, ({ one }) => ({
+  user: one(User, { fields: [UserResume.userId], references: [User.id] }),
+}));
+
 const phoneRegex = /^([+][0-9]+)?[\s]?([(]?[0-9]{3}[)]?)[-\s]?([0-9]{3})[-\s]?([0-9]{4})$/
 
 export const CreateApplicationSchema = createInsertSchema(Application, {
@@ -216,7 +229,9 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .max(50, "First Name is too long"),
   lastName: z.string()
     .max(50, "Last Name is too long"),
-  age: z.enum(["16-", "17", "18", "19", "20", "21", "22", "23", "24+"]),
+  // age: z.string()
+  // .max(3, "Age is too long"),
+  age: z.string(z.enum(["16-", "17", "18", "19", "20", "21", "22", "23", "24+"])),
   country: z.string()
     .max(50, "Country is too long"),
   email: z.string()
@@ -239,12 +254,17 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .max(50, "Race is too long"),
   hackathonsAttended: z.string()
     .max(50, "Hackathons Attended is too long"),
-  experience: z.enum(["Beginner", "Intermediate", "Advanced"]),
-  hasTeam: z.enum(["No", "Yes"]),
+  experience: z.string()
+    .max(50, "Experience is too long"),
+  // experience: z.enum(["Beginner", "Intermediate", "Advanced"]),
+  hasTeam: z.string()
+    .max(3, "Has Team is too long"),
+  // hasTeam: z.enum(["No", "Yes"]),
   eventSource: z.string()
     .max(100, "Event Source is too long"),
-  shirtSize: z.enum(["S", "M", "L", "XL", "XXL"]),
-  resume: z.string(),
+  shirtSize: z.string()
+    .max(3, "Shirt Size is too long"),
+  // shirtSize: z.enum(["S", "M", "L", "XL", "XXL"]),
   address: z.string()
     .max(100, "Address is too long"),
   references: z.string(),
@@ -256,10 +276,12 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .max(500, "Interest Three is too long"),
   dietaryRestriction: z.string()
     .max(255, "Dietary Restriction is too long")
-    .optional(),
+    .optional()
+    .nullable(),
   extraInfo: z.string()
     .max(255, "Extra Info is too long")
-    .optional(),
+    .optional()
+    .nullable(),
 }).omit({
   id: true,
   userId: true,
@@ -267,4 +289,11 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
   status: true,
   createdAt: true,
   updatedAt: true,
+});
+
+export const CreateUserResumeSchema = createInsertSchema(UserResume, {
+  resumeUrl: z.string().url("Invalid URL format"),
+}).omit({
+  id: true,
+  userId: true,
 });

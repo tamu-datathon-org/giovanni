@@ -1,6 +1,7 @@
 import { ApplicationForm } from "~/app/_components/application-form";
 
 export default async function Page() {
+
   return (
     <>
       <div className="mainContent">
