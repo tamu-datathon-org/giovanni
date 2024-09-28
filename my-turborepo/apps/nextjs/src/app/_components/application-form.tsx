@@ -25,6 +25,7 @@ import { TRPCClientError } from "@trpc/client";
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
 import { upload } from '@vercel/blob/client';
+import { CodeSandboxLogoIcon } from "@radix-ui/react-icons";
 
 
 /*
@@ -203,27 +204,47 @@ export function ApplicationForm() {
     const updateApplication = api.application.update.useMutation();
 
     const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
-        let newBlob = null;
+        let blob_name = undefined;
+        let blob_url = undefined;
+
         if (data.resumeFile) {
-            newBlob = await upload(data.resumeFile.name, data.resumeFile, {
+            // console.log("Uploading")
+            await upload(data.resumeFile.name, data.resumeFile, {
                 access: 'public',
                 contentType: 'application/pdf',
                 handleUploadUrl: '/api/resume'
+            }).then((blob) => {
+                blob_name = data.resumeFile?.name;
+                blob_url = blob.url;
+                return blob;
+            }).catch((error) => {
+                toast({
+                    variant: "destructive",
+                    title: "Resume Failed to Upload",
+                    description: error.message,
+                });
             });
+        } else {
+            blob_name = importedValues?.resume?.resumeName;
+            blob_url = importedValues?.resume?.resumeUrl;
+        }
+
+        if (!blob_name || !blob_url) {
+            toast({
+                variant: "destructive",
+                title: "Submission failed",
+                description: "Resume file is required.",
+            });
+            return;
         }
 
         console.log(data);
-        if (!importedValues?.app) {
-            if (newBlob == null) {
-                toast({
-                    variant: "destructive",
-                    title: "Submission failed",
-                    description: "Resume file is required.",
-                });
-            }
+        if (!importedValues) {
+
             const createApplicationData = {
                 eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
-                resumeUrl: newBlob?.url as string,
+                resumeUrl: blob_url as string,
+                resumeName: blob_name as string,
                 applicationData: {
                     ...data,
                 },
@@ -248,12 +269,12 @@ export function ApplicationForm() {
                 },
             });
         } else {
-            console.log("Updating")
-
+            // console.log("Updating")
             const updateApplicationData = {
                 id: importedValues.app.id,
                 userId: importedValues.app.userId,
-                resumeUrl: newBlob?.url as string | null,
+                resumeUrl: blob_url as string,
+                resumeName: blob_name as string,
                 eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
                 application: {
                     ...data,
@@ -465,20 +486,21 @@ export function ApplicationForm() {
                 name="address"
             />
 
-            <input
-                type="file"
-                {...register("resumeFile", {
-                    onChange: (e) => {
-                        const file = e.target.files ? e.target.files[0] : null;
-                    },
-                })}
-            />
+            <div>
+                <label>
+                    Current Resume: {importedValues?.resume?.resumeName || 'None'}
+                </label>
+                <input
+                    type="file"
+                    {...register("resumeFile")}
+                />
 
-            {errors.resumeFile?.message && typeof errors.resumeFile.message === 'string' && (
-                <div>
-                    {errors.resumeFile.message}
-                </div>
-            )}
+                {errors.resumeFile?.message && typeof errors.resumeFile.message === 'string' && (
+                    <div>
+                        {errors.resumeFile.message}
+                    </div>
+                )}
+            </div>
 
             <FormInput
                 id="references"

@@ -4,12 +4,14 @@ import { z } from "zod";
 import { Event } from "@vanni/db/schema";
 import { TRPCError } from "@trpc/server";
 import { and, eq } from "@vanni/db";
+import { del } from "@vercel/blob";
 
 export const applicationRouter = {
     create: protectedProcedure
         .input(z.object({
             eventName: z.string(),
-            resumeUrl: z.string().url().nullable(),
+            resumeUrl: z.string().url(),
+            resumeName: z.string(),
             applicationData: CreateApplicationSchema,
         }))
         .mutation(async ({ ctx, input }) => {
@@ -33,17 +35,30 @@ export const applicationRouter = {
                 })
             }
 
-            if (input.resumeUrl == null) {
+            const resume = await ctx.db.query.UserResume.findFirst({
+                where: eq(UserResume.userId, ctx.session.user.id),
+            });
+
+            // No resume at all
+            if (!resume && (input.resumeUrl == null || input.resumeName == "")) {
                 throw new TRPCError({
                     code: "INTERNAL_SERVER_ERROR",
-                    message: "Resume URL is null"
+                    message: "Resume URL or Resume Name is null"
                 })
             }
 
-            await ctx.db.insert(UserResume).values({
-                userId: ctx.session.user.id,
-                resumeUrl: input.resumeUrl,
-            });
+            if (!resume) {
+                // console.log("Inserted New Resume");
+                await ctx.db.insert(UserResume).values({
+                    userId: ctx.session.user.id,
+                    resumeUrl: input.resumeUrl,
+                    resumeName: input.resumeName,
+                });
+            } else if (resume?.resumeUrl !== input.resumeUrl) {
+                // console.log("Deleted Existing Resume");
+                await ctx.db.update(UserResume).set({ resumeUrl: input.resumeUrl }).where(eq(UserResume.userId, ctx.session.user.id));
+                await del(resume.resumeUrl);
+            }
 
             return await ctx.db.insert(Application).values({
                 ...applicationData,
@@ -57,7 +72,8 @@ export const applicationRouter = {
             z.object({
                 id: z.string(),
                 userId: z.string(),
-                resumeUrl: z.string().url().nullable(),
+                resumeUrl: z.string().url(),
+                resumeName: z.string(),
                 eventName: z.string(),
                 application: CreateApplicationSchema,
             })
@@ -90,8 +106,14 @@ export const applicationRouter = {
             }
             console.log(application);
             console.log(resumeUrl);
-            if (resumeUrl != null) {
-                await ctx.db.update(UserResume).set({ resumeUrl: resumeUrl }).where(eq(UserResume.userId, userId));
+            const resume = await ctx.db.query.UserResume.findFirst({
+                where: eq(UserResume.userId, ctx.session.user.id),
+            });
+
+            if (resume && resume?.resumeUrl !== input.resumeUrl) {
+                console.log("Deleted Existing Resume");
+                await ctx.db.update(UserResume).set({ resumeUrl: input.resumeUrl, resumeName: input.resumeName }).where(eq(UserResume.userId, ctx.session.user.id));
+                await del(resume.resumeUrl);
             }
 
             return await ctx.db.update(Application).set(application).where(eq(Application.id, id));
@@ -124,8 +146,6 @@ export const applicationRouter = {
                     eq(Application.userId, ctx.session.user.id)),
             });
 
-            // Define the schema for the application
-
             if (!application) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
@@ -133,8 +153,19 @@ export const applicationRouter = {
                 });
             }
 
+            const resume = await ctx.db.query.UserResume.findFirst({
+                where: eq(UserResume.userId, ctx.session.user.id),
+            });
+
+            if (!resume) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Resume not found"
+                });
+            }
+
             // Validate the application with the schema
             const validatedApplication = CreateApplicationSchema.merge(z.object({ id: z.string(), userId: z.string(), eventId: z.string() })).parse(application);
-            return { app: validatedApplication };
+            return { app: validatedApplication, resume: resume };
         }),
 }
