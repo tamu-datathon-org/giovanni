@@ -48,14 +48,12 @@ export const applicationRouter = {
             }
 
             if (!resume) {
-                // console.log("Inserted New Resume");
                 await ctx.db.insert(UserResume).values({
                     userId: ctx.session.user.id,
                     resumeUrl: input.resumeUrl,
                     resumeName: input.resumeName,
                 });
             } else if (resume?.resumeUrl !== input.resumeUrl) {
-                // console.log("Deleted Existing Resume");
                 await ctx.db.update(UserResume).set({ resumeUrl: input.resumeUrl }).where(eq(UserResume.userId, ctx.session.user.id));
                 await del(resume.resumeUrl);
             }
@@ -104,14 +102,12 @@ export const applicationRouter = {
                     message: "Event query was not successful"
                 });
             }
-            console.log(application);
-            console.log(resumeUrl);
+
             const resume = await ctx.db.query.UserResume.findFirst({
                 where: eq(UserResume.userId, ctx.session.user.id),
             });
 
             if (resume && resume?.resumeUrl !== input.resumeUrl) {
-                console.log("Deleted Existing Resume");
                 await ctx.db.update(UserResume).set({ resumeUrl: input.resumeUrl, resumeName: input.resumeName }).where(eq(UserResume.userId, ctx.session.user.id));
                 await del(resume.resumeUrl);
             }

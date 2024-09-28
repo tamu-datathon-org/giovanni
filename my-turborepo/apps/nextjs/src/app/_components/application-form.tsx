@@ -96,6 +96,7 @@ const FormInput: React.FC<FormInputProps> = ({ id, label, register, errors, name
     );
 };
 
+
 const FormSelect: React.FC<FormSelectProps> = ({ id, label, register, errors, name, options, defaultValue }) => {
     return (
         <div>
@@ -186,6 +187,7 @@ export function ApplicationForm() {
         }
     );
 
+
     const { register, handleSubmit, formState: { errors, isDirty, isSubmitting } } = useForm<ApplicationSchema>({
         mode: "onSubmit",
         defaultValues: {
@@ -208,7 +210,6 @@ export function ApplicationForm() {
         let blob_url = undefined;
 
         if (data.resumeFile) {
-            // console.log("Uploading")
             await upload(data.resumeFile.name, data.resumeFile, {
                 access: 'public',
                 contentType: 'application/pdf',
@@ -238,9 +239,7 @@ export function ApplicationForm() {
             return;
         }
 
-        console.log(data);
         if (!importedValues) {
-
             const createApplicationData = {
                 eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
                 resumeUrl: blob_url as string,
