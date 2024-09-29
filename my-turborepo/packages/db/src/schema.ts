@@ -1,6 +1,5 @@
 import { relations, sql } from "drizzle-orm";
 import {
-  boolean,
   integer,
   pgTable,
   primaryKey,
@@ -119,11 +118,23 @@ export const SessionRelations = relations(Session, ({ one }) => ({
 export const Event = pgTable("event", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }).notNull(),
-  startDate: timestamp("start_date", { mode: "date", withTimezone: true }).notNull(),
-  endDate: timestamp("end_date", { mode: "date", withTimezone: true }).notNull(),
-  appDeadline: timestamp("app_deadline", { mode: "date", withTimezone: true }).notNull(),
-  extendedDeadline: timestamp("extended_deadline", { mode: "date", withTimezone: true }).notNull(),
-})
+  startDate: timestamp("start_date", {
+    mode: "date",
+    withTimezone: true,
+  }).notNull(),
+  endDate: timestamp("end_date", {
+    mode: "date",
+    withTimezone: true,
+  }).notNull(),
+  appDeadline: timestamp("app_deadline", {
+    mode: "date",
+    withTimezone: true,
+  }).notNull(),
+  extendedDeadline: timestamp("extended_deadline", {
+    mode: "date",
+    withTimezone: true,
+  }).notNull(),
+});
 
 export const Role = pgTable("role", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
@@ -133,18 +144,22 @@ export const Role = pgTable("role", {
   name: varchar("name", { length: 255 }).notNull(),
 });
 
-export const UserRole = pgTable("user_role", {
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => User.id, { onDelete: "cascade" }),
-  roleId: uuid("role_id")
-    .notNull()
-    .references(() => Role.id, { onDelete: "cascade" }),
-}, (userRole) => ({
-  compoundKey: primaryKey({
-    columns: [userRole.userId, userRole.roleId],
+export const UserRole = pgTable(
+  "user_role",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => User.id, { onDelete: "cascade" }),
+    roleId: uuid("role_id")
+      .notNull()
+      .references(() => Role.id, { onDelete: "cascade" }),
+  },
+  (userRole) => ({
+    compoundKey: primaryKey({
+      columns: [userRole.userId, userRole.roleId],
+    }),
   }),
-}));
+);
 
 export const UserRoleRelations = relations(UserRole, ({ one }) => ({
   user: one(User, { fields: [UserRole.userId], references: [User.id] }),
@@ -216,21 +231,38 @@ export const UserResume = pgTable("user_resume", {
 
 export const UserRelations = relations(User, ({ many, one }) => ({
   accounts: many(Account),
-  userResume: one(UserResume, { fields: [User.id], references: [UserResume.userId] }),
+  userResume: one(UserResume, {
+    fields: [User.id],
+    references: [UserResume.userId],
+  }),
 }));
 
 export const UserResumeRelations = relations(UserResume, ({ one }) => ({
   user: one(User, { fields: [UserResume.userId], references: [User.id] }),
 }));
 
-const phoneRegex = /^([+][0-9]+)?[\s]?([(]?[0-9]{3}[)]?)[-\s]?([0-9]{3})[-\s]?([0-9]{4})$/
+const phoneRegex =
+  /^([+][0-9]+)?[\s]?([(]?[0-9]{3}[)]?)[-\s]?([0-9]{3})[-\s]?([0-9]{4})$/;
 
 export const CreateApplicationSchema = createInsertSchema(Application, {
-  firstName: z.string().min(1, "First Name is missing").max(50, "First Name is too long"),
-  lastName: z.string().min(1, "Last Name is missing").max(50, "Last Name is too long"),
+  firstName: z
+    .string()
+    .min(1, "First Name is missing")
+    .max(50, "First Name is too long"),
+  lastName: z
+    .string()
+    .min(1, "Last Name is missing")
+    .max(50, "Last Name is too long"),
   age: z.string().min(1, "Age is missing").max(3, "Age is too long"),
-  country: z.string().min(1, "Country is missing").max(50, "Country is too long"),
-  email: z.string().min(1, "Email is missing").max(50, "Email is too long").email(),
+  country: z
+    .string()
+    .min(1, "Country is missing")
+    .max(50, "Country is too long"),
+  email: z
+    .string()
+    .min(1, "Email is missing")
+    .max(50, "Email is too long")
+    .email(),
   phoneNumber: z
     .string()
     .min(10, "Phone number is too short")
@@ -238,22 +270,60 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .max(25, "Phone number is too long"),
   school: z.string().min(1, "School is missing").max(100, "School is too long"),
   major: z.string().min(1, "Major is missing").max(100, "Major is too long"),
-  classification: z.string().min(1, "Classification is missing").max(100, "Classification is too long"),
+  classification: z
+    .string()
+    .min(1, "Classification is missing")
+    .max(100, "Classification is too long"),
   gradYear: z.number(),
   gender: z.string().min(1, "Gender is missing").max(50, "Gender is too long"),
   race: z.string().min(1, "Race is missing").max(50, "Race is too long"),
-  hackathonsAttended: z.string().min(1, "Hackathons Attended is missing").max(50, "Hackathons Attended is too long"),
-  experience: z.string().min(1, "Experience is missing").max(50, "Experience is too long"),
-  hasTeam: z.string().min(1, "Has Team is missing").max(3, "Has Team is too long"),
-  eventSource: z.string().min(1, "Event Source is missing").max(100, "Event Source is too long"),
-  shirtSize: z.string().min(1, "Shirt Size is missing").max(3, "Shirt Size is too long"),
-  address: z.string().min(1, "Address is missing").max(100, "Address is too long"),
+  hackathonsAttended: z
+    .string()
+    .min(1, "Hackathons Attended is missing")
+    .max(50, "Hackathons Attended is too long"),
+  experience: z
+    .string()
+    .min(1, "Experience is missing")
+    .max(50, "Experience is too long"),
+  hasTeam: z
+    .string()
+    .min(1, "Has Team is missing")
+    .max(3, "Has Team is too long"),
+  eventSource: z
+    .string()
+    .min(1, "Event Source is missing")
+    .max(100, "Event Source is too long"),
+  shirtSize: z
+    .string()
+    .min(1, "Shirt Size is missing")
+    .max(3, "Shirt Size is too long"),
+  address: z
+    .string()
+    .min(1, "Address is missing")
+    .max(100, "Address is too long"),
   references: z.string().min(1, "References is missing"),
-  interestOne: z.string().min(1, "Interest One is missing").max(500, "Interest One is too long"),
-  interestTwo: z.string().min(1, "Interest Two is missing").max(500, "Interest Two is too long"),
-  interestThree: z.string().min(1, "Interest Three is missing").max(500, "Interest Three is too long"),
-  dietaryRestriction: z.string().max(255, "Dietary Restriction is too long").optional().nullable(),
-  extraInfo: z.string().max(255, "Extra Info is too long").optional().nullable(),
+  interestOne: z
+    .string()
+    .min(1, "Interest One is missing")
+    .max(500, "Interest One is too long"),
+  interestTwo: z
+    .string()
+    .min(1, "Interest Two is missing")
+    .max(500, "Interest Two is too long"),
+  interestThree: z
+    .string()
+    .min(1, "Interest Three is missing")
+    .max(500, "Interest Three is too long"),
+  dietaryRestriction: z
+    .string()
+    .max(255, "Dietary Restriction is too long")
+    .optional()
+    .nullable(),
+  extraInfo: z
+    .string()
+    .max(255, "Extra Info is too long")
+    .optional()
+    .nullable(),
 }).omit({
   id: true,
   userId: true,

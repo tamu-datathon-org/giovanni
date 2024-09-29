@@ -1,26 +1,26 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, UseFormRegister, FieldErrors } from "react-hook-form";
-import React, { useState } from 'react';
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { TRPCClientError } from "@trpc/client";
+import { upload } from "@vercel/blob/client";
+import { useForm } from "react-hook-form";
+
+import { Button } from "@vanni/ui/button";
 
 import type { ApplicationSchema } from "../apply/validation";
-import schools from "./application-data/schools.json";
-
-
-import { ReloadIcon } from "@radix-ui/react-icons";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { Button } from "@vanni/ui/button";
-import Image from "next/image";
 import { toast } from "~/hooks/use-toast";
-import { TRPCClientError } from "@trpc/client";
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
-import { upload } from '@vercel/blob/client';
+import schools from "./application-data/schools.json";
+
 import "./customCss.scss";
+
 import {
   AGE,
   COUNTRIES,
@@ -37,7 +37,6 @@ import {
 import GenericDropdown from "./genericDropdown";
 import SchoolDropdown from "./schoolDropdown";
 import Title from "./title";
-
 
 /*
     First Name
@@ -64,23 +63,26 @@ import Title from "./title";
 */
 
 const Loading = () => {
-  return (<div>
-    Hello, Loading
-  </div>);
-}
+  return <div>Hello, Loading</div>;
+};
 
 export function ApplicationForm() {
-  const { data: importedValues, isLoading } = api.application.getApplicationByEventName.useQuery(
-    { eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      retry: 1, // Retry failed requests once
-    }
-  );
+  const { data: importedValues, isLoading } =
+    api.application.getApplicationByEventName.useQuery(
+      { eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" },
+      {
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        retry: 1, // Retry failed requests once
+      },
+    );
 
-
-  const { register, handleSubmit, setValue, formState: { errors, isDirty, isSubmitting } } = useForm<ApplicationSchema>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isDirty, isSubmitting },
+  } = useForm<ApplicationSchema>({
     mode: "onSubmit",
     defaultValues: {
       resumeFile: null,
@@ -103,23 +105,25 @@ export function ApplicationForm() {
 
     if (data.resumeFile) {
       await upload(data.resumeFile.name, data.resumeFile, {
-        access: 'public',
-        contentType: 'application/pdf',
-        handleUploadUrl: '/api/resume'
-      }).then((blob) => {
-        blob_name = data.resumeFile?.name;
-        blob_url = blob.url;
-        return blob;
-      }).catch((error) => {
-        toast({
-          variant: "destructive",
-          title: "Resume Failed to Upload",
-          description: error.message,
+        access: "public",
+        contentType: "application/pdf",
+        handleUploadUrl: "/api/resume",
+      })
+        .then((blob) => {
+          blob_name = data.resumeFile?.name;
+          blob_url = blob.url;
+          return blob;
+        })
+        .catch((error) => {
+          toast({
+            variant: "destructive",
+            title: "Resume Failed to Upload",
+            description: error.message,
+          });
         });
-      });
     } else {
-      blob_name = importedValues?.resume?.resumeName;
-      blob_url = importedValues?.resume?.resumeUrl;
+      blob_name = importedValues?.resume.resumeName;
+      blob_url = importedValues?.resume.resumeUrl;
     }
 
     if (!blob_name || !blob_url) {
@@ -134,8 +138,8 @@ export function ApplicationForm() {
     if (!importedValues) {
       const createApplicationData = {
         eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
-        resumeUrl: blob_url as string,
-        resumeName: blob_name as string,
+        resumeUrl: blob_url,
+        resumeName: blob_name,
         applicationData: {
           ...data,
           gradYear: Number(data.gradYear),
@@ -164,8 +168,8 @@ export function ApplicationForm() {
       const updateApplicationData = {
         id: importedValues.app.id,
         userId: importedValues.app.userId,
-        resumeUrl: blob_url as string,
-        resumeName: blob_name as string,
+        resumeUrl: blob_url,
+        resumeName: blob_name,
         eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
         application: {
           ...data,
@@ -192,10 +196,10 @@ export function ApplicationForm() {
         },
       });
     }
-  }
+  };
 
   if (isLoading) {
-    return (<Loading />)
+    return <Loading />;
   }
 
   return (
@@ -228,7 +232,7 @@ export function ApplicationForm() {
               type="text"
               {...register("firstName")}
               placeholder="John"
-              defaultValue={importedValues?.app?.firstName}
+              defaultValue={importedValues?.app.firstName}
             />
             {errors.firstName?.message && <div>AJHBDA</div>}
           </div>
@@ -243,7 +247,7 @@ export function ApplicationForm() {
               type="text"
               {...register("lastName")}
               placeholder="Doe"
-              defaultValue={importedValues?.app?.lastName}
+              defaultValue={importedValues?.app.lastName}
             />
           </div>
         </div>
@@ -258,7 +262,7 @@ export function ApplicationForm() {
             type="text"
             {...register("email")}
             placeholder="abc123@gmail.com"
-            defaultValue={importedValues?.app?.email}
+            defaultValue={importedValues?.app.email}
           />
         </div>
 
@@ -271,7 +275,7 @@ export function ApplicationForm() {
             id="phoneNumber"
             type="text"
             {...register("phoneNumber")}
-            defaultValue={importedValues?.app?.phoneNumber}
+            defaultValue={importedValues?.app.phoneNumber}
           />
         </div>
 
@@ -281,7 +285,9 @@ export function ApplicationForm() {
           name={"age"}
           label={"Age"}
           options={AGE}
-          defaultOption={AGE.find(option => option.value === importedValues?.app?.age)}
+          defaultOption={AGE.find(
+            (option) => option.value === importedValues?.app.age,
+          )}
         />
 
         {/* Country */}
@@ -290,7 +296,9 @@ export function ApplicationForm() {
           name={"country"}
           label={"Country of Residence"}
           options={COUNTRIES}
-          defaultOption={COUNTRIES.find(option => option.value === importedValues?.app?.country)}
+          defaultOption={COUNTRIES.find(
+            (option) => option.value === importedValues?.app.country,
+          )}
         />
 
         {/* Gender */}
@@ -299,7 +307,9 @@ export function ApplicationForm() {
           name={"gender"}
           label={"What's your gender"}
           options={GENDER_OPTIONS}
-          defaultOption={GENDER_OPTIONS.find(option => option.value === importedValues?.app?.gender)}
+          defaultOption={GENDER_OPTIONS.find(
+            (option) => option.value === importedValues?.app.gender,
+          )}
         />
 
         {/* Race */}
@@ -308,7 +318,9 @@ export function ApplicationForm() {
           name={"race"}
           label={"What ethnicity do you identify with?"}
           options={RACE_OPTIONS}
-          defaultOption={RACE_OPTIONS.find(option => option.value === importedValues?.app?.race)}
+          defaultOption={RACE_OPTIONS.find(
+            (option) => option.value === importedValues?.app.race,
+          )}
         />
 
         {/* School */}
@@ -318,7 +330,9 @@ export function ApplicationForm() {
           name={"school"}
           label={"What school do you go to?"}
           options={schools}
-          defaultOption={schools.find(option => option.schoolName === importedValues?.app?.school)}
+          defaultOption={schools.find(
+            (option) => option.schoolName === importedValues?.app.school,
+          )}
         />
 
         {/* Major */}
@@ -327,7 +341,9 @@ export function ApplicationForm() {
           name={"major"}
           label={"What's your major?"}
           options={MAJOR}
-          defaultOption={MAJOR.find(option => option.value === importedValues?.app?.major)}
+          defaultOption={MAJOR.find(
+            (option) => option.value === importedValues?.app.major,
+          )}
         />
 
         {/* Classification */}
@@ -336,7 +352,9 @@ export function ApplicationForm() {
           name={"classification"}
           label={"What classification are you?"}
           options={EDUCATION_LEVELS}
-          defaultOption={EDUCATION_LEVELS.find(option => option.value === importedValues?.app?.classification)}
+          defaultOption={EDUCATION_LEVELS.find(
+            (option) => option.value === importedValues?.app.classification,
+          )}
         />
 
         {/* Graduation Year */}
@@ -345,7 +363,9 @@ export function ApplicationForm() {
           name={"gradYear"}
           label={"What is your anticipated graduation year?"}
           options={GRADUATION_YEARS}
-          defaultOption={GRADUATION_YEARS.find(option => Number(option.value) === importedValues?.app?.gradYear)}
+          defaultOption={GRADUATION_YEARS.find(
+            (option) => Number(option.value) === importedValues?.app.gradYear,
+          )}
         />
 
         {/* Hackathons Attended */}
@@ -355,7 +375,9 @@ export function ApplicationForm() {
           name={"hackathonsAttended"}
           label={"How many hackathons have you attended?"}
           options={HACKATHON_EXPERIENCE}
-          defaultOption={HACKATHON_EXPERIENCE.find(option => option.value === importedValues?.app?.hackathonsAttended)}
+          defaultOption={HACKATHON_EXPERIENCE.find(
+            (option) => option.value === importedValues?.app.hackathonsAttended,
+          )}
         />
 
         {/* Experience Level */}
@@ -364,7 +386,9 @@ export function ApplicationForm() {
           name={"experience"}
           label={"What is your experience level in Data Science?"}
           options={PROGRAMMING_SKILL_LEVELS}
-          defaultOption={PROGRAMMING_SKILL_LEVELS.find(option => option.value === importedValues?.app?.experience)}
+          defaultOption={PROGRAMMING_SKILL_LEVELS.find(
+            (option) => option.value === importedValues?.app.experience,
+          )}
         />
 
         {/* Team */}
@@ -376,7 +400,14 @@ export function ApplicationForm() {
             { value: "No", label: "I do have a team" },
             { value: "Yes", label: "I do not have a team" },
           ]}
-          defaultOption={importedValues?.app?.hasTeam ? { value: importedValues.app.hasTeam, label: importedValues.app.hasTeam } : undefined}
+          defaultOption={
+            importedValues?.app.hasTeam
+              ? {
+                  value: importedValues.app.hasTeam,
+                  label: importedValues.app.hasTeam,
+                }
+              : undefined
+          }
         />
 
         {/* Team Members */}
@@ -393,13 +424,15 @@ export function ApplicationForm() {
           name={"shirtSize"}
           label={"What's your shirt size?"}
           options={SHIRT_SIZES}
-          defaultOption={SHIRT_SIZES.find(option => option.value === importedValues?.app?.shirtSize)}
+          defaultOption={SHIRT_SIZES.find(
+            (option) => option.value === importedValues?.app.shirtSize,
+          )}
         />
 
         {/* Resume */}
         <div className="pt-4">
           <Label htmlFor="resume" className="text-xl">
-            Current Resume: {importedValues?.resume?.resumeName || 'None'} <br />
+            Current Resume: {importedValues?.resume.resumeName || "None"} <br />
             Upload Resume (PDF only):
           </Label>
           <Input
@@ -410,8 +443,8 @@ export function ApplicationForm() {
             onChange={(event) => {
               setValue(
                 "resumeFile",
-                event.target.files ? (event.target.files[0] as File) : null
-              )
+                event.target.files ? event.target.files[0]! : null,
+              );
             }}
           />
         </div>
@@ -429,7 +462,12 @@ export function ApplicationForm() {
             Point us to anything you'd like us to look at while considering your
             application:
           </Label>
-          <Input id="references" type="text" {...register("references")} defaultValue={importedValues?.app?.references} />
+          <Input
+            id="references"
+            type="text"
+            {...register("references")}
+            defaultValue={importedValues?.app.references}
+          />
         </div>
 
         {/* Tell us your best programming joke. */}
@@ -445,7 +483,7 @@ export function ApplicationForm() {
             id="joke"
             type="text"
             {...register("interestOne")}
-            defaultValue={importedValues?.app?.interestOne}
+            defaultValue={importedValues?.app.interestOne}
           />
         </div>
 
@@ -458,7 +496,7 @@ export function ApplicationForm() {
             id="unlimitedResources"
             type="text"
             {...register("interestTwo")}
-            defaultValue={importedValues?.app?.interestTwo}
+            defaultValue={importedValues?.app.interestTwo}
           />
         </div>
 
@@ -471,11 +509,9 @@ export function ApplicationForm() {
             id="interest"
             type="text"
             {...register("interestThree")}
-            defaultValue={importedValues?.app?.interestThree}
+            defaultValue={importedValues?.app.interestThree}
           />
         </div>
-
-
 
         {/* Dietry Restrictions */}
         <div className="pt-4">
@@ -487,7 +523,7 @@ export function ApplicationForm() {
             id="dietaryRestriction"
             type="text"
             {...register("dietaryRestriction")}
-            defaultValue={importedValues?.app?.dietaryRestriction ?? ''}
+            defaultValue={importedValues?.app.dietaryRestriction ?? ""}
           />
         </div>
 
@@ -496,7 +532,12 @@ export function ApplicationForm() {
           <Label htmlFor="extraInfo" className="text-xl">
             Anything else you would like us to know?
           </Label>
-          <Input id="extraInfo" type="text" {...register("extraInfo")} defaultValue={importedValues?.app?.extraInfo ?? ''} />
+          <Input
+            id="extraInfo"
+            type="text"
+            {...register("extraInfo")}
+            defaultValue={importedValues?.app.extraInfo ?? ""}
+          />
         </div>
 
         {/* Liability Waiver */}

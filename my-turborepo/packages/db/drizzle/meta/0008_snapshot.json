@@ -81,12 +81,8 @@
           "name": "account_userId_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -94,10 +90,7 @@
       "compositePrimaryKeys": {
         "account_provider_providerAccountId_pk": {
           "name": "account_provider_providerAccountId_pk",
-          "columns": [
-            "provider",
-            "providerAccountId"
-          ]
+          "columns": ["provider", "providerAccountId"]
         }
       },
       "uniqueConstraints": {}
@@ -296,12 +289,8 @@
           "name": "application_user_id_user_id_fk",
           "tableFrom": "application",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -309,12 +298,8 @@
           "name": "application_event_id_event_id_fk",
           "tableFrom": "application",
           "tableTo": "event",
-          "columnsFrom": [
-            "event_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["event_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -477,12 +462,8 @@
           "name": "role_event_id_event_id_fk",
           "tableFrom": "role",
           "tableTo": "event",
-          "columnsFrom": [
-            "event_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["event_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -519,12 +500,8 @@
           "name": "session_userId_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -603,12 +580,8 @@
           "name": "user_resume_user_id_user_id_fk",
           "tableFrom": "user_resume",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -639,12 +612,8 @@
           "name": "user_role_user_id_user_id_fk",
           "tableFrom": "user_role",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -652,12 +621,8 @@
           "name": "user_role_role_id_role_id_fk",
           "tableFrom": "user_role",
           "tableTo": "role",
-          "columnsFrom": [
-            "role_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["role_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -665,10 +630,7 @@
       "compositePrimaryKeys": {
         "user_role_user_id_role_id_pk": {
           "name": "user_role_user_id_role_id_pk",
-          "columns": [
-            "user_id",
-            "role_id"
-          ]
+          "columns": ["user_id", "role_id"]
         }
       },
       "uniqueConstraints": {}
