@@ -1,6 +1,6 @@
-import type { UseFormRegister } from "react-hook-form";
-import React, { ElementRef, useMemo, useRef } from "react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import type { ElementRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BsChevronExpand } from "react-icons/bs";
 
@@ -23,38 +23,12 @@ import {
   CommandItem,
   CommandList,
 } from "~/components/ui/command";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@vanni/ui/form";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import useDebounce from "~/components/ui/debounce";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import React, {ElementRef, useMemo, useRef, useState} from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
-
-import { AiOutlineCheck } from "react-icons/ai";
-import type { ApplicationSchema } from "~/app/apply/validation";
-import { BsChevronExpand } from "react-icons/bs";
-import { Button } from "~/components/ui/button";
-import { Label } from "~/components/ui/label";
-import type { UseFormRegister } from "react-hook-form";
-import { cn } from "@vanni/ui";
-import useDebounce from "~/components/ui/debounce";
 
 interface DropdownOption {
   value: string;
@@ -77,13 +51,12 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
 }) => {
   const form = useFormContext<ApplicationSchema>();
   const [searchValue, setSearchValue] = useState("");
-  const {debouncedValue, isDebouncing} = useDebounce(searchValue, 250);
-  
+  const { debouncedValue, isDebouncing } = useDebounce(searchValue, 250);
+
   const commandInputRef = useRef<ElementRef<typeof CommandInput>>(null);
 
-
   const filter20Items = useMemo(() => {
-    if(isDebouncing) {
+    if (isDebouncing) {
       return ["Loading..."];
     }
 
@@ -98,7 +71,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
         .slice(0, 20);
     }
     return options;
-  }, [debouncedValue, options])
+  }, [debouncedValue, options]);
 
   return (
     //Basic Dropdown
@@ -147,7 +120,6 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                   ref={commandInputRef}
                 />
                 <CommandList>
-                  {/*TODO: Change the line below*/}
                   <CommandEmpty>No results.</CommandEmpty>
                   <CommandGroup>
                     {filter20Items.map((option) => (

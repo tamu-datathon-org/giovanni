@@ -19,6 +19,6 @@ export default function useDebounce(value: any, delay: number) {
   return {
     debouncedValue,
     isDebouncing,
-    immediateValue: value
+    immediateValue: value,
   };
-  }
+}
