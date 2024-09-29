@@ -48,6 +48,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   label,
   options,
   filter,
+  defaultOption,
 }) => {
   const form = useFormContext<ApplicationSchema>();
   const [searchValue, setSearchValue] = useState("");
@@ -93,6 +94,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
     <FormField
       control={form.control}
       name={name}
+      defaultOption={defaultOption}
       render={({ field }) => (
         <FormItem className="flex flex-col">
           <FormLabel className="text-xl">{label}</FormLabel>
