@@ -2,19 +2,23 @@ import { z } from "zod";
 import { zfd } from "zod-form-data";
 
 const phoneRegex = new RegExp(
-  '/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/'
+  "/^([+]?[s0-9]+)?(d{3}|[(]?[0-9]+[)])?([-]?[s]?[0-9])+$/",
 );
 
 export const applicationSchema = zfd.formData({
   firstName: zfd.text(z.string().min(1, "Missing First Name")),
   lastName: zfd.text(z.string().min(1, "Missing Last Name")),
-  email: zfd.text(z.string().min(1, "Missing Email").max(256, "Email is too long").email()),
+  email: zfd.text(
+    z.string().min(1, "Missing Email").max(256, "Email is too long").email(),
+  ),
   age: zfd.numeric(z.number().min(16, "Too young").max(99, "Too old")),
   country: zfd.text(z.string()),
   phoneNumber: zfd.text(z.string().regex(phoneRegex).min(9)),
   school: zfd.text(z.string()),
   major: zfd.text(z.string()),
-  classification: zfd.text(z.enum(['Highschool', 'Freshman', 'Sophomore', 'Junior', 'Senior+'])),
+  classification: zfd.text(
+    z.enum(["Highschool", "Freshman", "Sophomore", "Junior", "Senior+"]),
+  ),
   gradYear: zfd.numeric(),
   gender: zfd.text(),
   hasTeam: zfd.text(),
