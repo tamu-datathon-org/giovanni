@@ -482,7 +482,8 @@ export function ApplicationForm() {
                       }}
                     />
                   </FormControl>
-                  <FormMessage />
+                  {/* I removed this because there is already a toast */}
+                  {/* <FormMessage /> */}
                 </FormItem>
               )}
             />
