@@ -1,5 +1,5 @@
 import type { UseFormRegister } from "react-hook-form";
-import React, {ElementRef, useMemo, useRef} from "react";
+import React, { ElementRef, useMemo, useRef } from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BsChevronExpand } from "react-icons/bs";
@@ -9,8 +9,8 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
-    FormLabel,
 } from "@vanni/ui/form";
 
 import type { ApplicationSchema } from "~/app/apply/validation";
@@ -56,7 +56,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   name,
   label,
   options,
-    filter,
+  filter,
 }) => {
   const form = useFormContext<ApplicationSchema>();
   const commandInputRef = useRef<ElementRef<typeof CommandInput>>(null);
@@ -65,10 +65,13 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
     const query = commandInputRef.current?.value;
     console.log("thing: ", query);
 
-    if(filter) {
-    return options
-      .filter(({value}) => value.toLowerCase().includes(query ? query.toLowerCase() : ""))
-      .slice(0, 20);}
+    if (filter) {
+      return options
+        .filter(({ value }) =>
+          value.toLowerCase().includes(query ? query.toLowerCase() : ""),
+        )
+        .slice(0, 20);
+    }
     return options;
   }
 
@@ -114,7 +117,10 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
             </PopoverTrigger>
             <PopoverContent className=" w-fit p-0">
               <Command>
-                <CommandInput placeholder={`Search ${name}...`} ref={commandInputRef} />
+                <CommandInput
+                  placeholder={`Search ${name}...`}
+                  ref={commandInputRef}
+                />
                 <CommandList>
                   {/*TODO: Change the line below*/}
                   <CommandEmpty>No framework found.</CommandEmpty>
@@ -124,7 +130,8 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                         key={option.value}
                         value={option.value}
                         onSelect={(currentValue) => {
-                          form.setValue(name,
+                          form.setValue(
+                            name,
                             currentValue === field.value ? "" : currentValue,
                           );
                           // setOpen(false);
