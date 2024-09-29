@@ -186,7 +186,7 @@ export function ApplicationForm() {
             description: "Your application has been received.",
           });
         },
-        onError: (error) => {
+        onError: (error: any) => {
           if (error instanceof TRPCClientError) {
             toast({
               variant: "destructive",
