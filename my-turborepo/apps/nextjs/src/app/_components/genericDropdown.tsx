@@ -1,5 +1,5 @@
-import React from "react";
 import type { UseFormRegister } from "react-hook-form";
+import React from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BsChevronExpand } from "react-icons/bs";
 
