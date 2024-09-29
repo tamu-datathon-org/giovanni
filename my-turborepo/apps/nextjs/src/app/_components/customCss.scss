@@ -1,30 +1,30 @@
 .page {
-    margin: 3%;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 30px;
-    border-radius: 3px;
-    // text-align:center;
-    font-size: 1.4vw;
-    // h2{
-    // 	font-weight: bold;
-    // 	font-size: 6.5vw;
-    // 	font-weight: 900;
-    // 	font-style: italic;
-    // 	color:#dad8ec;
-    // }
+  margin: 3%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 30px;
+  border-radius: 3px;
+  // text-align:center;
+  font-size: 1.4vw;
+  // h2{
+  // 	font-weight: bold;
+  // 	font-size: 6.5vw;
+  // 	font-weight: 900;
+  // 	font-style: italic;
+  // 	color:#dad8ec;
+  // }
 }
 
 .wrap {
-    perspective-origin: 50% 50%;
+  perspective-origin: 50% 50%;
 }
 
 .svg {
-    stroke: #3b3d54;
-    position: absolute;
-    bottom: -100vh;
-    transform-style: preserve-3d;
+  stroke: #3b3d54;
+  position: absolute;
+  bottom: -100vh;
+  transform-style: preserve-3d;
 }
 
 $total: 10;
@@ -73,12 +73,12 @@ $total: 10;
 
 
 .compStyling {
-    background-color: #e4e3e4;
-    border-color: black;
-    border-width: 2px;
-    border-style: solid;
-    position: relative;
-    padding: 0.5rem;
+  background-color: #e4e3e4;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  position: relative;
+  padding: 0.5rem;
 
 
     &::before {
@@ -94,9 +94,9 @@ $total: 10;
 
     }
 
-    &:hover {
-        background-color: #e4e3e4;
-    }
+  &:hover {
+    background-color: #e4e3e4;
+  }
 
     &:focus {
 
@@ -123,14 +123,14 @@ $total: 10;
 
 
 .submitBtn {
-    box-shadow: rgb(0, 0, 0) -2px 2px 4px -0.5px;
+  box-shadow: rgb(0, 0, 0) -2px 2px 4px -0.5px;
 
-    &:focus {
-        // background-image: linear-gradient(to top, #b6ddf9, #dfe2e5, #6ba2fe);
-        box-shadow: rgba(255, 255, 255, 0.5) 2px 2px 6px 0px;
-        transform: translateY(2px);
-        transform: translateX(-2px);
-    }
+  &:focus {
+    // background-image: linear-gradient(to top, #b6ddf9, #dfe2e5, #6ba2fe);
+    box-shadow: rgba(255, 255, 255, 0.5) 2px 2px 6px 0px;
+    transform: translateY(2px);
+    transform: translateX(-2px);
+  }
 
     &:hover {
         background-image: linear-gradient(to bottom, rgba(182, 221, 249, 0.5), rgba(224, 227, 230, 0.5), rgba(107, 162, 254, 0.5));

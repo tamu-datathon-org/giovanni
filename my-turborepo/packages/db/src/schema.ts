@@ -67,7 +67,7 @@ export const CreatePreregistrationSchema = createInsertSchema(Preregistration, {
   id: true,
   registeredAt: true,
   expiresAt: true,
-})
+});
 
 export const UserRelations = relations(User, ({ many }) => ({
   accounts: many(Account),
