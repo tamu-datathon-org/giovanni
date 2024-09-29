@@ -12,13 +12,10 @@ export default {
   // important: true, // This will add !important to all Tailwind utilities
   theme: {
     extend: {
-      backgroundImage: {
-        "large-device": "url('./assets/wallpaper.jpg')",
-      },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", ...fontFamily.sans],
-        mono: ["var(--font-geist-mono)", ...fontFamily.mono],
-        XPfont: "myfont",
+        // The var is defined in a component somewhere
+        // We need this so NextJS does its font optimizations
+        XPfont: ["var(--font-w95fa)"],
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -51,7 +51,6 @@ interface SchoolDropdownProps {
 
 const SchoolDropdown: React.FC<SchoolDropdownProps> = ({
   register,
-  watch,
   name,
   label,
   options,
@@ -73,6 +72,63 @@ const SchoolDropdown: React.FC<SchoolDropdownProps> = ({
     //     </Select>
     // </div>
 
+    <div className="relative flex flex-col">
+      {label && (
+        <Label htmlFor={name} className="pt-4 text-xl">
+          {label}
+        </Label>
+      )}
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="justify-between"
+          >
+            {value
+              ? options.find((option) => option.schoolName === value)
+                  ?.schoolName
+              : "Select ..."}
+            <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="top-0 w-fit p-0" align="start">
+          <Command>
+            <CommandInput
+              placeholder={`Search ${name}...`}
+              {...register(name)}
+            />
+            <CommandList>
+              <CommandEmpty>No framework found.</CommandEmpty>
+              <CommandGroup>
+                {options.map((option, index) => (
+                  <CommandItem
+                    key={option.schoolName}
+                    value={option.schoolName}
+                    onSelect={(currentValue) => {
+                      setValue(currentValue === value ? "" : currentValue);
+                      setOpen(false);
+                    }}
+                  >
+                    <AiOutlineCheck
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === option.schoolName
+                          ? "opacity-100"
+                          : "opacity-0",
+                      )}
+                    />
+                    {option.schoolName}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
     <div className="flex flex-col">
       {label && (
         <Label htmlFor={name} className="pt-4 text-xl">

@@ -4,10 +4,12 @@ import { Button } from "@vanni/ui/button";
 export const runtime = "edge";
 
 function LoginButton({
-  providerId,
+  connectionId,
+  redirectUri,
   buttonText,
 }: {
-  providerId: string;
+  connectionId: string;
+  redirectUri?: string;
   buttonText: string;
 }) {
   return (
@@ -15,7 +17,9 @@ function LoginButton({
       size="lg"
       formAction={async () => {
         "use server";
-        await signIn(providerId);
+        await signIn("auth0", redirectUri ? { redirectTo: redirectUri } : {}, {
+          connection: connectionId,
+        });
       }}
     >
       {buttonText}
@@ -33,8 +37,12 @@ export default function LoginPage() {
         {/*<AuthShowcase />*/}
 
         <form>
-          <LoginButton providerId="discord" buttonText="Sign in with Discord" />
-          <LoginButton providerId="auth0" buttonText="Sign in with Auth0" />
+          <LoginButton connectionId="apple" buttonText="Sign in with Apple" />
+          <LoginButton connectionId="github" buttonText="Sign in with GitHub" />
+          <LoginButton
+            connectionId="google-oauth2"
+            buttonText="Sign in with Google"
+          />
         </form>
       </div>
     </main>

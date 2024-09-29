@@ -42,8 +42,6 @@ import GenericCombobox from "./genericCombobox";
 import SchoolCombobox from "./schoolDropdown";
 import Title from "./title";
 
-
-
 /*
     First Name
     Last Name
@@ -92,7 +90,6 @@ export function ApplicationForm() {
   const SCHOOL_OPTIONS = schoolsJson.map((entry, index) => ({value: entry.schoolName, label:entry.schoolName}));
   return (
     <div className="flex w-3/5 justify-center">
-      {/*TODO: Add shadcn form component so that the code looks nicer*/}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

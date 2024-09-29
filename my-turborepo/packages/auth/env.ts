@@ -8,6 +8,7 @@ export const env = createEnv({
     AUTH_DISCORD_SECRET: z.string().min(1),
     AUTH_AUTH0_ID: z.string().min(1),
     AUTH_AUTH0_SECRET: z.string().min(1),
+    AUTH_AUTH0_DOMAIN: z.string().url(),
     AUTH_SECRET:
       process.env.NODE_ENV === "production"
         ? z.string().min(1)
