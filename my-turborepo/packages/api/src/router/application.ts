@@ -77,7 +77,8 @@ export const applicationRouter = {
             })
         )
         .mutation(async ({ ctx, input }) => {
-            const { id, userId, resumeUrl, eventName, application } = input;
+            const { id, userId, resumeName, resumeUrl, eventName, application } = input;
+            console.log(input);
             if (ctx.session?.user == undefined) {
                 throw new TRPCError({
                     code: "UNAUTHORIZED",
@@ -107,8 +108,8 @@ export const applicationRouter = {
                 where: eq(UserResume.userId, ctx.session.user.id),
             });
 
-            if (resume && resume?.resumeUrl !== input.resumeUrl) {
-                await ctx.db.update(UserResume).set({ resumeUrl: input.resumeUrl, resumeName: input.resumeName }).where(eq(UserResume.userId, ctx.session.user.id));
+            if (resume && resume?.resumeUrl !== resumeUrl) {
+                await ctx.db.update(UserResume).set({ resumeUrl: resumeUrl, resumeName: resumeName }).where(eq(UserResume.userId, ctx.session.user.id));
                 await del(resume.resumeUrl);
             }
 

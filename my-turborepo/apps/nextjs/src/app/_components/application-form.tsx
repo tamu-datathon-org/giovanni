@@ -25,7 +25,6 @@ import { TRPCClientError } from "@trpc/client";
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
 import { upload } from '@vercel/blob/client';
-import { CodeSandboxLogoIcon } from "@radix-ui/react-icons";
 
 
 /*
@@ -188,7 +187,7 @@ export function ApplicationForm() {
     );
 
 
-    const { register, handleSubmit, formState: { errors, isDirty, isSubmitting } } = useForm<ApplicationSchema>({
+    const { register, handleSubmit, setValue, formState: { errors, isDirty, isSubmitting } } = useForm<ApplicationSchema>({
         mode: "onSubmit",
         defaultValues: {
             resumeFile: null,
@@ -208,6 +207,7 @@ export function ApplicationForm() {
     const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
         let blob_name = undefined;
         let blob_url = undefined;
+        console.log(data);
 
         if (data.resumeFile) {
             await upload(data.resumeFile.name, data.resumeFile, {
@@ -215,6 +215,7 @@ export function ApplicationForm() {
                 contentType: 'application/pdf',
                 handleUploadUrl: '/api/resume'
             }).then((blob) => {
+                console.log(blob);
                 blob_name = data.resumeFile?.name;
                 blob_url = blob.url;
                 return blob;
@@ -246,6 +247,7 @@ export function ApplicationForm() {
                 resumeName: blob_name as string,
                 applicationData: {
                     ...data,
+                    gradYear: Number(data.gradYear), // Ensure gradYear is a number
                 },
             };
 
@@ -277,6 +279,7 @@ export function ApplicationForm() {
                 eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
                 application: {
                     ...data,
+                    gradYear: Number(data.gradYear), // Ensure gradYear is a number
                 },
             };
 
@@ -491,7 +494,13 @@ export function ApplicationForm() {
                 </label>
                 <input
                     type="file"
-                    {...register("resumeFile")}
+                    accept="application/pdf"
+                    onChange={(event) => {
+                        setValue(
+                            "resumeFile",
+                            event.target.files ? (event.target.files[0] as File) : null
+                        )
+                    }}
                 />
 
                 {errors.resumeFile?.message && typeof errors.resumeFile.message === 'string' && (
@@ -557,7 +566,7 @@ export function ApplicationForm() {
 
             <div>
                 <label htmlFor="liabilityWaiver">Liability Waiver:</label>
-                <input id="liabilityWaiver" type="checkbox" value={"on"} {...register("liabilityWaiver")} />
+                <input id="liabilityWaiver" type="checkbox" {...register("liabilityWaiver")} />
                 {errors.liabilityWaiver?.message && typeof errors.liabilityWaiver.message === 'string' && (
                     <div>
                         {errors.liabilityWaiver.message}
