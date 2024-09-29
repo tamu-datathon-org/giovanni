@@ -1,31 +1,7 @@
 "use client";
 
-import type { SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
-import type { ApplicationSchema } from "../apply/validation";
-import { applicationSchema } from "../apply/validation";
-import schoolsJson from "./application-data/schools.json";
-
 import "./customCss.scss";
 
-import { useState } from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@vanni/ui/form";
-
-import { Button } from "~/components/ui/button";
-import { Checkbox } from "~/components/ui/checkbox";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import {
   AGE,
   COUNTRIES,
@@ -39,9 +15,30 @@ import {
   RACE_OPTIONS,
   SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@vanni/ui/form";
+
+import type { ApplicationSchema } from "../apply/validation";
+import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
 import GenericCombobox from "./genericCombobox";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import SchoolCombobox from "./schoolDropdown";
+import type { SubmitHandler } from "react-hook-form";
 import Title from "./title";
+import { applicationSchema } from "../apply/validation";
+import schoolsJson from "./application-data/schools.json";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 /*
     First Name
@@ -312,7 +309,7 @@ export function ApplicationForm() {
                 <FormItem>
                   <FormLabel className="text-xl">Address:</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input placeholder="308 Negra Arroyo Lane, Albuquerque, New Mexico 87104" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
