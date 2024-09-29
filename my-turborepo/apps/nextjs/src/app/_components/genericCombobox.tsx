@@ -1,3 +1,20 @@
+import type { ElementRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
+import { useFormContext } from "react-hook-form";
+import { AiOutlineCheck } from "react-icons/ai";
+import { BsChevronExpand } from "react-icons/bs";
+
+import { cn } from "@vanni/ui";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@vanni/ui/form";
+
+import type { ApplicationSchema } from "~/app/apply/validation";
+import { Button } from "~/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -6,28 +23,12 @@ import {
   CommandItem,
   CommandList,
 } from "~/components/ui/command";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@vanni/ui/form";
+import useDebounce from "~/components/ui/debounce";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import React, { useMemo, useRef, useState } from "react";
-
-import { AiOutlineCheck } from "react-icons/ai";
-import type { ApplicationSchema } from "~/app/apply/validation";
-import { BsChevronExpand } from "react-icons/bs";
-import { Button } from "~/components/ui/button";
-import type { ElementRef } from "react";
-import { cn } from "@vanni/ui";
-import useDebounce from "~/components/ui/debounce";
-import { useFormContext } from "react-hook-form";
 
 interface DropdownOption {
   value: string;
@@ -116,7 +117,10 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
               <Command>
                 <CommandInput
                   placeholder={`Search ${name}...`}
-                  onValueChange={(value) => {setSearchValue(value)}}                />
+                  onValueChange={(value) => {
+                    setSearchValue(value);
+                  }}
+                />
                 <CommandList>
                   <CommandEmpty>No results.</CommandEmpty>
                   <CommandGroup>
