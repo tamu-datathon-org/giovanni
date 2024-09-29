@@ -11,7 +11,6 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { zfd } from "zod-form-data";
 
 export const Post = pgTable("post", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
@@ -227,36 +226,36 @@ export const UserResumeRelations = relations(UserResume, ({ one }) => ({
 const phoneRegex = /^([+][0-9]+)?[\s]?([(]?[0-9]{3}[)]?)[-\s]?([0-9]{3})[-\s]?([0-9]{4})$/
 
 export const CreateApplicationSchema = createInsertSchema(Application, {
-  firstName: zfd.text(z.string().max(50, "First Name is too long")),
-  lastName: zfd.text(z.string().max(50, "Last Name is too long")),
-  age: zfd.text(z.string().max(3, "Age is too long")),
-  country: zfd.text(z.string().max(50, "Country is too long")),
-  email: zfd.text(z.string().max(50, "Email is too long").email()),
-  phoneNumber: zfd.text(
+  firstName: z.string().max(50, "First Name is too long"),
+  lastName: z.string().max(50, "Last Name is too long"),
+  age: z.string().max(3, "Age is too long"),
+  country: z.string().max(50, "Country is too long"),
+  email: z.string().max(50, "Email is too long").email(),
+  phoneNumber:
     z
       .string()
       .min(10, "Phone number is too short")
       .regex(phoneRegex, "Invalid phone number format")
       .max(25, "Phone number is too long")
-  ),
-  school: zfd.text(z.string().max(100, "School is too long")),
-  major: zfd.text(z.string().max(100, "Major is too long")),
-  classification: zfd.text(z.string().max(100, "Classification is too long")),
-  gradYear: zfd.numeric(z.number()),
-  gender: zfd.text(z.string().max(50, "Gender is too long")),
-  race: zfd.text(z.string().max(50, "Race is too long")),
-  hackathonsAttended: zfd.text(z.string().max(50, "Hackathons Attended is too long")),
-  experience: zfd.text(z.string().max(50, "Experience is too long")),
-  hasTeam: zfd.text(z.string().max(3, "Has Team is too long")),
-  eventSource: zfd.text(z.string().max(100, "Event Source is too long")),
-  shirtSize: zfd.text(z.string().max(3, "Shirt Size is too long")),
-  address: zfd.text(z.string().max(100, "Address is too long")),
-  references: zfd.text(z.string()),
-  interestOne: zfd.text(z.string().max(500, "Interest One is too long")),
-  interestTwo: zfd.text(z.string().max(500, "Interest Two is too long")),
-  interestThree: zfd.text(z.string().max(500, "Interest Three is too long")),
-  dietaryRestriction: zfd.text(z.string().max(255, "Dietary Restriction is too long").optional().nullable()),
-  extraInfo: zfd.text(z.string().max(255, "Extra Info is too long").optional().nullable()),
+  ,
+  school: z.string().max(100, "School is too long"),
+  major: z.string().max(100, "Major is too long"),
+  classification: z.string().max(100, "Classification is too long"),
+  gradYear: z.number().min(1900).max(2050),
+  gender: z.string().max(50, "Gender is too long"),
+  race: z.string().max(50, "Race is too long"),
+  hackathonsAttended: z.string().max(50, "Hackathons Attended is too long"),
+  experience: z.string().max(50, "Experience is too long"),
+  hasTeam: z.string().max(3, "Has Team is too long"),
+  eventSource: z.string().max(100, "Event Source is too long"),
+  shirtSize: z.string().max(3, "Shirt Size is too long"),
+  address: z.string().max(100, "Address is too long"),
+  references: z.string(),
+  interestOne: z.string().max(500, "Interest One is too long"),
+  interestTwo: z.string().max(500, "Interest Two is too long"),
+  interestThree: z.string().max(500, "Interest Three is too long"),
+  dietaryRestriction: z.string().max(255, "Dietary Restriction is too long").optional().nullable(),
+  extraInfo: z.string().max(255, "Extra Info is too long").optional().nullable(),
 }).omit({
   id: true,
   userId: true,
