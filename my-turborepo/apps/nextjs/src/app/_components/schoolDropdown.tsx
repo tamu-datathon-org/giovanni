@@ -34,6 +34,13 @@ interface DropdownOption {
   schoolName: string;
 }
 
+function filter20Items(arr, query: string) {
+  console.log(query);
+  return arr
+    .filter((el) => el.toLowerCase().includes(query.toLowerCase()))
+    .slice(0, 20);
+  // return arr;
+}
 interface SchoolDropdownProps {
   register: UseFormRegister<any>;
   name: string;
@@ -113,6 +120,58 @@ const SchoolDropdown: React.FC<SchoolDropdownProps> = ({
                       )}
                     />
                     {option.schoolName}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+    <div className="flex flex-col">
+      {label && (
+        <Label htmlFor={name} className="pt-4 text-xl">
+          {label}
+        </Label>
+      )}
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="justify-between"
+          >
+            {value ? options.find((option) => option === value) : "Select ..."}
+            <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className=" w-fit p-0">
+          <Command>
+            <CommandInput
+              placeholder={`Search ${name}...`}
+              {...register(name)}
+            />
+            <CommandList>
+              <CommandEmpty>School not found.</CommandEmpty>
+              <CommandGroup>
+                {filter20Items(options, watch(name)).map((option, index) => (
+                  <CommandItem
+                    key={option}
+                    value={option}
+                    onSelect={(currentValue) => {
+                      setValue(currentValue === value ? "" : currentValue);
+                      setOpen(false);
+                    }}
+                  >
+                    <AiOutlineCheck
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === option ? "opacity-100" : "opacity-0",
+                      )}
+                    />
+                    {option}
                   </CommandItem>
                 ))}
               </CommandGroup>

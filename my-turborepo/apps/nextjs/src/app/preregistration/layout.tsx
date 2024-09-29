@@ -39,7 +39,6 @@ export default function PreregistrationLayout({
 }) {
   return (
     <>
-      <BackgroundImage />
       <div className="max-h-screen-sm overflow-hidden">{children}</div>
     </>
   );

@@ -1,22 +1,7 @@
 "use client";
 
-import type { SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
-import type { ApplicationSchema } from "../apply/validation";
-import { applicationSchema } from "../apply/validation";
-import schools from "./application-data/schools.json";
-
 import "./customCss.scss";
 
-import { useState } from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
-
-import { Button } from "~/components/ui/button";
-import { Checkbox } from "~/components/ui/checkbox";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import {
   AGE,
   COUNTRIES,
@@ -30,9 +15,30 @@ import {
   RACE_OPTIONS,
   SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
-import GenericDropdown from "./genericDropdown";
-import SchoolDropdown from "./schoolDropdown";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@vanni/ui/form";
+
+import type { ApplicationSchema } from "../apply/validation";
+import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
+import GenericCombobox from "./genericCombobox";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import SchoolCombobox from "./schoolDropdown";
+import type { SubmitHandler } from "react-hook-form";
 import Title from "./title";
+import { applicationSchema } from "../apply/validation";
+import schoolsJson from "./application-data/schools.json";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 /*
     First Name
@@ -58,11 +64,7 @@ import Title from "./title";
     Liability Waiver (checkbox)
 */
 export function ApplicationForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ApplicationSchema>({
+  const form = useForm<ApplicationSchema>({
     mode: "onSubmit",
     defaultValues: {
       firstName: "",
@@ -83,266 +85,357 @@ export function ApplicationForm() {
   };
   const [submitting, setSubmitting] = useState(false);
 
+  const SCHOOL_OPTIONS = schoolsJson.map((entry, index) => ({
+    value: entry.schoolName,
+    label: entry.schoolName,
+  }));
   return (
     <div className="flex w-3/5 justify-center">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="rounded-lg bg-white p-5 px-16"
-      >
-        <h1 className="p-10 pb-3 text-center text-6xl font-bold">
-          <span className="odd:text-teal-400">H</span>
-          <span className="even:text-cyan-700">A</span>
-          <span className="odd:text-teal-400 ">C</span>
-          <span className="even:text-cyan-700">K</span>
-          <span className="odd:text-teal-400 ">E</span>
-          <span className="even:text-cyan-700">R</span> APPLICATION
-        </h1>
-        <div className="pb-4 text-center text-xl text-gray-500">
-          Please complete the following sections. Filling out this form should
-          take about 10-15 minutes.
-        </div>
-
-        <div className="flex w-full flex-row">
-          {/* First Name */}
-          <div className="flex w-1/2 flex-col pr-2">
-            <Label htmlFor="firstName" className="text-xl">
-              First Name
-            </Label>
-            <Input
-              id="firstName"
-              type="text"
-              {...register("firstName")}
-              placeholder="John"
-            />
-            {errors.firstName?.message && <div>AJHBDA</div>}
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="rounded-lg bg-white p-5 px-16"
+        >
+          <h1 className="p-10 pb-3 text-center text-6xl font-bold">
+            <span className="odd:text-teal-400">H</span>
+            <span className="even:text-cyan-700">A</span>
+            <span className="odd:text-teal-400 ">C</span>
+            <span className="even:text-cyan-700">K</span>
+            <span className="odd:text-teal-400 ">E</span>
+            <span className="even:text-cyan-700">R</span> APPLICATION
+          </h1>
+          <div className="pb-4 text-center text-xl text-gray-500">
+            Please complete the following sections. Filling out this form should
+            take about 10-15 minutes.
           </div>
 
-          {/* Last Name */}
-          <div className="flex w-1/2 flex-col ">
-            <Label htmlFor="lastName" className="text-xl">
-              Last Name
-            </Label>
-            <Input
-              id="lastName"
-              type="text"
-              {...register("lastName")}
-              placeholder="Doe"
+          <div className="flex w-full flex-row">
+            {/* First Name */}
+            <div className="flex w-1/2 flex-col pr-2">
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xl">First Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />{" "}
+            </div>
+
+            {/* Last Name */}
+            <div className="flex w-1/2 flex-col pr-2">
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xl">Last Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          {/* Email */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">Email:</FormLabel>
+                  <FormControl>
+                    <Input placeholder="abc123@gmail.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
-        </div>
 
-        {/* Email */}
-        <div className="pt-4">
-          <Label htmlFor="email" className="text-xl">
-            Email:
-          </Label>
-          <Input
-            id="email"
-            type="text"
-            {...register("email")}
-            placeholder="abc123@gmail.com"
+          {/* Phone Number */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">Phone Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="1234567890" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Age */}
+          <GenericCombobox name={"age"} label={"Age"} options={AGE} />
+
+          {/* Country */}
+          <GenericCombobox
+            name={"country"}
+            label={"Country of Residence"}
+            options={COUNTRIES}
           />
-        </div>
 
-        {/* Phone Number */}
-        <div className="pt-4">
-          <Label htmlFor="phoneNumber" className="text-xl">
-            Phone Number
-          </Label>
-          <Input id="phoneNumber" type="text" {...register("phoneNumber")} />
-        </div>
-
-        {/* Age */}
-        <GenericDropdown
-          register={register}
-          name={"age"}
-          label={"Age"}
-          options={AGE}
-        />
-
-        {/* Country */}
-        <GenericDropdown
-          register={register}
-          name={"country"}
-          label={"Country of Residence"}
-          options={COUNTRIES}
-        />
-
-        {/* Gender */}
-        <GenericDropdown
-          register={register}
-          name={"gender"}
-          label={"What's your gender"}
-          options={GENDER_OPTIONS}
-        />
-
-        {/* Race */}
-        <GenericDropdown
-          register={register}
-          name={"race"}
-          label={"What ethnicity do you identify with?"}
-          options={RACE_OPTIONS}
-        />
-
-        {/* School */}
-        <Title text="School Info" className="m-1" />
-        <SchoolDropdown
-          register={register}
-          name={"school"}
-          label={"What school do you go to?"}
-          options={schools}
-        />
-
-        {/* Major */}
-        <GenericDropdown
-          register={register}
-          name={"major"}
-          label={"What's your major?"}
-          options={MAJOR}
-        />
-
-        {/* Classification */}
-        <GenericDropdown
-          register={register}
-          name={"classification"}
-          label={"What classification are you?"}
-          options={EDUCATION_LEVELS}
-        />
-
-        {/* Graduation Year */}
-        <GenericDropdown
-          register={register}
-          name={"gradYear"}
-          label={"What is your anticipated graduation year?"}
-          options={GRADUATION_YEARS}
-        />
-
-        {/* Figure out how to do other */}
-        {/* Hackathons Attended */}
-        <Title text="Experience" className="m-1" />
-        <GenericDropdown
-          register={register}
-          name={"hackathonsAttended"}
-          label={"How many hackathons have you attended?"}
-          options={HACKATHON_EXPERIENCE}
-        />
-
-        {/* Experience Level */}
-        <GenericDropdown
-          register={register}
-          name={"experience"}
-          label={"What is your experience level in Data Science?"}
-          options={PROGRAMMING_SKILL_LEVELS}
-        />
-
-        {/* Team */}
-        <GenericDropdown
-          register={register}
-          name={"hasTeam"}
-          label={"Do you have a team?"}
-          options={[
-            { value: "No", label: "I do have a team" },
-            { value: "Yes", label: "I do not have a team" },
-          ]}
-        />
-
-        {/* Team Members */}
-        <GenericDropdown
-          register={register}
-          name={"teamMembers"}
-          label={"How many team members do you have?"}
-          options={HEARD_ABOUT_OPTIONS}
-        />
-
-        {/* Shirt Size */}
-        <GenericDropdown
-          register={register}
-          name={"shirtSize"}
-          label={"What's your shirt size?"}
-          options={SHIRT_SIZES}
-        />
-
-        {/* Resume */}
-        <div className="pt-4">
-          <Label htmlFor="resume" className="text-xl">
-            Upload Resume (PDF only):
-          </Label>
-          <Input
-            id="resume"
-            type="file"
-            accept="application/pdf"
-            className="border"
-            {...register("resume")}
+          {/* Gender */}
+          <GenericCombobox
+            name={"gender"}
+            label={"Gender"}
+            options={GENDER_OPTIONS}
           />
-        </div>
 
-        {/* Address */}
-        {/* <div className="pt-4">
-          <Label htmlFor="address" className="text-xl">Address:</Label>
-          <Input id="address" type="text" {...register("address")} />
-        </div> */}
-
-        <Title text="General Info" className="m-1" />
-        {/* References */}
-        <div className="pt-4">
-          <Label htmlFor="references" className="text-xl">
-            Point us to anything you'd like us to look at while considering your
-            application:
-          </Label>
-          <Input id="references" type="text" {...register("references")} />
-        </div>
-
-        {/* Tell us your best programming joke. */}
-        <div className="pt-4">
-          <Label htmlFor="joke" className="text-xl">
-            Tell us your best programming joke.
-          </Label>
-          <Input id="joke" type="text" {...register("joke")} />
-        </div>
-        {/* What is the one thing you'd build if you had unlimited resources? */}
-        {/* What drives your interest in being a part of TAMU Datathon?  */}
-
-        {/* Dietry Restrictions */}
-        <div className="pt-4">
-          <Label htmlFor="dietaryRestriction" className="text-xl">
-            Do you require any special accommodations at the event? Please list
-            all dietary restrictions here.
-          </Label>
-          <Input
-            id="dietaryRestriction"
-            type="text"
-            {...register("dietaryRestriction")}
+          {/* Race */}
+          <GenericCombobox
+            name={"race"}
+            label={"What ethnicity do you identify with?"}
+            options={RACE_OPTIONS}
           />
-        </div>
 
-        {/* Extra Info */}
-        <div className="pt-4">
-          <Label htmlFor="extraInfo" className="text-xl">
-            Anything else you would like us to know?
-          </Label>
-          <Input id="extraInfo" type="text" {...register("extraInfo")} />
-        </div>
+          {/* School */}
+          <Title text="School Info" className="m-1" />
+          <GenericCombobox
+            name={"school"}
+            label={"What school do you go to?"}
+            options={SCHOOL_OPTIONS}
+            filter
+          />
 
-        {/* Liability Waiver */}
-        <div className="flex items-center space-x-2 pt-4">
-          <Checkbox id="liabilityWaiver" {...register("liabilityWaiver")} />
-          <Label htmlFor="liabilityWaiver" className="text-xl">
-            Liability Waiver
-          </Label>
-        </div>
+          {/* Major */}
+          <GenericCombobox
+            name={"major"}
+            label={"What's your major?"}
+            options={MAJOR}
+          />
 
-        {/* Submit */}
-        <div className="pt-4 text-4xl">
-          {!submitting && <Button type="submit">Submit</Button>}
-          {submitting && (
-            <Button type="submit" disabled>
-              {" "}
-              <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-              Please wait ...
-            </Button>
-          )}
-        </div>
-      </form>
+          {/* Classification */}
+          <GenericCombobox
+            name={"classification"}
+            label={"What classification are you?"}
+            options={EDUCATION_LEVELS}
+          />
+
+          {/* Graduation Year */}
+          <GenericCombobox
+            name={"gradYear"}
+            label={"What is your anticipated graduation year?"}
+            options={GRADUATION_YEARS}
+          />
+
+          {/* Figure out how to do other */}
+          {/* Hackathons Attended */}
+          <Title text="Experience" className="m-1" />
+          <GenericCombobox
+            name={"hackathonsAttended"}
+            label={"How many hackathons have you attended?"}
+            options={HACKATHON_EXPERIENCE}
+          />
+
+          {/* Experience Level */}
+          <GenericCombobox
+            name={"experience"}
+            label={"What is your experience level in Data Science?"}
+            options={PROGRAMMING_SKILL_LEVELS}
+          />
+
+          {/* Team */}
+          <GenericCombobox
+            name={"hasTeam"}
+            label={"Do you have a team?"}
+            options={[
+              { value: "No", label: "I do have a team" },
+              { value: "Yes", label: "I do not have a team" },
+            ]}
+          />
+
+          {/* How'd you hear */}
+          <GenericCombobox
+            name={"eventSource"}
+            label={"How did you hear about TAMU Datathon?"}
+            options={HEARD_ABOUT_OPTIONS}
+          />
+
+          {/* Shirt Size */}
+          <GenericCombobox
+            name={"shirtSize"}
+            label={"What's your shirt size?"}
+            options={SHIRT_SIZES}
+          />
+
+          {/* Resume */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field: { value, onChange, ...fieldProps } }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Upload Resume (PDF only):
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...fieldProps}
+                      type="file"
+                      accept="application/pdf"
+                      className="border"
+                      onChange={(event) => {
+                        onChange(event.target.files && event.target.files[0]);
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Address */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">Address:</FormLabel>
+                  <FormControl>
+                    <Input placeholder="308 Negra Arroyo Lane, Albuquerque, New Mexico 87104" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Title text="General Info" className="m-1" />
+          {/* References */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="references"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Point us to anything you'd like us to look at while
+                    considering your application:
+                  </FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Tell us your best programming joke. */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="joke"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Tell us your best programming joke.
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Is your code running? Well, you better go catch it."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          {/* What is the one thing you'd build if you had unlimited resources? */}
+          {/* What drives your interest in being a part of TAMU Datathon?  */}
+
+          {/* Dietry Restrictions */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="dietaryRestriction"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Do you require any special accommodations at the event?
+                    Please list all dietary restrictions here.
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="Rock only diet." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Extra Info */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="extraInfo"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Anything else you would like us to know?
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="I love drywall!" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+
+              {/* TODO: Add the waiver */}
+          {/* Liability Waiver */}
+          <div className="flex items-center space-x-2 pt-4">
+            <FormField
+              control={form.control}
+              name="liabilityWaiver"
+              render={({ field }) => (
+                <FormItem>
+                    <FormLabel className="text-xl">I have read and accept the Liability Waiver: </FormLabel>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Submit */}
+          <div className="pt-4 text-4xl">
+            {!submitting && <Button type="submit">Submit</Button>}
+            {submitting && (
+              <Button type="submit" disabled>
+                {" "}
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait ...
+              </Button>
+            )}
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }
