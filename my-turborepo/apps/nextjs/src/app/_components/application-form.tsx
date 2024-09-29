@@ -401,6 +401,8 @@ export function ApplicationForm() {
             />
           </div>
 
+
+              {/* TODO: Add the waiver */}
           {/* Liability Waiver */}
           <div className="flex items-center space-x-2 pt-4">
             <FormField
@@ -408,7 +410,7 @@ export function ApplicationForm() {
               name="liabilityWaiver"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xl">Liability Waiver</FormLabel>
+                    <FormLabel className="text-xl">I have read and accept the Liability Waiver: </FormLabel>
                   <FormControl>
                     <Checkbox
                       checked={field.value}
