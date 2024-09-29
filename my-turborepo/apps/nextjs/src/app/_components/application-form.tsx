@@ -6,18 +6,7 @@ import { useForm, UseFormRegister, FieldErrors } from "react-hook-form";
 import React, { useState } from 'react';
 
 import type { ApplicationSchema } from "../apply/validation";
-import countries from "./application-data/countries.json";
 import schools from "./application-data/schools.json";
-import age from "./application-data/age.json";
-import experience from "./application-data/experience.json";
-import gender from "./application-data/gender.json";
-import gradYear from "./application-data/gradYear.json";
-import hackathonAttended from "./application-data/hackathonAttended.json";
-import major from "./application-data/major.json";
-import race from "./application-data/race.json";
-import shirtSize from "./application-data/shirtSize.json";
-import eventSource from "./application-data/eventSource.json";
-import classification from "./application-data/classification.json";
 
 
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -149,7 +138,7 @@ export function ApplicationForm() {
         resumeName: blob_name as string,
         applicationData: {
           ...data,
-          gradYear: Number(data.gradYear), // Ensure gradYear is a number
+          gradYear: Number(data.gradYear),
         },
       };
 
@@ -172,7 +161,6 @@ export function ApplicationForm() {
         },
       });
     } else {
-      // console.log("Updating")
       const updateApplicationData = {
         id: importedValues.app.id,
         userId: importedValues.app.userId,
@@ -181,7 +169,7 @@ export function ApplicationForm() {
         eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
         application: {
           ...data,
-          gradYear: Number(data.gradYear), // Ensure gradYear is a number
+          gradYear: Number(data.gradYear),
         },
       };
 
@@ -240,6 +228,7 @@ export function ApplicationForm() {
               type="text"
               {...register("firstName")}
               placeholder="John"
+              defaultValue={importedValues?.app?.firstName}
             />
             {errors.firstName?.message && <div>AJHBDA</div>}
           </div>
@@ -254,6 +243,7 @@ export function ApplicationForm() {
               type="text"
               {...register("lastName")}
               placeholder="Doe"
+              defaultValue={importedValues?.app?.lastName}
             />
           </div>
         </div>
@@ -268,6 +258,7 @@ export function ApplicationForm() {
             type="text"
             {...register("email")}
             placeholder="abc123@gmail.com"
+            defaultValue={importedValues?.app?.email}
           />
         </div>
 
@@ -276,7 +267,12 @@ export function ApplicationForm() {
           <Label htmlFor="phoneNumber" className="text-xl">
             Phone Number
           </Label>
-          <Input id="phoneNumber" type="text" {...register("phoneNumber")} />
+          <Input
+            id="phoneNumber"
+            type="text"
+            {...register("phoneNumber")}
+            defaultValue={importedValues?.app?.phoneNumber}
+          />
         </div>
 
         {/* Age */}
@@ -285,6 +281,7 @@ export function ApplicationForm() {
           name={"age"}
           label={"Age"}
           options={AGE}
+          defaultOption={AGE.find(option => option.value === importedValues?.app?.age)}
         />
 
         {/* Country */}
@@ -293,6 +290,7 @@ export function ApplicationForm() {
           name={"country"}
           label={"Country of Residence"}
           options={COUNTRIES}
+          defaultOption={COUNTRIES.find(option => option.value === importedValues?.app?.country)}
         />
 
         {/* Gender */}
@@ -301,6 +299,7 @@ export function ApplicationForm() {
           name={"gender"}
           label={"What's your gender"}
           options={GENDER_OPTIONS}
+          defaultOption={GENDER_OPTIONS.find(option => option.value === importedValues?.app?.gender)}
         />
 
         {/* Race */}
@@ -309,6 +308,7 @@ export function ApplicationForm() {
           name={"race"}
           label={"What ethnicity do you identify with?"}
           options={RACE_OPTIONS}
+          defaultOption={RACE_OPTIONS.find(option => option.value === importedValues?.app?.race)}
         />
 
         {/* School */}
@@ -318,6 +318,7 @@ export function ApplicationForm() {
           name={"school"}
           label={"What school do you go to?"}
           options={schools}
+          defaultOption={schools.find(option => option.schoolName === importedValues?.app?.school)}
         />
 
         {/* Major */}
@@ -326,6 +327,7 @@ export function ApplicationForm() {
           name={"major"}
           label={"What's your major?"}
           options={MAJOR}
+          defaultOption={MAJOR.find(option => option.value === importedValues?.app?.major)}
         />
 
         {/* Classification */}
@@ -334,6 +336,7 @@ export function ApplicationForm() {
           name={"classification"}
           label={"What classification are you?"}
           options={EDUCATION_LEVELS}
+          defaultOption={EDUCATION_LEVELS.find(option => option.value === importedValues?.app?.classification)}
         />
 
         {/* Graduation Year */}
@@ -342,9 +345,9 @@ export function ApplicationForm() {
           name={"gradYear"}
           label={"What is your anticipated graduation year?"}
           options={GRADUATION_YEARS}
+          defaultOption={GRADUATION_YEARS.find(option => Number(option.value) === importedValues?.app?.gradYear)}
         />
 
-        {/* Figure out how to do other */}
         {/* Hackathons Attended */}
         <Title text="Experience" className="m-1" />
         <GenericDropdown
@@ -352,6 +355,7 @@ export function ApplicationForm() {
           name={"hackathonsAttended"}
           label={"How many hackathons have you attended?"}
           options={HACKATHON_EXPERIENCE}
+          defaultOption={HACKATHON_EXPERIENCE.find(option => option.value === importedValues?.app?.hackathonsAttended)}
         />
 
         {/* Experience Level */}
@@ -360,6 +364,7 @@ export function ApplicationForm() {
           name={"experience"}
           label={"What is your experience level in Data Science?"}
           options={PROGRAMMING_SKILL_LEVELS}
+          defaultOption={PROGRAMMING_SKILL_LEVELS.find(option => option.value === importedValues?.app?.experience)}
         />
 
         {/* Team */}
@@ -371,6 +376,7 @@ export function ApplicationForm() {
             { value: "No", label: "I do have a team" },
             { value: "Yes", label: "I do not have a team" },
           ]}
+          defaultOption={importedValues?.app?.hasTeam ? { value: importedValues.app.hasTeam, label: importedValues.app.hasTeam } : undefined}
         />
 
         {/* Team Members */}
@@ -387,11 +393,13 @@ export function ApplicationForm() {
           name={"shirtSize"}
           label={"What's your shirt size?"}
           options={SHIRT_SIZES}
+          defaultOption={SHIRT_SIZES.find(option => option.value === importedValues?.app?.shirtSize)}
         />
 
         {/* Resume */}
         <div className="pt-4">
           <Label htmlFor="resume" className="text-xl">
+            Current Resume: {importedValues?.resume?.resumeName || 'None'} <br />
             Upload Resume (PDF only):
           </Label>
           <Input
@@ -399,7 +407,12 @@ export function ApplicationForm() {
             type="file"
             accept="application/pdf"
             className="border"
-            {...register("resume")}
+            onChange={(event) => {
+              setValue(
+                "resumeFile",
+                event.target.files ? (event.target.files[0] as File) : null
+              )
+            }}
           />
         </div>
 
@@ -416,20 +429,53 @@ export function ApplicationForm() {
             Point us to anything you'd like us to look at while considering your
             application:
           </Label>
-          <Input id="references" type="text" {...register("references")} />
+          <Input id="references" type="text" {...register("references")} defaultValue={importedValues?.app?.references} />
         </div>
+
+        {/* Tell us your best programming joke. */}
+        {/* What is the one thing you'd build if you had unlimited resources? */}
+        {/* What drives your interest in being a part of TAMU Datathon?  */}
 
         {/* Tell us your best programming joke. */}
         <div className="pt-4">
           <Label htmlFor="joke" className="text-xl">
             Tell us your best programming joke.
           </Label>
-          <Input id="joke" type="text" {...register("joke")} />
+          <Input
+            id="joke"
+            type="text"
+            {...register("interestOne")}
+            defaultValue={importedValues?.app?.interestOne}
+          />
         </div>
-        {/* What is the one thing you'd build if you had unlimited resources? */}
-        {/* What drives your interest in being a part of TAMU Datathon?  */}
 
-    
+        {/* What is the one thing you'd build if you had unlimited resources? */}
+        <div className="pt-4">
+          <Label htmlFor="unlimitedResources" className="text-xl">
+            What is the one thing you'd build if you had unlimited resources?
+          </Label>
+          <Input
+            id="unlimitedResources"
+            type="text"
+            {...register("interestTwo")}
+            defaultValue={importedValues?.app?.interestTwo}
+          />
+        </div>
+
+        {/* What drives your interest in being a part of TAMU Datathon? */}
+        <div className="pt-4">
+          <Label htmlFor="interest" className="text-xl">
+            What drives your interest in being a part of TAMU Datathon?
+          </Label>
+          <Input
+            id="interest"
+            type="text"
+            {...register("interestThree")}
+            defaultValue={importedValues?.app?.interestThree}
+          />
+        </div>
+
+
 
         {/* Dietry Restrictions */}
         <div className="pt-4">
@@ -441,6 +487,7 @@ export function ApplicationForm() {
             id="dietaryRestriction"
             type="text"
             {...register("dietaryRestriction")}
+            defaultValue={importedValues?.app?.dietaryRestriction ?? ''}
           />
         </div>
 
@@ -449,7 +496,7 @@ export function ApplicationForm() {
           <Label htmlFor="extraInfo" className="text-xl">
             Anything else you would like us to know?
           </Label>
-          <Input id="extraInfo" type="text" {...register("extraInfo")} />
+          <Input id="extraInfo" type="text" {...register("extraInfo")} defaultValue={importedValues?.app?.extraInfo ?? ''} />
         </div>
 
         {/* Liability Waiver */}
@@ -462,8 +509,8 @@ export function ApplicationForm() {
 
         {/* Submit */}
         <div className="pt-4 text-4xl">
-          {!submitting && <Button type="submit">Submit</Button>}
-          {submitting && (
+          {!isSubmitting && <Button type="submit">Submit</Button>}
+          {isSubmitting && (
             <Button type="submit" disabled>
               {" "}
               <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />

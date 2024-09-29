@@ -102,7 +102,7 @@ const GenericDropdown: React.FC<GenericDropdownProps> = ({
                   <CommandItem
                     key={option.value}
                     value={option.value}
-                    onSelect={(currentValue) => {
+                    onSelect={(currentValue: React.SetStateAction<string>) => {
                       setValue(currentValue === value ? "" : currentValue);
                       setOpen(false);
                     }}
