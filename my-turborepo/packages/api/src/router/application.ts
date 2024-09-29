@@ -78,7 +78,7 @@ export const applicationRouter = {
         )
         .mutation(async ({ ctx, input }) => {
             const { id, userId, resumeName, resumeUrl, eventName, application } = input;
-            console.log(input);
+
             if (ctx.session?.user == undefined) {
                 throw new TRPCError({
                     code: "UNAUTHORIZED",

@@ -207,7 +207,6 @@ export function ApplicationForm() {
     const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
         let blob_name = undefined;
         let blob_url = undefined;
-        console.log(data);
 
         if (data.resumeFile) {
             await upload(data.resumeFile.name, data.resumeFile, {
@@ -215,7 +214,6 @@ export function ApplicationForm() {
                 contentType: 'application/pdf',
                 handleUploadUrl: '/api/resume'
             }).then((blob) => {
-                console.log(blob);
                 blob_name = data.resumeFile?.name;
                 blob_url = blob.url;
                 return blob;
