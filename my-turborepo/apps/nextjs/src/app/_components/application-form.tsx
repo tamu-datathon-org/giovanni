@@ -673,8 +673,8 @@ export function ApplicationForm() {
 
           {/* Submit */}
           <div className="pt-4 text-4xl">
-            {!isSubmitting && <Button type="submit">Submit</Button>}
-            {isSubmitting && (
+            {!form.isSubmitting && <Button type="submit">Submit</Button>}
+            {form.isSubmitting && (
               <Button type="submit" disabled>
                 {" "}
                 <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
