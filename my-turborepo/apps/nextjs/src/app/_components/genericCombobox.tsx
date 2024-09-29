@@ -61,7 +61,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
     }
 
     const query = debouncedValue;
-    console.log("thing: ", query);
+    // console.log("thing: ", query);
 
     if (filter) {
       return options
