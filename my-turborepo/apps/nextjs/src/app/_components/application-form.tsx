@@ -535,7 +535,7 @@ export function ApplicationForm() {
           <div className="pt-4">
             <FormField
               control={form.control}
-              name="joke"
+              name="interestOne"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
@@ -558,7 +558,7 @@ export function ApplicationForm() {
 
           <FormField
               control={form.control}
-              name="unlimitedResources"
+              name="interestTwo"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
@@ -581,7 +581,7 @@ export function ApplicationForm() {
           <div className="pt-4">
             <FormField
               control={form.control}
-              name="interest"
+              name="interestThree"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
