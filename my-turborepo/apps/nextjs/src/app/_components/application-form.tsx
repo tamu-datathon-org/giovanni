@@ -578,8 +578,7 @@ export function ApplicationForm() {
 
           {/* What drives your interest in being a part of TAMU Datathon? */}
           <div className="pt-4">
-            
-          What is the one thing you'd build if you had unlimited resources?<FormField
+            <FormField
               control={form.control}
               name="interest"
               render={({ field }) => (
