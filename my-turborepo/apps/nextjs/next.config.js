@@ -1,6 +1,5 @@
 import { fileURLToPath } from "url";
 import createJiti from "jiti";
-import path from "path";
 
 // Import env files to validate at build time. Use jiti so we can load .ts files in here.
 createJiti(fileURLToPath(import.meta.url))("./src/env");
@@ -17,7 +16,7 @@ const config = {
     "@vanni/ui",
     "@vanni/validators",
   ],
-  outputFileTracingRoot: path.join(__dirname, '../../'),
+
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
