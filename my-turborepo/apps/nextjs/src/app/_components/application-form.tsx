@@ -18,6 +18,12 @@ import race from "./application-data/race.json";
 import shirtSize from "./application-data/shirtSize.json";
 import eventSource from "./application-data/eventSource.json";
 import classification from "./application-data/classification.json";
+
+
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { Checkbox } from "~/components/ui/checkbox";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 import { Button } from "@vanni/ui/button";
 import Image from "next/image";
 import { toast } from "~/hooks/use-toast";
@@ -25,6 +31,23 @@ import { TRPCClientError } from "@trpc/client";
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
 import { upload } from '@vercel/blob/client';
+import "./customCss.scss";
+import {
+  AGE,
+  COUNTRIES,
+  EDUCATION_LEVELS,
+  GENDER_OPTIONS,
+  GRADUATION_YEARS,
+  HACKATHON_EXPERIENCE,
+  HEARD_ABOUT_OPTIONS,
+  MAJOR,
+  PROGRAMMING_SKILL_LEVELS,
+  RACE_OPTIONS,
+  SHIRT_SIZES,
+} from "~/lib/dropdownOptions";
+import GenericDropdown from "./genericDropdown";
+import SchoolDropdown from "./schoolDropdown";
+import Title from "./title";
 
 
 /*
@@ -51,545 +74,404 @@ import { upload } from '@vercel/blob/client';
     Liability Waiver (checkbox)
 */
 
-interface FormInputProps {
-    id: string;
-    label: string;
-    register: UseFormRegister<ApplicationSchema>;
-    errors: FieldErrors;
-    name: keyof ApplicationSchema;
-    defaultValue?: string;
-}
-
-interface FormSelectProps {
-    id: string;
-    label: string;
-    register: UseFormRegister<ApplicationSchema>;
-    errors: FieldErrors;
-    name: keyof ApplicationSchema;
-    options: { value: string | number; label: string }[];
-    defaultValue?: string;
-}
-
-interface AutocompleteInputProps {
-    id: string;
-    label: string;
-    name: keyof ApplicationSchema;
-    register: UseFormRegister<ApplicationSchema>;
-    errors: FieldErrors;
-    options: { name: string }[];
-    placeholder?: string;
-    initQuery: string | undefined;
-}
-
-const FormInput: React.FC<FormInputProps> = ({ id, label, register, errors, name, defaultValue }) => {
-    return (
-        <div>
-            <label htmlFor={id}>{label}</label>
-            <input defaultValue={defaultValue} id={id} type="text" {...register(name)} />
-            {errors[name]?.message && typeof errors[name].message === 'string' && (
-                <div>
-                    {errors[name].message}
-                </div>
-            )}
-        </div>
-    );
-};
-
-
-const FormSelect: React.FC<FormSelectProps> = ({ id, label, register, errors, name, options, defaultValue }) => {
-    return (
-        <div>
-            <label htmlFor={id}>{label}</label>
-            <select id={id} {...register(name)} defaultValue={defaultValue}>
-                <option value=''>---------</option>
-                {options.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </select>
-            {errors[name]?.message && typeof errors[name].message === 'string' && (
-                <div>
-                    {errors[name].message}
-                </div>
-            )}
-        </div>
-    );
-};
-
-const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ id, label, name, register, errors, options, placeholder = 'Search...', initQuery = '' }) => {
-    const [searchQuery, setSearchQuery] = useState(initQuery);
-    const [showResults, setShowResults] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(initQuery);
-
-    const visibleOptions = options.filter(option =>
-        option.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 5);
-
-    return (
-        <div className='input-wrapper'>
-            <label htmlFor={id} className='requiredField'>{label}</label>
-            <div className='helperText'>Currently selected: {selectedValue}</div>
-            <input
-                type='text'
-                id={id}
-                value={searchQuery}
-                onFocus={() => setShowResults(true)}
-                placeholder={placeholder}
-                {...register(name, {
-                    onChange: event => {
-                        event.target.setAttribute('autocomplete', 'on');
-                        setSearchQuery(event.target.value);
-                        setShowResults(true);
-                    },
-                    onBlur: () => setShowResults(false),
-                })}
-            />
-            {showResults && (
-                <ul className="m-0 absolute bg-white w-60 overflow-y-auto max-h-40">
-                    {visibleOptions.map((option, index) => (
-                        <li
-                            key={index}
-                            onMouseDown={() => {
-                                setSelectedValue(option.name);
-                                setSearchQuery(option.name);
-                                setShowResults(false);
-                            }}
-                        >
-                            {option.name}
-                        </li>
-                    ))}
-                </ul>
-            )}
-            {errors[name]?.message && typeof errors[name].message === 'string' && (
-                <div>
-                    {errors[name].message}
-                </div>
-            )}
-        </div>
-    );
-};
-
 const Loading = () => {
-    return (<div>
-        Hello, Loading
-    </div>);
+  return (<div>
+    Hello, Loading
+  </div>);
 }
 
 export function ApplicationForm() {
-    const { data: importedValues, isLoading } = api.application.getApplicationByEventName.useQuery(
-        { eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" },
-        {
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: false,
-            retry: 1, // Retry failed requests once
-        }
-    );
+  const { data: importedValues, isLoading } = api.application.getApplicationByEventName.useQuery(
+    { eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: 1, // Retry failed requests once
+    }
+  );
 
 
-    const { register, handleSubmit, setValue, formState: { errors, isDirty, isSubmitting } } = useForm<ApplicationSchema>({
-        mode: "onSubmit",
-        defaultValues: {
-            resumeFile: null,
-            liabilityWaiver: false,
+  const { register, handleSubmit, setValue, formState: { errors, isDirty, isSubmitting } } = useForm<ApplicationSchema>({
+    mode: "onSubmit",
+    defaultValues: {
+      resumeFile: null,
+      liabilityWaiver: false,
+    },
+    ...importedValues?.app,
+    resetOptions: {
+      keepDirtyValues: true, // user-interacted input will not be retained
+      keepErrors: true,
+    },
+    resolver: zodResolver(applicationSchema),
+  });
+
+  const createApplication = api.application.create.useMutation();
+  const updateApplication = api.application.update.useMutation();
+
+  const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
+    let blob_name = undefined;
+    let blob_url = undefined;
+
+    if (data.resumeFile) {
+      await upload(data.resumeFile.name, data.resumeFile, {
+        access: 'public',
+        contentType: 'application/pdf',
+        handleUploadUrl: '/api/resume'
+      }).then((blob) => {
+        blob_name = data.resumeFile?.name;
+        blob_url = blob.url;
+        return blob;
+      }).catch((error) => {
+        toast({
+          variant: "destructive",
+          title: "Resume Failed to Upload",
+          description: error.message,
+        });
+      });
+    } else {
+      blob_name = importedValues?.resume?.resumeName;
+      blob_url = importedValues?.resume?.resumeUrl;
+    }
+
+    if (!blob_name || !blob_url) {
+      toast({
+        variant: "destructive",
+        title: "Submission failed",
+        description: "Resume file is required.",
+      });
+      return;
+    }
+
+    if (!importedValues) {
+      const createApplicationData = {
+        eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
+        resumeUrl: blob_url as string,
+        resumeName: blob_name as string,
+        applicationData: {
+          ...data,
+          gradYear: Number(data.gradYear), // Ensure gradYear is a number
         },
-        ...importedValues?.app,
-        resetOptions: {
-            keepDirtyValues: true, // user-interacted input will not be retained
-            keepErrors: true,
+      };
+
+      await createApplication.mutateAsync(createApplicationData, {
+        onSuccess: () => {
+          toast({
+            variant: "success",
+            title: "Application submitted successfully!",
+            description: "Your application has been received.",
+          });
         },
-        resolver: zodResolver(applicationSchema),
-    });
-
-    const createApplication = api.application.create.useMutation();
-    const updateApplication = api.application.update.useMutation();
-
-    const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
-        let blob_name = undefined;
-        let blob_url = undefined;
-
-        if (data.resumeFile) {
-            await upload(data.resumeFile.name, data.resumeFile, {
-                access: 'public',
-                contentType: 'application/pdf',
-                handleUploadUrl: '/api/resume'
-            }).then((blob) => {
-                blob_name = data.resumeFile?.name;
-                blob_url = blob.url;
-                return blob;
-            }).catch((error) => {
-                toast({
-                    variant: "destructive",
-                    title: "Resume Failed to Upload",
-                    description: error.message,
-                });
-            });
-        } else {
-            blob_name = importedValues?.resume?.resumeName;
-            blob_url = importedValues?.resume?.resumeUrl;
-        }
-
-        if (!blob_name || !blob_url) {
+        onError: (error) => {
+          if (error instanceof TRPCClientError) {
             toast({
-                variant: "destructive",
-                title: "Submission failed",
-                description: "Resume file is required.",
+              variant: "destructive",
+              title: "Submission failed",
+              description: error.message,
             });
-            return;
-        }
+          }
+        },
+      });
+    } else {
+      // console.log("Updating")
+      const updateApplicationData = {
+        id: importedValues.app.id,
+        userId: importedValues.app.userId,
+        resumeUrl: blob_url as string,
+        resumeName: blob_name as string,
+        eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
+        application: {
+          ...data,
+          gradYear: Number(data.gradYear), // Ensure gradYear is a number
+        },
+      };
 
-        if (!importedValues) {
-            const createApplicationData = {
-                eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
-                resumeUrl: blob_url as string,
-                resumeName: blob_name as string,
-                applicationData: {
-                    ...data,
-                    gradYear: Number(data.gradYear), // Ensure gradYear is a number
-                },
-            };
-
-            await createApplication.mutateAsync(createApplicationData, {
-                onSuccess: () => {
-                    toast({
-                        variant: "success",
-                        title: "Application submitted successfully!",
-                        description: "Your application has been received.",
-                    });
-                },
-                onError: (error) => {
-                    if (error instanceof TRPCClientError) {
-                        toast({
-                            variant: "destructive",
-                            title: "Submission failed",
-                            description: error.message,
-                        });
-                    }
-                },
+      await updateApplication.mutateAsync(updateApplicationData, {
+        onSuccess: () => {
+          toast({
+            variant: "success",
+            title: "Application updated successfully!",
+            description: "Your application has been received.",
+          });
+        },
+        onError: (error) => {
+          if (error instanceof TRPCClientError) {
+            toast({
+              variant: "destructive",
+              title: "Update failed",
+              description: error.message,
             });
-        } else {
-            // console.log("Updating")
-            const updateApplicationData = {
-                id: importedValues.app.id,
-                userId: importedValues.app.userId,
-                resumeUrl: blob_url as string,
-                resumeName: blob_name as string,
-                eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
-                application: {
-                    ...data,
-                    gradYear: Number(data.gradYear), // Ensure gradYear is a number
-                },
-            };
-
-            await updateApplication.mutateAsync(updateApplicationData, {
-                onSuccess: () => {
-                    toast({
-                        variant: "success",
-                        title: "Application updated successfully!",
-                        description: "Your application has been received.",
-                    });
-                },
-                onError: (error) => {
-                    if (error instanceof TRPCClientError) {
-                        toast({
-                            variant: "destructive",
-                            title: "Update failed",
-                            description: error.message,
-                        });
-                    }
-                },
-            });
-        }
+          }
+        },
+      });
     }
+  }
 
-    if (isLoading) {
-        return (<Loading />)
-    }
+  if (isLoading) {
+    return (<Loading />)
+  }
 
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <FormInput
-                id="firstName"
-                label="First Name:"
-                register={register}
-                errors={errors}
-                defaultValue={importedValues?.app?.firstName}
-                name="firstName"
+  return (
+    <div className="flex w-3/5 justify-center">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="rounded-lg bg-white p-5 px-16"
+      >
+        <h1 className="p-10 pb-3 text-center text-6xl font-bold">
+          <span className="odd:text-teal-400">H</span>
+          <span className="even:text-cyan-700">A</span>
+          <span className="odd:text-teal-400 ">C</span>
+          <span className="even:text-cyan-700">K</span>
+          <span className="odd:text-teal-400 ">E</span>
+          <span className="even:text-cyan-700">R</span> APPLICATION
+        </h1>
+        <div className="pb-4 text-center text-xl text-gray-500">
+          Please complete the following sections. Filling out this form should
+          take about 10-15 minutes.
+        </div>
+
+        <div className="flex w-full flex-row">
+          {/* First Name */}
+          <div className="flex w-1/2 flex-col pr-2">
+            <Label htmlFor="firstName" className="text-xl">
+              First Name
+            </Label>
+            <Input
+              id="firstName"
+              type="text"
+              {...register("firstName")}
+              placeholder="John"
             />
+            {errors.firstName?.message && <div>AJHBDA</div>}
+          </div>
 
-            <FormInput
-                id="lastName"
-                label="Last Name:"
-                register={register}
-                errors={errors}
-                defaultValue={importedValues?.app?.lastName}
-                name="lastName"
+          {/* Last Name */}
+          <div className="flex w-1/2 flex-col ">
+            <Label htmlFor="lastName" className="text-xl">
+              Last Name
+            </Label>
+            <Input
+              id="lastName"
+              type="text"
+              {...register("lastName")}
+              placeholder="Doe"
             />
+          </div>
+        </div>
 
-            <FormSelect
-                id="age"
-                label="Age:"
-                register={register}
-                errors={errors}
-                name="age"
-                defaultValue={importedValues?.app?.age}
-                options={age.options}
-            />
+        {/* Email */}
+        <div className="pt-4">
+          <Label htmlFor="email" className="text-xl">
+            Email:
+          </Label>
+          <Input
+            id="email"
+            type="text"
+            {...register("email")}
+            placeholder="abc123@gmail.com"
+          />
+        </div>
 
-            <AutocompleteInput
-                id="country"
-                label="Country of Residence:"
-                register={register}
-                errors={errors}
-                name="country"
-                options={countries}
-                initQuery={importedValues?.app?.country}
-            />
+        {/* Phone Number */}
+        <div className="pt-4">
+          <Label htmlFor="phoneNumber" className="text-xl">
+            Phone Number
+          </Label>
+          <Input id="phoneNumber" type="text" {...register("phoneNumber")} />
+        </div>
 
-            <FormInput
-                id="email"
-                label="Email:"
-                register={register}
-                errors={errors}
-                defaultValue={importedValues?.app?.email}
-                name="email"
-            />
+        {/* Age */}
+        <GenericDropdown
+          register={register}
+          name={"age"}
+          label={"Age"}
+          options={AGE}
+        />
 
-            <FormInput
-                id="phoneNumber"
-                label="Phone Number:"
-                register={register}
-                errors={errors}
-                defaultValue={importedValues?.app?.phoneNumber}
-                name="phoneNumber"
-            />
+        {/* Country */}
+        <GenericDropdown
+          register={register}
+          name={"country"}
+          label={"Country of Residence"}
+          options={COUNTRIES}
+        />
 
-            <AutocompleteInput
-                id="school"
-                label="What school do you go to?"
-                register={register}
-                errors={errors}
-                name="school"
-                options={schools}
-                initQuery={importedValues?.app?.school}
-            />
+        {/* Gender */}
+        <GenericDropdown
+          register={register}
+          name={"gender"}
+          label={"What's your gender"}
+          options={GENDER_OPTIONS}
+        />
 
-            <FormSelect
-                id="major"
-                label="What's your major?"
-                register={register}
-                errors={errors}
-                name="major"
-                defaultValue={importedValues?.app?.major}
-                options={major.options}
-            />
+        {/* Race */}
+        <GenericDropdown
+          register={register}
+          name={"race"}
+          label={"What ethnicity do you identify with?"}
+          options={RACE_OPTIONS}
+        />
 
-            <FormSelect
-                id="classification"
-                label="What classification are you?"
-                register={register}
-                errors={errors}
-                name="classification"
-                defaultValue={importedValues?.app?.classification}
-                options={classification.options}
-            />
+        {/* School */}
+        <Title text="School Info" className="m-1" />
+        <SchoolDropdown
+          register={register}
+          name={"school"}
+          label={"What school do you go to?"}
+          options={schools}
+        />
 
-            <FormSelect
-                id="gradYear"
-                label="What is your anticipated graduation year?"
-                register={register}
-                errors={errors}
-                name="gradYear"
-                defaultValue={importedValues?.app?.gradYear as unknown as string}
-                options={gradYear.options}
-            />
+        {/* Major */}
+        <GenericDropdown
+          register={register}
+          name={"major"}
+          label={"What's your major?"}
+          options={MAJOR}
+        />
 
-            <FormSelect
-                id="gender"
-                label="What's your gender"
-                register={register}
-                errors={errors}
-                name="gender"
-                defaultValue={importedValues?.app?.gender}
-                options={gender.options}
-            />
+        {/* Classification */}
+        <GenericDropdown
+          register={register}
+          name={"classification"}
+          label={"What classification are you?"}
+          options={EDUCATION_LEVELS}
+        />
 
-            <FormSelect
-                id="race"
-                label="What race(s) do you identify with?"
-                register={register}
-                errors={errors}
-                name="race"
-                defaultValue={importedValues?.app?.race}
-                options={race.options}
-            />
+        {/* Graduation Year */}
+        <GenericDropdown
+          register={register}
+          name={"gradYear"}
+          label={"What is your anticipated graduation year?"}
+          options={GRADUATION_YEARS}
+        />
 
-            <FormSelect
-                id="hackathonsAttended"
-                label="How many hackathons have you attended?"
-                register={register}
-                errors={errors}
-                name="hackathonsAttended"
-                defaultValue={importedValues?.app?.hackathonsAttended}
-                options={hackathonAttended.options}
-            />
+        {/* Figure out how to do other */}
+        {/* Hackathons Attended */}
+        <Title text="Experience" className="m-1" />
+        <GenericDropdown
+          register={register}
+          name={"hackathonsAttended"}
+          label={"How many hackathons have you attended?"}
+          options={HACKATHON_EXPERIENCE}
+        />
 
-            <FormSelect
-                id="experience"
-                label="What is your experience level in Data Science?"
-                register={register}
-                errors={errors}
-                name="experience"
-                defaultValue={importedValues?.app?.experience}
-                options={experience.options}
-            />
+        {/* Experience Level */}
+        <GenericDropdown
+          register={register}
+          name={"experience"}
+          label={"What is your experience level in Data Science?"}
+          options={PROGRAMMING_SKILL_LEVELS}
+        />
 
-            <FormSelect
-                id="hasTeam"
-                label="Do you have a team?"
-                register={register}
-                errors={errors}
-                name="hasTeam"
-                defaultValue={importedValues?.app?.hasTeam}
-                options={[
-                    { value: "No", label: 'I do not have a team' },
-                    { value: "Yes", label: 'I do have a team' }
-                ]}
-            />
+        {/* Team */}
+        <GenericDropdown
+          register={register}
+          name={"hasTeam"}
+          label={"Do you have a team?"}
+          options={[
+            { value: "No", label: "I do have a team" },
+            { value: "Yes", label: "I do not have a team" },
+          ]}
+        />
 
-            <FormSelect
-                id="eventSource"
-                label="How did you hear about the event?"
-                register={register}
-                errors={errors}
-                name="eventSource"
-                defaultValue={importedValues?.app?.eventSource}
-                options={eventSource.options.map((eventSourceOption) => ({ value: eventSourceOption.value, label: eventSourceOption.label }))}
-            />
+        {/* Team Members */}
+        <GenericDropdown
+          register={register}
+          name={"teamMembers"}
+          label={"How many team members do you have?"}
+          options={HEARD_ABOUT_OPTIONS}
+        />
 
-            <FormSelect
-                id="shirtSize"
-                label="Shirt Size:"
-                register={register}
-                errors={errors}
-                name="shirtSize"
-                defaultValue={importedValues?.app?.shirtSize}
-                options={shirtSize.options.map((shirtSizeOption) => ({ value: shirtSizeOption.value, label: shirtSizeOption.label }))}
-            />
+        {/* Shirt Size */}
+        <GenericDropdown
+          register={register}
+          name={"shirtSize"}
+          label={"What's your shirt size?"}
+          options={SHIRT_SIZES}
+        />
 
-            <FormInput
-                id="address"
-                label="Address:"
-                register={register}
-                errors={errors}
-                defaultValue={importedValues?.app?.address}
-                name="address"
-            />
+        {/* Resume */}
+        <div className="pt-4">
+          <Label htmlFor="resume" className="text-xl">
+            Upload Resume (PDF only):
+          </Label>
+          <Input
+            id="resume"
+            type="file"
+            accept="application/pdf"
+            className="border"
+            {...register("resume")}
+          />
+        </div>
 
-            <div>
-                <label>
-                    Current Resume: {importedValues?.resume?.resumeName || 'None'}
-                </label>
-                <input
-                    type="file"
-                    accept="application/pdf"
-                    onChange={(event) => {
-                        setValue(
-                            "resumeFile",
-                            event.target.files ? (event.target.files[0] as File) : null
-                        )
-                    }}
-                />
+        {/* Address */}
+        {/* <div className="pt-4">
+            <Label htmlFor="address" className="text-xl">Address:</Label>
+            <Input id="address" type="text" {...register("address")} />
+          </div> */}
 
-                {errors.resumeFile?.message && typeof errors.resumeFile.message === 'string' && (
-                    <div>
-                        {errors.resumeFile.message}
-                    </div>
-                )}
-            </div>
+        <Title text="General Info" className="m-1" />
+        {/* References */}
+        <div className="pt-4">
+          <Label htmlFor="references" className="text-xl">
+            Point us to anything you'd like us to look at while considering your
+            application:
+          </Label>
+          <Input id="references" type="text" {...register("references")} />
+        </div>
 
-            <FormInput
-                id="references"
-                label="Point us to anything you'd like us to look at while considering your application:"
-                register={register}
-                errors={errors}
-                defaultValue={importedValues?.app?.references}
-                name="references"
-            />
+        {/* Tell us your best programming joke. */}
+        <div className="pt-4">
+          <Label htmlFor="joke" className="text-xl">
+            Tell us your best programming joke.
+          </Label>
+          <Input id="joke" type="text" {...register("joke")} />
+        </div>
+        {/* What is the one thing you'd build if you had unlimited resources? */}
+        {/* What drives your interest in being a part of TAMU Datathon?  */}
 
-            <FormInput
-                id="joke"
-                label="Tell us your best programming joke:"
-                register={register}
-                errors={errors}
-                defaultValue={importedValues?.app?.interestOne}
-                name="interestOne"
-            />
+    
 
-            <FormInput
-                id="unlimitedResources"
-                label="What is the one thing you'd build if you had unlimited resources?"
-                register={register}
-                errors={errors}
-                defaultValue={importedValues?.app?.interestTwo}
-                name="interestTwo"
-            />
+        {/* Dietry Restrictions */}
+        <div className="pt-4">
+          <Label htmlFor="dietaryRestriction" className="text-xl">
+            Do you require any special accommodations at the event? Please list
+            all dietary restrictions here.
+          </Label>
+          <Input
+            id="dietaryRestriction"
+            type="text"
+            {...register("dietaryRestriction")}
+          />
+        </div>
 
-            <FormInput
-                id="interest"
-                label="What drives your interest in being a part of TAMU Datathon?"
-                register={register}
-                errors={errors}
-                defaultValue={importedValues?.app?.interestThree}
-                name="interestThree"
-            />
+        {/* Extra Info */}
+        <div className="pt-4">
+          <Label htmlFor="extraInfo" className="text-xl">
+            Anything else you would like us to know?
+          </Label>
+          <Input id="extraInfo" type="text" {...register("extraInfo")} />
+        </div>
 
-            <FormInput
-                id="dietaryRestriction"
-                label="Do you require any special accommodations at the event? Please list all dietary restrictions here."
-                register={register}
-                errors={errors}
-                defaultValue={importedValues?.app?.dietaryRestriction ?? undefined}
-                name="dietaryRestriction"
-            />
+        {/* Liability Waiver */}
+        <div className="flex items-center space-x-2 pt-4">
+          <Checkbox id="liabilityWaiver" {...register("liabilityWaiver")} />
+          <Label htmlFor="liabilityWaiver" className="text-xl">
+            Liability Waiver
+          </Label>
+        </div>
 
-            <FormInput
-                id="extraInfo"
-                label="Anything else you would like us to know?"
-                register={register}
-                errors={errors}
-                defaultValue={importedValues?.app?.extraInfo ?? undefined}
-                name="extraInfo"
-            />
-
-            <div>
-                <label htmlFor="liabilityWaiver">Liability Waiver:</label>
-                <input id="liabilityWaiver" type="checkbox" {...register("liabilityWaiver")} />
-                {errors.liabilityWaiver?.message && typeof errors.liabilityWaiver.message === 'string' && (
-                    <div>
-                        {errors.liabilityWaiver.message}
-                    </div>
-                )}
-            </div>
-
-            <Button
-                className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
-                type="submit"
-                disabled={!isDirty || isSubmitting}
-            >
-                {isSubmitting ? (
-                    <Image
-                        src="loading.svg"
-                        className="animate-spin"
-                        width={24}
-                        height={24}
-                        aria-hidden="true"
-                        alt="loading..."
-                    />
-                ) : (
-                    "Submit"
-                )}
+        {/* Submit */}
+        <div className="pt-4 text-4xl">
+          {!submitting && <Button type="submit">Submit</Button>}
+          {submitting && (
+            <Button type="submit" disabled>
+              {" "}
+              <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+              Please wait ...
             </Button>
-        </form>
-    );
+          )}
+        </div>
+      </form>
+    </div>
+  );
 }

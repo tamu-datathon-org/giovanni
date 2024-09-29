@@ -68,7 +68,7 @@ export const CreatePreregistrationSchema = createInsertSchema(Preregistration, {
   id: true,
   registeredAt: true,
   expiresAt: true,
-})
+});
 
 export const Account = pgTable(
   "account",
