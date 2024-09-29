@@ -2,29 +2,6 @@
 
 import "./customCss.scss";
 
-import type { SubmitHandler } from "react-hook-form";
-import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { TRPCClientError } from "@trpc/client";
-import { upload } from "@vercel/blob/client";
-import { useForm } from "react-hook-form";
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@vanni/ui/form";
-
-import type { ApplicationSchema } from "../apply/validation";
-import { Button } from "~/components/ui/button";
-import { Checkbox } from "~/components/ui/checkbox";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { toast } from "~/hooks/use-toast";
 import {
   AGE,
   COUNTRIES,
@@ -38,12 +15,34 @@ import {
   RACE_OPTIONS,
   SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@vanni/ui/form";
+
+import type { ApplicationSchema } from "../apply/validation";
+import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
+import GenericCombobox from "./genericCombobox";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import React from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import type { SubmitHandler } from "react-hook-form";
+import { TRPCClientError } from "@trpc/client";
+import Title from "./title";
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
 import schools from "./application-data/schools.json";
 import schoolsJson from "./application-data/schools.json";
-import GenericCombobox from "./genericCombobox";
-import Title from "./title";
+import { toast } from "~/hooks/use-toast";
+import { upload } from "@vercel/blob/client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 /*
     First Name
@@ -476,7 +475,7 @@ export function ApplicationForm() {
                       accept="application/pdf"
                       className="border"
                       onChange={(event) => {
-                        setValue(
+                        form.setValue(
                           "resumeFile",
                           event.target.files ? event.target.files[0]! : null,
                         );
@@ -555,27 +554,49 @@ export function ApplicationForm() {
           </div>
           {/* What is the one thing you'd build if you had unlimited resources? */}
           <div className="pt-4">
-            <Label htmlFor="unlimitedResources" className="text-xl">
-              What is the one thing you'd build if you had unlimited resources?
-            </Label>
-            <Input
-              id="unlimitedResources"
-              type="text"
-              {...register("interestTwo")}
-              defaultValue={importedValues?.app.interestTwo}
+
+          <FormField
+              control={form.control}
+              name="unlimitedResources"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                  What is the one thing you'd build if you had unlimited resources?
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="More resources."
+                      {...field}
+                      defaultValue={importedValues?.app.interestOne}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
 
           {/* What drives your interest in being a part of TAMU Datathon? */}
           <div className="pt-4">
-            <Label htmlFor="interest" className="text-xl">
-              What drives your interest in being a part of TAMU Datathon?
-            </Label>
-            <Input
-              id="interest"
-              type="text"
-              {...register("interestThree")}
-              defaultValue={importedValues?.app.interestThree}
+            
+          What is the one thing you'd build if you had unlimited resources?<FormField
+              control={form.control}
+              name="interest"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                  What drives your interest in being a part of TAMU Datathon?
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
+                      {...field}
+                      defaultValue={importedValues?.app.interestOne}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
           {/* Dietry Restrictions */}
