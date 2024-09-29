@@ -192,7 +192,7 @@ export function ApplicationForm() {
           {/* Gender */}
           <GenericCombobox
             name={"gender"}
-            label={"What's your gender"}
+            label={"Gender"}
             options={GENDER_OPTIONS}
           />
 
