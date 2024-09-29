@@ -262,7 +262,7 @@ export function ApplicationForm() {
             ]}
           />
 
-          {/* Team Members */}
+          {/* How'd you hear */}
           <GenericCombobox
             name={"eventSource"}
             label={"How did you hear about TAMU Datathon?"}
@@ -276,86 +276,165 @@ export function ApplicationForm() {
             options={SHIRT_SIZES}
           />
 
-          {/*  /!* Resume *!/*/}
-          {/*  <div className="pt-4">*/}
-          {/*    <Label htmlFor="resume" className="text-xl">*/}
-          {/*      Upload Resume (PDF only):*/}
-          {/*    </Label>*/}
-          {/*    <Input*/}
-          {/*      id="resume"*/}
-          {/*      type="file"*/}
-          {/*      accept="application/pdf"*/}
-          {/*      className="border"*/}
-          {/*      {...register("resume")}*/}
-          {/*    />*/}
-          {/*  </div>*/}
+          {/* Resume */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field: { value, onChange, ...fieldProps } }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Upload Resume (PDF only):
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...fieldProps}
+                      type="file"
+                      accept="application/pdf"
+                      className="border"
+                      onChange={(event) => {
+                        onChange(event.target.files && event.target.files[0]);
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          {/*  /!* Address *!/*/}
-          {/*  /!* <div className="pt-4">*/}
-          {/*  <Label htmlFor="address" className="text-xl">Address:</Label>*/}
-          {/*  <Input id="address" type="text" {...register("address")} />*/}
-          {/*</div> *!/*/}
+          {/* Address */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">Address:</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          {/*  <Title text="General Info" className="m-1" />*/}
-          {/*  /!* References *!/*/}
-          {/*  <div className="pt-4">*/}
-          {/*    <Label htmlFor="references" className="text-xl">*/}
-          {/*      Point us to anything you'd like us to look at while considering*/}
-          {/*      your application:*/}
-          {/*    </Label>*/}
-          {/*    <Input id="references" type="text" {...register("references")} />*/}
-          {/*  </div>*/}
+          <Title text="General Info" className="m-1" />
+          {/* References */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="references"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Point us to anything you'd like us to look at while
+                    considering your application:
+                  </FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          {/*  /!* Tell us your best programming joke. *!/*/}
-          {/*  <div className="pt-4">*/}
-          {/*    <Label htmlFor="joke" className="text-xl">*/}
-          {/*      Tell us your best programming joke.*/}
-          {/*    </Label>*/}
-          {/*    <Input id="joke" type="text" {...register("joke")} />*/}
-          {/*  </div>*/}
-          {/*  /!* What is the one thing you'd build if you had unlimited resources? *!/*/}
-          {/*  /!* What drives your interest in being a part of TAMU Datathon?  *!/*/}
+          {/* Tell us your best programming joke. */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="joke"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Tell us your best programming joke.
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Is your code running? Well, you better go catch it."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          {/* What is the one thing you'd build if you had unlimited resources? */}
+          {/* What drives your interest in being a part of TAMU Datathon?  */}
 
-          {/*  /!* Dietry Restrictions *!/*/}
-          {/*  <div className="pt-4">*/}
-          {/*    <Label htmlFor="dietaryRestriction" className="text-xl">*/}
-          {/*      Do you require any special accommodations at the event? Please*/}
-          {/*      list all dietary restrictions here.*/}
-          {/*    </Label>*/}
-          {/*    <Input*/}
-          {/*      id="dietaryRestriction"*/}
-          {/*      type="text"*/}
-          {/*      {...register("dietaryRestriction")}*/}
-          {/*    />*/}
-          {/*  </div>*/}
+          {/* Dietry Restrictions */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="dietaryRestriction"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Do you require any special accommodations at the event?
+                    Please list all dietary restrictions here.
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="Rock only diet." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          {/*  /!* Extra Info *!/*/}
-          {/*  <div className="pt-4">*/}
-          {/*    <Label htmlFor="extraInfo" className="text-xl">*/}
-          {/*      Anything else you would like us to know?*/}
-          {/*    </Label>*/}
-          {/*    <Input id="extraInfo" type="text" {...register("extraInfo")} />*/}
-          {/*  </div>*/}
+          {/* Extra Info */}
+          <div className="pt-4">
+            <FormField
+              control={form.control}
+              name="extraInfo"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Anything else you would like us to know?
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="I love drywall!" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          {/*  /!* Liability Waiver *!/*/}
-          {/*  <div className="flex items-center space-x-2 pt-4">*/}
-          {/*    <Checkbox id="liabilityWaiver" {...register("liabilityWaiver")} />*/}
-          {/*    <Label htmlFor="liabilityWaiver" className="text-xl">*/}
-          {/*      Liability Waiver*/}
-          {/*    </Label>*/}
-          {/*  </div>*/}
+          {/* Liability Waiver */}
+          <div className="flex items-center space-x-2 pt-4">
+            <FormField
+              control={form.control}
+              name="liabilityWaiver"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">Liability Waiver</FormLabel>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          {/*  /!* Submit *!/*/}
-          {/*  <div className="pt-4 text-4xl">*/}
-          {/*    {!submitting && <Button type="submit">Submit</Button>}*/}
-          {/*    {submitting && (*/}
-          {/*      <Button type="submit" disabled>*/}
-          {/*        {" "}*/}
-          {/*        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />*/}
-          {/*        Please wait ...*/}
-          {/*      </Button>*/}
-          {/*    )}*/}
-          {/*  </div>*/}
+          {/* Submit */}
+          <div className="pt-4 text-4xl">
+            {!submitting && <Button type="submit">Submit</Button>}
+            {submitting && (
+              <Button type="submit" disabled>
+                {" "}
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait ...
+              </Button>
+            )}
+          </div>
         </form>
       </Form>
     </div>
