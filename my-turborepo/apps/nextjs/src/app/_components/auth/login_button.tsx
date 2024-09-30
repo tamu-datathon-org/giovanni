@@ -1,7 +1,7 @@
 import { signIn } from "@vanni/auth";
 import { Button } from "@vanni/ui/button";
 
-export default function LoginButton({
+function LoginButton({
   connectionId,
   redirectUri,
   buttonText,
@@ -12,6 +12,7 @@ export default function LoginButton({
 }) {
   return (
     <Button
+      className="compStyling2 border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black"
       size="lg"
       formAction={async () => {
         "use server";
