@@ -1,15 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
 
 import { cn } from "@vanni/ui";
-import { ThemeProvider, ThemeToggle } from "@vanni/ui/theme";
-import { Toaster } from "@vanni/ui/toast";
 
+import { w95fa } from "~/app/_components/fonts";
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
 
+import { Toaster } from "~/components/ui/toaster";
 import { env } from "~/env";
 
 export const metadata: Metadata = {
@@ -18,19 +16,20 @@ export const metadata: Metadata = {
       ? "https://turbo.t3.gg"
       : "http://localhost:3000",
   ),
-  title: "Create T3 Turbo",
-  description: "Simple monorepo with shared backend for web & mobile apps",
+  title: "TAMU Datathon",
+  description: "A&M's Data Science Hackathon",
   openGraph: {
-    title: "Create T3 Turbo",
-    description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://create-t3-turbo.vercel.app",
-    siteName: "Create T3 Turbo",
+    title: "TAMU Datathon",
+    description: "A&M's Data Science Hackathon",
+    url: "https://tamudatathon.com",
+    siteName: "TAMU Datathon",
   },
-  twitter: {
-    card: "summary_large_image",
-    site: "@jullerino",
-    creator: "@jullerino",
-  },
+  // TODO: Find out if this is important
+  // twitter: {
+  //   card: "summary_large_image",
+  //   site: "@jullerino",
+  //   creator: "@jullerino",
+  // },
 };
 
 export const viewport: Viewport = {
@@ -42,21 +41,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={w95fa.className}>
       <body
-        className={cn(
-          "min-h-screen bg-background font-sans text-foreground antialiased",
-          GeistSans.variable,
-          GeistMono.variable,
-        )}
+        className={cn("min-h-screen bg-background text-foreground antialiased")}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider>{props.children}</TRPCReactProvider>
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <TRPCReactProvider>{props.children}</TRPCReactProvider>
+        <div className="absolute bottom-4 right-4"></div>
+        <Toaster />
       </body>
     </html>
   );
