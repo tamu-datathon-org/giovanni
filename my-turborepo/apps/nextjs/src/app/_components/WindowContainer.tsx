@@ -18,9 +18,11 @@ const WindowContainer: React.FC<WindowContainerProps> = ({ children }) => {
             <Lines />
             <ExitButton />
           </div>
-          <TAMUy2k />
-          <div>
-            {children}
+          <div className="border-[#585958] bg-[#e4e3e4]">
+            <TAMUy2k />
+            <div>
+              {children}
+            </div>
           </div>
         </div>
       </div>
