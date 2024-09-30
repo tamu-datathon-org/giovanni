@@ -47,12 +47,13 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   label,
   options,
   filter,
+  defaultOption,
 }) => {
   const form = useFormContext<ApplicationSchema>();
   const [searchValue, setSearchValue] = useState("");
   const { debouncedValue, isDebouncing } = useDebounce(searchValue, 250);
 
-  const commandInputRef = useRef<ElementRef<typeof CommandInput>>(null);
+  // form.setValue(name, defaultOption);
 
   const filter20Items = useMemo(() => {
     if (isDebouncing) {
@@ -60,7 +61,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
     }
 
     const query = debouncedValue;
-    console.log("thing: ", query);
+    // console.log("thing: ", query);
 
     if (filter) {
       return options
@@ -92,6 +93,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
     <FormField
       control={form.control}
       name={name}
+      defaultOption={defaultOption}
       render={({ field }) => (
         <FormItem className="flex flex-col">
           <FormLabel className="text-xl">{label}</FormLabel>
@@ -116,7 +118,10 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
               <Command>
                 <CommandInput
                   placeholder={`Search ${name}...`}
-                  onValueChange={(value) => {setSearchValue(value)}}                />
+                  onValueChange={(value) => {
+                    setSearchValue(value);
+                  }}
+                />
                 <CommandList>
                   <CommandEmpty>No results.</CommandEmpty>
                   <CommandGroup>

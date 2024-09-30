@@ -1,6 +1,14 @@
 "use client";
 
 import type * as LabelPrimitive from "@radix-ui/react-label";
+import * as React from "react";
+
+import {
+  Controller,
+  FormProvider,
+  useForm as __useForm,
+  useFormContext,
+} from "react-hook-form";
 import type {
   ControllerProps,
   FieldPath,
@@ -8,19 +16,11 @@ import type {
   UseFormProps,
 } from "react-hook-form";
 import type { ZodType, ZodTypeDef } from "zod";
-import * as React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Slot } from "@radix-ui/react-slot";
-import {
-  useForm as __useForm,
-  Controller,
-  FormProvider,
-  useFormContext,
-} from "react-hook-form";
-
-import { cn } from "@vanni/ui";
 
 import { Label } from "./label";
+import { Slot } from "@radix-ui/react-slot";
+import { cn } from "@vanni/ui";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const useForm = <TOut, TDef extends ZodTypeDef, TIn extends FieldValues>(
   props: Omit<UseFormProps<TIn>, "resolver"> & {
@@ -155,7 +155,7 @@ const FormDescription = React.forwardRef<
     <p
       ref={ref}
       id={formDescriptionId}
-      className={cn("text-[0.8rem] text-muted-foreground", className)}
+      className={cn("text-[0.8rem] text-muted-foreground text-red", className)}
       {...props}
     />
   );
@@ -177,7 +177,7 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
-      className={cn("text-[0.8rem] font-medium text-destructive", className)}
+      className={cn("text-[0.8rem] font-medium text-destructive text-red-500", className)}
       {...props}
     >
       {body}

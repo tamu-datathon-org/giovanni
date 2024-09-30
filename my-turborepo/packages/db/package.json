@@ -29,7 +29,8 @@
     "push": "pnpm with-env drizzle-kit push",
     "studio": "pnpm with-env drizzle-kit studio",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "with-env": "dotenv -e ../../.env --"
+    "with-env": "dotenv -e ../../.env --",
+    "drop": "drizzle-kit drop"
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
