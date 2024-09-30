@@ -2,15 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   @font-face {
-    font-family: 'myfont';
-    src: url('./assets/w95fa.woff2') format('woff2');
+    font-family: "myfont";
+    src: url("./assets/w95fa.woff2") format("woff2");
   }
-  body{
-    background-image: url(./assets/wallpaper.jpg);
+  body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -19,4 +16,3 @@
     --radius: 0.5rem;
   }
 }
-

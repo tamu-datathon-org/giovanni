@@ -1,8 +1,10 @@
 "use client";
 
-import type { MouseEventHandler } from "react";
-import type { SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import type {
+  FieldErrors,
+  SubmitHandler,
+  UseFormRegister,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -70,13 +72,19 @@ export function TitleText() {
   );
 }
 
-function EmailBox(props: { register: any; errors: any }) {
+function EmailBox(props: {
+  register: UseFormRegister<PreregistrationData>;
+  errors: FieldErrors<PreregistrationData>;
+}) {
   return (
     <>
       <label className="flex flex-row justify-center ">
         <h1 className="pr-4">Enter Email: </h1>
         <div className="flex rounded-sm bg-black p-0.5">
-          <input {...props.register} className=" border-cyan-600" />
+          <input
+            {...props.register("email")}
+            className=" border-cyan-600 px-1"
+          />
         </div>
       </label>
       {props.errors.email?.message != undefined && (
@@ -86,7 +94,10 @@ function EmailBox(props: { register: any; errors: any }) {
   );
 }
 
-function TermsAndConditions(props: { register: any; errors: any }) {
+function TermsAndConditions(props: {
+  register: UseFormRegister<PreregistrationData>;
+  errors: FieldErrors<PreregistrationData>;
+}) {
   return (
     <>
       <label className="text-blac">
@@ -94,7 +105,7 @@ function TermsAndConditions(props: { register: any; errors: any }) {
           className="m-1"
           type="checkbox"
           value={"on"}
-          {...props.register}
+          {...props.register("confirmation", { required: true })}
         />
         <span>I agree to the terms and conditions.</span>
       </label>
@@ -120,7 +131,7 @@ export const CreatePreregistrationForm = () => {
 
   const onSubmit: SubmitHandler<PreregistrationData> = async (data) => {
     try {
-      const resp = await createPreregistration.mutateAsync({
+      await createPreregistration.mutateAsync({
         email: data.email,
       });
       toast({
@@ -130,7 +141,8 @@ export const CreatePreregistrationForm = () => {
       });
     } catch (error) {
       if (error instanceof TRPCClientError) {
-        if (error.data.code === "INTERNAL_SERVER_ERROR") {
+        const code = (error.data as { code: string }).code;
+        if (code === "INTERNAL_SERVER_ERROR") {
           toast({
             variant: "destructive",
             title: "Submission Error",
@@ -139,7 +151,7 @@ export const CreatePreregistrationForm = () => {
         } else {
           toast({
             variant: "destructive",
-            title: error.data.code,
+            title: code,
             description: error.message,
           });
         }
@@ -161,46 +173,3 @@ export const CreatePreregistrationForm = () => {
     </FormContainer>
   );
 };
-
-// export const DeletePreregistrationForm = () => {
-//   interface FormData {
-//     email: string;
-//   }
-
-//   const [formData, setFormData] = useState<FormData>({
-//     email: "",
-//   });
-
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
-//     setFormData((prevState) => ({
-//       ...prevState,
-//       [name]: value,
-//     }));
-//   };
-
-//   const deletePreregistration = api.preregistration.delete.useMutation();
-//   const handleDelete: MouseEventHandler<HTMLButtonElement> = (event) => {
-//     event.preventDefault();
-//     deletePreregistration.mutate(formData.email);
-//   };
-
-//   const cancelPreregistration = api.preregistration.cancel.useMutation();
-//   const handleCancel: MouseEventHandler<HTMLButtonElement> = (event) => {
-//     event.preventDefault();
-//     cancelPreregistration.mutate(formData);
-//   };
-
-//   return (
-//     <>
-//       <form className="bg-grey-700 flex w-1/2 flex-col items-center justify-center rounded text-center text-lg">
-//         <label>
-//           <span>Enter Email:</span>
-//           <input type="text" name="email" onChange={handleChange} />
-//         </label>
-//         <button onClick={handleDelete}>Delete User</button>
-//         <button onClick={handleCancel}>Cancel User</button>
-//       </form>
-//     </>
-//   );
-// };
