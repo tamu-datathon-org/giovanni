@@ -2,8 +2,7 @@ import Link from "next/link";
 
 import { Button } from "@vanni/ui/button";
 
-import IconList from "../_components/IconList"; // Import the 'IconList' component and its props type
-import { CreatePreregistrationForm } from "../_components/preregistration-form";
+// Import the 'IconList' component and its props type
 import WindowContainer from "../_components/WindowContainer";
 
 // `app/registration-clone/page.tsx` is the UI for the `/registration-clone` URL
