@@ -1,24 +1,25 @@
-import { CreatePreregistrationForm } from "../_components/preregistration-form";
-import IconList from "../_components/IconList"; // Import the 'IconList' component and its props type
-import WindowContainer from "../_components/WindowContainer";
+import Link from "next/link";
+
 import { Button } from "@vanni/ui/button";
+
+import IconList from "../_components/IconList"; // Import the 'IconList' component and its props type
+import { CreatePreregistrationForm } from "../_components/preregistration-form";
+import WindowContainer from "../_components/WindowContainer";
 
 // `app/registration-clone/page.tsx` is the UI for the `/registration-clone` URL
 export default function Page() {
-    return (
-        <div className="overflow-hidden h-screen w-screen lg:bg-large-device bg-mobile-device bg-cover bg-no-repeat bg-center ">
-            <div className="z-30 relative flex flex-col items-center justify-center h-full">
-                
-                {/* <CreatePreregistrationForm /> */}
-                <WindowContainer>
-                <h1 className="text-white text-4xl mb-4">Registration is open!</h1>
-                <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
-              type="submit">
-                Click here to apply now.
-            </Button>
-                </WindowContainer>
-            </div>
-            <div className="absolute top-0 left-0 w-screen bg-black h-screen opacity-40"></div>
-        </div>
-    )
+  return (
+    <div className="lg:bg-large-device bg-mobile-device h-screen w-screen overflow-hidden bg-cover bg-center bg-no-repeat ">
+      <div className="relative z-30 flex h-full flex-col items-center justify-center">
+        {/* <CreatePreregistrationForm /> */}
+        <WindowContainer>
+          <h1 className="mb-4 text-4xl">Registration is open!</h1>
+          <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
+            <Link href="/apply/application">Click here to apply now.</Link>
+          </Button>
+        </WindowContainer>
+      </div>
+      <div className="absolute left-0 top-0 h-screen w-screen bg-black opacity-40"></div>
+    </div>
+  );
 }

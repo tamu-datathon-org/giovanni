@@ -82,7 +82,7 @@ function EmailBox(props: {
         <h1 className="pr-4">Enter Email: </h1>
         <div className="flex rounded-sm bg-black p-0.5">
           <input
-            {...props.register("email")}
+            {...props.register("email", { required: true, maxLength: 256 })}
             className=" border-cyan-600 px-1"
           />
         </div>
@@ -160,15 +160,19 @@ export const CreatePreregistrationForm = () => {
   };
 
   return (
-    <FormContainer onSubmit={handleSubmit(onSubmit)} isSubmitting={isSubmitting} isDirty={isDirty}>
+    <FormContainer
+      onSubmit={handleSubmit(onSubmit)}
+      isSubmitting={isSubmitting}
+      isDirty={isDirty}
+    >
       <div className="flex w-full flex-row items-center justify-between">
         <Lines />
         <ExitButton />
       </div>
       <TitleText />
       <div className="w-full px-4">
-        <EmailBox register={register("email", { required: true, maxLength: 256 })} errors={errors} />
-        <TermsAndConditions register={register("confirmation", { required: true })} errors={errors} />
+        <EmailBox register={register} errors={errors} />
+        <TermsAndConditions register={register} errors={errors} />
       </div>
     </FormContainer>
   );
