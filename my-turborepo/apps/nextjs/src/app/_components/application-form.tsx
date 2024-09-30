@@ -2,6 +2,29 @@
 
 import "./customCss.scss";
 
+import type { SubmitHandler } from "react-hook-form";
+import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { TRPCClientError } from "@trpc/client";
+import { upload } from "@vercel/blob/client";
+import { useForm } from "react-hook-form";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@vanni/ui/form";
+
+import type { ApplicationSchema } from "../apply/validation";
+import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { toast } from "~/hooks/use-toast";
 import {
   AGE,
   COUNTRIES,
@@ -15,34 +38,12 @@ import {
   RACE_OPTIONS,
   SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@vanni/ui/form";
-
-import type { ApplicationSchema } from "../apply/validation";
-import { Button } from "~/components/ui/button";
-import { Checkbox } from "~/components/ui/checkbox";
-import GenericCombobox from "./genericCombobox";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import React from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import type { SubmitHandler } from "react-hook-form";
-import { TRPCClientError } from "@trpc/client";
-import Title from "./title";
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
 import schools from "./application-data/schools.json";
 import schoolsJson from "./application-data/schools.json";
-import { toast } from "~/hooks/use-toast";
-import { upload } from "@vercel/blob/client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import GenericCombobox from "./genericCombobox";
+import Title from "./title";
 
 /*
     First Name
@@ -555,14 +556,14 @@ export function ApplicationForm() {
           </div>
           {/* What is the one thing you'd build if you had unlimited resources? */}
           <div className="pt-4">
-
-          <FormField
+            <FormField
               control={form.control}
               name="interestTwo"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
-                  What is the one thing you'd build if you had unlimited resources?
+                    What is the one thing you'd build if you had unlimited
+                    resources?
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -585,7 +586,7 @@ export function ApplicationForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
-                  What drives your interest in being a part of TAMU Datathon?
+                    What drives your interest in being a part of TAMU Datathon?
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -673,7 +674,9 @@ export function ApplicationForm() {
 
           {/* Submit */}
           <div className="pt-4 text-4xl">
-            {!form.formState.isSubmitting && <Button type="submit">Submit</Button>}
+            {!form.formState.isSubmitting && (
+              <Button type="submit">Submit</Button>
+            )}
             {form.formState.isSubmitting && (
               <Button type="submit" disabled>
                 {" "}

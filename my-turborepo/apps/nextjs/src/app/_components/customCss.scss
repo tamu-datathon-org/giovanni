@@ -101,12 +101,12 @@ $total: 10;
       background-color: #e4e3e4;
     }
 
-  &:focus {
-    background-color: #c2c2c2;
+    &:focus {
+      background-color: #c2c2c2;
 
-    .close {
-      margin-top: 2px;
-    }
+      .close {
+        margin-top: 2px;
+      }
 
       &::before {
         content: "";

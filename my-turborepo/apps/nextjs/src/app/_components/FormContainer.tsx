@@ -1,6 +1,7 @@
 import React from "react";
-import { Button } from "@vanni/ui/button";
 import Image from "next/image";
+
+import { Button } from "@vanni/ui/button";
 
 interface FormContainerProps {
   onSubmit?: React.FormEventHandler<HTMLFormElement>;
@@ -24,10 +25,10 @@ const FormContainer: React.FC<FormContainerProps> = ({
         >
           {/* <div className = "border-[#585958]"> */}
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
-          <div className="flex w-full flex-col items-center justify-center">
-            {children}
-          </div>
-          {/* <div className="relative mt-3 flex w-full h-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]"> */}
+            <div className="flex w-full flex-col items-center justify-center">
+              {children}
+            </div>
+            {/* <div className="relative mt-3 flex w-full h-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]"> */}
             <Button
               className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold"
               type="submit"
@@ -53,8 +54,8 @@ const FormContainer: React.FC<FormContainerProps> = ({
               height={100}
               alt="polar bear"
             />
-          {/* </div> */}
-          {/* </div> */}
+            {/* </div> */}
+            {/* </div> */}
           </div>
         </form>
       </div>
