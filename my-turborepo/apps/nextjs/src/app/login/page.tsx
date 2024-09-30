@@ -1,4 +1,9 @@
-import LoginButton from "~/app/_components/auth/login_button";
+import { Image } from "next/image";
+import { AiOutlineClose } from "react-icons/ai";
+
+import { Button } from "@vanni/ui/button";
+
+import { LoginButton } from "../_components/auth/login_button";
 
 import "../_components/customCss.scss";
 
@@ -37,8 +42,6 @@ export default function LoginPage() {
             <text className="">Post version 202.4</text>
             <hr className="absolute left-0 h-0.5 w-2/5 rounded border-0 bg-[#9c9c9c] dark:bg-[#e4e3e4]"></hr>
           </div>
-          {/*<AuthShowcase />*/}
-
           <div className="w-3/5 pt-4">
             <form className="flex w-full flex-col gap-2">
               <LoginButton

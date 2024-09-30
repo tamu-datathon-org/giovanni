@@ -1,7 +1,7 @@
 import { signIn } from "@vanni/auth";
 import { Button } from "@vanni/ui/button";
 
-function LoginButton({
+export function LoginButton({
   connectionId,
   redirectUri,
   buttonText,
