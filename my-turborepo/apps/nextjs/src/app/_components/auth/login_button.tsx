@@ -1,3 +1,4 @@
+import { AuthError } from "next-auth"
 import { Button } from "@vanni/ui/button";
 import { redirect } from "next/navigation";
 import { signIn } from "@vanni/auth";
