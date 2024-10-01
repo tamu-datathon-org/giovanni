@@ -114,7 +114,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className=" w-fit p-0">
+            <PopoverContent className="w-fit max-w-full p-0">
               <Command>
                 <CommandInput
                   placeholder={`Search ${name}...`}
