@@ -94,11 +94,10 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
     <FormField
       control={form.control}
       name={name}
-      defaultOption={defaultOption}
+      defaultValue={defaultOption?.value}
       render={({ field }) => (
         <FormItem className="flex flex-col">
           <FormLabel className="text-xl">{label}</FormLabel>
-
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -109,7 +108,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                 >
                   {field.value
                     ? options.find((option) => option.value === field.value)
-                        ?.label
+                      ?.label
                     : "Select ..."}
                   <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>

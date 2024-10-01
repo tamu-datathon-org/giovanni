@@ -11,12 +11,12 @@ import { upload } from "@vercel/blob/client";
 import { useForm } from "react-hook-form";
 
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@vanni/ui/form";
 
 import type { ApplicationSchema } from "../apply/validation";
@@ -25,21 +25,28 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { toast } from "~/hooks/use-toast";
 import {
-  AGE,
-  COUNTRIES,
-  EDUCATION_LEVELS,
-  GENDER_OPTIONS,
-  GRADUATION_YEARS,
-  HACKATHON_EXPERIENCE,
-  HEARD_ABOUT_OPTIONS,
-  MAJOR,
-  PROGRAMMING_SKILL_LEVELS,
-  RACE_OPTIONS,
-  SHIRT_SIZES,
+    AGE,
+    COUNTRIES,
+    EDUCATION_LEVELS,
+    GENDER_OPTIONS,
+    GRADUATION_YEARS,
+    HACKATHON_EXPERIENCE,
+    HEARD_ABOUT_OPTIONS,
+    MAJOR,
+    PROGRAMMING_SKILL_LEVELS,
+    RACE_OPTIONS,
+    SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
 import schools from "./application-data/schools.json";
+
+// Map schools to DropdownOption type
+const SCHOOL_OPTIONS = schools.map((school) => ({
+    value: school.schoolName,
+    label: school.schoolName,
+}));
+
 import schoolsJson from "./application-data/schools.json";
 import GenericCombobox from "./genericCombobox";
 import Title from "./title";
@@ -69,623 +76,699 @@ import Title from "./title";
 */
 
 const Loading = () => {
-  return <div>Hello, Loading</div>;
+    return <div>Hello, Loading</div>;
 };
 
 export function ApplicationForm() {
-  const { data: importedValues, isLoading } =
-    api.application.getApplicationByEventName.useQuery(
-      { eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" },
-      {
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        retry: 1, // Retry failed requests once
-      },
+    const { data: importedValues, isLoading } =
+        api.application.getApplicationByEventName.useQuery(
+            { eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" },
+            {
+                refetchOnWindowFocus: false,
+                refetchOnReconnect: false,
+                retry: 1, // Retry failed requests once
+            },
+        );
+
+    const form = useForm<ApplicationSchema>({
+        mode: "onSubmit",
+        defaultValues: {
+            resumeFile: null,
+            mlhCodeConduct: false,
+            mlhPrivacyPolicy: false,
+            mlhEmailConsent: false,
+        },
+        ...importedValues?.app,
+        resetOptions: {
+            keepDirtyValues: true, // user-interacted input will not be retained
+            keepErrors: true,
+        },
+        resolver: zodResolver(applicationSchema), // match it to an endpoint because it allows async or use values
+    });
+
+    const createApplication = api.application.create.useMutation();
+    const updateApplication = api.application.update.useMutation();
+
+    const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
+        let blob_name = undefined;
+        let blob_url = undefined;
+
+        if (data.resumeFile) {
+            await upload(data.resumeFile.name, data.resumeFile, {
+                access: "public",
+                contentType: "application/pdf",
+                handleUploadUrl: "/api/resume",
+            })
+                .then((blob) => {
+                    blob_name = data.resumeFile?.name;
+                    blob_url = blob.url;
+                    return blob;
+                })
+                .catch((error) => {
+                    toast({
+                        variant: "destructive",
+                        title: "Resume Failed to Upload",
+                        description: error.message,
+                    });
+                });
+        } else {
+            blob_name = importedValues?.resume.resumeName;
+            blob_url = importedValues?.resume.resumeUrl;
+        }
+
+        if (!blob_name || !blob_url) {
+            toast({
+                variant: "destructive",
+                title: "Submission failed",
+                description: "Resume file is required.",
+            });
+            return;
+        }
+
+        if (!importedValues) {
+            const createApplicationData = {
+                eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
+                resumeUrl: blob_url,
+                resumeName: blob_name,
+                applicationData: {
+                    ...data,
+                    gradYear: Number(data.gradYear),
+                },
+            };
+
+            await createApplication.mutateAsync(createApplicationData, {
+                onSuccess: () => {
+                    toast({
+                        variant: "success",
+                        title: "Application submitted successfully!",
+                        description: "Your application has been received.",
+                    });
+                },
+                onError: (error) => {
+                    if (error instanceof TRPCClientError) {
+                        toast({
+                            variant: "destructive",
+                            title: "Submission failed",
+                            description: error.message,
+                        });
+                    }
+                },
+            });
+        } else {
+            const updateApplicationData = {
+                id: importedValues.app.id,
+                userId: importedValues.app.userId,
+                resumeUrl: blob_url,
+                resumeName: blob_name,
+                eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
+                application: {
+                    ...data,
+                    gradYear: Number(data.gradYear),
+                },
+            };
+
+            await updateApplication.mutateAsync(updateApplicationData, {
+                onSuccess: () => {
+                    toast({
+                        variant: "success",
+                        title: "Application updated successfully!",
+                        description: "Your application has been received.",
+                    });
+                },
+                onError: (error: any) => {
+                    if (error instanceof TRPCClientError) {
+                        toast({
+                            variant: "destructive",
+                            title: "Update failed",
+                            description: error.message,
+                        });
+                    }
+                },
+            });
+        }
+    };
+
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    const SCHOOL_OPTIONS = schoolsJson.map((entry, index) => ({
+        value: entry.schoolName,
+        label: entry.schoolName,
+    }));
+    return (
+        <div className="flex w-3/5 justify-center">
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="rounded-lg bg-white p-5 px-16"
+                >
+                    <h1 className="p-10 pb-3 text-center text-6xl font-bold">
+                        <span className="odd:text-teal-400">H</span>
+                        <span className="even:text-cyan-700">A</span>
+                        <span className="odd:text-teal-400 ">C</span>
+                        <span className="even:text-cyan-700">K</span>
+                        <span className="odd:text-teal-400 ">E</span>
+                        <span className="even:text-cyan-700">R</span> APPLICATION
+                    </h1>
+                    <div className="pb-4 text-center text-xl text-gray-500">
+                        Please complete the following sections. Filling out this form should
+                        take about 10-15 minutes.
+                    </div>
+
+                    <div className="flex w-full flex-row">
+                        {/* First Name */}
+                        <div className="flex w-1/2 flex-col pr-2">
+                            <FormField
+                                control={form.control}
+                                name="firstName"
+                                defaultValue={importedValues?.app.firstName}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-xl">First Name</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="John"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />{" "}
+                        </div>
+
+                        {/* Last Name */}
+                        <div className="flex w-1/2 flex-col pr-2">
+                            <FormField
+                                control={form.control}
+                                name="lastName"
+                                defaultValue={importedValues?.app.lastName}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-xl">Last Name</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Doe"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Email */}
+                    <div className="pt-4">
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            defaultValue={importedValues?.app.email}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl">Email:</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="abc123@gmail.com"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    {/* Phone Number */}
+                    <div className="pt-4">
+                        <FormField
+                            control={form.control}
+                            name="phoneNumber"
+                            defaultValue={importedValues?.app.phoneNumber}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl">Phone Number</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="1234567890"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    {/* Age */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"age"}
+                            label={"Age"}
+                            options={AGE}
+                            defaultOption={AGE.find(
+                                (option) => option.value === importedValues?.app.age,
+                            )}
+                        />
+                    </div>
+
+                    {/* Country */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"country"}
+                            label={"Country of Residence"}
+                            options={COUNTRIES}
+                            defaultOption={COUNTRIES.find(
+                                (option) => option.value === importedValues?.app.country,
+                            )}
+                        />
+                    </div>
+
+                    {/* Gender */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"gender"}
+                            label={"Gender"}
+                            options={GENDER_OPTIONS}
+                            defaultOption={GENDER_OPTIONS.find(
+                                (option) => option.value === importedValues?.app.gender,
+                            )}
+                        />
+                    </div>
+
+                    {/* Race */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"race"}
+                            label={"What ethnicity do you identify with?"}
+                            options={RACE_OPTIONS}
+                            defaultOption={RACE_OPTIONS.find(
+                                (option) => option.value === importedValues?.app.race,
+                            )}
+                        />
+                    </div>
+
+                    {/* School */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"school"}
+                            label={"What school do you go to?"}
+                            options={SCHOOL_OPTIONS}
+                            defaultOption={SCHOOL_OPTIONS.find(
+                                (option) => option.value === importedValues?.app.school,
+                            )}
+                            filter
+                        />
+                    </div>
+
+                    {/* Major */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"major"}
+                            label={"What's your major?"}
+                            options={MAJOR}
+                            defaultOption={MAJOR.find(
+                                (option) => option.value === importedValues?.app.major,
+                            )}
+                        />
+                    </div>
+
+                    {/* Classification */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"classification"}
+                            label={"What classification are you?"}
+                            options={EDUCATION_LEVELS}
+                            defaultOption={EDUCATION_LEVELS.find(
+                                (option) => option.value === importedValues?.app.classification,
+                            )}
+                        />
+                    </div>
+
+                    {/* Graduation Year */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"gradYear"}
+                            label={"What is your anticipated graduation year?"}
+                            options={GRADUATION_YEARS}
+                            defaultOption={GRADUATION_YEARS.find(
+                                (option) => Number(option.value) === importedValues?.app.gradYear,
+                            )}
+                        />
+                    </div>
+
+                    {/* Figure out how to do other */}
+                    {/* Hackathons Attended */}
+                    <div className="pt-4">
+                        <Title text="Experience" className="m-1" />
+                        <GenericCombobox
+                            name={"hackathonsAttended"}
+                            label={"How many hackathons have you attended?"}
+                            options={HACKATHON_EXPERIENCE}
+                            defaultOption={HACKATHON_EXPERIENCE.find(
+                                (option) =>
+                                    option.value === importedValues?.app.hackathonsAttended,
+                            )}
+                        />
+                    </div>
+
+                    {/* Experience Level */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"experience"}
+                            label={"What is your experience level in Data Science?"}
+                            options={PROGRAMMING_SKILL_LEVELS}
+                            defaultOption={PROGRAMMING_SKILL_LEVELS.find(
+                                (option) => option.value === importedValues?.app.experience,
+                            )}
+                        />
+                    </div>
+
+                    {/* Team */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"hasTeam"}
+                            label={"Do you have a team?"}
+                            options={[
+                                { value: "No", label: "I do have a team" },
+                                {
+                                    value: "Yes",
+                                    label: "I do not have a team",
+                                },
+                            ]}
+                            defaultOption={
+                                importedValues?.app.hasTeam
+                                    ? {
+                                        value: importedValues.app.hasTeam,
+                                        label: importedValues.app.hasTeam,
+                                    }
+                                    : undefined
+                            }
+                        />
+                    </div>
+
+                    {/* How'd you hear */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"eventSource"}
+                            label={"How did you hear about TAMU Datathon?"}
+                            options={HEARD_ABOUT_OPTIONS}
+                            defaultOption={HEARD_ABOUT_OPTIONS.find(
+                                (option) => option.value === importedValues?.app.eventSource,
+                            )}
+                        />
+                    </div>
+
+                    {/* Shirt Size */}
+                    <div className="pt-4">
+                        <GenericCombobox
+                            name={"shirtSize"}
+                            label={"What's your shirt size?"}
+                            options={SHIRT_SIZES}
+                            defaultOption={SHIRT_SIZES.find(
+                                (option) => option.value === importedValues?.app.shirtSize,
+                            )}
+                        />
+                    </div>
+
+                    {/* Resume */}
+                    <div className="pt-4">
+                        <FormField
+                            control={form.control}
+                            name="resumeFile"
+                            render={({ field: { value, onChange, ...fieldProps } }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl">
+                                        Current Resume:{" "}
+                                        {importedValues?.resume.resumeName || "None"} <br />
+                                        Upload Resume (PDF only):
+                                    </FormLabel>
+                                    <FormControl className="hover:cursor-pointer">
+                                        <Input
+                                            {...fieldProps}
+                                            type="file"
+                                            accept="application/pdf"
+                                            className="border bg-gray-200"
+                                            onChange={(event) => {
+                                                form.setValue(
+                                                    "resumeFile",
+                                                    event.target.files ? event.target.files[0]! : null,
+                                                );
+                                            }}
+                                        />
+                                    </FormControl>
+                                    {/* I removed this because there is already a toast */}
+                                    {/* <FormMessage /> */}
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    {/* Address */}
+                    <div className="pt-4">
+                        <FormField
+                            control={form.control}
+                            name="address"
+                            defaultValue={importedValues?.app.address}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl">Address:</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="308 Negra Arroyo Lane, Albuquerque, New Mexico 87104"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <Title text="General Info" className="m-1" />
+                    {/* References */}
+                    <div className="pt-4">
+                        <FormField
+                            control={form.control}
+                            name="references"
+                            defaultValue={importedValues?.app.references}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl">
+                                        Point us to anything you'd like us to look at while
+                                        considering your application:
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    {/* Tell us your best programming joke. */}
+                    <div className="pt-4">
+                        <FormField
+                            control={form.control}
+                            defaultValue={importedValues?.app.interestOne}
+                            name="interestOne"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl">
+                                        Tell us your best programming joke.
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Is your code running? Well, you better go catch it."
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    {/* What is the one thing you'd build if you had unlimited resources? */}
+                    <div className="pt-4">
+                        <FormField
+                            control={form.control}
+                            name="interestTwo"
+                            defaultValue={importedValues?.app.interestOne}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl">
+                                        What is the one thing you'd build if you had unlimited
+                                        resources?
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="More resources."
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    {/* What drives your interest in being a part of TAMU Datathon? */}
+                    <div className="pt-4">
+                        <FormField
+                            control={form.control}
+                            name="interestThree"
+                            defaultValue={importedValues?.app.interestOne}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl">
+                                        What drives your interest in being a part of TAMU Datathon?
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    {/* Dietry Restrictions */}
+                    <div className="pt-4">
+                        <FormField
+                            control={form.control}
+                            name="dietaryRestriction"
+                            defaultValue={
+                                importedValues?.app.dietaryRestriction ?? ""
+                            }
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl">
+                                        Do you require any special accommodations at the event?
+                                        Please list all dietary restrictions here.
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Rock only diet."
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    {/* Extra Info */}
+                    <div className="pt-4">
+                        <FormField
+                            control={form.control}
+                            name="extraInfo"
+                            defaultValue={importedValues?.app.extraInfo ?? ""}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl">
+                                        Anything else you would like us to know?
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="I love drywall!"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    {/* TODO: Add the waiver */}
+                    {/* Liability Waiver */}
+                    <div className="flex items-center space-x-2 pt-4">
+                        <FormField
+                            control={form.control}
+                            name="mlhCodeConduct"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl pr-2">
+                                        I have read and agree to the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md">MLH Code of Conduct</a>:
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Checkbox
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <div className="flex items-center space-x-2 pt-4">
+                        <FormField
+                            control={form.control}
+                            name="mlhPrivacyPolicy"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl pr-2">
+                                        I authorize you to share my application/registration information with Major League Hacking for event administration,
+                                        ranking, and MLH administration in-line with the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md">MLH Privacy Policy</a>.
+                                        I further agree to the terms of both the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md">MLH Contest Terms and Conditions</a>
+                                        and the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md">MLH Privacy Policy</a>:
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Checkbox
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <div className="flex items-center space-x-2 pt-4">
+                        <FormField
+                            control={form.control}
+                            name="mlhEmailConsent"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xl pr-2">
+                                        (Optional) I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements:
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Checkbox
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    {/* Submit */}
+                    <div className="pt-4 text-4xl">
+                        {!form.formState.isSubmitting && (
+                            <Button type="submit">Submit</Button>
+                        )}
+                        {form.formState.isSubmitting && (
+                            <Button type="submit" disabled>
+                                {" "}
+                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                Please wait ...
+                            </Button>
+                        )}
+                    </div>
+                </form>
+            </Form>
+        </div>
     );
-
-  const form = useForm<ApplicationSchema>({
-    mode: "onSubmit",
-    defaultValues: {
-      resumeFile: null,
-      liabilityWaiver: false,
-    },
-    ...importedValues?.app,
-    resetOptions: {
-      keepDirtyValues: true, // user-interacted input will not be retained
-      keepErrors: true,
-    },
-    resolver: zodResolver(applicationSchema), // match it to an endpoint because it allows async or use values
-  });
-
-  const createApplication = api.application.create.useMutation();
-  const updateApplication = api.application.update.useMutation();
-
-  const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
-    let blob_name = undefined;
-    let blob_url = undefined;
-
-    if (data.resumeFile) {
-      await upload(data.resumeFile.name, data.resumeFile, {
-        access: "public",
-        contentType: "application/pdf",
-        handleUploadUrl: "/api/resume",
-      })
-        .then((blob) => {
-          blob_name = data.resumeFile?.name;
-          blob_url = blob.url;
-          return blob;
-        })
-        .catch((error) => {
-          toast({
-            variant: "destructive",
-            title: "Resume Failed to Upload",
-            description: error.message,
-          });
-        });
-    } else {
-      blob_name = importedValues?.resume.resumeName;
-      blob_url = importedValues?.resume.resumeUrl;
-    }
-
-    if (!blob_name || !blob_url) {
-      toast({
-        variant: "destructive",
-        title: "Submission failed",
-        description: "Resume file is required.",
-      });
-      return;
-    }
-
-    if (!importedValues) {
-      const createApplicationData = {
-        eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
-        resumeUrl: blob_url,
-        resumeName: blob_name,
-        applicationData: {
-          ...data,
-          gradYear: Number(data.gradYear),
-        },
-      };
-
-      await createApplication.mutateAsync(createApplicationData, {
-        onSuccess: () => {
-          toast({
-            variant: "success",
-            title: "Application submitted successfully!",
-            description: "Your application has been received.",
-          });
-        },
-        onError: (error) => {
-          if (error instanceof TRPCClientError) {
-            toast({
-              variant: "destructive",
-              title: "Submission failed",
-              description: error.message,
-            });
-          }
-        },
-      });
-    } else {
-      const updateApplicationData = {
-        id: importedValues.app.id,
-        userId: importedValues.app.userId,
-        resumeUrl: blob_url,
-        resumeName: blob_name,
-        eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
-        application: {
-          ...data,
-          gradYear: Number(data.gradYear),
-        },
-      };
-
-      await updateApplication.mutateAsync(updateApplicationData, {
-        onSuccess: () => {
-          toast({
-            variant: "success",
-            title: "Application updated successfully!",
-            description: "Your application has been received.",
-          });
-        },
-        onError: (error: any) => {
-          if (error instanceof TRPCClientError) {
-            toast({
-              variant: "destructive",
-              title: "Update failed",
-              description: error.message,
-            });
-          }
-        },
-      });
-    }
-  };
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  const SCHOOL_OPTIONS = schoolsJson.map((entry, index) => ({
-    value: entry.schoolName,
-    label: entry.schoolName,
-  }));
-  return (
-    <div className="flex w-3/5 justify-center">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="rounded-lg bg-white p-5 px-16"
-        >
-          <h1 className="p-10 pb-3 text-center text-6xl font-bold">
-            <span className="odd:text-teal-400">H</span>
-            <span className="even:text-cyan-700">A</span>
-            <span className="odd:text-teal-400 ">C</span>
-            <span className="even:text-cyan-700">K</span>
-            <span className="odd:text-teal-400 ">E</span>
-            <span className="even:text-cyan-700">R</span> APPLICATION
-          </h1>
-          <div className="pb-4 text-center text-xl text-gray-500">
-            Please complete the following sections. Filling out this form should
-            take about 10-15 minutes.
-          </div>
-
-          <div className="flex w-full flex-row">
-            {/* First Name */}
-            <div className="flex w-1/2 flex-col pr-2">
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xl">First Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="John"
-                        {...field}
-                        defaultValue={importedValues?.app.firstName}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />{" "}
-            </div>
-
-            {/* Last Name */}
-            <div className="flex w-1/2 flex-col pr-2">
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xl">Last Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Doe"
-                        {...field}
-                        defaultValue={importedValues?.app.lastName}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-
-          {/* Email */}
-          <div className="pt-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">Email:</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="abc123@gmail.com"
-                      {...field}
-                      defaultValue={importedValues?.app.email}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Phone Number */}
-          <div className="pt-4">
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">Phone Number</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="1234567890"
-                      {...field}
-                      defaultValue={importedValues?.app.phoneNumber}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Age */}
-          <GenericCombobox
-            name={"age"}
-            label={"Age"}
-            options={AGE}
-            defaultOption={AGE.find(
-              (option) => option.value === importedValues?.app.age,
-            )}
-          />
-
-          {/* Country */}
-          <GenericCombobox
-            name={"country"}
-            label={"Country of Residence"}
-            options={COUNTRIES}
-            defaultOption={COUNTRIES.find(
-              (option) => option.value === importedValues?.app.country,
-            )}
-          />
-
-          {/* Gender */}
-          <GenericCombobox
-            name={"gender"}
-            label={"Gender"}
-            options={GENDER_OPTIONS}
-            defaultOption={GENDER_OPTIONS.find(
-              (option) => option.value === importedValues?.app.gender,
-            )}
-          />
-
-          {/* Race */}
-          <GenericCombobox
-            name={"race"}
-            label={"What ethnicity do you identify with?"}
-            options={RACE_OPTIONS}
-            defaultOption={RACE_OPTIONS.find(
-              (option) => option.value === importedValues?.app.race,
-            )}
-          />
-
-          {/* School */}
-          <Title text="School Info" className="m-1" />
-          <GenericCombobox
-            name={"school"}
-            label={"What school do you go to?"}
-            options={SCHOOL_OPTIONS}
-            filter
-            defaultOption={schools.find(
-              (option) => option.schoolName === importedValues?.app.school,
-            )}
-          />
-
-          {/* Major */}
-          <GenericCombobox
-            name={"major"}
-            label={"What's your major?"}
-            options={MAJOR}
-            defaultOption={MAJOR.find(
-              (option) => option.value === importedValues?.app.major,
-            )}
-          />
-
-          {/* Classification */}
-          <GenericCombobox
-            name={"classification"}
-            label={"What classification are you?"}
-            options={EDUCATION_LEVELS}
-            defaultOption={EDUCATION_LEVELS.find(
-              (option) => option.value === importedValues?.app.classification,
-            )}
-          />
-
-          {/* Graduation Year */}
-          <GenericCombobox
-            name={"gradYear"}
-            label={"What is your anticipated graduation year?"}
-            options={GRADUATION_YEARS}
-            defaultOption={GRADUATION_YEARS.find(
-              (option) => Number(option.value) === importedValues?.app.gradYear,
-            )}
-          />
-
-          {/* Figure out how to do other */}
-          {/* Hackathons Attended */}
-          <Title text="Experience" className="m-1" />
-          <GenericCombobox
-            name={"hackathonsAttended"}
-            label={"How many hackathons have you attended?"}
-            options={HACKATHON_EXPERIENCE}
-            defaultOption={HACKATHON_EXPERIENCE.find(
-              (option) =>
-                option.value === importedValues?.app.hackathonsAttended,
-            )}
-          />
-
-          {/* Experience Level */}
-          <GenericCombobox
-            name={"experience"}
-            label={"What is your experience level in Data Science?"}
-            options={PROGRAMMING_SKILL_LEVELS}
-            defaultOption={PROGRAMMING_SKILL_LEVELS.find(
-              (option) => option.value === importedValues?.app.experience,
-            )}
-          />
-
-          {/* Team */}
-          <GenericCombobox
-            name={"hasTeam"}
-            label={"Do you have a team?"}
-            options={[
-              { value: "No", label: "I do have a team" },
-              {
-                value: "Yes",
-                label: "I do not have a team",
-              },
-            ]}
-            defaultOption={
-              importedValues?.app.hasTeam
-                ? {
-                    value: importedValues.app.hasTeam,
-                    label: importedValues.app.hasTeam,
-                  }
-                : undefined
-            }
-          />
-
-          {/* How'd you hear */}
-          <GenericCombobox
-            name={"eventSource"}
-            label={"How did you hear about TAMU Datathon?"}
-            options={HEARD_ABOUT_OPTIONS}
-          />
-
-          {/* Shirt Size */}
-          <GenericCombobox
-            name={"shirtSize"}
-            label={"What's your shirt size?"}
-            options={SHIRT_SIZES}
-            defaultOption={SHIRT_SIZES.find(
-              (option) => option.value === importedValues?.app.shirtSize,
-            )}
-          />
-
-          {/* Resume */}
-          <div className="pt-4">
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field: { value, onChange, ...fieldProps } }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">
-                    Current Resume:{" "}
-                    {importedValues?.resume.resumeName || "None"} <br />
-                    Upload Resume (PDF only):
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...fieldProps}
-                      type="file"
-                      accept="application/pdf"
-                      className="border"
-                      onChange={(event) => {
-                        form.setValue(
-                          "resumeFile",
-                          event.target.files ? event.target.files[0]! : null,
-                        );
-                      }}
-                    />
-                  </FormControl>
-                  {/* I removed this because there is already a toast */}
-                  {/* <FormMessage /> */}
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Address */}
-          <div className="pt-4">
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">Address:</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="308 Negra Arroyo Lane, Albuquerque, New Mexico 87104"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <Title text="General Info" className="m-1" />
-          {/* References */}
-          <div className="pt-4">
-            <FormField
-              control={form.control}
-              name="references"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">
-                    Point us to anything you'd like us to look at while
-                    considering your application:
-                  </FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-              defaultValue={importedValues?.app.references}
-            />
-          </div>
-
-          {/* Tell us your best programming joke. */}
-          <div className="pt-4">
-            <FormField
-              control={form.control}
-              name="interestOne"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">
-                    Tell us your best programming joke.
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Is your code running? Well, you better go catch it."
-                      {...field}
-                      defaultValue={importedValues?.app.interestOne}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          {/* What is the one thing you'd build if you had unlimited resources? */}
-          <div className="pt-4">
-            <FormField
-              control={form.control}
-              name="interestTwo"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">
-                    What is the one thing you'd build if you had unlimited
-                    resources?
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="More resources."
-                      {...field}
-                      defaultValue={importedValues?.app.interestOne}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* What drives your interest in being a part of TAMU Datathon? */}
-          <div className="pt-4">
-            <FormField
-              control={form.control}
-              name="interestThree"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">
-                    What drives your interest in being a part of TAMU Datathon?
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
-                      {...field}
-                      defaultValue={importedValues?.app.interestOne}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          {/* Dietry Restrictions */}
-          <div className="pt-4">
-            <FormField
-              control={form.control}
-              name="dietaryRestriction"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">
-                    Do you require any special accommodations at the event?
-                    Please list all dietary restrictions here.
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      defaultValue={
-                        importedValues?.app.dietaryRestriction ?? ""
-                      }
-                      placeholder="Rock only diet."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Extra Info */}
-          <div className="pt-4">
-            <FormField
-              control={form.control}
-              name="extraInfo"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">
-                    Anything else you would like us to know?
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="I love drywall!"
-                      defaultValue={importedValues?.app.extraInfo ?? ""}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* TODO: Add the waiver */}
-          {/* Liability Waiver */}
-          <div className="flex items-center space-x-2 pt-4">
-            <FormField
-              control={form.control}
-              name="liabilityWaiver"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">
-                    I have read and accept the Liability Waiver:{" "}
-                  </FormLabel>
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Submit */}
-          <div className="pt-4 text-4xl">
-            {!form.formState.isSubmitting && (
-              <Button type="submit">Submit</Button>
-            )}
-            {form.formState.isSubmitting && (
-              <Button type="submit" disabled>
-                {" "}
-                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                Please wait ...
-              </Button>
-            )}
-          </div>
-        </form>
-      </Form>
-    </div>
-  );
 }
