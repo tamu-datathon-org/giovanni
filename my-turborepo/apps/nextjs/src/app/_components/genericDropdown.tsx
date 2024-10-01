@@ -92,22 +92,22 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
             <FormControl>
               <SelectTrigger variant="outline" className="justify-between">
                 <SelectValue placeholder="Select..." />
-                <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </SelectTrigger>
+              {/*<BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />*/}
             </FormControl>
             <SelectContent className="w-fit max-w-full p-0">
               {options.map((option) => (
-                <SelectItem value={option.value}>
-                  <AiOutlineCheck
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      field.value === option.value
-                        ? "opacity-100"
-                        : "opacity-0",
-                    )}
-                  />
-                  {option.label}
-                </SelectItem>
+                <>
+                  {/*<AiOutlineCheck*/}
+                  {/*  className={cn(*/}
+                  {/*    "mr-2 h-4 w-4",*/}
+                  {/*    field.value === option.value*/}
+                  {/*      ? "opacity-100"*/}
+                  {/*      : "opacity-0",*/}
+                  {/*  )}*/}
+                  {/*/>*/}
+                  <SelectItem value={option.value}>{option.label}</SelectItem>
+                </>
               ))}
             </SelectContent>
           </Select>
