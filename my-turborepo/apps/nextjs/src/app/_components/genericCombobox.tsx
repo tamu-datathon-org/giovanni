@@ -79,21 +79,6 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   }, [debouncedValue, options]);
 
   return (
-    //Basic Dropdown
-    // <div className='flex flex-col'>
-    //     {label && <Label htmlFor={name} className='text-xl pt-4'>{label}</Label>}
-    //     <Select {...register(name)}>
-    //         <SelectTrigger className="hover:border-cyan-500 focus:border-sky-700">
-    //             <SelectValue placeholder="---------" />
-    //         </SelectTrigger>
-    //         <SelectContent>
-    //             {options.map((option, index) => (
-    //                 <SelectItem key={index} value={option.value}>{option.label}</SelectItem>
-    //             ))}
-    //         </SelectContent>
-    //     </Select>
-    // </div>
-
     // ComboBox
     <FormField
       control={form.control}
