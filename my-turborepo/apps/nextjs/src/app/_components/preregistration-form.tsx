@@ -1,26 +1,24 @@
 "use client";
 
+import "./customCss.scss";
+
 import type {
   FieldErrors,
   SubmitHandler,
   UseFormRegister,
 } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 
+import { AiOutlineClose } from "react-icons/ai";
+import { Button } from "node_modules/@vanni/ui/src/button";
+import FormContainer from "./FormContainer";
+import Image from "next/image";
 import type { PreregistrationData } from "../preregistration/validation";
+import { TRPCClientError } from "@trpc/client";
 import { api } from "~/trpc/react";
 import { preregistrationSchema } from "../preregistration/validation";
-
-import "./customCss.scss";
-
-import Image from "next/image";
-import { TRPCClientError } from "@trpc/client";
-import { Button } from "node_modules/@vanni/ui/src/button";
-import { AiOutlineClose } from "react-icons/ai";
-
+import { useForm } from "react-hook-form";
 import { useToast } from "~/hooks/use-toast";
-import FormContainer from "./FormContainer";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // import IconList from "./IconList";
 
@@ -164,10 +162,6 @@ export const CreatePreregistrationForm = () => {
       isSubmitting={isSubmitting}
       isDirty={isDirty}
     >
-      <div className="flex w-full flex-row items-center justify-center">
-        <Lines />
-        <ExitButton />
-      </div>
       <TitleText />
       <div className="w-full px-4">
         <EmailBox register={register} errors={errors} />
