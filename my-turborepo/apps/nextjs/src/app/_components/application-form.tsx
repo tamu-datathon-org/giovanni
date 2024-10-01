@@ -40,6 +40,13 @@ import {
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
 import schools from "./application-data/schools.json";
+
+// Map schools to DropdownOption type
+const SCHOOL_OPTIONS = schools.map((school) => ({
+    value: school.schoolName,
+    label: school.schoolName,
+}));
+
 import schoolsJson from "./application-data/schools.json";
 import GenericCombobox from "./genericCombobox";
 import Title from "./title";
@@ -235,6 +242,7 @@ export function ApplicationForm() {
                             <FormField
                                 control={form.control}
                                 name="firstName"
+                                defaultValue={importedValues?.app.firstName}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-xl">First Name</FormLabel>
@@ -242,7 +250,6 @@ export function ApplicationForm() {
                                             <Input
                                                 placeholder="John"
                                                 {...field}
-                                                defaultValue={importedValues?.app.firstName}
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -256,6 +263,7 @@ export function ApplicationForm() {
                             <FormField
                                 control={form.control}
                                 name="lastName"
+                                defaultValue={importedValues?.app.lastName}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-xl">Last Name</FormLabel>
@@ -263,7 +271,6 @@ export function ApplicationForm() {
                                             <Input
                                                 placeholder="Doe"
                                                 {...field}
-                                                defaultValue={importedValues?.app.lastName}
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -278,6 +285,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="email"
+                            defaultValue={importedValues?.app.email}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">Email:</FormLabel>
@@ -285,7 +293,6 @@ export function ApplicationForm() {
                                         <Input
                                             placeholder="abc123@gmail.com"
                                             {...field}
-                                            defaultValue={importedValues?.app.email}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -299,6 +306,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="phoneNumber"
+                            defaultValue={importedValues?.app.phoneNumber}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">Phone Number</FormLabel>
@@ -306,7 +314,6 @@ export function ApplicationForm() {
                                         <Input
                                             placeholder="1234567890"
                                             {...field}
-                                            defaultValue={importedValues?.app.phoneNumber}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -365,15 +372,14 @@ export function ApplicationForm() {
 
                     {/* School */}
                     <div className="pt-4">
-                        <Title text="School Info" className="m-1" />
                         <GenericCombobox
                             name={"school"}
                             label={"What school do you go to?"}
                             options={SCHOOL_OPTIONS}
-                            filter
-                            defaultOption={schools.find(
-                                (option) => option.schoolName === importedValues?.app.school,
+                            defaultOption={SCHOOL_OPTIONS.find(
+                                (option) => option.value === importedValues?.app.school,
                             )}
+                            filter
                         />
                     </div>
 
@@ -469,6 +475,9 @@ export function ApplicationForm() {
                             name={"eventSource"}
                             label={"How did you hear about TAMU Datathon?"}
                             options={HEARD_ABOUT_OPTIONS}
+                            defaultOption={HEARD_ABOUT_OPTIONS.find(
+                                (option) => option.value === importedValues?.app.eventSource,
+                            )}
                         />
                     </div>
 
@@ -522,6 +531,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="address"
+                            defaultValue={importedValues?.app.address}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">Address:</FormLabel>
@@ -543,6 +553,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="references"
+                            defaultValue={importedValues?.app.references}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
@@ -555,7 +566,6 @@ export function ApplicationForm() {
                                     <FormMessage />
                                 </FormItem>
                             )}
-                            defaultValue={importedValues?.app.references}
                         />
                     </div>
 
@@ -563,6 +573,7 @@ export function ApplicationForm() {
                     <div className="pt-4">
                         <FormField
                             control={form.control}
+                            defaultValue={importedValues?.app.interestOne}
                             name="interestOne"
                             render={({ field }) => (
                                 <FormItem>
@@ -573,7 +584,6 @@ export function ApplicationForm() {
                                         <Input
                                             placeholder="Is your code running? Well, you better go catch it."
                                             {...field}
-                                            defaultValue={importedValues?.app.interestOne}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -586,6 +596,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="interestTwo"
+                            defaultValue={importedValues?.app.interestOne}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
@@ -596,7 +607,6 @@ export function ApplicationForm() {
                                         <Input
                                             placeholder="More resources."
                                             {...field}
-                                            defaultValue={importedValues?.app.interestOne}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -610,6 +620,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="interestThree"
+                            defaultValue={importedValues?.app.interestOne}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
@@ -619,7 +630,6 @@ export function ApplicationForm() {
                                         <Input
                                             placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
                                             {...field}
-                                            defaultValue={importedValues?.app.interestOne}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -632,6 +642,9 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="dietaryRestriction"
+                            defaultValue={
+                                importedValues?.app.dietaryRestriction ?? ""
+                            }
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
@@ -640,9 +653,6 @@ export function ApplicationForm() {
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            defaultValue={
-                                                importedValues?.app.dietaryRestriction ?? ""
-                                            }
                                             placeholder="Rock only diet."
                                             {...field}
                                         />
@@ -658,6 +668,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="extraInfo"
+                            defaultValue={importedValues?.app.extraInfo ?? ""}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
@@ -666,7 +677,6 @@ export function ApplicationForm() {
                                     <FormControl>
                                         <Input
                                             placeholder="I love drywall!"
-                                            defaultValue={importedValues?.app.extraInfo ?? ""}
                                             {...field}
                                         />
                                     </FormControl>
