@@ -7,11 +7,6 @@ export default function PreregistrationLayout({
 }) {
   return (
     <>
-      <BackgroundImage
-        desktop_src={"/assets/wallpaper.png"}
-        mobile_src={"/assets/wallpaper-mobile.png"}
-        alt={"Preregistration background"}
-      />
       <div className="max-h-screen-sm overflow-hidden">{children}</div>
     </>
   );

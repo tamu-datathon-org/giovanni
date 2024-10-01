@@ -1,14 +1,13 @@
-import type { Metadata, Viewport } from "next";
-
-import { cn } from "@vanni/ui";
-
-import { w95fa } from "~/app/_components/fonts";
-import { TRPCReactProvider } from "~/trpc/react";
-
 import "~/app/globals.css";
 
+import type { Metadata, Viewport } from "next";
+
+import BackgroundImage from "./_components/images/background";
+import { TRPCReactProvider } from "~/trpc/react";
 import { Toaster } from "~/components/ui/toaster";
+import { cn } from "@vanni/ui";
 import { env } from "~/env";
+import { w95fa } from "~/app/_components/fonts";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -45,7 +44,14 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       <body
         className={cn("min-h-screen bg-background text-foreground antialiased")}
       >
-        <TRPCReactProvider>{props.children}</TRPCReactProvider>
+        <TRPCReactProvider>
+        <BackgroundImage
+        desktop_src={"/assets/wallpaper.png"}
+        mobile_src={"/assets/wallpaper-mobile.png"}
+        alt={"Preregistration background"}
+      />
+      {props.children}
+      </TRPCReactProvider>
         <div className="absolute bottom-4 right-4"></div>
         <Toaster />
       </body>
