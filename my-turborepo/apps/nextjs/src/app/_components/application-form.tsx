@@ -132,24 +132,24 @@ export function ApplicationForm() {
                     });
                 });
         } else {
-            blob_name = importedValues?.resume.resumeName;
-            blob_url = importedValues?.resume.resumeUrl;
+            blob_name = importedValues?.resume?.resumeName ?? undefined;
+            blob_url = importedValues?.resume?.resumeUrl ?? undefined;
         }
 
-        if (!blob_name || !blob_url) {
-            toast({
-                variant: "destructive",
-                title: "Submission failed",
-                description: "Resume file is required.",
-            });
-            return;
-        }
+        // if (!blob_name || !blob_url) {
+        //     toast({
+        //         variant: "destructive",
+        //         title: "Submission failed",
+        //         description: "Resume file is required.",
+        //     });
+        //     return;
+        // }
 
         if (!importedValues) {
             const createApplicationData = {
                 eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
-                resumeUrl: blob_url,
-                resumeName: blob_name,
+                resumeUrl: blob_url ?? "",
+                resumeName: blob_name ?? "",
                 applicationData: {
                     ...data,
                     gradYear: Number(data.gradYear),
@@ -175,11 +175,12 @@ export function ApplicationForm() {
                 },
             });
         } else {
+            console.log(blob_name, blob_url)
             const updateApplicationData = {
                 id: importedValues.app.id,
                 userId: importedValues.app.userId,
-                resumeUrl: blob_url,
-                resumeName: blob_name,
+                resumeUrl: blob_url ?? "",
+                resumeName: blob_name ?? "",
                 eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
                 application: {
                     ...data,
@@ -502,7 +503,7 @@ export function ApplicationForm() {
                                 <FormItem>
                                     <FormLabel className="text-xl">
                                         Current Resume:{" "}
-                                        {importedValues?.resume.resumeName || "None"} <br />
+                                        {importedValues?.resume?.resumeName || "None"} <br />
                                         Upload Resume (PDF only):
                                     </FormLabel>
                                     <FormControl className="hover:cursor-pointer">
