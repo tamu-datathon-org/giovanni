@@ -217,13 +217,13 @@ export function ApplicationForm() {
         label: entry.schoolName,
     }));
     return (
-        <div className="flex w-3/5 justify-center">
+        <div className="flex w-full lg:w-3/5 justify-center ">
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="rounded-lg bg-white p-5 px-16"
+                    className="rounded-lg bg-white p-5 lg:px-16 overflow-x-hidden"
                 >
-                    <h1 className="p-10 pb-3 text-center text-6xl font-bold">
+                    <h1 className="p-10 pb-3 text-center lg:text-6xl font-bold text-5xl">
                         <span className="odd:text-teal-400">H</span>
                         <span className="even:text-cyan-700">A</span>
                         <span className="odd:text-teal-400 ">C</span>

@@ -7,14 +7,14 @@ export default async function Page() {
   return (
     <>
       <div className="absolute top-0 h-screen w-screen overflow-auto">
-        <div className="h-10 flex-grow" />
+        <div className="lg:h-10 flex-grow" />
         <div className="font-XPfont flex justify-center">
           <Suspense fallback={<h1>Loading... please wait</h1>}>
-            
-          <ApplicationForm />
+
+            <ApplicationForm />
           </Suspense>
         </div>
-        <div className="h-10 flex-grow" />
+        <div className="lg:h-10 flex-grow" />
       </div>
     </>
   );
