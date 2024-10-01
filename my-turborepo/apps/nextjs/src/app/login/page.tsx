@@ -52,11 +52,11 @@ export default function LoginPage(props: {searchParams: { callbackUrl: string | 
                 buttonText="Sign in with Google"
                 searchParams={props.searchParams}
               />
-              <LoginButton
+              {/* <LoginButton
                 connectionId="windowslive"
                 buttonText="Sign in with Microsoft"
                 searchParams={props.searchParams}
-              />
+              /> */}
             </form>
           </div>
 
