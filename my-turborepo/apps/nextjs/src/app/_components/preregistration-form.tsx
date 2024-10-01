@@ -141,8 +141,7 @@ export const CreatePreregistrationForm = () => {
       });
     } catch (error) {
       if (error instanceof TRPCClientError) {
-        const code = (error.data as { code: string }).code;
-        if (code === "INTERNAL_SERVER_ERROR") {
+        if (error.data.code === "INTERNAL_SERVER_ERROR") {
           toast({
             variant: "destructive",
             title: "Submission Error",
@@ -151,7 +150,7 @@ export const CreatePreregistrationForm = () => {
         } else {
           toast({
             variant: "destructive",
-            title: code,
+            title: error.data.code,
             description: error.message,
           });
         }
@@ -165,7 +164,7 @@ export const CreatePreregistrationForm = () => {
       isSubmitting={isSubmitting}
       isDirty={isDirty}
     >
-      <div className="flex w-full flex-row items-center justify-between">
+      <div className="flex w-full flex-row items-center justify-center">
         <Lines />
         <ExitButton />
       </div>
