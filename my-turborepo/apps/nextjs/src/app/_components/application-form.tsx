@@ -488,7 +488,7 @@ export function ApplicationForm() {
                     <div className="pt-4">
                         <FormField
                             control={form.control}
-                            name="phoneNumber"
+                            name="resumeFile"
                             render={({ field: { value, onChange, ...fieldProps } }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
