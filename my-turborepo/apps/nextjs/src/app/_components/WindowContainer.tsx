@@ -1,12 +1,12 @@
 "use client";
 
-// Ensure the component is treated as a client component
-import React from "react";
-import Image from "next/image";
+import { ExitButton, Lines, TAMUy2k, TitleText } from "./preregistration-form"; // Ensure these imports are correct
 
 import { Button } from "@vanni/ui/button";
-
-import { ExitButton, Lines, TAMUy2k, TitleText } from "./preregistration-form"; // Ensure these imports are correct
+import Image from "next/image";
+// Ensure the component is treated as a client component
+import React from "react";
+import { toast } from "~/hooks/use-toast";
 
 interface WindowContainerProps {
   children: React.ReactNode;
@@ -21,7 +21,11 @@ const WindowContainer: React.FC<WindowContainerProps> = ({ children }) => {
           {/* Added px-4 for horizontal padding */}
           <div className="flex w-full flex-row items-center justify-between">
             <Lines />
-            <ExitButton />
+            <ExitButton onClick={() => {            toast({
+              variant: "success",
+              title: "The rest of the site is under construction!",
+              description: "Please apply, or check it out later.",
+            });}}/>
           </div>
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
             <TAMUy2k />

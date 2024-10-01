@@ -1,7 +1,5 @@
-import Link from "next/link";
-
 import { Button } from "@vanni/ui/button";
-
+import Link from "next/link";
 // Import the 'IconList' component and its props type
 import WindowContainer from "../_components/WindowContainer";
 
@@ -10,7 +8,6 @@ export default function Page() {
   return (
     <div className="lg:bg-large-device bg-mobile-device h-screen w-screen overflow-hidden bg-cover bg-center bg-no-repeat ">
       <div className="relative z-30 flex h-full flex-col items-center justify-center">
-        {/* <CreatePreregistrationForm /> */}
         <WindowContainer>
           <h1 className="mb-4 text-4xl">Registration is open!</h1>
           <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">

@@ -12,6 +12,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { Button } from "node_modules/@vanni/ui/src/button";
 import FormContainer from "./FormContainer";
 import Image from "next/image";
+import { MouseEventHandler } from "react";
 import type { PreregistrationData } from "../preregistration/validation";
 import { TRPCClientError } from "@trpc/client";
 import { api } from "~/trpc/react";
@@ -39,10 +40,10 @@ export function Lines() {
   );
 }
 
-export function ExitButton() {
+export function ExitButton(props:{onClick?: MouseEventHandler<HTMLButtonElement>}) {
   // This button is only there for visual purposes
   return (
-    <Button className="compStyling">
+    <Button className="compStyling" onClick={props.onClick}>
       <AiOutlineClose className="close" />
     </Button>
   );
