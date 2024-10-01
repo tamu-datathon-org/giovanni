@@ -1,15 +1,13 @@
-import Image from "next/image";
-import { AiOutlineClose } from "react-icons/ai";
-
-import { Button } from "@vanni/ui/button";
-
-import { LoginButton } from "../_components/auth/login_button";
-
 import "../_components/customCss.scss";
+
+import { AiOutlineClose } from "react-icons/ai";
+import { Button } from "@vanni/ui/button";
+import Image from "next/image";
+import { LoginButton } from "../_components/auth/login_button";
 
 export const runtime = "edge";
 
-export default function LoginPage() {
+export default function LoginPage(props: {searchParams: { callbackUrl: string | undefined}}) {
   return (
     <main className="font-XPfont bg-large-device flex h-screen w-screen items-center justify-center bg-cover bg-center bg-no-repeat">
       <div className="xpBorder flex max-w-full flex-col items-center justify-center">
@@ -47,14 +45,17 @@ export default function LoginPage() {
               <LoginButton
                 connectionId="github"
                 buttonText="Sign in with GitHub"
+                callbackUrl={props.searchParams?.callbackUrl ?? ""}
               />
               <LoginButton
                 connectionId="google-oauth2"
                 buttonText="Sign in with Google"
+                callbackUrl={props.searchParams?.callbackUrl ?? ""}
               />
               <LoginButton
                 connectionId="windowslive"
                 buttonText="Sign in with Microsoft"
+                callbackUrl={props.searchParams?.callbackUrl ?? ""}
               />
             </form>
           </div>

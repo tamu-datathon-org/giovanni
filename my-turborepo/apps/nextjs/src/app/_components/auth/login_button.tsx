@@ -1,24 +1,35 @@
-import { signIn } from "@vanni/auth";
 import { Button } from "@vanni/ui/button";
+import { redirect } from "next/navigation";
+import { signIn } from "@vanni/auth";
 
 export function LoginButton({
   connectionId,
-  redirectUri,
+  callbackUrl,
   buttonText,
 }: {
   connectionId: string;
-  redirectUri?: string;
+  callbackUrl?: string;
   buttonText: string;
 }) {
   return (
     <Button
       className="compStyling2 border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black"
       size="lg"
-      formAction={async () => {
+      formAction={async (formData) => {
         "use server";
-        await signIn("auth0", redirectUri ? { redirectTo: redirectUri } : {}, {
-          connection: connectionId,
-        });
+        try {
+
+          await signIn("auth0", {
+            redirectTo: callbackUrl ?? "",
+          }, {
+            connection: connectionId,
+          });
+        } catch (error) {
+          if (error instanceof AuthError) {
+            return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`)
+          }
+          throw error
+        }
       }}
     >
       {buttonText}
