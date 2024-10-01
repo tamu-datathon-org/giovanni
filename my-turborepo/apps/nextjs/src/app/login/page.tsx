@@ -45,17 +45,17 @@ export default function LoginPage(props: {searchParams: { callbackUrl: string | 
               <LoginButton
                 connectionId="github"
                 buttonText="Sign in with GitHub"
-                callbackUrl={props.searchParams?.callbackUrl ?? ""}
+                searchParams={props.searchParams}
               />
               <LoginButton
                 connectionId="google-oauth2"
                 buttonText="Sign in with Google"
-                callbackUrl={props.searchParams?.callbackUrl ?? ""}
+                searchParams={props.searchParams}
               />
               <LoginButton
                 connectionId="windowslive"
                 buttonText="Sign in with Microsoft"
-                callbackUrl={props.searchParams?.callbackUrl ?? ""}
+                searchParams={props.searchParams}
               />
             </form>
           </div>

@@ -4,11 +4,11 @@ import { signIn } from "@vanni/auth";
 
 export function LoginButton({
   connectionId,
-  callbackUrl,
+  searchParams,
   buttonText,
 }: {
   connectionId: string;
-  callbackUrl?: string;
+  searchParams?: { callbackUrl: string | undefined};
   buttonText: string;
 }) {
   return (
@@ -20,7 +20,7 @@ export function LoginButton({
         try {
 
           await signIn("auth0", {
-            redirectTo: callbackUrl ?? "",
+            redirectTo: searchParams?.callbackUrl ?? "",
           }, {
             connection: connectionId,
           });
