@@ -109,7 +109,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                 >
                   {field.value
                     ? options.find((option) => option.value === field.value)
-                        ?.label
+                      ?.label
                     : "Select ..."}
                   <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>

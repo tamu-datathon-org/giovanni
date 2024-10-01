@@ -7,9 +7,14 @@ import { CreateApplicationSchema } from "@vanni/db/schema";
 export const applicationSchema = CreateApplicationSchema.merge(
   z.object({
     resumeFile: z.instanceof(File).nullish(),
-    liabilityWaiver: z
+    mlhCodeConduct: z
       .boolean()
-      .refine((value) => value, "Please accept the liability waiver"),
+      .refine((value) => value, "Please accept the code of conduct"),
+    mlhPrivacyPolicy: z
+      .boolean()
+      .refine((value) => value, "Please accept the privacy policy"),
+    mlhEmailConsent: z
+      .boolean(),
     gradYear: z.string().min(1, "Please select a graduation year"),
   }),
 );
