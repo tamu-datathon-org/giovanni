@@ -78,6 +78,12 @@ const Loading = () => {
     return <div>Hello! Loading...</div>;
 };
 
+export function Asterisk() {
+    return (
+        <span className="text-red-500">*</span>
+    )
+}
+
 export function ApplicationForm() {
     const { data: importedValues, isLoading } =
         api.application.getApplicationByEventName.useQuery(
@@ -232,7 +238,7 @@ export function ApplicationForm() {
                     </h1>
                     <div className="pb-4 text-center text-xl text-gray-500">
                         Please complete the following sections. Filling out this form should
-                        take about 10-15 minutes. All fields are required unless otherwise specified.
+                        take about 10-15 minutes.
                     </div>
 
                     <div className="flex w-full flex-row">
@@ -244,7 +250,7 @@ export function ApplicationForm() {
                                 defaultValue={importedValues?.app.firstName}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-xl">First Name</FormLabel>
+                                        <FormLabel className="text-xl">First Name<Asterisk/></FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="John"
@@ -265,7 +271,7 @@ export function ApplicationForm() {
                                 defaultValue={importedValues?.app.lastName}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-xl">Last Name</FormLabel>
+                                        <FormLabel className="text-xl">Last Name<Asterisk/></FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="Doe"
@@ -287,7 +293,7 @@ export function ApplicationForm() {
                             defaultValue={importedValues?.app.email}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-xl">Email:</FormLabel>
+                                    <FormLabel className="text-xl">Primary Email<Asterisk/></FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="abc123@gmail.com"
@@ -308,7 +314,7 @@ export function ApplicationForm() {
                             defaultValue={importedValues?.app.phoneNumber}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-xl">Phone Number</FormLabel>
+                                    <FormLabel className="text-xl">Phone Number<Asterisk/></FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="1234567890"
@@ -330,6 +336,7 @@ export function ApplicationForm() {
                             defaultOption={AGE.find(
                                 (option) => option.value === importedValues?.app.age,
                             )}
+                            required={true}
                         />
                     </div>
 
@@ -342,6 +349,7 @@ export function ApplicationForm() {
                             defaultOption={COUNTRIES.find(
                                 (option) => option.value === importedValues?.app.country,
                             )}
+                            required={true}
                         />
                     </div>
 
@@ -354,6 +362,7 @@ export function ApplicationForm() {
                             defaultOption={GENDER_OPTIONS.find(
                                 (option) => option.value === importedValues?.app.gender,
                             )}
+                            required={true}
                         />
                     </div>
 
@@ -366,6 +375,7 @@ export function ApplicationForm() {
                             defaultOption={RACE_OPTIONS.find(
                                 (option) => option.value === importedValues?.app.race,
                             )}
+                            required={true}
                         />
                     </div>
 
@@ -379,6 +389,7 @@ export function ApplicationForm() {
                                 (option) => option.value === importedValues?.app.school,
                             )}
                             filter
+                            required={true}
                         />
                     </div>
 
@@ -391,6 +402,7 @@ export function ApplicationForm() {
                             defaultOption={MAJOR.find(
                                 (option) => option.value === importedValues?.app.major,
                             )}
+                            required={true}
                         />
                     </div>
 
@@ -403,6 +415,7 @@ export function ApplicationForm() {
                             defaultOption={EDUCATION_LEVELS.find(
                                 (option) => option.value === importedValues?.app.classification,
                             )}
+                            required={true}
                         />
                     </div>
 
@@ -415,6 +428,7 @@ export function ApplicationForm() {
                             defaultOption={GRADUATION_YEARS.find(
                                 (option) => Number(option.value) === importedValues?.app.gradYear,
                             )}
+                            required={true}
                         />
                     </div>
 
@@ -430,6 +444,7 @@ export function ApplicationForm() {
                                 (option) =>
                                     option.value === importedValues?.app.hackathonsAttended,
                             )}
+                            required={true}
                         />
                     </div>
 
@@ -442,6 +457,7 @@ export function ApplicationForm() {
                             defaultOption={PROGRAMMING_SKILL_LEVELS.find(
                                 (option) => option.value === importedValues?.app.experience,
                             )}
+                            required={true}
                         />
                     </div>
 
@@ -465,6 +481,7 @@ export function ApplicationForm() {
                                     }
                                     : undefined
                             }
+                            required={true}
                         />
                     </div>
 
@@ -477,6 +494,7 @@ export function ApplicationForm() {
                             defaultOption={HEARD_ABOUT_OPTIONS.find(
                                 (option) => option.value === importedValues?.app.eventSource,
                             )}
+                            required={true}
                         />
                     </div>
 
@@ -489,6 +507,7 @@ export function ApplicationForm() {
                             defaultOption={SHIRT_SIZES.find(
                                 (option) => option.value === importedValues?.app.shirtSize,
                             )}
+                            required={true}
                         />
                     </div>
 
@@ -500,11 +519,11 @@ export function ApplicationForm() {
                             render={({ field: { value, onChange, ...fieldProps } }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
-                                        <span className="text-gray-500">
+                                        {/* <span className="text-gray-500">
                                         (Optional)
                                             {" "}
-                                            </span>
-                                            Upload Resume (PDF Only):
+                                            </span> */}
+                                            Upload Resume<Asterisk/> (PDF Only):
                                             <br />
                                         Current Resume:{" "}
                                         <span className="text-cyan-700">
@@ -540,7 +559,7 @@ export function ApplicationForm() {
                             defaultValue={importedValues?.app.address}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-xl">Address:</FormLabel>
+                                    <FormLabel className="text-xl">Address<Asterisk/></FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="308 Negra Arroyo Lane, Albuquerque, New Mexico 87104"
@@ -564,7 +583,7 @@ export function ApplicationForm() {
                                 <FormItem>
                                     <FormLabel className="text-xl">
                                         Point us to anything you'd like us to look at while
-                                        considering your application:
+                                        considering your application.<Asterisk/>
                                     </FormLabel>
                                     <FormControl>
                                         <Input {...field} />
@@ -584,7 +603,7 @@ export function ApplicationForm() {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
-                                        Tell us your best programming joke.
+                                        Tell us your best programming joke.<Asterisk/>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
@@ -607,7 +626,7 @@ export function ApplicationForm() {
                                 <FormItem>
                                     <FormLabel className="text-xl">
                                         What is the one thing you'd build if you had unlimited
-                                        resources?
+                                        resources?<Asterisk/>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
@@ -630,7 +649,7 @@ export function ApplicationForm() {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
-                                        What drives your interest in being a part of TAMU Datathon?
+                                        What drives your interest in being a part of TAMU Datathon?<Asterisk/>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
@@ -702,7 +721,7 @@ export function ApplicationForm() {
                                 <FormItem>
                                     <FormLabel className="text-xl pr-2">
                                         I have read and agree to the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md">MLH Code of Conduct</a>:
-                                    </FormLabel>
+                                        <Asterisk/></FormLabel>
                                     <FormControl>
                                         <Checkbox
                                             checked={field.value}
@@ -726,7 +745,7 @@ export function ApplicationForm() {
                                         ranking, and MLH administration in-line with the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md">MLH Privacy Policy</a>.
                                         I further agree to the terms of both the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md">MLH Contest Terms and Conditions</a>
                                         and the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md">MLH Privacy Policy</a>:
-                                    </FormLabel>
+                                        <Asterisk/></FormLabel>
                                     <FormControl>
                                         <Checkbox
                                             checked={field.value}
