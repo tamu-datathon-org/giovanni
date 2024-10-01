@@ -2,28 +2,6 @@
 
 import "./customCss.scss";
 
-import type { SubmitHandler } from "react-hook-form";
-import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { TRPCClientError } from "@trpc/client";
-import { upload } from "@vercel/blob/client";
-import { useForm } from "react-hook-form";
-
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@vanni/ui/form";
-
-import type { ApplicationSchema } from "../apply/validation";
-import { Button } from "~/components/ui/button";
-import { Checkbox } from "~/components/ui/checkbox";
-import { Input } from "~/components/ui/input";
-import { toast } from "~/hooks/use-toast";
 import {
     AGE,
     COUNTRIES,
@@ -37,9 +15,33 @@ import {
     RACE_OPTIONS,
     SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@vanni/ui/form";
+
+import type { ApplicationSchema } from "../apply/validation";
+import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
+import GenericCombobox from "./genericCombobox";
+import { Input } from "~/components/ui/input";
+import React from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import type { SubmitHandler } from "react-hook-form";
+import { TRPCClientError } from "@trpc/client";
+import Title from "./title";
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
 import schools from "./application-data/schools.json";
+import schoolsJson from "./application-data/schools.json";
+import { toast } from "~/hooks/use-toast";
+import { upload } from "@vercel/blob/client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // Map schools to DropdownOption type
 const SCHOOL_OPTIONS = schools.map((school) => ({
@@ -47,9 +49,6 @@ const SCHOOL_OPTIONS = schools.map((school) => ({
     label: school.schoolName,
 }));
 
-import schoolsJson from "./application-data/schools.json";
-import GenericCombobox from "./genericCombobox";
-import Title from "./title";
 
 /*
     First Name
@@ -76,7 +75,7 @@ import Title from "./title";
 */
 
 const Loading = () => {
-    return <div>Hello, Loading</div>;
+    return <div>Hello! Loading...</div>;
 };
 
 export function ApplicationForm() {
@@ -233,7 +232,7 @@ export function ApplicationForm() {
                     </h1>
                     <div className="pb-4 text-center text-xl text-gray-500">
                         Please complete the following sections. Filling out this form should
-                        take about 10-15 minutes.
+                        take about 10-15 minutes. All fields are required unless otherwise specified.
                     </div>
 
                     <div className="flex w-full flex-row">
@@ -501,9 +500,16 @@ export function ApplicationForm() {
                             render={({ field: { value, onChange, ...fieldProps } }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
+                                        <span className="text-gray-500">
+                                        (Optional)
+                                            {" "}
+                                            </span>
+                                            Upload Resume (PDF Only):
+                                            <br />
                                         Current Resume:{" "}
-                                        {importedValues?.resume.resumeName || "None"} <br />
-                                        Upload Resume (PDF only):
+                                        <span className="text-cyan-700">
+                                            {importedValues?.resume.resumeName || "None"} 
+                                            </span>
                                     </FormLabel>
                                     <FormControl className="hover:cursor-pointer">
                                         <Input
@@ -740,7 +746,11 @@ export function ApplicationForm() {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl pr-2">
-                                        (Optional) I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements:
+                                    <span className="text-gray-500">
+                                        (Optional)
+                                            {" "}
+                                            </span>
+                                            I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements:
                                     </FormLabel>
                                     <FormControl>
                                         <Checkbox
