@@ -9,7 +9,7 @@ export default async function ApplyLayout({
 
   if (!session) {
     "use server";
-    await signIn();
+    await signIn(undefined, {redirectTo: "/apply"});
   }
 
   console.log("hello");
