@@ -1,3 +1,21 @@
+import type { ElementRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
+import { useFormContext } from "react-hook-form";
+import { AiOutlineCheck } from "react-icons/ai";
+import { BsChevronExpand } from "react-icons/bs";
+
+import { cn } from "@vanni/ui";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@vanni/ui/form";
+
+import type { ApplicationSchema } from "~/app/apply/validation";
+import { Button } from "~/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -6,29 +24,13 @@ import {
   CommandItem,
   CommandList,
 } from "~/components/ui/command";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@vanni/ui/form";
+import useDebounce from "~/components/ui/debounce";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import React, { useMemo, useRef, useState } from "react";
-
-import { AiOutlineCheck } from "react-icons/ai";
-import type { ApplicationSchema } from "~/app/apply/validation";
 import { Asterisk } from "./application-form";
-import { BsChevronExpand } from "react-icons/bs";
-import { Button } from "~/components/ui/button";
-import type { ElementRef } from "react";
-import { cn } from "@vanni/ui";
-import useDebounce from "~/components/ui/debounce";
-import { useFormContext } from "react-hook-form";
 
 interface DropdownOption {
   value: string;
@@ -99,7 +101,10 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
       defaultValue={defaultOption?.value}
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel className="text-xl">{label}{required ? <Asterisk/> : ""}</FormLabel>
+          <FormLabel className="text-xl">
+            {label}
+            {required ? <Asterisk /> : ""}
+          </FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -110,7 +115,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                 >
                   {field.value
                     ? options.find((option) => option.value === field.value)
-                      ?.label
+                        ?.label
                     : "Select ..."}
                   <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -147,7 +152,9 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                               : "opacity-0",
                           )}
                         />
-                        {option.label}
+                        <PopoverPrimitive.Close>
+                          {option.label}
+                        </PopoverPrimitive.Close>
                       </CommandItem>
                     ))}
                   </CommandGroup>
