@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   integer,
   pgTable,
   primaryKey,
@@ -218,6 +219,7 @@ export const Application = pgTable("application", {
   interestThree: varchar("interest_three", { length: 500 }).notNull(),
   dietaryRestriction: varchar("dietary_restriction", { length: 255 }),
   extraInfo: varchar("extra_info", { length: 255 }),
+  mlhEmailConsent: boolean("mlh_email_consent").notNull().default(false),
 });
 
 export const UserResume = pgTable("user_resume", {
@@ -324,6 +326,7 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .max(255, "Extra Info is too long")
     .optional()
     .nullable(),
+  mlhEmailConsent: z.boolean(),
 }).omit({
   id: true,
   userId: true,
