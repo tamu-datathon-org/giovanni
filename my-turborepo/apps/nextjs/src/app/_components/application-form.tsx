@@ -29,7 +29,7 @@ import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import GenericCombobox from "./genericCombobox";
 import { Input } from "~/components/ui/input";
-import React from "react";
+import React, { useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import type { SubmitHandler } from "react-hook-form";
 import { TRPCClientError } from "@trpc/client";
@@ -85,6 +85,8 @@ export function Asterisk() {
 }
 
 export function ApplicationForm() {
+    const [disableSubmit, setDisableSubmit] = useState(false);
+
     const { data: importedValues, isLoading } =
         api.application.getApplicationByEventName.useQuery(
             { eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" },
@@ -166,8 +168,13 @@ export function ApplicationForm() {
                     toast({
                         variant: "success",
                         title: "Application submitted successfully!",
-                        description: "Your application has been received.",
+                        description: "Your application has been received. Reloading page...",
                     });
+
+                    setDisableSubmit(true);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 5000);
                 },
                 onError: (error) => {
                     if (error instanceof TRPCClientError) {
@@ -180,7 +187,6 @@ export function ApplicationForm() {
                 },
             });
         } else {
-            console.log(blob_name, blob_url)
             const updateApplicationData = {
                 id: importedValues.app.id,
                 userId: importedValues.app.userId,
@@ -785,7 +791,7 @@ export function ApplicationForm() {
                     {/* Submit */}
                     <div className="pt-4 text-4xl">
                         {!form.formState.isSubmitting && (
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit" disabled={disableSubmit}>Submit</Button>
                         )}
                         {form.formState.isSubmitting && (
                             <Button type="submit" disabled>
