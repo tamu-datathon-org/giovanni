@@ -523,7 +523,9 @@ export function ApplicationForm() {
                                         Upload Resume (PDF Only):
                                         <br />
                                         Current Resume:{" "}
-                                        {importedValues?.resume?.resumeName || "None"}
+                                        <span className="text-cyan-700">
+                                            {importedValues?.resume?.resumeName || "None"}
+                                        </span>
                                     </FormLabel>
                                     <FormControl className="hover:cursor-pointer">
                                         <Input
