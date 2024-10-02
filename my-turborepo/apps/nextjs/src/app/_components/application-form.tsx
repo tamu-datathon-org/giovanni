@@ -1,5 +1,3 @@
-"use client";
-
 import "./customCss.scss";
 
 import {
@@ -49,6 +47,10 @@ const SCHOOL_OPTIONS = schools.map((school) => ({
     label: school.schoolName,
 }));
 
+import schoolsJson from "./application-data/schools.json";
+import GenericCombobox from "./genericCombobox";
+import Title from "./title";
+import LoadingAnimation from "./loadingAnimation";
 
 /*
     First Name
@@ -75,7 +77,7 @@ const SCHOOL_OPTIONS = schools.map((school) => ({
 */
 
 const Loading = () => {
-    return <div>Hello! Loading...</div>;
+    return <LoadingAnimation />;
 };
 
 export function Asterisk() {
@@ -169,7 +171,7 @@ export function ApplicationForm() {
                         description: "Your application has been received.",
                     });
                 },
-                onError: (error) => {
+                onError: (error: { message: any; }) => {
                     if (error instanceof TRPCClientError) {
                         toast({
                             variant: "destructive",
@@ -226,7 +228,7 @@ export function ApplicationForm() {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="rounded-lg bg-white p-5 lg:px-16 overflow-x-hidden"
+                    className="rounded-lg bg-slate-50 p-5 lg:px-16 overflow-x-hidden"
                 >
                     <h1 className="p-10 pb-3 text-center lg:text-6xl font-bold text-5xl">
                         <span className="odd:text-teal-400">H</span>
@@ -253,6 +255,7 @@ export function ApplicationForm() {
                                         <FormLabel className="text-xl">First Name<Asterisk/></FormLabel>
                                         <FormControl>
                                             <Input
+                                                className="bg-white"
                                                 placeholder="John"
                                                 {...field}
                                             />
@@ -274,6 +277,7 @@ export function ApplicationForm() {
                                         <FormLabel className="text-xl">Last Name<Asterisk/></FormLabel>
                                         <FormControl>
                                             <Input
+                                                className="bg-white"
                                                 placeholder="Doe"
                                                 {...field}
                                             />
@@ -296,6 +300,7 @@ export function ApplicationForm() {
                                     <FormLabel className="text-xl">Primary Email<Asterisk/></FormLabel>
                                     <FormControl>
                                         <Input
+                                            className="bg-white"
                                             placeholder="abc123@gmail.com"
                                             {...field}
                                         />
@@ -317,6 +322,7 @@ export function ApplicationForm() {
                                     <FormLabel className="text-xl">Phone Number<Asterisk/></FormLabel>
                                     <FormControl>
                                         <Input
+                                            className="bg-white"
                                             placeholder="1234567890"
                                             {...field}
                                         />
@@ -586,7 +592,9 @@ export function ApplicationForm() {
                                         considering your application.<Asterisk/>
                                     </FormLabel>
                                     <FormControl>
-                                        <Input {...field} />
+
+                                        <Input {...field} className="bg-white"
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -607,6 +615,7 @@ export function ApplicationForm() {
                                     </FormLabel>
                                     <FormControl>
                                         <Input
+                                            className="bg-white"
                                             placeholder="Is your code running? Well, you better go catch it."
                                             {...field}
                                         />
@@ -630,6 +639,7 @@ export function ApplicationForm() {
                                     </FormLabel>
                                     <FormControl>
                                         <Input
+                                            className="bg-white"
                                             placeholder="More resources."
                                             {...field}
                                         />
@@ -653,6 +663,7 @@ export function ApplicationForm() {
                                     </FormLabel>
                                     <FormControl>
                                         <Input
+                                            className="bg-white"
                                             placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
                                             {...field}
                                         />
@@ -678,6 +689,7 @@ export function ApplicationForm() {
                                     </FormLabel>
                                     <FormControl>
                                         <Input
+                                            className="bg-white"
                                             placeholder="Rock only diet."
                                             {...field}
                                         />
@@ -701,6 +713,7 @@ export function ApplicationForm() {
                                     </FormLabel>
                                     <FormControl>
                                         <Input
+                                            className="bg-white"
                                             placeholder="I love drywall!"
                                             {...field}
                                         />
