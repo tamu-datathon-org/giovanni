@@ -145,7 +145,7 @@ export function ApplicationForm() {
         //     return;
         // }
 
-        if (!importedValues) {
+        if (!importedValues?.app) {
             const createApplicationData = {
                 eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
                 resumeUrl: blob_url ?? "",
@@ -243,7 +243,7 @@ export function ApplicationForm() {
                             <FormField
                                 control={form.control}
                                 name="firstName"
-                                defaultValue={importedValues?.app.firstName}
+                                defaultValue={importedValues?.app?.firstName}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-xl">First Name</FormLabel>
@@ -264,7 +264,7 @@ export function ApplicationForm() {
                             <FormField
                                 control={form.control}
                                 name="lastName"
-                                defaultValue={importedValues?.app.lastName}
+                                defaultValue={importedValues?.app?.lastName}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-xl">Last Name</FormLabel>
@@ -286,7 +286,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="email"
-                            defaultValue={importedValues?.app.email}
+                            defaultValue={importedValues?.app?.email}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">Email:</FormLabel>
@@ -307,7 +307,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="phoneNumber"
-                            defaultValue={importedValues?.app.phoneNumber}
+                            defaultValue={importedValues?.app?.phoneNumber}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">Phone Number</FormLabel>
@@ -330,7 +330,7 @@ export function ApplicationForm() {
                             label={"Age"}
                             options={AGE}
                             defaultOption={AGE.find(
-                                (option) => option.value === importedValues?.app.age,
+                                (option) => option.value === importedValues?.app?.age,
                             )}
                         />
                     </div>
@@ -339,10 +339,10 @@ export function ApplicationForm() {
                     <div className="pt-4">
                         <GenericCombobox
                             name={"country"}
-                            label={"Country of Residence"}
+                            label={"Country of Residence?"}
                             options={COUNTRIES}
                             defaultOption={COUNTRIES.find(
-                                (option) => option.value === importedValues?.app.country,
+                                (option) => option.value === importedValues?.app?.country,
                             )}
                         />
                     </div>
@@ -351,10 +351,10 @@ export function ApplicationForm() {
                     <div className="pt-4">
                         <GenericCombobox
                             name={"gender"}
-                            label={"Gender"}
+                            label={"Gender?"}
                             options={GENDER_OPTIONS}
                             defaultOption={GENDER_OPTIONS.find(
-                                (option) => option.value === importedValues?.app.gender,
+                                (option) => option.value === importedValues?.app?.gender,
                             )}
                         />
                     </div>
@@ -366,7 +366,7 @@ export function ApplicationForm() {
                             label={"What ethnicity do you identify with?"}
                             options={RACE_OPTIONS}
                             defaultOption={RACE_OPTIONS.find(
-                                (option) => option.value === importedValues?.app.race,
+                                (option) => option.value === importedValues?.app?.race,
                             )}
                         />
                     </div>
@@ -378,7 +378,7 @@ export function ApplicationForm() {
                             label={"What school do you go to?"}
                             options={SCHOOL_OPTIONS}
                             defaultOption={SCHOOL_OPTIONS.find(
-                                (option) => option.value === importedValues?.app.school,
+                                (option) => option.value === importedValues?.app?.school,
                             )}
                             filter
                         />
@@ -391,7 +391,7 @@ export function ApplicationForm() {
                             label={"What's your major?"}
                             options={MAJOR}
                             defaultOption={MAJOR.find(
-                                (option) => option.value === importedValues?.app.major,
+                                (option) => option.value === importedValues?.app?.major,
                             )}
                         />
                     </div>
@@ -403,7 +403,7 @@ export function ApplicationForm() {
                             label={"What classification are you?"}
                             options={EDUCATION_LEVELS}
                             defaultOption={EDUCATION_LEVELS.find(
-                                (option) => option.value === importedValues?.app.classification,
+                                (option) => option.value === importedValues?.app?.classification,
                             )}
                         />
                     </div>
@@ -415,7 +415,7 @@ export function ApplicationForm() {
                             label={"What is your anticipated graduation year?"}
                             options={GRADUATION_YEARS}
                             defaultOption={GRADUATION_YEARS.find(
-                                (option) => Number(option.value) === importedValues?.app.gradYear,
+                                (option) => Number(option.value) === importedValues?.app?.gradYear,
                             )}
                         />
                     </div>
@@ -430,7 +430,7 @@ export function ApplicationForm() {
                             options={HACKATHON_EXPERIENCE}
                             defaultOption={HACKATHON_EXPERIENCE.find(
                                 (option) =>
-                                    option.value === importedValues?.app.hackathonsAttended,
+                                    option.value === importedValues?.app?.hackathonsAttended,
                             )}
                         />
                     </div>
@@ -442,7 +442,7 @@ export function ApplicationForm() {
                             label={"What is your experience level in Data Science?"}
                             options={PROGRAMMING_SKILL_LEVELS}
                             defaultOption={PROGRAMMING_SKILL_LEVELS.find(
-                                (option) => option.value === importedValues?.app.experience,
+                                (option) => option.value === importedValues?.app?.experience,
                             )}
                         />
                     </div>
@@ -460,7 +460,7 @@ export function ApplicationForm() {
                                 },
                             ]}
                             defaultOption={
-                                importedValues?.app.hasTeam
+                                importedValues?.app?.hasTeam
                                     ? {
                                         value: importedValues.app.hasTeam,
                                         label: importedValues.app.hasTeam,
@@ -477,7 +477,7 @@ export function ApplicationForm() {
                             label={"How did you hear about TAMU Datathon?"}
                             options={HEARD_ABOUT_OPTIONS}
                             defaultOption={HEARD_ABOUT_OPTIONS.find(
-                                (option) => option.value === importedValues?.app.eventSource,
+                                (option) => option.value === importedValues?.app?.eventSource,
                             )}
                         />
                     </div>
@@ -489,7 +489,7 @@ export function ApplicationForm() {
                             label={"What's your shirt size?"}
                             options={SHIRT_SIZES}
                             defaultOption={SHIRT_SIZES.find(
-                                (option) => option.value === importedValues?.app.shirtSize,
+                                (option) => option.value === importedValues?.app?.shirtSize,
                             )}
                         />
                     </div>
@@ -532,7 +532,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="address"
-                            defaultValue={importedValues?.app.address}
+                            defaultValue={importedValues?.app?.address}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">Address:</FormLabel>
@@ -554,7 +554,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="references"
-                            defaultValue={importedValues?.app.references}
+                            defaultValue={importedValues?.app?.references}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
@@ -574,7 +574,7 @@ export function ApplicationForm() {
                     <div className="pt-4">
                         <FormField
                             control={form.control}
-                            defaultValue={importedValues?.app.interestOne}
+                            defaultValue={importedValues?.app?.interestOne}
                             name="interestOne"
                             render={({ field }) => (
                                 <FormItem>
@@ -597,7 +597,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="interestTwo"
-                            defaultValue={importedValues?.app.interestOne}
+                            defaultValue={importedValues?.app?.interestOne}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
@@ -621,7 +621,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="interestThree"
-                            defaultValue={importedValues?.app.interestOne}
+                            defaultValue={importedValues?.app?.interestOne}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
@@ -644,7 +644,7 @@ export function ApplicationForm() {
                             control={form.control}
                             name="dietaryRestriction"
                             defaultValue={
-                                importedValues?.app.dietaryRestriction ?? ""
+                                importedValues?.app?.dietaryRestriction ?? ""
                             }
                             render={({ field }) => (
                                 <FormItem>
@@ -656,6 +656,7 @@ export function ApplicationForm() {
                                         <Input
                                             placeholder="Rock only diet."
                                             {...field}
+                                            value={field.value ?? ""}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -669,7 +670,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="extraInfo"
-                            defaultValue={importedValues?.app.extraInfo ?? ""}
+                            defaultValue={importedValues?.app?.extraInfo ?? ""}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
@@ -679,6 +680,7 @@ export function ApplicationForm() {
                                         <Input
                                             placeholder="I love drywall!"
                                             {...field}
+                                            value={field.value ?? ""}
                                         />
                                     </FormControl>
                                     <FormMessage />
