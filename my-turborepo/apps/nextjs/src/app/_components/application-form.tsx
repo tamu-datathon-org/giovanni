@@ -251,7 +251,7 @@ export function ApplicationForm() {
                                 defaultValue={importedValues?.app?.firstName}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-xl">First Name<Asterisk/></FormLabel>
+                                        <FormLabel className="text-xl">First Name<Asterisk /></FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="John"
@@ -272,7 +272,7 @@ export function ApplicationForm() {
                                 defaultValue={importedValues?.app?.lastName}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-xl">Last Name<Asterisk/></FormLabel>
+                                        <FormLabel className="text-xl">Last Name<Asterisk /></FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="Doe"
@@ -294,7 +294,7 @@ export function ApplicationForm() {
                             defaultValue={importedValues?.app?.email}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-xl">Primary Email<Asterisk/></FormLabel>
+                                    <FormLabel className="text-xl">Primary Email<Asterisk /></FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="abc123@gmail.com"
@@ -315,7 +315,7 @@ export function ApplicationForm() {
                             defaultValue={importedValues?.app?.phoneNumber}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-xl">Phone Number<Asterisk/></FormLabel>
+                                    <FormLabel className="text-xl">Phone Number<Asterisk /></FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="1234567890"
@@ -520,15 +520,10 @@ export function ApplicationForm() {
                             render={({ field: { value, onChange, ...fieldProps } }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
-                                        {/* <span className="text-gray-500">
-                                        (Optional)
-                                            {" "}
-                                            </span> */}
-                                            Upload Resume<Asterisk/> (PDF Only):
-                                            <br />
+                                        Upload Resume (PDF Only):
+                                        <br />
                                         Current Resume:{" "}
-                                        {importedValues?.resume?.resumeName || "None"} <br />
-                                        Upload Resume (PDF only):
+                                        {importedValues?.resume?.resumeName || "None"}
                                     </FormLabel>
                                     <FormControl className="hover:cursor-pointer">
                                         <Input
@@ -559,7 +554,7 @@ export function ApplicationForm() {
                             defaultValue={importedValues?.app?.address}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-xl">Address<Asterisk/></FormLabel>
+                                    <FormLabel className="text-xl">Address<Asterisk /></FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="308 Negra Arroyo Lane, Albuquerque, New Mexico 87104"
@@ -583,7 +578,7 @@ export function ApplicationForm() {
                                 <FormItem>
                                     <FormLabel className="text-xl">
                                         Point us to anything you'd like us to look at while
-                                        considering your application.<Asterisk/>
+                                        considering your application.<Asterisk />
                                     </FormLabel>
                                     <FormControl>
                                         <Input {...field} />
@@ -603,7 +598,7 @@ export function ApplicationForm() {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
-                                        Tell us your best programming joke.<Asterisk/>
+                                        Tell us your best programming joke.<Asterisk />
                                     </FormLabel>
                                     <FormControl>
                                         <Input
@@ -626,7 +621,7 @@ export function ApplicationForm() {
                                 <FormItem>
                                     <FormLabel className="text-xl">
                                         What is the one thing you'd build if you had unlimited
-                                        resources?<Asterisk/>
+                                        resources?<Asterisk />
                                     </FormLabel>
                                     <FormControl>
                                         <Input
@@ -649,7 +644,7 @@ export function ApplicationForm() {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
-                                        What drives your interest in being a part of TAMU Datathon?<Asterisk/>
+                                        What drives your interest in being a part of TAMU Datathon?<Asterisk />
                                     </FormLabel>
                                     <FormControl>
                                         <Input
@@ -723,7 +718,7 @@ export function ApplicationForm() {
                                 <FormItem>
                                     <FormLabel className="text-xl pr-2">
                                         I have read and agree to the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md">MLH Code of Conduct</a>:
-                                        <Asterisk/></FormLabel>
+                                        <Asterisk /></FormLabel>
                                     <FormControl>
                                         <Checkbox
                                             checked={field.value}
@@ -747,7 +742,7 @@ export function ApplicationForm() {
                                         ranking, and MLH administration in-line with the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md">MLH Privacy Policy</a>.
                                         I further agree to the terms of both the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md">MLH Contest Terms and Conditions</a>
                                         and the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md">MLH Privacy Policy</a>:
-                                        <Asterisk/></FormLabel>
+                                        <Asterisk /></FormLabel>
                                     <FormControl>
                                         <Checkbox
                                             checked={field.value}
@@ -767,11 +762,11 @@ export function ApplicationForm() {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl pr-2">
-                                    <span className="text-gray-500">
-                                        (Optional)
+                                        <span className="text-gray-500">
+                                            (Optional)
                                             {" "}
-                                            </span>
-                                            I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements:
+                                        </span>
+                                        I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements:
                                     </FormLabel>
                                     <FormControl>
                                         <Checkbox
