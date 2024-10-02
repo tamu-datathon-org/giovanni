@@ -25,17 +25,14 @@ import {
 import type { ApplicationSchema } from "../apply/validation";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
-import GenericCombobox from "./genericCombobox";
 import { Input } from "~/components/ui/input";
 import React from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import type { SubmitHandler } from "react-hook-form";
 import { TRPCClientError } from "@trpc/client";
-import Title from "./title";
 import { api } from "~/trpc/react";
 import { applicationSchema } from "../apply/validation";
 import schools from "./application-data/schools.json";
-import schoolsJson from "./application-data/schools.json";
 import { toast } from "~/hooks/use-toast";
 import { upload } from "@vercel/blob/client";
 import { useForm } from "react-hook-form";
