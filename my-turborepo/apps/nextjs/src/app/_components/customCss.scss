@@ -16,6 +16,20 @@
   // }
 }
 
+body {
+  cursor: url("cursor.png"), auto;
+}
+
+a, button, input[type="submit"], input[type="button"], [role="button"] {
+  cursor: url("largercursor.png"), auto !important;
+}
+
+
+.clickable-box {
+  cursor: url("largercursor.png"), auto;
+  
+}
+
 .wrap {
   perspective-origin: 50% 50%;
 }
