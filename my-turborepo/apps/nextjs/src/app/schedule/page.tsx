@@ -378,7 +378,7 @@ const SchedulePage: React.FC = () => {
                     key={event.id}
                     className={`p-4 rounded-lg compStyling w-full border border-black ${
                       isPast ? 'bg-gray-400 text-white' : 'bg-[#f5f5f5] text-black'
-                    } hover:bg-[#e4e3e4] cursor-pointer`}
+                    } hover:bg-[#e4e3e4] clickable-box`}
                     onClick={() => setSelectedEvent(event)}
                   >
                     <h3 className="text-lg font-semibold">{event.name}</h3>
