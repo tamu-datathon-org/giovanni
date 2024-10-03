@@ -38,6 +38,8 @@ function LoginButton({
 export default function LoginPage() {
   return (
     <main className="flex font-XPfont bg-large-device h-screen w-screen items-center justify-center bg-cover bg-center bg-no-repeat">
+
+      <DraggableComponent></DraggableComponent>
       <div className="flex max-w-full flex-col xpBorder items-center justify-center">
         <div className="flex w-full flex-row items-center justify-center">
           <div className="w-full pr-2">
