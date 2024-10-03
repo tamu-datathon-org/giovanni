@@ -51,7 +51,7 @@ export function ExitButton(props:{onClick?: MouseEventHandler<HTMLButtonElement>
 
 export function TAMUy2k() {
   return (
-    <h1 className="p-10 pb-5 text-5xl md:text-6xl">
+    <h1 className="text-5xl md:text-6xl">
       <span className="odd:text-teal-400">T</span>
       <span className="even:text-cyan-700">A</span>
       <span className="odd:text-teal-400 ">M</span>
