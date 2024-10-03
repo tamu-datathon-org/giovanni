@@ -2,24 +2,19 @@
 
 import React from "react";
 import Draggable from "react-draggable";
+import WindowContainer from "~/app/_components/WindowContainer";
+import {ExitButton, Lines, TAMUy2k} from "~/app/_components/preregistration-form";
+import {toast} from "~/hooks/use-toast";
 
 const DraggableComponent: React.FC = () => {
   return (
-    <Draggable>
-      <div
-        style={{
-          width: 100,
-          height: 100,
-          backgroundColor: "skyblue",
-          textAlign: "center",
-          lineHeight: "100px",
-          borderRadius: "10px",
-          cursor: "move",
-        }}
-      >
-        Drag me
-      </div>
-    </Draggable>
+      <Draggable handle=".handle" bounds="parent">
+          <div className="handle">
+              <WindowContainer>
+                  hey
+              </WindowContainer>
+          </div>
+      </Draggable>
   );
 };
 

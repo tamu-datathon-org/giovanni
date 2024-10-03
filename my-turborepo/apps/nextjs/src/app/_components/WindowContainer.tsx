@@ -14,9 +14,9 @@ interface WindowContainerProps {
 
 const WindowContainer: React.FC<WindowContainerProps> = ({ children }) => {
   return (
-    <div className="font-XPfont w-full font-bold ">
-      <div className="flex h-screen flex-col items-center justify-center">
-        <div className="xpBorder m-5 flex w-11/12 flex-col items-center px-4 text-center text-lg lg:w-2/5">
+    <div className="font-XPfont font-bold ">
+      <div className="flex flex-col items-center justify-center">
+        <div className="xpBorder m-5 flex w-11/12 flex-col items-center px-4 text-center text-lg">
           {" "}
           {/* Added px-4 for horizontal padding */}
           <div className="flex w-full flex-row items-center justify-between">

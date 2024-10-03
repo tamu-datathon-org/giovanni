@@ -1,3 +1,5 @@
+import "./_components/customCss.scss";
+import DraggableComponent from "./_components/DraggableComponent";
 // import { Suspense } from "react";
 import { redirect } from "next/navigation";
 
@@ -11,8 +13,15 @@ import { redirect } from "next/navigation";
 export const runtime = "edge";
 
 export default function HomePage() {
-  redirect("/registration");
-  // You can await this here if you don't want to show Suspense fallback below
+  // redirect("/registration");
+  return(
+      <main
+          className="font-XPfont bg-large-device flex h-screen w-screen items-center justify-center bg-cover bg-center bg-no-repeat">
+          <DraggableComponent></DraggableComponent>
+      </main>
+  )
+
+    // You can await this here if you don't want to show Suspense fallback below
   // const posts = api.post.all();
   //
   // return (
