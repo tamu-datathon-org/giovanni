@@ -7,7 +7,9 @@ import {
   Application,
   CreateApplicationSchema,
   Event,
+  Role,
   UserResume,
+  UserRole,
 } from "@vanni/db/schema";
 
 import { protectedProcedure } from "../trpc";
@@ -40,8 +42,7 @@ export const applicationRouter = {
         where: eq(UserResume.userId, ctx.session.user.id),
       });
 
-      // No resume at all
-
+      // resume updates
       if (!resume) {
         await ctx.db.insert(UserResume).values({
           userId: ctx.session.user.id,
@@ -55,6 +56,25 @@ export const applicationRouter = {
           .where(eq(UserResume.userId, ctx.session.user.id));
         await del(resume.resumeUrl);
       }
+
+      // query for the role based on event
+      const role = await ctx.db.query.Role.findFirst({
+        where: and(eq(Role.eventId, event.id),
+          eq(Role.name, "Applicant")),
+      });
+
+      if (role == undefined) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Role query was not successful. Contact a datathon officer.",
+        });
+      }
+
+      // user roles insertion
+      await ctx.db.insert(UserRole).values({
+        userId: ctx.session.user.id,
+        roleId: role.id,
+      });
 
       return await ctx.db.insert(Application).values({
         ...applicationData,
