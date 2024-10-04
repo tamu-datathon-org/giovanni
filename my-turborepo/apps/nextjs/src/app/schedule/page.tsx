@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { AiOutlineClose } from "react-icons/ai";
 import "../_components/customCss.scss";
-
+import EventAlertPopup from './EventAlertPopup';
 
 
 interface Event {
@@ -199,53 +199,6 @@ interface EventAlertPopupProps {
   onClose: () => void;
   onOpenDescription: (event: Event) => void;
 }
-
-
-const EventAlertPopup: React.FC<EventAlertPopupProps> = ({ event, onClose, onOpenDescription }) => {
-  return (
-    <div 
-      className="fixed inset-0 flex justify-center items-center z-50"
-      onClick={onClose}
-    >
-      <div 
-        className="rounded-lg p-6 max-w-sm w-full m-4 relative"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* remember that this bear needs to be changed but only if idea is signed off on
-            could also have a noise pop up sound to alert user or add pop up to other pages
-        */}
-        <img 
-          src="/images/wipbear.png" 
-          style={{
-            width: '530px',
-            height: '180px',
-            right: '7px',
-            position: 'absolute',
-            objectFit: 'contain',
-          }}
-          onClick={() => onOpenDescription(event)}
-        />
-
-        {/* lower the size of the words */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <h2 className="text-xl font-bold mb-4">Event Starting!</h2>
-          <p className="mb-4">{event.name} is starting now!</p>
-        </div>
-
-        {/* This button prob gotta get changed maybe to the other button 
-            tbh the button isnt really needed either click on the bear or click away
-        */}
-        <Button 
-          onClick={onClose}
-          className="absolute top-2 right-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          <AiOutlineClose />
-        </Button>
-      </div>
-    </div>
-  );
-};
-
 
 const SchedulePage: React.FC = () => {
   const targetDate = new Date('2024-11-09T00:00:00');
