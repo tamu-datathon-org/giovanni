@@ -304,7 +304,7 @@ const SchedulePage: React.FC = () => {
           */}
   return (
     <div style={{
-      backgroundImage: 'url(/images/wallpapernoblur.png)',
+      backgroundImage: 'url(/images/datathon_plainbg.png)',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       fontFamily: 'windows95Font',
