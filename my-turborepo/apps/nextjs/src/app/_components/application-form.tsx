@@ -29,7 +29,7 @@ import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import GenericCombobox from "./genericCombobox";
 import { Input } from "~/components/ui/input";
-import React from "react";
+import React, { useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import type { SubmitHandler } from "react-hook-form";
 import { TRPCClientError } from "@trpc/client";
@@ -85,6 +85,11 @@ export function Asterisk() {
 }
 
 export function ApplicationForm() {
+    const [interestOneCount, setInterestOneCount] = useState(0);
+    const [interestTwoCount, setInterestTwoCount] = useState(0);
+    const [interestThreeCount, setInterestThreeCount] = useState(0);
+    const [dietaryRestrictionCount, setDietaryRestrictionCount] = useState(0);
+
     const { data: importedValues, isLoading } =
         api.application.getApplicationByEventName.useQuery(
             { eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" },
@@ -586,7 +591,7 @@ export function ApplicationForm() {
                                         considering your application.<Asterisk/>
                                     </FormLabel>
                                     <FormControl>
-                                        <Input {...field} />
+                                    <Input />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -609,9 +614,17 @@ export function ApplicationForm() {
                                         <Input
                                             placeholder="Is your code running? Well, you better go catch it."
                                             {...field}
+                                            maxLength={500}
+                                            onChange={(e) => {
+                                                field.onChange(e);
+                                                setInterestOneCount(e.target.value.length);
+                                            }}
                                         />
                                     </FormControl>
                                     <FormMessage />
+                                    <p className="text-sm text-gray-500 mt-1">
+                                    {interestOneCount}/500 characters
+                                    </p>
                                 </FormItem>
                             )}
                         />
@@ -632,9 +645,17 @@ export function ApplicationForm() {
                                         <Input
                                             placeholder="More resources."
                                             {...field}
+                                            maxLength={500}
+                                            onChange={(e) => {
+                                                field.onChange(e);
+                                                setInterestTwoCount(e.target.value.length);
+                                            }}
                                         />
                                     </FormControl>
                                     <FormMessage />
+                                    <p className="text-sm text-gray-500 mt-1">
+                                    {interestTwoCount}/500 characters
+                                    </p>
                                 </FormItem>
                             )}
                         />
@@ -655,9 +676,17 @@ export function ApplicationForm() {
                                         <Input
                                             placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
                                             {...field}
+                                            maxLength={500}
+                                            onChange={(e) => {
+                                                field.onChange(e);
+                                                setInterestThreeCount(e.target.value.length);
+                                            }}
                                         />
                                     </FormControl>
                                     <FormMessage />
+                                    <p className="text-sm text-gray-500 mt-1">
+                                    {interestThreeCount}/500 characters
+                                    </p>
                                 </FormItem>
                             )}
                         />
@@ -680,9 +709,17 @@ export function ApplicationForm() {
                                         <Input
                                             placeholder="Rock only diet."
                                             {...field}
+                                    maxLength={250}
+                                    onChange={(e) => {
+                                        field.onChange(e);
+                                        setDietaryRestrictionCount(e.target.value.length);
+                                    }}
                                         />
                                     </FormControl>
                                     <FormMessage />
+                                    <p className="text-sm text-gray-500 mt-1">
+                                    {dietaryRestrictionCount}/250 characters
+                                    </p>
                                 </FormItem>
                             )}
                         />
