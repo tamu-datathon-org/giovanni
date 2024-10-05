@@ -23,40 +23,32 @@ export default function HomePage() {
   return(
       <main
           className="font-XPfont bg-large-device flex h-screen w-screen items-center justify-center bg-cover bg-center bg-no-repeat">
-          <Draggable handle=".handle" bounds="parent" defaultPosition={{x: -300, y: -50}}>
-              <div className="handle">
-                  <WindowContainer>
-                      <div className="text-2xl text-cyan-700 pb-2">
-                          <span>
-                              FAQ
-                          </span>
-                      </div>
-                  </WindowContainer>
+          <DraggableComponent xPos={50} yPos={0}>
+              <div className="text-2xl text-cyan-700 pb-2">
+                  <span>
+                      FAQ
+                  </span>
               </div>
-          </Draggable>
-          <Draggable handle=".handle" bounds="parent" defaultPosition={{x: -500, y: -300}}>
+          </DraggableComponent>
+          <DraggableComponent xPos={0} yPos={0}>
+            <div className="text-2xl text-cyan-700 pb-2">
+                <Image
+                    src="/Pixel_PolarBear.png"
+                    className=""
+                    width={200}
+                    height={200}
+                    alt="polar bear"
+                />
+            </div>
+          </DraggableComponent>
+
+          <DraggableComponent xPos={0} yPos={0}>
               <div className="handle">
-                  <WindowContainer>
-                      <div className="text-2xl text-cyan-700 pb-2">
-                          <Image
-                              src="/Pixel_PolarBear.png"
-                              className=""
-                              width={200}
-                              height={200}
-                              alt="polar bear"
-                          />
-                      </div>
-                  </WindowContainer>
+                  <div className="text-2xl text-cyan-700 pb-2">WELCOME TO</div>
+                  <TAMUy2k/>
               </div>
-          </Draggable>
-          <Draggable handle=".handle" bounds="parent" defaultPosition={{x: 0, y: 0}}>
-              <div className="handle">
-                  <WindowContainer>
-                      <div className="text-2xl text-cyan-700 pb-2">WELCOME TO</div>
-                      <TAMUy2k/>
-                  </WindowContainer>
-              </div>
-          </Draggable>
+          </DraggableComponent>
+
       </main>
   )
 
