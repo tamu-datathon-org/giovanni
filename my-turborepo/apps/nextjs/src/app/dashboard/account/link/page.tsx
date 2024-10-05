@@ -1,9 +1,9 @@
-import LoginButton from "~/app/_components/auth/login_button";
+import { LoginButton } from "~/app/_components/auth/login_button";
 
 export const runtime = "edge";
 
 function getLinkedAccounts() {
-  
+
 }
 
 export default function LoginPage() {
@@ -11,7 +11,7 @@ export default function LoginPage() {
     <main className="container h-screen py-16">
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-        Linked accounts:
+          Linked accounts:
         </h1>
 
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">

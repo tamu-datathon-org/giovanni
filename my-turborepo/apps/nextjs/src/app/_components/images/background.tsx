@@ -17,6 +17,7 @@ export default function BackgroundImage({
     alt: alt,
     fill: true,
     sizes: "100vw",
+
   };
 
   const {
