@@ -141,7 +141,7 @@ interface FAQItem {
             {faqItems.map((item) => (
               <div
                 key={item.id}
-                className="p-4 rounded-lg compStyling w-full border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] cursor-pointer"
+                className="p-4 rounded-lg compStyling w-full border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] clickable-box"
                 onClick={() => {
                   setSelectedItem(item);
                   setIsPopupOpen(true);
