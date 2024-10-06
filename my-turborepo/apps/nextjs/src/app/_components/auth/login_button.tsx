@@ -1,7 +1,8 @@
-import { AuthError } from "next-auth"
-import { Button } from "@vanni/ui/button";
 import { redirect } from "next/navigation";
+import { AuthError } from "next-auth";
+
 import { signIn } from "@vanni/auth";
+import { Button } from "@vanni/ui/button";
 
 export function LoginButton({
   connectionId,
@@ -9,7 +10,7 @@ export function LoginButton({
   buttonText,
 }: {
   connectionId: string;
-  searchParams?: { callbackUrl: string | undefined};
+  searchParams?: { callbackUrl: string | undefined };
   buttonText: string;
 }) {
   return (
@@ -19,17 +20,20 @@ export function LoginButton({
       formAction={async (formData) => {
         "use server";
         try {
-
-          await signIn("auth0", {
-            redirectTo: searchParams?.callbackUrl ?? "",
-          }, {
-            connection: connectionId,
-          });
+          await signIn(
+            "auth0",
+            {
+              redirectTo: searchParams?.callbackUrl ?? "",
+            },
+            {
+              connection: connectionId,
+            },
+          );
         } catch (error) {
           if (error instanceof AuthError) {
-            return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`)
+            return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
           }
-          throw error
+          throw error;
         }
       }}
     >

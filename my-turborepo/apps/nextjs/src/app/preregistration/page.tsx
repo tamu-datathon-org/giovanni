@@ -1,11 +1,12 @@
-import { CreatePreregistrationForm } from "../_components/preregistration-form";
 import { redirect } from "next/navigation";
+
+import { CreatePreregistrationForm } from "../_components/preregistration-form";
 
 // import IconList from "../_components/IconList"; // Import the 'IconList' component and its props type
 
 // `app/dashboard/page.tsx` is the UI for the `/dashboard` URL
 export default function Page() {
-  redirect("/")
+  redirect("/");
   return (
     <div className="lg:bg-large-device bg-mobile-device h-screen w-screen overflow-hidden bg-cover bg-center bg-no-repeat ">
       <div className="relative z-30">
