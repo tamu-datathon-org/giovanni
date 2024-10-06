@@ -5,12 +5,20 @@ import Draggable from "react-draggable";
 
 interface DraggableComponentProps {
   children: React.ReactNode;
+  className?: string;
+  onFocus: (arg0: string) => void;
+  name: string;
+  focus: string;
 }
 
-const DraggableComponent: React.FC<DraggableComponentProps> = ({ children }) => {
+
+const DraggableComponent: React.FC<DraggableComponentProps> = ({ children, onFocus, name, focus, className }) => {
   return (
-    <Draggable >
-      <div className="h-min-content w-min-content overflow-hidden cursor-move"
+    <Draggable onDrag={() => {
+      onFocus(name);
+      console.log(name, focus, name === focus);
+    }}>
+      < div className={`h-fit w-fit overflow-hidden cursor-move ${focus === name ? "z-50" : "z-10"} ${className}`}
       // style={{
       //   // width: 100,
       //   // height: 100,
@@ -23,8 +31,8 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({ children }) => 
       // }}
       >
         {children}
-      </div>
-    </Draggable>
+      </div >
+    </Draggable >
   );
 };
 

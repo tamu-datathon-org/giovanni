@@ -15,11 +15,10 @@ interface WindowContainerProps {
 }
 
 const WindowContainer: React.FC<WindowContainerProps> = ({ children, isOpen, openFunc }) => {
-  return (isOpen && (
-    <div className="font-XPfont w-full font-bold ">
+  return (
+    <div className={`font-XPfont w-fit font-bold ${isOpen ? "unhidden" : "hidden"}`}>
       <div className="flex flex-col items-center justify-center">
         <div className="xpBorder m-5 flex w-fit flex-col items-center px-4 text-center text-lg ">
-          {" "}
           {/* Added px-4 for horizontal padding */}
           <div className="flex w-full flex-row items-center justify-between">
             <Lines />
@@ -35,13 +34,12 @@ const WindowContainer: React.FC<WindowContainerProps> = ({ children, isOpen, ope
             }} />
           </div>
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
-            <TAMUy2k />
             <div>{children}</div>
           </div>
         </div>
       </div>
     </div>
-  ));
+  );
 };
 
 export default WindowContainer;
