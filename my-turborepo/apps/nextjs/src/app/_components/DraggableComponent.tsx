@@ -18,7 +18,7 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({ children, onFoc
       onFocus(name);
       console.log(name, focus, name === focus);
     }}>
-      < div className={`h-fit w-fit overflow-hidden cursor-move ${focus === name ? "z-50" : "z-10"} ${className}`}
+      < div className={`h-fit w-fit overflow-hidden cursor-move ${focus === name ? "z-40" : "z-10"} ${className}`}
       // style={{
       //   // width: 100,
       //   // height: 100,

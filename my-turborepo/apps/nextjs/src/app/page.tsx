@@ -58,7 +58,7 @@ export default function HomePage() {
             </DraggableComponent>
           </div>
 
-          <IconList welcFunc={setWelcomeOpen} applyFunc={setApplyOpen} className="absolute bottom-20 flex " />
+          <IconList welcFunc={setWelcomeOpen} applyFunc={setApplyOpen} className="absolute bottom-20 flex z-50" />
         </div>
       </div >
     </>
