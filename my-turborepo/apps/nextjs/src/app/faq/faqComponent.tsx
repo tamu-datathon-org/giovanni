@@ -1,6 +1,5 @@
 "use client";
 
-// testing the component
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
@@ -114,7 +113,7 @@ const faqItems: FAQItem[] = [
   },
 ];
 
-const SchedulePage: React.FC = () => {
+const faqComponent: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<FAQItem | null>(null);
   const [isMainWindowOpen, setIsMainWindowOpen] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -177,4 +176,4 @@ const SchedulePage: React.FC = () => {
   );
 };
 
-export default SchedulePage;
+export default faqComponent;
