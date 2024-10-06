@@ -1,12 +1,13 @@
 "use client";
 
-import { ExitButton, Lines, TAMUy2k, TitleText } from "./preregistration-form"; // Ensure these imports are correct
-
-import { Button } from "@vanni/ui/button";
-import Image from "next/image";
 // Ensure the component is treated as a client component
 import React from "react";
+import Image from "next/image";
+
+import { Button } from "@vanni/ui/button";
+
 import { toast } from "~/hooks/use-toast";
+import { ExitButton, Lines, TAMUy2k, TitleText } from "./preregistration-form"; // Ensure these imports are correct
 
 interface WindowContainerProps {
   children: React.ReactNode;
@@ -14,34 +15,42 @@ interface WindowContainerProps {
   openFunc?: (isOpen: boolean) => void;
 }
 
-const WindowContainer: React.FC<WindowContainerProps> = ({ children, isOpen, openFunc }) => {
-  return (isOpen && (
-    <div className="font-XPfont w-full font-bold ">
-      <div className="flex flex-col items-center justify-center">
-        <div className="xpBorder m-5 flex w-fit flex-col items-center px-4 text-center text-lg ">
-          {" "}
-          {/* Added px-4 for horizontal padding */}
-          <div className="flex w-full flex-row items-center justify-between">
-            <Lines />
-            <ExitButton onClick={() => {
-              // toast({
-              //   variant: "success",
-              //   title: "The rest of the site is under construction!",
-              //   description: "Please apply, or check it out later.",
-              // });
-              if (openFunc) {
-                openFunc(false);
-              }
-            }} />
-          </div>
-          <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
-            <TAMUy2k />
-            <div>{children}</div>
+const WindowContainer: React.FC<WindowContainerProps> = ({
+  children,
+  isOpen,
+  openFunc,
+}) => {
+  return (
+    isOpen && (
+      <div className="font-XPfont w-full font-bold ">
+        <div className="flex flex-col items-center justify-center">
+          <div className="xpBorder m-5 flex w-fit flex-col items-center px-4 text-center text-lg ">
+            {" "}
+            {/* Added px-4 for horizontal padding */}
+            <div className="flex w-full flex-row items-center justify-between">
+              <Lines />
+              <ExitButton
+                onClick={() => {
+                  // toast({
+                  //   variant: "success",
+                  //   title: "The rest of the site is under construction!",
+                  //   description: "Please apply, or check it out later.",
+                  // });
+                  if (openFunc) {
+                    openFunc(false);
+                  }
+                }}
+              />
+            </div>
+            <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
+              <TAMUy2k />
+              <div>{children}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  ));
+    )
+  );
 };
 
 export default WindowContainer;
