@@ -2,12 +2,12 @@
 
 import "./customCss.scss";
 
+import type { MouseEventHandler } from "react";
 import type {
   FieldErrors,
   SubmitHandler,
   UseFormRegister,
 } from "react-hook-form";
-import type { MouseEventHandler } from "react";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TRPCClientError } from "@trpc/client";
