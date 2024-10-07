@@ -57,6 +57,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   const form = useFormContext<ApplicationSchema>();
   const [searchValue, setSearchValue] = useState("");
   const { debouncedValue, isDebouncing } = useDebounce(searchValue, 250);
+  const [open, setOpen] = React.useState(false);
 
   // form.setValue(name, defaultOption);
 
@@ -105,7 +106,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
             {label}
             {required ? <Asterisk /> : ""}
           </FormLabel>
-          <Popover>
+          <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
@@ -124,7 +125,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
             <PopoverContent className="w-fit max-w-full p-0">
               <Command>
                 <CommandInput
-                  placeholder={`Search ${name}...`}
+                  placeholder={`Search ${String(name)}...`}
                   onValueChange={(value) => {
                     setSearchValue(value);
                   }}
@@ -134,27 +135,25 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                   <CommandGroup>
                     {filter20Items.map((option) => (
                       <CommandItem
-                        key={option.value}
-                        value={option.value}
+                        key={(option as DropdownOption).value}
+                        value={(option as DropdownOption).value}
                         onSelect={(currentValue) => {
                           form.setValue(
                             name,
                             currentValue === field.value ? "" : currentValue,
                           );
-                          // setOpen(false);
+                          setOpen(false);
                         }}
                       >
                         <AiOutlineCheck
                           className={cn(
                             "mr-2 h-4 w-4",
-                            field.value === option.value
+                            field.value === (option as DropdownOption).value
                               ? "opacity-100"
                               : "opacity-0",
                           )}
                         />
-                        <PopoverPrimitive.Close>
-                          {option.label}
-                        </PopoverPrimitive.Close>
+                        {(option as DropdownOption).label}
                       </CommandItem>
                     ))}
                   </CommandGroup>
