@@ -15,8 +15,8 @@ export const runtime = "edge";
 export default function HomePage() {
   const [activeWindow, setActiveWindow] = useState("");
   const [welcomeOpen, setWelcomeOpen] = useState(true);
-  const [applyOpen, setApplyOpen] = useState(true);
-  const [faqOpen, setFaqOpen] = useState(true);
+  const [applyOpen, setApplyOpen] = useState(false);
+  const [faqOpen, setFaqOpen] = useState(false);
 
   // redirect("/registration");
   // You can await this here if you don't want to show Suspense fallback below
