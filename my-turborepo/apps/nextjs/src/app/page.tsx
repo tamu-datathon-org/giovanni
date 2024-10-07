@@ -1,11 +1,13 @@
 "use client";
-import WindowContainer from "./_components/WindowContainer";
-import { Button } from "~/components/ui/button";
-import Link from "next/link";
-import IconList from "./_components/IconList";
-import DraggableComponent from "./_components/DraggableComponent";
+
 import React, { useState } from "react";
+import Link from "next/link";
+
+import { Button } from "~/components/ui/button";
+import DraggableComponent from "./_components/DraggableComponent";
+import IconList from "./_components/IconList";
 import { TAMUy2k } from "./_components/preregistration-form";
+import WindowContainer from "./_components/WindowContainer";
 
 export const runtime = "edge";
 
@@ -19,13 +21,17 @@ export default function HomePage() {
   return (
     <>
       <div className="h-screen w-screen overflow-hidden">
-        <div className="flex flex-col justify-center items-center h-screen">
-          <div className="relative w-full h-full ">
-
+        <div className="flex h-screen flex-col items-center justify-center">
+          <div className="relative h-full w-full ">
             {/* Welcome Component */}
 
-            <DraggableComponent onFocus={setActiveWindow} name="welcome" focus={activeWindow} className="lg:absolute lg:top-1/4 lg:left-1/4 flex max-w-screen ">
-              <WindowContainer isOpen={welcomeOpen} openFunc={setWelcomeOpen} >
+            <DraggableComponent
+              onFocus={setActiveWindow}
+              name="welcome"
+              focus={activeWindow}
+              className="max-w-screen flex lg:absolute lg:left-1/4 lg:top-1/4 "
+            >
+              <WindowContainer isOpen={welcomeOpen} openFunc={setWelcomeOpen}>
                 <TAMUy2k />
                 <h1 className="mb-4 text-4xl">Welcome!!!</h1>
                 {/* <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
@@ -34,21 +40,31 @@ export default function HomePage() {
               </WindowContainer>
             </DraggableComponent>
 
-
             {/* Apply Component */}
-            <DraggableComponent onFocus={setActiveWindow} name="apply" focus={activeWindow} className="absolute top-1/3 left-1/2">
-              <WindowContainer isOpen={applyOpen} openFunc={setApplyOpen} >
-                <h1 className="mb-4 text-4xl m-6">Applications are open!!!</h1>
+            <DraggableComponent
+              onFocus={setActiveWindow}
+              name="apply"
+              focus={activeWindow}
+              className="absolute left-1/2 top-1/3"
+            >
+              <WindowContainer isOpen={applyOpen} openFunc={setApplyOpen}>
+                <h1 className="m-6 mb-4 text-4xl">Applications are open!!!</h1>
                 <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
-                  <Link href="/apply/application">Click here to apply now.</Link>
+                  <Link href="/apply/application">
+                    Click here to apply now.
+                  </Link>
                 </Button>
               </WindowContainer>
             </DraggableComponent>
           </div>
 
-          <IconList welcFunc={setWelcomeOpen} applyFunc={setApplyOpen} className="absolute bottom-20 flex " />
+          <IconList
+            welcFunc={setWelcomeOpen}
+            applyFunc={setApplyOpen}
+            className="absolute bottom-20 flex "
+          />
         </div>
-      </div >
+      </div>
     </>
   );
 }

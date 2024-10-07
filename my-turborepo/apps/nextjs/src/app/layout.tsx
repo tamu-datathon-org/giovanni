@@ -2,12 +2,13 @@ import "~/app/globals.css";
 
 import type { Metadata, Viewport } from "next";
 
-import BackgroundImage from "./_components/images/background";
-import { TRPCReactProvider } from "~/trpc/react";
-import { Toaster } from "~/components/ui/toaster";
 import { cn } from "@vanni/ui";
-import { env } from "~/env";
+
 import { w95fa } from "~/app/_components/fonts";
+import { Toaster } from "~/components/ui/toaster";
+import { env } from "~/env";
+import { TRPCReactProvider } from "~/trpc/react";
+import BackgroundImage from "./_components/images/background";
 
 export const metadata: Metadata = {
   metadataBase: new URL(

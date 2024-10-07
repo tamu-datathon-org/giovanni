@@ -1,7 +1,9 @@
 "use client";
+
 import React from "react";
 import Image from "next/image"; // Import the Image component from the appropriate library
 import Link from "next/link";
+
 import { Button } from "@vanni/ui/button";
 
 interface Icon {
@@ -23,19 +25,27 @@ const routes: Icon[] = [
   { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
 ];
 
-const IconList: React.FC<IconListProps> = ({ className, welcFunc, applyFunc }) => {
+const IconList: React.FC<IconListProps> = ({
+  className,
+  welcFunc,
+  applyFunc,
+}) => {
   return (
     // className='absolute top-0 grid grid-cols-2 pt-4 gap-1'
     <div className={className}>
       <div className="flex flex-row">
         {routes.map((icon) => (
-          <Button key={icon.name} className="shadow-none" onClick={() => {
-            if (icon.name === "Home") {
-              welcFunc(true);
-            } else if (icon.name === "Apply") {
-              applyFunc(true);
-            }
-          }}>
+          <Button
+            key={icon.name}
+            className="shadow-none"
+            onClick={() => {
+              if (icon.name === "Home") {
+                welcFunc(true);
+              } else if (icon.name === "Apply") {
+                applyFunc(true);
+              }
+            }}
+          >
             <div className="flex w-[100px] flex-col items-center justify-center border-white text-center duration-200 hover:bg-blue-400  hover:shadow-[inset_0_0_0_2px_rgba(14,116,144,1)] focus:border-4">
               {icon.image && (
                 <>

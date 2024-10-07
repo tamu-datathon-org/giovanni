@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+
 import IconList from "../_components/IconList";
 
 export default function Page() {
