@@ -25,8 +25,8 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
       <div
         className={`font-XPfont w-fit font-bold ${isOpen ? "unhidden" : "hidden"}`}
       >
-        <div className="z-50 flex flex-col items-center justify-center">
-          <div className="xpBorder flex w-fit flex-col items-center px-4 text-center text-lg">
+        <div className="flex flex-col items-center justify-center">
+          <div className="xpBorder p-3 flex w-fit flex-col items-center text-center text-lg">
             {/* Added px-4 for horizontal padding */}
             <div className="flex w-full flex-row items-center justify-between">
               <Lines />
