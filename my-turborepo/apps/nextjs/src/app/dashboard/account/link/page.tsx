@@ -1,4 +1,4 @@
-import LoginButton from "~/app/_components/auth/login_button";
+import { LoginButton } from "~/app/_components/auth/login_button";
 
 export const runtime = "edge";
 

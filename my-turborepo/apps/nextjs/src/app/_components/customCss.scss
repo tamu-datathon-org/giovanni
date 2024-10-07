@@ -16,6 +16,22 @@
   // }
 }
 
+body {
+  cursor: url("cursor.png"), auto;
+}
+
+a,
+button,
+input[type="submit"],
+input[type="button"],
+[role="button"] {
+  cursor: url("largercursor.png"), auto !important;
+}
+
+.clickable-box {
+  cursor: url("largercursor.png"), auto;
+}
+
 .wrap {
   perspective-origin: 50% 50%;
 }
@@ -101,7 +117,7 @@ $total: 10;
       background-color: #e4e3e4;
     }
 
-    &:focus {
+    &:hover {
       background-color: #c2c2c2;
 
       .close {

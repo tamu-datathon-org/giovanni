@@ -1,3 +1,5 @@
+"use client";
+
 import "./customCss.scss";
 
 import type { SubmitHandler } from "react-hook-form";
@@ -82,6 +84,11 @@ export function Asterisk() {
 }
 
 export function ApplicationForm() {
+  const [interestOneCount, setInterestOneCount] = useState(0);
+  const [interestTwoCount, setInterestTwoCount] = useState(0);
+  const [interestThreeCount, setInterestThreeCount] = useState(0);
+  const [dietaryRestrictionCount, setDietaryRestrictionCount] = useState(0);
+
   const [disableSubmit, setDisableSubmit] = useState(false);
 
   const { data: importedValues, isLoading } =
@@ -542,6 +549,7 @@ export function ApplicationForm() {
               render={({ field: { value, onChange, ...fieldProps } }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
+                    <span className="text-gray-500">(Optional) </span>
                     Upload Resume (PDF Only):
                     <br />
                     Current Resume:{" "}
@@ -631,12 +639,19 @@ export function ApplicationForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-white"
                       placeholder="Is your code running? Well, you better go catch it."
                       {...field}
+                      maxLength={500}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setInterestOneCount(e.target.value.length);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
+                  <p className="mt-1 text-sm text-gray-500">
+                    {interestOneCount}/500 characters
+                  </p>
                 </FormItem>
               )}
             />
@@ -656,12 +671,19 @@ export function ApplicationForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-white"
                       placeholder="More resources."
                       {...field}
+                      maxLength={500}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setInterestTwoCount(e.target.value.length);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
+                  <p className="mt-1 text-sm text-gray-500">
+                    {interestTwoCount}/500 characters
+                  </p>
                 </FormItem>
               )}
             />
@@ -681,12 +703,19 @@ export function ApplicationForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-white"
                       placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
                       {...field}
+                      maxLength={500}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setInterestThreeCount(e.target.value.length);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
+                  <p className="mt-1 text-sm text-gray-500">
+                    {interestThreeCount}/500 characters
+                  </p>
                 </FormItem>
               )}
             />
@@ -705,13 +734,19 @@ export function ApplicationForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-white"
                       placeholder="Rock only diet."
                       {...field}
-                      value={field.value ?? ""}
+                      maxLength={250}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setDietaryRestrictionCount(e.target.value.length);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
+                  <p className="mt-1 text-sm text-gray-500">
+                    {dietaryRestrictionCount}/250 characters
+                  </p>
                 </FormItem>
               )}
             />
@@ -755,6 +790,7 @@ export function ApplicationForm() {
                     <a
                       className="text-blue-500 underline"
                       href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md"
+                      target="_blank"
                     >
                       MLH Code of Conduct
                     </a>
@@ -787,6 +823,7 @@ export function ApplicationForm() {
                     <a
                       className="text-blue-500 underline"
                       href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+                      target="_blank"
                     >
                       MLH Privacy Policy
                     </a>
@@ -794,6 +831,7 @@ export function ApplicationForm() {
                     <a
                       className="text-blue-500 underline"
                       href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
+                      target="_blank"
                     >
                       MLH Contest Terms and Conditions
                     </a>
@@ -801,6 +839,7 @@ export function ApplicationForm() {
                     <a
                       className="text-blue-500 underline"
                       href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+                      target="_blank"
                     >
                       MLH Privacy Policy
                     </a>
