@@ -12,35 +12,41 @@ interface PopupProps {
   item: FAQItem;
   isOpen: boolean;
   onClose: () => void;
+  onFocus: (arg0: string) => void;
+  focus: string;
 }
 
-const Popup: React.FC<PopupProps> = ({ item, isOpen, onClose }) => {
+const Popup: React.FC<PopupProps> = ({ item, isOpen, onClose, onFocus, focus }) => {
   return (
-    <div className="font-XPfont fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="relative m-4 max-h-[80vh] w-full max-w-2xl overflow-hidden">
-        <WindowContainer isOpen={isOpen} openFunc={onClose}>
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              padding: "20px",
-              position: "relative",
-            }}
-          >
-            <div className="h-full w-full overflow-y-auto">
-              <div className="mb-4 text-2xl font-bold">
-                <ReactMarkdown>{item.question}</ReactMarkdown>
+    <div className={`font-XPfont fixed inset-0 flex items-center justify-center pointer-events-none ${focus === 'faq-popup' ? 'z-50' : 'z-0'}`}>
+      <div className="pointer-events-auto">
+        <DraggableComponent onFocus={onFocus} name="faq-popup" focus={focus}>
+          <div className="relative m-4 max-h-[80vh] w-full max-w-2xl overflow-hidden">
+            <WindowContainer isOpen={isOpen} openFunc={onClose}>
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  padding: "20px",
+                  position: "relative",
+                }}
+              >
+                <div className="h-full w-full overflow-y-auto">
+                  <div className="mb-4 text-2xl font-bold">
+                    <ReactMarkdown>{item.question}</ReactMarkdown>
+                  </div>
+                  <div className="text-base">
+                    <ReactMarkdown>{item.answer}</ReactMarkdown>
+                  </div>
+                </div>
               </div>
-              <div className="text-base">
-                <ReactMarkdown>{item.answer}</ReactMarkdown>
-              </div>
-            </div>
+            </WindowContainer>
           </div>
-        </WindowContainer>
+        </DraggableComponent>
       </div>
     </div>
   );
@@ -115,37 +121,46 @@ const faqItems: FAQItem[] = [
 ];
 
 function FAQComponent({
-  ...props
+  focus,
+  onFocus,
+  isMainWindowOpen,
+  setIsMainWindowOpen,
 }: {
   focus: string;
-  onFocus: Dispatch<SetStateAction<string>>;
+  onFocus: (arg0: string) => void;
   isMainWindowOpen: boolean;
-  setIsMainWindowOpen: Dispatch<SetStateAction<boolean>>;
+  setIsMainWindowOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [selectedItem, setSelectedItem] = useState<FAQItem | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleMainWindowOpenClose = (open: boolean) => {
-    props.setIsMainWindowOpen(open);
+    setIsMainWindowOpen(open);
+    if (open) {
+      onFocus('faq');
+    }
   };
 
   const handlePopupOpenClose = (open: boolean) => {
     setIsPopupOpen(open);
-    if (!open) {
+    if (open) {
+      onFocus('faq-popup');
+    } else {
       setSelectedItem(null);
+      onFocus('faq');
     }
   };
 
   return (
     <div>
       <DraggableComponent
-        onFocus={props.onFocus}
+        onFocus={onFocus}
         name="faq"
-        focus={props.focus}
+        focus={focus}
         className="absolute left-1/2 top-1/3"
       >
         <WindowContainer
-          isOpen={props.isMainWindowOpen}
+          isOpen={isMainWindowOpen}
           openFunc={handleMainWindowOpenClose}
         >
           <div className="font-XPfont p-4">
@@ -169,8 +184,8 @@ function FAQComponent({
                   className="compStyling clickable-box w-full rounded-lg border border-black bg-[#f5f5f5] p-4 text-black hover:bg-[#e4e3e4]"
                   onClick={() => {
                     setSelectedItem(item);
-                    setIsPopupOpen(true);
-                  } }
+                    handlePopupOpenClose(true);
+                  }}
                 >
                   <h3 className="text-lg font-semibold">{item.question}</h3>
                 </div>
@@ -183,7 +198,10 @@ function FAQComponent({
         <Popup
           item={selectedItem}
           isOpen={isPopupOpen}
-          onClose={() => handlePopupOpenClose(false)} />
+          onClose={() => handlePopupOpenClose(false)}
+          onFocus={onFocus}
+          focus={focus}
+        />
       )}
     </div>
   );
