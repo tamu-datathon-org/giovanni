@@ -26,7 +26,7 @@ import type { ApplicationSchema } from "../apply/validation";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
-import React from "react";
+import React, { useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import type { SubmitHandler } from "react-hook-form";
 import { TRPCClientError } from "@trpc/client";
@@ -84,6 +84,8 @@ export function Asterisk() {
 }
 
 export function ApplicationForm() {
+    const [disableSubmit, setDisableSubmit] = useState(false);
+
     const { data: importedValues, isLoading } =
         api.application.getApplicationByEventName.useQuery(
             { eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" },
@@ -136,24 +138,24 @@ export function ApplicationForm() {
                     });
                 });
         } else {
-            blob_name = importedValues?.resume.resumeName;
-            blob_url = importedValues?.resume.resumeUrl;
+            blob_name = importedValues?.resume?.resumeName ?? undefined;
+            blob_url = importedValues?.resume?.resumeUrl ?? undefined;
         }
 
-        if (!blob_name || !blob_url) {
-            toast({
-                variant: "destructive",
-                title: "Submission failed",
-                description: "Resume file is required.",
-            });
-            return;
-        }
+        // if (!blob_name || !blob_url) {
+        //     toast({
+        //         variant: "destructive",
+        //         title: "Submission failed",
+        //         description: "Resume file is required.",
+        //     });
+        //     return;
+        // }
 
-        if (!importedValues) {
+        if (!importedValues?.app) {
             const createApplicationData = {
                 eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
-                resumeUrl: blob_url,
-                resumeName: blob_name,
+                resumeUrl: blob_url ?? "",
+                resumeName: blob_name ?? "",
                 applicationData: {
                     ...data,
                     gradYear: Number(data.gradYear),
@@ -165,8 +167,13 @@ export function ApplicationForm() {
                     toast({
                         variant: "success",
                         title: "Application submitted successfully!",
-                        description: "Your application has been received.",
+                        description: "Your application has been received. Reloading page...",
                     });
+
+                    setDisableSubmit(true);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 5000);
                 },
                 onError: (error: { message: any; }) => {
                     if (error instanceof TRPCClientError) {
@@ -182,8 +189,8 @@ export function ApplicationForm() {
             const updateApplicationData = {
                 id: importedValues.app.id,
                 userId: importedValues.app.userId,
-                resumeUrl: blob_url,
-                resumeName: blob_name,
+                resumeUrl: blob_url ?? "",
+                resumeName: blob_name ?? "",
                 eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
                 application: {
                     ...data,
@@ -246,10 +253,10 @@ export function ApplicationForm() {
                             <FormField
                                 control={form.control}
                                 name="firstName"
-                                defaultValue={importedValues?.app.firstName}
+                                defaultValue={importedValues?.app?.firstName}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-xl">First Name<Asterisk/></FormLabel>
+                                        <FormLabel className="text-xl">First Name<Asterisk /></FormLabel>
                                         <FormControl>
                                             <Input
                                                 className="bg-white"
@@ -268,10 +275,10 @@ export function ApplicationForm() {
                             <FormField
                                 control={form.control}
                                 name="lastName"
-                                defaultValue={importedValues?.app.lastName}
+                                defaultValue={importedValues?.app?.lastName}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-xl">Last Name<Asterisk/></FormLabel>
+                                        <FormLabel className="text-xl">Last Name<Asterisk /></FormLabel>
                                         <FormControl>
                                             <Input
                                                 className="bg-white"
@@ -291,10 +298,10 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="email"
-                            defaultValue={importedValues?.app.email}
+                            defaultValue={importedValues?.app?.email}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-xl">Primary Email<Asterisk/></FormLabel>
+                                    <FormLabel className="text-xl">Primary Email<Asterisk /></FormLabel>
                                     <FormControl>
                                         <Input
                                             className="bg-white"
@@ -313,10 +320,10 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="phoneNumber"
-                            defaultValue={importedValues?.app.phoneNumber}
+                            defaultValue={importedValues?.app?.phoneNumber}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-xl">Phone Number<Asterisk/></FormLabel>
+                                    <FormLabel className="text-xl">Phone Number<Asterisk /></FormLabel>
                                     <FormControl>
                                         <Input
                                             className="bg-white"
@@ -337,7 +344,7 @@ export function ApplicationForm() {
                             label={"Age"}
                             options={AGE}
                             defaultOption={AGE.find(
-                                (option) => option.value === importedValues?.app.age,
+                                (option) => option.value === importedValues?.app?.age,
                             )}
                             required={true}
                         />
@@ -347,10 +354,10 @@ export function ApplicationForm() {
                     <div className="pt-4">
                         <GenericCombobox
                             name={"country"}
-                            label={"Country of Residence"}
+                            label={"Country of Residence?"}
                             options={COUNTRIES}
                             defaultOption={COUNTRIES.find(
-                                (option) => option.value === importedValues?.app.country,
+                                (option) => option.value === importedValues?.app?.country,
                             )}
                             required={true}
                         />
@@ -360,10 +367,10 @@ export function ApplicationForm() {
                     <div className="pt-4">
                         <GenericCombobox
                             name={"gender"}
-                            label={"Gender"}
+                            label={"Gender?"}
                             options={GENDER_OPTIONS}
                             defaultOption={GENDER_OPTIONS.find(
-                                (option) => option.value === importedValues?.app.gender,
+                                (option) => option.value === importedValues?.app?.gender,
                             )}
                             required={true}
                         />
@@ -376,7 +383,7 @@ export function ApplicationForm() {
                             label={"What ethnicity do you identify with?"}
                             options={RACE_OPTIONS}
                             defaultOption={RACE_OPTIONS.find(
-                                (option) => option.value === importedValues?.app.race,
+                                (option) => option.value === importedValues?.app?.race,
                             )}
                             required={true}
                         />
@@ -389,7 +396,7 @@ export function ApplicationForm() {
                             label={"What school do you go to?"}
                             options={SCHOOL_OPTIONS}
                             defaultOption={SCHOOL_OPTIONS.find(
-                                (option) => option.value === importedValues?.app.school,
+                                (option) => option.value === importedValues?.app?.school,
                             )}
                             filter
                             required={true}
@@ -403,7 +410,7 @@ export function ApplicationForm() {
                             label={"What's your major?"}
                             options={MAJOR}
                             defaultOption={MAJOR.find(
-                                (option) => option.value === importedValues?.app.major,
+                                (option) => option.value === importedValues?.app?.major,
                             )}
                             required={true}
                         />
@@ -416,7 +423,7 @@ export function ApplicationForm() {
                             label={"What classification are you?"}
                             options={EDUCATION_LEVELS}
                             defaultOption={EDUCATION_LEVELS.find(
-                                (option) => option.value === importedValues?.app.classification,
+                                (option) => option.value === importedValues?.app?.classification,
                             )}
                             required={true}
                         />
@@ -429,7 +436,7 @@ export function ApplicationForm() {
                             label={"What is your anticipated graduation year?"}
                             options={GRADUATION_YEARS}
                             defaultOption={GRADUATION_YEARS.find(
-                                (option) => Number(option.value) === importedValues?.app.gradYear,
+                                (option) => Number(option.value) === importedValues?.app?.gradYear,
                             )}
                             required={true}
                         />
@@ -445,7 +452,7 @@ export function ApplicationForm() {
                             options={HACKATHON_EXPERIENCE}
                             defaultOption={HACKATHON_EXPERIENCE.find(
                                 (option) =>
-                                    option.value === importedValues?.app.hackathonsAttended,
+                                    option.value === importedValues?.app?.hackathonsAttended,
                             )}
                             required={true}
                         />
@@ -458,7 +465,7 @@ export function ApplicationForm() {
                             label={"What is your experience level in Data Science?"}
                             options={PROGRAMMING_SKILL_LEVELS}
                             defaultOption={PROGRAMMING_SKILL_LEVELS.find(
-                                (option) => option.value === importedValues?.app.experience,
+                                (option) => option.value === importedValues?.app?.experience,
                             )}
                             required={true}
                         />
@@ -477,7 +484,7 @@ export function ApplicationForm() {
                                 },
                             ]}
                             defaultOption={
-                                importedValues?.app.hasTeam
+                                importedValues?.app?.hasTeam
                                     ? {
                                         value: importedValues.app.hasTeam,
                                         label: importedValues.app.hasTeam,
@@ -495,7 +502,7 @@ export function ApplicationForm() {
                             label={"How did you hear about TAMU Datathon?"}
                             options={HEARD_ABOUT_OPTIONS}
                             defaultOption={HEARD_ABOUT_OPTIONS.find(
-                                (option) => option.value === importedValues?.app.eventSource,
+                                (option) => option.value === importedValues?.app?.eventSource,
                             )}
                             required={true}
                         />
@@ -508,7 +515,7 @@ export function ApplicationForm() {
                             label={"What's your shirt size?"}
                             options={SHIRT_SIZES}
                             defaultOption={SHIRT_SIZES.find(
-                                (option) => option.value === importedValues?.app.shirtSize,
+                                (option) => option.value === importedValues?.app?.shirtSize,
                             )}
                             required={true}
                         />
@@ -522,16 +529,12 @@ export function ApplicationForm() {
                             render={({ field: { value, onChange, ...fieldProps } }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
-                                        {/* <span className="text-gray-500">
-                                        (Optional)
-                                            {" "}
-                                            </span> */}
-                                            Upload Resume<Asterisk/> (PDF Only):
-                                            <br />
+                                        Upload Resume (PDF Only):
+                                        <br />
                                         Current Resume:{" "}
                                         <span className="text-cyan-700">
-                                            {importedValues?.resume.resumeName || "None"} 
-                                            </span>
+                                            {importedValues?.resume?.resumeName || "None"}
+                                        </span>
                                     </FormLabel>
                                     <FormControl className="hover:cursor-pointer">
                                         <Input
@@ -559,10 +562,10 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="address"
-                            defaultValue={importedValues?.app.address}
+                            defaultValue={importedValues?.app?.address}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-xl">Address<Asterisk/></FormLabel>
+                                    <FormLabel className="text-xl">Address<Asterisk /></FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="308 Negra Arroyo Lane, Albuquerque, New Mexico 87104"
@@ -581,12 +584,12 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="references"
-                            defaultValue={importedValues?.app.references}
+                            defaultValue={importedValues?.app?.references}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
                                         Point us to anything you'd like us to look at while
-                                        considering your application.<Asterisk/>
+                                        considering your application.<Asterisk />
                                     </FormLabel>
                                     <FormControl>
 
@@ -603,12 +606,12 @@ export function ApplicationForm() {
                     <div className="pt-4">
                         <FormField
                             control={form.control}
-                            defaultValue={importedValues?.app.interestOne}
+                            defaultValue={importedValues?.app?.interestOne}
                             name="interestOne"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
-                                        Tell us your best programming joke.<Asterisk/>
+                                        Tell us your best programming joke.<Asterisk />
                                     </FormLabel>
                                     <FormControl>
                                         <Input
@@ -627,12 +630,12 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="interestTwo"
-                            defaultValue={importedValues?.app.interestOne}
+                            defaultValue={importedValues?.app?.interestOne}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
                                         What is the one thing you'd build if you had unlimited
-                                        resources?<Asterisk/>
+                                        resources?<Asterisk />
                                     </FormLabel>
                                     <FormControl>
                                         <Input
@@ -652,11 +655,11 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="interestThree"
-                            defaultValue={importedValues?.app.interestOne}
+                            defaultValue={importedValues?.app?.interestOne}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
-                                        What drives your interest in being a part of TAMU Datathon?<Asterisk/>
+                                        What drives your interest in being a part of TAMU Datathon?<Asterisk />
                                     </FormLabel>
                                     <FormControl>
                                         <Input
@@ -676,7 +679,7 @@ export function ApplicationForm() {
                             control={form.control}
                             name="dietaryRestriction"
                             defaultValue={
-                                importedValues?.app.dietaryRestriction ?? ""
+                                importedValues?.app?.dietaryRestriction ?? ""
                             }
                             render={({ field }) => (
                                 <FormItem>
@@ -689,6 +692,7 @@ export function ApplicationForm() {
                                             className="bg-white"
                                             placeholder="Rock only diet."
                                             {...field}
+                                            value={field.value ?? ""}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -702,7 +706,7 @@ export function ApplicationForm() {
                         <FormField
                             control={form.control}
                             name="extraInfo"
-                            defaultValue={importedValues?.app.extraInfo ?? ""}
+                            defaultValue={importedValues?.app?.extraInfo ?? ""}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl">
@@ -713,6 +717,7 @@ export function ApplicationForm() {
                                             className="bg-white"
                                             placeholder="I love drywall!"
                                             {...field}
+                                            value={field.value ?? ""}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -731,7 +736,7 @@ export function ApplicationForm() {
                                 <FormItem>
                                     <FormLabel className="text-xl pr-2">
                                         I have read and agree to the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md">MLH Code of Conduct</a>:
-                                        <Asterisk/></FormLabel>
+                                        <Asterisk /></FormLabel>
                                     <FormControl>
                                         <Checkbox
                                             checked={field.value}
@@ -755,7 +760,7 @@ export function ApplicationForm() {
                                         ranking, and MLH administration in-line with the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md">MLH Privacy Policy</a>.
                                         I further agree to the terms of both the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md">MLH Contest Terms and Conditions</a>
                                         and the <a className="text-blue-500 underline" href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md">MLH Privacy Policy</a>:
-                                        <Asterisk/></FormLabel>
+                                        <Asterisk /></FormLabel>
                                     <FormControl>
                                         <Checkbox
                                             checked={field.value}
@@ -775,11 +780,11 @@ export function ApplicationForm() {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xl pr-2">
-                                    <span className="text-gray-500">
-                                        (Optional)
+                                        <span className="text-gray-500">
+                                            (Optional)
                                             {" "}
-                                            </span>
-                                            I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements:
+                                        </span>
+                                        I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements:
                                     </FormLabel>
                                     <FormControl>
                                         <Checkbox
@@ -796,7 +801,7 @@ export function ApplicationForm() {
                     {/* Submit */}
                     <div className="pt-4 text-4xl">
                         {!form.formState.isSubmitting && (
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit" disabled={disableSubmit}>Submit</Button>
                         )}
                         {form.formState.isSubmitting && (
                             <Button type="submit" disabled>

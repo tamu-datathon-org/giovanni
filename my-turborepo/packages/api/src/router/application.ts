@@ -17,7 +17,7 @@ export const applicationRouter = {
     .input(
       z.object({
         eventName: z.string(),
-        resumeUrl: z.string().url(),
+        resumeUrl: z.string(),
         resumeName: z.string(),
         applicationData: CreateApplicationSchema,
       }),
@@ -41,19 +41,20 @@ export const applicationRouter = {
       });
 
       // No resume at all
-
-      if (!resume) {
-        await ctx.db.insert(UserResume).values({
-          userId: ctx.session.user.id,
-          resumeUrl: input.resumeUrl,
-          resumeName: input.resumeName,
-        });
-      } else if (resume.resumeUrl !== input.resumeUrl) {
-        await ctx.db
-          .update(UserResume)
-          .set({ resumeUrl: input.resumeUrl })
-          .where(eq(UserResume.userId, ctx.session.user.id));
-        await del(resume.resumeUrl);
+      if (input.resumeUrl !== "" && input.resumeName !== "") {
+        if (!resume) {
+          await ctx.db.insert(UserResume).values({
+            userId: ctx.session.user.id,
+            resumeUrl: input.resumeUrl,
+            resumeName: input.resumeName,
+          });
+        } else if (resume.resumeUrl !== input.resumeUrl) {
+          await ctx.db
+            .update(UserResume)
+            .set({ resumeUrl: input.resumeUrl })
+            .where(eq(UserResume.userId, ctx.session.user.id));
+          await del(resume.resumeUrl);
+        }
       }
 
       return await ctx.db.insert(Application).values({
@@ -68,7 +69,7 @@ export const applicationRouter = {
       z.object({
         id: z.string(),
         userId: z.string(),
-        resumeUrl: z.string().url(),
+        resumeUrl: z.string(),
         resumeName: z.string(),
         eventName: z.string(),
         application: CreateApplicationSchema,
@@ -100,12 +101,20 @@ export const applicationRouter = {
         where: eq(UserResume.userId, ctx.session.user.id),
       });
 
-      if (resume && resume.resumeUrl !== resumeUrl) {
-        await ctx.db
-          .update(UserResume)
-          .set({ resumeUrl: resumeUrl, resumeName: resumeName })
-          .where(eq(UserResume.userId, ctx.session.user.id));
-        await del(resume.resumeUrl);
+      if (resumeUrl !== "" && resumeName !== "") {
+        if (resume && resume.resumeUrl !== resumeUrl) {
+          await ctx.db
+            .update(UserResume)
+            .set({ resumeUrl: resumeUrl, resumeName: resumeName })
+            .where(eq(UserResume.userId, ctx.session.user.id));
+          await del(resume.resumeUrl);
+        } else {
+          await ctx.db.insert(UserResume).values({
+            userId: ctx.session.user.id,
+            resumeUrl: input.resumeUrl,
+            resumeName: input.resumeName,
+          });
+        }
       }
 
       return await ctx.db
@@ -136,25 +145,24 @@ export const applicationRouter = {
         ),
       });
 
-      if (!application) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Application not found",
-        });
-      }
+      // if (!application) {
+      //   throw new TRPCError({
+      //     code: "NOT_FOUND",
+      //     message: "Application not found",
+      //   });
+      // }
 
       const resume = await ctx.db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
       });
 
-      if (!resume) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Resume not found",
-        });
+      // Validate the application with the schema
+      if (!application && !resume) {
+        return { app: undefined, resume: null };
+      } else if (!application) {
+        return { app: undefined, resume: resume };
       }
 
-      // Validate the application with the schema
       const validatedApplication = CreateApplicationSchema.merge(
         z.object({ id: z.string(), userId: z.string(), eventId: z.string() }),
       ).parse(application);
