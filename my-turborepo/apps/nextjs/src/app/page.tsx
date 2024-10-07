@@ -16,8 +16,8 @@ export const runtime = "edge";
 export default function HomePage() {
   const [activeWindow, setActiveWindow] = useState("");
   const [welcomeOpen, setWelcomeOpen] = useState(true);
-  const [applyOpen, setApplyOpen] = useState(false);
-  const [faqOpen, setFaqOpen] = useState(false);
+  const [applyOpen, setApplyOpen] = useState(true);
+  const [faqOpen, setFaqOpen] = useState(true);
 
   // redirect("/registration");
   // You can await this here if you don't want to show Suspense fallback below
@@ -47,7 +47,25 @@ export default function HomePage() {
               className="absolute lg:top-[45%] lg:left-[40%]"
             >
               <WindowContainer isOpen={applyOpen} openFunc={setApplyOpen}>
-                <h1 className="lg:m-6 lg:mb-4 lg:text-4xl">Applications are open!!!</h1>
+                <style jsx global>{`
+        :root {
+          --color-start: #0e7490;
+          --color-end: #2dd4bf;
+        }
+        @keyframes color-change {
+          0%, 100% {
+            color: var(--color-start);
+          }
+          50% {
+            color: var(--color-end);
+          }
+        }
+        .animate-color-change {
+          animation: color-change 2s ease-in-out infinite;
+        }
+      `}</style>
+
+                <h1 className="lg:m-6 lg:mb-4 m-2 lg:text-5xl text-3xl font-bold animate-color-change">Applications are open!!!</h1>
                 <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
                   <Link href="/apply/application">
                     Click here to apply now.
@@ -80,7 +98,7 @@ export default function HomePage() {
             applyFunc={setApplyOpen}
             faqFunc={setFaqOpen}
             setFocus={setActiveWindow}
-            className="absolute lg:bottom-20 bottom-10"
+            className="absolute lg:bottom-20 bottom-10 z-50"
           />
         </div>
       </div >

@@ -37,7 +37,7 @@ const IconList: React.FC<IconListProps> = ({
   return (
     // className='absolute top-0 grid grid-cols-2 pt-4 gap-1'
     <div className={className}>
-      <div className="flex flex-row z-50">
+      <div className="flex flex-row">
         {routes.map((icon) => (
           <Button
             key={icon.name}

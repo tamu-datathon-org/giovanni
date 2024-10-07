@@ -6,6 +6,8 @@ import ReactMarkdown from "react-markdown";
 import WindowContainer from "./WindowContainer";
 
 import "../_components/customCss.scss";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { Separator } from "@radix-ui/react-select";
 
 interface PopupProps {
   item: FAQItem;
@@ -72,15 +74,15 @@ const faqItems: FAQItem[] = [
   },
   {
     id: 4,
-    question: "How do I sign up?",
+    question: "How much do I need to know?",
     answer:
-      "Registration is currently open! Admission decisions will be released soon after the registration ends.",
+      "If you are new to data science, TAMU Datathon is the perfect time and place to learn. We will provide introductory coursework and mentors to guide you along your journey to complete a data science project. For our more advanced students, our challenges will pique your interest and allow you to put your skills to the test. We are committed to helping you build something you can be proud of!",
   },
   {
     id: 5,
-    question: "How much does it cost?",
+    question: "How do I sign up?",
     answer:
-      "It is FREE! All you need is a laptop! We will even throw in tons of swag, food, Wi-Fi, workspaces, and caffeine during your stay. ALSO PARKING IS FREE!",
+      "Registration is currently open! Admission decisions will be released soon after the registration ends.",
   },
   {
     id: 6,
@@ -90,9 +92,9 @@ const faqItems: FAQItem[] = [
   },
   {
     id: 7,
-    question: "How much do I need to know?",
+    question: "How much does it cost?",
     answer:
-      "If you are new to data science, TAMU Datathon is the perfect time and place to learn. We will provide introductory coursework and mentors to guide you along your journey to complete a data science project. For our more advanced students, our challenges will pique your interest and allow you to put your skills to the test. We are committed to helping you build something you can be proud of!",
+      "It is FREE! All you need is a laptop! We will even throw in tons of swag, food, Wi-Fi, workspaces, and caffeine during your stay. ALSO PARKING IS FREE!",
   },
   {
     id: 8,
@@ -142,30 +144,34 @@ const FaqComponent: React.FC = () => {
         <p className="mb-4 font-semibold">
           click on the buttons for more info!
         </p>
-        <div
-          className="grid grid-cols-1 gap-4 md:grid-cols-2 max-h-[400px] overflow-y-auto scrollbar-none touch-pan-y"
+        <ScrollArea
+          className="max-h-[400px] overflow-auto"
           style={{
             WebkitOverflowScrolling: 'touch',
-            overscrollBehavior: 'contain'
+            overscrollBehavior: 'contain',
+            touchAction: 'pan-y'
           }}
         >
-          {faqItems.map((item) => (
-            <div
-              key={item.id}
-              className="compStyling clickable-box w-full rounded-lg border border-black bg-[#f5f5f5] p-4 text-black hover:bg-[#e4e3e4] active:bg-[#d3d2d3]"
-              onClick={() => {
-                setSelectedItem(item);
-                setIsPopupOpen(true);
-              }}
-              onTouchEnd={() => {
-                setSelectedItem(item);
-                setIsPopupOpen(true);
-              }}
-            >
-              <h3 className="text-lg font-semibold">{item.question}</h3>
-            </div>
-          ))}
-        </div>
+          <div className="grid gap-4 grid-cols-2 p-1">
+            {faqItems.map((item) => (
+              <div
+                key={item.id}
+                className="compStyling clickable-box w-full h-full rounded-lg border border-black bg-[#f5f5f5] p-4 text-black hover:bg-[#e4e3e4] active:bg-[#d3d2d3]  justify-center items-center text-center align-center"
+                onClick={() => {
+                  setSelectedItem(item);
+                  setIsPopupOpen(true);
+                }}
+                onTouchEnd={() => {
+                  setSelectedItem(item);
+                  setIsPopupOpen(true);
+                }}
+              >
+                <h3 className="lg:text-lg text:sm font-semibold">{item.question}</h3>
+                <Separator className="my-2" />
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
       </div>
       {/* </WindowContainer> */}
       {selectedItem && (
