@@ -19,7 +19,6 @@ interface IconListProps {
   applyFunc: (isOpen: boolean) => void;
   faqFunc: (isOpen: boolean) => void;
   setFocus: (focus: string) => void;
-}
 
 const routes: Icon[] = [
   { name: "welcome", route: "/", image: "/Pixel_ComputerIcon.png" },

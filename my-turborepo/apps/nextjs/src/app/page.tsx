@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
+import FAQComponent from "~/app/faq/FAQComponent";
 import { Button } from "~/components/ui/button";
 import DraggableComponent from "./_components/DraggableComponent";
 import IconList from "./_components/IconList";
@@ -18,6 +19,7 @@ export default function HomePage() {
   const [welcomeOpen, setWelcomeOpen] = useState(true);
   const [applyOpen, setApplyOpen] = useState(true);
   const [faqOpen, setFaqOpen] = useState(true);
+
 
   // redirect("/registration");
   // You can await this here if you don't want to show Suspense fallback below
@@ -99,6 +101,7 @@ export default function HomePage() {
             faqFunc={setFaqOpen}
             setFocus={setActiveWindow}
             className="absolute lg:bottom-20 bottom-10 z-50"
+
           />
         </div>
       </div >

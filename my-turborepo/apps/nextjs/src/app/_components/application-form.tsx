@@ -790,6 +790,7 @@ export function ApplicationForm() {
                     <a
                       className="text-blue-500 underline"
                       href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md"
+                      target="_blank"
                     >
                       MLH Code of Conduct
                     </a>
@@ -822,6 +823,7 @@ export function ApplicationForm() {
                     <a
                       className="text-blue-500 underline"
                       href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+                      target="_blank"
                     >
                       MLH Privacy Policy
                     </a>
@@ -829,6 +831,7 @@ export function ApplicationForm() {
                     <a
                       className="text-blue-500 underline"
                       href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
+                      target="_blank"
                     >
                       MLH Contest Terms and Conditions
                     </a>
@@ -836,6 +839,7 @@ export function ApplicationForm() {
                     <a
                       className="text-blue-500 underline"
                       href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+                      target="_blank"
                     >
                       MLH Privacy Policy
                     </a>
