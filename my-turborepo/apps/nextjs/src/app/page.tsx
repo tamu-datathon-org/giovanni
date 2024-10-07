@@ -40,7 +40,7 @@ export default function HomePage() {
             {/* Apply Page */}
             <DraggableComponent
               onFocus={setActiveWindow}
-              name="apply"
+              name="Apply"
               focus={activeWindow}
               className="absolute lg:left-[40%] lg:top-[45%]"
             >
@@ -78,7 +78,7 @@ export default function HomePage() {
             {/* Welcome Component */}
             <DraggableComponent
               onFocus={setActiveWindow}
-              name="welcome"
+              name="Welcome"
               focus={activeWindow}
               className="absolute lg:left-[20%] lg:top-[25%] "
             >
