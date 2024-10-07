@@ -1,13 +1,17 @@
 import "../_components/customCss.scss";
 
-import { AiOutlineClose } from "react-icons/ai";
-import { Button } from "@vanni/ui/button";
 import Image from "next/image";
+import { AiOutlineClose } from "react-icons/ai";
+
+import { Button } from "@vanni/ui/button";
+
 import { LoginButton } from "../_components/auth/login_button";
 
 export const runtime = "edge";
 
-export default function LoginPage(props: {searchParams: { callbackUrl: string | undefined}}) {
+export default function LoginPage(props: {
+  searchParams: { callbackUrl: string | undefined };
+}) {
   return (
     <main className="font-XPfont bg-large-device flex h-screen w-screen items-center justify-center bg-cover bg-center bg-no-repeat">
       <div className="xpBorder flex max-w-full flex-col items-center justify-center">

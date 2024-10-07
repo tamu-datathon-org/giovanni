@@ -12,7 +12,7 @@ export default async function PreregistrationLayout({
   const session = await auth();
 
   if (!session) {
-    "use server";
+    ("use server");
     await signIn();
   }
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default function Page() {
-  redirect("/apply/application")
+  redirect("/apply/application");
   return (
     <>
       {/* <Navbar/> */}
