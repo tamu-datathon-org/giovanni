@@ -5,32 +5,39 @@ import React from "react";
 import { api } from "~/trpc/react";
 
 export const Testing = () => {
-  const [userId, setUserId] = React.useState<string | null>(null);
-  const query = api.account.getProviderByEmail.useQuery(userId || "", {
-    enabled: !!userId,
-  });
+    const [userInput, setUserInput] = React.useState<string | null>(null);
+    // const queryProvider = api.account.getProviderByEmail.useQuery(userInput || "", {
+    //     enabled: !!userInput,
+    // });
 
-  const handleSubmit = (data: React.FormEvent<HTMLFormElement>) => {
-    const formData = new FormData(data.currentTarget);
-    const userId = formData.get("userId") as string;
-    setUserId(userId);
-  };
+    // const emailList = api.email.getAllEmails.useQuery();
 
-  React.useEffect(() => {
-    if (query.data) {
-      console.log(query.data);
-    }
-  }, [query.data]);
+    const queryEmails = api.email.getEmailByLabel.useQuery(userInput || "", {
+        enabled: !!userInput,
+        retry: false,
+    });
 
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(e);
-      }}
-    >
-      <input type="text" name="userId" />
-      <button type="submit">Submit</button>
-    </form>
-  );
+    const handleSubmit = (data: React.FormEvent<HTMLFormElement>) => {
+        const formData = new FormData(data.currentTarget);
+        const userId = formData.get("userInput") as string;
+        setUserInput(userId);
+    };
+
+    React.useEffect(() => {
+        if (queryEmails.data) {
+            console.log(queryEmails.data);
+        }
+    }, [queryEmails.data]);
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit(e);
+            }}
+        >
+            <input type="text" name="userInput" />
+            <button type="submit">Submit</button>
+        </form>
+    );
 };
