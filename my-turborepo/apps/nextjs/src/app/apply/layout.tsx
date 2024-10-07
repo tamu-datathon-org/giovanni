@@ -8,8 +8,8 @@ export default async function ApplyLayout({
   const session = await auth();
 
   if (!session) {
-    "use server";
-    await signIn(undefined, {redirectTo: "/apply"});
+    ("use server");
+    await signIn(undefined, { redirectTo: "/apply" });
   }
 
   console.log("hello");

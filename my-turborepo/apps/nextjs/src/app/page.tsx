@@ -1,42 +1,70 @@
-// import { Suspense } from "react";
-import { redirect } from "next/navigation";
+"use client";
 
-// import { api } from "~/trpc/server";
-// import {
-//   CreatePostForm,
-//   PostCardSkeleton,
-//   PostList,
-// } from "./_components/posts";
+import React, { useState } from "react";
+import Link from "next/link";
+
+import { Button } from "~/components/ui/button";
+import DraggableComponent from "./_components/DraggableComponent";
+import IconList from "./_components/IconList";
+import { TAMUy2k } from "./_components/preregistration-form";
+import WindowContainer from "./_components/WindowContainer";
 
 export const runtime = "edge";
 
 export default function HomePage() {
-  redirect("/registration");
+  const [activeWindow, setActiveWindow] = useState("");
+  const [welcomeOpen, setWelcomeOpen] = useState(true);
+  const [applyOpen, setApplyOpen] = useState(true);
+
+  // redirect("/registration");
   // You can await this here if you don't want to show Suspense fallback below
-  // const posts = api.post.all();
-  //
-  // return (
-  //   <main className="container h-screen py-16">
-  //     <div className="flex flex-col items-center justify-center gap-4">
-  //       <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-  //         Create <span className="text-primary">T3</span> Turbo
-  //       </h1>
-  //
-  //       <CreatePostForm />
-  //       <div className="w-full max-w-2xl overflow-y-scroll">
-  //         <Suspense
-  //           fallback={
-  //             <div className="flex w-full flex-col gap-4">
-  //               <PostCardSkeleton />
-  //               <PostCardSkeleton />
-  //               <PostCardSkeleton />
-  //             </div>
-  //           }
-  //         >
-  //           <PostList posts={posts} />
-  //         </Suspense>
-  //       </div>
-  //     </div>
-  //   </main>
-  // );
+  return (
+    <>
+      <div className="h-screen w-screen overflow-hidden">
+        <div className="flex h-screen flex-col items-center justify-center">
+          <div className="relative h-full w-full ">
+            {/* Welcome Component */}
+
+            <DraggableComponent
+              onFocus={setActiveWindow}
+              name="welcome"
+              focus={activeWindow}
+              className="max-w-screen flex lg:absolute lg:left-1/4 lg:top-1/4 "
+            >
+              <WindowContainer isOpen={welcomeOpen} openFunc={setWelcomeOpen}>
+                <TAMUy2k />
+                <h1 className="mb-4 text-4xl">Welcome!!!</h1>
+                {/* <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
+                    <Link href="/apply/application">Click here to apply now.</Link>
+                  </Button> */}
+              </WindowContainer>
+            </DraggableComponent>
+
+            {/* Apply Component */}
+            <DraggableComponent
+              onFocus={setActiveWindow}
+              name="apply"
+              focus={activeWindow}
+              className="absolute left-1/2 top-1/3"
+            >
+              <WindowContainer isOpen={applyOpen} openFunc={setApplyOpen}>
+                <h1 className="m-6 mb-4 text-4xl">Applications are open!!!</h1>
+                <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
+                  <Link href="/apply/application">
+                    Click here to apply now.
+                  </Link>
+                </Button>
+              </WindowContainer>
+            </DraggableComponent>
+          </div>
+
+          <IconList
+            welcFunc={setWelcomeOpen}
+            applyFunc={setApplyOpen}
+            className="absolute bottom-20 flex "
+          />
+        </div>
+      </div>
+    </>
+  );
 }
