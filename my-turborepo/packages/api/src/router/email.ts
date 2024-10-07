@@ -11,7 +11,7 @@ export const emailRouter = {
             }).from(EmailLabel);
             emailLabels.push({ name: "Preregistration" });
             emailLabels.push({ name: "Registration" });
-            console.log(emailLabels);
+
             return emailLabels;
         }),
     getAllEmails: protectedProcedure
@@ -51,4 +51,10 @@ export const emailRouter = {
                     return emailLabel?.emails ?? [];
             }
         }),
+    getAllEmailList: protectedProcedure
+        .query(async ({ ctx }) => {
+            return await ctx.db.selectDistinct({
+                email: EmailList.email,
+            }).from(EmailList);
+        })
 };
