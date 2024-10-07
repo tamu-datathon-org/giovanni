@@ -113,7 +113,7 @@ const faqItems: FAQItem[] = [
   },
 ];
 
-const faqComponent: React.FC = () => {
+const FAQComponent: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<FAQItem | null>(null);
   const [isMainWindowOpen, setIsMainWindowOpen] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -176,4 +176,4 @@ const faqComponent: React.FC = () => {
   );
 };
 
-export default faqComponent;
+export default FAQComponent;

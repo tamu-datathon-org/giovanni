@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
+import FAQComponent from "~/app/faq/FAQComponent";
 import { Button } from "~/components/ui/button";
 import DraggableComponent from "./_components/DraggableComponent";
 import IconList from "./_components/IconList";
@@ -14,7 +15,7 @@ export const runtime = "edge";
 export default function HomePage() {
   const [activeWindow, setActiveWindow] = useState("");
   const [welcomeOpen, setWelcomeOpen] = useState(true);
-  const [applyOpen, setApplyOpen] = useState(true);
+  const [applyOpen, setApplyOpen] = useState(false);
 
   // redirect("/registration");
   // You can await this here if you don't want to show Suspense fallback below
@@ -57,6 +58,15 @@ export default function HomePage() {
               </WindowContainer>
             </DraggableComponent>
           </div>
+
+          <DraggableComponent
+            onFocus={setActiveWindow}
+            name="faq"
+            focus={activeWindow}
+            className="absolute left-1/2 top-1/3"
+          >
+            <FAQComponent />
+          </DraggableComponent>
 
           <IconList
             welcFunc={setWelcomeOpen}
