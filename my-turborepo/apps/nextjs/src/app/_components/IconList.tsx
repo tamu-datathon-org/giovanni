@@ -19,6 +19,7 @@ interface IconListProps {
   applyFunc: (isOpen: boolean) => void;
   faqFunc: (isOpen: boolean) => void;
   setFocus: (focus: string) => void;
+}
 
 const routes: Icon[] = [
   { name: "welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
@@ -52,7 +53,7 @@ const IconList: React.FC<IconListProps> = ({
               }
             }}
           >
-            <div className="flex lg:w-[100px] w-[75px] flex-col items-center justify-center border-white text-center duration-200 hover:bg-blue-400  hover:shadow-[inset_0_0_0_2px_rgba(14,116,144,1)] focus:border-4">
+            <div className="flex w-[75px] flex-col items-center justify-center border-white text-center duration-200 hover:bg-blue-400 hover:shadow-[inset_0_0_0_2px_rgba(14,116,144,1)]  focus:border-4 lg:w-[100px]">
               {icon.image && (
                 <>
                   <Image
