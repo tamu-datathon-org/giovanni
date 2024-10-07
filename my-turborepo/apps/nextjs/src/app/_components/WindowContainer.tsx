@@ -11,27 +11,18 @@ import { toast } from "~/hooks/use-toast";
 interface WindowContainerProps {
   children: React.ReactNode;
   isOpen?: boolean;
-  openFunc?: (isOpen: boolean) => void;
+  openFunc: (isOpen: boolean) => void;
 }
 
 const WindowContainer: React.FC<WindowContainerProps> = ({ children, isOpen, openFunc }) => {
   return (
     <div className={`font-XPfont w-fit font-bold ${isOpen ? "unhidden" : "hidden"}`}>
-      <div className="flex flex-col items-center justify-center">
-        <div className="xpBorder flex w-fit flex-col items-center px-4 text-center text-lg ">
+      <div className="flex flex-col items-center justify-center z-50">
+        <div className="xpBorder flex w-fit flex-col items-center px-4 text-center text-lg">
           {/* Added px-4 for horizontal padding */}
           <div className="flex w-full flex-row items-center justify-between">
             <Lines />
-            <ExitButton onClick={() => {
-              // toast({
-              //   variant: "success",
-              //   title: "The rest of the site is under construction!",
-              //   description: "Please apply, or check it out later.",
-              // });
-              if (openFunc) {
-                openFunc(false);
-              }
-            }} />
+            <ExitButton onClick={() => { openFunc(false); }} onTouchEnd={() => { openFunc(false); }} />
           </div>
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
             <div>{children}</div>

@@ -9,10 +9,9 @@ import type {
 } from "react-hook-form";
 
 import { AiOutlineClose } from "react-icons/ai";
-import { Button } from "node_modules/@vanni/ui/src/button";
 import FormContainer from "./FormContainer";
 import Image from "next/image";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, TouchEventHandler } from "react";
 import type { PreregistrationData } from "../preregistration/validation";
 import { TRPCClientError } from "@trpc/client";
 import { api } from "~/trpc/react";
@@ -20,6 +19,7 @@ import { preregistrationSchema } from "../preregistration/validation";
 import { useForm } from "react-hook-form";
 import { useToast } from "~/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "~/components/ui/button";
 
 // import IconList from "./IconList";
 
@@ -40,11 +40,11 @@ export function Lines() {
   );
 }
 
-export function ExitButton(props:{onClick?: MouseEventHandler<HTMLButtonElement>}) {
+export function ExitButton(props: { onClick: MouseEventHandler<HTMLButtonElement>, onTouchEnd: TouchEventHandler<HTMLButtonElement> }) {
   // This button is only there for visual purposes
   return (
-    <Button className="compStyling" onClick={props.onClick}>
-      <AiOutlineClose className="close" />
+    <Button className="compStyling" onClick={props.onClick} onTouchEnd={props.onTouchEnd}>
+      <AiOutlineClose className="close" color="black" />
     </Button>
   );
 }

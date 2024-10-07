@@ -36,7 +36,7 @@ export default function HomePage() {
 
             {/* Welcome Component */}
 
-            <DraggableComponent onFocus={setActiveWindow} name="welcome" focus={activeWindow} className="absolute top-1/4 left-1/4">
+            <DraggableComponent onFocus={setActiveWindow} name="welcome" focus={activeWindow} className="lg:absolute lg:top-1/4 lg:left-1/4 flex max-w-screen ">
               <WindowContainer isOpen={welcomeOpen} openFunc={setWelcomeOpen} >
                 <TAMUy2k />
                 <h1 className="mb-4 text-4xl">Welcome!!!</h1>
@@ -58,7 +58,7 @@ export default function HomePage() {
             </DraggableComponent>
           </div>
 
-          <IconList welcFunc={setWelcomeOpen} applyFunc={setApplyOpen} className="absolute bottom-20 flex z-50" />
+          <IconList welcFunc={setWelcomeOpen} applyFunc={setApplyOpen} className="absolute bottom-20 flex " />
         </div>
       </div >
     </>
