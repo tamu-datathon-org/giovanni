@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import IconList from "../_components/IconList";
 
 export default function Page() {
-  redirect("/apply/application")
+  redirect("/apply/application");
   return (
     <>
       <IconList />

@@ -8,16 +8,16 @@ import type {
   UseFormRegister,
 } from "react-hook-form";
 
-import { AiOutlineClose } from "react-icons/ai";
-import FormContainer from "./FormContainer";
-import Image from "next/image";
 import { MouseEventHandler, TouchEventHandler } from "react";
-import type { PreregistrationData } from "../preregistration/validation";
 import { TRPCClientError } from "@trpc/client";
+import { useForm } from "react-hook-form";
+import { AiOutlineClose } from "react-icons/ai";
+
+import type { PreregistrationData } from "../preregistration/validation";
+import { useToast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
 import { preregistrationSchema } from "../preregistration/validation";
-import { useForm } from "react-hook-form";
-import { useToast } from "~/hooks/use-toast";
+import FormContainer from "./FormContainer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "~/components/ui/button";
 

@@ -2,9 +2,7 @@ import { LoginButton } from "~/app/_components/auth/login_button";
 
 export const runtime = "edge";
 
-function getLinkedAccounts() {
-
-}
+function getLinkedAccounts() {}
 
 export default function LoginPage() {
   return (
@@ -18,7 +16,10 @@ export default function LoginPage() {
           Link more accounts:
         </h1>
         <form>
-          <LoginButton connectionId="discord" buttonText="Sign in with Discord" />
+          <LoginButton
+            connectionId="discord"
+            buttonText="Sign in with Discord"
+          />
           <LoginButton connectionId="github" buttonText="Sign in with GitHub" />
           <LoginButton
             connectionId="google-oauth2"

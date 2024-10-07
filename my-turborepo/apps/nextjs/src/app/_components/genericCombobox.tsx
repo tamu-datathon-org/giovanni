@@ -57,7 +57,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   const form = useFormContext<ApplicationSchema>();
   const [searchValue, setSearchValue] = useState("");
   const { debouncedValue, isDebouncing } = useDebounce(searchValue, 250);
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   // form.setValue(name, defaultOption);
 
@@ -142,7 +142,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                             name,
                             currentValue === field.value ? "" : currentValue,
                           );
-                          setOpen(false)
+                          setOpen(false);
                         }}
                       >
                         <AiOutlineCheck
