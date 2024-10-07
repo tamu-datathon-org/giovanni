@@ -1,10 +1,10 @@
+import { accountRouter } from "./router/account";
 import { applicationRouter } from "./router/application";
 import { authRouter } from "./router/auth";
 import { eventRouter } from "./router/event";
 import { postRouter } from "./router/post";
 import { preregistrationRouter } from "./router/preregistration";
 import { createTRPCRouter } from "./trpc";
-import { accountRouter } from "./router/account";
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,

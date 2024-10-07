@@ -1,7 +1,9 @@
-import { z } from "zod"
-import { protectedProcedure } from "../trpc"
-import { Account, User } from "@vanni/db/schema"
-import { eq } from "@vanni/db"
+import { z } from "zod";
+
+import { eq } from "@vanni/db";
+import { Account, User } from "@vanni/db/schema";
+
+import { protectedProcedure } from "../trpc";
 
 export const accountRouter = {
     getProviderByUserId: protectedProcedure
@@ -9,7 +11,7 @@ export const accountRouter = {
         .query(async ({ ctx, input }) => {
             return await ctx.db.query.Account.findMany({
                 where: eq(Account.userId, input),
-            },)
+            });
         }),
     getProviderByEmail: protectedProcedure
         .input(z.string().email())
@@ -18,8 +20,8 @@ export const accountRouter = {
                 where: eq(User.email, input),
                 with: {
                     accounts: true,
-                }
+                },
             });
-            return user?.accounts || [];
-        })
-}
+            return user?.accounts ?? [];
+        }),
+};
