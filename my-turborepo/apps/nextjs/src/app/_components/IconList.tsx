@@ -44,9 +44,9 @@ const IconList: React.FC<IconListProps> = ({
             className="shadow-none"
             onClick={() => {
               setFocus(icon.name);
-              if (icon.name === "welcome") {
+              if (icon.name === "Welcome") {
                 welcFunc(true);
-              } else if (icon.name === "apply") {
+              } else if (icon.name === "Apply") {
                 applyFunc(true);
               } else if (icon.name === "FAQ") {
                 faqFunc(true);
