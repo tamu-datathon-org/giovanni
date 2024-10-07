@@ -1,23 +1,11 @@
 "use client";
-// import { Suspense } from "react";
-import { redirect } from "next/navigation";
-import { CreatePostForm, PostCardSkeleton, PostList } from "./_components/posts";
-import { Suspense, useState } from "react";
-import { api } from "~/trpc/server";
 import WindowContainer from "./_components/WindowContainer";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import IconList from "./_components/IconList";
 import DraggableComponent from "./_components/DraggableComponent";
-import React from "react";
+import React, { useState } from "react";
 import { TAMUy2k } from "./_components/preregistration-form";
-
-// import { api } from "~/trpc/server";
-// import {
-//   CreatePostForm,
-//   PostCardSkeleton,
-//   PostList,
-// } from "./_components/posts";
 
 export const runtime = "edge";
 
