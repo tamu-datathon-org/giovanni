@@ -1,13 +1,12 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useState } from "react";
-import ReactMarkdown from "react-markdown";
-
-import WindowContainer from "../_components/WindowContainer";
-
 import "../_components/customCss.scss";
 
+import React, { Dispatch, SetStateAction, useState } from "react";
+
 import DraggableComponent from "~/app/_components/DraggableComponent";
+import ReactMarkdown from "react-markdown";
+import WindowContainer from "../_components/WindowContainer";
 
 interface PopupProps {
   item: FAQItem;
@@ -115,14 +114,14 @@ const faqItems: FAQItem[] = [
   },
 ];
 
-const FAQComponent: React.FC = ({
-  props,
+function FAQComponent({
+  ...props
 }: {
   focus: string;
   onFocus: Dispatch<SetStateAction<string>>;
   isMainWindowOpen: boolean;
   setIsMainWindowOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
+}) {
   const [selectedItem, setSelectedItem] = useState<FAQItem | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -171,7 +170,7 @@ const FAQComponent: React.FC = ({
                   onClick={() => {
                     setSelectedItem(item);
                     setIsPopupOpen(true);
-                  }}
+                  } }
                 >
                   <h3 className="text-lg font-semibold">{item.question}</h3>
                 </div>
@@ -184,11 +183,10 @@ const FAQComponent: React.FC = ({
         <Popup
           item={selectedItem}
           isOpen={isPopupOpen}
-          onClose={() => handlePopupOpenClose(false)}
-        />
+          onClose={() => handlePopupOpenClose(false)} />
       )}
     </div>
   );
-};
+}
 
 export default FAQComponent;
