@@ -2,6 +2,7 @@
 
 import React from "react";
 import Draggable from "react-draggable";
+import { isMobile } from 'react-device-detect';
 
 interface DraggableComponentProps {
   children: React.ReactNode;
@@ -20,23 +21,24 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({
 }) => {
   return (
     <Draggable
+      disabled={isMobile}
       onDrag={() => {
         onFocus(name);
         console.log(name, focus, name === focus);
       }}
     >
       <div
-        className={`h-fit w-fit cursor-move overflow-hidden ${focus === name ? "z-50" : "z-10"} ${className}`}
-        // style={{
-        //   // width: 100,
-        //   // height: 100,
-        //   // backgroundColor: "skyblue",
-        //   // textAlign: "center",
-        //   // lineHeight: "100px",
-        //   // borderRadius: "10px",
+        className={`h-fit w-fit cursor-move overflow-hidden ${focus === name ? "z-40" : "z-10"} ${className}`}
+      // style={{
+      //   // width: 100,
+      //   // height: 100,
+      //   // backgroundColor: "skyblue",
+      //   // textAlign: "center",
+      //   // lineHeight: "100px",
+      //   // borderRadius: "10px",
 
-        //   cursor: "move",
-        // }}
+      //   cursor: "move",
+      // }}
       >
         {children}
       </div>
