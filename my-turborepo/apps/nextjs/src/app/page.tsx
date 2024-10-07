@@ -16,6 +16,7 @@ export default function HomePage() {
   const [activeWindow, setActiveWindow] = useState("");
   const [welcomeOpen, setWelcomeOpen] = useState(true);
   const [applyOpen, setApplyOpen] = useState(false);
+  const [faqOpen, setFaqOpen] = useState(false);
 
   // redirect("/registration");
   // You can await this here if you don't want to show Suspense fallback below
@@ -59,18 +60,17 @@ export default function HomePage() {
             </DraggableComponent>
           </div>
 
-          <DraggableComponent
+          <FAQComponent
             onFocus={setActiveWindow}
-            name="faq"
             focus={activeWindow}
-            className="absolute left-1/2 top-1/3"
-          >
-            <FAQComponent onFocus={setActiveWindow} focus={activeWindow} />
-          </DraggableComponent>
+            isMainWindowOpen={faqOpen}
+            setIsMainWindowOpen={setFaqOpen}
+          />
 
           <IconList
             welcFunc={setWelcomeOpen}
             applyFunc={setApplyOpen}
+            faqFunc={setFaqOpen}
             className="absolute bottom-20 flex "
           />
         </div>

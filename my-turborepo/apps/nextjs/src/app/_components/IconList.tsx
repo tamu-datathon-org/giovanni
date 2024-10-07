@@ -17,6 +17,7 @@ interface IconListProps {
   className?: string;
   welcFunc: (isOpen: boolean) => void;
   applyFunc: (isOpen: boolean) => void;
+  faqFunc: (isOpen: boolean) => void;
 }
 
 const routes: Icon[] = [
@@ -29,6 +30,7 @@ const IconList: React.FC<IconListProps> = ({
   className,
   welcFunc,
   applyFunc,
+  faqFunc,
 }) => {
   return (
     // className='absolute top-0 grid grid-cols-2 pt-4 gap-1'
@@ -43,6 +45,8 @@ const IconList: React.FC<IconListProps> = ({
                 welcFunc(true);
               } else if (icon.name === "Apply") {
                 applyFunc(true);
+              } else if (icon.name === "FAQ") {
+                faqFunc(true);
               }
             }}
           >

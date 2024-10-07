@@ -120,13 +120,14 @@ const FAQComponent: React.FC = ({
 }: {
   focus: string;
   onFocus: Dispatch<SetStateAction<string>>;
+  isMainWindowOpen: boolean;
+  setIsMainWindowOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [selectedItem, setSelectedItem] = useState<FAQItem | null>(null);
-  const [isMainWindowOpen, setIsMainWindowOpen] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleMainWindowOpenClose = (open: boolean) => {
-    setIsMainWindowOpen(open);
+    props.setIsMainWindowOpen(open);
   };
 
   const handlePopupOpenClose = (open: boolean) => {
@@ -145,7 +146,7 @@ const FAQComponent: React.FC = ({
         className="absolute left-1/2 top-1/3"
       >
         <WindowContainer
-          isOpen={isMainWindowOpen}
+          isOpen={props.isMainWindowOpen}
           openFunc={handleMainWindowOpenClose}
         >
           <div className="font-XPfont p-4">
