@@ -65,7 +65,7 @@ export default function HomePage() {
             focus={activeWindow}
             className="absolute left-1/2 top-1/3"
           >
-            <FAQComponent />
+            <FAQComponent onFocus={setActiveWindow} focus={activeWindow} />
           </DraggableComponent>
 
           <IconList

@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 import WindowContainer from "../_components/WindowContainer";
 
 import "../_components/customCss.scss";
+
+import DraggableComponent from "~/app/_components/DraggableComponent";
 
 interface PopupProps {
   item: FAQItem;
@@ -113,7 +115,12 @@ const faqItems: FAQItem[] = [
   },
 ];
 
-const FAQComponent: React.FC = () => {
+const FAQComponent: React.FC = ({
+  props,
+}: {
+  focus: string;
+  onFocus: Dispatch<SetStateAction<string>>;
+}) => {
   const [selectedItem, setSelectedItem] = useState<FAQItem | null>(null);
   const [isMainWindowOpen, setIsMainWindowOpen] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -131,40 +138,47 @@ const FAQComponent: React.FC = () => {
 
   return (
     <div>
-      <WindowContainer
-        isOpen={isMainWindowOpen}
-        openFunc={handleMainWindowOpenClose}
+      <DraggableComponent
+        onFocus={props.onFocus}
+        name="faq"
+        focus={props.focus}
+        className="absolute left-1/2 top-1/3"
       >
-        <div className="font-XPfont p-4">
-          <h2 className="mb-4 text-4xl font-semibold">
-            Frequently Asked Questions
-          </h2>
-          <p className="mb-4 font-semibold">
-            click on the buttons for more info!
-          </p>
-          <div
-            className="grid grid-cols-1 gap-4 md:grid-cols-2"
-            style={{
-              maxHeight: "400px",
-              overflowY: "auto",
-              scrollbarWidth: "none",
-            }}
-          >
-            {faqItems.map((item) => (
-              <div
-                key={item.id}
-                className="compStyling clickable-box w-full rounded-lg border border-black bg-[#f5f5f5] p-4 text-black hover:bg-[#e4e3e4]"
-                onClick={() => {
-                  setSelectedItem(item);
-                  setIsPopupOpen(true);
-                }}
-              >
-                <h3 className="text-lg font-semibold">{item.question}</h3>
-              </div>
-            ))}
+        <WindowContainer
+          isOpen={isMainWindowOpen}
+          openFunc={handleMainWindowOpenClose}
+        >
+          <div className="font-XPfont p-4">
+            <h2 className="mb-4 text-4xl font-semibold">
+              Frequently Asked Questions
+            </h2>
+            <p className="mb-4 font-semibold">
+              click on the buttons for more info!
+            </p>
+            <div
+              className="grid grid-cols-1 gap-4 md:grid-cols-2"
+              style={{
+                maxHeight: "400px",
+                overflowY: "auto",
+                scrollbarWidth: "none",
+              }}
+            >
+              {faqItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="compStyling clickable-box w-full rounded-lg border border-black bg-[#f5f5f5] p-4 text-black hover:bg-[#e4e3e4]"
+                  onClick={() => {
+                    setSelectedItem(item);
+                    setIsPopupOpen(true);
+                  }}
+                >
+                  <h3 className="text-lg font-semibold">{item.question}</h3>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </WindowContainer>
+        </WindowContainer>
+      </DraggableComponent>
       {selectedItem && (
         <Popup
           item={selectedItem}
