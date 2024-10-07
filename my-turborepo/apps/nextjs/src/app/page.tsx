@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-import FAQComponent from "~/app/faq/FAQComponent";
 import { Button } from "~/components/ui/button";
 import DraggableComponent from "./_components/DraggableComponent";
+import FAQComponent from "./_components/FAQComponent";
 import IconList from "./_components/IconList";
 import { TAMUy2k } from "./_components/preregistration-form";
 import WindowContainer from "./_components/WindowContainer";
@@ -33,7 +33,7 @@ export default function HomePage() {
               className="absolute lg:left-[50%] lg:top-[10%] "
             >
               <WindowContainer isOpen={faqOpen} openFunc={setFaqOpen}>
-                <FaqComponent />
+                <FAQComponent />
               </WindowContainer>
             </DraggableComponent>
 
