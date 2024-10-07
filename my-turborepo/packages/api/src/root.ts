@@ -4,6 +4,7 @@ import { eventRouter } from "./router/event";
 import { postRouter } from "./router/post";
 import { preregistrationRouter } from "./router/preregistration";
 import { createTRPCRouter } from "./trpc";
+import { accountRouter } from "./router/account";
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
@@ -11,6 +12,7 @@ export const appRouter = createTRPCRouter({
   event: eventRouter,
   application: applicationRouter,
   preregistration: preregistrationRouter,
+  account: accountRouter,
 });
 
 // export type definition of API
