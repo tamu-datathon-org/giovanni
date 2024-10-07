@@ -9,8 +9,6 @@ import DraggableComponent from "./_components/DraggableComponent";
 import IconList from "./_components/IconList";
 import { TAMUy2k } from "./_components/preregistration-form";
 import WindowContainer from "./_components/WindowContainer";
-import FaqComponent from "./_components/faqComponent";
-
 
 export const runtime = "edge";
 
@@ -20,21 +18,19 @@ export default function HomePage() {
   const [applyOpen, setApplyOpen] = useState(true);
   const [faqOpen, setFaqOpen] = useState(true);
 
-
   // redirect("/registration");
   // You can await this here if you don't want to show Suspense fallback below
   return (
     <>
       <div className="h-screen w-screen overflow-hidden">
         <div className="flex h-screen flex-col items-center justify-center">
-          <div className="lg:relative h-full w-full flex justify-center items-center ">
-
+          <div className="flex h-full w-full items-center justify-center lg:relative ">
             {/* FAQ Component */}
             <DraggableComponent
               onFocus={setActiveWindow}
               name="FAQ"
               focus={activeWindow}
-              className="absolute lg:top-[10%] lg:left-[50%] "
+              className="absolute lg:left-[50%] lg:top-[10%] "
             >
               <WindowContainer isOpen={faqOpen} openFunc={setFaqOpen}>
                 <FaqComponent />
@@ -46,28 +42,31 @@ export default function HomePage() {
               onFocus={setActiveWindow}
               name="apply"
               focus={activeWindow}
-              className="absolute lg:top-[45%] lg:left-[40%]"
+              className="absolute lg:left-[40%] lg:top-[45%]"
             >
               <WindowContainer isOpen={applyOpen} openFunc={setApplyOpen}>
                 <style jsx global>{`
-        :root {
-          --color-start: #0e7490;
-          --color-end: #2dd4bf;
-        }
-        @keyframes color-change {
-          0%, 100% {
-            color: var(--color-start);
-          }
-          50% {
-            color: var(--color-end);
-          }
-        }
-        .animate-color-change {
-          animation: color-change 2s ease-in-out infinite;
-        }
-      `}</style>
+                  :root {
+                    --color-start: #0e7490;
+                    --color-end: #2dd4bf;
+                  }
+                  @keyframes color-change {
+                    0%,
+                    100% {
+                      color: var(--color-start);
+                    }
+                    50% {
+                      color: var(--color-end);
+                    }
+                  }
+                  .animate-color-change {
+                    animation: color-change 2s ease-in-out infinite;
+                  }
+                `}</style>
 
-                <h1 className="lg:m-6 lg:mb-4 m-2 lg:text-5xl text-3xl font-bold animate-color-change">Applications are open!!!</h1>
+                <h1 className="animate-color-change m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">
+                  Applications are open!!!
+                </h1>
                 <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
                   <Link href="/apply/application">
                     Click here to apply now.
@@ -75,7 +74,6 @@ export default function HomePage() {
                 </Button>
               </WindowContainer>
             </DraggableComponent>
-
 
             {/* Welcome Component */}
             <DraggableComponent
@@ -94,17 +92,15 @@ export default function HomePage() {
             </DraggableComponent>
           </div>
 
-
           <IconList
             welcFunc={setWelcomeOpen}
             applyFunc={setApplyOpen}
             faqFunc={setFaqOpen}
             setFocus={setActiveWindow}
-            className="absolute lg:bottom-20 bottom-10 z-50"
-
+            className="absolute bottom-10 z-50 lg:bottom-20"
           />
         </div>
-      </div >
+      </div>
     </>
   );
 }

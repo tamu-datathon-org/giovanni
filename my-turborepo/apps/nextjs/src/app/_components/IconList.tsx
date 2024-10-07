@@ -22,9 +22,9 @@ interface IconListProps {
 }
 
 const routes: Icon[] = [
-  { name: "welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
+  { name: "Welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
   { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
-  { name: "apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
+  { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
 ];
 
 const IconList: React.FC<IconListProps> = ({

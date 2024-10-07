@@ -6,8 +6,10 @@ import ReactMarkdown from "react-markdown";
 import WindowContainer from "./WindowContainer";
 
 import "../_components/customCss.scss";
-import { ScrollArea } from "~/components/ui/scroll-area";
+
 import { Separator } from "@radix-ui/react-select";
+
+import { ScrollArea } from "~/components/ui/scroll-area";
 
 interface PopupProps {
   item: FAQItem;
@@ -115,7 +117,7 @@ const faqItems: FAQItem[] = [
   },
 ];
 
-const FaqComponent: React.FC = () => {
+const FAQComponent: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<FAQItem | null>(null);
   // const [isMainWindowOpen, setIsMainWindowOpen] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -147,16 +149,16 @@ const FaqComponent: React.FC = () => {
         <ScrollArea
           className="max-h-[400px] overflow-auto"
           style={{
-            WebkitOverflowScrolling: 'touch',
-            overscrollBehavior: 'contain',
-            touchAction: 'pan-y'
+            WebkitOverflowScrolling: "touch",
+            overscrollBehavior: "contain",
+            touchAction: "pan-y",
           }}
         >
-          <div className="grid gap-4 grid-cols-2 p-1">
+          <div className="grid grid-cols-2 gap-4 p-1">
             {faqItems.map((item) => (
               <div
                 key={item.id}
-                className="compStyling clickable-box w-full h-full rounded-lg border border-black bg-[#f5f5f5] p-4 text-black hover:bg-[#e4e3e4] active:bg-[#d3d2d3]  justify-center items-center text-center align-center"
+                className="compStyling clickable-box align-center h-full w-full items-center justify-center rounded-lg border border-black bg-[#f5f5f5] p-4  text-center text-black hover:bg-[#e4e3e4] active:bg-[#d3d2d3]"
                 onClick={() => {
                   setSelectedItem(item);
                   setIsPopupOpen(true);
@@ -166,7 +168,9 @@ const FaqComponent: React.FC = () => {
                   setIsPopupOpen(true);
                 }}
               >
-                <h3 className="lg:text-lg text:sm font-semibold">{item.question}</h3>
+                <h3 className="text:sm font-semibold lg:text-lg">
+                  {item.question}
+                </h3>
                 <Separator className="my-2" />
               </div>
             ))}
@@ -185,4 +189,4 @@ const FaqComponent: React.FC = () => {
   );
 };
 
-export default FaqComponent;
+export default FAQComponent;
