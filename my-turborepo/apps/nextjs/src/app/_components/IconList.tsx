@@ -22,9 +22,9 @@ interface IconListProps {
 }
 
 const routes: Icon[] = [
-  { name: "welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
+  { name: "Welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
   { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
-  { name: "apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
+  { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
 ];
 
 const IconList: React.FC<IconListProps> = ({
@@ -37,23 +37,23 @@ const IconList: React.FC<IconListProps> = ({
   return (
     // className='absolute top-0 grid grid-cols-2 pt-4 gap-1'
     <div className={className}>
-      <div className="flex flex-row z-50">
+      <div className="flex flex-row">
         {routes.map((icon) => (
           <Button
             key={icon.name}
             className="shadow-none"
             onClick={() => {
               setFocus(icon.name);
-              if (icon.name === "welcome") {
+              if (icon.name === "Welcome") {
                 welcFunc(true);
-              } else if (icon.name === "apply") {
+              } else if (icon.name === "Apply") {
                 applyFunc(true);
               } else if (icon.name === "FAQ") {
                 faqFunc(true);
               }
             }}
           >
-            <div className="flex lg:w-[100px] w-[75px] flex-col items-center justify-center border-white text-center duration-200 hover:bg-blue-400  hover:shadow-[inset_0_0_0_2px_rgba(14,116,144,1)] focus:border-4">
+            <div className="flex w-[75px] flex-col items-center justify-center border-white text-center duration-200 hover:bg-blue-400 hover:shadow-[inset_0_0_0_2px_rgba(14,116,144,1)]  focus:border-4 lg:w-[100px]">
               {icon.image && (
                 <>
                   <Image

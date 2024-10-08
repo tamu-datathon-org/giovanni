@@ -7,7 +7,7 @@ export default function Page() {
   redirect("/apply/application");
   return (
     <>
-      <IconList />
+      {/* <IconList /> */}
       <div className="mainContent">
         <h1>DASHBOARD</h1>
 
