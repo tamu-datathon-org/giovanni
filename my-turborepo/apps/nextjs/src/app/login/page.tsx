@@ -6,8 +6,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { Button } from "@vanni/ui/button";
 
 import { LoginButton } from "../_components/auth/login_button";
-import { WindowContainer } from "../_components/WindowContainer";
-import {ExitButton, Lines} from "~/app/_components/preregistration-form";
+import {Lines} from "~/app/_components/preregistration-form";
 import React from "react";
 
 export const runtime = "edge";
@@ -37,12 +36,12 @@ export default function LoginPage(props: {
                               <span className="even:text-cyan-700">U</span> DATATHON{" "}
                           </h1>
                           <h1 className="text-5xl tracking-tight">Log In</h1>
-                          <div className="w-full text-[#9c9c9c]">
+                          <div className="absolute left-0 w-2/5 text-[#9c9c9c]">
                               <text className="">Post version 202.4</text>
-                              <hr className="absolute left-0 h-0.5 w-2/5 rounded border-0 bg-[#9c9c9c] dark:bg-[#e4e3e4]"></hr>
+                              <hr className="h-0.5 rounded border-0 bg-[#9c9c9c] dark:bg-[#e4e3e4]"></hr>
                           </div>
-                          <div className="w-3/5 pt-8">
-                          <form className="flex w-full flex-col gap-2">
+                          <div className="w-3/5 pt-12">
+                              <form className="flex w-full flex-col gap-2">
                                   <LoginButton
                                       connectionId="github"
                                       buttonText="Sign in with GitHub"
@@ -70,8 +69,8 @@ export default function LoginPage(props: {
                           />
                       </div>
                   </div>
-              </div>
+          </div>
       </main>
-)
-;
+  )
+      ;
 }
