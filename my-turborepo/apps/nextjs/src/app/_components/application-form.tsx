@@ -506,9 +506,9 @@ export function ApplicationForm() {
               defaultOption={
                 importedValues?.app?.hasTeam
                   ? {
-                      value: importedValues.app.hasTeam,
-                      label: importedValues.app.hasTeam,
-                    }
+                    value: importedValues.app.hasTeam,
+                    label: importedValues.app.hasTeam,
+                  }
                   : undefined
               }
               required={true}
@@ -661,7 +661,7 @@ export function ApplicationForm() {
             <FormField
               control={form.control}
               name="interestTwo"
-              defaultValue={importedValues?.app?.interestOne}
+              defaultValue={importedValues?.app?.interestTwo}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
@@ -694,7 +694,7 @@ export function ApplicationForm() {
             <FormField
               control={form.control}
               name="interestThree"
-              defaultValue={importedValues?.app?.interestOne}
+              defaultValue={importedValues?.app?.interestThree}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
