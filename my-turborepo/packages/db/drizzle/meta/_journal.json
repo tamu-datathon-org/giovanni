@@ -15,6 +15,69 @@
       "when": 1723432196310,
       "tag": "0001_dizzy_fixer",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1726453986211,
+      "tag": "0002_black_bromley",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1726454235671,
+      "tag": "0003_mature_lake",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1726978562561,
+      "tag": "0004_public_ultimates",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1727127589206,
+      "tag": "0005_happy_mastermind",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1727147667462,
+      "tag": "0006_wakeful_skreet",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1727274660243,
+      "tag": "0007_wooden_marvel_zombies",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1727456978779,
+      "tag": "0008_overconfident_doorman",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1727485097900,
+      "tag": "0009_melodic_karma",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1727835391912,
+      "tag": "0010_harsh_ghost_rider",
+      "breakpoints": true
     }
   ]
 }
