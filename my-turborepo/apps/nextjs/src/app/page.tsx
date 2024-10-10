@@ -85,6 +85,8 @@ export default function HomePage() {
               <WindowContainer isOpen={welcomeOpen} openFunc={setWelcomeOpen}>
                 <TAMUy2k />
                 <h1 className="mb-4 text-4xl">Welcome!!!</h1>
+                <h3>Memorial Student Center - Bethancourt Ballroom (MSC 2300)</h3>
+                <h3>Nov 9-10</h3>
                 {/* <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
                     <Link href="/apply/application">Click here to apply now.</Link>
                   </Button> */}

@@ -4,6 +4,7 @@ import {
   integer,
   pgTable,
   primaryKey,
+  serial,
   text,
   timestamp,
   uuid,
@@ -343,3 +344,24 @@ export const CreateUserResumeSchema = createInsertSchema(UserResume, {
   id: true,
   userId: true,
 });
+
+export const EmailLabel = pgTable("email_label", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+})
+
+export const EmailList = pgTable("email_list", {
+  id: serial("id").primaryKey(),
+  email: varchar("email", { length: 255 }).notNull(),
+  labelId: integer("label_id")
+    .notNull()
+    .references(() => EmailLabel.id, { onDelete: "cascade" }),
+});
+
+export const EmailListRelations = relations(EmailList, ({ one }) => ({
+  label: one(EmailLabel, { fields: [EmailList.labelId], references: [EmailLabel.id] }),
+}));
+
+export const EmailLabelRelations = relations(EmailLabel, ({ many }) => ({
+  emails: many(EmailList),
+}));
