@@ -66,7 +66,7 @@ const faqItems: FAQItem[] = [
     id: 2,
     question: "When is the event?",
     answer:
-      "November 9-10th, 2024. A complete schedule is available at tamudatathon.com/schedule. The event will begin at 10 am on Saturday and end at 4 pm on Sunday.",
+      "November 9-10th, 2024. A complete schedule will be available at tamudatathon.com/schedule at a later date.",
   },
   {
     id: 3,
