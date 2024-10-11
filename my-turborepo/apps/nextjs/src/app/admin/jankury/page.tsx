@@ -16,11 +16,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export const runtime = "edge";
 
 const FormSchema = z.object({
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
+  mailing_list: z.string(),
+  subject: z.string(),
+  content: z.string(),
+  confirmation: z.boolean().refine((value) => value, "Please test the email and check the box.")
 });
 
 export default function HomePage() {
