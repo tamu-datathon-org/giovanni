@@ -101,27 +101,13 @@ const example = `<!DOCTYPE html>
           </p>
       </div>
   </body>
-  </html>`
+  </html></code>`
 
-export default function Content() {
+export default function Preview() {
     const form = useFormContext();
+
+    const content = form.getValues("content")
     return (
-      <FormField
-      control={form.control}
-      name="content"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Email Content (HTML)</FormLabel>
-          <FormControl>
-            <Textarea
-              className="resize-none"
-              defaultValue={example}
-              {...field}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
+      <iframe className="w-full h-auto" srcDoc={content}></iframe>
     );
 }

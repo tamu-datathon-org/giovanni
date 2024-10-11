@@ -1,9 +1,11 @@
 "use client";
 
 import { Button } from "@vanni/ui/button";
+import Confirmation from "./components/Confirmation";
 import Content from "./components/Content";
 import EmailLists from "./components/EmailLists";
 import { Form } from "@vanni/ui/form";
+import Preview from "./components/Preview";
 import Subject from "./components/Subject";
 import { Suspense } from "react";
 import { toast } from "~/hooks/use-toast";
@@ -40,7 +42,7 @@ export default function HomePage() {
     <>
       <div className="absolute top-0 h-screen w-screen overflow-auto bg-black bg-opacity-70">
         <div className="font-XPfont flex justify-center">
-          <div className="flex w-full justify-center lg:w-3/5 ">
+          <div className="flex w-full justify-center lg:w-3/5 h-full">
             <Suspense fallback={<h1>Loading... please wait</h1>}>
               <Form {...form}>
                 <form
@@ -51,6 +53,8 @@ export default function HomePage() {
                   <EmailLists />
                     <Subject/>
                     <Content/>
+                    <Preview/>
+                    <Confirmation/>
                   <Button type="submit">Submit</Button>
                 </form>
               </Form>
