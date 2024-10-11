@@ -1,11 +1,24 @@
 "use client";
 
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@vanni/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@vanni/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 
 import { Checkbox } from "~/components/ui/checkbox";
 import Link from "next/link";
-import {Textarea} from "@vanni/ui/textarea"
+import { Textarea } from "@vanni/ui/textarea";
 import { api } from "~/trpc/react";
 import { type } from "os";
 import { useFormContext } from "react-hook-form";
@@ -101,13 +114,16 @@ const example = `<!DOCTYPE html>
           </p>
       </div>
   </body>
-  </html></code>`
+  </html></code>`;
 
 export default function Preview() {
-    const form = useFormContext();
+  const form = useFormContext();
 
-    const content = form.getValues("content")
-    return (
-      <iframe className="w-full h-auto" srcDoc={content}></iframe>
-    );
+  const content = form.getValues("content");
+  return (
+    <>
+      <h1>Preview</h1>
+      <iframe className="h-auto w-full" srcDoc={content}></iframe>
+    </>
+  );
 }
