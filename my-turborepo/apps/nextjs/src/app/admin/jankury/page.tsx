@@ -1,5 +1,7 @@
 "use client";
 
+import { useMutation, useQuery } from "@tanstack/react-query";
+
 import { Button } from "@vanni/ui/button";
 import Confirmation from "./components/Confirmation";
 import Content from "./components/Content";
@@ -19,7 +21,9 @@ const FormSchema = z.object({
   mailing_list: z.string(),
   subject: z.string(),
   content: z.string(),
-  confirmation: z.boolean().refine((value) => value, "Please test the email and check the box.")
+  confirmation: z
+    .boolean()
+    .refine((value) => value, "Please test the email and check the box."),
 });
 
 export default function HomePage() {
@@ -27,33 +31,64 @@ export default function HomePage() {
     resolver: zodResolver(FormSchema),
   });
 
+  const {mutate} = useMutation({
+    mutationFn: (data: z.infer<typeof FormSchema>) =>
+      fetch("/api/email", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+  });
+  
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
       title: "You submitted the following values:",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
+        <>
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          </pre>
+          <h1>Please wait while the emails are sent.</h1>
+        </>
       ),
+    });
+
+
+
+    mutate(data, {
+      onSuccess: () => {
+        toast({
+          title: "Emails sent!",
+          description: "The emails have been sent successfully.",
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "Error sending emails",
+          description: error.message,
+          variant: "destructive",
+        });
+      },
     });
   }
   return (
     <>
       <div className="absolute top-0 h-screen w-screen overflow-auto bg-black bg-opacity-70">
         <div className="font-XPfont flex justify-center">
-          <div className="flex w-full justify-center lg:w-3/5 h-full">
+          <div className="flex h-full w-full justify-center lg:w-3/5">
             <Suspense fallback={<h1>Loading... please wait</h1>}>
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
-                  
-          className="overflow-x-hidden rounded-lg bg-slate-50 p-5 lg:px-16"
+                  className="overflow-x-hidden rounded-lg bg-slate-50 p-5 lg:px-16"
                 >
                   <EmailLists />
-                    <Subject/>
-                    <Content/>
-                    <Preview/>
-                    <Confirmation/>
+                  <Subject />
+                  <Content />
+                  <Preview />
+                  <Confirmation />
                   <Button type="submit">Submit</Button>
                 </form>
               </Form>

@@ -278,6 +278,9 @@ importers:
       '@types/nodemailer':
         specifier: ^6.4.16
         version: 6.4.16
+      '@types/nodemailer-ses-transport':
+        specifier: ^1.5.5
+        version: 1.5.5
       '@types/react':
         specifier: ^18.3.2
         version: 18.3.4
@@ -2943,6 +2946,9 @@ packages:
   '@types/acorn@4.0.6':
     resolution: {integrity: sha512-veQTnWP+1D/xbxVrPC3zHnCZRjSrKfhbMUlEA43iMZLu7EsnTtkJklIuwrCPbOi8YkvDQAiW05VQQFvvz9oieQ==}
 
+  '@types/aws-sdk2-types@0.0.5':
+    resolution: {integrity: sha512-FIOe05YZpdvafyZxlAmflV5jStj2TJoyFBtLJvXJnQauxQGFSVrazauVws1mlLRwS0GnITlFipNh0kHWdnUU1g==}
+
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
 
@@ -2996,6 +3002,18 @@ packages:
 
   '@types/node@20.16.2':
     resolution: {integrity: sha512-91s/n4qUPV/wg8eE9KHYW1kouTfDk2FPGjXbBMfRWP/2vg1rCXNQL1OCabwGs0XSdukuK+MwCDXE30QpSeMUhQ==}
+
+  '@types/nodemailer-direct-transport@1.0.35':
+    resolution: {integrity: sha512-D3CqXuU4WcHflbFF/ZMG4gXRU2OJKzv44XgPKX3FxLxU1nWz6l+hsAkN7dcBvBSu74muXUxd8EGioBW04iWZ5g==}
+
+  '@types/nodemailer-ses-transport@1.5.5':
+    resolution: {integrity: sha512-QL1SjkySMfpjnPEkPLZHY/wZleEboGsEruuZzDCI2dk/VDShoizX2smF859MDFLbtA/yHE/u7+7U/lkNgSe0Gg==}
+
+  '@types/nodemailer-smtp-transport@2.7.8':
+    resolution: {integrity: sha512-r+6LLaO4VtzP2FFLjOZGXpsm1Oz4wm5U9BdiMPfOFiIJhpPRmNKFXrzuBZUufRJoHhNi+NnS7Igy+m8ZyrADQg==}
+
+  '@types/nodemailer@3.1.14':
+    resolution: {integrity: sha512-8PYFpsjpGMOk3i4XRPM0piXa1OtGckjDjrvXAuKYZjXuvAI6XcrD/cN3f5MrqNVPDZGyxtlvQdhGzXo/D/uS/Q==}
 
   '@types/nodemailer@6.4.16':
     resolution: {integrity: sha512-uz6hN6Pp0upXMcilM61CoKyjT7sskBoOWpptkjjJp8jIMlTdc3xG01U7proKkXzruMS4hS0zqtHNkNPFB20rKQ==}
@@ -10049,6 +10067,10 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.5
 
+  '@types/aws-sdk2-types@0.0.5':
+    dependencies:
+      '@types/node': 20.16.2
+
   '@types/cookie@0.6.0': {}
 
   '@types/debug@4.1.12':
@@ -10106,6 +10128,27 @@ snapshots:
   '@types/node@20.16.2':
     dependencies:
       undici-types: 6.19.8
+
+  '@types/nodemailer-direct-transport@1.0.35':
+    dependencies:
+      '@types/nodemailer': 3.1.14
+
+  '@types/nodemailer-ses-transport@1.5.5':
+    dependencies:
+      '@types/aws-sdk2-types': 0.0.5
+      '@types/nodemailer': 3.1.14
+
+  '@types/nodemailer-smtp-transport@2.7.8':
+    dependencies:
+      '@types/node': 20.16.2
+      '@types/nodemailer': 3.1.14
+
+  '@types/nodemailer@3.1.14':
+    dependencies:
+      '@types/node': 20.16.2
+      '@types/nodemailer-direct-transport': 1.0.35
+      '@types/nodemailer-ses-transport': 1.5.5
+      '@types/nodemailer-smtp-transport': 2.7.8
 
   '@types/nodemailer@6.4.16':
     dependencies:
