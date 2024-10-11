@@ -179,7 +179,10 @@ const SchedulePage: React.FC = () => {
           <div className="w-full text-center">
             <h1 className="text-5xl font-bold inline-block pr-4 sm:pr-0"
               style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
-            >Datathon Schedule (wip)</h1>
+            >Datathon Schedule (WIP)</h1>
+            <h3 className="text-xl md:text-3xl lg:text-4xl font-bold text-black">More stuff via updates soon!</h3>
+
+
           </div>
         </div>
 
