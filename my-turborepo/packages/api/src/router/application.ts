@@ -10,7 +10,7 @@ import {
   UserResume,
 } from "@vanni/db/schema";
 
-import { protectedProcedure } from "../trpc";
+import { protectedProcedure, publicProcedure } from "../trpc";
 
 export const applicationRouter = {
   create: protectedProcedure
@@ -168,10 +168,10 @@ export const applicationRouter = {
       ).parse(application);
       return { app: validatedApplication, resume: resume };
     }),
-  getAllApplicationByEventName: protectedProcedure
+  getAllApplicationByEventName: publicProcedure
     .input(z.string())
     .query(({ ctx, input }) => {
-      return ctx.db.selectDistinctOn([Application.userId])
+      return ctx.db.selectDistinctOn([Application.userId], { id: Application.id, firstName: Application.firstName })
         .from(Application)
         .leftJoin(Event, eq(Event.id, Application.eventId))
         .where(eq(Event.name, input));

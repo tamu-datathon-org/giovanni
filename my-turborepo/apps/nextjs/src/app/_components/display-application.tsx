@@ -11,8 +11,8 @@ const CheckApplication: React.FC = () => {
             <div className='font-bold text-xl'>There are {data?.length} applications for this event</div>
             {data?.map((item) => {
                 return (
-                    <div key={item.application.id} className='flex-col w-4/5'>
-                        {item.application.firstName} {item.application.lastName}
+                    <div key={item.id} className='flex-col w-4/5'>
+                        {item.firstName}
                     </div>
                 );
             })}
