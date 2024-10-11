@@ -1,9 +1,8 @@
+import { env as authEnv } from "@vanni/auth/env";
 /* eslint-disable no-restricted-properties */
 import { createEnv } from "@t3-oss/env-nextjs";
 import { vercel } from "@t3-oss/env-nextjs/presets";
 import { z } from "zod";
-
-import { env as authEnv } from "@vanni/auth/env";
 
 export const env = createEnv({
   extends: [authEnv, vercel()],
@@ -20,6 +19,10 @@ export const env = createEnv({
     POSTGRES_URL: z.string().url(),
     JWT_SECRET: z.string(),
     JWT_EXPIRES_IN: z.string(),
+
+    AWS_ACCESS_KEY_ID: z.string(),
+    AWS_SECRET_ACCESS_KEY: z.string(),
+    AWS_EMAIL_USER: z.string(),
   },
 
   /**
