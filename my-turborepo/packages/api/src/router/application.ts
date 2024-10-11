@@ -168,4 +168,12 @@ export const applicationRouter = {
       ).parse(application);
       return { app: validatedApplication, resume: resume };
     }),
+  getAllApplicationByEventName: protectedProcedure
+    .input(z.string())
+    .query(({ ctx, input }) => {
+      return ctx.db.selectDistinctOn([Application.userId])
+        .from(Application)
+        .leftJoin(Event, eq(Event.id, Application.eventId))
+        .where(eq(Event.name, input));
+    })
 };

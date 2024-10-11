@@ -43,15 +43,15 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={w95fa.className}>
       <body
-        className={cn("min-h-screen bg-background text-foreground antialiased")}
+        className={cn("min-h-screen text-foreground antialiased")}
       >
         <TRPCReactProvider>
           <main>
-            <BackgroundImage
+            {/* <BackgroundImage
               desktop_src={"/assets/wallpaper.png"}
               mobile_src={"/assets/wallpaper-mobile.png"}
               alt={"Preregistration background"}
-            />
+            /> */}
             {props.children}
           </main>
         </TRPCReactProvider>
