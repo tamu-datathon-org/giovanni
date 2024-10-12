@@ -1,4 +1,4 @@
-export default function VettingLayout({
+export default function ApplicationLayout({
     children, // will be a page or nested layout
 }: {
     children: React.ReactNode;

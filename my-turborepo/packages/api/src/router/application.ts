@@ -7,10 +7,36 @@ import {
   Application,
   CreateApplicationSchema,
   Event,
+  Role,
   UserResume,
+  UserRole,
 } from "@vanni/db/schema";
 
 import { protectedProcedure } from "../trpc";
+
+const organizerAuth = async (ctx: any, input: string) => {
+  const eventName = input;
+
+  const user_role = await ctx.db.select()
+    .from(Role)
+    .leftJoin(Event, eq(Role.eventId, Event.id))
+    .leftJoin(UserRole, eq(Role.id, UserRole.roleId))
+    .where(and(eq(Event.name, eventName), eq(UserRole.userId, ctx.session.user.id)));
+
+  if (!user_role || user_role.length === 0) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "User_role was not found",
+    });
+  }
+
+  if (user_role[0]?.role.name !== "Organizer") {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "User is not an organizer",
+    });
+  }
+};
 
 export const applicationRouter = {
   create: protectedProcedure
@@ -168,4 +194,32 @@ export const applicationRouter = {
       ).parse(application);
       return { app: validatedApplication, resume: resume };
     }),
+  getAllApplicationsByEventName: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      // Auth Check
+      await organizerAuth(ctx, input);
+
+      const query = await ctx.db.selectDistinctOn([Application.userId])
+        .from(Application)
+        .leftJoin(Event, eq(Event.id, Application.eventId))
+        .where(eq(Event.name, input));
+
+      return query.map((row) => row.application);
+    }),
+  updateStatus: protectedProcedure
+    .input(z.object({
+      eventName: z.string(),
+      id: z.string(),
+      newStatus: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { eventName, id, newStatus } = input;
+
+      await organizerAuth(ctx, eventName);
+
+      return await ctx.db.update(Application)
+        .set({ status: newStatus as "pending" | "accepted" | "checkedin" | "rejected" })
+        .where(eq(Application.id, id))
+    })
 };
