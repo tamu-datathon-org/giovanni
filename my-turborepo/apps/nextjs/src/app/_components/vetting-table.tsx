@@ -89,6 +89,7 @@ export const PersonalInformation: React.FC<InformationProps> = ({ application })
         <CardInformation>
             <p><span className="font-bold">First Name:</span> {application.firstName}</p>
             <p><span className="font-bold">Last Name:</span> {application.lastName}</p>
+            <p><span className="font-bold">Email:</span> {application.email}</p>
             <p><span className="font-bold">Age:</span> {application.age}</p>
             <p><span className="font-bold">Country:</span> {application.country}</p>
             <p><span className="font-bold">Race:</span> {application.race}</p>
@@ -326,7 +327,7 @@ export function VettingTable() {
     })
 
     return (
-        <div className="w-full overflow-auto h-4/5">
+        <div className="w-full px-5 overflow-auto h-full">
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Filter firstName..."
@@ -334,11 +335,12 @@ export function VettingTable() {
                     onChange={(event) =>
                         table.getColumn("firstName")?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm"
+                    className="max-w-sm bg-white"
                 />
                 <Button
-                    variant="ghost"
+                    variant="secondary"
                     onClick={() => table.getColumn("createdAt")?.toggleSorting()}
+                    className="ml-2"
                 >
                     Order By created_at
                     <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -370,15 +372,15 @@ export function VettingTable() {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <div className="rounded-md border bg-gray-500">
-                <div className="overflow-y-auto max-h-[75vh]">
+            <div className="rounded-md border bg-indigo-900">
+                <div className="overflow-y-auto max-h-[80vh]">
                     <Table className="w-full">
                         <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <TableRow key={headerGroup.id}>
                                     {headerGroup.headers.map((header) => {
                                         return (
-                                            <TableHead key={header.id} className="text-black">
+                                            <TableHead key={header.id} className="text-white">
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
@@ -388,7 +390,7 @@ export function VettingTable() {
                                             </TableHead>
                                         )
                                     })}
-                                    <TableHead className="text-black">Change Status</TableHead>
+                                    <TableHead className="text-white">Change Status</TableHead>
                                 </TableRow>
                             ))}
                         </TableHeader>

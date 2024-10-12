@@ -5,7 +5,9 @@ export default function OrganizerLayout({
 }) {
     return (
         <>
-            <div className="max-h-screen-sm overflow-hidden bg-white font-mono">{children}</div>
+            <div className="max-h-screen-sm h-screen overflow-hidden font-mono">
+                {children}
+            </div>
         </>
     );
 }
