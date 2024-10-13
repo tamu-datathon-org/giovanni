@@ -21,10 +21,13 @@ export async function POST(request: Request) {
   });
 
   const emails = await api.email.getEmailByLabel(mailing_list);
+  let count = 0;
 
   for (const { email } of emails) {
     console.log("Sending email to", email);
 
+
+    for (let i = 0; i < 3; i++) {
       const resp = await transporter.sendMail({
         from: process.env.AWS_EMAIL_USER,
         to: email,
@@ -33,6 +36,13 @@ export async function POST(request: Request) {
       });
 
       console.log("Response:", resp);
+      if (resp.accepted.length > 0) {
+        count++;
+        break;
+      } else {
+        console.log("Failed to send email. Retrying...", email);
+      }
+    }
   }
 
   return NextResponse.json(
