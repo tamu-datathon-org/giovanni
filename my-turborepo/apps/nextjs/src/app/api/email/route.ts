@@ -24,25 +24,33 @@ export async function POST(request: Request) {
   let count = 0;
 
   for (const { email } of emails) {
-    console.log("Sending email to", email);
+
+    // This should wait for the transporter to be idle before sending the next email
+    // This is to prevent rate limiting 
+    transporter.once('idle', async () => {
+      if (transporter.isIdle()) {
+        console.log("Sending email to", email);
 
 
-    for (let i = 0; i < 3; i++) {
-      const resp = await transporter.sendMail({
-        from: process.env.AWS_EMAIL_USER,
-        to: email,
-        subject: subject,
-        html: content,
-      });
+        // We want to retry any emails that failed to send
+        for (let i = 0; i < 3; i++) {
+          const resp = await transporter.sendMail({
+            from: process.env.AWS_EMAIL_USER,
+            to: email,
+            subject: subject,
+            html: content,
+          });
 
-      console.log("Response:", resp);
-      if (resp.accepted.length > 0) {
-        count++;
-        break;
-      } else {
-        console.log("Failed to send email. Retrying...", email);
+          console.log("Response:", resp);
+          if (resp.accepted.includes(email)) {
+            count++;
+            break;
+          } else {
+            console.log("Failed to send email. Retrying...", email);
+          }
+        }
       }
-    }
+    });
   }
 
   return NextResponse.json(
