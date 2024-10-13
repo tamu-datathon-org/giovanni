@@ -42,7 +42,7 @@ export async function POST(request: Request) {
           });
 
           console.log("Response:", resp);
-          if (resp.accepted.includes(email)) {
+          if (resp.messageId.includes(resp.response)) {
             count++;
             break;
           } else {
