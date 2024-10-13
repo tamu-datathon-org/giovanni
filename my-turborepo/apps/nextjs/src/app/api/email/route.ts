@@ -20,6 +20,7 @@ export async function POST(request: Request) {
   const transporter = nodemailer.createTransport({
     SES: { ses, aws },
     sendingRate: 14,
+    maxConnections: 20,
   });
 
   const emails = await api.email.getEmailByLabel(mailing_list);
