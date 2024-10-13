@@ -23,17 +23,17 @@ export async function POST(request: Request) {
   const emails = await api.email.getEmailByLabel(mailing_list);
   let count = 0;
 
+  let failed = [];
   for (const { email } of emails) {
-
     // // This should wait for the transporter to be idle before sending the next email
-    // // This is to prevent rate limiting 
+    // // This is to prevent rate limiting
     // transporter.once('idle', async () => {
-      if (transporter.isIdle()) {
-        console.log("Sending email to", email);
+    if (transporter.isIdle()) {
+      console.log("Sending email to", email);
 
-
-        // We want to retry any emails that failed to send
-        for (let i = 0; i < 3; i++) {
+      // We want to retry any emails that failed to send
+      for (let i = 0; i < 3; i++) {
+        try {
           const resp = await transporter.sendMail({
             from: process.env.AWS_EMAIL_USER,
             to: email,
@@ -48,13 +48,30 @@ export async function POST(request: Request) {
           } else {
             console.log("Failed to send email. Retrying...", email);
           }
+        } catch (error) {
+          if (i === 2) {
+            console.error("Failed to send email after 3 retries", email);
+            failed.push(email);
+            break;
+          }
+          console.error("Failed to send email. Retrying...", email);
+          await setTimeout(() => {}, 1000);
         }
       }
+    }
     // });
   }
 
   console.log("Emails Sent:", count);
   console.log("Emails Failed:", emails.length - count);
+
+  if (failed.length > 0) {
+    console.log("Failed Emails:", failed);
+    return NextResponse.json(
+      { message: "Failed to send some emails:" + failed.join(", ") },
+      { status: 400 },
+    );
+  }
 
   return NextResponse.json(
     { message: "Emails Sent Successfully" },
