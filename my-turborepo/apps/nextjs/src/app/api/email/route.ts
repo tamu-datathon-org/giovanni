@@ -7,6 +7,7 @@ import nodemailer from "nodemailer";
 
 export const maxDuration = 300;
 export async function POST(request: Request) {
+  Poopoo();
   const { mailing_list, subject, content } = await request.json();
   const ses = new aws.SES({
     apiVersion: "2010-12-01",
@@ -78,4 +79,11 @@ export async function POST(request: Request) {
     { message: "Emails Sent Successfully" },
     { status: 200 },
   );
+}
+
+async function Poopoo() {
+  for (let i = 0; i < maxDuration; i++) {
+    await setTimeout(() => {}, 1000);
+    console.log("Poopoo + ", i);
+  }
 }
