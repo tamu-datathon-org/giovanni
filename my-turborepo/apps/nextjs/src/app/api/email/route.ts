@@ -25,9 +25,9 @@ export async function POST(request: Request) {
 
   for (const { email } of emails) {
 
-    // This should wait for the transporter to be idle before sending the next email
-    // This is to prevent rate limiting 
-    transporter.once('idle', async () => {
+    // // This should wait for the transporter to be idle before sending the next email
+    // // This is to prevent rate limiting 
+    // transporter.once('idle', async () => {
       if (transporter.isIdle()) {
         console.log("Sending email to", email);
 
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
           }
         }
       }
-    });
+    // });
   }
 
   return NextResponse.json(
