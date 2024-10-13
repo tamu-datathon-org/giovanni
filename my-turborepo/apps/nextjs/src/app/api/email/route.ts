@@ -5,6 +5,7 @@ import { api } from "~/trpc/server";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import nodemailer from "nodemailer";
 
+export const maxDuration = 300;
 export async function POST(request: Request) {
   const { mailing_list, subject, content } = await request.json();
   const ses = new aws.SES({
