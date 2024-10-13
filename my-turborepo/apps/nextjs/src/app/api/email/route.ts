@@ -53,6 +53,9 @@ export async function POST(request: Request) {
     // });
   }
 
+  console.log("Emails Sent:", count);
+  console.log("Emails Failed:", emails.length - count);
+
   return NextResponse.json(
     { message: "Emails Sent Successfully" },
     { status: 200 },
