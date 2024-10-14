@@ -2,13 +2,13 @@ import "~/app/globals.css";
 
 import type { Metadata, Viewport } from "next";
 
-import { cn } from "@vanni/ui";
-
-import { w95fa } from "~/app/_components/fonts";
-import { Toaster } from "~/components/ui/toaster";
-import { env } from "~/env";
-import { TRPCReactProvider } from "~/trpc/react";
 import BackgroundImage from "./_components/images/background";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { TRPCReactProvider } from "~/trpc/react";
+import { Toaster } from "~/components/ui/toaster";
+import { cn } from "@vanni/ui";
+import { env } from "~/env";
+import { w95fa } from "~/app/_components/fonts";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -53,6 +53,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
               alt={"Preregistration background"}
             />
             {props.children}
+            <SpeedInsights />
           </main>
         </TRPCReactProvider>
         <div className="absolute bottom-4 right-4"></div>

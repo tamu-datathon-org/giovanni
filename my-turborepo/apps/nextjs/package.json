@@ -38,6 +38,7 @@
     "@vanni/ui": "workspace:*",
     "@vanni/validators": "workspace:*",
     "@vercel/blob": "^0.24.0",
+    "@vercel/speed-insights": "^1.0.12",
     "aws-sdk": "^2.1691.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
