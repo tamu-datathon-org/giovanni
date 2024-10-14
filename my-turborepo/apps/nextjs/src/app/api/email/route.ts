@@ -27,6 +27,8 @@ export async function POST(request: Request) {
   let count = 0;
 
   let failed = [];
+
+  console.log("Emails to send:", emails.length);
   for (const { email } of emails) {
     // // This should wait for the transporter to be idle before sending the next email
     // // This is to prevent rate limiting
