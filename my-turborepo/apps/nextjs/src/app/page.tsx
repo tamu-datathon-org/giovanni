@@ -17,6 +17,7 @@ export default function HomePage() {
   const [welcomeOpen, setWelcomeOpen] = useState(true);
   const [applyOpen, setApplyOpen] = useState(false);
   const [faqOpen, setFaqOpen] = useState(false);
+  const [prizesOpen, setPrizesOpen] = useState(false);
 
   // redirect("/registration");
   // You can await this here if you don't want to show Suspense fallback below
@@ -100,7 +101,7 @@ export default function HomePage() {
                 focus={activeWindow}
                 className="absolute lg:left-[20%] lg:top-[25%] "
             >
-              <WindowContainer isOpen={welcomeOpen} openFunc={setWelcomeOpen}>
+              <WindowContainer isOpen={prizesOpen} openFunc={setPrizesOpen}>
                 <h1 className="m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">
                   Prizes!
                 </h1>
@@ -113,6 +114,7 @@ export default function HomePage() {
               welcFunc={setWelcomeOpen}
               applyFunc={setApplyOpen}
               faqFunc={setFaqOpen}
+              prizesFunc={setPrizesOpen}
             setFocus={setActiveWindow}
             className="absolute bottom-10 z-50 lg:bottom-20"
           />
