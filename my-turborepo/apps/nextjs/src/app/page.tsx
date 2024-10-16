@@ -99,7 +99,7 @@ export default function HomePage() {
                 onFocus={setActiveWindow}
                 name="Prize"
                 focus={activeWindow}
-                className="absolute lg:left-[20%] lg:top-[25%] "
+                className="absolute lg:right-[30%] lg:top-[45%] "
             >
               <WindowContainer isOpen={prizesOpen} openFunc={setPrizesOpen}>
                 <h1 className="m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">
