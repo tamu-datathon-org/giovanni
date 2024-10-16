@@ -92,12 +92,27 @@ export default function HomePage() {
                   </Button> */}
               </WindowContainer>
             </DraggableComponent>
+
+            {/* Prize Component */}
+            <DraggableComponent
+                onFocus={setActiveWindow}
+                name="Prize"
+                focus={activeWindow}
+                className="absolute lg:left-[20%] lg:top-[25%] "
+            >
+              <WindowContainer isOpen={welcomeOpen} openFunc={setWelcomeOpen}>
+                <h1 className="m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">
+                  Prizes!
+                </h1>
+                <h3>Challenge 1: </h3>
+              </WindowContainer>
+            </DraggableComponent>
           </div>
 
           <IconList
-            welcFunc={setWelcomeOpen}
-            applyFunc={setApplyOpen}
-            faqFunc={setFaqOpen}
+              welcFunc={setWelcomeOpen}
+              applyFunc={setApplyOpen}
+              faqFunc={setFaqOpen}
             setFocus={setActiveWindow}
             className="absolute bottom-10 z-50 lg:bottom-20"
           />
