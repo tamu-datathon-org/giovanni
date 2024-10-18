@@ -12,7 +12,7 @@ import { useFormContext } from "react-hook-form";
 export default function EmailLists() {
     const lists = api.email.getAllLabels.useQuery().data;
     const form = useFormContext();
-    console.log("list lol ", lists, "type is", typeof(lists))
+
     return (
         <FormField
           control={form.control}
