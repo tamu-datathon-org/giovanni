@@ -10,6 +10,7 @@ import "../_components/customCss.scss";
 import { Separator } from "@radix-ui/react-select";
 
 import { ScrollArea } from "~/components/ui/scroll-area";
+import Link from "next/link";
 
 interface PopupProps {
   item: FAQItem;
@@ -175,6 +176,15 @@ const FAQComponent: React.FC = () => {
               </div>
             ))}
           </div>
+          <Link
+            href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-center text-sm text-gray-700 underline"
+          >
+            MLH Code of Conduct
+          </Link>
+
         </ScrollArea>
       </div>
       {/* </WindowContainer> */}

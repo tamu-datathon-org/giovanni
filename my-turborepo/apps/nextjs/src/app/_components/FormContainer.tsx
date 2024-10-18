@@ -28,7 +28,7 @@ const FormContainer: React.FC<FormContainerProps> = ({
           {/* <div className = "border-[#585958]"> */}
           <div className="flex w-full flex-row items-center justify-center">
             <Lines />
-            <ExitButton />
+            {/* <ExitButton /> */}
           </div>
           <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] lg:border-[1px]">
             {children}

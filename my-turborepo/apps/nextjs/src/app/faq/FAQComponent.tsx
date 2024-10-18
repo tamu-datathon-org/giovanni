@@ -7,6 +7,7 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import DraggableComponent from "~/app/_components/DraggableComponent";
 import ReactMarkdown from "react-markdown";
 import WindowContainer from "../_components/WindowContainer";
+import Link from "next/link";
 
 interface PopupProps {
   item: FAQItem;
@@ -57,7 +58,7 @@ const faqItems: FAQItem[] = [
     id: 1,
     question: "What is TAMU Datathon?",
     answer:
-      "A datathon is where you build your analytical skill set and create data-driven solutions in 24 hours. We provide data science lectures, workshops, challenges, prizes, fun activities, swag, food, and more!",
+      "A datathon is where you build your analytical skill set and create data-driven solutions in 24 hours. We provide data science lectures, workshops, challenges, prizes, fun activities, swag, food, and more! Must follow MLH Code of Conduct.",
   },
   {
     id: 2,
@@ -69,7 +70,7 @@ const faqItems: FAQItem[] = [
     id: 3,
     question: "Where is the event & how will I get there?",
     answer:
-      "The event will take place at the MSC 2300 Bethancourt Ballroom! Parking will be free at a later disclosed location",
+      "The event will take place at the MSC 2300 Bethancourt Ballroom! Parking will be free at a later disclosed location.",
   },
   {
     id: 4,
@@ -170,11 +171,12 @@ function FAQComponent({
                   onClick={() => {
                     setSelectedItem(item);
                     setIsPopupOpen(true);
-                  } }
+                  }}
                 >
                   <h3 className="text-lg font-semibold">{item.question}</h3>
                 </div>
               ))}
+              <Link href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf" style={{ position: "fixed", bottom: "10px", right: "10px", fontSize: "20px", color: "blue", textDecoration: "underline" }}>MLH Code of Conduct</Link>
             </div>
           </div>
         </WindowContainer>
