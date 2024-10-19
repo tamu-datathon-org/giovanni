@@ -23,85 +23,121 @@ const events: Event[] = [
     id: 1, 
     name: 'Doors Open + Check-in', 
     date: new Date('2024-11-09T10:00:00'),
-    description: '# **Opening Ceremony**\n\nJoin us for the kickoff of our exciting Datathon! This event will include:\n\n- Welcome speech\n- Introduction of judges\n- Overview of the challenge\n- Q&A session'
+    description: ''
   },
   { 
     id: 2, 
     name: 'Opening Ceremony', 
-    date: new Date('2024-11-09T11:30:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    date: new Date('2024-11-09T12:00:00'),
+    description: ''
   },
   { 
     id: 3, 
     name: 'Hacking Starts', 
     date: new Date('2024-11-09T13:00:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    description: ''
   },
   { 
     id: 4, 
-    name: 'Lunch and Student Org Fair', 
-    date: new Date('2024-11-09T13:30:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    name: 'Workshop 1 (to be named soon)', 
+    date: new Date('2024-11-09T13:00:00'),
+    description: ''
   },
   { 
     id: 5, 
-    name: 'Workshop 1', 
+    name: 'Lunch - Schlozskys!', 
     date: new Date('2024-11-09T13:30:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    description: ''
   },
   { 
     id: 6, 
-    name: 'Workshop 2', 
-    date: new Date('2024-11-09T15:30:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    name: 'Workshop 2 (to be named soon)', 
+    date: new Date('2024-11-09T14:30:00'),
+    description: ''
   },
   { 
     id: 7, 
-    name: 'Dinner', 
-    date: new Date('2024-11-09T18:30:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    name: 'Workshop 3 (to be named soon)', 
+    date: new Date('2024-11-09T15:00:00'),
+    description: ''
   },
   { 
+    id: 7, 
+    name: 'Workshop 4 (to be named soon)', 
+    date: new Date('2024-11-09T15:30:00'),
+    description: ''
+  },
+  { 
+    id: 7, 
+    name: 'Trivia! (Mini Event)', 
+    date: new Date('2024-11-09T16:30:00'),
+    description: ''
+  },
+  { 
+    id: 7, 
+    name: 'Workshop 5 (to be named soon)', 
+    date: new Date('2024-11-09T17:30:00'),
+    description: ''
+  },
+  { 
+    id: 7, 
+    name: 'Dinner - Ronis!', 
+    date: new Date('2024-11-09T19:00:00'),
+    description: ''
+  },
+  { 
+    id: 7, 
+    name: 'Bob Ross digital painting! (Mini Event)', 
+    date: new Date('2024-11-09T20:00:00'),
+    description: ''
+  },
+  {
     id: 8, 
-    name: 'Breakfast', 
+    name: 'Breakfast - Stellas Cafe!', 
     date: new Date('2024-11-10T08:00:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    description: ''
   },
   { 
     id: 9, 
-    name: 'Workshop 3', 
+    name: 'Workshop 6 (to be named soon)', 
     date: new Date('2024-11-10T09:00:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    description: ''
   },
   { 
     id: 10, 
-    name: 'Hacking Ends', 
-    date: new Date('2024-11-10T11:30:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    name: 'Submissions close + Judging begins', 
+    date: new Date('2024-11-10T11:45:00'),
+    description: ''
   },
   { 
     id: 11, 
-    name: 'Judging', 
-    date: new Date('2024-11-10T12:00:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    name: 'Lunch - (unnamed)', 
+    date: new Date('2024-11-10T12:30:00'),
+    description: ''
   },
   { 
     id: 12, 
-    name: 'Lunch', 
-    date: new Date('2024-11-10T12:30:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    name: 'Judging ends', 
+    date: new Date('2024-11-10T13:00:00'),
+    description: ''
   },
   { 
     id: 13, 
-    name: 'Closing Ceremony', 
-    date: new Date('2024-11-10T15:00:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    name: 'Typing Contest! (Mini event)', 
+    date: new Date('2024-11-10T14:00:00'),
+    description: ''
   },
   { 
     id: 14, 
-    name: 'Event Ends', 
+    name: 'Closing Ceremony', 
+    date: new Date('2024-11-10T15:00:00'),
+    description: ''
+  },
+  { 
+    id: 15, 
+    name: 'Event Ends + T-Shirt Pickup', 
     date: new Date('2024-11-10T16:00:00'),
-    description: '# **Closing Ceremony**\n\nWrap up the Datathon with our closing event featuring:\n\n- Presentation of top projects\n- Awards ceremony\n- Closing remarks\n- Networking opportunity'
+    description: ''
   },
 ];
 
