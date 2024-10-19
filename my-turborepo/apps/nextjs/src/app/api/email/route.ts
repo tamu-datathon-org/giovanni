@@ -129,6 +129,7 @@ async function queueBulkEmail(
 
   // Add emails to the queue in batches of 10
   const maxBatchSize = 10;
+  const senderEmail = process.env.AWS_EMAIL_USER;
   let failed = [];
   let successCount = 0;
 
@@ -139,9 +140,9 @@ async function queueBulkEmail(
 
     const command = new SendMessageBatchCommand({
       QueueUrl: process.env.AWS_SQS_MAIL_URL,
-      Entries: batch.map((email, index) => ({
+      Entries: batch.map((receiverEmail, index) => ({
         Id: index.toString(),
-        MessageBody: JSON.stringify({ email, subject, content }),
+        MessageBody: JSON.stringify({ senderEmail, receiverEmail, subject, content }),
       })),
     });
 
