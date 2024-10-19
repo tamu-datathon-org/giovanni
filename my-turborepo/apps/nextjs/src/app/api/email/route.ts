@@ -169,14 +169,11 @@ async function queueBulkEmail(
 
 export async function POST(request: Request) {
   // const f = Poopoo();
-  const { mailing_list, subject, content } = await request.json();
-  let emails = await api.email.getEmailByLabel(mailing_list);
-  
-  // Dedupe emails
-  emails = emails.filter((e, i, self) => self.findIndex((s) => s.email === e.email) === i);
+  const { mailing_lists, subject, content } = await request.json();
+  let emails = await api.email.getEmailsByLabelList(mailing_lists);
   
 
-  const failed = await queueBulkEmail(emails.map((e) => e.email), subject, content);
+  const failed = await queueBulkEmail(emails, subject, content);
 
   if (failed.length > 0) {
     return NextResponse.json(
