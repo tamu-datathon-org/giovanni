@@ -17,8 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export const runtime = "edge";
 
-const FormSchema = z.object({
-  mailing_list: z.string(),
+export const FormSchema = z.object({
+  mailing_lists: z.array(z.string()),
   subject: z.string(),
   content: z.string(),
   confirmation: z

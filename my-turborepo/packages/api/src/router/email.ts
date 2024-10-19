@@ -1,6 +1,7 @@
-import { asc, eq } from "@vanni/db";
-import { protectedProcedure } from "../trpc";
 import { Application, EmailLabel, EmailList, Preregistration } from "@vanni/db/schema";
+import { asc, eq } from "@vanni/db";
+
+import { protectedProcedure } from "../trpc";
 import { z } from "zod";
 
 export const emailRouter = {
@@ -9,10 +10,10 @@ export const emailRouter = {
             const emailLabels = await ctx.db.select({
                 name: EmailLabel.name
             }).from(EmailLabel);
-            emailLabels.push({ name: "Preregistration" });
-            emailLabels.push({ name: "Registration" });
+            // emailLabels.push({ name: "Preregistration" });
+            // emailLabels.push({ name: "Registration" });
 
-            return emailLabels;
+            return emailLabels.map((label) => label.name);
         }),
     getAllEmails: protectedProcedure
         .query(async ({ ctx }) => {
