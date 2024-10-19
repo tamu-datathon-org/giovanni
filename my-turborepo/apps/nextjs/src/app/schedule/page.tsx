@@ -387,13 +387,6 @@ const SchedulePage: React.FC = () => {
           </WindowContainer>
         </DraggableComponent>
       </div>
-      {currentEvent && (
-        <EventAlertPopup 
-          event={currentEvent} 
-          onClose={closeEventAlert} 
-          onOpenDescription={openEventDescription}
-        />
-      )}
     </div>
   );
 };
