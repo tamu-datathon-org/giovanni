@@ -279,18 +279,18 @@ const SchedulePage: React.FC = () => {
           <div className="absolute left-0">
             <a href="https://tamudatathon.com" onClick={handleLogoClick}>
               <Image 
-                src="/2024_Fall_Logo.png" 
-                alt="TAMU Datathon Logo" 
-                width={150} 
-                height={150} 
-                className="w-20 h-20 md:w-32 md:h-32 lg:w-[150px] lg:h-[150px]"
+                src="/Pixel_WorldIcon.png" 
+                alt="go home et" 
+                width={120} 
+                height={120} 
+                className="w-20 h-20 md:w-32 md:h-32 lg:w-[100px] lg:h-[100px]"
               />
             </a>
           </div>
           <div className="w-full text-center">
           <h1 className="text-5xl font-bold inline-block pr-4 sm:pr-0"
             style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
-            >Datathon Schedule</h1>
+            >Schedule</h1>
           </div>
         </div>
 
@@ -300,9 +300,16 @@ const SchedulePage: React.FC = () => {
           focus={focusedWindow}
           className="absolute top-[120px] left-[60px] md:top-[120px] md:left-[60px]"
         >
-          <WindowContainer isOpen={true} openFunc={setIsCountdownOpen}>
+          <WindowContainer isOpen={true} openFunc={setIsCountdownOpen}
+          borderGradientStart="#34a4eb"
+          borderGradientMiddle="#004c99"
+          borderGradientEnd="#124c87"
+          >
             <div className="w-[300px] h-[200px] md:w-[600px] md:h-[350px] lg:w-[758px] lg:h-[448px] p-4 md:p-12 lg:p-16 flex flex-col justify-between items-center">
               <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-black text-center mb-2 md:mb-4">Countdown to Datathon!</h2>
+              <h3 className="text-xl font-bold text-black md:text-3xl lg:text-4xl">
+                  Event: November 9th at the MSC!
+                </h3>
               <div className="flex justify-center space-x-2 md:space-x-4">
                 {Object.entries(timeLeft).map(([unit, value]) => (
                   <div key={unit} className="text-center">
@@ -321,8 +328,14 @@ const SchedulePage: React.FC = () => {
           focus={focusedWindow}
           className="absolute top-[340px] right-[20px] md:top-[120px] md:right-[60px]"
         >
-          <WindowContainer isOpen={true} openFunc={setIsEventsOpen}>
-            <div className="w-[300px] h-[300px] md:w-[400px] md:h-[450px] lg:w-[420px] lg:h-[480px] p-4 md:p-8 lg:p-10 flex flex-col items-center">
+        <WindowContainer 
+            isOpen={isEventsOpen} 
+            openFunc={() => {}}
+            borderGradientStart="#34a4eb"
+            borderGradientMiddle="#004c99"
+            borderGradientEnd="#124c87"
+          > 
+           <div className="w-[300px] h-[300px] md:w-[400px] md:h-[450px] lg:w-[420px] lg:h-[480px] p-4 md:p-8 lg:p-10 flex flex-col items-center">
               <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold mb-2 md:mb-4">Events!!!</h2>
               <div style= {{scrollbarWidth:'none',
                 overflowY: 'auto'
