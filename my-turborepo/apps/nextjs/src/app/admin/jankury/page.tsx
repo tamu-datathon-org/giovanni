@@ -1,37 +1,30 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { Suspense } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { Button } from "@vanni/ui/button";
+import { Form } from "@vanni/ui/form";
+
+import { FormSchema } from "~/app/admin/jankury/formSchema";
+import { toast } from "~/hooks/use-toast";
 import Confirmation from "./components/Confirmation";
 import Content from "./components/Content";
 import EmailLists from "./components/EmailLists";
-import { Form } from "@vanni/ui/form";
 import Preview from "./components/Preview";
 import Subject from "./components/Subject";
-import { Suspense } from "react";
-import { toast } from "~/hooks/use-toast";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 export const runtime = "edge";
-
-export const FormSchema = z.object({
-  mailing_lists: z.array(z.string()),
-  subject: z.string(),
-  content: z.string(),
-  confirmation: z
-    .boolean()
-    .refine((value) => value, "Please test the email and check the box."),
-});
 
 export default function HomePage() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  const {mutate} = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (data: z.infer<typeof FormSchema>) =>
       fetch("/api/email", {
         method: "POST",
@@ -41,7 +34,7 @@ export default function HomePage() {
         },
       }),
   });
-  
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
       title: "You submitted the following values:",
@@ -50,18 +43,17 @@ export default function HomePage() {
           <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
             <code className="text-white">{JSON.stringify(data, null, 2)}</code>
           </pre>
-          <h1>Please wait while the emails are sent.</h1>
+          <h1>Please wait while the emails are queued.</h1>
         </>
       ),
     });
 
-
-
     mutate(data, {
       onSuccess: () => {
         toast({
-          title: "Emails sent!",
-          description: "The emails have been sent successfully.",
+          title: "Emails queued!",
+          description:
+            "The emails have been added to the sending queue. You can now exit this page.",
         });
       },
       onError: (error) => {

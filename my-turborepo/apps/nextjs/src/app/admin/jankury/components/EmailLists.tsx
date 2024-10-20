@@ -1,5 +1,11 @@
 "use client";
 
+import { type } from "os";
+import Link from "next/link";
+import { list } from "@vercel/blob";
+import { useFormContext } from "react-hook-form";
+import { z } from "zod";
+
 import {
   FormControl,
   FormDescription,
@@ -8,6 +14,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@vanni/ui/form";
+
+import { FormSchema } from "~/app/admin/jankury/formSchema";
+import { Checkbox } from "~/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -15,15 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-
-import { Checkbox } from "~/components/ui/checkbox";
-import { FormSchema } from "../page";
-import Link from "next/link";
 import { api } from "~/trpc/react";
-import { list } from "@vercel/blob";
-import { type } from "os";
-import { useFormContext } from "react-hook-form";
-import { z } from "zod";
 
 export default function EmailLists() {
   const lists = api.email.getAllLabels.useQuery().data;
