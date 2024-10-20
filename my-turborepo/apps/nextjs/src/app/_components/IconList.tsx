@@ -26,7 +26,7 @@ const routes: Icon[] = [
   { name: "Welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
   { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
   { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
-  { name: "Socials", route: "/socials", image: "/Pixel_EmailIcon.png" },
+  { name: "Socials", route: "/socials", image: "/Pixel_FileIcon.png" },
 ];
 
 const IconList: React.FC<IconListProps> = ({
