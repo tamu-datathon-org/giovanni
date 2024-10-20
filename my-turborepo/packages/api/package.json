@@ -20,6 +20,8 @@
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
+    "@aws-sdk/client-sqs": "^3.675.0",
+    "@aws-sdk/credential-provider-node": "^3.669.0",
     "@trpc/server": "11.0.0-rc.364",
     "@vanni/auth": "workspace:*",
     "@vanni/db": "workspace:*",
@@ -28,6 +30,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@aws-sdk/types": "^3.664.0",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
