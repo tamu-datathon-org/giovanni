@@ -88,6 +88,8 @@ export function ApplicationForm() {
   const [interestTwoCount, setInterestTwoCount] = useState(0);
   const [interestThreeCount, setInterestThreeCount] = useState(0);
   const [dietaryRestrictionCount, setDietaryRestrictionCount] = useState(0);
+  const [referencesCount, setReferencesCount] = useState(0);
+  const [extraCount, setExtraCount] = useState(0);
 
   const [disableSubmit, setDisableSubmit] = useState(false);
 
@@ -617,9 +619,18 @@ export function ApplicationForm() {
                     <Asterisk />
                   </FormLabel>
                   <FormControl>
-                    <Input {...field} className="bg-white" />
+                    <Input {...field}
+                      maxLength={250}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setReferencesCount(e.target.value.length);
+                      }}
+                      className="bg-white" />
                   </FormControl>
                   <FormMessage />
+                  <p className="mt-1 text-sm text-gray-500">
+                    {referencesCount}/250 characters
+                  </p>
                 </FormItem>
               )}
             />
@@ -768,6 +779,11 @@ export function ApplicationForm() {
                       className="bg-white"
                       placeholder="I love drywall!"
                       {...field}
+                      maxLength={255}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setExtraCount(e.target.value.length);
+                      }}
                       value={field.value ?? ""}
                     />
                   </FormControl>

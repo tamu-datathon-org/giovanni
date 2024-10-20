@@ -36,10 +36,10 @@ const prizes = [
 export default function HomePage() {
   const [activeWindow, setActiveWindow] = useState("");
   const [welcomeOpen, setWelcomeOpen] = useState(true);
-  const [applyOpen, setApplyOpen] = useState(true);
+  const [applyOpen, setApplyOpen] = useState(false);
   const [faqOpen, setFaqOpen] = useState(true);
-  const [sponsorOpen, setSponsorOpen] = useState(true);
-  const [prizesOpen, setPrizesOpen] = useState(true);
+  const [sponsorOpen, setSponsorOpen] = useState(false);
+  const [prizesOpen, setPrizesOpen] = useState(false);
 
   const [mounted, setMounted] = useState(false)
 
@@ -148,7 +148,7 @@ export default function HomePage() {
               onFocus={setActiveWindow}
               name="FAQ"
               focus={activeWindow}
-              className="absolute lg:left-[49%] lg:top-[5%] "
+              className="absolute lg:left-[48%] lg:top-[5%] "
             >
               <WindowContainer isOpen={faqOpen} openFunc={setFaqOpen}>
                 <FAQComponent />
@@ -198,7 +198,7 @@ export default function HomePage() {
               onFocus={setActiveWindow}
               name="Welcome"
               focus={activeWindow}
-              className="absolute lg:left-[20%] lg:top-[25%] "
+              className="absolute lg:left-[18%] lg:top-[25%] "
             >
               <WindowContainer isOpen={welcomeOpen} openFunc={setWelcomeOpen}>
                 <TAMUy2k />
