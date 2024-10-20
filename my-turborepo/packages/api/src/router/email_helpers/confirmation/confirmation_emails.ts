@@ -1,4 +1,4 @@
-import { queueBulkEmail } from "~/app/api/email/queue_bulk";
+import { queueBulkEmail } from "../queue_bulk";
 
 export function sendConfirmationEmail(address: string) {
   queueBulkEmail([address], subject, content).then();

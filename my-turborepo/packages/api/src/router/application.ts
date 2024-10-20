@@ -11,6 +11,7 @@ import {
 } from "@vanni/db/schema";
 
 import { protectedProcedure } from "../trpc";
+import { sendConfirmationEmail } from "./email_helpers/confirmation/confirmation_emails";
 
 export const applicationRouter = {
   create: protectedProcedure
@@ -57,12 +58,15 @@ export const applicationRouter = {
         }
       }
 
-      return await ctx.db.insert(Application).values({
+      const response = await ctx.db.insert(Application).values({
         ...applicationData,
         userId: ctx.session.user.id,
         eventId: event.id,
         status: "pending",
       });
+
+      sendConfirmationEmail(applicationData.email);
+      return response;
     }),
   update: protectedProcedure
     .input(
@@ -117,10 +121,13 @@ export const applicationRouter = {
         }
       }
 
-      return await ctx.db
+      const response = await ctx.db
         .update(Application)
         .set(application)
         .where(eq(Application.id, id));
+
+      sendConfirmationEmail(application.email);
+      return response;
     }),
   getApplicationByEventName: protectedProcedure
     .input(z.object({ eventName: z.string() }))
