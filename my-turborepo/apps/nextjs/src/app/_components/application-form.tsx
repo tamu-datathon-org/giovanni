@@ -6,9 +6,11 @@ import type { SubmitHandler } from "react-hook-form";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useMutation } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
 import { upload } from "@vercel/blob/client";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import {
   Form,
@@ -20,6 +22,7 @@ import {
 } from "@vanni/ui/form";
 
 import type { ApplicationSchema } from "../apply/validation";
+import { FormSchema } from "~/app/admin/jankury/formSchema";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
@@ -74,6 +77,23 @@ const SCHOOL_OPTIONS = schools.map((school) => ({
     Extra Information (textarea)
     Liability Waiver (checkbox)
 */
+
+function requestConfirmationEmail(email: string) {
+  const dataSchema = z.object({ email: z.string() });
+
+  const { mutate } = useMutation({
+    mutationFn: (data: z.infer<typeof dataSchema>) =>
+      fetch("/api/email/confirmation", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+  });
+
+  mutate({ email });
+}
 
 const Loading = () => {
   return <LoadingAnimation />;
@@ -169,6 +189,7 @@ export function ApplicationForm() {
 
       await createApplication.mutateAsync(createApplicationData, {
         onSuccess: () => {
+          requestConfirmationEmail(form.getValues("email"));
           toast({
             variant: "success",
             title: "Application submitted successfully!",
@@ -206,6 +227,7 @@ export function ApplicationForm() {
 
       await updateApplication.mutateAsync(updateApplicationData, {
         onSuccess: () => {
+          requestConfirmationEmail(form.getValues("email"));
           toast({
             variant: "success",
             title: "Application updated successfully!",
@@ -506,9 +528,9 @@ export function ApplicationForm() {
               defaultOption={
                 importedValues?.app?.hasTeam
                   ? {
-                    value: importedValues.app.hasTeam,
-                    label: importedValues.app.hasTeam,
-                  }
+                      value: importedValues.app.hasTeam,
+                      label: importedValues.app.hasTeam,
+                    }
                   : undefined
               }
               required={true}

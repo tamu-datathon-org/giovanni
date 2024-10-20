@@ -19,7 +19,7 @@ import Subject from "./components/Subject";
 
 export const runtime = "edge";
 
-export default function HomePage() {
+export default function JankuryPage() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });

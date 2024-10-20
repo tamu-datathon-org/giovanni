@@ -304,7 +304,7 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .string()
     .min(1, "Address is missing")
     .max(100, "Address is too long"),
-  references: z.string().min(1, "References is missing"),
+  references: z.string().min(1, "References is missing").max(255),
   interestOne: z
     .string()
     .min(1, "Interest One is missing")
@@ -348,7 +348,7 @@ export const CreateUserResumeSchema = createInsertSchema(UserResume, {
 export const EmailLabel = pgTable("email_label", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
-})
+});
 
 export const EmailList = pgTable("email_list", {
   id: serial("id").primaryKey(),
@@ -359,7 +359,10 @@ export const EmailList = pgTable("email_list", {
 });
 
 export const EmailListRelations = relations(EmailList, ({ one }) => ({
-  label: one(EmailLabel, { fields: [EmailList.labelId], references: [EmailLabel.id] }),
+  label: one(EmailLabel, {
+    fields: [EmailList.labelId],
+    references: [EmailLabel.id],
+  }),
 }));
 
 export const EmailLabelRelations = relations(EmailLabel, ({ many }) => ({
