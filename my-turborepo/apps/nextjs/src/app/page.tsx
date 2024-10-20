@@ -11,7 +11,6 @@ import FAQComponent from "./_components/FAQComponent";
 import IconList from "./_components/IconList";
 import { TAMUy2k } from "./_components/preregistration-form";
 import WindowContainer from "./_components/WindowContainer";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "~/components/ui/carousel";
 
 export const runtime = "edge";
 
@@ -143,7 +142,6 @@ export default function HomePage() {
                 {/* </div> */}
               </WindowContainer>
             </DraggableComponent>
-
 
             {/* FAQ Component */}
             <DraggableComponent
