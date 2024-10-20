@@ -20,7 +20,7 @@ interface PopupProps {
 
 const Popup: React.FC<PopupProps> = ({ item, isOpen, onClose }) => {
   return (
-    <div className="font-XPfont fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="font-XPfont fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="relative m-4 max-h-[80vh] w-full max-w-2xl overflow-hidden">
         <WindowContainer isOpen={isOpen} openFunc={onClose}>
           <div
@@ -140,7 +140,7 @@ const FAQComponent: React.FC = () => {
         isOpen={isMainWindowOpen}
         openFunc={handleMainWindowOpenClose}
       > */}
-      <div className="font-XPfont p-4">
+      <div className={`font-XPfont p-4`}>
         <h2 className="mb-4 text-4xl font-semibold">
           Frequently Asked Questions
         </h2>

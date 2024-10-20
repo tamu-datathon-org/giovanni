@@ -18,12 +18,16 @@ interface IconListProps {
   welcFunc: (isOpen: boolean) => void;
   applyFunc: (isOpen: boolean) => void;
   faqFunc: (isOpen: boolean) => void;
+  sponFunc: (isOpen: boolean) => void;
+  prizeFunc: (isOpen: boolean) => void;
   setFocus: (focus: string) => void;
 }
 
 const routes: Icon[] = [
   { name: "Welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
   { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
+  { name: "Sponsor", route: "/", image: "/Pixel_WorldIcon.png" },
+  { name: "Prizes", route: "/", image: "/Pixel_CDIcon.png" },
   { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
 ];
 
@@ -32,6 +36,8 @@ const IconList: React.FC<IconListProps> = ({
   welcFunc,
   applyFunc,
   faqFunc,
+  sponFunc,
+  prizeFunc,
   setFocus,
 }) => {
   return (
@@ -50,8 +56,13 @@ const IconList: React.FC<IconListProps> = ({
                 applyFunc(true);
               } else if (icon.name === "FAQ") {
                 faqFunc(true);
+              } else if (icon.name === "Sponsor") {
+                sponFunc(true);
+              } else if (icon.name === "Prizes") {
+                prizeFunc(true);
               }
-            }}
+            }
+            }
           >
             <div className="flex w-[75px] flex-col items-center justify-center border-white text-center duration-200 hover:bg-blue-400 hover:shadow-[inset_0_0_0_2px_rgba(14,116,144,1)]  focus:border-4 lg:w-[100px]">
               {icon.image && (
