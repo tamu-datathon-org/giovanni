@@ -18,6 +18,7 @@ interface IconListProps {
   welcFunc: (isOpen: boolean) => void;
   applyFunc: (isOpen: boolean) => void;
   faqFunc: (isOpen: boolean) => void;
+  socialsFunc: (isOpen: boolean) => void;
   setFocus: (focus: string) => void;
 }
 
@@ -25,6 +26,7 @@ const routes: Icon[] = [
   { name: "Welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
   { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
   { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
+  { name: "Socials", route: "/socials", image: "/Pixel_FileIcon.png" },
 ];
 
 const IconList: React.FC<IconListProps> = ({
@@ -32,6 +34,7 @@ const IconList: React.FC<IconListProps> = ({
   welcFunc,
   applyFunc,
   faqFunc,
+  socialsFunc,
   setFocus,
 }) => {
   return (
@@ -50,6 +53,8 @@ const IconList: React.FC<IconListProps> = ({
                 applyFunc(true);
               } else if (icon.name === "FAQ") {
                 faqFunc(true);
+              } else if (icon.name === "Socials") {
+                socialsFunc(true);
               }
             }}
           >
