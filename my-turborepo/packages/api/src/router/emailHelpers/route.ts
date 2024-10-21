@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
+import { api } from "apps/nextjs/src/trpc/server";
 
-import { api } from "~/trpc/server";
 import { queueBulkEmail } from "./queue_bulk";
 
 export async function POST(request: Request) {

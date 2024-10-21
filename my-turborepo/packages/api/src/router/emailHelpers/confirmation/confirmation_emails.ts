@@ -1,7 +1,9 @@
-import { queueBulkEmail } from "~/app/api/email/queue_bulk";
+import { queueBulkEmail } from "../queue_bulk";
 
-export function sendConfirmationEmail(address: string) {
-  queueBulkEmail([address], subject, content).then();
+export default function sendConfirmationEmail(
+  addresses: (string | undefined | null)[],
+) {
+  queueBulkEmail(addresses, subject, content).then();
 }
 
 // TODO: Find a way to store these without hard coding

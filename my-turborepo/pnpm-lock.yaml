@@ -250,6 +250,9 @@ importers:
       '@aws-sdk/types':
         specifier: ^3.664.0
         version: 3.664.0
+      '@total-typescript/ts-reset':
+        specifier: ^0.4.2
+        version: 0.4.2
       '@types/jsonwebtoken':
         specifier: ^9.0.7
         version: 9.0.7
@@ -326,6 +329,9 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
+      '@total-typescript/ts-reset':
+        specifier: ^0.4.2
+        version: 0.4.2
       '@vanni/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint
@@ -4524,6 +4530,10 @@ packages:
 
   /@tootallnate/quickjs-emscripten@0.23.0:
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
+    dev: true
+
+  /@total-typescript/ts-reset@0.4.2:
+    resolution: {integrity: sha512-vqd7ZUDSrXFVT1n8b2kc3LnklncDQFPvR58yUS1kEP23/nHPAO9l1lMjUfnPrXYYk4Hj54rrLKMW5ipwk7k09A==}
     dev: true
 
   /@trpc/client@11.0.0-rc.364(@trpc/server@11.0.0-rc.364):

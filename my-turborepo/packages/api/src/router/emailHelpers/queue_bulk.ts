@@ -5,10 +5,13 @@ import { string } from "zod";
 // This function adds an email to the AWS SQS queue
 // The actual sending is done with SQS, lambda, and SES
 export async function queueBulkEmail(
-  emails: string[],
+  emails: (string | undefined | null)[],
   subject: string,
   content: string,
 ) {
+  // This deduplicates the emails and removes all null/undefined emails
+  emails = [...new Set(emails.filter(Boolean))];
+
   console.log(
     "Adding ",
     emails.length,

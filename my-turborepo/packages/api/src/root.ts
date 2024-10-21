@@ -17,5 +17,10 @@ export const appRouter = createTRPCRouter({
   email: emailRouter,
 });
 
+// Some things really do not like the Vercel Edge runtime, so we put them here
+export const edgelessRouter = createTRPCRouter({
+  emailSending: emailSendingRouter,
+});
+
 // export type definition of API
 export type AppRouter = typeof appRouter;

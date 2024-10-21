@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-
-import { sendConfirmationEmail } from "~/app/api/email/confirmation/confirmation_emails";
+import { sendConfirmationEmail } from "src/router/emailHelpers/email/confirmation/confirmation_emails";
 
 export async function POST(request: Request) {
   const { email } = await request.json();

@@ -1,13 +1,32 @@
+import { z } from "zod";
+
+import { asc, eq } from "@vanni/db";
+import { db } from "@vanni/db/client";
 import {
   Application,
   EmailLabel,
   EmailList,
   Preregistration,
 } from "@vanni/db/schema";
-import { asc, eq } from "@vanni/db";
 
 import { protectedProcedure } from "../trpc";
-import { z } from "zod";
+
+export async function getEmailsByLabelList(input: string[]) {
+  console.log(input);
+
+  const emails = new Set<string>();
+  for (const label of input) {
+    const emailLabel = await db.query.EmailLabel.findFirst({
+      where: eq(EmailLabel.name, label),
+      with: {
+        emails: true,
+      },
+    });
+    emailLabel?.emails.forEach((email) => emails.add(email.email));
+  }
+
+  return Array.from(emails);
+}
 
 export const emailRouter = {
   getAllLabels: protectedProcedure.query(async ({ ctx }) => {
@@ -82,21 +101,6 @@ export const emailRouter = {
 
   // This takes a list of labels and returns all emails that are in any of the labels
   getEmailsByLabelList: protectedProcedure
-  .input(z.array(z.string()))
-  .query(async ({ ctx, input }) => {
-    console.log(input);
-
-    const emails = new Set<string>();
-    for (const label of input) {
-      const emailLabel = await ctx.db.query.EmailLabel.findFirst({
-        where: eq(EmailLabel.name, label),
-        with: {
-          emails: true,
-        },
-      });
-      emailLabel?.emails.forEach((email) => emails.add(email.email));
-    }
-
-    return Array.from(emails);
-  }),
+    .input(z.array(z.string()))
+    .query(({ input }) => getEmailsByLabelList(input)),
 };
