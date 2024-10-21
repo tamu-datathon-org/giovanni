@@ -12,7 +12,7 @@ import {
 } from "@vanni/db/schema";
 
 import { protectedProcedure } from "../../trpc";
-import sendConfirmationEmail from "../emailHelpers/confirmation/confirmation_emails";
+import sendConfirmationEmail from "./emailHelpers/confirmation/confirmation_emails";
 
 export const edgelessApplicationRouter = {
   create: protectedProcedure

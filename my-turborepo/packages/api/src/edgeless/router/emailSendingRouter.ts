@@ -1,8 +1,8 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { protectedProcedure } from "../trpc";
-import { getEmailsByLabelList } from "./email";
+import { getEmailsByLabelList } from "../../router/email";
+import { protectedProcedure } from "../../trpc";
 import sendConfirmationEmails from "./emailHelpers/confirmation/confirmation_emails";
 import { queueBulkEmail } from "./emailHelpers/queue_bulk";
 

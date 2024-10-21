@@ -1,6 +1,6 @@
-import { edgelessApplicationRouter } from "./router/edgeless/edgelessApplication";
+import { createTRPCRouter } from "../trpc";
+import { edgelessApplicationRouter } from "./router/edgelessApplication";
 import { emailSendingRouter } from "./router/emailSendingRouter";
-import { createTRPCRouter } from "./trpc";
 
 // Some things really do not like the Vercel Edge runtime, so we put them here
 export const edgelessRouter = createTRPCRouter({
