@@ -1,6 +1,8 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-import { createTRPCContext, edgelessRouter } from "@vanni/api";
+import { createTRPCContext } from "@vanni/api";
+import { edgelessRouter} "@vanni/api/edgeless"
+import { auth } from "@vanni/auth";
 
 /**
  * Configure basic CORS headers
@@ -24,7 +26,7 @@ export const OPTIONS = () => {
 const handler = auth(async (req) => {
   const response = await fetchRequestHandler({
     endpoint: "/api/trpc",
-    router: appRouter,
+    router: edgelessRouter,
     req,
     createContext: () =>
       createTRPCContext({
