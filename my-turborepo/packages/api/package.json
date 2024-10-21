@@ -7,7 +7,8 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./src/index.ts"
+      "default": "./src/index.ts",
+      "edgeless": "./src/edgeless/index.ts"
     }
   },
   "scripts": {
