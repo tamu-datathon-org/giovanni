@@ -8,4 +8,4 @@ export const edgelessRouter = createTRPCRouter({
   edgelessApplication: edgelessApplicationRouter,
 });
 
-export type edgelessRouter = typeof edgelessRouter;
+export type EdgelessRouter = typeof edgelessRouter;
