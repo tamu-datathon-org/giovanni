@@ -8,6 +8,7 @@ import "../_components/customCss.scss";
 import Image from 'next/image';
 import EventAlertPopup from './EventAlertPopup';
 import DraggableComponent from '../_components/DraggableComponent';
+import ScheduleIconList from './scheduleHome';
 
 
 
@@ -276,17 +277,7 @@ const SchedulePage: React.FC = () => {
     <div className="relative min-h-screen overflow-hidden">
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8 relative">
-          <div className="absolute left-0">
-            <a href="https://tamudatathon.com" onClick={handleLogoClick}>
-              <Image 
-                src="/Pixel_WorldIcon.png" 
-                alt="go home et" 
-                width={120} 
-                height={120} 
-                className="w-20 h-20 md:w-32 md:h-32 lg:w-[100px] lg:h-[100px]"
-              />
-            </a>
-          </div>
+        <ScheduleIconList className="absolute left-0" />
           <div className="w-full text-center">
           <h1 className="text-5xl font-bold inline-block pr-4 sm:pr-0"
             style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
