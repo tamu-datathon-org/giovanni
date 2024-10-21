@@ -1,7 +1,7 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 import { createTRPCContext } from "@vanni/api";
-import { edgelessRouter} "@vanni/api/edgeless"
+import { edgelessRouter } from "@vanni/api/edgeless";
 import { auth } from "@vanni/auth";
 
 /**
