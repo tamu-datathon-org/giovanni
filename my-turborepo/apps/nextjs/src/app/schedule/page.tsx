@@ -23,6 +23,7 @@ interface Event {
   description: string;
 }
 
+// TODO: Refactor and put this in a separate file
 const events: Event[] = [
   {
     id: 1,
