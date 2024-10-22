@@ -11,6 +11,7 @@ import { Form } from "@vanni/ui/form";
 
 import { FormSchema } from "~/app/admin/jankury/formSchema";
 import { toast } from "~/hooks/use-toast";
+import { api } from "~/trpc/react";
 import Confirmation from "./components/Confirmation";
 import Content from "./components/Content";
 import EmailLists from "./components/EmailLists";
@@ -24,16 +25,7 @@ export default function JankuryPage() {
     resolver: zodResolver(FormSchema),
   });
 
-  const { mutate } = useMutation({
-    mutationFn: (data: z.infer<typeof FormSchema>) =>
-      fetch("/api/email", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }),
-  });
+  const sendBulk = api.emailSending.sendBulkEmails.useMutation();
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
@@ -48,7 +40,7 @@ export default function JankuryPage() {
       ),
     });
 
-    mutate(data, {
+    sendBulk.mutate(data, {
       onSuccess: () => {
         toast({
           title: "Emails queued!",
@@ -56,7 +48,7 @@ export default function JankuryPage() {
             "The emails have been added to the sending queue. You can now exit this page.",
         });
       },
-      onError: (error) => {
+      onError: (error: { message: any }) => {
         toast({
           title: "Error sending emails",
           description: error.message,

@@ -1,4 +1,8 @@
-import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
+import {
+  SendMessageBatchCommand,
+  SQSClient,
+  SQSClientConfig,
+} from "@aws-sdk/client-sqs";
 
 // This function adds an email to the AWS SQS queue
 // The actual sending is done with SQS, lambda, and SES
@@ -17,14 +21,15 @@ export async function queueBulkEmail(
     subject,
   );
 
-  // const config: SQSClientConfig = {
-  //   region: "us-east-1",
-  //   credentials: {
-  //     accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? "",
-  //     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? "",
-  //   },
-  // };
-  const client = new SQSClient({});
+  const config: SQSClientConfig = {
+    region: process.env.AWS_REGION,
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? "",
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? "",
+    },
+  };
+
+  const client = new SQSClient(config);
 
   // Add emails to the queue in batches of 10
   const maxBatchSize = 10;
