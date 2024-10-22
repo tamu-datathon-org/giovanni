@@ -38,14 +38,16 @@ export default function HomePage() {
   const [welcomeOpen, setWelcomeOpen] = useState(true);
   const [applyOpen, setApplyOpen] = useState(false);
   const [faqOpen, setFaqOpen] = useState(true);
-  const [sponsorOpen, setSponsorOpen] = useState(false);
-  const [prizesOpen, setPrizesOpen] = useState(false);
+  const [socialsOpen, setSocialsOpen] = useState(false);
 
-  const [mounted, setMounted] = useState(false)
+    const [sponsorOpen, setSponsorOpen] = useState(false);
+    const [prizesOpen, setPrizesOpen] = useState(false);
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
   // redirect("/registration");
   // You can await this here if you don't want to show Suspense fallback below
@@ -210,6 +212,36 @@ export default function HomePage() {
                   </Button> */}
               </WindowContainer>
             </DraggableComponent>
+
+            {/* Socials component */}
+            <DraggableComponent
+              onFocus={setActiveWindow}
+              name="Socials"
+              focus={activeWindow}
+              className="absolute lg:left-[60%] lg:top-[25%] "
+            >
+              <WindowContainer isOpen={socialsOpen} openFunc={setSocialsOpen}>
+                <div className="flex flex-col m-6 gap-4">
+                  <h1 className="text-3xl font-bold lg:text-5xl">
+                      Socials!!
+                    </h1>
+                    <div className="flex flex-col w-64">
+                      <Link href="https://discord.gg/pHsNmjuWSc"
+                        className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black"
+                        rel="noopener noreferrer"
+                        target="_blank">
+                          Discord Server Link
+                      </Link>
+                      <Link href="https://www.instagram.com/tamudatathon/"
+                        className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black px-4"
+                        rel="noopener noreferrer"
+                        target="_blank">
+                          Instagram
+                      </Link>
+                    </div>
+                  </div>
+              </WindowContainer>
+            </DraggableComponent>
           </div>
 
           <IconList
@@ -218,6 +250,7 @@ export default function HomePage() {
             faqFunc={setFaqOpen}
             sponFunc={setSponsorOpen}
             prizeFunc={setPrizesOpen}
+            socialsFunc={setSocialsOpen}
             setFocus={setActiveWindow}
             className="absolute bottom-10 z-10 lg:bottom-20"
           />
