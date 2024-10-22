@@ -7,6 +7,7 @@ import WindowContainer from "./WindowContainer";
 
 import "../_components/customCss.scss";
 
+import Link from "next/link";
 import { Separator } from "@radix-ui/react-select";
 
 import { ScrollArea } from "~/components/ui/scroll-area";
@@ -19,7 +20,7 @@ interface PopupProps {
 
 const Popup: React.FC<PopupProps> = ({ item, isOpen, onClose }) => {
   return (
-    <div className="font-XPfont fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="font-XPfont fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="relative m-4 max-h-[80vh] w-full max-w-2xl overflow-hidden">
         <WindowContainer isOpen={isOpen} openFunc={onClose}>
           <div
@@ -139,7 +140,7 @@ const FAQComponent: React.FC = () => {
         isOpen={isMainWindowOpen}
         openFunc={handleMainWindowOpenClose}
       > */}
-      <div className="font-XPfont p-4">
+      <div className={`font-XPfont p-4`}>
         <h2 className="mb-4 text-4xl font-semibold">
           Frequently Asked Questions
         </h2>
@@ -175,6 +176,14 @@ const FAQComponent: React.FC = () => {
               </div>
             ))}
           </div>
+          <Link
+            href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-center text-sm text-gray-700 underline"
+          >
+            MLH Code of Conduct
+          </Link>
         </ScrollArea>
       </div>
       {/* </WindowContainer> */}

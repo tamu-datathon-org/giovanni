@@ -2,8 +2,7 @@
 
 import "../_components/customCss.scss";
 
-import type { Dispatch, SetStateAction } from "react";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 import DraggableComponent from "~/app/_components/DraggableComponent";
