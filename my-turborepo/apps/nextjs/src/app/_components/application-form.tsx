@@ -789,7 +789,7 @@ export function ApplicationForm() {
                     I have read and agree to the{" "}
                     <a
                       className="text-blue-500 underline"
-                      href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md"
+                      href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf"
                       target="_blank"
                     >
                       MLH Code of Conduct
@@ -822,7 +822,7 @@ export function ApplicationForm() {
                     the{" "}
                     <a
                       className="text-blue-500 underline"
-                      href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+                      href="https://mlh.io/privacy"
                       target="_blank"
                     >
                       MLH Privacy Policy
@@ -835,10 +835,10 @@ export function ApplicationForm() {
                     >
                       MLH Contest Terms and Conditions
                     </a>
-                    and the{" "}
+                    {" "}and the{" "}
                     <a
                       className="text-blue-500 underline"
-                      href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+                      href="https://mlh.io/privacy"
                       target="_blank"
                     >
                       MLH Privacy Policy

@@ -99,7 +99,7 @@ export default function HomePage() {
             applyFunc={setApplyOpen}
             faqFunc={setFaqOpen}
             setFocus={setActiveWindow}
-            className="absolute bottom-10 z-50 lg:bottom-20"
+            className="absolute bottom-10 z-10 lg:bottom-20"
           />
         </div>
       </div>
