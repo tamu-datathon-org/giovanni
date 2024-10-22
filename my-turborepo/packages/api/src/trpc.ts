@@ -105,7 +105,7 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
   });
 });
 
-//
+// TODO: Make this more demure and mindful (don't hardcode the user roles)
 export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
   if (
     !ctx.session.user.email ||
