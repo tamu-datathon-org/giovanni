@@ -20,18 +20,18 @@ interface IconListProps {
   applyFunc: (isOpen: boolean) => void;
   faqFunc: (isOpen: boolean) => void;
   socialsFunc: (isOpen: boolean) => void;
-  sponFunc: (isOpen: boolean) => void;
-  prizeFunc: (isOpen: boolean) => void;
+  // sponFunc: (isOpen: boolean) => void;
+  // prizeFunc: (isOpen: boolean) => void;
   setFocus: (focus: string) => void;
 }
 
 const routes: Icon[] = [
   { name: "Welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
   { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
-  { name: "Sponsor", route: "/", image: "/Pixel_WorldIcon.png" },
-  { name: "Prizes", route: "/", image: "/Pixel_CDIcon.png" },
+  // { name: "Sponsor", route: "/", image: "/Pixel_WorldIcon.png" },
+  // { name: "Prizes", route: "/", image: "/Pixel_CDIcon.png" },
   { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
-  { name: "Schedule", route: "/schedule", image: "/Pixel_CDIcon.png" },
+  // { name: "Schedule", route: "/schedule", image: "/Pixel_CDIcon.png" },
   { name: "Socials", route: "/socials", image: "/Pixel_FileIcon.png" },
 ];
 
