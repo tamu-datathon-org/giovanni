@@ -2,14 +2,15 @@ import "~/app/globals.css";
 
 import type { Metadata, Viewport } from "next";
 
+import BackgroundImage from "./_components/images/background";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { TRPCReactProvider } from "~/trpc/react";
+import { Toaster } from "~/components/ui/toaster";
 import { cn } from "@vanni/ui";
+import { env } from "~/env";
+import Link from "next/link";
 
 import { w95fa } from "~/app/_components/fonts";
-import { Toaster } from "~/components/ui/toaster";
-import { env } from "~/env";
-import { TRPCReactProvider } from "~/trpc/react";
-import BackgroundImage from "./_components/images/background";
-
 export const metadata: Metadata = {
   metadataBase: new URL(
     env.VERCEL_ENV === "production"
@@ -45,6 +46,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       <body
         className={cn("min-h-screen bg-background text-foreground antialiased")}
       >
+        <Link id="mlh-trust-badge" className="mlh-trust-badge" href="https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2025-season&utm_content=white" target="_blank">
+          <img src="https://s3.amazonaws.com/logged-assets/trust-badge/2025/mlh-trust-badge-2025-white.svg" alt="Major League Hacking 2025 Hackathon Season" className="w-full" />
+        </Link>
         <TRPCReactProvider>
           <main>
             <BackgroundImage
@@ -53,6 +57,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
               alt={"Preregistration background"}
             />
             {props.children}
+            <SpeedInsights />
           </main>
         </TRPCReactProvider>
         <div className="absolute bottom-4 right-4"></div>

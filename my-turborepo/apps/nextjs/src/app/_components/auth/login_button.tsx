@@ -15,7 +15,7 @@ export function LoginButton({
 }) {
   return (
     <Button
-      className="compStyling2 border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black"
+      className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black"
       size="lg"
       formAction={async (formData) => {
         "use server";

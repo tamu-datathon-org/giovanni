@@ -24,7 +24,7 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({
       disabled={isMobile}
       onDrag={() => {
         onFocus(name);
-        console.log(name, focus, name === focus);
+        // console.log(name, focus, name === focus);
       }}
     >
       <div

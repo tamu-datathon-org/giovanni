@@ -28,7 +28,7 @@ const events: Event[] = [
     id: 1,
     name: "Doors Open + Check-in",
     date: new Date("2024-11-09T10:00:00"),
-    description: "",
+ description: "",
   },
   {
     id: 2,
@@ -236,9 +236,7 @@ const EventPopup: React.FC<EventPopupProps> = ({
 const SchedulePage: React.FC = () => {
   const targetDate = new Date("2024-11-09T00:00:00");
   const timeLeft = useCountdown(targetDate);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
-  const [showEventPopup, setShowEventPopup] = useState<boolean>(false);
   const [isCountdownOpen, setIsCountdownOpen] = useState(true);
   const [isEventsOpen, setIsEventsOpen] = useState(true);
   const [focusedWindow, setFocusedWindow] = useState<string>("");
@@ -425,12 +423,12 @@ const SchedulePage: React.FC = () => {
                         })}
                       </p>
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
               </div>
-            </div>
-          </WindowContainer>
-        </DraggableComponent>
+            </WindowContainer>
+          </DraggableComponent>
+        </div>
       </div>
     </div>
   );

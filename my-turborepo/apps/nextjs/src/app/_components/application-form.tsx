@@ -88,6 +88,8 @@ export function ApplicationForm() {
   const [interestTwoCount, setInterestTwoCount] = useState(0);
   const [interestThreeCount, setInterestThreeCount] = useState(0);
   const [dietaryRestrictionCount, setDietaryRestrictionCount] = useState(0);
+  const [referencesCount, setReferencesCount] = useState(0);
+  const [extraCount, setExtraCount] = useState(0);
 
   const [disableSubmit, setDisableSubmit] = useState(false);
 
@@ -617,9 +619,18 @@ export function ApplicationForm() {
                     <Asterisk />
                   </FormLabel>
                   <FormControl>
-                    <Input {...field} className="bg-white" />
+                    <Input {...field}
+                      maxLength={250}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setReferencesCount(e.target.value.length);
+                      }}
+                      className="bg-white" />
                   </FormControl>
                   <FormMessage />
+                  <p className="mt-1 text-sm text-gray-500">
+                    {referencesCount}/250 characters
+                  </p>
                 </FormItem>
               )}
             />
@@ -661,7 +672,7 @@ export function ApplicationForm() {
             <FormField
               control={form.control}
               name="interestTwo"
-              defaultValue={importedValues?.app?.interestOne}
+              defaultValue={importedValues?.app?.interestTwo}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
@@ -694,7 +705,7 @@ export function ApplicationForm() {
             <FormField
               control={form.control}
               name="interestThree"
-              defaultValue={importedValues?.app?.interestOne}
+              defaultValue={importedValues?.app?.interestThree}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
@@ -768,6 +779,11 @@ export function ApplicationForm() {
                       className="bg-white"
                       placeholder="I love drywall!"
                       {...field}
+                      maxLength={255}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setExtraCount(e.target.value.length);
+                      }}
                       value={field.value ?? ""}
                     />
                   </FormControl>
@@ -789,7 +805,7 @@ export function ApplicationForm() {
                     I have read and agree to the{" "}
                     <a
                       className="text-blue-500 underline"
-                      href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md"
+                      href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf"
                       target="_blank"
                     >
                       MLH Code of Conduct
@@ -822,7 +838,7 @@ export function ApplicationForm() {
                     the{" "}
                     <a
                       className="text-blue-500 underline"
-                      href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+                      href="https://mlh.io/privacy"
                       target="_blank"
                     >
                       MLH Privacy Policy
@@ -835,10 +851,10 @@ export function ApplicationForm() {
                     >
                       MLH Contest Terms and Conditions
                     </a>
-                    and the{" "}
+                    {" "}and the{" "}
                     <a
                       className="text-blue-500 underline"
-                      href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+                      href="https://mlh.io/privacy"
                       target="_blank"
                     >
                       MLH Privacy Policy
