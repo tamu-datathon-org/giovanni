@@ -19,12 +19,18 @@ export const emailSendingRouter = {
         mailing_lists: z.array(z.string()),
         subject: z.string(),
         content: z.string(),
+        maxBatchSize: z.number().int().min(1).max(10),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       let emails = await getEmailsByLabelList(input.mailing_lists);
 
-      const failed = await queueBulkEmail(emails, input.subject, input.content);
+      const failed = await queueBulkEmail(
+        emails,
+        input.subject,
+        input.content,
+        input.maxBatchSize,
+      );
 
       if (failed.length > 0) {
         throw new TRPCError({

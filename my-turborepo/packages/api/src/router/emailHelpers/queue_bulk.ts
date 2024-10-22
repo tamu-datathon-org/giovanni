@@ -10,6 +10,7 @@ export async function queueBulkEmail(
   emails: (string | undefined | null)[],
   subject: string,
   content: string,
+  maxBatchSize?: number,
 ) {
   // This deduplicates the emails and removes all null/undefined emails
   emails = [...new Set(emails.filter(Boolean))];
@@ -31,8 +32,11 @@ export async function queueBulkEmail(
 
   const client = new SQSClient(config);
 
-  // Add emails to the queue in batches of 10
-  const maxBatchSize = 10;
+  // SQS limits batch sizes to 10 emails
+  if (!maxBatchSize) {
+    maxBatchSize = 10;
+  }
+
   const senderEmail = process.env.AWS_EMAIL_USER;
   let failed = [];
   let successCount = 0;

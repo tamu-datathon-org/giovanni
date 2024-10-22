@@ -2,7 +2,6 @@
 
 import { Suspense } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -12,6 +11,7 @@ import { Form } from "@vanni/ui/form";
 import { FormSchema } from "~/app/admin/jankury/formSchema";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
+import BatchSize from "./components/BatchSize";
 import Confirmation from "./components/Confirmation";
 import Content from "./components/Content";
 import EmailLists from "./components/EmailLists";
@@ -71,6 +71,7 @@ export default function JankuryPage() {
                   <EmailLists />
                   <Subject />
                   <Content />
+                  <BatchSize />
                   <Preview />
                   <Confirmation />
                   <Button type="submit">Submit</Button>
