@@ -1,9 +1,9 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { getEmailsByLabelList } from "../../router/email";
-import { protectedProcedure } from "../../trpc";
-import sendConfirmationEmails from "./emailHelpers/confirmation/confirmation_emails";
+import { protectedProcedure } from "../trpc";
+import { getEmailsByLabelList } from "./email";
+import sendConfirmationEmails from "./emailHelpers/confirmation_emails";
 import { queueBulkEmail } from "./emailHelpers/queue_bulk";
 
 export const emailSendingRouter = {

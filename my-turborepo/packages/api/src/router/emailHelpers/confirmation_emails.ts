@@ -1,4 +1,4 @@
-import { queueBulkEmail } from "../queue_bulk";
+import { queueBulkEmail } from "./queue_bulk";
 
 export default function sendConfirmationEmail(
   addresses: (string | undefined | null)[],
