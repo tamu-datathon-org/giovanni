@@ -641,7 +641,7 @@ export function ApplicationForm() {
                     <Input
                       placeholder="Is your code running? Well, you better go catch it."
                       {...field}
-                      maxLength={500}
+                      maxLength={250}
                       onChange={(e) => {
                         field.onChange(e);
                         setInterestOneCount(e.target.value.length);
@@ -650,7 +650,7 @@ export function ApplicationForm() {
                   </FormControl>
                   <FormMessage />
                   <p className="mt-1 text-sm text-gray-500">
-                    {interestOneCount}/500 characters
+                    {interestOneCount}/250 characters
                   </p>
                 </FormItem>
               )}
@@ -673,7 +673,7 @@ export function ApplicationForm() {
                     <Input
                       placeholder="More resources."
                       {...field}
-                      maxLength={500}
+                      maxLength={250}
                       onChange={(e) => {
                         field.onChange(e);
                         setInterestTwoCount(e.target.value.length);
@@ -682,7 +682,7 @@ export function ApplicationForm() {
                   </FormControl>
                   <FormMessage />
                   <p className="mt-1 text-sm text-gray-500">
-                    {interestTwoCount}/500 characters
+                    {interestTwoCount}/250 characters
                   </p>
                 </FormItem>
               )}
@@ -705,7 +705,7 @@ export function ApplicationForm() {
                     <Input
                       placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
                       {...field}
-                      maxLength={500}
+                      maxLength={250}
                       onChange={(e) => {
                         field.onChange(e);
                         setInterestThreeCount(e.target.value.length);
@@ -714,7 +714,7 @@ export function ApplicationForm() {
                   </FormControl>
                   <FormMessage />
                   <p className="mt-1 text-sm text-gray-500">
-                    {interestThreeCount}/500 characters
+                    {interestThreeCount}/250 characters
                   </p>
                 </FormItem>
               )}
