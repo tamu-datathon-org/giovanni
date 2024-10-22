@@ -69,9 +69,9 @@ export default function JankuryPage() {
                   className="overflow-x-hidden rounded-lg bg-slate-50 p-5 lg:px-16"
                 >
                   <EmailLists />
+                  <BatchSize />
                   <Subject />
                   <Content />
-                  <BatchSize />
                   <Preview />
                   <Confirmation />
                   <Button type="submit">Submit</Button>

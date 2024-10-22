@@ -14,7 +14,7 @@ import { Slider } from "@vanni/ui/slider";
 
 import { Input } from "~/components/ui/input";
 
-export default function Subject() {
+export default function BatchSize() {
   const form = useFormContext();
   return (
     <FormField
@@ -24,8 +24,13 @@ export default function Subject() {
         <FormItem>
           <FormLabel>Maximum Batch Size</FormLabel>
           <FormControl>
-            <Input placeholder="Marriage Proposal" {...field} />
-            <Slider defaultValue={[10]} max={10} step={1} min={1} />
+            <Slider
+              className="black"
+              defaultValue={[10]}
+              max={10}
+              step={1}
+              min={1}
+            />
           </FormControl>
           <FormMessage />
           <FormDescription>

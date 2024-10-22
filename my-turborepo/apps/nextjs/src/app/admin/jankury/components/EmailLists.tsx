@@ -1,14 +1,10 @@
 "use client";
 
-import { type } from "os";
-import Link from "next/link";
-import { list } from "@vercel/blob";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,13 +13,6 @@ import {
 
 import { FormSchema } from "~/app/admin/jankury/formSchema";
 import { Checkbox } from "~/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
 import { api } from "~/trpc/react";
 
 export default function EmailLists() {

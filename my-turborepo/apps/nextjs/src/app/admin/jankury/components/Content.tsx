@@ -1,28 +1,15 @@
 "use client";
 
-import { type } from "os";
-import Link from "next/link";
 import { useFormContext } from "react-hook-form";
 
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@vanni/ui/form";
 import { Textarea } from "@vanni/ui/textarea";
-
-import { Checkbox } from "~/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
-import { api } from "~/trpc/react";
 
 const example = `<!DOCTYPE html>
   <html>
