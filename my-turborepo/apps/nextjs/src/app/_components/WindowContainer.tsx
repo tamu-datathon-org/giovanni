@@ -36,7 +36,10 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
         className={`font-XPfont w-fit font-bold ${isOpen ? "unhidden" : "hidden"}`}
       >
         <div className="flex flex-col items-center justify-center">
-          <div className="xpBorder p-3 flex w-fit flex-col items-center text-center text-lg" style={borderStyle}>
+          <div
+            className="xpBorder flex w-fit flex-col items-center p-3 text-center text-lg"
+            style={borderStyle}
+          >
             <div className="flex w-full flex-row items-center justify-between">
               <Lines />
               <ExitButton

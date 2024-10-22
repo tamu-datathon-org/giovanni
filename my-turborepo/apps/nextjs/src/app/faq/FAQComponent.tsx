@@ -3,9 +3,9 @@
 import "../_components/customCss.scss";
 
 import React, { Dispatch, SetStateAction, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 import DraggableComponent from "~/app/_components/DraggableComponent";
-import ReactMarkdown from "react-markdown";
 import WindowContainer from "../_components/WindowContainer";
 
 interface PopupProps {
@@ -170,7 +170,7 @@ function FAQComponent({
                   onClick={() => {
                     setSelectedItem(item);
                     setIsPopupOpen(true);
-                  } }
+                  }}
                 >
                   <h3 className="text-lg font-semibold">{item.question}</h3>
                 </div>
@@ -183,7 +183,8 @@ function FAQComponent({
         <Popup
           item={selectedItem}
           isOpen={isPopupOpen}
-          onClose={() => handlePopupOpenClose(false)} />
+          onClose={() => handlePopupOpenClose(false)}
+        />
       )}
     </div>
   );

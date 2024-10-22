@@ -1,6 +1,7 @@
-import React from 'react';
-import { Button } from '@vanni/ui/button';
+import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
+
+import { Button } from "@vanni/ui/button";
 
 interface Event {
   id: number;
@@ -15,36 +16,40 @@ interface EventAlertPopupProps {
   onOpenDescription: (event: Event) => void;
 }
 
-const EventAlertPopup: React.FC<EventAlertPopupProps> = ({ event, onClose, onOpenDescription }) => {
+const EventAlertPopup: React.FC<EventAlertPopupProps> = ({
+  event,
+  onClose,
+  onOpenDescription,
+}) => {
   return (
-    <div 
-      className="fixed inset-0 flex justify-center items-center z-50"
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
       onClick={onClose}
     >
-      <div 
-        className="rounded-lg p-6 max-w-sm w-full m-4 relative"
+      <div
+        className="relative m-4 w-full max-w-sm rounded-lg p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <img 
-          src="/images/wipbear.png" 
+        <img
+          src="/images/wipbear.png"
           style={{
-            width: '530px',
-            height: '180px',
-            right: '7px',
-            position: 'absolute',
-            objectFit: 'contain',
+            width: "530px",
+            height: "180px",
+            right: "7px",
+            position: "absolute",
+            objectFit: "contain",
           }}
           onClick={() => onOpenDescription(event)}
         />
 
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <h2 className="text-xl font-bold mb-4">Event Starting!</h2>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-center">
+          <h2 className="mb-4 text-xl font-bold">Event Starting!</h2>
           <p className="mb-4">{event.name} is starting now!</p>
         </div>
 
-        <Button 
+        <Button
           onClick={onClose}
-          className="absolute top-2 right-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="absolute right-2 top-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         >
           <AiOutlineClose />
         </Button>
