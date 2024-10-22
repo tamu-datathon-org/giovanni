@@ -619,13 +619,15 @@ export function ApplicationForm() {
                     <Asterisk />
                   </FormLabel>
                   <FormControl>
-                    <Input {...field}
+                    <Input
+                      {...field}
                       maxLength={250}
                       onChange={(e) => {
                         field.onChange(e);
                         setReferencesCount(e.target.value.length);
                       }}
-                      className="bg-white" />
+                      className="bg-white"
+                    />
                   </FormControl>
                   <FormMessage />
                   <p className="mt-1 text-sm text-gray-500">
@@ -850,8 +852,8 @@ export function ApplicationForm() {
                       target="_blank"
                     >
                       MLH Contest Terms and Conditions
-                    </a>
-                    {" "}and the{" "}
+                    </a>{" "}
+                    and the{" "}
                     <a
                       className="text-blue-500 underline"
                       href="https://mlh.io/privacy"

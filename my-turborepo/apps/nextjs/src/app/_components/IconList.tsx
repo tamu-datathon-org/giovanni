@@ -2,8 +2,8 @@
 
 import React from "react";
 import Image from "next/image"; // Import the Image component from the appropriate library
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+
+import { redirect } from "next/navigation";
 
 import { Button } from "@vanni/ui/button";
 
@@ -45,8 +45,6 @@ const IconList: React.FC<IconListProps> = ({
   prizeFunc,
   setFocus,
 }) => {
-  const router = useRouter();
-
   return (
     // className='absolute top-0 grid grid-cols-2 pt-4 gap-1'
     <div className={className}>
@@ -64,7 +62,7 @@ const IconList: React.FC<IconListProps> = ({
               } else if (icon.name === "FAQ") {
                 faqFunc(true);
               } else if (icon.name === "Schedule") {
-                router.push("/schedule");
+                redirect("/schedule");
               } else if (icon.name === "Socials") {
                 socialsFunc(true);
               } else if (icon.name === "Sponsor") {
@@ -72,8 +70,7 @@ const IconList: React.FC<IconListProps> = ({
               } else if (icon.name === "Prizes") {
                 prizeFunc(true);
               }
-            }
-            }
+            }}
           >
             <div className="flex w-[75px] flex-col items-center justify-center border-white text-center duration-200 hover:bg-blue-400 hover:shadow-[inset_0_0_0_2px_rgba(14,116,144,1)]  focus:border-4 lg:w-[100px]">
               {icon.image && (

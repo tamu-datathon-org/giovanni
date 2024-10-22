@@ -1,10 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
-import ReactMarkdown from "react-markdown";
-
-import { Button } from "@vanni/ui/button";
 
 import WindowContainer from "../_components/WindowContainer";
 
@@ -13,7 +9,6 @@ import "../_components/customCss.scss";
 import Image from "next/image";
 
 import DraggableComponent from "../_components/DraggableComponent";
-import EventAlertPopup from "./EventAlertPopup";
 import ScheduleIconList from "./scheduleHome";
 
 interface Event {
@@ -29,7 +24,7 @@ const events: Event[] = [
     id: 1,
     name: "Doors Open + Check-in",
     date: new Date("2024-11-09T10:00:00"),
- description: "",
+    description: "",
   },
   {
     id: 2,
@@ -187,57 +182,12 @@ const getEventsByDay = (events: Event[], day: string) => {
   });
 };
 
-interface EventPopupProps {
-  event: Event;
-  onClose: () => void;
-  onFocus: (name: string) => void;
-  focus: string;
-}
-
-const EventPopup: React.FC<EventPopupProps> = ({
-  event,
-  onClose,
-  onFocus,
-  focus,
-}) => {
-  return (
-    <div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-      style={{ zIndex: 9999 }}
-    >
-      <DraggableComponent
-        onFocus={onFocus}
-        name={`event-popup-${event.id}`}
-        focus={focus}
-        className="relative"
-      >
-        <WindowContainer isOpen={true} openFunc={() => onClose()}>
-          <div
-            style={{
-              width: "650px",
-              height: "380px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              padding: "20px",
-              position: "relative",
-            }}
-          >
-            <div className="prose prose-sm h-full w-full max-w-none overflow-y-auto">
-              <ReactMarkdown>{event.description}</ReactMarkdown>
-            </div>
-          </div>
-        </WindowContainer>
-      </DraggableComponent>
-    </div>
-  );
-};
-
 const SchedulePage: React.FC = () => {
   const targetDate = new Date("2024-11-09T00:00:00");
   const timeLeft = useCountdown(targetDate);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
+  const [showEventPopup, setShowEventPopup] = useState<boolean>(false);
   const [isCountdownOpen, setIsCountdownOpen] = useState(true);
   const [isEventsOpen, setIsEventsOpen] = useState(true);
   const [focusedWindow, setFocusedWindow] = useState<string>("");
@@ -272,16 +222,6 @@ const SchedulePage: React.FC = () => {
 
     return () => clearInterval(intervalId);
   }, []);
-
-  const closeEventAlert = () => {
-    setCurrentEvent(null);
-  };
-
-  const openEventDescription = (event: Event) => {
-    setSelectedEvent(event);
-    setShowEventPopup(true);
-    closeEventAlert();
-  };
 
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -424,12 +364,12 @@ const SchedulePage: React.FC = () => {
                         })}
                       </p>
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
-            </WindowContainer>
-          </DraggableComponent>
-        </div>
+            </div>
+          </WindowContainer>
+        </DraggableComponent>
       </div>
     </div>
   );

@@ -39,7 +39,9 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
           <div
             className="xpBorder flex w-fit flex-col items-center p-3 text-center text-lg"
             style={borderStyle}
-          >            {/* Added px-4 for horizontal padding */}
+          >
+            {" "}
+            {/* Added px-4 for horizontal padding */}
             <div className="flex w-full flex-row items-center justify-between">
               <Lines />
               <ExitButton
