@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { protectedProcedure } from "../trpc";
+import { adminProcedure, protectedProcedure } from "../trpc";
 import { getEmailsByLabelList } from "./email";
 import sendConfirmationEmails from "./emailHelpers/confirmation_emails";
 import { queueBulkEmail } from "./emailHelpers/queue_bulk";
@@ -13,7 +13,7 @@ export const emailSendingRouter = {
       sendConfirmationEmails(input.emails);
     }),
 
-  sendBulkEmails: protectedProcedure
+  sendBulkEmails: adminProcedure
     .input(
       z.object({
         mailing_lists: z.array(z.string()),
