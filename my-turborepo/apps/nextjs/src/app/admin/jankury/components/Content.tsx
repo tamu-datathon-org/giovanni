@@ -1,14 +1,28 @@
 "use client";
 
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@vanni/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { type } from "os";
+import Link from "next/link";
+import { useFormContext } from "react-hook-form";
+
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@vanni/ui/form";
+import { Textarea } from "@vanni/ui/textarea";
 
 import { Checkbox } from "~/components/ui/checkbox";
-import Link from "next/link";
-import {Textarea} from "@vanni/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import { api } from "~/trpc/react";
-import { type } from "os";
-import { useFormContext } from "react-hook-form";
 
 const example = `<!DOCTYPE html>
   <html>
@@ -101,12 +115,12 @@ const example = `<!DOCTYPE html>
           </p>
       </div>
   </body>
-  </html>`
+  </html>`;
 
 export default function Content() {
-    const form = useFormContext();
-    return (
-      <FormField
+  const form = useFormContext();
+  return (
+    <FormField
       control={form.control}
       name="content"
       render={({ field }) => (
@@ -123,5 +137,5 @@ export default function Content() {
         </FormItem>
       )}
     />
-    );
+  );
 }

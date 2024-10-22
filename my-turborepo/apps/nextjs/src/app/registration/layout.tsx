@@ -5,7 +5,7 @@ export default function preRegistrationLayout({
 }: {
   children: React.ReactNode;
 }) {
-  redirect("/apply/application")
+  redirect("/apply/application");
   return (
     <>
       <div className="max-h-screen-sm overflow-hidden">{children}</div>
