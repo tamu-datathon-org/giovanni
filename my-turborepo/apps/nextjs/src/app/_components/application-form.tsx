@@ -508,9 +508,9 @@ export function ApplicationForm() {
               defaultOption={
                 importedValues?.app?.hasTeam
                   ? {
-                    value: importedValues.app.hasTeam,
-                    label: importedValues.app.hasTeam,
-                  }
+                      value: importedValues.app.hasTeam,
+                      label: importedValues.app.hasTeam,
+                    }
                   : undefined
               }
               required={true}
@@ -619,13 +619,15 @@ export function ApplicationForm() {
                     <Asterisk />
                   </FormLabel>
                   <FormControl>
-                    <Input {...field}
+                    <Input
+                      {...field}
                       maxLength={250}
                       onChange={(e) => {
                         field.onChange(e);
                         setReferencesCount(e.target.value.length);
                       }}
-                      className="bg-white" />
+                      className="bg-white"
+                    />
                   </FormControl>
                   <FormMessage />
                   <p className="mt-1 text-sm text-gray-500">
@@ -652,7 +654,7 @@ export function ApplicationForm() {
                     <Input
                       placeholder="Is your code running? Well, you better go catch it."
                       {...field}
-                      maxLength={500}
+                      maxLength={250}
                       onChange={(e) => {
                         field.onChange(e);
                         setInterestOneCount(e.target.value.length);
@@ -661,7 +663,7 @@ export function ApplicationForm() {
                   </FormControl>
                   <FormMessage />
                   <p className="mt-1 text-sm text-gray-500">
-                    {interestOneCount}/500 characters
+                    {interestOneCount}/250 characters
                   </p>
                 </FormItem>
               )}
@@ -684,7 +686,7 @@ export function ApplicationForm() {
                     <Input
                       placeholder="More resources."
                       {...field}
-                      maxLength={500}
+                      maxLength={250}
                       onChange={(e) => {
                         field.onChange(e);
                         setInterestTwoCount(e.target.value.length);
@@ -693,7 +695,7 @@ export function ApplicationForm() {
                   </FormControl>
                   <FormMessage />
                   <p className="mt-1 text-sm text-gray-500">
-                    {interestTwoCount}/500 characters
+                    {interestTwoCount}/250 characters
                   </p>
                 </FormItem>
               )}
@@ -716,7 +718,7 @@ export function ApplicationForm() {
                     <Input
                       placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
                       {...field}
-                      maxLength={500}
+                      maxLength={250}
                       onChange={(e) => {
                         field.onChange(e);
                         setInterestThreeCount(e.target.value.length);
@@ -725,7 +727,7 @@ export function ApplicationForm() {
                   </FormControl>
                   <FormMessage />
                   <p className="mt-1 text-sm text-gray-500">
-                    {interestThreeCount}/500 characters
+                    {interestThreeCount}/250 characters
                   </p>
                 </FormItem>
               )}
@@ -850,8 +852,8 @@ export function ApplicationForm() {
                       target="_blank"
                     >
                       MLH Contest Terms and Conditions
-                    </a>
-                    {" "}and the{" "}
+                    </a>{" "}
+                    and the{" "}
                     <a
                       className="text-blue-500 underline"
                       href="https://mlh.io/privacy"
