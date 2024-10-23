@@ -12,31 +12,8 @@ import {
   UserRole,
 } from "@vanni/db/schema";
 
-import { protectedProcedure } from "../trpc";
-
-const organizerAuth = async (ctx: any, input: string) => {
-  const eventName = input;
-
-  const user_role = await ctx.db.select()
-    .from(Role)
-    .leftJoin(Event, eq(Role.eventId, Event.id))
-    .leftJoin(UserRole, eq(Role.id, UserRole.roleId))
-    .where(and(eq(Event.name, eventName), eq(UserRole.userId, ctx.session.user.id)));
-
-  if (!user_role || user_role.length === 0) {
-    throw new TRPCError({
-      code: "NOT_FOUND",
-      message: "User_role was not found",
-    });
-  }
-
-  if (user_role[0]?.role.name !== "Organizer") {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "User is not an organizer",
-    });
-  }
-};
+import { organizerProcedure, protectedProcedure } from "../trpc";
+import { getEventData } from "./event";
 
 export const applicationRouter = {
   create: protectedProcedure
@@ -51,16 +28,7 @@ export const applicationRouter = {
     .mutation(async ({ ctx, input }) => {
       const { eventName, applicationData } = input;
 
-      const event = await ctx.db.query.Event.findFirst({
-        where: eq(Event.name, eventName),
-      });
-
-      if (event == undefined) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Event query was not successful",
-        });
-      }
+      const event = await getEventData({ ctx, eventName });
 
       const resume = await ctx.db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
@@ -112,16 +80,7 @@ export const applicationRouter = {
         });
       }
 
-      const event = await ctx.db.query.Event.findFirst({
-        where: eq(Event.name, eventName),
-      });
-
-      if (event == undefined) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Event query was not successful",
-        });
-      }
+      const event = await getEventData({ ctx, eventName });
 
       const resume = await ctx.db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
@@ -153,16 +112,7 @@ export const applicationRouter = {
     .query(async ({ ctx, input }) => {
       const { eventName } = input;
 
-      const event = await ctx.db.query.Event.findFirst({
-        where: eq(Event.name, eventName),
-      });
-
-      if (event == undefined) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Event not found",
-        });
-      }
+      const event = await getEventData({ ctx, eventName });
 
       const application = await ctx.db.query.Application.findFirst({
         where: and(
@@ -170,13 +120,6 @@ export const applicationRouter = {
           eq(Application.userId, ctx.session.user.id),
         ),
       });
-
-      // if (!application) {
-      //   throw new TRPCError({
-      //     code: "NOT_FOUND",
-      //     message: "Application not found",
-      //   });
-      // }
 
       const resume = await ctx.db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
@@ -194,12 +137,9 @@ export const applicationRouter = {
       ).parse(application);
       return { app: validatedApplication, resume: resume };
     }),
-  getAllApplicationsByEventName: protectedProcedure
+  getAllApplicationsByEventName: organizerProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
-      // Auth Check
-      await organizerAuth(ctx, input);
-
       const query = await ctx.db.selectDistinctOn([Application.userId])
         .from(Application)
         .leftJoin(Event, eq(Event.id, Application.eventId))
@@ -207,16 +147,13 @@ export const applicationRouter = {
 
       return query.map((row) => row.application);
     }),
-  updateStatus: protectedProcedure
+  updateStatus: organizerProcedure
     .input(z.object({
-      eventName: z.string(),
       id: z.string(),
       newStatus: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
-      const { eventName, id, newStatus } = input;
-
-      await organizerAuth(ctx, eventName);
+      const { id, newStatus } = input;
 
       return await ctx.db.update(Application)
         .set({ status: newStatus as "pending" | "accepted" | "checkedin" | "rejected" })
