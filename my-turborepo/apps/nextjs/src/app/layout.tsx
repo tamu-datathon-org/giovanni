@@ -47,11 +47,11 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       >
         <TRPCReactProvider>
           <main>
-            {/* <BackgroundImage
+            <BackgroundImage
               desktop_src={"/assets/wallpaper.png"}
               mobile_src={"/assets/wallpaper-mobile.png"}
               alt={"Preregistration background"}
-            /> */}
+            />
             {props.children}
           </main>
         </TRPCReactProvider>
