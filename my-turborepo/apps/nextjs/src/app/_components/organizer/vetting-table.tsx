@@ -58,14 +58,14 @@ interface InformationProps {
 
 export const StatusInformation: React.FC<InformationProps> = ({ application }) => {
     return (
-        <Card>
+        <CardInformation>
             <CardContent className="flex flex-col gap-1 px-2 py-2">
                 <p><span className="font-bold">Status:</span> {application.status}</p>
                 <p><span className="font-bold">Created At:</span> {application.createdAt.toLocaleDateString()}</p>
                 <p><span className="font-bold">Updated At:</span> {application.updatedAt.toLocaleDateString()}</p>
                 <p><span className="font-bold">MLH Consent:</span> {application.mlhEmailConsent ? "Yes" : "No"}</p>
             </CardContent>
-        </Card>
+        </CardInformation>
     );
 }
 
@@ -76,7 +76,7 @@ interface CardInformationProps {
 const CardInformation: React.FC<CardInformationProps> = ({ children }) => {
     return (
         <Card>
-            <CardContent className="flex flex-col gap-1 px-2 py-2">
+            <CardContent className="flex flex-col gap-1 px-2 py-2 text-wrap">
                 {children}
             </CardContent>
         </Card>
