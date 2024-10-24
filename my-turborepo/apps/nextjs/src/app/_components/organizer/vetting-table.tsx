@@ -50,6 +50,7 @@ import {
     SelectValue,
 } from "~/components/ui/select"
 import { toast } from "~/hooks/use-toast";
+import { useEffect, useState } from "react"
 
 
 interface InformationProps {
@@ -205,10 +206,12 @@ type SelectStatusProps = {
     name: string,
     id: string,
     currStatus: string,
-    mutation: any
+    mutation: any,
+    setData: React.Dispatch<React.SetStateAction<any>>,
+    setPendingCount: React.Dispatch<React.SetStateAction<number>>
 }
 
-const SelectStatus: React.FC<SelectStatusProps> = ({ name, id, currStatus, mutation }) => {
+const SelectStatus: React.FC<SelectStatusProps> = ({ name, id, currStatus, mutation, setData, setPendingCount }) => {
     return (
         <Select
             defaultValue={currStatus}
@@ -219,6 +222,23 @@ const SelectStatus: React.FC<SelectStatusProps> = ({ name, id, currStatus, mutat
                     newStatus: value,
                 }, {
                     onSuccess: () => {
+                        // Update the table
+                        setData((prevData: any) => {
+                            return prevData.map((item: any) => {
+                                if (item.id === id) {
+                                    return { ...item, status: value };
+                                }
+                                return item;
+                            });
+                        });
+
+                        // Update the status counter
+                        if (currStatus === "pending" && value !== "pending") {
+                            setPendingCount((prevCount: number) => prevCount - 1);
+                        } else if (currStatus !== "pending" && value === "pending") {
+                            setPendingCount((prevCount: number) => prevCount + 1);
+                        }
+
                         toast({
                             variant: "success",
                             title: "Status of " + name + "has been updated",
@@ -251,7 +271,12 @@ const SelectStatus: React.FC<SelectStatusProps> = ({ name, id, currStatus, mutat
     );
 }
 
-const SelectStatusCell: React.FC<{ row: any, mutation: any }> = ({ row, mutation }) => {
+const SelectStatusCell: React.FC<{
+    row: any,
+    mutation: any,
+    setData: React.Dispatch<React.SetStateAction<any>>,
+    setPendingCount: React.Dispatch<React.SetStateAction<number>>
+}> = ({ row, mutation, setData, setPendingCount }) => {
     return (
         <td>
             <div className="bg-white rounded">
@@ -260,6 +285,8 @@ const SelectStatusCell: React.FC<{ row: any, mutation: any }> = ({ row, mutation
                     id={row.original.id}
                     currStatus={row.original.status}
                     mutation={mutation}
+                    setData={setData}
+                    setPendingCount={setPendingCount}
                 />
             </div>
         </td>
@@ -314,6 +341,8 @@ const Pagination: React.FC<{ table: any }> = ({ table }) => {
 }
 
 export function VettingTable() {
+    const statusMutation = api.application.updateStatus.useMutation();
+    // Tan table setup
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -325,15 +354,24 @@ export function VettingTable() {
             createdAt: false,
         })
     const [rowSelection, setRowSelection] = React.useState({})
-    const { data } = api.application.getAllApplicationsByEventName.useQuery(process.env.NEXT_PUBLIC_EVENT_NAME ?? "", {
+
+    // Application data query from database
+    const [tableData, setTableData] = useState<typeof Application.$inferSelect[]>([]);
+
+    const { data, isLoading } = api.application.getAllApplicationsByEventName.useQuery(process.env.NEXT_PUBLIC_EVENT_NAME ?? "", {
         retry: false,
         refetchOnWindowFocus: false,
     });
 
-    const statusMutation = api.application.updateStatus.useMutation();
+    useEffect(() => {
+        if (data) {
+            setTableData(data);
+        }
+    }, [data]);
 
+    // Form the table
     const table = useReactTable<typeof Application.$inferSelect>({
-        data: data ?? [],
+        data: tableData ?? [],
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -351,14 +389,18 @@ export function VettingTable() {
         },
     })
 
-    const [pendingApplicationsCount, setPendingApplicationsCount] = React.useState(0);
+    const [pendingCount, setPendingCount] = React.useState(0);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (data) {
             const count = data.filter(application => application.status === "pending").length;
-            setPendingApplicationsCount(count);
+            setPendingCount(count);
         }
     }, [data]);
+
+    if (isLoading) {
+        return <div className="w-full px-5 overflow-auto h-full">Loading...</div>
+    }
 
     return (
         <div className="w-full px-5 overflow-auto h-full">
@@ -372,6 +414,19 @@ export function VettingTable() {
                     className="max-w-sm bg-white"
                 />
                 <Button
+                    variant="outline"
+                    onClick={() => {
+                        if (table.getColumn("status")?.getFilterValue() === "pending") {
+                            table.getColumn("status")?.setFilterValue("");
+                        } else {
+                            table.getColumn("status")?.setFilterValue("pending");
+                        }
+                    }}
+                    className={"ml-2" + (table.getColumn("status")?.getFilterValue() === "pending" ? " bg-green-500" : "")}
+                >
+                    Only Pending
+                </Button>
+                <Button
                     variant="secondary"
                     onClick={() => table.getColumn("createdAt")?.toggleSorting()}
                     className="ml-2"
@@ -380,7 +435,7 @@ export function VettingTable() {
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
                 <span className="ml-4 text-white">
-                    Total Pending Applications: {pendingApplicationsCount}
+                    Total Pending Applications: {pendingCount}
                 </span>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -446,7 +501,12 @@ export function VettingTable() {
                                                 )}
                                             </TableCell>
                                         ))}
-                                        <SelectStatusCell row={row} mutation={statusMutation} />
+                                        <SelectStatusCell
+                                            row={row}
+                                            mutation={statusMutation}
+                                            setData={setTableData}
+                                            setPendingCount={setPendingCount}
+                                        />
                                     </TableRow>
                                 ))
                             ) : (
