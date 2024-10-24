@@ -202,12 +202,13 @@ export const columns: ColumnDef<typeof Application.$inferSelect>[] = [
 ]
 
 type SelectStatusProps = {
+    name: string,
     id: string,
     currStatus: string,
     mutation: any
 }
 
-const SelectStatus: React.FC<SelectStatusProps> = ({ id, currStatus, mutation }) => {
+const SelectStatus: React.FC<SelectStatusProps> = ({ name, id, currStatus, mutation }) => {
     return (
         <Select
             defaultValue={currStatus}
@@ -219,12 +220,14 @@ const SelectStatus: React.FC<SelectStatusProps> = ({ id, currStatus, mutation })
                 }, {
                     onSuccess: () => {
                         toast({
-                            title: "Status updated",
+                            variant: "success",
+                            title: "Status of " + name + "has been updated",
                             description: `The status has been successfully updated to ${value}.`,
                         });
                     },
                     onError: (error: any) => {
                         toast({
+                            variant: "destructive",
                             title: "Error updating status",
                             description: `There was an error updating the status: ${error.message}`,
                         });
@@ -253,6 +256,7 @@ const SelectStatusCell: React.FC<{ row: any, mutation: any }> = ({ row, mutation
         <td>
             <div className="bg-white rounded">
                 <SelectStatus
+                    name={row.original.firstName + " " + row.original.lastName}
                     id={row.original.id}
                     currStatus={row.original.status}
                     mutation={mutation}
@@ -263,8 +267,17 @@ const SelectStatusCell: React.FC<{ row: any, mutation: any }> = ({ row, mutation
 };
 
 const Pagination: React.FC<{ table: any }> = ({ table }) => {
+    const [pageInput, setPageInput] = React.useState("");
+
+    const handlePageChange = () => {
+        const pageNumber = Number(pageInput);
+        if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= table.getPageCount()) {
+            table.setPageIndex(pageNumber - 1);
+        }
+    };
+
     return (
-        <div className="space-x-2">
+        <div className="space-x-2 flex flex-row">
             <Button
                 variant="outline"
                 size="sm"
@@ -284,6 +297,18 @@ const Pagination: React.FC<{ table: any }> = ({ table }) => {
             >
                 Next
             </Button>
+            <div className="flex items-center space-x-2">
+                <Input
+                    type="number"
+                    value={pageInput}
+                    onChange={(e) => setPageInput(e.target.value)}
+                    placeholder="Page number"
+                    className="w-20"
+                />
+                <Button variant="outline" size="sm" onClick={handlePageChange}>
+                    Go
+                </Button>
+            </div>
         </div>
     );
 }
@@ -326,9 +351,18 @@ export function VettingTable() {
         },
     })
 
+    const [pendingApplicationsCount, setPendingApplicationsCount] = React.useState(0);
+
+    React.useEffect(() => {
+        if (data) {
+            const count = data.filter(application => application.status === "pending").length;
+            setPendingApplicationsCount(count);
+        }
+    }, [data]);
+
     return (
         <div className="w-full px-5 overflow-auto h-full">
-            <div className="flex items-center py-4">
+            <div className="flex items-center py-2">
                 <Input
                     placeholder="Filter firstName..."
                     value={(table.getColumn("firstName")?.getFilterValue() as string) ?? ""}
@@ -345,6 +379,9 @@ export function VettingTable() {
                     Order By created_at
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
+                <span className="ml-4 text-white">
+                    Total Pending Applications: {pendingApplicationsCount}
+                </span>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
@@ -426,7 +463,7 @@ export function VettingTable() {
                     </Table>
                 </div>
             </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex items-center justify-end space-x-2 py-2">
                 <Pagination table={table} />
             </div>
         </div>
