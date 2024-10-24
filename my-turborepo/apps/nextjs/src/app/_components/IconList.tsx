@@ -1,6 +1,11 @@
+"use client";
+
 import React from "react";
 import Image from "next/image"; // Import the Image component from the appropriate library
-import Link from "next/link";
+
+import { redirect } from "next/navigation";
+
+import { Button } from "@vanni/ui/button";
 
 interface Icon {
   name: string;
@@ -9,37 +14,82 @@ interface Icon {
   // Add any other properties you need for the icon
 }
 
+interface IconListProps {
+  className?: string;
+  welcFunc: (isOpen: boolean) => void;
+  applyFunc: (isOpen: boolean) => void;
+  faqFunc: (isOpen: boolean) => void;
+  socialsFunc: (isOpen: boolean) => void;
+  // sponFunc: (isOpen: boolean) => void;
+  // prizeFunc: (isOpen: boolean) => void;
+  setFocus: (focus: string) => void;
+}
+
 const routes: Icon[] = [
-  { name: "home", route: "/preregistration", image: "/Pixel_ComputerIcon.png" },
-  { name: "about", route: "/about", image: "/Pixel_InternetIcon.png" },
-  { name: "contact", route: "/contact", image: "/Pixel_WorldIcon.png" },
-  { name: "schedule", route: "/about", image: "/Pixel_CDIcon.png" },
-  { name: "Challenges OMGG", route: "/contact", image: "/Pixel_EmailIcon.png" },
+  { name: "Welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
+  { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
+  // { name: "Sponsor", route: "/", image: "/Pixel_WorldIcon.png" },
+  // { name: "Prizes", route: "/", image: "/Pixel_CDIcon.png" },
+  { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
+  // { name: "Schedule", route: "/schedule", image: "/Pixel_CDIcon.png" },
+  { name: "Socials", route: "/socials", image: "/Pixel_FileIcon.png" },
 ];
 
-const IconList = () => {
+const IconList: React.FC<IconListProps> = ({
+  className,
+  welcFunc,
+  applyFunc,
+  faqFunc,
+  socialsFunc,
+  sponFunc,
+  prizeFunc,
+  setFocus,
+}) => {
   return (
     // className='absolute top-0 grid grid-cols-2 pt-4 gap-1'
-    <div className="flex-rows z-10 flex">
-      {routes.map((icon) => (
-        <Link key={icon.name} href={icon.route}>
-          <div className="flex w-[100px] flex-col items-center justify-center border-white text-center duration-200 hover:bg-blue-400 hover:opacity-50 hover:shadow-[inset_0_0_0_2px_rgba(14,116,144,1)] focus:border-4">
-            {icon.image && (
-              <>
-                <Image
-                  src={icon.image}
-                  alt={"not found"}
-                  width={100}
-                  height={100}
-                  className=""
-                />
-                <div className="text-wrap">{icon.name}</div>
-              </>
-            )}{" "}
-            {/* Use the Image component with the correct props */}
-          </div>
-        </Link>
-      ))}
+    <div className={className}>
+      <div className="flex flex-row">
+        {routes.map((icon) => (
+          <Button
+            key={icon.name}
+            className="shadow-none"
+            onClick={() => {
+              setFocus(icon.name);
+              if (icon.name === "Welcome") {
+                welcFunc(true);
+              } else if (icon.name === "Apply") {
+                applyFunc(true);
+              } else if (icon.name === "FAQ") {
+                faqFunc(true);
+              } else if (icon.name === "Schedule") {
+                redirect("/schedule");
+              } else if (icon.name === "Socials") {
+                socialsFunc(true);
+              } else if (icon.name === "Sponsor") {
+                sponFunc(true);
+              } else if (icon.name === "Prizes") {
+                prizeFunc(true);
+              }
+            }}
+          >
+            <div className="flex w-[75px] flex-col items-center justify-center border-white text-center duration-200 hover:bg-blue-400 hover:shadow-[inset_0_0_0_2px_rgba(14,116,144,1)]  focus:border-4 lg:w-[100px]">
+              {icon.image && (
+                <>
+                  <Image
+                    src={icon.image}
+                    alt={"not found"}
+                    width={100}
+                    height={100}
+                    className=""
+                  />
+                  <div className="text-wrap">{icon.name}</div>
+                </>
+              )}{" "}
+              {/* Use the Image component with the correct props */}
+            </div>
+          </Button>
+        ))}
+      </div>
     </div>
   );
 };

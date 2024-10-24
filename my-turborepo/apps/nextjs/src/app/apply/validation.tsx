@@ -13,8 +13,7 @@ export const applicationSchema = CreateApplicationSchema.merge(
     mlhPrivacyPolicy: z
       .boolean()
       .refine((value) => value, "Please accept the privacy policy"),
-    mlhEmailConsent: z
-      .boolean(),
+    mlhEmailConsent: z.boolean(),
     gradYear: z.string().min(1, "Please select a graduation year"),
   }),
 );

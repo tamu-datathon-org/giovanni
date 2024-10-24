@@ -10,6 +10,8 @@ export const AGE = [
   { value: "24+", label: "24 or older" },
 ];
 export const COUNTRIES = [
+  { value: "United States of America", label: "United States of America" },
+
   { value: "Afghanistan", label: "Afghanistan" },
   { value: "Åland Islands", label: "Åland Islands" },
   { value: "Albania", label: "Albania" },
@@ -290,7 +292,6 @@ export const COUNTRIES = [
     value: "United Kingdom of Great Britain and Northern Ireland",
     label: "United Kingdom of Great Britain and Northern Ireland",
   },
-  { value: "United States of America", label: "United States of America" },
   {
     value: "United States Minor Outlying Islands",
     label: "United States Minor Outlying Islands",

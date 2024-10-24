@@ -16,6 +16,22 @@
   // }
 }
 
+body {
+  cursor: url("cursor.png"), auto;
+}
+
+a,
+button,
+input[type="submit"],
+input[type="button"],
+[role="button"] {
+  cursor: url("largercursor.png"), auto !important;
+}
+
+.clickable-box {
+  cursor: url("largercursor.png"), auto;
+}
+
 .wrap {
   perspective-origin: 50% 50%;
 }
@@ -55,7 +71,6 @@ $total: 10;
     border-width: 1px;
     border-style: solid;
     position: relative;
-    padding: 1rem;
     border-color: #000;
     color: inherit;
     box-shadow:
@@ -80,10 +95,11 @@ $total: 10;
   @media screen {
     background-color: #e4e3e4;
     border-color: black;
+    border-radius: 0%;
     border-width: 2px;
     border-style: solid;
     position: relative;
-    padding: 0.5rem;
+    padding: 0.3rem;
 
     &::before {
       content: "";
@@ -101,12 +117,8 @@ $total: 10;
       background-color: #e4e3e4;
     }
 
-    &:focus {
+    &:hover {
       background-color: #c2c2c2;
-
-      .close {
-        margin-top: 2px;
-      }
 
       &::before {
         content: "";

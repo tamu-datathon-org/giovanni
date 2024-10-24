@@ -3,6 +3,7 @@ import { del } from "@vercel/blob";
 import { z } from "zod";
 
 import { and, eq } from "@vanni/db";
+import { db } from "@vanni/db/client";
 import {
   Application,
   CreateApplicationSchema,
@@ -13,13 +14,14 @@ import {
 } from "@vanni/db/schema";
 
 import { protectedProcedure } from "../trpc";
+import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 
 export const applicationRouter = {
   create: protectedProcedure
     .input(
       z.object({
         eventName: z.string(),
-        resumeUrl: z.string().url(),
+        resumeUrl: z.string(),
         resumeName: z.string(),
         applicationData: CreateApplicationSchema,
       }),
@@ -27,7 +29,7 @@ export const applicationRouter = {
     .mutation(async ({ ctx, input }) => {
       const { eventName, applicationData } = input;
 
-      const event = await ctx.db.query.Event.findFirst({
+      const event = await db.query.Event.findFirst({
         where: eq(Event.name, eventName),
       });
 
@@ -38,57 +40,66 @@ export const applicationRouter = {
         });
       }
 
-      const resume = await ctx.db.query.UserResume.findFirst({
+      const resume = await db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
       });
 
-      // resume updates
-      if (!resume) {
-        await ctx.db.insert(UserResume).values({
+      // No resume at all
+      if (input.resumeUrl !== "" && input.resumeName !== "") {
+        if (!resume) {
+          await db.insert(UserResume).values({
+            userId: ctx.session.user.id,
+            resumeUrl: input.resumeUrl,
+            resumeName: input.resumeName,
+          });
+        } else if (resume.resumeUrl !== input.resumeUrl) {
+          await db
+            .update(UserResume)
+            .set({ resumeUrl: input.resumeUrl })
+            .where(eq(UserResume.userId, ctx.session.user.id));
+          await del(resume.resumeUrl);
+        }
+
+        // query for the role based on event
+        const role = await ctx.db.query.Role.findFirst({
+          where: and(eq(Role.eventId, event.id),
+            eq(Role.name, "Applicant")),
+        });
+
+        if (role == undefined) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Role query was not successful. Contact a datathon officer.",
+          });
+        }
+
+        // user roles insertion
+        await ctx.db.insert(UserRole).values({
           userId: ctx.session.user.id,
-          resumeUrl: input.resumeUrl,
-          resumeName: input.resumeName,
-        });
-      } else if (resume.resumeUrl !== input.resumeUrl) {
-        await ctx.db
-          .update(UserResume)
-          .set({ resumeUrl: input.resumeUrl })
-          .where(eq(UserResume.userId, ctx.session.user.id));
-        await del(resume.resumeUrl);
-      }
-
-      // query for the role based on event
-      const role = await ctx.db.query.Role.findFirst({
-        where: and(eq(Role.eventId, event.id),
-          eq(Role.name, "Applicant")),
-      });
-
-      if (role == undefined) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Role query was not successful. Contact a datathon officer.",
+          roleId: role.id,
         });
       }
 
-      // user roles insertion
-      await ctx.db.insert(UserRole).values({
-        userId: ctx.session.user.id,
-        roleId: role.id,
-      });
-
-      return await ctx.db.insert(Application).values({
+      const response = await db.insert(Application).values({
         ...applicationData,
         userId: ctx.session.user.id,
         eventId: event.id,
         status: "pending",
       });
+
+      const loginEmail = ctx.session.user.email;
+      const applicationEmail = applicationData.email;
+
+      sendConfirmationEmail([loginEmail, applicationEmail]);
+
+      return response;
     }),
   update: protectedProcedure
     .input(
       z.object({
         id: z.string(),
         userId: z.string(),
-        resumeUrl: z.string().url(),
+        resumeUrl: z.string(),
         resumeName: z.string(),
         eventName: z.string(),
         application: CreateApplicationSchema,
@@ -105,7 +116,7 @@ export const applicationRouter = {
         });
       }
 
-      const event = await ctx.db.query.Event.findFirst({
+      const event = await db.query.Event.findFirst({
         where: eq(Event.name, eventName),
       });
 
@@ -116,22 +127,37 @@ export const applicationRouter = {
         });
       }
 
-      const resume = await ctx.db.query.UserResume.findFirst({
+      const resume = await db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
       });
 
-      if (resume && resume.resumeUrl !== resumeUrl) {
-        await ctx.db
-          .update(UserResume)
-          .set({ resumeUrl: resumeUrl, resumeName: resumeName })
-          .where(eq(UserResume.userId, ctx.session.user.id));
-        await del(resume.resumeUrl);
+      if (resumeUrl !== "" && resumeName !== "") {
+        if (resume && resume.resumeUrl !== resumeUrl) {
+          await db
+            .update(UserResume)
+            .set({ resumeUrl: resumeUrl, resumeName: resumeName })
+            .where(eq(UserResume.userId, ctx.session.user.id));
+          await del(resume.resumeUrl);
+        } else {
+          await db.insert(UserResume).values({
+            userId: ctx.session.user.id,
+            resumeUrl: input.resumeUrl,
+            resumeName: input.resumeName,
+          });
+        }
       }
 
-      return await ctx.db
+      const response = await db
         .update(Application)
         .set(application)
         .where(eq(Application.id, id));
+
+      const loginEmail = ctx.session.user.email;
+      const applicationEmail = application.email;
+
+      sendConfirmationEmail([loginEmail, applicationEmail]);
+
+      return response;
     }),
   getApplicationByEventName: protectedProcedure
     .input(z.object({ eventName: z.string() }))
@@ -156,25 +182,24 @@ export const applicationRouter = {
         ),
       });
 
-      if (!application) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Application not found",
-        });
-      }
+      // if (!application) {
+      //   throw new TRPCError({
+      //     code: "NOT_FOUND",
+      //     message: "Application not found",
+      //   });
+      // }
 
       const resume = await ctx.db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
       });
 
-      if (!resume) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Resume not found",
-        });
+      // Validate the application with the schema
+      if (!application && !resume) {
+        return { app: undefined, resume: null };
+      } else if (!application) {
+        return { app: undefined, resume: resume };
       }
 
-      // Validate the application with the schema
       const validatedApplication = CreateApplicationSchema.merge(
         z.object({ id: z.string(), userId: z.string(), eventId: z.string() }),
       ).parse(application);
