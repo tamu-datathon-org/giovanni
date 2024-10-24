@@ -3,6 +3,7 @@ import { del } from "@vercel/blob";
 import { z } from "zod";
 
 import { and, eq } from "@vanni/db";
+import { db } from "@vanni/db/client";
 import {
   Application,
   CreateApplicationSchema,
@@ -11,6 +12,7 @@ import {
 } from "@vanni/db/schema";
 
 import { protectedProcedure } from "../trpc";
+import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 
 export const applicationRouter = {
   create: protectedProcedure
@@ -25,7 +27,7 @@ export const applicationRouter = {
     .mutation(async ({ ctx, input }) => {
       const { eventName, applicationData } = input;
 
-      const event = await ctx.db.query.Event.findFirst({
+      const event = await db.query.Event.findFirst({
         where: eq(Event.name, eventName),
       });
 
@@ -36,33 +38,39 @@ export const applicationRouter = {
         });
       }
 
-      const resume = await ctx.db.query.UserResume.findFirst({
+      const resume = await db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
       });
 
       // No resume at all
       if (input.resumeUrl !== "" && input.resumeName !== "") {
         if (!resume) {
-          await ctx.db.insert(UserResume).values({
+          await db.insert(UserResume).values({
             userId: ctx.session.user.id,
             resumeUrl: input.resumeUrl,
             resumeName: input.resumeName,
           });
         } else if (resume.resumeUrl !== input.resumeUrl) {
-          await ctx.db
+          await db
             .update(UserResume)
             .set({ resumeUrl: input.resumeUrl })
             .where(eq(UserResume.userId, ctx.session.user.id));
           await del(resume.resumeUrl);
         }
       }
-
-      return await ctx.db.insert(Application).values({
+      const response = await db.insert(Application).values({
         ...applicationData,
         userId: ctx.session.user.id,
         eventId: event.id,
         status: "pending",
       });
+
+      const loginEmail = ctx.session.user.email;
+      const applicationEmail = applicationData.email;
+
+      sendConfirmationEmail([loginEmail, applicationEmail]);
+
+      return response;
     }),
   update: protectedProcedure
     .input(
@@ -86,7 +94,7 @@ export const applicationRouter = {
         });
       }
 
-      const event = await ctx.db.query.Event.findFirst({
+      const event = await db.query.Event.findFirst({
         where: eq(Event.name, eventName),
       });
 
@@ -97,19 +105,19 @@ export const applicationRouter = {
         });
       }
 
-      const resume = await ctx.db.query.UserResume.findFirst({
+      const resume = await db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
       });
 
       if (resumeUrl !== "" && resumeName !== "") {
         if (resume && resume.resumeUrl !== resumeUrl) {
-          await ctx.db
+          await db
             .update(UserResume)
             .set({ resumeUrl: resumeUrl, resumeName: resumeName })
             .where(eq(UserResume.userId, ctx.session.user.id));
           await del(resume.resumeUrl);
         } else {
-          await ctx.db.insert(UserResume).values({
+          await db.insert(UserResume).values({
             userId: ctx.session.user.id,
             resumeUrl: input.resumeUrl,
             resumeName: input.resumeName,
@@ -117,10 +125,17 @@ export const applicationRouter = {
         }
       }
 
-      return await ctx.db
+      const response = await db
         .update(Application)
         .set(application)
         .where(eq(Application.id, id));
+
+      const loginEmail = ctx.session.user.email;
+      const applicationEmail = application.email;
+
+      sendConfirmationEmail([loginEmail, applicationEmail]);
+
+      return response;
     }),
   getApplicationByEventName: protectedProcedure
     .input(z.object({ eventName: z.string() }))
