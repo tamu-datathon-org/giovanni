@@ -11,6 +11,7 @@ import FAQComponent from "./_components/FAQComponent";
 import IconList from "./_components/IconList";
 import { TAMUy2k } from "./_components/preregistration-form";
 import WindowContainer from "./_components/WindowContainer";
+import { redirect } from "next/dist/server/api-utils";
 
 export const runtime = "edge";
 
@@ -42,6 +43,7 @@ export default function HomePage() {
 
   const [sponsorOpen, setSponsorOpen] = useState(false);
   const [prizesOpen, setPrizesOpen] = useState(false);
+  const setScheduleOpen = () => { window.location.href = '/schedule'; };
 
   const [mounted, setMounted] = useState(false);
 
@@ -263,6 +265,7 @@ export default function HomePage() {
             prizeFunc={setPrizesOpen}
             socialsFunc={setSocialsOpen}
             setFocus={setActiveWindow}
+            scheduleFunc={setScheduleOpen}
             className="flex z-10 max-w-full h-fit py-5"
           />
         </div>

@@ -22,6 +22,7 @@ interface IconListProps {
   socialsFunc: (isOpen: boolean) => void;
   sponFunc: (isOpen: boolean) => void;
   prizeFunc: (isOpen: boolean) => void;
+  scheduleFunc: () => void;
   setFocus: (focus: string) => void;
 }
 
@@ -30,9 +31,9 @@ const routes: Icon[] = [
   { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
   { name: "Sponsor", route: "/", image: "/Pixel_WorldIcon.png" },
   { name: "Prizes", route: "/", image: "/Pixel_CDIcon.png" },
-  { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
-  { name: "Schedule", route: "/schedule", image: "/Pixel_CDIcon.png" },
+  { name: "Schedule", route: "/schedule", image: "/Pixel_PolarBear.png" },
   { name: "Socials", route: "/socials", image: "/Pixel_FileIcon.png" },
+  { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
 ];
 const numPerRow = 6;
 const IconList: React.FC<IconListProps> = ({
@@ -43,6 +44,7 @@ const IconList: React.FC<IconListProps> = ({
   socialsFunc,
   sponFunc,
   prizeFunc,
+  scheduleFunc,
   setFocus,
 }) => {
   const router = useRouter();
@@ -75,7 +77,7 @@ const IconList: React.FC<IconListProps> = ({
                   }
                 }}
               >
-                <div className="flex flex-col w-12 h-auto lg:w-[100px] lg:h-[100px] max-w-full items-center justify-center border-white text-center duration-200 hover:bg-blue-400 hover:shadow-[inset_0_0_0_2px_rgba(14,116,144,1)] focus:border-4">
+                <div className="flex flex-col w-12 h-auto lg:w-auto lg:h-auto max-w-full items-center justify-center border-white text-center duration-200 hover:bg-blue-400 hover:shadow-[inset_0_0_0_2px_rgba(14,116,144,1)] focus:border-4">
                   {icon.image && (
                     <>
                       <Image
