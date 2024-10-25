@@ -22,16 +22,9 @@ export default function BatchSize() {
       name="maxBatchSize"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Maximum Batch Size: {field.value}</FormLabel>
+          <FormLabel>Maximum Batch Size</FormLabel>
           <FormControl>
-            <Slider
-              className="black"
-              defaultValue={[10]}
-              max={10}
-              step={1}
-              min={1}
-	      onChange={field.onChange}
-            />
+            <Input placeholder="10" {...field} />
           </FormControl>
           <FormMessage />
           <FormDescription>
