@@ -148,7 +148,7 @@ const FAQComponent: React.FC = () => {
           click on the buttons for more info!
         </p>
         <ScrollArea
-          className="max-h-[400px] overflow-auto"
+          className="max-h-[300px] lg:max-h-[400px] overflow-auto"
           style={{
             WebkitOverflowScrolling: "touch",
             overscrollBehavior: "contain",

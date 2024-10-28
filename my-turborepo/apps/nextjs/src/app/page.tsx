@@ -11,6 +11,7 @@ import FAQComponent from "./_components/FAQComponent";
 import IconList from "./_components/IconList";
 import { TAMUy2k } from "./_components/preregistration-form";
 import WindowContainer from "./_components/WindowContainer";
+import { redirect } from "next/dist/server/api-utils";
 
 export const runtime = "edge";
 
@@ -42,6 +43,7 @@ export default function HomePage() {
 
   const [sponsorOpen, setSponsorOpen] = useState(false);
   const [prizesOpen, setPrizesOpen] = useState(false);
+  const setScheduleOpen = () => { window.location.href = '/schedule'; };
 
   const [mounted, setMounted] = useState(false);
 
@@ -61,7 +63,7 @@ export default function HomePage() {
               onFocus={setActiveWindow}
               name="Prizes"
               focus={activeWindow}
-              className="absolute lg:left-[1%] lg:top-[2%]"
+              className="absolute max-h-full max-w-full lg:left-[1%] lg:top-[2%]"
             >
               <WindowContainer isOpen={prizesOpen} openFunc={setPrizesOpen}>
                 <motion.h1
@@ -76,7 +78,7 @@ export default function HomePage() {
                   {prizes.map((prize, index) => (
                     <motion.div
                       key={index}
-                      className="flex flex-col items-center justify-center overflow-hidden rounded-lg bg-card bg-white p-4 shadow-md transition-shadow duration-300 hover:shadow-lg"
+                      className="flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden bg-white"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{
                         opacity: mounted ? 1 : 0,
@@ -89,9 +91,9 @@ export default function HomePage() {
                         <Image
                           src={prize.img}
                           alt={prize.name}
-                          width={100}
-                          height={100}
-                          className="max-h-full max-w-full rounded-md object-contain"
+                          width={75}
+                          height={75}
+                          className="max-w-full max-h-full rounded-md object-contain"
                         />
                       </div>
                       <motion.div
@@ -114,7 +116,7 @@ export default function HomePage() {
               onFocus={setActiveWindow}
               name="Sponsor"
               focus={activeWindow}
-              className="absolute lg:left-[5%] lg:top-[50%]"
+              className="absolute max-h-full max-w-full lg:left-[5%] lg:top-[50%]"
             >
               <WindowContainer isOpen={sponsorOpen} openFunc={setSponsorOpen}>
                 <motion.h1
@@ -144,7 +146,7 @@ export default function HomePage() {
                         alt={logo}
                         width={100}
                         height={100}
-                        className="max-h-20 max-w-full object-contain"
+                        className="max-w-full max-h-20 object-contain"
                       />
                     </motion.div>
                   ))}
@@ -158,7 +160,7 @@ export default function HomePage() {
               onFocus={setActiveWindow}
               name="FAQ"
               focus={activeWindow}
-              className="absolute lg:left-[48%] lg:top-[5%] "
+              className="absolute top-[5%] lg:left-[48%] lg:top-[5%] max-h-full"
             >
               <WindowContainer isOpen={faqOpen} openFunc={setFaqOpen}>
                 <FAQComponent />
@@ -255,7 +257,6 @@ export default function HomePage() {
               </WindowContainer>
             </DraggableComponent>
           </div>
-
           <IconList
             welcFunc={setWelcomeOpen}
             applyFunc={setApplyOpen}
@@ -264,7 +265,8 @@ export default function HomePage() {
             prizeFunc={setPrizesOpen}
             socialsFunc={setSocialsOpen}
             setFocus={setActiveWindow}
-            className="absolute bottom-10 z-10 lg:bottom-20"
+            scheduleFunc={setScheduleOpen}
+            className="flex z-10 max-w-full h-fit py-5"
           />
         </div>
       </div>
