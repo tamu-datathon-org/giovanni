@@ -24,7 +24,7 @@ export default function BatchSize() {
         <FormItem>
           <FormLabel>Maximum Batch Size</FormLabel>
           <FormControl>
-            <Input type=number placeholder="10" {...field} />
+            <Input placeholder="10" {...field} />
           </FormControl>
           <FormMessage />
           <FormDescription>
