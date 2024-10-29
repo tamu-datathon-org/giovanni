@@ -8,6 +8,7 @@ import {
   CreateApplicationSchema,
   Event,
   Role,
+  User,
   UserResume,
   UserRole,
 } from "@vanni/db/schema";
@@ -140,12 +141,24 @@ export const applicationRouter = {
   getAllApplicationsByEventName: organizerProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
-      const query = await ctx.db.selectDistinctOn([Application.userId])
+      const sq = ctx.db.$with('sq').as(ctx.db.selectDistinct({
+        userId: UserResume.userId,
+        resumeUrl: UserResume.resumeUrl,
+        resumeName: UserResume.resumeName,
+      })
+        .from(UserResume));
+
+      const query = await ctx.db.with(sq).select()
         .from(Application)
         .leftJoin(Event, eq(Event.id, Application.eventId))
+        .leftJoin(sq, eq(sq.userId, Application.userId))
         .where(eq(Event.name, input));
 
-      return query.map((row) => row.application);
+      return query.map((row) => {
+        return {
+          ...row.application, resumeUrl: row.sq?.resumeUrl, resumeName: row.sq?.resumeName
+        }
+      });
     }),
   updateStatus: organizerProcedure
     .input(z.object({

@@ -16,7 +16,6 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal, ChevronsUpDown } from "lucide-react"
 
 import { Button } from "~/components/ui/button"
-import { Checkbox } from "~/components/ui/checkbox"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -34,12 +33,7 @@ import {
 } from "~/components/ui/table"
 
 import { api } from "~/trpc/react"
-import { Application } from "@vanni/db/schema"
 
-import {
-    Card,
-    CardContent,
-} from "~/components/ui/card"
 import {
     Select,
     SelectContent,
@@ -51,82 +45,16 @@ import {
 } from "~/components/ui/select"
 import { toast } from "~/hooks/use-toast";
 import { useEffect, useState } from "react"
+import {
+    StatusInformation,
+    PersonalInformation,
+    ReponseInformation,
+    SchoolInformation
+} from "./table-information"
+import { TableData } from "./schema"
 
 
-interface InformationProps {
-    application: typeof Application.$inferSelect;
-}
-
-export const StatusInformation: React.FC<InformationProps> = ({ application }) => {
-    return (
-        <CardInformation>
-            <CardContent className="flex flex-col gap-1 px-2 py-2">
-                <p><span className="font-bold">Status:</span> {application.status}</p>
-                <p><span className="font-bold">Created At:</span> {application.createdAt.toLocaleDateString()}</p>
-                <p><span className="font-bold">Updated At:</span> {application.updatedAt.toLocaleDateString()}</p>
-                <p><span className="font-bold">MLH Consent:</span> {application.mlhEmailConsent ? "Yes" : "No"}</p>
-            </CardContent>
-        </CardInformation>
-    );
-}
-
-interface CardInformationProps {
-    children: React.ReactNode;
-}
-
-const CardInformation: React.FC<CardInformationProps> = ({ children }) => {
-    return (
-        <Card>
-            <CardContent className="flex flex-col gap-1 px-2 py-2 text-wrap">
-                {children}
-            </CardContent>
-        </Card>
-    );
-};
-
-// Personal Info: First, Last, Age, Country, Race, Phone #, shirt size, event source
-export const PersonalInformation: React.FC<InformationProps> = ({ application }) => {
-    return (
-        <CardInformation>
-            <p><span className="font-bold">First Name:</span> {application.firstName}</p>
-            <p><span className="font-bold">Last Name:</span> {application.lastName}</p>
-            <p><span className="font-bold">Email:</span> {application.email}</p>
-            <p><span className="font-bold">Age:</span> {application.age}</p>
-            <p><span className="font-bold">Country:</span> {application.country}</p>
-            <p><span className="font-bold">Race:</span> {application.race}</p>
-            <p><span className="font-bold">Phone Number:</span> {application.phoneNumber}</p>
-            <p><span className="font-bold">Shirt Size:</span> {application.shirtSize}</p>
-            <p><span className="font-bold">Event Source:</span> {application.eventSource}</p>
-            <p><span className="font-bold">Dietary Restrictions:</span> {application.dietaryRestriction}</p>
-        </CardInformation>
-    );
-}
-
-export const ReponseInformation: React.FC<InformationProps> = ({ application }) => {
-    return (
-        <CardInformation>
-            <p><span className="font-bold">References:</span> {application.references}</p>
-            <p><span className="font-bold">Interests One:</span> {application.interestOne}</p>
-            <p><span className="font-bold">Interests Two:</span> {application.interestTwo}</p>
-            <p><span className="font-bold">Interests Three:</span> {application.interestThree}</p>
-            <p><span className="font-bold">Extra Info:</span> {application.extraInfo}</p>
-        </CardInformation>
-    );
-}
-
-// School related: school, major, grad year
-export const SchoolInformation: React.FC<InformationProps> = ({ application }) => {
-    return (
-        <CardInformation>
-            <p><span className="font-bold">School:</span> {application.school}</p>
-            <p><span className="font-bold">Major:</span> {application.major}</p>
-            <p><span className="font-bold">Classification:</span> {application.classification}</p>
-            <p><span className="font-bold">Graduation Year:</span> {application.gradYear}</p>
-        </CardInformation>
-    );
-}
-
-export const columns: ColumnDef<typeof Application.$inferSelect>[] = [
+export const columns: ColumnDef<TableData>[] = [
     {
         id: "status",
         accessorKey: "status",
@@ -255,7 +183,7 @@ const SelectStatus: React.FC<SelectStatusProps> = ({ name, id, currStatus, mutat
                 })
             }}
         >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger>
                 <SelectValue placeholder="Select a status" />
             </SelectTrigger>
             <SelectContent>
@@ -330,7 +258,7 @@ const Pagination: React.FC<{ table: any }> = ({ table }) => {
                     value={pageInput}
                     onChange={(e) => setPageInput(e.target.value)}
                     placeholder="Page number"
-                    className="w-20"
+                    className="w-20 bg-white"
                 />
                 <Button variant="outline" size="sm" onClick={handlePageChange}>
                     Go
@@ -339,6 +267,80 @@ const Pagination: React.FC<{ table: any }> = ({ table }) => {
         </div>
     );
 }
+
+const exampleData: TableData[] = [
+    {
+        id: "1",
+        userId: "user-1",
+        status: "pending",
+        eventId: "event-1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        firstName: "John",
+        lastName: "Doe",
+        email: "john.doe@example.com",
+        age: "21",
+        country: "USA",
+        phoneNumber: "123-456-7890",
+        school: "Example University",
+        major: "Computer Science",
+        classification: "Senior",
+        gradYear: 2023,
+        gender: "Male",
+        hasTeam: "Yes",
+        race: "White",
+        hackathonsAttended: "3",
+        experience: "Intermediate",
+        eventSource: "University",
+        shirtSize: "M",
+        address: "123 Main St, Anytown, USA",
+        references: "Prof. Smith",
+        interestOne: "AI",
+        interestTwo: "Web Development",
+        interestThree: "Cybersecurity",
+        dietaryRestriction: "None",
+        extraInfo: "Looking forward to the event!",
+        mlhEmailConsent: true,
+        resumeName: "JohnDoeResume.pdf",
+        resumeUrl: "https://example.com/resumes/JohnDoeResume.pdf",
+    },
+    {
+        id: "2",
+        userId: "user-2",
+        status: "pending",
+        eventId: "event-1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "jane.smith@example.com",
+        age: "22",
+        country: "Canada",
+        phoneNumber: "987-654-3210",
+        school: "Another University",
+        major: "Software Engineering",
+        classification: "Junior",
+        gradYear: 2024,
+        gender: "Female",
+        hasTeam: "No",
+        race: "Asian",
+        hackathonsAttended: "5",
+        experience: "Advanced",
+        eventSource: "Friend",
+        shirtSize: "L",
+        address: "456 Elm St, Othertown, Canada",
+        references: "Dr. Johnson",
+        interestOne: "Machine Learning",
+        interestTwo: "Blockchain",
+        interestThree: "IoT",
+        dietaryRestriction: "Vegetarian",
+        extraInfo: "Excited to participate!",
+        mlhEmailConsent: false,
+        resumeName: "JaneSmithResume.pdf",
+        resumeUrl: "https://example.com/resumes/JaneSmithResume.pdf",
+    },
+    // Add more example data as needed
+];
 
 export function VettingTable() {
     const statusMutation = api.application.updateStatus.useMutation();
@@ -356,7 +358,7 @@ export function VettingTable() {
     const [rowSelection, setRowSelection] = React.useState({})
 
     // Application data query from database
-    const [tableData, setTableData] = useState<typeof Application.$inferSelect[]>([]);
+    const [tableData, setTableData] = useState<TableData[]>([]);
 
     const { data, isLoading } = api.application.getAllApplicationsByEventName.useQuery(process.env.NEXT_PUBLIC_EVENT_NAME ?? "", {
         retry: false,
@@ -370,7 +372,7 @@ export function VettingTable() {
     }, [data]);
 
     // Form the table
-    const table = useReactTable<typeof Application.$inferSelect>({
+    const table = useReactTable<TableData>({
         data: tableData ?? [],
         columns,
         onSortingChange: setSorting,
@@ -398,12 +400,8 @@ export function VettingTable() {
         }
     }, [data]);
 
-    if (isLoading) {
-        return <div className="w-full px-5 overflow-auto h-full">Loading...</div>
-    }
-
     return (
-        <div className="w-full px-5 overflow-auto h-full">
+        <div className="w-full px-5 h-full">
             <div className="flex items-center py-2">
                 <Input
                     placeholder="Filter firstName..."
@@ -429,7 +427,9 @@ export function VettingTable() {
                 <Button
                     variant="secondary"
                     onClick={() => table.getColumn("createdAt")?.toggleSorting()}
-                    className="ml-2"
+                    className={"ml-2" + (table.getColumn("createdAt")?.getIsSorted() === "asc"
+                        ? " bg-green-500"
+                        : (table.getColumn("createdAt")?.getIsSorted() === "desc" ? " bg-red-500" : ""))}
                 >
                     Order By created_at
                     <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -464,64 +464,62 @@ export function VettingTable() {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <div className="rounded-md border bg-indigo-900">
-                <div className="overflow-y-auto max-h-[80vh]">
-                    <Table className="w-full">
-                        <TableHeader>
-                            {table.getHeaderGroups().map((headerGroup) => (
-                                <TableRow key={headerGroup.id}>
-                                    {headerGroup.headers.map((header) => {
-                                        return (
-                                            <TableHead key={header.id} className="text-white">
-                                                {header.isPlaceholder
-                                                    ? null
-                                                    : flexRender(
-                                                        header.column.columnDef.header,
-                                                        header.getContext()
-                                                    )}
-                                            </TableHead>
-                                        )
-                                    })}
-                                    <TableHead className="text-white">Change Status</TableHead>
-                                </TableRow>
-                            ))}
-                        </TableHeader>
-                        <TableBody>
-                            {table.getRowModel().rows?.length ? (
-                                table.getRowModel().rows.map((row) => (
-                                    <TableRow
-                                        key={row.id}
-                                        data-state={row.getIsSelected() && "selected"}
-                                    >
-                                        {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id} className="max-w-[500px]">
-                                                {flexRender(
-                                                    cell.column.columnDef.cell,
-                                                    cell.getContext()
+            <div className="max-h-[80vh] max-w-full block h-full overflow-y-auto rounded-md border bg-indigo-900">
+                <Table className="w-full">
+                    <TableHeader>
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <TableRow key={headerGroup.id}>
+                                {headerGroup.headers.map((header) => {
+                                    return (
+                                        <TableHead key={header.id} className="text-white">
+                                            {header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                    header.column.columnDef.header,
+                                                    header.getContext()
                                                 )}
-                                            </TableCell>
-                                        ))}
-                                        <SelectStatusCell
-                                            row={row}
-                                            mutation={statusMutation}
-                                            setData={setTableData}
-                                            setPendingCount={setPendingCount}
-                                        />
-                                    </TableRow>
-                                ))
-                            ) : (
-                                <TableRow>
-                                    <TableCell
-                                        colSpan={columns.length}
-                                        className="h-24 text-center"
-                                    >
-                                        No results.
-                                    </TableCell>
+                                        </TableHead>
+                                    )
+                                })}
+                                <TableHead className="text-white">Change Status</TableHead>
+                            </TableRow>
+                        ))}
+                    </TableHeader>
+                    <TableBody>
+                        {table.getRowModel().rows?.length ? (
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow
+                                    key={row.id}
+                                    data-state={row.getIsSelected() && "selected"}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id} className="max-w-[500px]">
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )}
+                                        </TableCell>
+                                    ))}
+                                    <SelectStatusCell
+                                        row={row}
+                                        mutation={statusMutation}
+                                        setData={setTableData}
+                                        setPendingCount={setPendingCount}
+                                    />
                                 </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </div>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell
+                                    colSpan={columns.length}
+                                    className="h-24 text-center"
+                                >
+                                    No results.
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
             </div>
             <div className="flex items-center justify-end space-x-2 py-2">
                 <Pagination table={table} />

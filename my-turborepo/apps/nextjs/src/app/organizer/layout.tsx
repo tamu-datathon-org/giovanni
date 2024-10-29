@@ -20,8 +20,7 @@ export default async function OrganizerLayout({
         redirect("/");
     }
 
-    console.log("hello");
-    console.log(session);
+    // console.log(session);
 
     return (
         <>
