@@ -4,6 +4,8 @@ import { z } from "zod";
 
 import { and, eq } from "@vanni/db";
 import { db } from "@vanni/db/client";
+import { SQL, inArray, sql } from 'drizzle-orm';
+
 import {
   Application,
   CreateApplicationSchema,
@@ -186,5 +188,32 @@ export const applicationRouter = {
       return await ctx.db.update(Application)
         .set({ status: newStatus as "pending" | "accepted" | "checkedin" | "rejected" })
         .where(eq(Application.id, id))
+    }),
+  updateBatchStatus: organizerProcedure
+    .input(z.object({
+      ids: z.array(z.string()),
+      newStatus: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { ids, newStatus } = input;
+      console.log(ids, newStatus)
+
+      if (ids.length == 0) {
+        return {
+          status: 200,
+          message: "No applications selected"
+        }
+      }
+
+      const sqlChunks: SQL[] = [];
+      sqlChunks.push(sql`(case`);
+      for (const id of ids) {
+        sqlChunks.push(sql`when ${Application.id} = ${id} then ${newStatus}`);
+      }
+      sqlChunks.push(sql`end)`);
+
+      const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
+
+      return await db.update(Application).set({ status: finalSql }).where(inArray(Application.id, ids));
     })
 };
