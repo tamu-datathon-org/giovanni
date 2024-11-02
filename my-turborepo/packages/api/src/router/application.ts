@@ -196,7 +196,6 @@ export const applicationRouter = {
     }))
     .mutation(async ({ ctx, input }) => {
       const { ids, newStatus } = input;
-      console.log(ids, newStatus)
 
       if (ids.length == 0) {
         return {
