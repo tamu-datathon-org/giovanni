@@ -215,7 +215,7 @@ export const applicationRouter = {
 
       return await db.update(Application).set({ status: finalSql }).where(inArray(Application.id, ids));
     }),
-  getAcceptanceEmails: protectedProcedure
+  getAcceptanceEmails: organizerProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
       const eventName = input;
@@ -231,7 +231,7 @@ export const applicationRouter = {
 
       return applications;
     }),
-  updateBatchAcceptance: protectedProcedure
+  updateBatchAcceptance: organizerProcedure
     .input(z.object({
       ids: z.array(z.string()),
       newStatus: z.boolean(),
