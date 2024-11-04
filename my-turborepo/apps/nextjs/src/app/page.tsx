@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { redirect } from "next/dist/server/api-utils";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -11,7 +12,6 @@ import FAQComponent from "./_components/FAQComponent";
 import IconList from "./_components/IconList";
 import { TAMUy2k } from "./_components/preregistration-form";
 import WindowContainer from "./_components/WindowContainer";
-import { redirect } from "next/dist/server/api-utils";
 
 export const runtime = "edge";
 
@@ -31,7 +31,7 @@ const prizes = [
   { img: "/prizes/keyboard.jpg", name: "Keychron Keyboard" },
   { img: "/prizes/polaroid.webp", name: "FujiFilm Camera" },
   { img: "/prizes/drawing_tablet.jpg", name: "Drawing Tablet" },
-  { img: "/prizes/air_frier.jpg", name: "Air Frier" },
+  { img: "/prizes/air_fryer.jpg", name: "Air Fryer" },
 ];
 
 export default function HomePage() {
@@ -43,7 +43,9 @@ export default function HomePage() {
 
   const [sponsorOpen, setSponsorOpen] = useState(false);
   const [prizesOpen, setPrizesOpen] = useState(false);
-  const setScheduleOpen = () => { window.location.href = '/schedule'; };
+  const setScheduleOpen = () => {
+    window.location.href = "/schedule";
+  };
 
   const [mounted, setMounted] = useState(false);
 
@@ -78,7 +80,7 @@ export default function HomePage() {
                   {prizes.map((prize, index) => (
                     <motion.div
                       key={index}
-                      className="flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden bg-white"
+                      className="flex flex-col items-center justify-center overflow-hidden rounded-lg bg-card bg-white p-3 shadow-md transition-shadow duration-300 hover:shadow-lg"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{
                         opacity: mounted ? 1 : 0,
@@ -93,7 +95,7 @@ export default function HomePage() {
                           alt={prize.name}
                           width={75}
                           height={75}
-                          className="max-w-full max-h-full rounded-md object-contain"
+                          className="max-h-full max-w-full rounded-md object-contain"
                         />
                       </div>
                       <motion.div
@@ -146,7 +148,7 @@ export default function HomePage() {
                         alt={logo}
                         width={100}
                         height={100}
-                        className="max-w-full max-h-20 object-contain"
+                        className="max-h-20 max-w-full object-contain"
                       />
                     </motion.div>
                   ))}
@@ -160,7 +162,7 @@ export default function HomePage() {
               onFocus={setActiveWindow}
               name="FAQ"
               focus={activeWindow}
-              className="absolute top-[5%] lg:left-[48%] lg:top-[5%] max-h-full"
+              className="absolute top-[5%] max-h-full lg:left-[48%] lg:top-[5%]"
             >
               <WindowContainer isOpen={faqOpen} openFunc={setFaqOpen}>
                 <FAQComponent />
@@ -266,7 +268,7 @@ export default function HomePage() {
             socialsFunc={setSocialsOpen}
             setFocus={setActiveWindow}
             scheduleFunc={setScheduleOpen}
-            className="flex z-10 max-w-full h-fit py-5"
+            className="z-10 flex h-fit max-w-full py-5"
           />
         </div>
       </div>

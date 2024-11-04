@@ -46,7 +46,7 @@ const events: Event[] = [
   },
   {
     id: 5,
-    name: "Lunch - Schlozskys!",
+    name: "Lunch - Chick-fil-A!",
     date: new Date("2024-11-09T13:30:00"),
     description: "",
   },
@@ -112,7 +112,7 @@ const events: Event[] = [
   },
   {
     id: 11,
-    name: "Lunch - (unnamed)",
+    name: "Lunch - Panda Express",
     date: new Date("2024-11-10T12:30:00"),
     description: "",
   },
