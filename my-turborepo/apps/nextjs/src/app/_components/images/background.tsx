@@ -36,7 +36,7 @@ export default function BackgroundImage({
     <picture>
       <source media="(min-width: 1000px)" srcSet={desktop} />
       <source media="(min-width: 500px)" srcSet={mobile} />
-      <img {...rest} />
+      <img {...rest} className="z-[-1]" />
     </picture>
   );
 }
