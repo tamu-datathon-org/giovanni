@@ -28,8 +28,8 @@ export default function BatchSize() {
           </FormControl>
           <FormMessage />
           <FormDescription>
-            Keep this at the highest number possible. If the test fails, lower
-            the number and try again.
+            Keep this at the highest number possible (10). If the test fails,
+            lower the number and try again.
           </FormDescription>
         </FormItem>
       )}
