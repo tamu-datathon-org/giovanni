@@ -220,19 +220,43 @@ export const applicationRouter = {
     .query(async ({ ctx, input }) => {
       const eventName = input;
 
-      const applications = await ctx.db.query.Application.findMany({
-        where: and(eq(Event.name, eventName), eq(Application.status, "accepted")),
-        columns: {
-          id: true,
-          firstName: true,
-          lastName: true,
-          email: true,
-        },
-        with: {
-          event: true,
-        }
-      });
+      const applications = await ctx.db.select({
+        id: Application.id,
+        firstName: Application.firstName,
+        lastName: Application.lastName,
+        email: Application.email,
+        acceptanceEmail: Application.acceptanceEmail,
+      }).from(Application).leftJoin(Event, eq(Event.id, Application.eventId))
+        .where(and(eq(Event.name, eventName), eq(Application.status, "accepted")));
 
       return applications;
+    }),
+  updateBatchAcceptance: protectedProcedure
+    .input(z.object({
+      ids: z.array(z.string()),
+      newStatus: z.boolean(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { ids, newStatus } = input;
+
+      if (ids.length == 0) {
+        return {
+          status: 200,
+          message: "No applications selected"
+        }
+      }
+
+      const sqlChunks: SQL[] = [];
+      sqlChunks.push(sql`(case`);
+      for (const id of ids) {
+        sqlChunks.push(sql`when ${Application.id} = ${id} then ${newStatus}`);
+      }
+      sqlChunks.push(sql`end)`);
+
+      const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
+
+      return await ctx.db.update(Application)
+        .set({ acceptanceEmail: newStatus })
+        .where(inArray(Application.id, ids));
     })
 };
