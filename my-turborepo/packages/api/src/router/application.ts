@@ -214,5 +214,25 @@ export const applicationRouter = {
       const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
 
       return await db.update(Application).set({ status: finalSql }).where(inArray(Application.id, ids));
+    }),
+  getAcceptanceEmails: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const eventName = input;
+
+      const applications = await ctx.db.query.Application.findMany({
+        where: and(eq(Event.name, eventName), eq(Application.status, "accepted")),
+        columns: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+        },
+        with: {
+          event: true,
+        }
+      });
+
+      return applications;
     })
 };
