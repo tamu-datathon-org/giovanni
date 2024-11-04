@@ -11,7 +11,6 @@ import {
   CreateApplicationSchema,
   Event,
   Role,
-  User,
   UserResume,
   UserRole,
 } from "@vanni/db/schema";
@@ -54,7 +53,27 @@ export const applicationRouter = {
             .where(eq(UserResume.userId, ctx.session.user.id));
           await del(resume.resumeUrl);
         }
+
+        // query for the role based on event
+        const role = await ctx.db.query.Role.findFirst({
+          where: and(eq(Role.eventId, event.id),
+            eq(Role.name, "Applicant")),
+        });
+
+        if (role == undefined) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Role query was not successful. Contact a datathon officer.",
+          });
+        }
+
+        // user roles insertion
+        await ctx.db.insert(UserRole).values({
+          userId: ctx.session.user.id,
+          roleId: role.id,
+        });
       }
+
       const response = await db.insert(Application).values({
         ...applicationData,
         userId: ctx.session.user.id,
