@@ -21,12 +21,12 @@ export default function PDFReader(props: PDFReaderProps) {
             < DialogTrigger asChild >
                 <Button variant="secondary" className="bg-white text-black">Resume: {props.pdfButtonTitle}</Button>
             </DialogTrigger >
-            <DialogContent className="max-w-[60vw] max-h-[80vh]">
+            <DialogContent className="max-w-[60vw] max-h-[90vh]">
                 <DialogHeader>
                     <DialogTitle>{props.pdfTitle}</DialogTitle>
                 </DialogHeader>
                 {/* Body */}
-                <div className="h-[70vh]">
+                <div className="h-[80vh]">
                     <iframe src={props.pdfUrl} width='100%' height='100%' title={props.pdfTitle} />
                 </div>
             </DialogContent>

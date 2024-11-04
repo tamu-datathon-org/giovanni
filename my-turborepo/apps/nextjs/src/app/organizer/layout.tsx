@@ -14,10 +14,13 @@ export default async function OrganizerLayout({
         ("use server");
         await signIn(undefined, { redirectTo: "/organizer" });
     }
-    try {
-        await api.auth.validateOrganizerAuth();
-    } catch (e) {
-        redirect("/");
+
+    if (session) {
+        try {
+            await api.auth.validateOrganizerAuth();
+        } catch (e) {
+            redirect("/");
+        }
     }
 
     // console.log(session);
