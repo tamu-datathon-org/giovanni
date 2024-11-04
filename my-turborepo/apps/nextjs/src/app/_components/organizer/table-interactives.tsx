@@ -19,9 +19,12 @@ type SelectStatusProps = {
     mutation: any,
     setData: React.Dispatch<React.SetStateAction<any>>,
     setPendingCount: React.Dispatch<React.SetStateAction<number>>
+    setAcceptedCount: React.Dispatch<React.SetStateAction<number>>
 }
 
-const SelectStatus: React.FC<SelectStatusProps> = ({ name, id, currStatus, mutation, setData, setPendingCount }) => {
+const SelectStatus: React.FC<SelectStatusProps> = ({
+    name, id, currStatus, mutation, setData, setPendingCount, setAcceptedCount
+}) => {
     if (mutation.isLoading) {
         return <div>Loading...</div>;
     }
@@ -51,6 +54,12 @@ const SelectStatus: React.FC<SelectStatusProps> = ({ name, id, currStatus, mutat
                             setPendingCount((prevCount: number) => prevCount - 1);
                         } else if (currStatus !== "pending" && value === "pending") {
                             setPendingCount((prevCount: number) => prevCount + 1);
+                        }
+
+                        if (currStatus === "accepted" && value !== "accepted") {
+                            setAcceptedCount((prevCount: number) => prevCount - 1);
+                        } else if (currStatus !== "accepted" && value === "accepted") {
+                            setAcceptedCount((prevCount: number) => prevCount + 1);
                         }
 
                         toast({
@@ -90,7 +99,8 @@ export const SelectStatusCell: React.FC<{
     mutation: any,
     setData: React.Dispatch<React.SetStateAction<any>>,
     setPendingCount: React.Dispatch<React.SetStateAction<number>>
-}> = ({ row, mutation, setData, setPendingCount }) => {
+    setAcceptedCount: React.Dispatch<React.SetStateAction<number>>
+}> = ({ row, mutation, setData, setPendingCount, setAcceptedCount }) => {
     return (
         <td>
             <div className="bg-white rounded">
@@ -101,6 +111,7 @@ export const SelectStatusCell: React.FC<{
                     mutation={mutation}
                     setData={setData}
                     setPendingCount={setPendingCount}
+                    setAcceptedCount={setAcceptedCount}
                 />
             </div>
         </td>
@@ -158,8 +169,9 @@ export const BatchAcceptPage: React.FC<{
     table: any,
     mutation: any,
     setPendingCount: React.Dispatch<React.SetStateAction<number>>,
-    setData: React.Dispatch<React.SetStateAction<any>>
-}> = ({ table, mutation, setData, setPendingCount }) => {
+    setData: React.Dispatch<React.SetStateAction<any>>,
+    setAcceptedCount: React.Dispatch<React.SetStateAction<number>>
+}> = ({ table, mutation, setData, setPendingCount, setAcceptedCount }) => {
     const updateBatchStatus = () => {
         const ids = table.getRowModel().rows.map((row: any) => row.original.id);
         mutation.mutateAsync({
@@ -179,6 +191,11 @@ export const BatchAcceptPage: React.FC<{
                 setPendingCount((prevCount: number) => {
                     const pendingCount = table.getRowModel().rows.filter((row: any) => row.original.status === "pending").length;
                     return prevCount - pendingCount;
+                });
+
+                setAcceptedCount((prevCount: number) => {
+                    const notAcceptedCount = table.getRowModel().rows.filter((row: any) => row.original.status !== "accepted").length;
+                    return prevCount + notAcceptedCount;
                 });
 
                 toast({

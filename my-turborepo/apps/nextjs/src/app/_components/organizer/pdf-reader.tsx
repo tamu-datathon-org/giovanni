@@ -18,7 +18,7 @@ type PDFReaderProps = {
 export default function PDFReader(props: PDFReaderProps) {
     return (
         <Dialog>
-            < DialogTrigger asChild >
+            <DialogTrigger asChild >
                 <Button variant="secondary" className="bg-white text-black">Resume: {props.pdfButtonTitle}</Button>
             </DialogTrigger >
             <DialogContent className="max-w-[60vw] max-h-[90vh]">

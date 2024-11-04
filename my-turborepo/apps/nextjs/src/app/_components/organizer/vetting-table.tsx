@@ -199,6 +199,7 @@ export function VettingTable() {
     const batchStatusMutation = api.application.updateBatchStatus.useMutation();
 
     const [pendingCount, setPendingCount] = React.useState(0);
+    const [acceptedCount, setAcceptedCount] = React.useState(0);
 
     // Tan table setup
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -224,8 +225,8 @@ export function VettingTable() {
     useEffect(() => {
         if (data) {
             setTableData(data);
-            const count = data.filter(application => application.status === "pending").length;
-            setPendingCount(count);
+            setPendingCount(data.filter(application => application.status === "pending").length);
+            setAcceptedCount(data.filter(application => application.status === "accepted").length);
         }
     }, [data]);
 
@@ -284,7 +285,10 @@ export function VettingTable() {
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
                 <span className="ml-4 text-white">
-                    Total Pending Applications: {pendingCount}
+                    Total Pending: {pendingCount}
+                </span>
+                <span className="ml-4 text-white">
+                    Total Accepted: {acceptedCount}
                 </span>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -354,6 +358,7 @@ export function VettingTable() {
                                         mutation={statusMutation}
                                         setData={setTableData}
                                         setPendingCount={setPendingCount}
+                                        setAcceptedCount={setAcceptedCount}
                                     />
                                 </TableRow>
                             ))
@@ -376,6 +381,7 @@ export function VettingTable() {
                     mutation={batchStatusMutation}
                     setPendingCount={setPendingCount}
                     setData={setTableData}
+                    setAcceptedCount={setAcceptedCount}
                 />
                 <Pagination table={table} />
             </div>
