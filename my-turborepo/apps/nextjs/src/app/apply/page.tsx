@@ -1,47 +1,110 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
+"use client"
 
-import IconList from "../_components/IconList";
+import Link from "next/link";
+import StaticWindowContainer from "../_components/StaticWindowContainer";
+import { api } from "~/trpc/react";
+import { toast } from "~/hooks/use-toast";
+
 
 export default function Page() {
-  redirect("/apply/application");
+  // TODO: Replace this with an API call to the correct router
+  const { data, isLoading } = api.application.getApplicationStatus.useQuery({
+    eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
+  }, {
+    enabled: !!process.env.NEXT_PUBLIC_EVENT_NAME,
+    retry: 2,
+  });
+
+  if (!isLoading && data === undefined) {
+    toast({
+      variant: "destructive",
+      title: "Failed to load status",
+      description: "Please refresh the page.",
+    })
+  }
+  let gradient;
+  if (!isLoading) {
+    switch (data?.status) {
+      case "pending":
+        gradient = "from-gray-400 to-cyan-700";
+        break;
+      case "accepted":
+        gradient = "from-pink-500 to-cyan-700";
+        break;
+      case "rejected":
+        gradient = "from-red-500 to-cyan-700";
+        break;
+      case "checkedin":
+        gradient = "from-green-500 to-cyan-700";
+        break;
+      default:
+        gradient = "from-gray-400 to-cyan-700";
+        break;
+    }
+  }
+
+  // TODO: Replace this variable with an api route that checks the latest event
+  const appsOpen = false;
+
   return (
     <>
       {/* <IconList /> */}
-      <div className="mainContent">
-        <h1>DASHBOARD</h1>
+      <div className="w-screen h-screen flex justify-center items-center">
+        <StaticWindowContainer>
+          <div className="mainContent py-4">
+            <h1 className="text-3xl">DASHBOARD</h1>
 
-        <form
-          className="vertical boxShadowContainer"
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            height: "50vh",
-            width: "75vw",
-            padding: "10px",
-          }}
-        >
-          {/* <div className="dashboardText">APPLICATION STATUS:</div>
-          <div className="dashStatus">{appStatus.toUpperCase()}</div>
-
-          <div className="dashboardText">
-            <br />
-            Applications are currently closed.
-            <br />
-            We are currently reviewing applications.
-            <br />
-            Keep an eye out for an email!
-          </div>
-          <button className="editButton">
-            <Link
-              className="dashboardText buttonText"
-              href="/apply/application"
+            <form
+              className="vertical boxShadowContainer"
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                height: "50vh",
+                width: "75vw",
+                padding: "10px",
+              }}
             >
-              Edit your application
-            </Link>
-          </button> */}
-        </form>
+              <div className="dashboardText text-2xl"> YOUR APPLICATION STATUS:</div>
+              <div
+                className={`dashStatus text-transparent bg-clip-text bg-gradient-to-b 
+                  ${gradient} text-xl
+                  `}
+              >
+                {isLoading ? "Loading...".toUpperCase() : data?.status ? data.status.toUpperCase() : "No status available"}
+              </div>
+
+              {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
+            </form>
+          </div>
+        </StaticWindowContainer>
       </div>
     </>
+  );
+}
+
+function AppsClosedMessage() {
+  return (
+    <div className="dashboardText text-xl">
+      <br />
+      Applications are currently closed.
+      <br />
+      We are currently reviewing applications.
+      <br />
+      Keep an eye out for an email!
+      <br />
+      <br />
+      <br />
+      Feel free to contact <span className="text-cyan-700">connect@tamudatathon.com</span> for any issues.
+    </div>
+  );
+}
+
+function AppsOpenMessage() {
+  return (
+    <button className="editButton">
+      <Link className="dashboardText buttonText text-xl" href="/apply/application">
+        Edit your application
+      </Link>
+    </button>
   );
 }

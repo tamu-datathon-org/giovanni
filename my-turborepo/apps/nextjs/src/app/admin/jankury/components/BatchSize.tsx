@@ -24,18 +24,12 @@ export default function BatchSize() {
         <FormItem>
           <FormLabel>Maximum Batch Size</FormLabel>
           <FormControl>
-            <Slider
-              className="black"
-              defaultValue={[10]}
-              max={10}
-              step={1}
-              min={1}
-            />
+            <Input placeholder="10" {...field} />
           </FormControl>
           <FormMessage />
           <FormDescription>
-            Keep this at the highest number possible. If the test fails, lower
-            the number and try again.
+            Keep this at the highest number possible (10). If the test fails,
+            lower the number and try again.
           </FormDescription>
         </FormItem>
       )}

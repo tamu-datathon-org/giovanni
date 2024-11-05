@@ -1,10 +1,17 @@
 "use client";
 
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 
 import { ApplicationForm } from "~/app/_components/application-form";
 
+// TODO: Replace this variable with an api route that checks the latest event
+const appsOpen = false;
+
 export default async function Page() {
+  if (!appsOpen) {
+    redirect("/apply");
+  }
   return (
     <>
       <div className="absolute top-0 h-screen w-screen overflow-auto bg-black bg-opacity-70">

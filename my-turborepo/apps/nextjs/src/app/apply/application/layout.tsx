@@ -1,9 +1,10 @@
-import { auth, signIn } from "@vanni/auth";
+import { redirect } from "next/navigation";
 
 export default async function ApplicationLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  redirect("/apply");
+  // return <>{children}</>;
 }

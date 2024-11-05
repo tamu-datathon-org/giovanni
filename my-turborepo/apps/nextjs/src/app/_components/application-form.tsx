@@ -149,15 +149,6 @@ export function ApplicationForm() {
       blob_url = importedValues?.resume?.resumeUrl ?? undefined;
     }
 
-    // if (!blob_name || !blob_url) {
-    //     toast({
-    //         variant: "destructive",
-    //         title: "Submission failed",
-    //         description: "Resume file is required.",
-    //     });
-    //     return;
-    // }
-
     if (!importedValues?.app) {
       const createApplicationData = {
         eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
@@ -508,9 +499,9 @@ export function ApplicationForm() {
               defaultOption={
                 importedValues?.app?.hasTeam
                   ? {
-                      value: importedValues.app.hasTeam,
-                      label: importedValues.app.hasTeam,
-                    }
+                    value: importedValues.app.hasTeam,
+                    label: importedValues.app.hasTeam,
+                  }
                   : undefined
               }
               required={true}
