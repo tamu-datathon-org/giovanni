@@ -11,6 +11,7 @@ import {
   CreateApplicationSchema,
   Event,
   Role,
+  User,
   UserResume,
   UserRole,
 } from "@vanni/db/schema";
@@ -245,7 +246,10 @@ export const applicationRouter = {
         lastName: Application.lastName,
         email: Application.email,
         acceptanceEmail: Application.acceptanceEmail,
-      }).from(Application).leftJoin(Event, eq(Event.id, Application.eventId))
+        userEmail: User.email,
+      }).from(Application)
+        .leftJoin(Event, eq(Event.id, Application.eventId))
+        .leftJoin(User, eq(User.id, Application.userId))
         .where(and(eq(Event.name, eventName), eq(Application.status, "accepted")));
 
       return applications;
@@ -275,7 +279,7 @@ export const applicationRouter = {
       const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
 
       return await ctx.db.update(Application)
-        .set({ acceptanceEmail: newStatus })
+        .set({ acceptanceEmail: finalSql })
         .where(inArray(Application.id, ids));
     })
 };
