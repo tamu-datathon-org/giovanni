@@ -196,13 +196,20 @@ export default function HomePage() {
                   }
                 `}</style>
 
-                <h1 className="animate-color-change m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">
-                  Applications are open!!!
+                {/*<h1 className="animate-color-change m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">*/}
+                {/*  Applications are open!!!*/}
+                {/*</h1>*/}
+                {/*<Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">*/}
+                {/*  <Link href="/apply/application">*/}
+                {/*    Click here to apply now.*/}
+                {/*  </Link>*/}
+                {/*</Button>*/}
+
+                <h1 className="m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">
+                  Applications have closed.
                 </h1>
                 <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
-                  <Link href="/apply/application">
-                    Click here to apply now.
-                  </Link>
+                  <Link href="/apply">Check status</Link>
                 </Button>
               </WindowContainer>
             </DraggableComponent>
