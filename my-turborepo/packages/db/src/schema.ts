@@ -221,6 +221,7 @@ export const Application = pgTable("application", {
   dietaryRestriction: varchar("dietary_restriction", { length: 255 }),
   extraInfo: varchar("extra_info", { length: 255 }),
   mlhEmailConsent: boolean("mlh_email_consent").notNull().default(false),
+  acceptanceEmail: boolean("acceptance_email").notNull().default(false),
 });
 
 export const UserResume = pgTable("user_resume", {
@@ -335,6 +336,7 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
   status: true,
   createdAt: true,
   updatedAt: true,
+  acceptanceEmail: true,
 });
 
 export const CreateUserResumeSchema = createInsertSchema(UserResume, {
