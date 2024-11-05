@@ -92,6 +92,13 @@
       "when": 1730745365925,
       "tag": "0012_loose_gideon",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "6",
+      "when": 1730834134399,
+      "tag": "0013_chubby_shaman",
+      "breakpoints": true
     }
   ]
 }

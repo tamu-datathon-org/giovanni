@@ -222,6 +222,8 @@ export const Application = pgTable("application", {
   extraInfo: varchar("extra_info", { length: 255 }),
   mlhEmailConsent: boolean("mlh_email_consent").notNull().default(false),
   acceptanceEmail: boolean("acceptance_email").notNull().default(false),
+  waitlistEmail: boolean("waitlist_email").notNull().default(false),
+  rejectionEmail: boolean("rejection_email").notNull().default(false)
 });
 
 export const UserResume = pgTable("user_resume", {
@@ -337,6 +339,8 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
   createdAt: true,
   updatedAt: true,
   acceptanceEmail: true,
+  waitlistEmail: true,
+  rejectionEmail: true,
 });
 
 export const CreateUserResumeSchema = createInsertSchema(UserResume, {
