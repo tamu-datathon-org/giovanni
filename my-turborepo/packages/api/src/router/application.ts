@@ -206,7 +206,7 @@ export const applicationRouter = {
       const { id, newStatus } = input;
 
       return await ctx.db.update(Application)
-        .set({ status: newStatus as "pending" | "accepted" | "checkedin" | "rejected" })
+        .set({ status: newStatus as "pending" | "accepted" | "checkedin" | "rejected" | "waitlisted" })
         .where(eq(Application.id, id))
     }),
   updateBatchStatus: organizerProcedure

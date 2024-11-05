@@ -174,7 +174,7 @@ export const Application = pgTable("application", {
     .notNull()
     .references(() => User.id, { onDelete: "cascade" }),
   status: varchar("status", { length: 255 })
-    .$type<"pending" | "accepted" | "checkedin" | "rejected">()
+    .$type<"pending" | "accepted" | "checkedin" | "rejected" | "waitlisted">()
     .notNull(),
   eventId: uuid("event_id")
     .notNull()
