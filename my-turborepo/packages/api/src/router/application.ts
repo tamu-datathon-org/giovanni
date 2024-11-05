@@ -234,5 +234,25 @@ export const applicationRouter = {
       const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
 
       return await db.update(Application).set({ status: finalSql }).where(inArray(Application.id, ids));
-    })
+    }),
+  getApplicationStatus: protectedProcedure
+    .input(z.object({ eventName: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { eventName } = input;
+
+      const event = await getEventData({ ctx, eventName });
+
+      const application = await ctx.db.query.Application.findFirst({
+        columns: {
+          id: true,
+          status: true,
+        },
+        where: and(
+          eq(Application.eventId, event.id),
+          eq(Application.userId, ctx.session.user.id),
+        ),
+      });
+
+      return application;
+    }),
 };
