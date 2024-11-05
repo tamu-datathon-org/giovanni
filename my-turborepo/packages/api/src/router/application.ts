@@ -20,6 +20,64 @@ import { organizerProcedure, protectedProcedure } from "../trpc";
 import { getEventData } from "./event";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 
+export async function getBatchStatus(page: number, limit: number, ctx: any, eventName: string): Promise<
+  {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    status: string;
+    acceptedEmail: boolean;
+    waitlistEmail: boolean;
+    rejectedEmail: boolean;
+    userEmail: string;
+  }[]
+> {
+  return await ctx.db.select({
+    id: Application.id,
+    firstName: Application.firstName,
+    lastName: Application.lastName,
+    email: Application.email,
+    status: Application.status,
+    acceptedEmail: Application.acceptedEmail,
+    waitlistEmail: Application.waitlistEmail,
+    rejectedEmail: Application.rejectedEmail,
+    userEmail: User.email,
+  }).from(Application)
+    .offset((page - 1) * limit)
+    .limit(limit)
+    .leftJoin(Event, eq(Event.id, Application.eventId))
+    .leftJoin(User, eq(User.id, Application.userId))
+    .where(eq(Event.name, eventName));
+}
+
+export async function updateBatchStatus(ids: string[], newStatus: boolean, ctx: any, sqlField: string) {
+  if (ids.length == 0) {
+    return {
+      status: 200,
+      message: "No applications selected"
+    }
+  }
+
+  const sqlChunks: SQL[] = [];
+  sqlChunks.push(sql`(case`);
+  for (const id of ids) {
+    sqlChunks.push(sql`when ${Application.id} = ${id} then ${newStatus}`);
+  }
+  sqlChunks.push(sql`end)`);
+
+  const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
+
+  return await ctx.db.update(Application)
+    .set({ [sqlField]: finalSql })
+    .where(inArray(Application.id, ids));
+}
+
+// the batch requires the page/limit, I need to get all of them in each
+// Get batch status gives all applications -> filter the status to 3 categories -> send it to the email router
+// the email router will send the emails based on the status one at a time but all at the same time
+// email router needs the batch and trickles it down
+
 export const applicationRouter = {
   create: protectedProcedure
     .input(
@@ -235,26 +293,7 @@ export const applicationRouter = {
 
       return await db.update(Application).set({ status: finalSql }).where(inArray(Application.id, ids));
     }),
-  getAcceptanceEmails: organizerProcedure
-    .input(z.string())
-    .query(async ({ ctx, input }) => {
-      const eventName = input;
-
-      const applications = await ctx.db.select({
-        id: Application.id,
-        firstName: Application.firstName,
-        lastName: Application.lastName,
-        email: Application.email,
-        acceptanceEmail: Application.acceptanceEmail,
-        userEmail: User.email,
-      }).from(Application)
-        .leftJoin(Event, eq(Event.id, Application.eventId))
-        .leftJoin(User, eq(User.id, Application.userId))
-        .where(and(eq(Event.name, eventName), eq(Application.status, "accepted")));
-
-      return applications;
-    }),
-  updateBatchAcceptance: organizerProcedure
+  updateBatchAccepted: organizerProcedure
     .input(z.object({
       ids: z.array(z.string()),
       newStatus: z.boolean(),
@@ -279,7 +318,7 @@ export const applicationRouter = {
       const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
 
       return await ctx.db.update(Application)
-        .set({ acceptanceEmail: finalSql })
+        .set({ acceptedEmail: finalSql })
         .where(inArray(Application.id, ids));
     }),
   getApplicationStatus: protectedProcedure
