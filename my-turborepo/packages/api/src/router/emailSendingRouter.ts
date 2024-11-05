@@ -24,7 +24,7 @@ async function checkStatusEmails(
   if (batchStatus.status !== 200) {
     throw new TRPCError({
       message:
-        "[WARNING, contact Dev] Failed to send rejected emails:" +
+        "[WARNING, contact Dev] Failed to send " + statusField + " emails:" +
         failedList.join(", "),
       code: "INTERNAL_SERVER_ERROR",
     });
@@ -87,8 +87,10 @@ export const emailSendingRouter = {
       }
 
       const applicationCount = applicationCountResult[0]?.count;
+      console.log(applicationCount);
       for (let i = 1; i <= Math.ceil(Number(applicationCount) / statusBatchSize); i++) {
         const batch = await getBatchStatus(i, statusBatchSize, ctx, process.env.NEXT_PUBLIC_EVENT_NAME ?? "");
+        // console.log(i, batch.length);
 
         const emailMap = new Map<string, string>();
 
@@ -96,62 +98,71 @@ export const emailSendingRouter = {
         const acceptedEmails = [];
         const rejectedEmails = [];
 
-        // Filter by status
+        // // Filter by status
         for (const application of batch) {
           if (!emailMap.has(application.email)) {
             emailMap.set(application.email, application.id);
           }
 
-          switch (application.status) {
-            case "waitlisted":
-              waitlistEmails.push(application.email);
-              if (application.userEmail !== application.email)
-                waitlistEmails.push(application.userEmail);
-              break;
-            case "accepted":
-              acceptedEmails.push(application.email);
-              if (application.userEmail !== application.email)
-                waitlistEmails.push(application.userEmail);
-              break;
-            case "rejected":
-              rejectedEmails.push(application.email);
-              if (application.userEmail !== application.email)
-                waitlistEmails.push(application.userEmail);
-              break;
-            default:
-              break;
+          if (application.status === "waitlisted" && application.waitlistEmail === false) {
+            waitlistEmails.push(application.email);
+            if (application.userEmail !== application.email)
+              waitlistEmails.push(application.userEmail);
+          } else if (application.status === "accepted" && application.acceptedEmail === false) {
+            acceptedEmails.push(application.email);
+            if (application.userEmail !== application.email)
+              acceptedEmails.push(application.userEmail);
+          } else if (application.status === "rejected" && application.rejectedEmail === false) {
+            rejectedEmails.push(application.email);
+            if (application.userEmail !== application.email)
+              rejectedEmails.push(application.userEmail);
           }
         }
 
         // Rejection Emails
-        const failedRejected = await queueBulkEmail(
-          rejectedEmails,
-          "TODO REPLACE TITLE HERE",
-          "TODO REPLACE CONTENTS HERE",
-          emailBatchSize,
-        );
+        if (rejectedEmails.length > 0) {
+          const failedRejected = await queueBulkEmail(
+            rejectedEmails,
+            "TODO REPLACE TITLE HERE",
+            "TODO REPLACE CONTENTS HERE",
+            emailBatchSize,
+          );
 
-        checkStatusEmails(rejectedEmails, failedRejected, emailMap, ctx, "rejectedEmail", true);
+          checkStatusEmails(rejectedEmails, failedRejected, emailMap, ctx, "rejectedEmail", true);
+          console.log("Updated Rejected emails for batch", i);
+        }
 
-        // Waitlist emails
-        const failedWaitlist = await queueBulkEmail(
-          waitlistEmails,
-          "TODO REPLACE TITLE HERE",
-          "TODO REPLACE CONTENTS HERE",
-          emailBatchSize,
-        );
+        // // Waitlist emails
+        if (waitlistEmails.length > 0) {
+          const failedWaitlist = await queueBulkEmail(
+            waitlistEmails,
+            "TODO REPLACE TITLE HERE",
+            "TODO REPLACE CONTENTS HERE",
+            emailBatchSize,
+          );
 
-        checkStatusEmails(waitlistEmails, failedWaitlist, emailMap, ctx, "waitlistEmail", true);
+          checkStatusEmails(waitlistEmails, failedWaitlist, emailMap, ctx, "waitlistEmail", true);
+
+          console.log("Updated Waitlist emails for batch", i);
+        }
 
         // Accepted Emails
-        const failedAccepted = await queueBulkEmail(
-          acceptedEmails,
-          "TODO REPLACE TITLE HERE",
-          "TODO REPLACE CONTENTS HERE",
-          emailBatchSize,
-        );
+        if (acceptedEmails.length > 0) {
+          const failedAccepted = await queueBulkEmail(
+            acceptedEmails,
+            "TODO REPLACE ACCEPTED HERE",
+            "TODO REPLACE CONTENTS HERE",
+            emailBatchSize,
+          );
 
-        checkStatusEmails(acceptedEmails, failedAccepted, emailMap, ctx, "acceptedEmail", true);
+          checkStatusEmails(acceptedEmails, failedAccepted, emailMap, ctx, "acceptedEmail", true);
+
+          console.log("Updated Accepted emails for batch", i);
+        }
+      }
+
+      return {
+        message: "Emails Successfully Queued!",
       }
     })
 };

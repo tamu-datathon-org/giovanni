@@ -62,7 +62,7 @@ export async function updateBatchStatus(ids: string[], newStatus: boolean, ctx: 
   const sqlChunks: SQL[] = [];
   sqlChunks.push(sql`(case`);
   for (const id of ids) {
-    sqlChunks.push(sql`when ${Application.id} = ${id} then ${newStatus}`);
+    sqlChunks.push(sql`when ${Application.id} = ${id} then ${newStatus}::boolean`);
   }
   sqlChunks.push(sql`end)`);
 
