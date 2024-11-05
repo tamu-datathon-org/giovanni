@@ -87,11 +87,9 @@ export const emailSendingRouter = {
       }
 
       const applicationCount = applicationCountResult[0]?.count;
-      console.log(applicationCount);
+
       for (let i = 1; i <= Math.ceil(Number(applicationCount) / statusBatchSize); i++) {
         const batch = await getBatchStatus(i, statusBatchSize, ctx, process.env.NEXT_PUBLIC_EVENT_NAME ?? "");
-        // console.log(i, batch.length);
-
         const emailMap = new Map<string, string>();
 
         const waitlistEmails = [];
@@ -123,7 +121,7 @@ export const emailSendingRouter = {
         if (rejectedEmails.length > 0) {
           const failedRejected = await queueBulkEmail(
             rejectedEmails,
-            "TODO REPLACE TITLE HERE",
+            "TODO REPLACE REJECTED HERE",
             "TODO REPLACE CONTENTS HERE",
             emailBatchSize,
           );
@@ -136,7 +134,7 @@ export const emailSendingRouter = {
         if (waitlistEmails.length > 0) {
           const failedWaitlist = await queueBulkEmail(
             waitlistEmails,
-            "TODO REPLACE TITLE HERE",
+            "TODO REPLACE WAITLIST HERE",
             "TODO REPLACE CONTENTS HERE",
             emailBatchSize,
           );
