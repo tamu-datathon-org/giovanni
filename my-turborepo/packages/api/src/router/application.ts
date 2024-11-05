@@ -235,6 +235,53 @@ export const applicationRouter = {
 
       return await db.update(Application).set({ status: finalSql }).where(inArray(Application.id, ids));
     }),
+  getAcceptanceEmails: organizerProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const eventName = input;
+
+      const applications = await ctx.db.select({
+        id: Application.id,
+        firstName: Application.firstName,
+        lastName: Application.lastName,
+        email: Application.email,
+        acceptanceEmail: Application.acceptanceEmail,
+        userEmail: User.email,
+      }).from(Application)
+        .leftJoin(Event, eq(Event.id, Application.eventId))
+        .leftJoin(User, eq(User.id, Application.userId))
+        .where(and(eq(Event.name, eventName), eq(Application.status, "accepted")));
+
+      return applications;
+    }),
+  updateBatchAcceptance: organizerProcedure
+    .input(z.object({
+      ids: z.array(z.string()),
+      newStatus: z.boolean(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { ids, newStatus } = input;
+
+      if (ids.length == 0) {
+        return {
+          status: 200,
+          message: "No applications selected"
+        }
+      }
+
+      const sqlChunks: SQL[] = [];
+      sqlChunks.push(sql`(case`);
+      for (const id of ids) {
+        sqlChunks.push(sql`when ${Application.id} = ${id} then ${newStatus}`);
+      }
+      sqlChunks.push(sql`end)`);
+
+      const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
+
+      return await ctx.db.update(Application)
+        .set({ acceptanceEmail: finalSql })
+        .where(inArray(Application.id, ids));
+    }),
   getApplicationStatus: protectedProcedure
     .input(z.object({ eventName: z.string() }))
     .query(async ({ ctx, input }) => {
