@@ -4,6 +4,7 @@ import Link from "next/link";
 import StaticWindowContainer from "../_components/StaticWindowContainer";
 import { api } from "~/trpc/react";
 import { toast } from "~/hooks/use-toast";
+import { Button } from "~/components/ui/button";
 
 
 export default function Page() {
@@ -22,7 +23,7 @@ export default function Page() {
       description: "Please refresh the page.",
     })
   }
-  let gradient;
+  let gradient = "from-blue-400 to-cyan-700";
   if (!isLoading) {
     switch (data?.status) {
       case "pending":
@@ -36,9 +37,6 @@ export default function Page() {
         break;
       case "checkedin":
         gradient = "from-green-500 to-cyan-700";
-        break;
-      default:
-        gradient = "from-gray-400 to-cyan-700";
         break;
     }
   }
@@ -74,6 +72,12 @@ export default function Page() {
               </div>
 
               {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
+
+              <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
+                <Link href="/">
+                  Back to home
+                </Link>
+              </Button>
             </form>
           </div>
         </StaticWindowContainer>
