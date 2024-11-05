@@ -6,5 +6,5 @@ export default async function ApplicationLayout({
   children: React.ReactNode;
 }) {
   redirect("/apply");
-  return <>{children}</>;
+  // return <>{children}</>;
 }
