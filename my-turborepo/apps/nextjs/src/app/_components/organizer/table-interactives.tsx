@@ -88,6 +88,7 @@ const SelectStatus: React.FC<SelectStatusProps> = ({
                     <SelectItem value="accepted">Accepted</SelectItem>
                     <SelectItem value="rejected">Rejected</SelectItem>
                     <SelectItem value="checkedin">Checked In</SelectItem>
+                    <SelectItem value="waitlisted">Waitlisted</SelectItem>
                 </SelectGroup>
             </SelectContent>
         </Select>
