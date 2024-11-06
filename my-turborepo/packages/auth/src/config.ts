@@ -30,6 +30,9 @@ export const authConfig = {
       issuer: env.AUTH_AUTH0_DOMAIN,
     }),
   ],
+  pages: {
+    signIn: "/login",
+  },
   callbacks: {
     session: (opts) => {
       if (!("user" in opts)) throw "unreachable with session strategy";

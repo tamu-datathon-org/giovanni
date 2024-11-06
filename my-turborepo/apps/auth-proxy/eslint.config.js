@@ -3,7 +3,7 @@ import baseConfig from "@vanni/eslint-config/base";
 /** @type {import('typescript-eslint').Config} */
 export default [
   {
-    ignores: [".nitro/**", ".output/**"],
+    ignores: [".nitro/**", ".output/**", "node_modules/**"],
   },
   ...baseConfig,
 ];

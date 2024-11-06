@@ -1,0 +1,1 @@
+ALTER TABLE "application" ADD COLUMN "acceptance_email" boolean DEFAULT false NOT NULL;
