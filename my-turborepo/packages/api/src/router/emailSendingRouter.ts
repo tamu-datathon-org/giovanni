@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { adminProcedure, protectedProcedure } from "../trpc";
 import { getEmailsByLabelList } from "./email";
-import sendConfirmationEmails from "./emailHelpers/confirmation_emails";
+import sendConfirmationEmails, { accepted_content, accepted_title, rejected_content, rejected_title } from "./emailHelpers/confirmation_emails";
 import { queueBulkEmail } from "./emailHelpers/queue_bulk";
 import { Application } from "@vanni/db/schema";
 import { count, sql } from "@vanni/db";
@@ -73,7 +73,7 @@ export const emailSendingRouter = {
   sendStatusEmails: adminProcedure
     .input(z.object({
       statusBatchSize: z.number().int().min(1).max(100).default(100),
-      emailBatchSize: z.number().int().min(1).max(10).default(10),
+      emailBatchSize: z.number().int().min(1).max(10).default(7),
     }))
     .mutation(async ({ ctx, input }) => {
       const { statusBatchSize, emailBatchSize } = input;
@@ -121,8 +121,8 @@ export const emailSendingRouter = {
         if (rejectedEmails.length > 0) {
           const failedRejected = await queueBulkEmail(
             rejectedEmails,
-            "TODO REPLACE REJECTED HERE",
-            "TODO REPLACE CONTENTS HERE",
+            rejected_title,
+            rejected_content,
             emailBatchSize,
           );
 
@@ -148,8 +148,8 @@ export const emailSendingRouter = {
         if (acceptedEmails.length > 0) {
           const failedAccepted = await queueBulkEmail(
             acceptedEmails,
-            "TODO REPLACE ACCEPTED HERE",
-            "TODO REPLACE CONTENTS HERE",
+            accepted_title,
+            accepted_content,
             emailBatchSize,
           );
 
