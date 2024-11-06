@@ -26,6 +26,11 @@ export default function JankuryPage() {
   });
 
   const sendBulk = api.emailSending.sendBulkEmails.useMutation();
+  const sendStatus = api.emailSending.sendStatusEmails.useMutation();
+
+  function handleSendStatus() {
+    sendStatus.mutate({});
+  }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
@@ -62,6 +67,7 @@ export default function JankuryPage() {
       <div className="absolute top-0 h-screen w-screen overflow-auto bg-black bg-opacity-70">
         <div className="font-XPfont flex justify-center">
           <div className="flex h-full w-full justify-center lg:w-3/5">
+            <Button onClick={handleSendStatus}>HELPPP</Button>
             <Suspense fallback={<h1>Loading... please wait</h1>}>
               <Form {...form}>
                 <form

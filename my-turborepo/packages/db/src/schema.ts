@@ -174,7 +174,7 @@ export const Application = pgTable("application", {
     .notNull()
     .references(() => User.id, { onDelete: "cascade" }),
   status: varchar("status", { length: 255 })
-    .$type<"pending" | "accepted" | "checkedin" | "rejected">()
+    .$type<"pending" | "accepted" | "checkedin" | "rejected" | "waitlisted">()
     .notNull(),
   eventId: uuid("event_id")
     .notNull()
@@ -221,7 +221,9 @@ export const Application = pgTable("application", {
   dietaryRestriction: varchar("dietary_restriction", { length: 255 }),
   extraInfo: varchar("extra_info", { length: 255 }),
   mlhEmailConsent: boolean("mlh_email_consent").notNull().default(false),
-  acceptanceEmail: boolean("acceptance_email").notNull().default(false),
+  acceptedEmail: boolean("accepted_email").notNull().default(false),
+  waitlistEmail: boolean("waitlist_email").notNull().default(false),
+  rejectedEmail: boolean("rejected_email").notNull().default(false)
 });
 
 export const UserResume = pgTable("user_resume", {
@@ -336,7 +338,9 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
   status: true,
   createdAt: true,
   updatedAt: true,
-  acceptanceEmail: true,
+  acceptedEmail: true,
+  waitlistEmail: true,
+  rejectedEmail: true,
 });
 
 export const CreateUserResumeSchema = createInsertSchema(UserResume, {

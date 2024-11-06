@@ -38,6 +38,9 @@ export default function Page() {
       case "checkedin":
         gradient = "from-green-500 to-cyan-700";
         break;
+      case "waitlisted":
+        gradient = "from-yellow-500 to-cyan-700";
+        break;
     }
   }
 
