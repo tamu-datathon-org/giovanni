@@ -266,10 +266,10 @@ const SchedulePage: React.FC = () => {
             borderGradientEnd="#124c87"
           >
             <div className="flex h-[150px] w-[220px] flex-col items-center justify-between p-4 sm:h-[200px] sm:w-[300px] md:h-[350px] md:w-[600px] lg:h-[448px] lg:w-[758px]">
-              <h2 className="mb-2 text-center text-xl font-bold text-black sm:text-2xl md:text-4xl lg:text-5xl">
+              <h2 className="mb-2 text-center text-sm font-bold text-black sm:text-xl md:text-4xl lg:text-5xl">
                 Countdown to Datathon!
               </h2>
-              <h3 className="text-lg font-bold text-black sm:text-xl md:text-3xl lg:text-4xl">
+              <h3 className="text-xs font-bold text-black sm:text-lg md:text-3xl lg:text-4xl">
                 Event: November 9th at the MSC!
               </h3>
               <div className="flex justify-center space-x-2 sm:space-x-3 md:space-x-4">
@@ -288,6 +288,7 @@ const SchedulePage: React.FC = () => {
           </WindowContainer>
         </DraggableComponent>
 
+        {/* Events window */}
         <DraggableComponent
           onFocus={setFocusedWindow}
           name="events"
@@ -318,6 +319,7 @@ const SchedulePage: React.FC = () => {
                     className={`compStyling clickable-box w-full cursor-pointer rounded-lg border border-black p-2 md:p-4 ${
                       new Date() > event.date ? "bg-gray-400 text-white" : "bg-[#f5f5f5] text-black"
                     } hover:bg-[#e4e3e4]`}
+                    onClick={() => setSelectedEvent(event)}
                   >
                     <h3 className="text-sm font-semibold sm:text-base md:text-lg">
                       {event.name}
@@ -341,6 +343,7 @@ const SchedulePage: React.FC = () => {
                     className={`compStyling clickable-box w-full cursor-pointer rounded-lg border border-black p-2 md:p-4 ${
                       new Date() > event.date ? "bg-gray-400 text-white" : "bg-[#f5f5f5] text-black"
                     } hover:bg-[#e4e3e4]`}
+                    onClick={() => setSelectedEvent(event)}
                   >
                     <h3 className="text-sm font-semibold sm:text-base md:text-lg">
                       {event.name}
