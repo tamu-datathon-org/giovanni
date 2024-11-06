@@ -3,7 +3,7 @@
 // Ensure the component is treated as a client component
 import React from "react";
 import Image from "next/image";
-
+import { isMobile } from "react-device-detect";
 import { Button } from "@vanni/ui/button";
 
 import { toast } from "~/hooks/use-toast";
@@ -33,8 +33,11 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
   return (
     isOpen && (
       <div
-        className={`font-XPfont w-fit font-bold ${isOpen ? "unhidden" : "hidden"}`}
-      >
+  className={`bg-blue-500 font-XPfont w-fit font-bold ${isOpen ? "unhidden" : "hidden"} ${
+    isMobile ? "bg-blue-500" : ""
+  }`}
+  style={{ transform: isMobile ? "scale(0.5)" : "none" }} // Conditionally scale on mobile
+  >
         <div className="flex flex-col items-center justify-center">
           <div
             className="xpBorder flex w-fit flex-col items-center p-3 text-center text-lg"
