@@ -33,10 +33,8 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
   return (
     isOpen && (
       <div
-  className={`bg-blue-500 font-XPfont w-fit font-bold ${isOpen ? "unhidden" : "hidden"} ${
-    isMobile ? "bg-blue-500" : ""
-  }`}
-  style={{ transform: isMobile ? "scale(0.5)" : "none" }} // Conditionally scale on mobile
+  className={`scale-50 sm:scale-100 font-XPfont w-fit font-bold ${isOpen ? "unhidden" : "hidden"} `}
+  // style={{ transform: "scale(0.5) sm:scale(1)" }}
   >
         <div className="flex flex-col items-center justify-center">
           <div
