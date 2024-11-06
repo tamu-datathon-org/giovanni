@@ -112,7 +112,7 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
 export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
   if (
     !ctx.session.user.email ||
-    !["upadsamay387@gmail.com", "upadsamay387@tamu.edu"].includes(
+    !["upadsamay387@gmail.com", "upadsamay387@tamu.edu", "le.tamu.c7@tamu.edu"].includes(
       ctx.session.user.email,
     )
   ) {
