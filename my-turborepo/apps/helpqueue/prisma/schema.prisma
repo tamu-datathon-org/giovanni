@@ -1,6 +1,6 @@
 // schema.prisma
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -10,6 +10,10 @@ generator client {
   engineType = "binary"
 }
 
+generator drizzle {
+  provider = "drizzle-prisma-generator"
+  output   = "./drizzle" // Where to put generated Drizle tables
+}
 
 model Ticket {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -38,9 +42,9 @@ model ResolvedTicket {
   publishTime DateTime @default(now())
   claimedTime DateTime?
   resolvedTime DateTime?
-  claimantId String? 
+  claimantId String?
   claimantName String?
-  authorId  String 
+  authorId  String
 }
 
 model Account {
