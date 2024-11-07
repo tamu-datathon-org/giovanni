@@ -1,3 +1,5 @@
+//TODO: Refactor everything using this guide:
+
 import { relations, sql } from "drizzle-orm";
 import {
   boolean,
@@ -370,3 +372,40 @@ export const EmailListRelations = relations(EmailList, ({ one }) => ({
 export const EmailLabelRelations = relations(EmailLabel, ({ many }) => ({
   emails: many(EmailList),
 }));
+
+// Helpqueue Stuff
+
+export const Ticket = pgTable("helpqueue_ticket", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  authorName: varchar("authorName").notNull(),
+  challenge: varchar("challenge").default("Miscellaneous").notNull(),
+  issue: varchar("issue").notNull(),
+  location: varchar("location").notNull(),
+  contact: varchar("contact").notNull(),
+  publishTime: timestamp("publishTime").defaultNow().notNull(),
+  claimedTime: timestamp("clamedTime"),
+  resolvedTime: timestamp("resolvedTime"),
+  //corresponds to user
+  claimantId: uuid("claimantId").references(() => User.id),
+  claimantName: varchar("claimantName"),
+  //coresponds to user
+  authorId: uuid("authorId").references(() => User.id),
+});
+
+export const ResolvedTicket = pgTable("helpqueue_resolved_ticket", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  authorName: varchar("authorName").notNull(),
+  challenge: varchar("challenge").default("Miscellaneous").notNull(),
+  issue: varchar("issue").notNull(),
+  location: varchar("location").notNull(),
+  contact: varchar("contact").notNull(),
+  publishTime: timestamp("publishTime").defaultNow().notNull(),
+  claimedTime: timestamp("clamedTime"),
+  resolvedTime: timestamp("resolvedTime"),
+  //corresponds to user
+  claimantId: uuid("claimantId").references(() => User.id),
+  claimantName: varchar("claimantName"),
+  //coresponds to user
+  authorId: uuid("authorId").references(() => User.id),
+});
+// End Helpqueue Stuff
