@@ -23,12 +23,13 @@ async function checkStatusEmails(
 
   if (batchStatus.status !== 200) {
     throw new TRPCError({
-      message:
-        "[WARNING, contact Dev] Failed to send " + statusField + " emails:" +
-        failedList.join(", "),
+      message: `[WARNING, contact Dev] Failed to send ${statusField} emails: ${failedList.join(", ")}. 
+        Error Message: ${batchStatus.message}`,
       code: "INTERNAL_SERVER_ERROR",
     });
   }
+
+  console.log("Status for " + ids.length + " emails updated")
 }
 
 export const emailSendingRouter = {
@@ -89,7 +90,7 @@ export const emailSendingRouter = {
       const applicationCount = applicationCountResult[0]?.count;
 
       for (let i = 1; i <= Math.ceil(Number(applicationCount) / statusBatchSize); i++) {
-        const batch = await getBatchStatus(i, statusBatchSize, ctx, process.env.NEXT_PUBLIC_EVENT_NAME ?? "");
+        const batch = await getBatchStatus(i, statusBatchSize, ctx, process.env.NEXT_PUBLIC_EVENT_NAME ?? "", true);
         const emailMap = new Map<string, string>();
 
         const waitlistEmails = [];
@@ -102,15 +103,15 @@ export const emailSendingRouter = {
             emailMap.set(application.email, application.id);
           }
 
-          if (application.status === "waitlisted" && application.waitlistEmail === false) {
+          if (application.status === "waitlisted") {
             waitlistEmails.push(application.email);
             if (application.userEmail !== application.email)
               waitlistEmails.push(application.userEmail);
-          } else if (application.status === "accepted" && application.acceptedEmail === false) {
+          } else if (application.status === "accepted") {
             acceptedEmails.push(application.email);
             if (application.userEmail !== application.email)
               acceptedEmails.push(application.userEmail);
-          } else if (application.status === "rejected" && application.rejectedEmail === false) {
+          } else if (application.status === "rejected") {
             rejectedEmails.push(application.email);
             if (application.userEmail !== application.email)
               rejectedEmails.push(application.userEmail);

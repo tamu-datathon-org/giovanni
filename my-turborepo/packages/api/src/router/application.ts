@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import { and, eq } from "@vanni/db";
 import { db } from "@vanni/db/client";
-import { SQL, inArray, sql } from 'drizzle-orm';
+import { SQL, inArray, or, sql } from 'drizzle-orm';
 
 import {
   Application,
@@ -20,7 +20,7 @@ import { organizerProcedure, protectedProcedure } from "../trpc";
 import { getEventData } from "./event";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 
-export async function getBatchStatus(page: number, limit: number, ctx: any, eventName: string): Promise<
+export async function getBatchStatus(page: number, limit: number, ctx: any, eventName: string, filter?: boolean): Promise<
   {
     id: string;
     firstName: string;
@@ -33,7 +33,7 @@ export async function getBatchStatus(page: number, limit: number, ctx: any, even
     userEmail: string;
   }[]
 > {
-  return await ctx.db.select({
+  const baseQuery = ctx.db.select({
     id: Application.id,
     firstName: Application.firstName,
     lastName: Application.lastName,
@@ -49,6 +49,18 @@ export async function getBatchStatus(page: number, limit: number, ctx: any, even
     .leftJoin(Event, eq(Event.id, Application.eventId))
     .leftJoin(User, eq(User.id, Application.userId))
     .where(eq(Event.name, eventName));
+
+  if (filter) {
+    baseQuery.where(
+      or(
+        and(eq(Application.status, "accepted"), eq(Application.acceptedEmail, false)),
+        and(eq(Application.status, "rejected"), eq(Application.rejectedEmail, false)),
+        and(eq(Application.status, "waitlisted"), eq(Application.waitlistEmail, false))
+      )
+    );
+  }
+
+  return await baseQuery;
 }
 
 export async function updateBatchStatus(ids: string[], newStatus: boolean, ctx: any, sqlField: string) {
@@ -68,9 +80,21 @@ export async function updateBatchStatus(ids: string[], newStatus: boolean, ctx: 
 
   const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
 
-  return await ctx.db.update(Application)
-    .set({ [sqlField]: finalSql })
-    .where(inArray(Application.id, ids));
+  try {
+    await ctx.db.update(Application)
+      .set({ [sqlField]: finalSql })
+      .where(inArray(Application.id, ids));
+
+    return {
+      status: 200,
+      message: "Finished updating applications " + ids.length,
+    };
+  } catch (e) {
+    return {
+      status: 500,
+      message: "Failed to update applications " + ids.length,
+    };
+  }
 }
 
 // the batch requires the page/limit, I need to get all of them in each
