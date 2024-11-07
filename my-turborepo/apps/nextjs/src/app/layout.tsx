@@ -47,18 +47,6 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       <body
         className={cn("min-h-screen bg-background text-foreground antialiased")}
       >
-        <Link
-          id="mlh-trust-badge"
-          className="mlh-trust-badge"
-          href="https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2025-season&utm_content=white"
-          target="_blank"
-        >
-          <img
-            src="https://s3.amazonaws.com/logged-assets/trust-badge/2025/mlh-trust-badge-2025-white.svg"
-            alt="Major League Hacking 2025 Hackathon Season"
-            className="w-full"
-          />
-        </Link>
         <TRPCReactProvider>
           <main>
             <BackgroundImage
