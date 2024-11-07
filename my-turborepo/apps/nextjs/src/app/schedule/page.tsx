@@ -229,16 +229,12 @@ const SchedulePage: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative h-screen overflow-hidden">
       <div
+        className="fixed bottom-0 left-0 right-0 mb-12 flex justify-center w-full"
         style={{
-          position: "absolute",
-          left: "50%",
-          bottom: "50px", // Adjust this value to position higher from bottom
-          transform: "translateX(-50%)",
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
+          transform: 'translateZ(0)',
+          WebkitTransform: 'translateZ(0)', 
         }}
       >
         <ScheduleIconList />
@@ -246,10 +242,7 @@ const SchedulePage: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="relative mb-8 flex items-center justify-between">
           <div className="w-full text-center">
-            <h1
-              className="inline-block pr-4 text-5xl font-bold sm:pr-0"
-              style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
-            >
+            <h1 className="inline-block pr-4 text-3xl font-bold sm:pr-0 sm:text-4xl md:text-5xl lg:text-6xl">
               Schedule
             </h1>
           </div>
@@ -259,7 +252,7 @@ const SchedulePage: React.FC = () => {
           onFocus={setFocusedWindow}
           name="countdown"
           focus={focusedWindow}
-          className="absolute left-[60px] top-[120px] md:left-[60px] md:top-[120px]"
+          className="absolute left-4 top-20 sm:left-8 sm:top-28 md:left-[60px] md:top-[120px]"
         >
           <WindowContainer
             isOpen={true}
@@ -268,20 +261,20 @@ const SchedulePage: React.FC = () => {
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
           >
-            <div className="flex h-[200px] w-[300px] flex-col items-center justify-between p-4 md:h-[350px] md:w-[600px] md:p-12 lg:h-[448px] lg:w-[758px] lg:p-16">
-              <h2 className="mb-2 text-center text-2xl font-bold text-black md:mb-4 md:text-4xl lg:text-5xl">
+            <div className="flex h-[150px] w-[220px] flex-col items-center justify-between p-4 sm:h-[200px] sm:w-[300px] md:h-[350px] md:w-[600px] lg:h-[448px] lg:w-[758px]">
+              <h2 className="mb-2 text-center text-sm font-bold text-black sm:text-xl md:text-4xl lg:text-5xl">
                 Countdown to Datathon!
               </h2>
-              <h3 className="text-xl font-bold text-black md:text-3xl lg:text-4xl">
+              <h3 className="text-xs font-bold text-black sm:text-lg md:text-3xl lg:text-4xl">
                 Event: November 9th at the MSC!
               </h3>
-              <div className="flex justify-center space-x-2 md:space-x-4">
+              <div className="flex justify-center space-x-2 sm:space-x-3 md:space-x-4">
                 {Object.entries(timeLeft).map(([unit, value]) => (
                   <div key={unit} className="text-center">
-                    <div className="text-xl font-bold text-black md:text-3xl lg:text-4xl">
+                    <div className="text-lg font-bold text-black sm:text-xl md:text-3xl lg:text-4xl">
                       {value}
                     </div>
-                    <div className="text-xs uppercase text-black md:text-base lg:text-xl">
+                    <div className="text-xs uppercase text-black sm:text-sm md:text-base lg:text-xl">
                       {unit}
                     </div>
                   </div>
@@ -291,11 +284,12 @@ const SchedulePage: React.FC = () => {
           </WindowContainer>
         </DraggableComponent>
 
+        {/* Events window */}
         <DraggableComponent
           onFocus={setFocusedWindow}
           name="events"
           focus={focusedWindow}
-          className="absolute right-[20px] top-[340px] md:right-[60px] md:top-[120px]"
+          className="absolute right-4 top-[300px] sm:right-8 sm:top-[340px] md:right-[60px] md:top-[120px]"
         >
           <WindowContainer
             isOpen={isEventsOpen}
@@ -304,68 +298,60 @@ const SchedulePage: React.FC = () => {
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
           >
-            <div className="flex h-[300px] w-[300px] flex-col items-center p-4 md:h-[450px] md:w-[400px] md:p-8 lg:h-[480px] lg:w-[420px] lg:p-10">
-              <h2 className="mb-2 text-2xl font-semibold md:mb-4 md:text-4xl lg:text-5xl">
+            <div className="flex h-[200px] w-[220px] flex-col items-center p-4 sm:h-[300px] sm:w-[300px] md:h-[450px] md:w-[400px] lg:h-[480px] lg:w-[420px]">
+              <h2 className="mb-2 text-2xl font-semibold sm:mb-4 sm:text-3xl md:text-4xl lg:text-5xl">
                 Events!!!
               </h2>
               <div
                 style={{ scrollbarWidth: "none", overflowY: "auto" }}
-                className={`max-h-[250px] w-full space-y-2 md:max-h-[370px] md:space-y-4 lg:max-h-[390px]`}
+                className="max-h-[150px] w-full space-y-2 sm:max-h-[250px] md:max-h-[370px] lg:max-h-[390px]"
               >
-                <h2 className="mb-2 text-center text-xl font-bold md:mb-4 md:text-3xl lg:text-4xl">
+                <h2 className="mb-2 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-3xl lg:text-4xl">
                   Saturday
                 </h2>
-                {saturdayEvents.map((event) => {
-                  const isPast = new Date() > event.date;
-                  return (
-                    <div
-                      key={event.id}
-                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border border-black p-2 md:p-4 ${
-                        isPast
-                          ? "bg-gray-400 text-white"
-                          : "bg-[#f5f5f5] text-black"
-                      } hover:bg-[#e4e3e4]`}
-                      onClick={() => setSelectedEvent(event)}
-                    >
-                      <h3 className="text-sm font-semibold md:text-lg">
-                        {event.name}
-                      </h3>
-                      <p className="text-xs md:text-sm">
-                        {event.date.toLocaleString("en-US", {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })}
-                      </p>
-                    </div>
-                  );
-                })}
-                <h2 className="mb-2 text-center text-xl font-bold md:mb-4 md:text-3xl lg:text-4xl">
+                {saturdayEvents.map((event) => (
+                  <div
+                    key={event.id}
+                    className={`compStyling clickable-box w-full cursor-pointer rounded-lg border border-black p-2 md:p-4 ${
+                      new Date() > event.date ? "bg-gray-400 text-white" : "bg-[#f5f5f5] text-black"
+                    } hover:bg-[#e4e3e4]`}
+                    onClick={() => setSelectedEvent(event)}
+                  >
+                    <h3 className="text-sm font-semibold sm:text-base md:text-lg">
+                      {event.name}
+                    </h3>
+                    <p className="text-xs sm:text-sm">
+                      {event.date.toLocaleString("en-US", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}
+                    </p>
+                  </div>
+                ))}
+                
+                {/* Sunday Events */}
+                <h2 className="mt-4 mb-2 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-3xl lg:text-4xl">
                   Sunday
                 </h2>
-                {sundayEvents.map((event) => {
-                  const isPast = new Date() > event.date;
-                  return (
-                    <div
-                      key={event.id}
-                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border border-black p-2 md:p-4 ${
-                        isPast
-                          ? "bg-gray-400 text-white"
-                          : "bg-[#f5f5f5] text-black"
-                      } hover:bg-[#e4e3e4]`}
-                      onClick={() => setSelectedEvent(event)}
-                    >
-                      <h3 className="text-sm font-semibold md:text-lg">
-                        {event.name}
-                      </h3>
-                      <p className="text-xs md:text-sm">
-                        {event.date.toLocaleString("en-US", {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })}
-                      </p>
-                    </div>
-                  );
-                })}
+                {sundayEvents.map((event) => (
+                  <div
+                    key={event.id}
+                    className={`compStyling clickable-box w-full cursor-pointer rounded-lg border border-black p-2 md:p-4 ${
+                      new Date() > event.date ? "bg-gray-400 text-white" : "bg-[#f5f5f5] text-black"
+                    } hover:bg-[#e4e3e4]`}
+                    onClick={() => setSelectedEvent(event)}
+                  >
+                    <h3 className="text-sm font-semibold sm:text-base md:text-lg">
+                      {event.name}
+                    </h3>
+                    <p className="text-xs sm:text-sm">
+                      {event.date.toLocaleString("en-US", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </WindowContainer>
@@ -374,4 +360,5 @@ const SchedulePage: React.FC = () => {
     </div>
   );
 };
+
 export default SchedulePage;
