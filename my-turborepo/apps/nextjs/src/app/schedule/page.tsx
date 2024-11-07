@@ -231,14 +231,10 @@ const SchedulePage: React.FC = () => {
   return (
     <div className="relative h-screen overflow-hidden">
       <div
+        className="fixed bottom-0 left-0 right-0 mb-12 flex justify-center w-full"
         style={{
-          position: "absolute",
-          left: "50%",
-          bottom: "50px",
-          transform: "translateX(-50%)",
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
+          transform: 'translateZ(0)',
+          WebkitTransform: 'translateZ(0)', 
         }}
       >
         <ScheduleIconList />
