@@ -229,7 +229,7 @@ const SchedulePage: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative h-screen overflow-hidden">
       <div
         style={{
           position: "absolute",
