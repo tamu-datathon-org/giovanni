@@ -32,15 +32,15 @@ const prizes = [
   { img: "/prizes/polaroid.webp", name: "FujiFilm Camera" },
   { img: "/prizes/drawing_tablet.jpg", name: "Drawing Tablet" },
   { img: "/prizes/air_fryer.jpg", name: "Air Fryer" },
-  { img: "/prizes/ipad.png", name: "iPad"},
-  { img: "/prizes/g305_mouse.png", name: "Logitech Mouse"},
-  { img: "/prizes/anker_speaker.jpg", name: "Anker Blueetooth Speaker"},
-  { img: "/prizes/firestick.jpg", name: "Amazon Fire Stick"},
-  { img: "/prizes/echo_dot.webp", name: "Amazon Echo Dot"},
-  { img: "/prizes/power_bank.jpg", name: "Power Bank"},
-  { img: "/prizes/owala_bottle.webp", name: "Owala Water Bottle"},
-  { img: "/prizes/apple_air_tag.jpg", name: "Apple Airtag"},
-  { img: "/prizes/wireless_charger.jpg", name: "Wireless Charging Pad"}
+  { img: "/prizes/ipad.png", name: "iPad" },
+  { img: "/prizes/g305_mouse.png", name: "Logitech Mouse" },
+  { img: "/prizes/anker_speaker.jpg", name: "Anker Blueetooth Speaker" },
+  { img: "/prizes/firestick.jpg", name: "Amazon Fire Stick" },
+  { img: "/prizes/echo_dot.webp", name: "Amazon Echo Dot" },
+  { img: "/prizes/power_bank.jpg", name: "Power Bank" },
+  { img: "/prizes/owala_bottle.webp", name: "Owala Water Bottle" },
+  { img: "/prizes/apple_air_tag.jpg", name: "Apple Airtag" },
+  { img: "/prizes/wireless_charger.jpg", name: "Wireless Charging Pad" },
 ];
 
 export default function HomePage() {
@@ -67,15 +67,15 @@ export default function HomePage() {
   return (
     <>
       <Link
-          id="mlh-trust-badge"
-          className="mlh-trust-badge"
-          href="https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2025-season&utm_content=white"
-          target="_blank"
+        id="mlh-trust-badge"
+        className="mlh-trust-badge"
+        href="https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2025-season&utm_content=white"
+        target="_blank"
       >
         <img
-            src="https://s3.amazonaws.com/logged-assets/trust-badge/2025/mlh-trust-badge-2025-white.svg"
-            alt="Major League Hacking 2025 Hackathon Season"
-            className="w-full"
+          src="https://s3.amazonaws.com/logged-assets/trust-badge/2025/mlh-trust-badge-2025-white.svg"
+          alt="Major League Hacking 2025 Hackathon Season"
+          className="w-full"
         />
       </Link>
       <div className="h-screen w-screen overflow-hidden">
@@ -97,7 +97,10 @@ export default function HomePage() {
                 >
                   THE PRIZES!!!
                 </motion.h1>
-                <div style={{ overflowY: "auto" }} className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 overflow-y-visible max-h-[400px]">
+                <div
+                  style={{ overflowY: "auto" }}
+                  className="grid max-h-[400px] grid-cols-2 gap-4 overflow-y-visible p-4 sm:grid-cols-3"
+                >
                   {prizes.map((prize, index) => (
                     <motion.div
                       key={index}
