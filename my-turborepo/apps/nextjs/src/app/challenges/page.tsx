@@ -6,7 +6,7 @@ export default function Challenge() {
     return (
         <>
             <Title>Pop Tac Toe</Title>
-            {/* <Prize></Prize>; */}
+            
         </>
     );
 }
