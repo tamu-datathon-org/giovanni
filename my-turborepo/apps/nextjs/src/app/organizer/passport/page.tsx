@@ -1,7 +1,7 @@
 "use client"
 
 import { Turtle, Fish, Cat, Dog } from "lucide-react";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { MultiSelect } from "~/app/_components/multiselect";
 import QRScanner from "~/app/_components/organizer/qr-scanner";
 import { Button } from "~/components/ui/button";
@@ -62,8 +62,7 @@ export default function PassportPage() {
     ]
 
     const statusMutation = api.application.updateCheckInStatus.useMutation();
-    const handleCheckIn = async (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
+    const updateCheckIn = async (newStatus: boolean) => {
         let inputEmail = "";
         if (inputRef.current && inputRef.current.value) {
             inputEmail = inputRef.current.value;
@@ -83,14 +82,14 @@ export default function PassportPage() {
         const queryData = await statusMutation.mutateAsync({
             eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
             email: inputEmail,
-            newStatus: true,
-            allowedStatuses: ["accepted", "waitlisted", "rejected"],
+            newStatus: newStatus,
+            allowedStatuses: selectedStatuses,
         }, {
             onSuccess: () => {
                 toast({
                     variant: "success",
-                    title: "Check-in Successful",
-                    description: "The participant has been successfully checked in."
+                    title: (newStatus ? "ADDED" : "REMOVED") + " Check-in Successful",
+                    description: "The participant has been successfully " + (newStatus ? "added" : "removed") + " from the check-in list",
                 })
             },
             onError: (e: any) => {
@@ -109,8 +108,18 @@ export default function PassportPage() {
         }
     }
 
+    const handleCheckIn = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        updateCheckIn(true);
+    }
+
+    const handleCheckOut = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        updateCheckIn(false);
+    }
+
     return (
-        <div className="flex flex-col w-full h-full items-center justify-center relative gap-2">
+        <div className="flex flex-col w-full h-full items-center justify-center relative gap-2 p-4">
             <h1 className="text-3xl font-bold">Check-in System</h1>
             <div className="flex flex-col items-center gap-2">
                 Currently Scanning: {scannerData}
@@ -123,7 +132,8 @@ export default function PassportPage() {
             </div>
 
             <div className="flex flex-col items-center bg-orange-100 rounded-md p-4">
-                <h2 className="text-2xl font-bold mb-2">Participant's Data</h2>
+                <h2 className="text-2xl font-bold mb-1">Participant's Data</h2>
+                <p>Name: {participantData.firstName} {participantData.lastName}</p>
                 <p className="text-cyan-600">
                     Status: {participantData.status}
                 </p>
@@ -132,22 +142,27 @@ export default function PassportPage() {
                         {participantData.checkedIn ? "True" : "False"}
                     </span>
                 </p>
-                <p>Name: {participantData.firstName} {participantData.lastName}</p>
-                <p>Dietary Restrictions: {participantData.dietaryRestrictions}</p>
+                <p>Dietary Restrictions: {participantData.dietaryRestrictions ? participantData.dietaryRestrictions : "None"}</p>
                 <p>Email: {participantData.email}</p>
-                <p>Extra Info: {participantData.extraInfo}</p>
+                <p>Extra Info: {participantData.extraInfo ? participantData.extraInfo : "None"}</p>
             </div>
-            <div className="border-2 border-black w-full my-2"></div>
-            <h2>Select Allowed Statuses:</h2>
-            <MultiSelect
-                options={statusList}
-                onValueChange={setSelectedStatuses}
-                defaultValue={selectedStatuses}
-                placeholder="Select Allowed Statuses"
-                variant="inverted"
-                animation={2}
-                maxCount={4}
-            />
+            {/* Divider */}
+            <div className="border-2 border-black w-1/2 my-2"></div>
+
+            {/* Multiselect */}
+            <div className="w-full text-center sm:w-1/2 mx-4">
+                <h2>Select Allowed Statuses:</h2>
+                <MultiSelect
+                    options={statusList}
+                    onValueChange={setSelectedStatuses}
+                    defaultValue={selectedStatuses}
+                    placeholder="Select Allowed Statuses"
+                    variant="inverted"
+                    animation={2}
+                    maxCount={4}
+                />
+                <Button onClick={handleCheckOut}>Remove Participant</Button>
+            </div>
         </div>
     );
 }

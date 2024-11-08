@@ -10,8 +10,14 @@ export default function QRScanner(
     const [pauseScan, setPauseScan] = useState(true);
     const scannerStyles: IScannerStyles = {
         container: {
-            width: "50%",
-            height: "50%",
+            width: '400px',
+            height: '400px',
+        },
+        video: {
+            maxWidth: '400px',
+            maxHeight: '400px',
+            width: 'auto',
+            height: 'auto',
         }
     }
 
@@ -32,12 +38,12 @@ export default function QRScanner(
     };
 
     return (
-        <div className='flex flex-col items-center gap-2 mb-40 max-w-4/5'>
-            <Button className={"text-white hover:bg-opacity-50" + (pauseScan ? "bg-green-600" : "bg-red-600")}
+        <div className={'flex flex-col items-center gap-2 max-w-4/5 h-full w-full'}>
+            <Button variant="secondary" className={"text-white " + (pauseScan ? "bg-green-600" : "bg-red-600")}
                 onClick={() => setPauseScan(!pauseScan)}>
                 {pauseScan ? "Activate Scanner" : "Pause Scanner"}
             </Button>
-            <Scanner onError={handleQRError} onScan={handleQRScan} paused={pauseScan} />
+            <Scanner onError={handleQRError} onScan={handleQRScan} paused={pauseScan} styles={scannerStyles} />
         </div>
     )
 }
