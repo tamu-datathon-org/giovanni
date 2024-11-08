@@ -32,6 +32,15 @@ const prizes = [
   { img: "/prizes/polaroid.webp", name: "FujiFilm Camera" },
   { img: "/prizes/drawing_tablet.jpg", name: "Drawing Tablet" },
   { img: "/prizes/air_fryer.jpg", name: "Air Fryer" },
+  { img: "/prizes/ipad.png", name: "iPad"},
+  { img: "/prizes/g305_mouse.png", name: "Logitech Mouse"},
+  { img: "/prizes/anker_speaker.jpg", name: "Anker Blueetooth Speaker"},
+  { img: "/prizes/firestick.jpg", name: "Amazon Fire Stick"},
+  { img: "/prizes/echo_dot.webp", name: "Amazon Echo Dot"},
+  { img: "/prizes/power_bank.jpg", name: "Power Bank"},
+  { img: "/prizes/owala_bottle.webp", name: "Owala Water Bottle"},
+  { img: "/prizes/apple_air_tag.jpg", name: "Apple Airtag"},
+  { img: "/prizes/wireless_charger.jpg", name: "Wireless Charging Pad"}
 ];
 
 export default function HomePage() {
@@ -88,7 +97,7 @@ export default function HomePage() {
                 >
                   THE PRIZES!!!
                 </motion.h1>
-                <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3">
+                <div style={{ overflowY: "auto" }} className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 overflow-y-visible max-h-[400px]">
                   {prizes.map((prize, index) => (
                     <motion.div
                       key={index}
