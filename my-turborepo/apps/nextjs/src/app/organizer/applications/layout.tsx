@@ -5,7 +5,7 @@ export default function ApplicationLayout({
 }) {
     return (
         <>
-            <div className="max-h-screen-sm overflow-hidden">{children}</div>
+            <div>{children}</div>
         </>
     );
 }
