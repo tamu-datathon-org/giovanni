@@ -281,15 +281,55 @@ export const applicationRouter = {
     }),
   updateStatus: organizerProcedure
     .input(z.object({
-      id: z.string(),
+      eventName: z.string(),
+      id: z.string().optional(),
+      email: z.string().optional(),
       newStatus: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
-      const { id, newStatus } = input;
+      const { id, newStatus, email } = input;
 
-      return await ctx.db.update(Application)
-        .set({ status: newStatus as "pending" | "accepted" | "checkedin" | "rejected" | "waitlisted" })
-        .where(eq(Application.id, id))
+      const event = await getEventData({ ctx, eventName: input.eventName });
+
+      console.log(email);
+      // Query based on email or id
+      if (email !== undefined && email !== "") {
+        const results = await ctx.db.update(Application)
+          .set({ status: newStatus as "pending" | "accepted" | "checkedin" | "rejected" | "waitlisted" })
+          .where(and(eq(Application.email, email), eq(Application.eventId, event.id)));
+        if (results.rows.length === 0) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Application Email not found",
+          });
+        }
+
+        const application = await ctx.db.query.Application.findFirst({
+          where: and(eq(Application.email, email), eq(Application.eventId, event.id)),
+        });
+
+        if (!application) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Application not found",
+          });
+        }
+
+        return application;
+      } else if (id !== undefined && id !== "") {
+        await ctx.db.update(Application)
+          .set({ status: newStatus as "pending" | "accepted" | "checkedin" | "rejected" | "waitlisted" })
+          .where(and(eq(Application.id, id), eq(Application.eventId, event.id)));
+
+        return await ctx.db.query.Application.findFirst({
+          where: and(eq(Application.id, id), eq(Application.eventId, event.id)),
+        });
+      }
+
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Invalid input data",
+      });
     }),
   updateBatchStatus: organizerProcedure
     .input(z.object({
@@ -365,4 +405,57 @@ export const applicationRouter = {
 
       return application;
     }),
+  updateCheckInStatus: organizerProcedure
+    .input(z.object({
+      eventName: z.string(),
+      email: z.string(),
+      newStatus: z.boolean(),
+      allowedStatuses: z.array(z.string()),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { newStatus, email } = input;
+
+      const event = await getEventData({ ctx, eventName: input.eventName });
+
+      // Query based on email or id
+      if (email !== undefined && email !== "") {
+        const application = await ctx.db.query.Application.findFirst({
+          where: and(eq(Application.email, email), eq(Application.eventId, event.id)),
+        });
+
+        if (!application) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Application not found",
+          });
+        }
+
+        // Verifying their status
+        if (!input.allowedStatuses.includes(application.status)) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "User status is not allowed",
+          });
+        }
+
+        const results = await ctx.db.update(Application)
+          .set({ checkedIn: newStatus })
+          .where(and(eq(Application.email, email), eq(Application.eventId, event.id)));
+
+        if (results.rowCount === 0) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Application Email not updated",
+          });
+        }
+
+        return { ...application, checkedIn: newStatus };
+      }
+
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Invalid input data",
+      });
+    }),
+
 };
