@@ -6,7 +6,6 @@ import { format } from "date-fns";
 import WindowContainer from "../_components/WindowContainer";
 import "../_components/customCss.scss";
 import DraggableComponent from "../_components/DraggableComponent";
-import ScheduleIconList from "./scheduleHome";
 import Image from "next/image";
 
 interface Event {
@@ -288,17 +287,11 @@ const LivePage: React.FC = () => {
       className="fixed inset-0 overflow-hidden touch-none"
       style={{ height: "100vh" }}
     >
-      <div
-        className="fixed bottom-0 left-0 right-0 mb-12 flex justify-center w-full"
-        style={{ transform: "translateZ(0)", WebkitTransform: "translateZ(0)" }}
-      >
-        <ScheduleIconList />
-      </div>
       <div className="container mx-auto px-4 py-8">
         <div className="relative mb-8 flex items-center justify-between">
           <div className="w-full text-center">
             <h1 className="inline-block pr-4 text-3xl font-bold sm:pr-0 sm:text-4xl md:text-5xl lg:text-6xl">
-              Schedule
+              TAMU Datathon Live
             </h1>
           </div>
         </div>
@@ -378,7 +371,7 @@ const LivePage: React.FC = () => {
               ) : (
                 <div>
                   <h2 className="text-center text-xs font-bold text-blue-500 sm:text-lg md:text-2xl lg:text-3xl pt-4 tabletRange:text-sm">
-                    No event currently happening! <br/> 
+                    No event currently happening! <br />
                     Check the countdown for our next one :D
                   </h2>
                   <Image
@@ -408,14 +401,13 @@ const LivePage: React.FC = () => {
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
           >
-            <div className="tabletRange:h-[300px] flex ipadproRange:w-[600px] h-[420px] w-[300px] flex-col items-center p-4 sm:h-[300px] sm:w-[300px] md:h-[450px] md:w-[400px] lg:h-[480px] lg:w-[420px] h700:h-[250px] ipadRange:h-[300px]">
+            <div className="tabletRange:h-[300px] flex ipadproRange:w-[600px] h-[420px] w-[300px] flex-col items-center p-4 sm:h-[300px] sm:w-[300px] md:h-[450px] md:w-[400px] lg:h-[700px] lg:w-[420px] h700:h-[250px] ipadRange:h-[300px]">
               <h2 className="mb-2 text-2xl font-semibold sm:mb-4 sm:text-3xl md:text-4xl lg:text-5xl">
                 Events!!!
               </h2>
-              <p>Click on the event for more information!</p>
               <div
                 style={{ scrollbarWidth: "none", overflowY: "auto" }}
-                className="h-full w-full space-y-2 sm:max-h-[400px] md:max-h-[370px] lg:max-h-[390px]"
+                className="h-full w-full space-y-2 sm:max-h-[400px] md:max-h-[370px] lg:max-h-[700px]"
               >
                 <h2 className="mt-4 mb-2 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-2xl lg:text-3xl">
                   Saturday
@@ -426,10 +418,10 @@ const LivePage: React.FC = () => {
                     <div
                       key={event.id}
                       className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${new Date() > event.endDate
-                          ? "bg-gray-200 text-gray-500 line-through" // Entire div with line-through for past events
-                          : new Date() >= event.startDate && new Date() <= event.endDate
-                            ? "border-blue-500 text-blue-500 font-bold"
-                            : "bg-[#f5f5f5] text-black"
+                        ? "bg-gray-200 text-gray-500 line-through" // Entire div with line-through for past events
+                        : new Date() >= event.startDate && new Date() <= event.endDate
+                          ? "border-blue-500 text-blue-500 font-bold"
+                          : "bg-[#f5f5f5] text-black"
                         } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
@@ -456,10 +448,10 @@ const LivePage: React.FC = () => {
                     <div
                       key={event.id}
                       className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${new Date() > event.endDate
-                          ? "bg-gray-200 text-gray-500"
-                          : new Date() >= event.startDate && new Date() <= event.endDate
-                            ? "border-blue-500 text-blue-500 font-bold"
-                            : "bg-[#f5f5f5] text-black"
+                        ? "bg-gray-200 text-gray-500"
+                        : new Date() >= event.startDate && new Date() <= event.endDate
+                          ? "border-blue-500 text-blue-500 font-bold"
+                          : "bg-[#f5f5f5] text-black"
                         } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
@@ -478,6 +470,53 @@ const LivePage: React.FC = () => {
             </div>
           </WindowContainer>
         </DraggableComponent>
+
+        {/* Window for QR Code to Discord */}
+        <DraggableComponent
+          onFocus={setFocusedWindow}
+          name="discordInvite"
+          focus={focusedWindow}
+          className="absolute left-0 top-20 sm:left-8 sm:top-28 md:left-[60px] md:top-[200px]"
+        >
+          <WindowContainer
+            isOpen={true}
+            openFunc={() => { }}
+            borderGradientStart="#34a4eb"
+            borderGradientMiddle="#004c99"
+            borderGradientEnd="#124c87"
+          >
+            <div className="flex h-[390px] w-[600px] flex-col items-center justify-between p-4">
+              <h2 className="mb-2 mt-2 text-center text-md font-bold text-black sm:text-lg md:text-2xl lg:text-3xl tabletRange:text-sm">
+                Join our Discord for important updates during the event and to join in on our minievents!
+              </h2>
+              <div className="flex-row flex">
+                {/* Static Discord Logo */}
+                <Image
+                  src="/Discord_bit.png" // Replace with the actual path to your Discord logo
+                  alt="Discord Logo"
+                  width={180}
+                  height={60}
+                  className="mb-4"
+                />
+
+                {/* Static QR Code */}
+                <Image
+                  src="/Discord_QR.png" // Replace with the actual path to your QR code image
+                  alt="Discord QR Code"
+                  width={150}
+                  height={150}
+                  className="mb-4"
+                />
+              </div>
+
+              {/* Static Text for QR Code Link */}
+              <p className="mt-4 text-center text-sm text-black sm:text-base md:text-lg lg:text-xl">
+                Or, join at discord.com/invite/pHsNmjuWSc
+              </p>
+            </div>
+          </WindowContainer>
+        </DraggableComponent>
+
 
         {/* Popup for Selected Event */}
         {selectedEvent && (
