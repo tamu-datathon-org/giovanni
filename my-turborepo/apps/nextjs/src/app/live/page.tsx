@@ -4,13 +4,9 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 
 import WindowContainer from "../_components/WindowContainer";
-
 import "../_components/customCss.scss";
-
-import Image from "next/image";
-
 import DraggableComponent from "../_components/DraggableComponent";
-import ScheduleIconList from "./scheduleHome";
+import Image from "next/image";
 
 interface Event {
   id: number;
@@ -165,8 +161,7 @@ const events: Event[] = [
     name: "Video Game Tournament!!",
     startDate: new Date("2024-11-09T23:00:00"),
     endDate: new Date("2024-11-10T00:00:00"),
-    description:
-      "Compete in our video game tournament for a chance to win some prizes ;)",
+    description: "Compete in our video game tournament for a chance to win some prizes ;)",
     location: "MSC 2406A",
   },
 
@@ -262,18 +257,13 @@ const getNextEvent = () => {
 
 const getCurrentEvent = () => {
   const now = new Date();
-  return (
-    events.find((event) => now >= event.startDate && now <= event.endDate) ||
-    null
-  );
+  return events.find((event) => now >= event.startDate && now <= event.endDate) || null;
 };
 
-const SchedulePage: React.FC = () => {
+const LivePage: React.FC = () => {
   const [nextEvent, setNextEvent] = useState<Event | null>(getNextEvent());
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [currentEvent, setCurrentEvent] = useState<Event | null>(
-    getCurrentEvent(),
-  );
+  const [currentEvent, setCurrentEvent] = useState<Event | null>(getCurrentEvent());
   const timeLeft = useCountdown(nextEvent ? nextEvent.startDate : new Date());
   const [focusedWindow, setFocusedWindow] = useState<string>("");
 
@@ -281,8 +271,7 @@ const SchedulePage: React.FC = () => {
     const intervalId = setInterval(() => {
       const newNextEvent = getNextEvent();
       const newCurrentEvent = getCurrentEvent();
-      if (newNextEvent && newNextEvent !== nextEvent)
-        setNextEvent(newNextEvent);
+      if (newNextEvent && newNextEvent !== nextEvent) setNextEvent(newNextEvent);
       if (newCurrentEvent !== currentEvent) setCurrentEvent(newCurrentEvent);
     }, 10000);
 
@@ -295,20 +284,14 @@ const SchedulePage: React.FC = () => {
 
   return (
     <div
-      className="fixed inset-0 touch-none overflow-hidden"
+      className="fixed inset-0 overflow-hidden touch-none"
       style={{ height: "100vh" }}
     >
-      <div
-        className="fixed bottom-0 left-0 right-0 mb-12 flex w-full justify-center"
-        style={{ transform: "translateZ(0)", WebkitTransform: "translateZ(0)" }}
-      >
-        <ScheduleIconList />
-      </div>
       <div className="container mx-auto px-4 py-8">
         <div className="relative mb-8 flex items-center justify-between">
           <div className="w-full text-center">
             <h1 className="inline-block pr-4 text-3xl font-bold sm:pr-0 sm:text-4xl md:text-5xl lg:text-6xl">
-              Schedule
+              TAMU Datathon Live
             </h1>
           </div>
         </div>
@@ -387,17 +370,17 @@ const SchedulePage: React.FC = () => {
                 </>
               ) : (
                 <div>
-                    <h2 className="pt-4 text-center text-xs font-bold text-blue-500 sm:text-lg md:text-2xl lg:text-3xl tabletRange:text-sm">
-                      No event currently happening! <br/> 
+                  <h2 className="text-center text-xs font-bold text-blue-500 sm:text-lg md:text-2xl lg:text-3xl pt-4 tabletRange:text-sm">
+                    No event currently happening! <br />
                     Check the countdown for our next one :D
-                    </h2>
-                    <Image
-                      src="/Pixel_PolarBear.png"
-                      className="visible absolute -bottom-4 -right-5 tabletRange:w-[100px] "
-                      width={150}
-                      height={150}
-                      alt="polar bear"
-                    />
+                  </h2>
+                  <Image
+                    src="/Pixel_PolarBear.png"
+                    className="visible absolute -bottom-4 -right-5 tabletRange:w-[100px] "
+                    width={150}
+                    height={150}
+                    alt="polar bear"
+                  />
                 </div>
               )}
             </div>
@@ -418,40 +401,35 @@ const SchedulePage: React.FC = () => {
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
           >
-            <div className="tabletRange:h-[300px] flex ipadproRange:w-[600px] h-[420px] w-[300px] flex-col items-center p-4 sm:h-[300px] sm:w-[300px] md:h-[450px] md:w-[400px] lg:h-[480px] lg:w-[420px] h700:h-[250px] ipadRange:h-[300px]">
+            <div className="tabletRange:h-[300px] flex ipadproRange:w-[600px] h-[420px] w-[300px] flex-col items-center p-4 sm:h-[300px] sm:w-[300px] md:h-[450px] md:w-[400px] lg:h-[700px] lg:w-[420px] h700:h-[250px] ipadRange:h-[300px]">
               <h2 className="mb-2 text-2xl font-semibold sm:mb-4 sm:text-3xl md:text-4xl lg:text-5xl">
                 Events!!!
               </h2>
-              <p>Click on the event for more information!</p>
               <div
                 style={{ scrollbarWidth: "none", overflowY: "auto" }}
-                className="h-full w-full space-y-2 sm:max-h-[400px] md:max-h-[370px] lg:max-h-[390px]"
+                className="h-full w-full space-y-2 sm:max-h-[400px] md:max-h-[370px] lg:max-h-[700px]"
               >
-                <h2 className="mb-2 mt-4 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-2xl lg:text-3xl">
+                <h2 className="mt-4 mb-2 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-2xl lg:text-3xl">
                   Saturday
                 </h2>
                 {events
-                  .filter((event) => event.startDate.getDay() === 6) // Saturday events
-                  .map((event) => (
+                  .filter(event => event.startDate.getDay() === 6) // Saturday events
+                  .map(event => (
                     <div
                       key={event.id}
                       className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${new Date() > event.endDate
-                          ? "bg-gray-200 text-gray-500 line-through" // Entire div with line-through for past events
-                          : new Date() >= event.startDate &&
-                              new Date() <= event.endDate
-                              ? "border-blue-500 font-bold text-blue-500"
-                              : "bg-[#f5f5f5] text-black"
+                        ? "bg-gray-200 text-gray-500 line-through" // Entire div with line-through for past events
+                        : new Date() >= event.startDate && new Date() <= event.endDate
+                          ? "border-blue-500 text-blue-500 font-bold"
+                          : "bg-[#f5f5f5] text-black"
                         } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
-                      <h3
-                        className="text-sm font-semibold sm:text-base md:text-lg"
-                      >
+                      <h3 className="text-sm font-semibold sm:text-base md:text-lg">
                         {event.name}
                       </h3>
                       <p className="text-xs sm:text-sm">
-                        {format(event.startDate, "MMM d, yyyy, h:mm a")} -{" "}
-                        {format(event.endDate, "h:mm a")}
+                        {format(event.startDate, "MMM d, yyyy, h:mm a")} - {format(event.endDate, "h:mm a")}
                       </p>
                       <p className="text-sm font-semibold sm:text-base md:text-lg">
                         {event.location}
@@ -465,25 +443,26 @@ const SchedulePage: React.FC = () => {
                   Sunday
                 </h2>
                 {events
-                  .filter((event) => event.startDate.getDay() === 0) // Sunday events
-                  .map((event) => (
+                  .filter(event => event.startDate.getDay() === 0) // Sunday events
+                  .map(event => (
                     <div
                       key={event.id}
                       className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${new Date() > event.endDate
-                          ? "bg-gray-200 text-gray-500"
-                          : new Date() >= event.startDate && new Date() <= event.endDate
-                            ? "border-blue-500 text-blue-500 font-bold"
-                            : "bg-[#f5f5f5] text-black"
+                        ? "bg-gray-200 text-gray-500"
+                        : new Date() >= event.startDate && new Date() <= event.endDate
+                          ? "border-blue-500 text-blue-500 font-bold"
+                          : "bg-[#f5f5f5] text-black"
                         } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
-                      <h3
-                        className={`text-sm font-semibold sm:text-base md:text-lg`}
-                      >
+                      <h3 className={`text-sm font-semibold sm:text-base md:text-lg`}>
                         {event.name}
                       </h3>
                       <p className="text-xs sm:text-sm">
                         {format(event.startDate, "MMM d, yyyy, h:mm a")} - {format(event.endDate, "h:mm a")}
+                      </p>
+                      <p className={`text-sm font-semibold sm:text-base md:text-lg`}>
+                        {event.location}
                       </p>
                     </div>
                   ))}
@@ -492,21 +471,69 @@ const SchedulePage: React.FC = () => {
           </WindowContainer>
         </DraggableComponent>
 
+        {/* Window for QR Code to Discord */}
+        <DraggableComponent
+          onFocus={setFocusedWindow}
+          name="discordInvite"
+          focus={focusedWindow}
+          className="absolute left-0 top-20 sm:left-8 sm:top-28 md:left-[60px] md:top-[200px]"
+        >
+          <WindowContainer
+            isOpen={true}
+            openFunc={() => { }}
+            borderGradientStart="#34a4eb"
+            borderGradientMiddle="#004c99"
+            borderGradientEnd="#124c87"
+          >
+            <div className="flex h-[390px] w-[600px] flex-col items-center justify-between p-4">
+              <h2 className="mb-2 mt-2 text-center text-md font-bold text-black sm:text-lg md:text-2xl lg:text-3xl tabletRange:text-sm">
+                Join our Discord for important updates during the event and to join in on our minievents!
+              </h2>
+              <div className="flex-row flex">
+                {/* Static Discord Logo */}
+                <Image
+                  src="/Discord_bit.png" // Replace with the actual path to your Discord logo
+                  alt="Discord Logo"
+                  width={180}
+                  height={60}
+                  className="mb-4"
+                />
+
+                {/* Static QR Code */}
+                <Image
+                  src="/Discord_QR.png" // Replace with the actual path to your QR code image
+                  alt="Discord QR Code"
+                  width={150}
+                  height={150}
+                  className="mb-4"
+                />
+              </div>
+
+              {/* Static Text for QR Code Link */}
+              <p className="mt-4 text-center text-sm text-black sm:text-base md:text-lg lg:text-xl">
+                Or, join at discord.com/invite/pHsNmjuWSc
+              </p>
+            </div>
+          </WindowContainer>
+        </DraggableComponent>
+
+
         {/* Popup for Selected Event */}
         {selectedEvent && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="relative w-full max-w-md rounded-lg bg-white p-6">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white p-6 rounded-lg max-w-md w-full relative">
               <button
-                className="absolute right-2 top-2 text-gray-600 hover:text-gray-800"
+                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
                 onClick={() => setSelectedEvent(null)}
               >
                 ✕
               </button>
-              <h2 className="mb-4 text-2xl font-bold">{selectedEvent.name}</h2>
+              <h2 className="text-2xl font-bold mb-4">
+                {selectedEvent.name}
+              </h2>
               <p className="mb-2">
                 <strong>Date:</strong>{" "}
-                {format(selectedEvent.startDate, "MMMM d, yyyy, h:mm a")} -{" "}
-                {format(selectedEvent.endDate, "h:mm a")}
+                {format(selectedEvent.startDate, "MMMM d, yyyy, h:mm a")} - {format(selectedEvent.endDate, "h:mm a")}
               </p>
               <p className="mb-2">
                 <strong>Location:</strong> {selectedEvent.location}
@@ -523,4 +550,4 @@ const SchedulePage: React.FC = () => {
   );
 };
 
-export default SchedulePage;
+export default LivePage;
