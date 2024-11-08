@@ -35,7 +35,7 @@ const routes: Icon[] = [
   { name: "Schedule", route: "/schedule", image: "/Pixel_PolarBear.png" },
   { name: "Socials", route: "/socials", image: "/Pixel_FileIcon.png" },
   { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
-  { name: "Help Queue", route: "https://helpqueue.tamudatathon.com/", image: "/Pixel_EmailIcon.png" }
+  { name: "Help Queue", route: "https://helpqueue.tamudatathon.com/", image: "/Pixel_RecycleIcon.png" }
 ];
 const numPerRow = 6;
 const IconList: React.FC<IconListProps> = ({
