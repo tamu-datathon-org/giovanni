@@ -1,7 +1,11 @@
 interface titleSchema {
-  title: string;
+  children: React.ReactNode;
+  className?: string;
 }
-//TODO
-export default function Title(info: titleSchema) {
-  return <>hi</>;
+export default function Title({ children, className }: titleSchema) {
+  return (
+    <div className={`w-full flex justify-center items-center text-5xl font-extrabold ${className}`}>
+      {children}
+    </div>
+  );
 }
