@@ -83,13 +83,21 @@ export default function PassportPage() {
                 <QRScanner onScan={setScannerData} />
                 <label htmlFor="">Manual Input:</label>
                 <Input ref={inputRef} placeholder="enter email here"></Input>
-                <Button onClick={handleCheckIn}>Check-in Participant</Button>
+                <Button className="hover:bg-opacity-50 bg-cyan-700" onClick={handleCheckIn}>
+                    {statusMutation.isPending ? "Loading..." : "Check-in Participant"}
+                </Button>
             </div>
 
-            <div className="flex flex-col items-center p-4 gap-2">
+            <div className="flex flex-col items-center">
                 <h2 className="text-2xl font-bold mb-2">Participant's Data</h2>
-                <p className="text-cyan-600">Status: {participantData.status}</p>
-                <p className="text-indigo-500">Checked In: {participantData.checkedIn ? "True" : "False"}</p>
+                <p className="text-cyan-600">
+                    Status: {participantData.status}
+                </p>
+                <p className="text-indigo-500">
+                    Checked In: <span className={participantData.checkedIn ? "text-green-500" : "text-red-500"}>
+                        {participantData.checkedIn ? "True" : "False"}
+                    </span>
+                </p>
                 <p>Name: {participantData.firstName} {participantData.lastName}</p>
                 <p>Dietary Restrictions: {participantData.dietaryRestrictions}</p>
                 <p>Email: {participantData.email}</p>
