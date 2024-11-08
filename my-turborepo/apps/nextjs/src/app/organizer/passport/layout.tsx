@@ -6,7 +6,7 @@ export default async function PassportLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="bg-white">
+        <div className="bg-slate-400">
             {children}
         </div>
     );

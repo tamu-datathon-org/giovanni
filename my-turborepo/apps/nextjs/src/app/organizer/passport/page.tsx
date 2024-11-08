@@ -1,6 +1,8 @@
 "use client"
 
+import { Turtle, Fish, Cat, Dog } from "lucide-react";
 import { useRef, useState } from "react";
+import { MultiSelect } from "~/app/_components/multiselect";
 import QRScanner from "~/app/_components/organizer/qr-scanner";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -32,7 +34,32 @@ const defaultParticipantData: participantDataSchema = {
 export default function PassportPage() {
     const [participantData, setParticipantData] = useState<participantDataSchema>(defaultParticipantData);
     const [scannerData, setScannerData] = useState<string>("");
+    const [selectedStatuses, setSelectedStatuses] = useState<string[]>(["accepted", "waitlisted"]);
+
     const inputRef = useRef<HTMLInputElement>(null);
+
+    const statusList = [
+        {
+            label: "Pending",
+            value: "pending",
+            icon: Turtle,
+        },
+        {
+            label: "Accepted",
+            value: "accepted",
+            icon: Dog,
+        },
+        {
+            label: "Rejected",
+            value: "rejected",
+            icon: Cat,
+        },
+        {
+            label: "Waitlisted",
+            value: "waitlisted",
+            icon: Fish,
+        }
+    ]
 
     const statusMutation = api.application.updateCheckInStatus.useMutation();
     const handleCheckIn = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -44,7 +71,14 @@ export default function PassportPage() {
             inputEmail = scannerData;
         }
 
-        console.log(inputEmail);
+        if (inputEmail === "") {
+            toast({
+                variant: "destructive",
+                title: "Check-in Failed",
+                description: "Missing input data",
+            })
+            return;
+        }
 
         const queryData = await statusMutation.mutateAsync({
             eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
@@ -59,7 +93,7 @@ export default function PassportPage() {
                     description: "The participant has been successfully checked in."
                 })
             },
-            onError: (e) => {
+            onError: (e: any) => {
                 toast({
                     variant: "destructive",
                     title: "Check-in Failed",
@@ -76,19 +110,19 @@ export default function PassportPage() {
     }
 
     return (
-        <div className="flex flex-col w-full h-full items-center justify-center relative">
+        <div className="flex flex-col w-full h-full items-center justify-center relative gap-2">
             <h1 className="text-3xl font-bold">Check-in System</h1>
             <div className="flex flex-col items-center gap-2">
                 Currently Scanning: {scannerData}
                 <QRScanner onScan={setScannerData} />
                 <label htmlFor="">Manual Input:</label>
-                <Input ref={inputRef} placeholder="enter email here"></Input>
+                <Input className="bg-orange-100 border border-black" ref={inputRef} placeholder="enter email here"></Input>
                 <Button className="hover:bg-opacity-50 bg-cyan-700" onClick={handleCheckIn}>
                     {statusMutation.isPending ? "Loading..." : "Check-in Participant"}
                 </Button>
             </div>
 
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center bg-orange-100 rounded-md p-4">
                 <h2 className="text-2xl font-bold mb-2">Participant's Data</h2>
                 <p className="text-cyan-600">
                     Status: {participantData.status}
@@ -103,6 +137,17 @@ export default function PassportPage() {
                 <p>Email: {participantData.email}</p>
                 <p>Extra Info: {participantData.extraInfo}</p>
             </div>
+            <div className="border-2 border-black w-full my-2"></div>
+            <h2>Select Allowed Statuses:</h2>
+            <MultiSelect
+                options={statusList}
+                onValueChange={setSelectedStatuses}
+                defaultValue={selectedStatuses}
+                placeholder="Select Allowed Statuses"
+                variant="inverted"
+                animation={2}
+                maxCount={4}
+            />
         </div>
     );
 }

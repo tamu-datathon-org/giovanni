@@ -33,7 +33,7 @@ export default function QRScanner(
 
     return (
         <div className='flex flex-col items-center gap-2 mb-40 max-w-4/5'>
-            <Button className={"text-white " + (pauseScan ? "bg-green-600" : "bg-red-600")}
+            <Button className={"text-white hover:bg-opacity-50" + (pauseScan ? "bg-green-600" : "bg-red-600")}
                 onClick={() => setPauseScan(!pauseScan)}>
                 {pauseScan ? "Activate Scanner" : "Pause Scanner"}
             </Button>
