@@ -1,11 +1,10 @@
 import { TRPCError } from "@trpc/server";
 import { del } from "@vercel/blob";
+import { inArray, SQL, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { and, eq } from "@vanni/db";
 import { db } from "@vanni/db/client";
-import { SQL, inArray, sql } from 'drizzle-orm';
-
 import {
   Application,
   CreateApplicationSchema,
@@ -17,10 +16,15 @@ import {
 } from "@vanni/db/schema";
 
 import { organizerProcedure, protectedProcedure } from "../trpc";
-import { getEventData } from "./event";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
+import { getEventData } from "./event";
 
-export async function getBatchStatus(page: number, limit: number, ctx: any, eventName: string): Promise<
+export async function getBatchStatus(
+  page: number,
+  limit: number,
+  ctx: any,
+  eventName: string,
+): Promise<
   {
     id: string;
     firstName: string;
@@ -33,17 +37,19 @@ export async function getBatchStatus(page: number, limit: number, ctx: any, even
     userEmail: string;
   }[]
 > {
-  return await ctx.db.select({
-    id: Application.id,
-    firstName: Application.firstName,
-    lastName: Application.lastName,
-    email: Application.email,
-    status: Application.status,
-    acceptedEmail: Application.acceptedEmail,
-    waitlistEmail: Application.waitlistEmail,
-    rejectedEmail: Application.rejectedEmail,
-    userEmail: User.email,
-  }).from(Application)
+  return await ctx.db
+    .select({
+      id: Application.id,
+      firstName: Application.firstName,
+      lastName: Application.lastName,
+      email: Application.email,
+      status: Application.status,
+      acceptedEmail: Application.acceptedEmail,
+      waitlistEmail: Application.waitlistEmail,
+      rejectedEmail: Application.rejectedEmail,
+      userEmail: User.email,
+    })
+    .from(Application)
     .offset((page - 1) * limit)
     .limit(limit)
     .leftJoin(Event, eq(Event.id, Application.eventId))
@@ -51,24 +57,32 @@ export async function getBatchStatus(page: number, limit: number, ctx: any, even
     .where(eq(Event.name, eventName));
 }
 
-export async function updateBatchStatus(ids: string[], newStatus: boolean, ctx: any, sqlField: string) {
+export async function updateBatchStatus(
+  ids: string[],
+  newStatus: boolean,
+  ctx: any,
+  sqlField: string,
+) {
   if (ids.length == 0) {
     return {
       status: 200,
-      message: "No applications selected"
-    }
+      message: "No applications selected",
+    };
   }
 
   const sqlChunks: SQL[] = [];
   sqlChunks.push(sql`(case`);
   for (const id of ids) {
-    sqlChunks.push(sql`when ${Application.id} = ${id} then ${newStatus}::boolean`);
+    sqlChunks.push(
+      sql`when ${Application.id} = ${id} then ${newStatus}::boolean`,
+    );
   }
   sqlChunks.push(sql`end)`);
 
-  const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
+  const finalSql: SQL = sql.join(sqlChunks, sql.raw(" "));
 
-  return await ctx.db.update(Application)
+  return await ctx.db
+    .update(Application)
     .set({ [sqlField]: finalSql })
     .where(inArray(Application.id, ids));
 }
@@ -115,14 +129,14 @@ export const applicationRouter = {
 
         // query for the role based on event
         const role = await ctx.db.query.Role.findFirst({
-          where: and(eq(Role.eventId, event.id),
-            eq(Role.name, "Applicant")),
+          where: and(eq(Role.eventId, event.id), eq(Role.name, "Applicant")),
         });
 
         if (role == undefined) {
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
-            message: "Role query was not successful. Contact a datathon officer.",
+            message:
+              "Role query was not successful. Contact a datathon officer.",
           });
         }
 
@@ -236,14 +250,19 @@ export const applicationRouter = {
   getAllApplicationsByEventName: organizerProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
-      const sq = ctx.db.$with('sq').as(ctx.db.selectDistinct({
-        userId: UserResume.userId,
-        resumeUrl: UserResume.resumeUrl,
-        resumeName: UserResume.resumeName,
-      })
-        .from(UserResume));
+      const sq = ctx.db.$with("sq").as(
+        ctx.db
+          .selectDistinct({
+            userId: UserResume.userId,
+            resumeUrl: UserResume.resumeUrl,
+            resumeName: UserResume.resumeName,
+          })
+          .from(UserResume),
+      );
 
-      const query = await ctx.db.with(sq).select()
+      const query = await ctx.db
+        .with(sq)
+        .select()
         .from(Application)
         .leftJoin(Event, eq(Event.id, Application.eventId))
         .leftJoin(sq, eq(sq.userId, Application.userId))
@@ -251,35 +270,49 @@ export const applicationRouter = {
 
       return query.map((row) => {
         return {
-          ...row.application, resumeUrl: row.sq?.resumeUrl, resumeName: row.sq?.resumeName
-        }
+          ...row.application,
+          resumeUrl: row.sq?.resumeUrl,
+          resumeName: row.sq?.resumeName,
+        };
       });
     }),
   updateStatus: organizerProcedure
-    .input(z.object({
-      id: z.string(),
-      newStatus: z.string(),
-    }))
+    .input(
+      z.object({
+        id: z.string(),
+        newStatus: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const { id, newStatus } = input;
 
-      return await ctx.db.update(Application)
-        .set({ status: newStatus as "pending" | "accepted" | "checkedin" | "rejected" | "waitlisted" })
-        .where(eq(Application.id, id))
+      return await ctx.db
+        .update(Application)
+        .set({
+          status: newStatus as
+            | "pending"
+            | "accepted"
+            | "checkedin"
+            | "rejected"
+            | "waitlisted",
+        })
+        .where(eq(Application.id, id));
     }),
   updateBatchStatus: organizerProcedure
-    .input(z.object({
-      ids: z.array(z.string()),
-      newStatus: z.string(),
-    }))
+    .input(
+      z.object({
+        ids: z.array(z.string()),
+        newStatus: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const { ids, newStatus } = input;
 
       if (ids.length == 0) {
         return {
           status: 200,
-          message: "No applications selected"
-        }
+          message: "No applications selected",
+        };
       }
 
       const sqlChunks: SQL[] = [];
@@ -289,23 +322,28 @@ export const applicationRouter = {
       }
       sqlChunks.push(sql`end)`);
 
-      const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
+      const finalSql: SQL = sql.join(sqlChunks, sql.raw(" "));
 
-      return await db.update(Application).set({ status: finalSql }).where(inArray(Application.id, ids));
+      return await db
+        .update(Application)
+        .set({ status: finalSql })
+        .where(inArray(Application.id, ids));
     }),
   updateBatchAccepted: organizerProcedure
-    .input(z.object({
-      ids: z.array(z.string()),
-      newStatus: z.boolean(),
-    }))
+    .input(
+      z.object({
+        ids: z.array(z.string()),
+        newStatus: z.boolean(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const { ids, newStatus } = input;
 
       if (ids.length == 0) {
         return {
           status: 200,
-          message: "No applications selected"
-        }
+          message: "No applications selected",
+        };
       }
 
       const sqlChunks: SQL[] = [];
@@ -315,9 +353,10 @@ export const applicationRouter = {
       }
       sqlChunks.push(sql`end)`);
 
-      const finalSql: SQL = sql.join(sqlChunks, sql.raw(' '));
+      const finalSql: SQL = sql.join(sqlChunks, sql.raw(" "));
 
-      return await ctx.db.update(Application)
+      return await ctx.db
+        .update(Application)
         .set({ acceptedEmail: finalSql })
         .where(inArray(Application.id, ids));
     }),
