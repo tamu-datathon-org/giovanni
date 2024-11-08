@@ -124,7 +124,7 @@ export default function PassportPage() {
             <div className="flex flex-col items-center gap-2">
                 Currently Scanning: {scannerData}
                 <QRScanner onScan={setScannerData} />
-                <label htmlFor="">Manual Input:</label>
+                <label htmlFor="">Manual Override Input:</label>
                 <Input className="bg-orange-100 border border-black" ref={inputRef} placeholder="enter email here"></Input>
                 <Button className="hover:bg-opacity-50 bg-cyan-700" onClick={handleCheckIn}>
                     {statusMutation.isPending ? "Loading..." : "Check-in Participant"}
