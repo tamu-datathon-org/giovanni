@@ -4,10 +4,13 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 
 import WindowContainer from "../_components/WindowContainer";
+
 import "../_components/customCss.scss";
+
+import Image from "next/image";
+
 import DraggableComponent from "../_components/DraggableComponent";
 import ScheduleIconList from "./scheduleHome";
-import Image from "next/image";
 
 interface Event {
   id: number;
@@ -162,7 +165,8 @@ const events: Event[] = [
     name: "Video Game Tournament!!",
     startDate: new Date("2024-11-09T23:00:00"),
     endDate: new Date("2024-11-10T00:00:00"),
-    description: "Compete in our video game tournament for a chance to win some prizes ;)",
+    description:
+      "Compete in our video game tournament for a chance to win some prizes ;)",
     location: "MSC 2406A",
   },
 
@@ -258,13 +262,18 @@ const getNextEvent = () => {
 
 const getCurrentEvent = () => {
   const now = new Date();
-  return events.find((event) => now >= event.startDate && now <= event.endDate) || null;
+  return (
+    events.find((event) => now >= event.startDate && now <= event.endDate) ||
+    null
+  );
 };
 
 const SchedulePage: React.FC = () => {
   const [nextEvent, setNextEvent] = useState<Event | null>(getNextEvent());
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [currentEvent, setCurrentEvent] = useState<Event | null>(getCurrentEvent());
+  const [currentEvent, setCurrentEvent] = useState<Event | null>(
+    getCurrentEvent(),
+  );
   const timeLeft = useCountdown(nextEvent ? nextEvent.startDate : new Date());
   const [focusedWindow, setFocusedWindow] = useState<string>("");
 
@@ -272,7 +281,8 @@ const SchedulePage: React.FC = () => {
     const intervalId = setInterval(() => {
       const newNextEvent = getNextEvent();
       const newCurrentEvent = getCurrentEvent();
-      if (newNextEvent && newNextEvent !== nextEvent) setNextEvent(newNextEvent);
+      if (newNextEvent && newNextEvent !== nextEvent)
+        setNextEvent(newNextEvent);
       if (newCurrentEvent !== currentEvent) setCurrentEvent(newCurrentEvent);
     }, 10000);
 
@@ -285,11 +295,11 @@ const SchedulePage: React.FC = () => {
 
   return (
     <div
-      className="fixed inset-0 overflow-hidden touch-none"
+      className="fixed inset-0 touch-none overflow-hidden"
       style={{ height: "100vh" }}
     >
       <div
-        className="fixed bottom-0 left-0 right-0 mb-12 flex justify-center w-full"
+        className="fixed bottom-0 left-0 right-0 mb-12 flex w-full justify-center"
         style={{ transform: "translateZ(0)", WebkitTransform: "translateZ(0)" }}
       >
         <ScheduleIconList />
@@ -318,11 +328,15 @@ const SchedulePage: React.FC = () => {
             borderGradientEnd="#124c87"
           >
             <div className="flex h-[175px] w-[205px] flex-col items-center justify-between p-4 sm:h-[150px] sm:w-[350px] md:h-[150px] md:w-[500px] lg:h-[200px] lg:w-[400px] xl:h-[200px] xl:w-[600px]">
-              <h2 className="mb-2 text-center text-md font-bold text-black sm:text-lg md:text-2xl lg:text-3xl">
-                {nextEvent ? `Countdown to ${nextEvent.name}` : "No upcoming events"}
+              <h2 className="text-md mb-2 text-center font-bold text-black sm:text-lg md:text-2xl lg:text-3xl">
+                {nextEvent
+                  ? `Countdown to ${nextEvent.name}`
+                  : "No upcoming events"}
               </h2>
               <h3 className="text-xs font-bold text-black sm:text-lg md:text-xl lg:text-2xl">
-                {nextEvent ? format(nextEvent.startDate, "MMMM d, yyyy, h:mm a") : ""}
+                {nextEvent
+                  ? format(nextEvent.startDate, "MMMM d, yyyy, h:mm a")
+                  : ""}
               </h3>
               <div className="flex justify-center space-x-2 sm:space-x-3 md:space-x-4">
                 {Object.entries(timeLeft).map(([unit, value]) => (
@@ -357,14 +371,17 @@ const SchedulePage: React.FC = () => {
             <div className="flex h-[220px] w-[175px] flex-col items-center justify-between p-4 sm:h-[150px] sm:w-[300px] md:h-[150px] md:w-[500px] lg:h-[200px] lg:w-[300px] xl:h-[200px] xl:w-[700px]">
               {currentEvent ? (
                 <>
-                  <h2 className="mb-2 text-center text-md font-bold text-blue-500 sm:text-lg md:text-2xl lg:text-3xl">
+                  <h2 className="text-md mb-2 text-center font-bold text-blue-500 sm:text-lg md:text-2xl lg:text-3xl">
                     Current Event: {currentEvent.name}
                   </h2>
                   <p className="text-sm font-medium text-blue-500 sm:text-sm md:text-base lg:text-lg">
-                    {format(currentEvent.startDate, "h:mm a")} - {format(currentEvent.endDate, "h:mm a")}
+                    {format(currentEvent.startDate, "h:mm a")} -{" "}
+                    {format(currentEvent.endDate, "h:mm a")}
                   </p>
-                  <p className="text-sm text-blue-500 sm:text-sm md:text-base lg:text-lg">{currentEvent.description}</p>
-                  <p className="text-sm text-blue-500 font-semibold sm:text-sm md:text-base lg:text-lg">
+                  <p className="text-sm text-blue-500 sm:text-sm md:text-base lg:text-lg">
+                    {currentEvent.description}
+                  </p>
+                  <p className="text-sm font-semibold text-blue-500 sm:text-sm md:text-base lg:text-lg">
                     Location: {currentEvent.location}
                   </p>
                   <Image
@@ -377,16 +394,16 @@ const SchedulePage: React.FC = () => {
                 </>
               ) : (
                 <div>
-                <h2 className="text-center text-xs font-bold text-blue-500 sm:text-lg md:text-2xl lg:text-3xl pt-4">
-                  No event currently happening :O
-                </h2>
-                <Image
-                  src="/Pixel_PolarBear.png"
-                  className="visible absolute -bottom-4 -right-5 "
-                  width={150}
-                  height={150}
-                  alt="polar bear"
-                />
+                  <h2 className="pt-4 text-center text-xs font-bold text-blue-500 sm:text-lg md:text-2xl lg:text-3xl">
+                    No event currently happening :O
+                  </h2>
+                  <Image
+                    src="/Pixel_PolarBear.png"
+                    className="visible absolute -bottom-4 -right-5 "
+                    width={150}
+                    height={150}
+                    alt="polar bear"
+                  />
                 </div>
               )}
             </div>
@@ -415,54 +432,62 @@ const SchedulePage: React.FC = () => {
                 style={{ scrollbarWidth: "none", overflowY: "auto" }}
                 className="h-full w-full space-y-2 sm:max-h-[400px] md:max-h-[370px] lg:max-h-[390px]"
               >
-                <h2 className="mt-4 mb-2 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-3xl lg:text-4xl">
+                <h2 className="mb-2 mt-4 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-3xl lg:text-4xl">
                   Saturday
                 </h2>
                 {events
-                  .filter(event => event.startDate.getDay() === 6) // Saturday events
-                  .map(event => (
+                  .filter((event) => event.startDate.getDay() === 6) // Saturday events
+                  .map((event) => (
                     <div
                       key={event.id}
                       className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${
                         new Date() > event.endDate
                           ? "bg-gray-200 text-gray-500"
-                          : new Date() >= event.startDate && new Date() <= event.endDate
-                          ? "border-blue-500 text-blue-500 font-bold"
-                          : "bg-[#f5f5f5] text-black"
+                          : new Date() >= event.startDate &&
+                              new Date() <= event.endDate
+                            ? "border-blue-500 font-bold text-blue-500"
+                            : "bg-[#f5f5f5] text-black"
                       } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
-                      <h3 className={`text-sm font-semibold sm:text-base md:text-lg`}>
+                      <h3
+                        className={`text-sm font-semibold sm:text-base md:text-lg`}
+                      >
                         {event.name}
                       </h3>
                       <p className="text-xs sm:text-sm">
-                        {format(event.startDate, "MMM d, yyyy, h:mm a")} - {format(event.endDate, "h:mm a")}
+                        {format(event.startDate, "MMM d, yyyy, h:mm a")} -{" "}
+                        {format(event.endDate, "h:mm a")}
                       </p>
                     </div>
                   ))}
-                
-                <h2 className="mt-4 mb-2 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-3xl lg:text-4xl">
+
+                <h2 className="mb-2 mt-4 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-3xl lg:text-4xl">
                   Sunday
                 </h2>
                 {events
-                  .filter(event => event.startDate.getDay() === 0) // Sunday events
-                  .map(event => (
+                  .filter((event) => event.startDate.getDay() === 0) // Sunday events
+                  .map((event) => (
                     <div
                       key={event.id}
                       className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${
                         new Date() > event.endDate
                           ? "bg-gray-200 text-gray-500"
-                          : new Date() >= event.startDate && new Date() <= event.endDate
-                          ? "border-blue-500 text-blue-500 font-bold"
-                          : "bg-[#f5f5f5] text-black"
+                          : new Date() >= event.startDate &&
+                              new Date() <= event.endDate
+                            ? "border-blue-500 font-bold text-blue-500"
+                            : "bg-[#f5f5f5] text-black"
                       } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
-                      <h3 className={`text-sm font-semibold sm:text-base md:text-lg`}>
+                      <h3
+                        className={`text-sm font-semibold sm:text-base md:text-lg`}
+                      >
                         {event.name}
                       </h3>
                       <p className="text-xs sm:text-sm">
-                        {format(event.startDate, "MMM d, yyyy, h:mm a")} - {format(event.endDate, "h:mm a")}
+                        {format(event.startDate, "MMM d, yyyy, h:mm a")} -{" "}
+                        {format(event.endDate, "h:mm a")}
                       </p>
                     </div>
                   ))}
@@ -473,20 +498,19 @@ const SchedulePage: React.FC = () => {
 
         {/* Popup for Selected Event */}
         {selectedEvent && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-lg max-w-md w-full relative">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="relative w-full max-w-md rounded-lg bg-white p-6">
               <button
-                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+                className="absolute right-2 top-2 text-gray-600 hover:text-gray-800"
                 onClick={() => setSelectedEvent(null)}
               >
                 ✕
               </button>
-              <h2 className="text-2xl font-bold mb-4">
-                {selectedEvent.name}
-              </h2>
+              <h2 className="mb-4 text-2xl font-bold">{selectedEvent.name}</h2>
               <p className="mb-2">
                 <strong>Date:</strong>{" "}
-                {format(selectedEvent.startDate, "MMMM d, yyyy, h:mm a")} - {format(selectedEvent.endDate, "h:mm a")}
+                {format(selectedEvent.startDate, "MMMM d, yyyy, h:mm a")} -{" "}
+                {format(selectedEvent.endDate, "h:mm a")}
               </p>
               <p className="mb-2">
                 <strong>Location:</strong> {selectedEvent.location}

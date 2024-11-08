@@ -1,27 +1,30 @@
-"use client"
+"use client";
 
 import Link from "next/link";
-import StaticWindowContainer from "../_components/StaticWindowContainer";
-import { api } from "~/trpc/react";
-import { toast } from "~/hooks/use-toast";
-import { Button } from "~/components/ui/button";
 
+import { Button } from "~/components/ui/button";
+import { toast } from "~/hooks/use-toast";
+import { api } from "~/trpc/react";
+import StaticWindowContainer from "../_components/StaticWindowContainer";
 
 export default function Page() {
   // TODO: Replace this with an API call to the correct router
-  const { data, isLoading } = api.application.getApplicationStatus.useQuery({
-    eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
-  }, {
-    enabled: !!process.env.NEXT_PUBLIC_EVENT_NAME,
-    retry: 2,
-  });
+  const { data, isLoading } = api.application.getApplicationStatus.useQuery(
+    {
+      eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
+    },
+    {
+      enabled: !!process.env.NEXT_PUBLIC_EVENT_NAME,
+      retry: 2,
+    },
+  );
 
   if (!isLoading && data === undefined) {
     toast({
       variant: "destructive",
       title: "Failed to load status",
       description: "Please refresh the page.",
-    })
+    });
   }
   let gradient = "from-blue-400 to-cyan-700";
   if (!isLoading) {
@@ -50,7 +53,7 @@ export default function Page() {
   return (
     <>
       {/* <IconList /> */}
-      <div className="w-screen h-screen flex justify-center items-center">
+      <div className="flex h-screen w-screen items-center justify-center">
         <StaticWindowContainer>
           <div className="mainContent py-4">
             <h1 className="text-3xl">DASHBOARD</h1>
@@ -65,21 +68,26 @@ export default function Page() {
                 padding: "10px",
               }}
             >
-              <div className="dashboardText text-2xl"> YOUR APPLICATION STATUS:</div>
+              <div className="dashboardText text-2xl">
+                {" "}
+                YOUR APPLICATION STATUS:
+              </div>
               <div
-                className={`dashStatus text-transparent bg-clip-text bg-gradient-to-b 
+                className={`dashStatus bg-gradient-to-b bg-clip-text text-transparent 
                   ${gradient} text-xl
                   `}
               >
-                {isLoading ? "Loading...".toUpperCase() : data?.status ? data.status.toUpperCase() : "No status available"}
+                {isLoading
+                  ? "Loading...".toUpperCase()
+                  : data?.status
+                    ? data.status.toUpperCase()
+                    : "No status available"}
               </div>
 
               {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
 
               <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
-                <Link href="/">
-                  Back to home
-                </Link>
+                <Link href="/">Back to home</Link>
               </Button>
             </form>
           </div>
@@ -101,7 +109,9 @@ function AppsClosedMessage() {
       <br />
       <br />
       <br />
-      Feel free to contact <span className="text-cyan-700">connect@tamudatathon.com</span> for any issues.
+      Feel free to contact{" "}
+      <span className="text-cyan-700">connect@tamudatathon.com</span> for any
+      issues.
     </div>
   );
 }
@@ -109,7 +119,10 @@ function AppsClosedMessage() {
 function AppsOpenMessage() {
   return (
     <button className="editButton">
-      <Link className="dashboardText buttonText text-xl" href="/apply/application">
+      <Link
+        className="dashboardText buttonText text-xl"
+        href="/apply/application"
+      >
         Edit your application
       </Link>
     </button>
