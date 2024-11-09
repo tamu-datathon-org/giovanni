@@ -3,6 +3,7 @@ import Heading from "../helpers/Heading";
 import Bold from "../helpers/Bold";
 import Paragraph from "../helpers/Paragraph";
 import Bullet from "../helpers/Bullet";
+import Link from "next/link";
 
 
 export default function ConnectionsPage() {
@@ -14,6 +15,15 @@ export default function ConnectionsPage() {
                 <Title>
                     Connections AI
                 </Title>
+
+                <Heading>
+                    Connections AI Data
+                </Heading>
+                <Paragraph>
+                    <Link href={'https://drive.google.com/drive/u/2/folders/1kf7Wc88U3JIz_M-v0KZv2ao-v2pyDBru'}>
+                    Link to Connections
+                    </Link>
+                </Paragraph>
 
                 <Heading>
                     Background

@@ -6,6 +6,7 @@ import Bold from "../helpers/Bold";
 import Paragraph from "../helpers/Paragraph";
 import Bullet from "../helpers/Bullet";
 import Number from "../helpers/Number";
+import Link from "next/link";
 
 export default function Challenge() {
 
@@ -20,6 +21,13 @@ export default function Challenge() {
         <Title className="mt-8">
           Roni's Challenge: Dashboard Building for Business Insights
         </Title>
+        
+        <Heading>
+          Roni's Challenge Data
+        </Heading>
+        <Paragraph>
+          <Link href={'https://drive.google.com/drive/folders/1sNmQDZFnoqqso5eC14SnxVodiu8cB_gq'}>Link to data here</Link>
+        </Paragraph>
 
         <Heading className="mt-6">
         Challenge Overview

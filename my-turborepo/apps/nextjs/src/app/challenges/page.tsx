@@ -14,6 +14,9 @@ export default function Challenge() {
     return (
         <div className="w-full h-full p-8">
             <Title>Challenges</Title>
+
+            <a className="px-4 py-3 border-2" href="/">Back</a>
+
             <div className="flex gap-4 flex-wrap mt-8">
             {
                 challenges.map((challenge, index) => {

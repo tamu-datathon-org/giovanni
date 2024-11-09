@@ -46,6 +46,9 @@ export default function HomePage() {
   const setScheduleOpen = () => {
     window.location.href = "/schedule";
   };
+  const setChallenegesOpen = () => {
+    window.location.href = "/challenges";
+  };
 
   const [mounted, setMounted] = useState(false);
 
@@ -280,15 +283,14 @@ export default function HomePage() {
           </div>
           <IconList
             welcFunc={setWelcomeOpen}
-            applyFunc={setApplyOpen}
             faqFunc={setFaqOpen}
             sponFunc={setSponsorOpen}
             prizeFunc={setPrizesOpen}
             socialsFunc={setSocialsOpen}
             setFocus={setActiveWindow}
             scheduleFunc={setScheduleOpen}
-            className="z-10 flex h-fit max-w-full py-5"
-          />
+            challengesFunc={setChallenegesOpen}
+            />
         </div>
       </div>
     </>

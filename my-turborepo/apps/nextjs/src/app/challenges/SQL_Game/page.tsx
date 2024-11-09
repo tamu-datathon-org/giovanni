@@ -17,6 +17,9 @@ export default function Challenge() {
 
             <div className="bg-white/90 rounded-lg border-4 p-4">
 
+            <a className="px-4 py-3 border-2" href="/challenges">Back</a>
+
+
                 <Title>
                     Time-Traveling Adventure
                 </Title>
