@@ -98,11 +98,9 @@ export default function Challenge() {
         </Heading>
 
         <Bullet items={[
-          "Agents must make a move within 1 second or else a random move will be played",
-          "Any failed moves will result in a random move being played",
-          "Any timed out moves will result in a random move being played",
+          "Agents must make a move within 5 seconds or else a fallback move will be attempted",
+          "Any invalid moves will result in a forfeit",
           "No network access",
-          "Python is required",
           "1 CPU Core",
           "1 GB RAM",
           "1 GB VRAM"
@@ -193,7 +191,10 @@ export default function Challenge() {
              target="_blank">Challenge Data</a>
           <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
              href="https://www.youtube.com/watch?v=3trBRh9PEmM"
-             target="_blank">Video Explanation</a>
+             target="_blank">Running Push Battle Locally</a>
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+             href="https://www.youtube.com/watch?v=x5Obcmm9IN4"
+             target="_blank">Push Battle Rules Video</a>
         </div>
 
 
