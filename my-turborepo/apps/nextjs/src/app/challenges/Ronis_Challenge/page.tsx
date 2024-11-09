@@ -180,7 +180,7 @@ export default function Challenge() {
               <b>A README</b> explaining the dashboard functionality and setup instructions (if any).
             </li>
             <li>
-              <b>A brief report</b> (1-2 pages) detailing the approach, insights, and any recommendations.
+              <b>A brief report</b> (1-2 minute) video explaining functionality.
             </li>
           </ul>
         </Paragraph>
