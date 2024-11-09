@@ -252,7 +252,7 @@ export default function Challenge() {
             Push Battle Rules Video
           </a>
         </div>
-        {/*<Prizes prizes=[{name: "iPad"}, {name: "Wacom Tablet"}]]/>*/}
+        <Prizes prizes={[]} />
       </div>
     </div>
   );

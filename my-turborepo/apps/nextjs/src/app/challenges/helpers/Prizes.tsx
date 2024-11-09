@@ -7,7 +7,7 @@ interface prizeSchema {
   img_url?: string;
 }
 const places = ["1st", "2nd", "3rd", "4th", "5th"];
-export default function Prizes(prizes: prizeSchema[]) {
+export default function Prizes({ prizes }: { prizes: prizeSchema[] }) {
   return (
     <>
       {prizes.map((prize, index) => {
