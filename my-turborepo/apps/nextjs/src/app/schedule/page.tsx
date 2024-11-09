@@ -44,7 +44,7 @@ const events: Event[] = [
     id: 3,
     name: "Hacking Starts",
     startDate: new Date("2024-11-09T11:30:00"),
-    endDate: new Date("2024-11-09T23:00:00"),
+    endDate: new Date("2024-11-09T23:30:00"),
     description: "Let the hacking begin!",
     location: "MSC Bethancourt Ballroom",
   },
@@ -96,7 +96,7 @@ const events: Event[] = [
     startDate: new Date("2024-11-09T15:00:00"),
     endDate: new Date("2024-11-09T15:30:00"),
     description: "Workshop hosted by Capital One.",
-    location: "MSC 2406B",
+    location: "MSC 2406A",
   },
   {
     id: 11,
@@ -105,7 +105,7 @@ const events: Event[] = [
     endDate: new Date("2024-11-09T16:30:00"),
     description:
       "Workshop hosted by Baker Hughes on data downsampling techniques for ML efficiency.",
-    location: "MSC 2406B",
+    location: "MSC 2406A",
   },
   {
     id: 12,
@@ -123,7 +123,7 @@ const events: Event[] = [
     endDate: new Date("2024-11-09T17:30:00"),
     description:
       "We'll teach you the basics of the algorithms that are used to power the AI bots that play board games and give you hints on how to solve our challenge.",
-    location: "MSC 2406B",
+    location: "MSC 2406A",
   },
   {
     id: 14,
@@ -323,7 +323,7 @@ const SchedulePage: React.FC = () => {
         >
           <WindowContainer
             isOpen={true}
-            openFunc={() => {}}
+            openFunc={() => { }}
             borderGradientStart="#34a4eb"
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
@@ -364,7 +364,7 @@ const SchedulePage: React.FC = () => {
         >
           <WindowContainer
             isOpen={true}
-            openFunc={() => {}}
+            openFunc={() => { }}
             borderGradientStart="#34a4eb"
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
@@ -421,7 +421,7 @@ const SchedulePage: React.FC = () => {
         >
           <WindowContainer
             isOpen={true}
-            openFunc={() => {}}
+            openFunc={() => { }}
             borderGradientStart="#34a4eb"
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
@@ -443,14 +443,13 @@ const SchedulePage: React.FC = () => {
                   .map((event) => (
                     <div
                       key={event.id}
-                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${
-                        new Date() > event.endDate
-                          ? "bg-gray-200 text-gray-500 line-through" // Entire div with line-through for past events
-                          : new Date() >= event.startDate &&
-                              new Date() <= event.endDate
-                            ? "border-blue-500 font-bold text-blue-500"
-                            : "bg-[#f5f5f5] text-black"
-                      } hover:bg-[#e4e3e4]`}
+                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${new Date() > event.endDate
+                        ? "bg-gray-200 text-gray-500 line-through" // Entire div with line-through for past events
+                        : new Date() >= event.startDate &&
+                          new Date() <= event.endDate
+                          ? "border-blue-500 font-bold text-blue-500"
+                          : "bg-[#f5f5f5] text-black"
+                        } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
                       <h3 className="text-sm font-semibold sm:text-base md:text-lg">
@@ -474,14 +473,13 @@ const SchedulePage: React.FC = () => {
                   .map((event) => (
                     <div
                       key={event.id}
-                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${
-                        new Date() > event.endDate
-                          ? "bg-gray-200 text-gray-500"
-                          : new Date() >= event.startDate &&
-                              new Date() <= event.endDate
-                            ? "border-blue-500 font-bold text-blue-500"
-                            : "bg-[#f5f5f5] text-black"
-                      } hover:bg-[#e4e3e4]`}
+                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${new Date() > event.endDate
+                        ? "bg-gray-200 text-gray-500"
+                        : new Date() >= event.startDate &&
+                          new Date() <= event.endDate
+                          ? "border-blue-500 font-bold text-blue-500"
+                          : "bg-[#f5f5f5] text-black"
+                        } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
                       <h3
