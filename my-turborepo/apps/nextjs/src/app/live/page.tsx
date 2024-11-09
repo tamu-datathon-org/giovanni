@@ -66,7 +66,7 @@ const events: Event[] = [
     startDate: new Date("2024-11-09T13:30:00"),
     endDate: new Date("2024-11-09T14:00:00"),
     description: "You've probably heard of git or GitHub before but what is it? Why do we use it? How can you set it up and use it for yourself? This workshop answers all this and more!",
-    location: "MSC 2406B",
+    location: "MSC 2406A",
   },
   {
     id: 7,
@@ -90,7 +90,7 @@ const events: Event[] = [
     startDate: new Date("2024-11-09T15:00:00"),
     endDate: new Date("2024-11-09T15:30:00"),
     description: "Workshop hosted by Capital One.",
-    location: "MSC 2406B",
+    location: "MSC 2406A",
   },
   {
     id: 10,
@@ -106,7 +106,7 @@ const events: Event[] = [
     startDate: new Date("2024-11-09T16:00:00"),
     endDate: new Date("2024-11-09T16:30:00"),
     description: "Workshop hosted by Baker Hughes on data downsampling techniques for ML efficiency.",
-    location: "MSC 2406B",
+    location: "MSC 2406A",
   },
   {
     id: 12,
@@ -122,7 +122,7 @@ const events: Event[] = [
     startDate: new Date("2024-11-09T17:00:00"),
     endDate: new Date("2024-11-09T17:30:00"),
     description: "We'll teach you the basics of the algorithms that are used to power the AI bots that play board games and give you hints on how to solve our challenge.",
-    location: "MSC 2406B",
+    location: "MSC 2406A",
   },
   {
     id: 14,
@@ -209,8 +209,8 @@ const events: Event[] = [
   {
     id: 24,
     name: "T-Shirt Pickup",
-    startDate: new Date("2024-11-10T17:00:00"),
-    endDate: new Date("2024-11-10T17:00:00"),
+    startDate: new Date("2024-11-10T16:00:00"),
+    endDate: new Date("2024-11-10T16:30:00"),
     description: "Pick up your event T-shirt.",
     location: "MSC Bethancourt Ballroom",
   },
