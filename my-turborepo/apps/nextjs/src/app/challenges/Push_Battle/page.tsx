@@ -5,6 +5,7 @@ import Heading from "../helpers/Heading";
 import Bold from "../helpers/Bold";
 import Paragraph from "../helpers/Paragraph";
 import Bullet from "../helpers/Bullet";
+import "../../_components/customCss.scss";
 
 export default function Challenge() {
 
@@ -186,8 +187,13 @@ export default function Challenge() {
           After the round robin tournament has concluded, the top n agents in terms of wins will compete in a double elimination tournament. The agents will be paired by seed (ex. Seed 1 plays seed n). They will play twice, once as player one and once as player two. If a tiebreaker is needed, it will go to the higher seed. This final tournament will determine the first, second, and third place winners.
         </Paragraph>
 
-        <div className="flex items-center justify-center pt-6">
-          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://cdn.discordapp.com/attachments/1210713468714352701/1304873886260662363/Push_Battle_public-20241109T182246Z-001.zip?ex=6730fa01&is=672fa881&hm=42c1ae80c9dd3f0496d8a2705e5cae1a93c64a324cc08b491fdb62d18e8e16d1&" target="_blank">Challenge Data</a>
+        <div className="flex flex-col gap-2 items-center justify-center pt-6">
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+             href="https://cdn.discordapp.com/attachments/1210713468714352701/1304873886260662363/Push_Battle_public-20241109T182246Z-001.zip?ex=6730fa01&is=672fa881&hm=42c1ae80c9dd3f0496d8a2705e5cae1a93c64a324cc08b491fdb62d18e8e16d1&"
+             target="_blank">Challenge Data</a>
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+             href="https://www.youtube.com/watch?v=3trBRh9PEmM"
+             target="_blank">Video Explanation</a>
         </div>
 
       </div>
