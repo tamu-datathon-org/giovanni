@@ -71,7 +71,7 @@ const events: Event[] = [
     endDate: new Date("2024-11-09T14:00:00"),
     description:
       "You've probably heard of git or GitHub before but what is it? Why do we use it? How can you set it up and use it for yourself? This workshop answers all this and more!",
-    location: "MSC 2406B",
+    location: "MSC 2406A",
   },
   {
     id: 7,
