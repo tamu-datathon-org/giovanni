@@ -44,4 +44,5 @@ yarn-error.log*
 # Turborepo
 .turbo
 
+# Python scripts
 venv/

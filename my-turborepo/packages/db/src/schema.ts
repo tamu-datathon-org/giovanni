@@ -224,6 +224,7 @@ export const Application = pgTable("application", {
   acceptedEmail: boolean("accepted_email").notNull().default(false),
   waitlistEmail: boolean("waitlist_email").notNull().default(false),
   rejectedEmail: boolean("rejected_email").notNull().default(false),
+  checkedIn: boolean("checked_in").notNull().default(false)
 });
 
 export const UserResume = pgTable("user_resume", {
@@ -341,6 +342,7 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
   acceptedEmail: true,
   waitlistEmail: true,
   rejectedEmail: true,
+  checkedIn: true,
 });
 
 export const CreateUserResumeSchema = createInsertSchema(UserResume, {
