@@ -21,7 +21,7 @@ export default function Challenge() {
         <Title className="mt-8">
           Roni's Challenge: Dashboard Building for Business Insights
         </Title>
-        
+
         <Heading>
           Roni's Challenge Data
         </Heading>
@@ -30,7 +30,7 @@ export default function Challenge() {
         </Paragraph>
 
         <Heading className="mt-6">
-        Challenge Overview
+          Challenge Overview
         </Heading>
 
         <Paragraph>
@@ -45,7 +45,7 @@ export default function Challenge() {
           You have been provided with the following dataset:
           <Bullet items={[
             "A detailed log of every order made at the College Station location during the months of May to October"
-          ]}/>
+          ]} />
 
         </Paragraph>
 
@@ -62,20 +62,20 @@ export default function Challenge() {
               <b>Develop a Dashboard:</b> Build an intuitive and interactive dashboard that displays key insights. The dashboard should aim to improve Roni's understanding of their business operations.</li>
             <li>
               <b>Provide Insights:</b> Use the dashboard to potentially answer questions such as:
-                <ul className="list-disc list-outside [&_ul]:list-[revert] pl-5">
-                  <li>What are the most popular menu items?
-                    <ul className="pl-5">
-                      <li>Signature “Aggie” Bowl based on popularity</li>
-                    </ul>
-                  </li>
-                  <li>Are there any seasonal (days of week, month) trends or peaks in demand?</li>
-                  <li>How can Roni's optimize meal preparation based on efficiency logs?</li>
-                  <li>Are there any bottlenecks or delays in the meal preparation process?</li>
-                </ul>
-              </li>
-              <li>
+              <ul className="list-disc list-outside [&_ul]:list-[revert] pl-5">
+                <li>What are the most popular menu items?
+                  <ul className="pl-5">
+                    <li>Signature “Aggie” Bowl based on popularity</li>
+                  </ul>
+                </li>
+                <li>Are there any seasonal (days of week, month) trends or peaks in demand?</li>
+                <li>How can Roni's optimize meal preparation based on efficiency logs?</li>
+                <li>Are there any bottlenecks or delays in the meal preparation process?</li>
+              </ul>
+            </li>
+            <li>
               <b>Optional Enhancements:</b> Enhance the dashboard by integrating forecasting models, trend analyses, or other advanced analytics to support decision-making.
-              </li>
+            </li>
           </ol>
 
         </Paragraph>
@@ -108,7 +108,7 @@ export default function Challenge() {
         </Heading>
 
         <Paragraph>
-        <ul className="list-disc list-outside [&_ul]:list-[revert] pl-5">
+          <ul className="list-disc list-outside [&_ul]:list-[revert] pl-5">
             <li>
               <b>Inputs: </b>Three datasets (Sheet A, Sheet B, and Sheet C).
             </li>
@@ -165,7 +165,7 @@ export default function Challenge() {
         <Heading>
           Submission Guidelines
         </Heading>
-        
+
         <Paragraph>
           Participants should submit:
           <ul className="list-disc list-outside [&_ul]:list-[revert] pl-5">
@@ -185,8 +185,8 @@ export default function Challenge() {
         </Paragraph>
 
         <div className="flex items-center justify-center pt-6">
-                        <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://drive.google.com/drive/folders/1sNmQDZFnoqqso5eC14SnxVodiu8cB_gq?usp=sharing" target="_blank">Get Data</a>
-                </div>
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://cdn.discordapp.com/attachments/1210713468714352701/1304873686871838862/Ronis_Challenge_public-20241109T181440Z-001.zip?ex=6730f9d2&is=672fa852&hm=0aaa4a1c19934571792fa067822342e66544dbf8ecb303946e41dd6a9605954b&" target="_blank">Get Data</a>
+        </div>
 
       </div>
 

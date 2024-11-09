@@ -187,7 +187,7 @@ export default function Challenge() {
         </Paragraph>
 
         <div className="flex items-center justify-center pt-6">
-          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://drive.google.com/drive/folders/1i73nDhObfPq6-oI3DphWMRaYwgbGUUAz?usp=sharing" target="_blank">Challenge Data</a>
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://cdn.discordapp.com/attachments/1210713468714352701/1304873886260662363/Push_Battle_public-20241109T182246Z-001.zip?ex=6730fa01&is=672fa881&hm=42c1ae80c9dd3f0496d8a2705e5cae1a93c64a324cc08b491fdb62d18e8e16d1&" target="_blank">Challenge Data</a>
         </div>
 
       </div>
