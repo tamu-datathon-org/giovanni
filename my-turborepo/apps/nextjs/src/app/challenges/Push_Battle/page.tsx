@@ -1,38 +1,36 @@
 //TODO: This is where all information of a single challenge should be displayed
 // import Prize from "~/app/challenges/helpers/Prize";
 import Title from "~/app/challenges/helpers/Title";
-import Heading from "../helpers/Heading";
 import Bold from "../helpers/Bold";
-import Paragraph from "../helpers/Paragraph";
 import Bullet from "../helpers/Bullet";
+import Heading from "../helpers/Heading";
+import Paragraph from "../helpers/Paragraph";
+
 import "../../_components/customCss.scss";
 
+import Prizes from "~/app/challenges/helpers/Prizes";
+
 export default function Challenge() {
-
   return (
-    <div className="w-full h-full justify-center p-4 bg-blue-200">
-
-      <div className="bg-white/90 rounded-lg border-4 p-4">
-
-        <a className="px-4 py-3 compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black" href="/challenges">Back</a>
-
-
-        <Title className="mt-6">
-          Push Battle
-        </Title>
-
-        <Heading>
-          Background
-        </Heading>
-
+    <div className="h-full w-full justify-center bg-blue-200 p-4">
+      <div className="rounded-lg border-4 bg-white/90 p-4">
+        <a
+          className="compStyling border border-black bg-[#f5f5f5] px-4 py-3 text-black hover:bg-[#e4e3e4] hover:text-black"
+          href="/challenges"
+        >
+          Back
+        </a>
+        <Title className="mt-6">Push Battle</Title>
+        <Heading>Background</Heading>
         <Paragraph>
-          The challenge of creating agents that can play games at an expert level is a central problem in the field of Artificial Intelligence (AI). In recent years, breakthroughs in this area have resulted in AI agents mastering complex games like Chess, Go, and StarCraft, achieving superhuman levels of play as well as the ability to learn and adapt over time.
+          The challenge of creating agents that can play games at an expert
+          level is a central problem in the field of Artificial Intelligence
+          (AI). In recent years, breakthroughs in this area have resulted in AI
+          agents mastering complex games like Chess, Go, and StarCraft,
+          achieving superhuman levels of play as well as the ability to learn
+          and adapt over time.
         </Paragraph>
-
-        <Heading>
-          Task
-        </Heading>
-
+        <Heading>Task</Heading>
         <Paragraph>
           As a participant, you are tasked with the challenge of creating an AI that plays the game 
           <a className="underline text-blue-600" href="https://visualizer.challenges.tamudatathon.com/" target="_blank"> Push Battle</a>.  We will provide you with the API for the game and some starter code. We encourage you to be creative and explore new ways of “solving” the game as you will be playing against the other participants in the competition.
@@ -148,33 +146,49 @@ export default function Challenge() {
           If the move ends with an r (ex. -c4r or -c4b3r), that means the agent timed out and a random move was placed. If the move is a q (ex. -q) that means that the player forfeited.
           Players forfeit either due to using too many random moves or making an invalid move as described earlier. 
         </Paragraph>
-
-        <Heading>
-          Implementation Algorithms
-        </Heading>
-
-          Common ways to use algorithms to solve games are as follows:
-          <br /><br />
-          <b>Heuristic Algorithms</b> - finding sets of rules that work generally well. Entirely heuristic approaches are weaker than the methods below, but perform far better than picking random moves. As some form of heuristics will be used in most of the below approaches, they are still important to understand.
-          <br /><br />
-          <b>Minimax </b> - One player's gain is another player's loss. Utilizes a search tree in order to find the moves with the most loss for the opponent and the most gain for yourself.
-          <Bullet items={[
+        <Heading>Implementation Algorithms</Heading>
+        Common ways to use algorithms to solve games are as follows:
+        <br />
+        <br />
+        <b>Heuristic Algorithms</b> - finding sets of rules that work generally
+        well. Entirely heuristic approaches are weaker than the methods below,
+        but perform far better than picking random moves. As some form of
+        heuristics will be used in most of the below approaches, they are still
+        important to understand.
+        <br />
+        <br />
+        <b>Minimax </b> - One player's gain is another player's loss. Utilizes a
+        search tree in order to find the moves with the most loss for the
+        opponent and the most gain for yourself.
+        <Bullet
+          items={[
             "Alpha-Beta Pruning - An optimization to minimax. It limits the number of nodes that are evaluated in the search tree",
-          ]} />
-          <br /><br />
-          <b>Monte Carlo Tree Search (MCTS) </b> - Builds a search tree using random sampling. Random simulation of games and expands search paths for most promising moves based on previous results. Works very well for grid-based games with turns (e.g. AlphaGo).
-          <br /><br />
-          <b>Reinforcement Learning </b> - Simulates many games and uses neural networks in order to predict which moves are the best.
-          <Bullet items={[
-            "Q-learning",
-            "DQNs",
-            "Policy Gradient methods"
-          ]} />
-          <br /><br />
-          <b>Evolutionary Algorithms </b> - evolve agents over many generations, simulating natural selection to improve strategies. A population of agents (with different strategies) plays against each other. The highest performing ones create the next generation, often by combining strategies and introducing random mutations.
-          <br /><br />
-          <b>Neural Networks </b> - Learn to evaluate board positions and predict optimal moves through pattern recognition. Key approaches include:.
-          <Bullet items={[
+          ]}
+        />
+        <br />
+        <br />
+        <b>Monte Carlo Tree Search (MCTS) </b> - Builds a search tree using
+        random sampling. Random simulation of games and expands search paths for
+        most promising moves based on previous results. Works very well for
+        grid-based games with turns (e.g. AlphaGo).
+        <br />
+        <br />
+        <b>Reinforcement Learning </b> - Simulates many games and uses neural
+        networks in order to predict which moves are the best.
+        <Bullet items={["Q-learning", "DQNs", "Policy Gradient methods"]} />
+        <br />
+        <br />
+        <b>Evolutionary Algorithms </b> - evolve agents over many generations,
+        simulating natural selection to improve strategies. A population of
+        agents (with different strategies) plays against each other. The highest
+        performing ones create the next generation, often by combining
+        strategies and introducing random mutations.
+        <br />
+        <br />
+        <b>Neural Networks </b> - Learn to evaluate board positions and predict
+        optimal moves through pattern recognition. Key approaches include:.
+        <Bullet
+          items={[
             "Supervised Learning: Train on databases of expert games to mimic strong players",
             "Deep Convolutional Networks: Process the board as a grid to detect spatial patterns",
             "Policy Networks: Output probability distributions over possible moves",
@@ -194,10 +208,16 @@ export default function Challenge() {
         ]}
         />
         <br></br>
+        <Prizes
+          prizes={[
+            { name: "iPad", img_url: "/prizes/ipad.png" },
+            { name: "Wacom Tablet", img_url: "/prizes/drawing_tablet.jpg" },
+            { name: "Fujifilm Instax Mini" , img_url: "/prizes/polaroid.webp" },
+          ]}
+        />
 
 
       </div>
-
     </div>
   );
 }

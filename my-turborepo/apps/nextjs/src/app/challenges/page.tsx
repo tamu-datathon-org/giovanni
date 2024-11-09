@@ -19,7 +19,7 @@ export default function Challenge() {
             <Title>Challenges</Title>
 
             <a className="px-2 py-3 compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black" href="/">Back</a>
-            <div className="grid grid-cols-4 gap-4 mt-8 text-2xl w-fit mx-auto">
+            <div className="flex flex-wrap gap-4 mt-8 text-2xl mx-auto sm:w-3/4 w-full justify-center items-center">
                 {
                     challenges.map((challenge, index) => {
                         return (

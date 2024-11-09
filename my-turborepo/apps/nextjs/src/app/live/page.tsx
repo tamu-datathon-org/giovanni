@@ -16,7 +16,6 @@ interface Event {
   description: string;
   location: string;
 }
-
 // Events array
 const events: Event[] = [
   // Saturday Events
@@ -40,7 +39,7 @@ const events: Event[] = [
     id: 3,
     name: "Hacking Starts",
     startDate: new Date("2024-11-09T11:30:00"),
-    endDate: new Date("2024-11-09T23:00:00"),
+    endDate: new Date("2024-11-09T23:30:00"),
     description: "Let the hacking begin!",
     location: "MSC Bethancourt Ballroom",
   },
@@ -65,7 +64,8 @@ const events: Event[] = [
     name: "TD Workshop: Intro to Git",
     startDate: new Date("2024-11-09T13:30:00"),
     endDate: new Date("2024-11-09T14:00:00"),
-    description: "You've probably heard of git or GitHub before but what is it? Why do we use it? How can you set it up and use it for yourself? This workshop answers all this and more!",
+    description:
+      "You've probably heard of git or GitHub before but what is it? Why do we use it? How can you set it up and use it for yourself? This workshop answers all this and more!",
     location: "MSC 2406A",
   },
   {
@@ -81,7 +81,8 @@ const events: Event[] = [
     name: "TAMIDS Workshop: Fundamentals of Image Classification with a Simple Neural Network",
     startDate: new Date("2024-11-09T14:30:00"),
     endDate: new Date("2024-11-09T15:00:00"),
-    description: "Participants will focus on fundamental aspects of image classification using the Keras API with a handwritten digit dataset. They will learn key steps including image (matrix) structures, dataset loading and preparation, neural network construction for classification, and model training. Through hands-on exercises, participants will understand the fundamental components of machine learning, especially neural networks.",
+    description:
+      "Participants will focus on fundamental aspects of image classification using the Keras API with a handwritten digit dataset. They will learn key steps including image (matrix) structures, dataset loading and preparation, neural network construction for classification, and model training. Through hands-on exercises, participants will understand the fundamental components of machine learning, especially neural networks.",
     location: "MSC 2406B",
   },
   {
@@ -93,19 +94,12 @@ const events: Event[] = [
     location: "MSC 2406A",
   },
   {
-    id: 10,
-    name: "Workshop: MLH",
-    startDate: new Date("2024-11-09T15:30:00"),
-    endDate: new Date("2024-11-09T16:00:00"),
-    description: "Workshop hosted by MLH.",
-    location: "MSC 2406B",
-  },
-  {
     id: 11,
     name: "Baker Hughes: Data Downsampling Techniques for Machine Learning Efficiency",
     startDate: new Date("2024-11-09T16:00:00"),
     endDate: new Date("2024-11-09T16:30:00"),
-    description: "Workshop hosted by Baker Hughes on data downsampling techniques for ML efficiency.",
+    description:
+      "Workshop hosted by Baker Hughes on data downsampling techniques for ML efficiency.",
     location: "MSC 2406A",
   },
   {
@@ -113,7 +107,8 @@ const events: Event[] = [
     name: "TD Workshop: Quick and Dirty ML with SKLearn",
     startDate: new Date("2024-11-09T16:30:00"),
     endDate: new Date("2024-11-09T17:00:00"),
-    description: "Machine learning is a series of linear algebra, calculus, probability, statistics, and a lot of other advanced math concepts that you need a PHd to fully understand. But luckily, we don't need to know any of that to use it in our code! This workshop is a simple introduction to how you can make use of the power of numerous Machine Learning models using sklearn in just 5 lines of code!",
+    description:
+      "Machine learning is a series of linear algebra, calculus, probability, statistics, and a lot of other advanced math concepts that you need a PHd to fully understand. But luckily, we don't need to know any of that to use it in our code! This workshop is a simple introduction to how you can make use of the power of numerous Machine Learning models using sklearn in just 5 lines of code!",
     location: "MSC 2406B",
   },
   {
@@ -121,7 +116,8 @@ const events: Event[] = [
     name: "TD Workshop: Introduction to Game Solving Algorithms",
     startDate: new Date("2024-11-09T17:00:00"),
     endDate: new Date("2024-11-09T17:30:00"),
-    description: "We'll teach you the basics of the algorithms that are used to power the AI bots that play board games and give you hints on how to solve our challenge.",
+    description:
+      "We'll teach you the basics of the algorithms that are used to power the AI bots that play board games and give you hints on how to solve our challenge.",
     location: "MSC 2406A",
   },
   {
@@ -129,7 +125,8 @@ const events: Event[] = [
     name: "Workshop: Advanced GPT Usage",
     startDate: new Date("2024-11-09T17:30:00"),
     endDate: new Date("2024-11-09T18:00:00"),
-    description: "We'll cover interesting ways for you to apply GPT (and other LLMs) to provide more meaningful output, as well as how to use them beyond just their web interfaces.",
+    description:
+      "We'll cover interesting ways for you to apply GPT (and other LLMs) to provide more meaningful output, as well as how to use them beyond just their web interfaces.",
     location: "MSC 2406B",
   },
   {
@@ -137,7 +134,8 @@ const events: Event[] = [
     name: "Bob Ross Digital Painting Session",
     startDate: new Date("2024-11-09T18:00:00"),
     endDate: new Date("2024-11-09T18:45:00"),
-    description: "Follow along to a BOB ROSS tutorial with MS Paint (or equivalent app) using ONLY TOUCHPADS (NO PENS, TOUCHSCREENS, OR MOUSES ALLOWED). Post it in the Bob Ross channel for a chance to win some prizes!!",
+    description:
+      "Follow along to a BOB ROSS tutorial with MS Paint (or equivalent app) using ONLY TOUCHPADS (NO PENS, TOUCHSCREENS, OR MOUSES ALLOWED). Post it in the Bob Ross channel for a chance to win some prizes!!",
     location: "MSC 2406A",
   },
   {
@@ -153,7 +151,8 @@ const events: Event[] = [
     name: "Y2K Fashion Show",
     startDate: new Date("2024-11-09T20:00:00"),
     endDate: new Date("2024-11-09T21:00:00"),
-    description: "Showcase your y2k fashion! Winners get a prize! Come in your most amazing y2k fit with your best catwalk.",
+    description:
+      "Showcase your y2k fashion! Winners get a prize! Come in your most amazing y2k fit with your best catwalk.",
     location: "MSC 2406A",
   },
   {
@@ -161,7 +160,8 @@ const events: Event[] = [
     name: "Video Game Tournament!!",
     startDate: new Date("2024-11-09T23:00:00"),
     endDate: new Date("2024-11-10T00:00:00"),
-    description: "Compete in our video game tournament for a chance to win some prizes ;)",
+    description:
+      "Compete in our video game tournament for a chance to win some prizes ;)",
     location: "MSC 2406A",
   },
 
@@ -203,14 +203,15 @@ const events: Event[] = [
     name: "Closing Ceremony",
     startDate: new Date("2024-11-10T15:00:00"),
     endDate: new Date("2024-11-10T16:00:00"),
-    description: "Join us for the closing ceremony where we announce the winners of TAMU Datathon!",
+    description:
+      "Join us for the closing ceremony where we announce the winners of TAMU Datathon!",
     location: "MSC Bethancourt Ballroom",
   },
   {
     id: 24,
     name: "T-Shirt Pickup",
-    startDate: new Date("2024-11-10T16:00:00"),
-    endDate: new Date("2024-11-10T16:30:00"),
+    startDate: new Date("2024-11-10T17:00:00"),
+    endDate: new Date("2024-11-10T17:00:00"),
     description: "Pick up your event T-shirt.",
     location: "MSC Bethancourt Ballroom",
   },

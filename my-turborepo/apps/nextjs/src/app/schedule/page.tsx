@@ -21,6 +21,7 @@ interface Event {
   location: string;
 }
 
+// TODO: Refactor and put this in a separate file
 // Events array
 const events: Event[] = [
   // Saturday Events
@@ -44,7 +45,7 @@ const events: Event[] = [
     id: 3,
     name: "Hacking Starts",
     startDate: new Date("2024-11-09T11:30:00"),
-    endDate: new Date("2024-11-09T23:00:00"),
+    endDate: new Date("2024-11-09T23:30:00"),
     description: "Let the hacking begin!",
     location: "MSC Bethancourt Ballroom",
   },
@@ -96,7 +97,7 @@ const events: Event[] = [
     startDate: new Date("2024-11-09T15:00:00"),
     endDate: new Date("2024-11-09T15:30:00"),
     description: "Workshop hosted by Capital One.",
-    location: "MSC 2406B",
+    location: "MSC 2406A",
   },
   {
     id: 11,
@@ -105,7 +106,7 @@ const events: Event[] = [
     endDate: new Date("2024-11-09T16:30:00"),
     description:
       "Workshop hosted by Baker Hughes on data downsampling techniques for ML efficiency.",
-    location: "MSC 2406B",
+    location: "MSC 2406A",
   },
   {
     id: 12,
@@ -123,7 +124,7 @@ const events: Event[] = [
     endDate: new Date("2024-11-09T17:30:00"),
     description:
       "We'll teach you the basics of the algorithms that are used to power the AI bots that play board games and give you hints on how to solve our challenge.",
-    location: "MSC 2406B",
+    location: "MSC 2406A",
   },
   {
     id: 14,
