@@ -8,6 +8,7 @@ import Heading from "../helpers/Heading";
 import "../../_components/customCss.scss";
 
 import Image from "next/image";
+import Prizes from "../helpers/Prizes";
 
 export default function Challenge() {
   return (
@@ -25,10 +26,10 @@ export default function Challenge() {
             "Necessary sensors are installed on the asset to get 3 measurements at a time (assume the motor is powered by variable frequency drive): X1 (Frequency), X2 (Power), and Y (Vibration Level).",
             "After the asset and the monitoring system are in operation, the monitoring system will keep collecting the above measurements. The data collected in the first few weeks will be used as the baseline (training data), and the data collected after the baseline (prediction data) will be used to compare to the baseline data, the difference between them can reflect the health degradation.",
             "Technical approach: the training data is used to train the model:\n" +
-              "f(X1_t, X2_t) = Y_t\n" +
-              "where “f(*,*)” is the model function. “t” is “training”.\n",
+            "f(X1_t, X2_t) = Y_t\n" +
+            "where “f(*,*)” is the model function. “t” is “training”.\n",
             "Once the model is trained, for each prediction data (X1_p, X2_p and Y_p), X1_p and X2_p can be plugged into the model to get predicted Y_p_hat, then the difference between the predicted Y_p_hat and measured Y_p can be used to track health change.\n" +
-              "“p” is “prediction”.\n",
+            "“p” is “prediction”.\n",
             "During the first few weeks when the baseline is being established. A lot of data (3-measurements set) is collected (500,000 sets), but the global machine learning algorithm (which uses X1_t, X2_t and Y_t to find “f(*,*)”) is not very capable at handling large amount of data.",
           ]}
         />
@@ -48,7 +49,13 @@ export default function Challenge() {
           src={"/challenges_assets/images/baker_hughes_table.png"}
           alt={"Baker Hughes Challenge Table"}
         />
-
+        <Heading>Prizes!!!</Heading>
+        <Prizes
+          prizes={[
+            { name: "TV", img_url: "/prizes/TV.png" },
+            { name: "Beats Heaphones", img_url: "/prizes/Beats.png" },
+          ]}
+        />
         <div className="flex items-center justify-center pt-6">
           <a
             className="compStyling w-1/4 border border-black bg-[#f5f5f5] text-center text-black hover:bg-[#e4e3e4] hover:text-black"

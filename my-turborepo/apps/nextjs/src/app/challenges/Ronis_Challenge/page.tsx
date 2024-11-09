@@ -2,12 +2,11 @@
 // import Prize from "~/app/challenges/helpers/Prize";
 import Title from "~/app/challenges/helpers/Title";
 import Heading from "../helpers/Heading";
-import Bold from "../helpers/Bold";
 import Paragraph from "../helpers/Paragraph";
 import Bullet from "../helpers/Bullet";
-import Number from "../helpers/Number";
 import Link from "next/link";
 import "../../_components/customCss.scss";
+import Prizes from "../helpers/Prizes";
 
 export default function Challenge() {
 
@@ -184,7 +183,13 @@ export default function Challenge() {
             </li>
           </ul>
         </Paragraph>
-
+        <Heading>Prizes!!!</Heading>
+        <Prizes
+          prizes={[
+            { name: "Logitech Mouse", img_url: "/prizes/mouse.jpg" },
+            { name: "Anker Speaker", img_url: "/prizes/anker_speaker.jpg" },
+          ]}
+        />
         <div className="flex items-center justify-center pt-6">
           <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://cdn.discordapp.com/attachments/1020473812422250606/1304874385257271327/Ronis_Challenge_public-20241109T181440Z-001.zip?ex=6730fa78&is=672fa8f8&hm=103589c2c58dcfa0b6620d54e76f2a5575f7e6d8a6673a4af7512cde35541a4b&" target="_blank">Get Data</a>
         </div>

@@ -13,8 +13,8 @@ export default function Prizes({ prizes }: { prizes: prizeSchema[] }) {
     <div className="flex flex-row w-full justify-between items-stretch p-10 text-center">
       {prizes.map((prize, index) => {
         return (
-          <div key={index} className="flex flex-col items-center w-full">
-            <Heading className="flex text-center items-center mb-2 ">
+          <div key={index} className="flex flex-col items-center w-full justify-center text-center">
+            <Heading className="flex text-center items-center justify-center -m-1 w-full z-50 font-normal">
               {places[index] + " place: " + prize.name}
             </Heading>
             <div className="flex-grow flex items-center justify-center w-full px-2">
