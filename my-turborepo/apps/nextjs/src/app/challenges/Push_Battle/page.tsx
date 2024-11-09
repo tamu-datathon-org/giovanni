@@ -13,7 +13,7 @@ export default function Challenge() {
 
       <div className="bg-white/90 rounded-lg border-4 p-4">
 
-        <a className="px-4 py-3 border-2" href="/challenges">Back</a>
+        <a className="px-4 py-3 compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black" href="/challenges">Back</a>
 
 
         <Title className="mt-6">
@@ -62,7 +62,6 @@ export default function Challenge() {
           Implementation Algorithms
         </Heading>
 
-        <Paragraph>
           Common ways to use algorithms to solve games are as follows:
           <br /><br />
           <b>Heuristic Algorithms</b> - finding sets of rules that work generally well. Entirely heuristic approaches are weaker than the methods below, but perform far better than picking random moves. As some form of heuristics will be used in most of the below approaches, they are still important to understand.
@@ -92,7 +91,6 @@ export default function Challenge() {
             "Often combined with other methods like MCTS (as in AlphaZero) or reinforcement learning",
             "Can learn complex positional concepts but require significant training data/compute"
           ]} />
-        </Paragraph>
 
         <Heading>
           Restrictions
@@ -125,7 +123,6 @@ export default function Challenge() {
           Submission
         </Heading>
 
-        <Paragraph>
           Users will submit their model and all code in a zip file called agent.zip. We will provide starter code for how to run your agent. Your agent will use a Flask application to send and receive moves from the server. It will receive moves from a function called receive_move, and it will send moves from a function called send_move. The receiving function will have the agent receive a board state in the form of a 2D array. The sending function will have the agent send their move.
           <br /><br />
           <b>Webhooks</b>
@@ -166,7 +163,6 @@ export default function Challenge() {
             "board": "[[]]"<br />
             &#125;
           </pre>
-        </Paragraph>
 
         <Heading>
           Testing
