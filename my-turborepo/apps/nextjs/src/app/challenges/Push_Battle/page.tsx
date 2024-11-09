@@ -34,16 +34,35 @@ export default function Challenge() {
         </Heading>
 
         <Paragraph>
-          As a participant we would like you to “solve” this game
-          <a className="underline text-blue-600" href="https://mymathapps.com/mymacalc-sample/MathCircleApps/2PGames/PopTacToe/PopTacToe.html" target="_blank"> Push Battle</a> to the best of your abilities. You will be given the board state, and you will have to make the best move possible in order to ensure your success. We will provide you with the API for the game and some starter code. We encourage you to be creative and explore new ways of “solving” the game as you will be playing against the other participants in the competition.
+          As a participant, you are tasked with the challenge of creating an AI that plays the game 
+          <a className="underline text-blue-600" href="https://visualizer.challenges.tamudatathon.com/" target="_blank"> Push Battle</a>.  We will provide you with the API for the game and some starter code. We encourage you to be creative and explore new ways of “solving” the game as you will be playing against the other participants in the competition.
         </Paragraph>
+
+        <Heading>
+          Important Links
+        </Heading>
+
+        <div className="flex flex-col gap-2 items-center justify-center pt-6">
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+             href="https://visualizer.challenges.tamudatathon.com/"
+             target="_blank">Push Battle Visualizer</a>
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+             href="https://cdn.discordapp.com/attachments/1020473812422250606/1304874384825126963/Push_Battle_public-20241109T182246Z-001.zip?ex=6730fa78&is=672fa8f8&hm=c71b4a5f3479782d5a03e8bc8bfd08f6eba955c5371d94a8f2b832b4e5c85ee5&"
+             target="_blank">Challenge Data</a>
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+             href="https://www.youtube.com/watch?v=3trBRh9PEmM"
+             target="_blank">Running Push Battle Locally Video</a>
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+             href="https://www.youtube.com/watch?v=x5Obcmm9IN4"
+             target="_blank">Push Battle Rules Video</a>
+        </div>
 
         <Heading>
           Rules of the Game
         </Heading>
 
         <Bullet items={[
-          "Pop Tac Toe is a two player game played on an 8x8 grid",
+          "Push Battle is a two player game played on an 8x8 grid",
           "Each player will have eight pieces where players take turn placing pieces on the board",
           "When a piece is placed on the board, all pieces adjacent to the placed piece are pushed away, unless there is another piece behind it preventing it from being pushed",
           "If a piece gets pushed off the side of the board it will appear directly on the other side of the board",
@@ -51,12 +70,83 @@ export default function Challenge() {
           "Players win when three of their pieces are in a row"
         ]}
         />
-
+        <Paragraph>
+        A further explanation of the rules of the game can be found <a href='https://www.youtube.com/watch?v=x5Obcmm9IN4'>here</a>.
+        </Paragraph>
         <Heading>
           Board
         </Heading>
         <Paragraph>
-          The board will be represented by an 8x8 2D array. Spaces on the board will be labeled in a similar fashion to chess. This means that each column is represented with A-H and each row is represented with 0-7.
+          The board will be represented by an 8x8 2D array. In the placement stage of the game, the player places a piece on the board at [r, c].
+          Once all checkers have been placed, the player will make a move [r0, c0, r1, c1] which moves one of their existing pieces at (r0, c0) to (r1, c1).
+          <br></br>
+          
+          For readability purposes,the moves will be displayed on the visualizer in <a href="https://en.wikipedia.org/wiki/Algebraic_notation_(chess)">algebraic notation</a>.
+        </Paragraph>
+
+        <Heading>
+          Restrictions
+        </Heading>
+
+        <Bullet items={[
+          "Agents will be given 5 seconds to make a move. If the time limit is exceeded, agents will be given another 5 seconds to make a fallback move. If the time limit is exceeded again, a random move will be made for the agent. If this occurs 5 times, the agent will forfeit. ",
+          "If your agent makes an invalid move (i.e. placing a piece out of bounds or on an existing piece, attempting to move an opponent's piece, etc.), it will immediately forfeit (lose) the game",
+          "No network access",
+          "1 CPU Core",
+          "1 GB RAM",
+          "1 GB VRAM"
+        ]}
+        />
+        <br></br>
+
+        <Heading>
+          Webhooks
+        </Heading>
+        <Paragraph>
+
+        All webhooks are included in the starter code. Please consult that if you plan to make your own API or if you are unsure of how they work.
+        </Paragraph>
+
+        <Heading>
+          Submission
+        </Heading>
+
+          Download <a className="underline text-blue-600" href='https://drive.google.com/drive/folders/1i73nDhObfPq6-oI3DphWMRaYwgbGUUAz?usp=drive_link'>the starter code here</a>.
+          You will be exposing an API endpoint that makes a move given a game state. You must modify `start_game()` and `make_move()` to fit your implementation.
+          <Bullet items={[
+            "start_game() will instantiate your model",
+            "make_move() will be called when it is your model's turn to make a move. It will accept a game state and return a move"
+          ]}
+          />
+          <br></br>
+          <Heading>
+            How it works:
+          </Heading>
+          <Paragraph>
+            When the game begins, the judge will send a POST request to your agent with the initial game state. You will receive information about the game, the board, if you have the first turn, and the maximum amount of latency you can expect before a timeout.
+          </Paragraph>
+
+          <Paragraph>
+            After submitting, your agent will be placed in a pool where it will continuously play agents from other team where its performance will be scored using an ELO system.
+          </Paragraph>
+          
+
+        <Heading>
+          Testing
+        </Heading>
+
+        <Paragraph>
+          You will be given the game and the judge so that you can test locally. We strongly advise that you test locally before submitting to Richter. Please view 
+          <a className="underline text-blue-600" href="https://youtu.be/3trBRh9PEmM"> this</a> video for guidance on how to run locally. 
+        </Paragraph>
+
+        <Heading>
+          Reading the Game String
+        </Heading>
+        <Paragraph>
+          The game string is a list of all the events that took place during the game. Each is preceded with a dash followed by the alphanumeric value of where the piece was placed or moved.
+          If the move ends with an r (ex. -c4r or -c4b3r), that means the agent timed out and a random move was placed. If the move is a q (ex. -q) that means that the player forfeited.
+          Players forfeit either due to using too many random moves or making an invalid move as described earlier. 
         </Paragraph>
 
         <Heading>
@@ -94,20 +184,6 @@ export default function Challenge() {
           ]} />
 
         <Heading>
-          Restrictions
-        </Heading>
-
-        <Bullet items={[
-          "Agents must make a move within 5 seconds or else a fallback move will be attempted",
-          "Any invalid moves will result in a forfeit",
-          "No network access",
-          "1 CPU Core",
-          "1 GB RAM",
-          "1 GB VRAM"
-        ]}
-        />
-
-        <Heading>
           Resources
         </Heading>
 
@@ -117,85 +193,7 @@ export default function Challenge() {
           "https://www.lancaster.ac.uk/stor-i-student-sites/jordan-j-hood/2021/04/18/reinforcement-learning-the-end-game/"
         ]}
         />
-
-        <Heading>
-          Submission
-        </Heading>
-
-          Users will submit their model and all code in a zip file called agent.zip. We will provide starter code for how to run your agent. Your agent will use a Flask application to send and receive moves from the server. It will receive moves from a function called receive_move, and it will send moves from a function called send_move. The receiving function will have the agent receive a board state in the form of a 2D array. The sending function will have the agent send their move.
-          <br /><br />
-          <b>Webhooks</b>
-          <pre>
-            "GET /"
-            <br />
-            &#123;<br />
-            "Team": "&lt;TEAM_NAME&gt;",<br />
-            "Agent": "&lt;AGENT_NAME&gt;"<br />
-            &#125;
-          </pre>
-          <pre>
-            <br /><br />
-            "POST /start"
-            <br />
-            &#123;<br />
-            "game": "&lt;GAME_ID&gt;",<br />
-            "turn": "&lt;TURN_NO&gt;"<br />
-            "board": "[[]]"<br />
-            &#125;
-          </pre>
-          <br /><br />
-          <pre>
-            "POST /move"
-            <br />
-            &#123;<br />
-            "move_row": "x",<br />
-            "move_col": "y"<br />
-            &#125;
-          </pre>
-          <br /><br />
-          <pre>
-            "POST /end"
-            <br />
-            &#123;<br />
-            "game": "&lt;GAME_ID&gt;",<br />
-            "turn": "&lt;TURN_NO&gt;"<br />
-            "board": "[[]]"<br />
-            &#125;
-          </pre>
-
-        <Heading>
-          Testing
-        </Heading>
-
-        <Paragraph>
-          There will be a testing api provided at this endpoint: /test. By sending a POST /start request to the endpoint, it will create a game with your agent. This is a test game, and the opponent will play random valid moves. This environment will allow you to see if your model makes any incorrect moves or goes over the time constraint.
-          <br /><br />
-          Example:
-          Initialize a test game with POST /test/start
-          The game will then proceed with your agent sending moves via send_move() and receiving moves via receive_move()
-        </Paragraph>
-
-        <Heading>
-          Grading
-        </Heading>
-
-        <Paragraph>
-          After submitting, your agent(s) will be placed in a pool where a round robin tournament will take place. Each agent will play every other agent twice, once as player one and once as player two. Wins and losses will be tallied for each agent throughout the course of the round robin.
-          <br /><br />
-          After the round robin tournament has concluded, the top n agents in terms of wins will compete in a double elimination tournament. The agents will be paired by seed (ex. Seed 1 plays seed n). They will play twice, once as player one and once as player two. If a tiebreaker is needed, it will go to the higher seed. This final tournament will determine the first, second, and third place winners.
-        </Paragraph>
-
-        <div className="flex flex-col gap-2 items-center justify-center pt-6">
-          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
-             href="https://cdn.discordapp.com/attachments/1020473812422250606/1304874384825126963/Push_Battle_public-20241109T182246Z-001.zip?ex=6730fa78&is=672fa8f8&hm=c71b4a5f3479782d5a03e8bc8bfd08f6eba955c5371d94a8f2b832b4e5c85ee5&"
-             target="_blank">Challenge Data</a>
-          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
-             href="https://www.youtube.com/watch?v=3trBRh9PEmM"
-             target="_blank">Running Push Battle Locally</a>
-          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
-             href="https://www.youtube.com/watch?v=x5Obcmm9IN4"
-             target="_blank">Push Battle Rules Video</a>
-        </div>
+        <br></br>
 
 
       </div>
