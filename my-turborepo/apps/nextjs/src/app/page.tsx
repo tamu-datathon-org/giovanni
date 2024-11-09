@@ -306,19 +306,11 @@ export default function HomePage() {
             prizeFunc={setPrizesOpen}
             socialsFunc={setSocialsOpen}
             setFocus={setActiveWindow}
+            helpQueueFunc={setHelpQueueOpen}
+
             scheduleFunc={setScheduleOpen}
             challengesFunc={setChallenegesOpen}
             />
-              welcFunc={setWelcomeOpen}
-              faqFunc={setFaqOpen}
-              sponFunc={setSponsorOpen}
-              prizeFunc={setPrizesOpen}
-              socialsFunc={setSocialsOpen}
-              setFocus={setActiveWindow}
-              scheduleFunc={setScheduleOpen}
-              helpQueueFunc={setHelpQueueOpen}
-              className="z-10 flex h-fit max-w-full py-5"
-          />
         </div>
       </div>
     </>
