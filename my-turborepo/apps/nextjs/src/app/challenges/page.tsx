@@ -9,7 +9,8 @@ export default function Challenge() {
         "SQL Game",
         "Rev's Riddles",
         "Roni's Challenge",
-        "Capital One"
+        "Capital One",
+        "Baker Hughes"
     ]
 
     return (
