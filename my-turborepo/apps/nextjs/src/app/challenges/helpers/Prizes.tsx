@@ -9,22 +9,22 @@ interface prizeSchema {
 const places = ["1st", "2nd", "3rd", "4th", "5th"];
 export default function Prizes({ prizes }: { prizes: prizeSchema[] }) {
   return (
-    <>
+    <div className="flex flex-row w-full gap-4">
       {prizes.map((prize, index) => {
         return (
-          <div>
+          <div className="flex flex-col">
             <Heading>{places[index] + " place: " + prize.name}</Heading>
-            {(prize.img_url && prize.img_url !== "") ?? (
+            {prize.img_url && (
               <Image
-                width={500}
-                height={500}
-                src={prize.img_url!}
+                width={300}
+                height={300}
+                src={prize.img_url}
                 alt={"Challenge Prize"}
               />
             )}
           </div>
         );
       })}
-    </>
+    </div>
   );
 }

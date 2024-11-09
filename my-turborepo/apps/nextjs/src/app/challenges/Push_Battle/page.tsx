@@ -254,9 +254,9 @@ export default function Challenge() {
         </div>
         <Prizes
           prizes={[
-            { name: "iPad" },
-            { name: "Wacom Tablet" },
-            { name: "Polaroid" },
+            { name: "iPad", img_url: "/prizes/ipad.png" },
+            { name: "Wacom Tablet", img_url: "/prizes/drawing_tablet.jpg" },
+            { name: "Fujifilm Instax Mini" , img_url: "/prizes/polaroid.webp" },
           ]}
         />
       </div>
