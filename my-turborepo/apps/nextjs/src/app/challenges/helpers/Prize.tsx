@@ -1,13 +1,28 @@
+import Image from "next/image";
+
+import Heading from "~/app/challenges/helpers/Heading";
+
 interface prizeSchema {
-  children: React.ReactNode;
+  name: string;
+  img_url: string;
 }
 
-export default function Prize({ children }: prizeSchema) {
-  //TODO: Generate the prizes section of a challenge
-  // Info may or may not include an image
+export default function Prize(props: prizeSchema[]) {
   return (
-    < div className = "justify-self-stretch text-xl font-extrabold" >
-    { children }
-    </div >  
-  )
+    <>
+      {props.map((prize) => {
+        return (
+          <div>
+            <Heading>{prize.name}</Heading>
+            <Image
+              width={500}
+              height={500}
+              src={prize.img_url}
+              alt={"Challenge Prize"}
+            />
+          </div>
+        );
+      })}
+    </>
+  );
 }
