@@ -1,4 +1,5 @@
 import Title from "~/app/challenges/helpers/Title";
+import "../_components/customCss.scss";
 
 export default function Challenge() {
     //TODO: Get XML data, and based on that data, automatically generate which components are going to be used
@@ -17,7 +18,7 @@ export default function Challenge() {
         <div className="w-full h-full p-8 flex flex-col items-center justify-center">
             <Title>Challenges</Title>
 
-            <a className="px-2 py-3 border-2 mb-8" href="/">Back</a>
+            <a className="px-2 py-3 compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black" href="/">Back</a>
             <div className="grid grid-cols-4 gap-4 mt-8 text-2xl w-fit mx-auto">
                 {
                     challenges.map((challenge, index) => {
