@@ -8,6 +8,7 @@ import Bullet from "../helpers/Bullet";
 import { Button } from "@vanni/ui/button";
 import "../../_components/customCss.scss";
 import Link from "next/link";
+import Prizes from "~/app/challenges/helpers/Prizes";
 
 export default function Challenge() {
 
@@ -66,6 +67,13 @@ export default function Challenge() {
                     "Levels of Difficulty: The chatbot becomes more difficult to negotiate with at each level.",
                     "Web-Based Interaction: All interactions are done via a web app, with team logins for tracking."
                 ]}
+                />
+                <Prizes
+                    prizes={[
+                        { name: "Fire TV Stick", img_url: "/prizes/firestick.jpg" },
+                        { name: "5th Gen Echo Dot", img_url: "/prizes/echo_dot.webp" },
+                        { name: "5V/3A Power Bank" , img_url: "/prizes/power_bank.jpg" },
+                    ]}
                 />
             </div>
         </div>

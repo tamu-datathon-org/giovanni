@@ -7,6 +7,7 @@ import Heading from "../helpers/Heading";
 import Paragraph from "../helpers/Paragraph";
 
 import "../../_components/customCss.scss";
+import Prizes from "~/app/challenges/helpers/Prizes";
 
 export default function ConnectionsPage() {
   return (
@@ -262,6 +263,13 @@ export default function ConnectionsPage() {
             Get Data
           </a>
         </div>
+          <Prizes
+              prizes={[
+                  { name: "GoTrax GXL V2 Lightweight Scooter", img_url: "/prizes/escooter.jpg" },
+                  { name: "Keychron V1 Keyboard", img_url: "/prizes/keyboard.jpg" },
+                  { name: "6 Quart Gourmia Air Fryer" , img_url: "/prizes/air_fryer.jpg" },
+              ]}
+          />
       </div>
     </div>
   );
