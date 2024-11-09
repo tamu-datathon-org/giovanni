@@ -7,6 +7,7 @@ import Paragraph from "../helpers/Paragraph";
 import Bullet from "../helpers/Bullet";
 import { Button } from "@vanni/ui/button";
 import "../../_components/customCss.scss";
+import Prizes from "~/app/challenges/helpers/Prizes";
 
 export default function Challenge() {
 
@@ -71,6 +72,13 @@ export default function Challenge() {
                     <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://fortnite.challenges.tamudatathon.com/" target="_blank">Go to Challenge</a>
                 </div>
 
+                <Prizes
+                    prizes={[
+                        { name: "Owala WaterBottle", img_url: "/prizes/owala_bottle.webp" },
+                        { name: "Apple AirTag", img_url: "/prizes/apple_air_tag.jpg" },
+                        { name: "313 Anker Wireless Charger" , img_url: "/prizes/wireless_charger.jpg" },
+                    ]}
+                />
             </div>
         </div>
     );
