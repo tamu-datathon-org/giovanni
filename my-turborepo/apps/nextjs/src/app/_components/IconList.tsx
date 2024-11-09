@@ -84,6 +84,8 @@ const IconList: React.FC<IconListProps> = ({
                         sponFunc(true);
                       } else if (icon.name === "Prizes") {
                         prizeFunc(true);
+                      } else if (icon.name === "Help Queue") {
+                        router.push("https://helpqueue.tamudatathon.com/");
                       }
                     }}
                   >
