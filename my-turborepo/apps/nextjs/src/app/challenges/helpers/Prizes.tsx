@@ -14,7 +14,7 @@ export default function Prizes({ prizes }: { prizes: prizeSchema[] }) {
         return (
           <div>
             <Heading>{places[index] + " place: " + prize.name}</Heading>
-            {prize.img_url ?? (
+            {(prize.img_url && prize.img_url !== "") ?? (
               <Image
                 width={500}
                 height={500}
