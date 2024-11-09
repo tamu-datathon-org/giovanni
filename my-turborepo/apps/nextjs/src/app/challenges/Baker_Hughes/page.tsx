@@ -10,9 +10,8 @@ import Paragraph from "../helpers/Paragraph";
 
 import "../../_components/customCss.scss";
 
+import Image from "next/image";
 import Link from "next/link";
-
-import Image from "../helpers/Image";
 
 export default function Challenge() {
   return (
