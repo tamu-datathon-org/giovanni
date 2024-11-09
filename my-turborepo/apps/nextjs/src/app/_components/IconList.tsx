@@ -17,7 +17,6 @@ interface Icon {
 interface IconListProps {
   className?: string;
   welcFunc: (isOpen: boolean) => void;
-  applyFunc: (isOpen: boolean) => void;
   faqFunc: (isOpen: boolean) => void;
   socialsFunc: (isOpen: boolean) => void;
   sponFunc: (isOpen: boolean) => void;
@@ -25,6 +24,7 @@ interface IconListProps {
   scheduleFunc: () => void;
   helpQueueFunc: () => void;
   setFocus: (focus: string) => void;
+  challengesFunc: () => void;
 }
 
 const routes: Icon[] = [
@@ -34,20 +34,20 @@ const routes: Icon[] = [
   { name: "Prizes", route: "/", image: "/Pixel_CDIcon.png" },
   { name: "Schedule", route: "/schedule", image: "/Pixel_PolarBear.png" },
   { name: "Socials", route: "/socials", image: "/Pixel_FileIcon.png" },
-  { name: "Apply", route: "/apply/application", image: "/Pixel_EmailIcon.png" },
+  { name: "Challenges", route: "/challenges", image: "/Pixel_EmailIcon.png"},
   { name: "Help Queue", route: "https://helpqueue.tamudatathon.com/", image: "/Pixel_RecycleIcon.png" }
 ];
 const numPerRow = 6;
 const IconList: React.FC<IconListProps> = ({
   className,
   welcFunc,
-  applyFunc,
   faqFunc,
   socialsFunc,
   sponFunc,
   prizeFunc,
   scheduleFunc,
-    helpQueueFunc,
+  challengesFunc,
+  helpQueueFunc,
   setFocus,
 }) => {
   const router = useRouter();
@@ -72,8 +72,6 @@ const IconList: React.FC<IconListProps> = ({
                       setFocus(icon.name);
                       if (icon.name === "Welcome") {
                         welcFunc(true);
-                      } else if (icon.name === "Apply") {
-                        applyFunc(true);
                       } else if (icon.name === "Schedule") {
                         router.push("/schedule");
                       } else if (icon.name === "Socials") {
@@ -82,6 +80,10 @@ const IconList: React.FC<IconListProps> = ({
                         faqFunc(true);
                       } else if (icon.name === "Sponsor") {
                         sponFunc(true);
+                      } else if (icon.name === "Prize") {
+                        prizeFunc(true);
+                      } else if (icon.name === "Challenges") {
+                        router.push("/challenges")
                       } else if (icon.name === "Prizes") {
                         prizeFunc(true);
                       } else if (icon.name === "Help Queue") {

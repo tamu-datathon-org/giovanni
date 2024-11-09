@@ -55,6 +55,9 @@ export default function HomePage() {
   const setScheduleOpen = () => {
     window.location.href = "/schedule";
   };
+  const setChallenegesOpen = () => {
+    window.location.href = "/challenges";
+  };
   const setHelpQueueOpen = () => {
     window.location.href = "https://helpqueue.tamudatathon.com/";
   }
@@ -84,7 +87,7 @@ export default function HomePage() {
       <div className="h-screen w-screen overflow-hidden">
         <div className="flex h-screen flex-col items-center justify-center">
           <div className="flex h-full w-full items-center justify-center lg:relative ">
-            {/* Prizes Window */}
+            {/* Prize Window */}
             <DraggableComponent
                 onFocus={setActiveWindow}
                 name="Prizes"
@@ -297,8 +300,16 @@ export default function HomePage() {
           </div>
 
           <IconList
+            welcFunc={setWelcomeOpen}
+            faqFunc={setFaqOpen}
+            sponFunc={setSponsorOpen}
+            prizeFunc={setPrizesOpen}
+            socialsFunc={setSocialsOpen}
+            setFocus={setActiveWindow}
+            scheduleFunc={setScheduleOpen}
+            challengesFunc={setChallenegesOpen}
+            />
               welcFunc={setWelcomeOpen}
-              applyFunc={setApplyOpen}
               faqFunc={setFaqOpen}
               sponFunc={setSponsorOpen}
               prizeFunc={setPrizesOpen}
