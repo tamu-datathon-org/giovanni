@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const BulletPoint: React.FC<{ text: string }> = ({ text }) => {
     return (
-        <li style={{ marginBottom: '8px' }}>
+        <li className='list-disc mb-1'>
             {text}
         </li>
     );
@@ -15,7 +15,7 @@ BulletPoint.propTypes = {
 
 const CustomBulletPoints: React.FC<{ items: string[] }> = ({ items }) => {
     return (
-        <ul style={{ paddingLeft: '20px' }}>
+        <ul className='mt-4' style={{ paddingLeft: '20px' }}>
             {items.map((item, index) => (
                 <BulletPoint key={index} text={item} />
             ))}

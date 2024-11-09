@@ -4,8 +4,8 @@ interface headingSchema {
 }
 export default function Heading({ children, className }: headingSchema) {
     return (
-        <div className={`w-full flex justify-start items-center text-1xl ${className}`}>
+        <h1 className={`w-full flex justify-start items-center text-3xl font-bold ${className}`}>
             {children}
-        </div>
+        </h1>
     );
 }
