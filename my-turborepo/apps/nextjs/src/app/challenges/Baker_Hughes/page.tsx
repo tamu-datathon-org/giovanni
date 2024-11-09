@@ -47,9 +47,9 @@ export default function Challenge() {
           ]}
         />
         <Image
-               width={200}
-               height={200}
-          src={"/challenges_assets/baker_hughes_table.png"}
+               width={500}
+               height={500}
+          src={"/challenges_assets/images/baker_hughes_table.png"}
           alt={"Baker Hughes Challenge Table"}
         />
         <Link
