@@ -11,6 +11,7 @@ export default function ConnectionsPage() {
         <div className="w-full h-full justify-center p-4 bg-blue-200">
 
             <div className="bg-white/90 rounded-lg border-4 p-4">
+                <a className="px-4 py-3 border-2" href="/challenges">Back</a>
 
                 <Title>
                     Connections AI
@@ -20,8 +21,8 @@ export default function ConnectionsPage() {
                     Connections AI Data
                 </Heading>
                 <Paragraph>
-                    <a className= "underline text-blue-600" href={'https://drive.google.com/drive/u/2/folders/1kf7Wc88U3JIz_M-v0KZv2ao-v2pyDBru'}>
-                    Link to Connections
+                    <a className="underline text-blue-600" href={'https://drive.google.com/drive/u/2/folders/1kf7Wc88U3JIz_M-v0KZv2ao-v2pyDBru'}>
+                        Link to Connections
                     </a>
                 </Paragraph>
 

@@ -16,7 +16,7 @@ export default function Challenge() {
 
             <div className="bg-white/90 rounded-lg border-4 p-4">
 
-            <a className="px-4 py-3 border-2" href="/challenges">Back</a>
+                <a className="px-4 py-3 border-2" href="/challenges">Back</a>
 
                 <Title>
                     Rev's Riddles: Hotel Negotiation Edition
@@ -27,7 +27,7 @@ export default function Challenge() {
                 </Heading>
 
                 <Paragraph>
-                Negotiating is a key skill in many industries, and being able to drive a favorable deal is crucial. In this challenge, participants must negotiate hotel room prices with Reveille, Texas A&M’s mascot. The catch? Reveille is powered by an AI chatbot that becomes more challenging with each round. Can you convince Reveille to lower the price? This challenge encourages creativity in "prompt engineering" to achieve the best deal.
+                    Negotiating is a key skill in many industries, and being able to drive a favorable deal is crucial. In this challenge, participants must negotiate hotel room prices with Reveille, Texas A&M’s mascot. The catch? Reveille is powered by an AI chatbot that becomes more challenging with each round. Can you convince Reveille to lower the price? This challenge encourages creativity in "prompt engineering" to achieve the best deal.
                 </Paragraph>
 
                 <Heading>
@@ -35,7 +35,7 @@ export default function Challenge() {
                 </Heading>
 
                 <Paragraph>
-                Participants will log into a web app and interact with the AI chatbot, negotiating room prices. Starting with an easy chatbot, the challenge will get tougher as the levels progress. Your goal is to find the right words to convince the chatbot to lower the room price. No coding is required, just strategic thinking and clever communication.
+                    Participants will log into a web app and interact with the AI chatbot, negotiating room prices. Starting with an easy chatbot, the challenge will get tougher as the levels progress. Your goal is to find the right words to convince the chatbot to lower the room price. No coding is required, just strategic thinking and clever communication.
                 </Paragraph>
 
                 <Heading>
@@ -69,7 +69,7 @@ export default function Challenge() {
                 ]}
                 />
                 <div className="flex items-center justify-center pt-6">
-                        <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://revesriddles.com/" target="_blank">Go to Challenge</a>
+                    <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://fortnite.challenges.tamudatathon.com/" target="_blank">Go to Challenge</a>
                 </div>
 
             </div>
