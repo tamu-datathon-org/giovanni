@@ -14,26 +14,25 @@ export default function Challenge() {
     ]
 
     return (
-        <div className="w-full h-full p-8">
+        <div className="w-full h-full p-8 flex flex-col items-center justify-center">
             <Title>Challenges</Title>
 
-            <a className="px-4 py-3 border-2" href="/">Back</a>
-
-            <div className="flex gap-4 flex-wrap mt-8">
+            <a className="px-2 py-3 border-2 mb-8" href="/">Back</a>
+            <div className="grid grid-cols-4 gap-4 mt-8 text-2xl w-fit mx-auto">
                 {
                     challenges.map((challenge, index) => {
                         return (
-                            <a href={`/challenges/${challenge.replaceAll(" ", "_").replaceAll("'", "")}`} className="w-48 aspect-square bg-white/90 rounded-lg grid place-items-center shadow-md hover:shadow-2xl cursor-pointer" key={index}>
+                            <a href={`/challenges/${challenge.replaceAll(" ", "_").replaceAll("'", "")}`} className="w-52 aspect-square bg-white/90 rounded-lg grid place-items-center shadow-md hover:shadow-2xl cursor-pointer" key={index}>
                                 {challenge}
                             </a>
-
                         )
                     })
                 }
-                <a href={`https://docs.google.com/document/d/1lUrYbJNUuQ7u2q6QDXBEBv45kj0h-41a8HM3pRVcmj8/edit?usp=sharing`} className="w-48 aspect-square bg-white/90 rounded-lg grid place-items-center shadow-md hover:shadow-2xl cursor-pointer" key={10}>
-                TAMIDS
+                <a href={`https://docs.google.com/document/d/1lUrYbJNUuQ7u2q6QDXBEBv45kj0h-41a8HM3pRVcmj8/edit?usp=sharing`} className="w-52 aspect-square bg-white/90 rounded-lg grid place-items-center shadow-md hover:shadow-2xl cursor-pointer" key={10}>
+                    TAMIDS
                 </a>
             </div>
         </div>
     );
+
 }
