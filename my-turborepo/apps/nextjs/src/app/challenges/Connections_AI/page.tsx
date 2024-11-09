@@ -4,6 +4,7 @@ import Bold from "../helpers/Bold";
 import Paragraph from "../helpers/Paragraph";
 import Bullet from "../helpers/Bullet";
 import Link from "next/link";
+import "../../_components/customCss.scss";
 
 
 export default function ConnectionsPage() {
@@ -16,15 +17,6 @@ export default function ConnectionsPage() {
                 <Title>
                     Connections AI
                 </Title>
-
-                <Heading>
-                    Connections AI Data
-                </Heading>
-                <Paragraph>
-                    <a className="underline text-blue-600" href={'https://drive.google.com/drive/u/2/folders/1kf7Wc88U3JIz_M-v0KZv2ao-v2pyDBru'}>
-                        Link to Connections
-                    </a>
-                </Paragraph>
 
                 <Heading>
                     Background
@@ -221,7 +213,7 @@ export default function ConnectionsPage() {
                     ]} />
 
                 <div className="flex items-center justify-center pt-6">
-                    <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://cdn.discordapp.com/attachments/1210713468714352701/1304873687274487918/Connections_AI-20241109T181426Z-001.zip?ex=6730f9d2&is=672fa852&hm=e36328435e91d7e7b37ab14c499dc3d0f50b3ba56dd6f8307461b08bad622f87&" target="_blank">Get Data</a>
+                    <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://cdn.discordapp.com/attachments/1020473812422250606/1304874385949200515/Connections_AI-20241109T181426Z-001.zip?ex=6730fa79&is=672fa8f9&hm=f05172a42bfb44a6bef788ddccb5076c13a9ff834766b905b0f462e4296b88d0&" target="_blank">Get Data</a>
                 </div>
 
             </div>

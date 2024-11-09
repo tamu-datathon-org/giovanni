@@ -7,6 +7,7 @@ import Paragraph from "../helpers/Paragraph";
 import Bullet from "../helpers/Bullet";
 import Number from "../helpers/Number";
 import Link from "next/link";
+import "../../_components/customCss.scss";
 
 export default function Challenge() {
 
