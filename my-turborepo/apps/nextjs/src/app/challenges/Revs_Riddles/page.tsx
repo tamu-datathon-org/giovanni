@@ -64,7 +64,6 @@ export default function Challenge() {
                 </Heading>
 
                 <Bullet items={[
-                    "Negotiation Techniques: Basic negotiation strategy resources will be provided.",
                     "Prompt Engineering workshop: Optional tips for crafting effective prompts through a workshop"
                 ]}
                 />

@@ -5,6 +5,7 @@ import Heading from "../helpers/Heading";
 import Bold from "../helpers/Bold";
 import Paragraph from "../helpers/Paragraph";
 import Bullet from "../helpers/Bullet";
+import "../../_components/customCss.scss";
 
 export default function Challenge() {
 
@@ -97,11 +98,9 @@ export default function Challenge() {
         </Heading>
 
         <Bullet items={[
-          "Agents must make a move within 1 second or else a random move will be played",
-          "Any failed moves will result in a random move being played",
-          "Any timed out moves will result in a random move being played",
+          "Agents must make a move within 5 seconds or else a fallback move will be attempted",
+          "Any invalid moves will result in a forfeit",
           "No network access",
-          "Python is required",
           "1 CPU Core",
           "1 GB RAM",
           "1 GB VRAM"
@@ -186,9 +185,18 @@ export default function Challenge() {
           After the round robin tournament has concluded, the top n agents in terms of wins will compete in a double elimination tournament. The agents will be paired by seed (ex. Seed 1 plays seed n). They will play twice, once as player one and once as player two. If a tiebreaker is needed, it will go to the higher seed. This final tournament will determine the first, second, and third place winners.
         </Paragraph>
 
-        <div className="flex items-center justify-center pt-6">
-          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://cdn.discordapp.com/attachments/1210713468714352701/1304873886260662363/Push_Battle_public-20241109T182246Z-001.zip?ex=6730fa01&is=672fa881&hm=42c1ae80c9dd3f0496d8a2705e5cae1a93c64a324cc08b491fdb62d18e8e16d1&" target="_blank">Challenge Data</a>
+        <div className="flex flex-col gap-2 items-center justify-center pt-6">
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+             href="https://cdn.discordapp.com/attachments/1020473812422250606/1304874384825126963/Push_Battle_public-20241109T182246Z-001.zip?ex=6730fa78&is=672fa8f8&hm=c71b4a5f3479782d5a03e8bc8bfd08f6eba955c5371d94a8f2b832b4e5c85ee5&"
+             target="_blank">Challenge Data</a>
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+             href="https://www.youtube.com/watch?v=3trBRh9PEmM"
+             target="_blank">Running Push Battle Locally</a>
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+             href="https://www.youtube.com/watch?v=x5Obcmm9IN4"
+             target="_blank">Push Battle Rules Video</a>
         </div>
+
 
       </div>
 

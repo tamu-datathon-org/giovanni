@@ -7,6 +7,7 @@ import Paragraph from "../helpers/Paragraph";
 import Bullet from "../helpers/Bullet";
 import Number from "../helpers/Number";
 import Link from "next/link";
+import "../../_components/customCss.scss";
 
 export default function Challenge() {
 
@@ -185,7 +186,7 @@ export default function Challenge() {
         </Paragraph>
 
         <div className="flex items-center justify-center pt-6">
-          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://cdn.discordapp.com/attachments/1210713468714352701/1304873686871838862/Ronis_Challenge_public-20241109T181440Z-001.zip?ex=6730f9d2&is=672fa852&hm=0aaa4a1c19934571792fa067822342e66544dbf8ecb303946e41dd6a9605954b&" target="_blank">Get Data</a>
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://cdn.discordapp.com/attachments/1020473812422250606/1304874385257271327/Ronis_Challenge_public-20241109T181440Z-001.zip?ex=6730fa78&is=672fa8f8&hm=103589c2c58dcfa0b6620d54e76f2a5575f7e6d8a6673a4af7512cde35541a4b&" target="_blank">Get Data</a>
         </div>
 
       </div>
