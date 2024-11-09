@@ -55,7 +55,7 @@ export default function Challenge() {
 
             <div className="flex items-center justify-center pt-6">
                 <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
-                   href="https://cdn.discordapp.com/attachments/1304883198450204754/1304883510657421432/Challenge_Info-20241109T185800Z-001.zip?ex=673102f8&is=672fb178&hm=24f1cfc382636bd3820c55fbdb527f17cb1f668ead032cb7505b220e43390896&" target="_blank">Get Data Here</a>
+                   href="https://cdn.discordapp.com/attachments/1304883198450204754/1304883510657421432/Challenge_Info-20241109T185800Z-001.zip?ex=673102f8&is=672fb178&hm=24f1cfc382636bd3820c55fbdb527f17cb1f668ead032cb7505b220e43390896&" target="_blank">Get Data</a>
             </div>
         </div>
     </div>
