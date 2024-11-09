@@ -11,7 +11,7 @@ export default function ConnectionsPage() {
         <div className="w-full h-full justify-center p-4 bg-blue-200">
 
             <div className="bg-white/90 rounded-lg border-4 p-4">
-                <a className="px-4 py-3 border-2" href="/challenges">Back</a>
+                <a className="px-4 py-3 compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black" href="/challenges">Back</a>
 
                 <Title>
                     Connections AI
@@ -71,7 +71,6 @@ export default function ConnectionsPage() {
                     Implementation Algorithms
                 </Heading>
 
-                <Paragraph>
                     Common ways to use algorithms to solve games are as follows:
                     <br /> <br />
                     <b>Natural Language Processors (NLP) Libraries</b> - strong approach for understanding linguistics. Entirely heuristic approaches are weaker than the methods below, but perform far better than picking random moves. As some form of heuristics will be used in most of the below approaches, they are still important to understand.
@@ -97,7 +96,6 @@ export default function ConnectionsPage() {
                         "Scikit-Learn: Great for simpler models and for preprocessing steps such as clustering word vectors or performing dimensionality reduction.",
                         "Gensim: Specializes in word embedding models like Word2Vec, Doc2Vec, and FastText, ideal for finding semantic similarities."
                     ]} />
-                </Paragraph>
 
                 <Heading>
                     Restrictions
@@ -133,7 +131,6 @@ export default function ConnectionsPage() {
                     Submission
                 </Heading>
 
-                <Paragraph>
                     Users will submit their model and all code in a zip file called connections.zip. We will provide starter code for how to run the game and inputs. Your model will use a Flask application to send and receive words from the server. It will receive words from the POST request, and the model will output its 4 word guess of a group. The model will take in words, strikes, isOneAway, correctGroups, previousguesses, and error.
                     <br /><br />
                     <b>Webhooks</b>
@@ -145,7 +142,6 @@ export default function ConnectionsPage() {
                         "endTurn": "&lt;BOOLEAN&gt;"<br />
                         &#125;
                     </pre>
-                </Paragraph>
 
                 <Heading>
                     Testing
@@ -162,7 +158,6 @@ export default function ConnectionsPage() {
                     Grading
                 </Heading>
 
-                <Paragraph>
                     After submitting, your models will be evaluated on a testing dataset. Each guess is weighted differently depending on the number of correct guesses. There are no groups worth more than others based on difficulty. Instead, the group with the least successful guess will have the highest multiplier. This encourages to guess with confidence and accurately on the first attempt.
                     <br />
                     Example:
@@ -224,7 +219,6 @@ export default function ConnectionsPage() {
                         "Model Output: 4 words (array), endTurn (bool)",
                         "Example: ['Best Boy', 'Idea', 'Kroner', 'Stables']"
                     ]} />
-                </Paragraph>
 
             </div>
 
