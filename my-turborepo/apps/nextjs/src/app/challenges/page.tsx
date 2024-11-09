@@ -7,7 +7,7 @@ export default function Challenge() {
         "Pop Tac Toe",
         "Connections AI",
         "SQL Game",
-        "Rev's Riddles: Rent Mode",
+        "Rev's Riddles",
         "Roni's Challenge"
     ]
 
