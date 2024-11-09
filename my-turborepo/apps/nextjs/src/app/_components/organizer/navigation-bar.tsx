@@ -28,6 +28,11 @@ const OrganizerNavBar = () => {
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>Applications</NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <Link href="/organizer/passport" legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>Passport</NavigationMenuLink>
+                    </Link>
+                </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
     )

@@ -27,7 +27,7 @@ export default async function OrganizerLayout({
 
     return (
         <>
-            <div className="max-h-screen-sm h-screen overflow-hidden font-mono">
+            <div className="h-screen font-mono bg-slate-400">
                 <OrganizerNavBar></OrganizerNavBar>
                 {children}
             </div>

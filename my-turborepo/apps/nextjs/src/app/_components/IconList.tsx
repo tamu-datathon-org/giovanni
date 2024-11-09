@@ -22,6 +22,7 @@ interface IconListProps {
   sponFunc: (isOpen: boolean) => void;
   prizeFunc: (isOpen: boolean) => void;
   scheduleFunc: () => void;
+  helpQueueFunc: () => void;
   setFocus: (focus: string) => void;
   challengesFunc: () => void;
 }
@@ -34,6 +35,7 @@ const routes: Icon[] = [
   { name: "Schedule", route: "/schedule", image: "/Pixel_PolarBear.png" },
   { name: "Socials", route: "/socials", image: "/Pixel_FileIcon.png" },
   { name: "Challenges", route: "/challenges", image: "/Pixel_EmailIcon.png"}
+  { name: "Help Queue", route: "https://helpqueue.tamudatathon.com/", image: "/Pixel_RecycleIcon.png" }
 ];
 const numPerRow = 6;
 const IconList: React.FC<IconListProps> = ({
@@ -45,6 +47,7 @@ const IconList: React.FC<IconListProps> = ({
   prizeFunc,
   scheduleFunc,
   challengesFunc,
+  helpQueueFunc,
   setFocus,
 }) => {
   const router = useRouter();
@@ -81,6 +84,8 @@ const IconList: React.FC<IconListProps> = ({
                         prizeFunc(true);
                       } else if (icon.name === "Challenges") {
                         router.push("/challenges")
+                      } else if (icon.name === "Prizes") {
+                        prizeFunc(true);
                       }
                     }}
                   >
