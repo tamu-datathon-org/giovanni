@@ -24,9 +24,12 @@ export default function Challenge() {
                     <a href={`/challenges/${challenge.replaceAll(" ", "_").replaceAll("'", "")}`} className="w-48 aspect-square bg-white/90 rounded-lg grid place-items-center shadow-md hover:shadow-2xl cursor-pointer" key={index}>
                     {challenge}
                     </a>
+                    
                 )
                 })
             }
+            <a href={`https://docs.google.com/document/d/1lUrYbJNUuQ7u2q6QDXBEBv45kj0h-41a8HM3pRVcmj8/edit?usp=sharing`} className="w-48 aspect-square bg-white/90 rounded-lg grid place-items-center shadow-md hover:shadow-2xl cursor-pointer" key={10}>
+            </a>
             </div>
         </div>
     );
