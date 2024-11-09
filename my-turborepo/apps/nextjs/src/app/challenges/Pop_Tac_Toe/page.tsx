@@ -14,7 +14,10 @@ export default function Challenge() {
 
       <div className="bg-white/90 rounded-lg border-4 p-4">
 
-        <Title>
+        <a className="px-4 py-3 border-2" href="/challenges">Back</a>
+
+
+        <Title className="mt-6">
           Pop Tac Toe
         </Title>
 
@@ -187,6 +190,10 @@ export default function Challenge() {
           <br/><br/>
           After the round robin tournament has concluded, the top n agents in terms of wins will compete in a double elimination tournament. The agents will be paired by seed (ex. Seed 1 plays seed n). They will play twice, once as player one and once as player two. If a tiebreaker is needed, it will go to the higher seed. This final tournament will determine the first, second, and third place winners. 
         </Paragraph>
+
+        <div className="flex items-center justify-center pt-6">
+          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://drive.google.com/drive/folders/1i73nDhObfPq6-oI3DphWMRaYwgbGUUAz?usp=sharing" target="_blank">Challenge Data</a>
+        </div>
 
       </div>
 

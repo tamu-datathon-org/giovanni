@@ -58,9 +58,7 @@ export default function Challenge() {
                 ]}
                 />
                 <div className="flex items-center justify-center pt-6">
-                    <Button className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4">
-                        <a href="https://revesriddles.com/" target="_blank">Go to Challenge</a>
-                    </Button>
+                        <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center" href="https://revesriddles.com/" target="_blank">Go to Challenge</a>
                 </div>
 
             </div>
