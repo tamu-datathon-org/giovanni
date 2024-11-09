@@ -29,7 +29,7 @@ export default function CapitalOnePage() {
                 </Heading>
                 <Paragraph>
                     <Bullet items={[
-                        "$250 Amazon Gift Card for first place"
+                        "$250 Amazon Gift Card for each member 0f first place"
                     ]} />
                 </Paragraph>
             </div>
