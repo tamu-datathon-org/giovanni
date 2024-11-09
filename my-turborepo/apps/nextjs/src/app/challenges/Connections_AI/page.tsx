@@ -20,9 +20,9 @@ export default function ConnectionsPage() {
                     Connections AI Data
                 </Heading>
                 <Paragraph>
-                    <Link href={'https://drive.google.com/drive/u/2/folders/1kf7Wc88U3JIz_M-v0KZv2ao-v2pyDBru'}>
+                    <a className= "underline text-blue-600" href={'https://drive.google.com/drive/u/2/folders/1kf7Wc88U3JIz_M-v0KZv2ao-v2pyDBru'}>
                     Link to Connections
-                    </Link>
+                    </a>
                 </Paragraph>
 
                 <Heading>
