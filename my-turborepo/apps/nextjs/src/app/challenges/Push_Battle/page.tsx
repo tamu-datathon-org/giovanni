@@ -206,100 +206,6 @@ export default function Challenge() {
           "https://www.lancaster.ac.uk/stor-i-student-sites/jordan-j-hood/2021/04/18/reinforcement-learning-the-end-game/"
         ]}
         />
-        <Heading>Submission</Heading>
-        Users will submit their model and all code in a zip file called
-        agent.zip. We will provide starter code for how to run your agent. Your
-        agent will use a Flask application to send and receive moves from the
-        server. It will receive moves from a function called receive_move, and
-        it will send moves from a function called send_move. The receiving
-        function will have the agent receive a board state in the form of a 2D
-        array. The sending function will have the agent send their move.
-        <br />
-        <br />
-        <b>Webhooks</b>
-        <pre>
-          "GET /"
-          <br />
-          &#123;
-          <br />
-          "Team": "&lt;TEAM_NAME&gt;",
-          <br />
-          "Agent": "&lt;AGENT_NAME&gt;"
-          <br />
-          &#125;
-        </pre>
-        <pre>
-          <br />
-          <br />
-          "POST /start"
-          <br />
-          &#123;
-          <br />
-          "game": "&lt;GAME_ID&gt;",
-          <br />
-          "turn": "&lt;TURN_NO&gt;"
-          <br />
-          "board": "[[]]"
-          <br />
-          &#125;
-        </pre>
-        <br />
-        <br />
-        <pre>
-          "POST /move"
-          <br />
-          &#123;
-          <br />
-          "move_row": "x",
-          <br />
-          "move_col": "y"
-          <br />
-          &#125;
-        </pre>
-        <br />
-        <br />
-        <pre>
-          "POST /end"
-          <br />
-          &#123;
-          <br />
-          "game": "&lt;GAME_ID&gt;",
-          <br />
-          "turn": "&lt;TURN_NO&gt;"
-          <br />
-          "board": "[[]]"
-          <br />
-          &#125;
-        </pre>
-        <Heading>Testing</Heading>
-        <Paragraph>
-          There will be a testing api provided at this endpoint: /test. By
-          sending a POST /start request to the endpoint, it will create a game
-          with your agent. This is a test game, and the opponent will play
-          random valid moves. This environment will allow you to see if your
-          model makes any incorrect moves or goes over the time constraint.
-          <br />
-          <br />
-          Example: Initialize a test game with POST /test/start The game will
-          then proceed with your agent sending moves via send_move() and
-          receiving moves via receive_move()
-        </Paragraph>
-        <Heading>Grading</Heading>
-        <Paragraph>
-          After submitting, your agent(s) will be placed in a pool where a round
-          robin tournament will take place. Each agent will play every other
-          agent twice, once as player one and once as player two. Wins and
-          losses will be tallied for each agent throughout the course of the
-          round robin.
-          <br />
-          <br />
-          After the round robin tournament has concluded, the top n agents in
-          terms of wins will compete in a double elimination tournament. The
-          agents will be paired by seed (ex. Seed 1 plays seed n). They will
-          play twice, once as player one and once as player two. If a tiebreaker
-          is needed, it will go to the higher seed. This final tournament will
-          determine the first, second, and third place winners.
-        </Paragraph>
         <Heading>Prizes!!!</Heading>
         <Prizes
           prizes={[
@@ -308,29 +214,6 @@ export default function Challenge() {
             { name: "Fujifilm Instax Mini", img_url: "/prizes/polaroid.webp" },
           ]}
         />
-        <div className="flex flex-col items-center justify-center gap-2 pt-6">
-          <a
-            className="compStyling w-1/4 border border-black bg-[#f5f5f5] text-center text-black hover:bg-[#e4e3e4] hover:text-black"
-            href="https://cdn.discordapp.com/attachments/1020473812422250606/1304874384825126963/Push_Battle_public-20241109T182246Z-001.zip?ex=6730fa78&is=672fa8f8&hm=c71b4a5f3479782d5a03e8bc8bfd08f6eba955c5371d94a8f2b832b4e5c85ee5&"
-            target="_blank"
-          >
-            Challenge Data
-          </a>
-          <a
-            className="compStyling w-1/4 border border-black bg-[#f5f5f5] text-center text-black hover:bg-[#e4e3e4] hover:text-black"
-            href="https://www.youtube.com/watch?v=3trBRh9PEmM"
-            target="_blank"
-          >
-            Running Push Battle Locally
-          </a>
-          <a
-            className="compStyling w-1/4 border border-black bg-[#f5f5f5] text-center text-black hover:bg-[#e4e3e4] hover:text-black"
-            href="https://www.youtube.com/watch?v=x5Obcmm9IN4"
-            target="_blank"
-          >
-            Push Battle Rules Video
-          </a>
-        </div>
       </div>
     </div>
   );

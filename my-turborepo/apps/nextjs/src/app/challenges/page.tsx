@@ -7,7 +7,6 @@ export default function Challenge() {
     const challenges = [
         "Push Battle",
         "Connections AI",
-        "SQL Game",
         "Rev's Riddles",
         "Roni's Challenge",
         "Capital One",
