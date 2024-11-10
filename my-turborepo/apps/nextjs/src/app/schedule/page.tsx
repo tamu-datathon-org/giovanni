@@ -185,7 +185,7 @@ const events: Event[] = [
     name: "TAMIDs Challenge Submission Closes",
     startDate: new Date("2024-11-10T11:15:00"),
     endDate: new Date("2024-11-10T11:30:00"),
-    description: "Deadline to submit your projects for Baker Hughes Challenge.",
+    description: "Deadline to submit your projects for TAMIDs challenge.",
     location: "MSC Bethancourt Ballroom",
   },
   {
