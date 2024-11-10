@@ -45,7 +45,7 @@ const events: Event[] = [
     id: 3,
     name: "Hacking Starts",
     startDate: new Date("2024-11-09T11:30:00"),
-    endDate: new Date("2024-11-09T23:30:00"),
+    endDate: new Date("2024-11-09T11:30:00"),
     description: "Let the hacking begin!",
     location: "MSC Bethancourt Ballroom",
   },
@@ -147,7 +147,7 @@ const events: Event[] = [
   {
     id: 16,
     name: "Dinner - Roni's",
-    startDate: new Date("2024-11-09T19:00:00"),
+    startDate: new Date("2024-11-09T19:15:00"),
     endDate: new Date("2024-11-09T20:00:00"),
     description: "Dinner provided by Roni's.",
     location: "MSC Bethancourt Ballroom",
@@ -182,6 +182,14 @@ const events: Event[] = [
   },
   {
     id: 20,
+    name: "Baker Hughes Challenge Submission Closes",
+    startDate: new Date("2024-11-10T11:15:00"),
+    endDate: new Date("2024-11-10T11:30:00"),
+    description: "Deadline to submit your projects for Baker Hughes Challenge.",
+    location: "MSC Bethancourt Ballroom",
+  },
+  {
+    id: 21,
     name: "Lunch - Panda Express",
     startDate: new Date("2024-11-10T12:30:00"),
     endDate: new Date("2024-11-10T13:00:00"),
@@ -189,7 +197,7 @@ const events: Event[] = [
     location: "MSC Bethancourt Ballroom",
   },
   {
-    id: 21,
+    id: 22,
     name: "Submissions Close",
     startDate: new Date("2024-11-10T13:00:00"),
     endDate: new Date("2024-11-10T13:00:00"),
@@ -197,7 +205,15 @@ const events: Event[] = [
     location: "MSC Bethancourt Ballroom",
   },
   {
-    id: 22,
+    id: 23,
+    name: "Judging Starts",
+    startDate: new Date("2024-11-10T13:00:00"),
+    endDate: new Date("2024-11-10T13:00:00"),
+    description: "Judging for Capital One and Roni's Challenges starts. Logistics TBA",
+    location: "MSC Bethancourt Ballroom",
+  },
+  {
+    id: 24,
     name: "Typing Contest Minievent",
     startDate: new Date("2024-11-10T14:00:00"),
     endDate: new Date("2024-11-10T15:00:00"),
@@ -205,7 +221,15 @@ const events: Event[] = [
     location: "MSC 2406A",
   },
   {
-    id: 23,
+    id: 25,
+    name: "Judging Concludes",
+    startDate: new Date("2024-11-10T15:00:00"),
+    endDate: new Date("2024-11-10T15:00:00"),
+    description: "Judging for Capital One and Roni's Challenges ends. Other challenges will be graded.",
+    location: "MSC Bethancourt Ballroom",
+  },
+  {
+    id: 26,
     name: "Closing Ceremony",
     startDate: new Date("2024-11-10T15:00:00"),
     endDate: new Date("2024-11-10T16:00:00"),
@@ -214,9 +238,9 @@ const events: Event[] = [
     location: "MSC Bethancourt Ballroom",
   },
   {
-    id: 24,
+    id: 27,
     name: "T-Shirt Pickup",
-    startDate: new Date("2024-11-10T17:00:00"),
+    startDate: new Date("2024-11-10T:00:00"),
     endDate: new Date("2024-11-10T17:00:00"),
     description: "Pick up your event T-shirt.",
     location: "MSC Bethancourt Ballroom",
@@ -324,7 +348,7 @@ const SchedulePage: React.FC = () => {
         >
           <WindowContainer
             isOpen={true}
-            openFunc={() => {}}
+            openFunc={() => { }}
             borderGradientStart="#34a4eb"
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
@@ -365,7 +389,7 @@ const SchedulePage: React.FC = () => {
         >
           <WindowContainer
             isOpen={true}
-            openFunc={() => {}}
+            openFunc={() => { }}
             borderGradientStart="#34a4eb"
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
@@ -422,7 +446,7 @@ const SchedulePage: React.FC = () => {
         >
           <WindowContainer
             isOpen={true}
-            openFunc={() => {}}
+            openFunc={() => { }}
             borderGradientStart="#34a4eb"
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
@@ -444,14 +468,13 @@ const SchedulePage: React.FC = () => {
                   .map((event) => (
                     <div
                       key={event.id}
-                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${
-                        new Date() > event.endDate
-                          ? "bg-gray-200 text-gray-500 line-through" // Entire div with line-through for past events
-                          : new Date() >= event.startDate &&
-                              new Date() <= event.endDate
-                            ? "border-blue-500 font-bold text-blue-500"
-                            : "bg-[#f5f5f5] text-black"
-                      } hover:bg-[#e4e3e4]`}
+                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${new Date() > event.endDate
+                        ? "bg-gray-200 text-gray-500 line-through" // Entire div with line-through for past events
+                        : new Date() >= event.startDate &&
+                          new Date() <= event.endDate
+                          ? "border-blue-500 font-bold text-blue-500"
+                          : "bg-[#f5f5f5] text-black"
+                        } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
                       <h3 className="text-sm font-semibold sm:text-base md:text-lg">
@@ -475,14 +498,13 @@ const SchedulePage: React.FC = () => {
                   .map((event) => (
                     <div
                       key={event.id}
-                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${
-                        new Date() > event.endDate
-                          ? "bg-gray-200 text-gray-500"
-                          : new Date() >= event.startDate &&
-                              new Date() <= event.endDate
-                            ? "border-blue-500 font-bold text-blue-500"
-                            : "bg-[#f5f5f5] text-black"
-                      } hover:bg-[#e4e3e4]`}
+                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${new Date() > event.endDate
+                        ? "bg-gray-200 text-gray-500"
+                        : new Date() >= event.startDate &&
+                          new Date() <= event.endDate
+                          ? "border-blue-500 font-bold text-blue-500"
+                          : "bg-[#f5f5f5] text-black"
+                        } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
                       <h3
