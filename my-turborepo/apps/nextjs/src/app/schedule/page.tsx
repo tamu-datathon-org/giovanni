@@ -199,8 +199,8 @@ const events: Event[] = [
   {
     id: 22,
     name: "Submissions Close",
-    startDate: new Date("2024-11-10T12:00:00"),
-    endDate: new Date("2024-11-10T12:00:00"),
+    startDate: new Date("2024-11-10T13:00:00"),
+    endDate: new Date("2024-11-10T13:00:00"),
     description: "Deadline to submit your projects.",
     location: "MSC Bethancourt Ballroom",
   },
