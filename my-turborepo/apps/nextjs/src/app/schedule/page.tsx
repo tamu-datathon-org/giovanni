@@ -182,7 +182,7 @@ const events: Event[] = [
   },
   {
     id: 20,
-    name: "Baker Hughes Challenge Submission Closes",
+    name: "TAMIDs Challenge Submission Closes",
     startDate: new Date("2024-11-10T11:15:00"),
     endDate: new Date("2024-11-10T11:30:00"),
     description: "Deadline to submit your projects for Baker Hughes Challenge.",
