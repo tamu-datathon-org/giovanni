@@ -1,7 +1,4 @@
-import Link from "next/link";
-
 import Title from "~/app/challenges/helpers/Title";
-import Bold from "../helpers/Bold";
 import Bullet from "../helpers/Bullet";
 import Heading from "../helpers/Heading";
 import Paragraph from "../helpers/Paragraph";
