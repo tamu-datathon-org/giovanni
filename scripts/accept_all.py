@@ -4,6 +4,10 @@ from psycopg import sql
 from dotenv import load_dotenv
 load_dotenv()
 
+'''
+Accesses the database to accept all pending applications.
+'''
+
 # Connect to the PostgreSQL database
 try:
     connection = psycopg.connect(os.getenv("POSTGRES_URL"))
