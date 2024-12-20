@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="PostgreSQL (AWS Wrapper)" uuid="ca1e2274-d7f2-4d7c-837a-7216452a8a80">
+      <driver-ref>postgresql.aws_wrapper</driver-ref>
+      <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>software.amazon.jdbc.Driver</jdbc-driver>
+      <jdbc-url>postgres://default:Qe61TYpVcmwz@ep-nameless-flower-a44hkadf.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>
