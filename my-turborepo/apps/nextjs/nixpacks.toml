@@ -1,0 +1,11 @@
+[phases.setup]
+nixPath = ['...', 'nodejs', 'pnpm']
+
+[phases.install]
+cmds = ['pnpm install']
+
+[phases.build]
+cmds = ['pnpm build']
+
+[phases.start]
+cmds = ['pnpm dlx turbo run start']
