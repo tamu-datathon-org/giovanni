@@ -34,9 +34,6 @@ COPY --from=builder /app/out/json/ .
 RUN pnpm install
 
 # Build the project
-ARG SKIP_ENV_VALIDATION
-ENV SKIP_ENV_VALIDATION=$SKIP_ENV_VALIDATION
-
 ARG TURBO_TEAM
 ENV TURBO_TEAM=$TURBO_TEAM
 
@@ -44,7 +41,9 @@ ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
 COPY --from=builder /app/out/full/ .
+RUN echo "SKIP_ENV_VALIDATION=true" > .env
 RUN pnpm turbo run build
+RUN rm .env
 
 FROM base AS runner
 WORKDIR /app
