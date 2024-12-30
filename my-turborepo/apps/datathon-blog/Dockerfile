@@ -1,13 +1,4 @@
 FROM node:22-alpine AS base
-ARG SKIP_ENV_VALIDATION
-ENV SKIP_ENV_VALIDATION=$SKIP_ENV_VALIDATION
-
-ARG TURBO_TEAM
-ENV TURBO_TEAM=$TURBO_TEAM
-
-ARG TURBO_TOKEN
-ENV TURBO_TOKEN=$TURBO_TOKEN
-
 
 FROM base AS builder
 RUN npm install -g pnpm
@@ -43,6 +34,15 @@ COPY --from=builder /app/out/json/ .
 RUN pnpm install
 
 # Build the project
+ARG SKIP_ENV_VALIDATION
+ENV SKIP_ENV_VALIDATION=$SKIP_ENV_VALIDATION
+
+ARG TURBO_TEAM
+ENV TURBO_TEAM=$TURBO_TEAM
+
+ARG TURBO_TOKEN
+ENV TURBO_TOKEN=$TURBO_TOKEN
+
 COPY --from=builder /app/out/full/ .
 RUN pnpm turbo run build
 
