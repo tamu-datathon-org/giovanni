@@ -1,3 +1,4 @@
+ARG SKIP_ENV_VALIDATION
 FROM node:22-alpine AS base
 
 FROM base AS builder
@@ -35,7 +36,6 @@ RUN pnpm install
 
 # Build the project
 COPY --from=builder /app/out/full/ .
-ENV SKIP_ENV_VALIDATION=true
 RUN pnpm turbo run build
 
 FROM base AS runner
