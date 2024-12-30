@@ -22,6 +22,7 @@ RUN turbo prune @vanni/datathon-blog --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
+RUN npm install -g pnpm
 RUN apk update
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
