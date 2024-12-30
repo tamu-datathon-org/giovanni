@@ -18,7 +18,7 @@ COPY . .
 
 # Generate a partial monorepo with a pruned lockfile for a target workspace.
 # Assuming "web" is the name entered in the project's package.json: { name: "web" }
-RUN turbo prune datathon-blog --docker
+RUN turbo prune @vanni/datathon-blog --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
