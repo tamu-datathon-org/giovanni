@@ -26,6 +26,7 @@ RUN npm install -g pnpm
 RUN apk update
 RUN apk add --no-cache libc6-compat
 RUN apk add --no-cache python3
+RUN apk --no-cache add build-base
 WORKDIR /app
 
 # First install the dependencies (as they change less often)
