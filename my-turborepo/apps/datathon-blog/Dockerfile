@@ -1,4 +1,4 @@
-FROM nikolaik/python-nodejs:latest AS base
+FROM node:22-alpine AS base
 
 FROM base AS builder
 RUN npm install -g pnpm
@@ -25,6 +25,7 @@ FROM base AS installer
 RUN npm install -g pnpm
 RUN apk update
 RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache python3
 WORKDIR /app
 
 # First install the dependencies (as they change less often)
