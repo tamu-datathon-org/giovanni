@@ -256,6 +256,7 @@ export default function HomePage() {
                 <h3>
                   {/* Memorial Student Center - Bethancourt Ballroom (MSC 2300) */}
                   We are recruiting for new members! If you are interested in joining our team, please fill out the form below.
+                  
                 </h3>
                 <h3>Applications close on February 6th</h3>
                 {/* <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
