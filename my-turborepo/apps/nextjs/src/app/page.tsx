@@ -88,7 +88,7 @@ export default function HomePage() {
         <div className="flex h-screen flex-col items-center justify-center">
           <div className="flex h-full w-full items-center justify-center lg:relative ">
             {/* Prize Window */}
-            <DraggableComponent
+            {/* <DraggableComponent
                 onFocus={setActiveWindow}
                 name="Prizes"
                 focus={activeWindow}
@@ -139,12 +139,11 @@ export default function HomePage() {
                       </motion.div>
                   ))}
                 </div>
-                {/* </div> */}
               </WindowContainer>
-            </DraggableComponent>
+            </DraggableComponent> */}
 
             {/* Sponsor Window */}
-            <DraggableComponent
+            {/* <DraggableComponent
                 onFocus={setActiveWindow}
                 name="Sponsor"
                 focus={activeWindow}
@@ -159,7 +158,6 @@ export default function HomePage() {
                 >
                   Our Sponsors!
                 </motion.h1>
-                {/* <div className="w-[200px] h-[100px]"> Set a fixed size for the carousel container */}
                 <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 md:grid-cols-4">
                   {logos.map((logo, index) => (
                       <motion.div
@@ -183,12 +181,11 @@ export default function HomePage() {
                       </motion.div>
                   ))}
                 </div>
-                {/* </div> */}
               </WindowContainer>
-            </DraggableComponent>
+            </DraggableComponent> */}
 
             {/* FAQ Component */}
-            <DraggableComponent
+            {/* <DraggableComponent
                 onFocus={setActiveWindow}
                 name="FAQ"
                 focus={activeWindow}
@@ -197,10 +194,10 @@ export default function HomePage() {
               <WindowContainer isOpen={faqOpen} openFunc={setFaqOpen}>
                 <FAQComponent/>
               </WindowContainer>
-            </DraggableComponent>
+            </DraggableComponent> */}
 
             {/* Apply Page */}
-            <DraggableComponent
+            {/* <DraggableComponent
                 onFocus={setActiveWindow}
                 name="Apply"
                 focus={activeWindow}
@@ -226,7 +223,7 @@ export default function HomePage() {
                   .animate-color-change {
                     animation: color-change 2s ease-in-out infinite;
                   }
-                `}</style>
+                `}</style> */}
 
                 {/*<h1 className="animate-color-change m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">*/}
                 {/*  Applications are open!!!*/}
@@ -237,14 +234,14 @@ export default function HomePage() {
                 {/*  </Link>*/}
                 {/*</Button>*/}
 
-                <h1 className="m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">
+                {/* <h1 className="m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">
                   Applications have closed.
                 </h1>
                 <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
                   <Link href="/apply">Check status</Link>
                 </Button>
               </WindowContainer>
-            </DraggableComponent>
+            </DraggableComponent> */}
 
             {/* Welcome Component */}
             <DraggableComponent
@@ -257,9 +254,10 @@ export default function HomePage() {
                 <TAMUy2k/>
                 <h1 className="mb-4 text-4xl">Welcome!!!</h1>
                 <h3>
-                  Memorial Student Center - Bethancourt Ballroom (MSC 2300)
+                  {/* Memorial Student Center - Bethancourt Ballroom (MSC 2300) */}
+                  We are recruiting for new members! If you are interested in joining our team, please fill out the form below.
                 </h3>
-                <h3>Nov 9-10</h3>
+                <h3>Applications close on February 6th</h3>
                 {/* <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
                     <Link href="/apply/application">Click here to apply now.</Link>
                   </Button> */}
@@ -301,15 +299,15 @@ export default function HomePage() {
 
           <IconList
             welcFunc={setWelcomeOpen}
-            faqFunc={setFaqOpen}
-            sponFunc={setSponsorOpen}
-            prizeFunc={setPrizesOpen}
+            // faqFunc={setFaqOpen}
+            // sponFunc={setSponsorOpen}
+            // prizeFunc={setPrizesOpen}
             socialsFunc={setSocialsOpen}
             setFocus={setActiveWindow}
-            helpQueueFunc={setHelpQueueOpen}
+            // helpQueueFunc={setHelpQueueOpen}
 
-            scheduleFunc={setScheduleOpen}
-            challengesFunc={setChallenegesOpen}
+            // scheduleFunc={setScheduleOpen}
+            // challengesFunc={setChallenegesOpen}
             />
         </div>
       </div>
