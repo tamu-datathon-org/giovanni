@@ -29,13 +29,13 @@ interface IconListProps {
 
 const routes: Icon[] = [
   { name: "Welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
-  { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
-  { name: "Sponsor", route: "/", image: "/Pixel_WorldIcon.png" },
-  { name: "Prizes", route: "/", image: "/Pixel_CDIcon.png" },
-  { name: "Schedule", route: "/schedule", image: "/Pixel_PolarBear.png" },
+  // { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
+  // { name: "Sponsor", route: "/", image: "/Pixel_WorldIcon.png" },
+  // { name: "Prizes", route: "/", image: "/Pixel_CDIcon.png" },
+  // { name: "Schedule", route: "/schedule", image: "/Pixel_PolarBear.png" },
   { name: "Socials", route: "/socials", image: "/Pixel_FileIcon.png" },
-  { name: "Challenges", route: "/challenges", image: "/Pixel_EmailIcon.png"},
-  { name: "Help Queue", route: "https://helpqueue.tamudatathon.com/", image: "/Pixel_RecycleIcon.png" }
+  // { name: "Challenges", route: "/challenges", image: "/Pixel_EmailIcon.png"},
+  // { name: "Help Queue", route: "https://helpqueue.tamudatathon.com/", image: "/Pixel_RecycleIcon.png" }
 ];
 const numPerRow = 6;
 const IconList: React.FC<IconListProps> = ({
