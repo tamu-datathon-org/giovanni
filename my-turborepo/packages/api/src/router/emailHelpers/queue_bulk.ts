@@ -1,8 +1,5 @@
-import {
-  SendMessageBatchCommand,
-  SQSClient,
-  SQSClientConfig,
-} from "@aws-sdk/client-sqs";
+import type { SQSClientConfig } from "@aws-sdk/client-sqs";
+import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
 
 // This function adds an email to the AWS SQS queue
 // The actual sending is done with SQS, lambda, and SES
@@ -38,7 +35,7 @@ export async function queueBulkEmail(
   }
 
   const senderEmail = process.env.AWS_EMAIL_USER;
-  let failed = [];
+  const failed = [];
   let successCount = 0;
 
   for (let i = 0; i < emails.length; i += maxBatchSize) {
@@ -63,7 +60,7 @@ export async function queueBulkEmail(
     const response = await client.send(command);
 
     // If there are any failed messages, add them to the failed list
-    if (response?.Failed && response.Failed.length > 0) {
+    if (response.Failed && response.Failed.length > 0) {
       console.log("Failed to send messages: ", response.Failed);
       failed.push(...response.Failed.map((f) => f.Message));
       successCount += batch.length - response.Failed.length;

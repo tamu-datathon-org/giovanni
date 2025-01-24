@@ -4,9 +4,12 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 
 import WindowContainer from "../_components/WindowContainer";
+
 import "../_components/customCss.scss";
-import DraggableComponent from "../_components/DraggableComponent";
+
 import Image from "next/image";
+
+import DraggableComponent from "../_components/DraggableComponent";
 
 interface Event {
   id: number;
@@ -203,7 +206,8 @@ const events: Event[] = [
     name: "Judging Starts",
     startDate: new Date("2024-11-10T13:00:00"),
     endDate: new Date("2024-11-10T13:00:00"),
-    description: "Judging for Capital One and Roni's Challenges starts. Logistics TBA",
+    description:
+      "Judging for Capital One and Roni's Challenges starts. Logistics TBA",
     location: "MSC Bethancourt Ballroom",
   },
   {
@@ -219,7 +223,8 @@ const events: Event[] = [
     name: "Judging Concludes",
     startDate: new Date("2024-11-10T15:00:00"),
     endDate: new Date("2024-11-10T15:00:00"),
-    description: "Judging for Capital One and Roni's Challenges ends. Other challenges will be graded.",
+    description:
+      "Judging for Capital One and Roni's Challenges ends. Other challenges will be graded.",
     location: "MSC Bethancourt Ballroom",
   },
   {
@@ -282,13 +287,18 @@ const getNextEvent = () => {
 
 const getCurrentEvent = () => {
   const now = new Date();
-  return events.find((event) => now >= event.startDate && now <= event.endDate) || null;
+  return (
+    events.find((event) => now >= event.startDate && now <= event.endDate) ||
+    null
+  );
 };
 
 const LivePage: React.FC = () => {
   const [nextEvent, setNextEvent] = useState<Event | null>(getNextEvent());
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [currentEvent, setCurrentEvent] = useState<Event | null>(getCurrentEvent());
+  const [currentEvent, setCurrentEvent] = useState<Event | null>(
+    getCurrentEvent(),
+  );
   const timeLeft = useCountdown(nextEvent ? nextEvent.startDate : new Date());
   const [focusedWindow, setFocusedWindow] = useState<string>("");
 
@@ -296,7 +306,8 @@ const LivePage: React.FC = () => {
     const intervalId = setInterval(() => {
       const newNextEvent = getNextEvent();
       const newCurrentEvent = getCurrentEvent();
-      if (newNextEvent && newNextEvent !== nextEvent) setNextEvent(newNextEvent);
+      if (newNextEvent && newNextEvent !== nextEvent)
+        setNextEvent(newNextEvent);
       if (newCurrentEvent !== currentEvent) setCurrentEvent(newCurrentEvent);
     }, 10000);
 
@@ -309,7 +320,7 @@ const LivePage: React.FC = () => {
 
   return (
     <div
-      className="fixed inset-0 overflow-hidden touch-none"
+      className="fixed inset-0 touch-none overflow-hidden"
       style={{ height: "100vh" }}
     >
       <div className="container mx-auto px-4 py-8">
@@ -330,25 +341,29 @@ const LivePage: React.FC = () => {
         >
           <WindowContainer
             isOpen={true}
-            openFunc={() => { }}
+            openFunc={() => {}}
             borderGradientStart="#34a4eb"
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
           >
-            <div className="flex tabletRange:w-[250px] h-[175px] w-[190px] flex-col items-center justify-between p-4 sm:h-[150px] sm:w-[350px] md:h-[150px] md:w-[500px] lg:h-[200px] lg:w-[400px] xl:h-[200px] xl:w-[600px]">
-              <h2 className="mb-2 text-center text-md font-bold text-black sm:text-lg md:text-2xl lg:text-3xl tabletRange:text-sm">
-                {nextEvent ? `Countdown to ${nextEvent.name}` : "No upcoming events"}
+            <div className="tabletRange:w-[250px] flex h-[175px] w-[190px] flex-col items-center justify-between p-4 sm:h-[150px] sm:w-[350px] md:h-[150px] md:w-[500px] lg:h-[200px] lg:w-[400px] xl:h-[200px] xl:w-[600px]">
+              <h2 className="text-md tabletRange:text-sm mb-2 text-center font-bold text-black sm:text-lg md:text-2xl lg:text-3xl">
+                {nextEvent
+                  ? `Countdown to ${nextEvent.name}`
+                  : "No upcoming events"}
               </h2>
-              <h3 className="text-xs font-bold text-black sm:text-lg md:text-xl lg:text-2xl tabletRange:text-sm">
-                {nextEvent ? format(nextEvent.startDate, "MMMM d, yyyy, h:mm a") : ""}
+              <h3 className="tabletRange:text-sm text-xs font-bold text-black sm:text-lg md:text-xl lg:text-2xl">
+                {nextEvent
+                  ? format(nextEvent.startDate, "MMMM d, yyyy, h:mm a")
+                  : ""}
               </h3>
-              <div className="flex justify-center space-x-2 sm:space-x-3 md:space-x-4 tabletRange:text-xs">
+              <div className="tabletRange:text-xs flex justify-center space-x-2 sm:space-x-3 md:space-x-4">
                 {Object.entries(timeLeft).map(([unit, value]) => (
                   <div key={unit} className="text-center">
-                    <div className="text-base font-bold text-black sm:text-lg md:text-2xl lg:text-3xl tabletRange:text-sm">
+                    <div className="tabletRange:text-sm text-base font-bold text-black sm:text-lg md:text-2xl lg:text-3xl">
                       {value}
                     </div>
-                    <div className="text-xs uppercase text-black sm:text-sm md:text-base lg:text-lg tabletRange:text-sm">
+                    <div className="tabletRange:text-sm text-xs uppercase text-black sm:text-sm md:text-base lg:text-lg">
                       {unit}
                     </div>
                   </div>
@@ -363,26 +378,29 @@ const LivePage: React.FC = () => {
           onFocus={setFocusedWindow}
           name="currentEvent"
           focus={focusedWindow}
-          className="absolute right-0 top-20 sm:left-8 sm:top-72 md:left-[90px] md:top-[375px] ipadRange:top-[320px] tabletRange:left-5"
+          className="ipadRange:top-[320px] tabletRange:left-5 absolute right-0 top-20 sm:left-8 sm:top-72 md:left-[90px] md:top-[375px]"
         >
           <WindowContainer
             isOpen={true}
-            openFunc={() => { }}
+            openFunc={() => {}}
             borderGradientStart="#34a4eb"
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
           >
-            <div className="flex h-[220px] w-[175px] flex-col items-center justify-between p-4 sm:h-[150px] sm:w-[300px] md:h-[150px] md:w-[500px] lg:h-[200px] lg:w-[520px] xl:h-[300px] xl:w-[700px] h700:w-[150px] ipadRange:w-[570px] tabletRange:w-[190px]">
+            <div className="h700:w-[150px] ipadRange:w-[570px] tabletRange:w-[190px] flex h-[220px] w-[175px] flex-col items-center justify-between p-4 sm:h-[150px] sm:w-[300px] md:h-[150px] md:w-[500px] lg:h-[200px] lg:w-[520px] xl:h-[300px] xl:w-[700px]">
               {currentEvent ? (
                 <>
-                  <h2 className="mb-2 text-center text-md font-bold text-black sm:text-lg md:text-2xl lg:text-3xl tabletRange:text-sm">
+                  <h2 className="text-md tabletRange:text-sm mb-2 text-center font-bold text-black sm:text-lg md:text-2xl lg:text-3xl">
                     Current Event: {currentEvent.name}
                   </h2>
                   <p className="text-sm font-medium text-black sm:text-sm md:text-base lg:text-lg">
-                    {format(currentEvent.startDate, "h:mm a")} - {format(currentEvent.endDate, "h:mm a")}
+                    {format(currentEvent.startDate, "h:mm a")} -{" "}
+                    {format(currentEvent.endDate, "h:mm a")}
                   </p>
-                  <p className="text-sm text-black sm:text-sm md:text-base lg:text-lg">{currentEvent.description}</p>
-                  <p className="text-sm text-black font-semibold sm:text-sm md:text-base lg:text-lg">
+                  <p className="text-sm text-black sm:text-sm md:text-base lg:text-lg">
+                    {currentEvent.description}
+                  </p>
+                  <p className="text-sm font-semibold text-black sm:text-sm md:text-base lg:text-lg">
                     Location: {currentEvent.location}
                   </p>
                   <Image
@@ -395,13 +413,13 @@ const LivePage: React.FC = () => {
                 </>
               ) : (
                 <div>
-                  <h2 className="text-center text-xs font-bold text-blue-500 sm:text-lg md:text-2xl lg:text-3xl pt-4 tabletRange:text-sm">
+                  <h2 className="tabletRange:text-sm pt-4 text-center text-xs font-bold text-blue-500 sm:text-lg md:text-2xl lg:text-3xl">
                     No event currently happening! <br />
                     Check the countdown for our next one :D
                   </h2>
                   <Image
                     src="/Pixel_PolarBear.png"
-                    className="visible absolute -bottom-4 -right-5 tabletRange:w-[100px] "
+                    className="tabletRange:w-[100px] visible absolute -bottom-4 -right-5 "
                     width={150}
                     height={150}
                     alt="polar bear"
@@ -417,16 +435,16 @@ const LivePage: React.FC = () => {
           onFocus={setFocusedWindow}
           name="events"
           focus={focusedWindow}
-          className="absolute right-4 tabletRange:right-[10px] top-[270px] sm:right-8 sm:top-[340px] md:right-[60px] md:top-[120px] ipadRange:top-[500px] ipadproRange:top-[620px] tabletRange:top-[150px]"
+          className="tabletRange:right-[10px] ipadRange:top-[500px] ipadproRange:top-[620px] tabletRange:top-[150px] absolute right-4 top-[270px] sm:right-8 sm:top-[340px] md:right-[60px] md:top-[120px]"
         >
           <WindowContainer
             isOpen={true}
-            openFunc={() => { }}
+            openFunc={() => {}}
             borderGradientStart="#34a4eb"
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
           >
-            <div className="tabletRange:h-[300px] flex ipadproRange:w-[600px] h-[420px] w-[300px] flex-col items-center p-4 sm:h-[300px] sm:w-[300px] md:h-[450px] md:w-[400px] lg:h-[700px] lg:w-[420px] h700:h-[250px] ipadRange:h-[300px]">
+            <div className="tabletRange:h-[300px] ipadproRange:w-[600px] h700:h-[250px] ipadRange:h-[300px] flex h-[420px] w-[300px] flex-col items-center p-4 sm:h-[300px] sm:w-[300px] md:h-[450px] md:w-[400px] lg:h-[700px] lg:w-[420px]">
               <h2 className="mb-2 text-2xl font-semibold sm:mb-4 sm:text-3xl md:text-4xl lg:text-5xl">
                 Events!!!
               </h2>
@@ -434,27 +452,30 @@ const LivePage: React.FC = () => {
                 style={{ scrollbarWidth: "none", overflowY: "auto" }}
                 className="h-full w-full space-y-2 sm:max-h-[400px] md:max-h-[370px] lg:max-h-[700px]"
               >
-                <h2 className="mt-4 mb-2 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-2xl lg:text-3xl">
+                <h2 className="mb-2 mt-4 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-2xl lg:text-3xl">
                   Saturday
                 </h2>
                 {events
-                  .filter(event => event.startDate.getDay() === 6) // Saturday events
-                  .map(event => (
+                  .filter((event) => event.startDate.getDay() === 6) // Saturday events
+                  .map((event) => (
                     <div
                       key={event.id}
-                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${new Date() > event.endDate
-                        ? "bg-gray-200 text-gray-500 line-through" // Entire div with line-through for past events
-                        : new Date() >= event.startDate && new Date() <= event.endDate
-                          ? "border-blue-500 text-blue-500 font-bold"
-                          : "bg-[#f5f5f5] text-black"
-                        } hover:bg-[#e4e3e4]`}
+                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${
+                        new Date() > event.endDate
+                          ? "bg-gray-200 text-gray-500 line-through" // Entire div with line-through for past events
+                          : new Date() >= event.startDate &&
+                              new Date() <= event.endDate
+                            ? "border-blue-500 font-bold text-blue-500"
+                            : "bg-[#f5f5f5] text-black"
+                      } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
                       <h3 className="text-sm font-semibold sm:text-base md:text-lg">
                         {event.name}
                       </h3>
                       <p className="text-xs sm:text-sm">
-                        {format(event.startDate, "MMM d, yyyy, h:mm a")} - {format(event.endDate, "h:mm a")}
+                        {format(event.startDate, "MMM d, yyyy, h:mm a")} -{" "}
+                        {format(event.endDate, "h:mm a")}
                       </p>
                       <p className="text-sm font-semibold sm:text-base md:text-lg">
                         {event.location}
@@ -462,31 +483,36 @@ const LivePage: React.FC = () => {
                     </div>
                   ))}
 
-
-
-                <h2 className="mt-4 mb-2 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-2xl p-2 lg:text-3xl">
+                <h2 className="mb-2 mt-4 p-2 text-center text-lg font-bold sm:mb-3 sm:text-xl md:mb-4 md:text-2xl lg:text-3xl">
                   Sunday
                 </h2>
                 {events
-                  .filter(event => event.startDate.getDay() === 0) // Sunday events
-                  .map(event => (
+                  .filter((event) => event.startDate.getDay() === 0) // Sunday events
+                  .map((event) => (
                     <div
                       key={event.id}
-                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${new Date() > event.endDate
-                        ? "bg-gray-200 text-gray-500"
-                        : new Date() >= event.startDate && new Date() <= event.endDate
-                          ? "border-blue-500 text-blue-500 font-bold"
-                          : "bg-[#f5f5f5] text-black"
-                        } hover:bg-[#e4e3e4]`}
+                      className={`compStyling clickable-box w-full cursor-pointer rounded-lg border ${
+                        new Date() > event.endDate
+                          ? "bg-gray-200 text-gray-500"
+                          : new Date() >= event.startDate &&
+                              new Date() <= event.endDate
+                            ? "border-blue-500 font-bold text-blue-500"
+                            : "bg-[#f5f5f5] text-black"
+                      } hover:bg-[#e4e3e4]`}
                       onClick={() => handleEventClick(event)}
                     >
-                      <h3 className={`text-sm font-semibold sm:text-base md:text-lg`}>
+                      <h3
+                        className={`text-sm font-semibold sm:text-base md:text-lg`}
+                      >
                         {event.name}
                       </h3>
                       <p className="text-xs sm:text-sm">
-                        {format(event.startDate, "MMM d, yyyy, h:mm a")} - {format(event.endDate, "h:mm a")}
+                        {format(event.startDate, "MMM d, yyyy, h:mm a")} -{" "}
+                        {format(event.endDate, "h:mm a")}
                       </p>
-                      <p className={`text-sm font-semibold sm:text-base md:text-lg`}>
+                      <p
+                        className={`text-sm font-semibold sm:text-base md:text-lg`}
+                      >
                         {event.location}
                       </p>
                     </div>
@@ -505,16 +531,17 @@ const LivePage: React.FC = () => {
         >
           <WindowContainer
             isOpen={true}
-            openFunc={() => { }}
+            openFunc={() => {}}
             borderGradientStart="#34a4eb"
             borderGradientMiddle="#004c99"
             borderGradientEnd="#124c87"
           >
             <div className="flex h-[390px] w-[600px] flex-col items-center justify-between p-4">
-              <h2 className="mb-2 mt-2 text-center text-md font-bold text-black sm:text-lg md:text-2xl lg:text-3xl tabletRange:text-sm">
-                Join our Discord for important updates during the event and to join in on our minievents!
+              <h2 className="text-md tabletRange:text-sm mb-2 mt-2 text-center font-bold text-black sm:text-lg md:text-2xl lg:text-3xl">
+                Join our Discord for important updates during the event and to
+                join in on our minievents!
               </h2>
-              <div className="flex-row flex">
+              <div className="flex flex-row">
                 {/* Static Discord Logo */}
                 <Image
                   src="/Discord_bit.png" // Replace with the actual path to your Discord logo
@@ -542,23 +569,21 @@ const LivePage: React.FC = () => {
           </WindowContainer>
         </DraggableComponent>
 
-
         {/* Popup for Selected Event */}
         {selectedEvent && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-lg max-w-md w-full relative">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="relative w-full max-w-md rounded-lg bg-white p-6">
               <button
-                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+                className="absolute right-2 top-2 text-gray-600 hover:text-gray-800"
                 onClick={() => setSelectedEvent(null)}
               >
                 ✕
               </button>
-              <h2 className="text-2xl font-bold mb-4">
-                {selectedEvent.name}
-              </h2>
+              <h2 className="mb-4 text-2xl font-bold">{selectedEvent.name}</h2>
               <p className="mb-2">
                 <strong>Date:</strong>{" "}
-                {format(selectedEvent.startDate, "MMMM d, yyyy, h:mm a")} - {format(selectedEvent.endDate, "h:mm a")}
+                {format(selectedEvent.startDate, "MMMM d, yyyy, h:mm a")} -{" "}
+                {format(selectedEvent.endDate, "h:mm a")}
               </p>
               <p className="mb-2">
                 <strong>Location:</strong> {selectedEvent.location}

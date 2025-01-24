@@ -1,22 +1,39 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { adminProcedure, protectedProcedure } from "../trpc";
-import { getEmailsByLabelList } from "./email";
-import sendConfirmationEmails, { accepted_content, accepted_title, rejected_content, rejected_title } from "./emailHelpers/confirmation_emails";
-import { queueBulkEmail } from "./emailHelpers/queue_bulk";
-import { Application } from "@vanni/db/schema";
 import { count, sql } from "@vanni/db";
+import { Application } from "@vanni/db/schema";
+
+import { adminProcedure, protectedProcedure } from "../trpc";
 import { getBatchStatus, updateBatchStatus } from "./application";
+import { getEmailsByLabelList } from "./email";
+import sendConfirmationEmails, {
+  accepted_content,
+  accepted_title,
+  rejected_content,
+  rejected_title,
+} from "./emailHelpers/confirmation_emails";
+import { queueBulkEmail } from "./emailHelpers/queue_bulk";
 
 async function checkStatusEmails(
-  emailList: string[], failedList: (string | undefined)[], statusMap: Map<string, string>, ctx: any, statusField: string, newStatus: boolean
+  emailList: string[],
+  failedList: (string | undefined)[],
+  statusMap: Map<string, string>,
+  ctx: any,
+  statusField: string,
+  newStatus: boolean,
 ) {
   // Filter out all the failed emails
   const failedSet = new Set(failedList);
-  const successfulEmails: string[] = emailList.filter((email) => !failedSet.has(email));
+  const successfulEmails: string[] = emailList.filter(
+    (email) => !failedSet.has(email),
+  );
   let ids: string[] = [];
-  ids = ids.concat(successfulEmails.map((email) => statusMap.get(email)).filter((id): id is string => id !== undefined));
+  ids = ids.concat(
+    successfulEmails
+      .map((email) => statusMap.get(email))
+      .filter((id): id is string => id !== undefined),
+  );
 
   // Update all the batch status
   const batchStatus = await updateBatchStatus(ids, newStatus, ctx, statusField);
@@ -29,7 +46,7 @@ async function checkStatusEmails(
     });
   }
 
-  console.log("Status for " + ids.length + " emails updated")
+  console.log("Status for " + ids.length + " emails updated");
 }
 
 export const emailSendingRouter = {
@@ -49,7 +66,7 @@ export const emailSendingRouter = {
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      let emails = await getEmailsByLabelList(input.mailing_lists);
+      const emails = await getEmailsByLabelList(input.mailing_lists);
 
       const failed = await queueBulkEmail(
         emails,
@@ -72,25 +89,39 @@ export const emailSendingRouter = {
       };
     }),
   sendStatusEmails: adminProcedure
-    .input(z.object({
-      statusBatchSize: z.number().int().min(1).max(100).default(100),
-      emailBatchSize: z.number().int().min(1).max(10).default(7),
-    }))
+    .input(
+      z.object({
+        statusBatchSize: z.number().int().min(1).max(100).default(100),
+        emailBatchSize: z.number().int().min(1).max(10).default(7),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const { statusBatchSize, emailBatchSize } = input;
-      const applicationCountResult = await ctx.db.select({ count: count() }).from(Application);
+      const applicationCountResult = await ctx.db
+        .select({ count: count() })
+        .from(Application);
 
       if (applicationCountResult.length === 0) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Application count is undefined",
-        })
+        });
       }
 
       const applicationCount = applicationCountResult[0]?.count;
 
-      for (let i = 1; i <= Math.ceil(Number(applicationCount) / statusBatchSize); i++) {
-        const batch = await getBatchStatus(i, statusBatchSize, ctx, process.env.NEXT_PUBLIC_EVENT_NAME ?? "", true);
+      for (
+        let i = 1;
+        i <= Math.ceil(Number(applicationCount) / statusBatchSize);
+        i++
+      ) {
+        const batch = await getBatchStatus(
+          i,
+          statusBatchSize,
+          ctx,
+          process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
+          true,
+        );
         const emailMap = new Map<string, string>();
 
         const waitlistEmails = [];
@@ -127,7 +158,14 @@ export const emailSendingRouter = {
             emailBatchSize,
           );
 
-          checkStatusEmails(rejectedEmails, failedRejected, emailMap, ctx, "rejectedEmail", true);
+          checkStatusEmails(
+            rejectedEmails,
+            failedRejected,
+            emailMap,
+            ctx,
+            "rejectedEmail",
+            true,
+          );
           console.log("Updated Rejected emails for batch", i);
         }
 
@@ -140,7 +178,14 @@ export const emailSendingRouter = {
             emailBatchSize,
           );
 
-          checkStatusEmails(waitlistEmails, failedWaitlist, emailMap, ctx, "waitlistEmail", true);
+          checkStatusEmails(
+            waitlistEmails,
+            failedWaitlist,
+            emailMap,
+            ctx,
+            "waitlistEmail",
+            true,
+          );
 
           console.log("Updated Waitlist emails for batch", i);
         }
@@ -154,7 +199,14 @@ export const emailSendingRouter = {
             emailBatchSize,
           );
 
-          checkStatusEmails(acceptedEmails, failedAccepted, emailMap, ctx, "acceptedEmail", true);
+          checkStatusEmails(
+            acceptedEmails,
+            failedAccepted,
+            emailMap,
+            ctx,
+            "acceptedEmail",
+            true,
+          );
 
           console.log("Updated Accepted emails for batch", i);
         }
@@ -162,6 +214,6 @@ export const emailSendingRouter = {
 
       return {
         message: "Emails Successfully Queued!",
-      }
-    })
+      };
+    }),
 };

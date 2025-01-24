@@ -1,9 +1,9 @@
 "use client";
 
+import type { z } from "zod";
 import { Suspense } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 import { Button } from "@vanni/ui/button";
 import { Form } from "@vanni/ui/form";
@@ -29,23 +29,26 @@ export default function JankuryPage() {
   const sendStatus = api.emailSending.sendStatusEmails.useMutation();
 
   function handleSendStatus() {
-    sendStatus.mutate({}, {
-      onSuccess: () => {
-        toast({
-          variant: "success",
-          title: "Emails have finished sending",
-          description:
-            "The emails have finished sending. You can now exit this page.",
-        })
+    sendStatus.mutate(
+      {},
+      {
+        onSuccess: () => {
+          toast({
+            variant: "success",
+            title: "Emails have finished sending",
+            description:
+              "The emails have finished sending. You can now exit this page.",
+          });
+        },
+        onError: (error: { message: any }) => {
+          toast({
+            title: "Error sending emails",
+            description: error.message,
+            variant: "destructive",
+          });
+        },
       },
-      onError: (error: { message: any }) => {
-        toast({
-          title: "Error sending emails",
-          description: error.message,
-          variant: "destructive",
-        })
-      }
-    });
+    );
   }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
