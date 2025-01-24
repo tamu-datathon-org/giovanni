@@ -1,21 +1,24 @@
 "use client";
 
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+} from "@tanstack/react-table";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import {
-  ColumnDef,
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
-  VisibilityState,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown } from "lucide-react";
 
+import type { TableData } from "./schema";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -33,7 +36,6 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { api } from "~/trpc/react";
-import { TableData } from "./schema";
 import {
   PersonalInformation,
   ReponseInformation,
@@ -87,7 +89,7 @@ export const columns: ColumnDef<TableData>[] = [
       );
     },
     cell: ({ row }) => {
-      const createdAt = row.getValue("createdAt") as Date;
+      const createdAt = row.getValue("createdAt");
       return <div className="lowercase">{createdAt.toLocaleDateString()}</div>;
     },
     enableHiding: true,
@@ -276,7 +278,7 @@ export function VettingTable() {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import Heading from "~/app/challenges/helpers/Heading";
 
 interface prizeSchema {
@@ -10,21 +11,24 @@ const places = ["1st", "2nd", "3rd", "4th", "5th"];
 
 export default function Prizes({ prizes }: { prizes: prizeSchema[] }) {
   return (
-    <div className="flex flex-row w-full justify-between items-stretch p-10 text-center">
+    <div className="flex w-full flex-row items-stretch justify-between p-10 text-center">
       {prizes.map((prize, index) => {
         return (
-          <div key={index} className="flex flex-col items-center w-full justify-center text-center">
-            <Heading className="flex text-center items-center justify-center -m-1 w-full z-50 font-normal">
+          <div
+            key={index}
+            className="flex w-full flex-col items-center justify-center text-center"
+          >
+            <Heading className="z-50 -m-1 flex w-full items-center justify-center text-center font-normal">
               {places[index] + " place: " + prize.name}
             </Heading>
-            <div className="flex-grow flex items-center justify-center w-full px-2">
+            <div className="flex w-full flex-grow items-center justify-center px-2">
               {prize.img_url && (
                 <Image
                   width={300}
                   height={300}
                   src={prize.img_url}
                   alt={"Challenge Prize"}
-                  className="max-w-full max-h-full object-contain"
+                  className="max-h-full max-w-full object-contain"
                 />
               )}
             </div>

@@ -1,8 +1,8 @@
 import { Application } from "@vanni/db/schema";
 
+import type { TableData } from "./schema";
 import { Card, CardContent } from "~/components/ui/card";
 import PDFReader from "./pdf-reader";
-import { TableData } from "./schema";
 
 interface CardInformationProps {
   children: React.ReactNode;

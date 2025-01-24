@@ -83,7 +83,7 @@ const IconList: React.FC<IconListProps> = ({
                       } else if (icon.name === "Prize") {
                         prizeFunc(true);
                       } else if (icon.name === "Challenges") {
-                        router.push("/challenges")
+                        router.push("/challenges");
                       } else if (icon.name === "Prizes") {
                         prizeFunc(true);
                       } else if (icon.name === "Help Queue") {

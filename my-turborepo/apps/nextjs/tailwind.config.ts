@@ -14,12 +14,18 @@ export default {
     extend: {
       screens: {
         // Custom height-based breakpoint
-        'tabletRange': { 'raw': '(min-width: 740px) and (max-width: 850px) and (min-height: 600px) and (max-height: 850px)' },
-        'ipadRange': { 'raw': '(min-width: 740px) and (max-width: 850px) and (min-height: 800px) and (max-height: 1400px)' },
-        'ipadproRange': { 'raw': '(min-width: 900px) and (max-width: 1200px) and (min-height: 1200px) and (max-height: 1500px)' },
-        'h700': { 'raw': '(max-height: 750px) and (max-width: 400px)' },
-        'h800': { 'raw': '(max-height: 800px)' },
-        'w800': { 'raw': '(max-width: 900px)' },
+        tabletRange: {
+          raw: "(min-width: 740px) and (max-width: 850px) and (min-height: 600px) and (max-height: 850px)",
+        },
+        ipadRange: {
+          raw: "(min-width: 740px) and (max-width: 850px) and (min-height: 800px) and (max-height: 1400px)",
+        },
+        ipadproRange: {
+          raw: "(min-width: 900px) and (max-width: 1200px) and (min-height: 1200px) and (max-height: 1500px)",
+        },
+        h700: { raw: "(max-height: 750px) and (max-width: 400px)" },
+        h800: { raw: "(max-height: 800px)" },
+        w800: { raw: "(max-width: 900px)" },
       },
       fontFamily: {
         // The var is defined in a component somewhere
