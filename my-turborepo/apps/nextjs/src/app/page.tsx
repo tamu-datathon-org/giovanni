@@ -60,7 +60,7 @@ export default function HomePage() {
   };
   const setHelpQueueOpen = () => {
     window.location.href = "https://helpqueue.tamudatathon.com/";
-  }
+  };
 
   const [mounted, setMounted] = useState(false);
 
@@ -225,16 +225,16 @@ export default function HomePage() {
                   }
                 `}</style> */}
 
-                {/*<h1 className="animate-color-change m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">*/}
-                {/*  Applications are open!!!*/}
-                {/*</h1>*/}
-                {/*<Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">*/}
-                {/*  <Link href="/apply/application">*/}
-                {/*    Click here to apply now.*/}
-                {/*  </Link>*/}
-                {/*</Button>*/}
+            {/*<h1 className="animate-color-change m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">*/}
+            {/*  Applications are open!!!*/}
+            {/*</h1>*/}
+            {/*<Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">*/}
+            {/*  <Link href="/apply/application">*/}
+            {/*    Click here to apply now.*/}
+            {/*  </Link>*/}
+            {/*</Button>*/}
 
-                {/* <h1 className="m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">
+            {/* <h1 className="m-2 text-3xl font-bold lg:m-6 lg:mb-4 lg:text-5xl">
                   Applications have closed.
                 </h1>
                 <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
@@ -245,54 +245,88 @@ export default function HomePage() {
 
             {/* Welcome Component */}
             <DraggableComponent
-                onFocus={setActiveWindow}
-                name="Welcome"
-                focus={activeWindow}
-                className="absolute lg:left-[18%] lg:top-[25%] "
+              onFocus={setActiveWindow}
+              name="Welcome"
+              focus={activeWindow}
+              className="absolute lg:left-[18%] lg:top-[25%]"
             >
-              <WindowContainer isOpen={welcomeOpen} openFunc={setWelcomeOpen}>
-                <TAMUy2k/>
-                <h1 className="mb-4 text-4xl">Welcome!!!</h1>
+              <WindowContainer 
+                isOpen={welcomeOpen} 
+                openFunc={setWelcomeOpen}
+                >
+                <TAMUy2k />
+                <h1 className="mb-4 text-4xl">Recruiting!!!</h1>
                 <h3>
                   {/* Memorial Student Center - Bethancourt Ballroom (MSC 2300) */}
                   We are recruiting for new members!
                 </h3>
                 <h3>
-                  If you are interested in joining our team, please fill out the form below.
+                  If you are interested in joining our team,
                 </h3>
                 <h3>
-                  Applications close on February 6th
+                  please fill out the form below.
                 </h3>
+                <a href="https://forms.gle/rXj4BhdmnQFH1Stw6">
+                  <Button
+                    className="hover:bg-cyan-700 hover:text-white bg-cyan-500 hover:cursor-grab text-white text-xl font-extrabold">
+                      Recruitment Form
+                  </Button>
+                </a>
+
+                <h3>Applications close on February 6th</h3>
                 {/* <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
                     <Link href="/apply/application">Click here to apply now.</Link>
                   </Button> */}
               </WindowContainer>
             </DraggableComponent>
 
+            {/* Informational Component */}
+            <DraggableComponent
+              onFocus={setActiveWindow}
+              name="Informational"
+              focus={activeWindow}
+              className="absolute lg:left-[18%] lg:top-[25%]"
+            >
+              <WindowContainer 
+                isOpen={faqOpen} 
+                openFunc={setFaqOpen}
+                >
+                <h1 className="mb-4 text-4xl">Informational</h1>
+                <h3>
+                  {/* Memorial Student Center - Bethancourt Ballroom (MSC 2300) */}
+                  We'll be hosting two informationals:
+                  <ul>
+                    <li>In-person - January 31st from 6-7 pm in PETR 118</li>
+                    <li>Online - February 4th from 6-7 pm via zoom <br /> (link will be sent out later on discord)</li>
+                  </ul>
+                </h3>
+              </WindowContainer>
+            </DraggableComponent>
+
             {/* Socials component */}
             <DraggableComponent
-                onFocus={setActiveWindow}
-                name="Socials"
-                focus={activeWindow}
-                className="absolute lg:left-[60%] lg:top-[25%] "
+              onFocus={setActiveWindow}
+              name="Socials"
+              focus={activeWindow}
+              className="absolute lg:left-[60%] lg:top-[25%] "
             >
               <WindowContainer isOpen={socialsOpen} openFunc={setSocialsOpen}>
                 <div className="m-6 flex flex-col gap-4">
                   <h1 className="text-3xl font-bold lg:text-5xl">Socials!!</h1>
                   <div className="flex w-64 flex-col">
                     <Link
-                        href="https://discord.gg/pHsNmjuWSc"
-                        className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black"
-                        rel="noopener noreferrer"
-                        target="_blank"
+                      href="https://discord.gg/pHsNmjuWSc"
+                      className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
                       Discord Server Link
                     </Link>
                     <Link
-                        href="https://www.instagram.com/tamudatathon/"
-                        className="compStyling border border-black bg-[#f5f5f5] px-4 text-black hover:bg-[#e4e3e4] hover:text-black"
-                        rel="noopener noreferrer"
-                        target="_blank"
+                      href="https://www.instagram.com/tamudatathon/"
+                      className="compStyling border border-black bg-[#f5f5f5] px-4 text-black hover:bg-[#e4e3e4] hover:text-black"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
                       Instagram
                     </Link>
@@ -304,16 +338,15 @@ export default function HomePage() {
 
           <IconList
             welcFunc={setWelcomeOpen}
-            // faqFunc={setFaqOpen}
+            faqFunc={setFaqOpen}
             // sponFunc={setSponsorOpen}
             // prizeFunc={setPrizesOpen}
             socialsFunc={setSocialsOpen}
             setFocus={setActiveWindow}
-            // helpQueueFunc={setHelpQueueOpen}
-
-            // scheduleFunc={setScheduleOpen}
-            // challengesFunc={setChallenegesOpen}
-            />
+          // helpQueueFunc={setHelpQueueOpen}
+          // scheduleFunc={setScheduleOpen}
+          // challengesFunc={setChallenegesOpen}
+          />
         </div>
       </div>
     </>

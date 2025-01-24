@@ -16,20 +16,20 @@ interface Icon {
 
 interface IconListProps {
   className?: string;
-  welcFunc: (isOpen: boolean) => void;
-  faqFunc: (isOpen: boolean) => void;
-  socialsFunc: (isOpen: boolean) => void;
-  sponFunc: (isOpen: boolean) => void;
-  prizeFunc: (isOpen: boolean) => void;
-  scheduleFunc: () => void;
-  helpQueueFunc: () => void;
+  welcFunc?: (isOpen: boolean) => void;
+  faqFunc?: (isOpen: boolean) => void;
+  socialsFunc?: (isOpen: boolean) => void;
+  sponFunc?: (isOpen: boolean) => void;
+  prizeFunc?: (isOpen: boolean) => void;
+  scheduleFunc?: () => void;
+  helpQueueFunc?: () => void;
   setFocus: (focus: string) => void;
-  challengesFunc: () => void;
+  challengesFunc?: () => void;
 }
 
 const routes: Icon[] = [
   { name: "Welcome", route: "/", image: "/Pixel_ComputerIcon.png" },
-  // { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
+  { name: "FAQ", route: "/about", image: "/Pixel_InternetIcon.png" },
   // { name: "Sponsor", route: "/", image: "/Pixel_WorldIcon.png" },
   // { name: "Prizes", route: "/", image: "/Pixel_CDIcon.png" },
   // { name: "Schedule", route: "/schedule", image: "/Pixel_PolarBear.png" },
@@ -70,21 +70,21 @@ const IconList: React.FC<IconListProps> = ({
                     className="flex h-full w-full p-0 shadow-none"
                     onClick={() => {
                       setFocus(icon.name);
-                      if (icon.name === "Welcome") {
+                      if (welcFunc && icon.name === "Welcome") {
                         welcFunc(true);
                       } else if (icon.name === "Schedule") {
                         router.push("/schedule");
-                      } else if (icon.name === "Socials") {
+                      } else if (socialsFunc && icon.name === "Socials") {
                         socialsFunc(true);
-                      } else if (icon.name === "FAQ") {
+                      } else if (faqFunc && icon.name === "FAQ") {
                         faqFunc(true);
-                      } else if (icon.name === "Sponsor") {
+                      } else if (sponFunc && icon.name === "Sponsor") {
                         sponFunc(true);
-                      } else if (icon.name === "Prize") {
+                      } else if (prizeFunc && icon.name === "Prize") {
                         prizeFunc(true);
                       } else if (icon.name === "Challenges") {
-                        router.push("/challenges")
-                      } else if (icon.name === "Prizes") {
+                        router.push("/challenges");
+                      } else if (prizeFunc && icon.name === "Prizes") {
                         prizeFunc(true);
                       } else if (icon.name === "Help Queue") {
                         router.push("https://helpqueue.tamudatathon.com/");
