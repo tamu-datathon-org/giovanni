@@ -13,7 +13,7 @@ import {
 } from "~/components/ui/select";
 import { toast } from "~/hooks/use-toast";
 
-type SelectStatusProps = {
+interface SelectStatusProps {
   name: string;
   id: string;
   currStatus: string;
@@ -21,7 +21,7 @@ type SelectStatusProps = {
   setData: React.Dispatch<React.SetStateAction<any>>;
   setPendingCount: React.Dispatch<React.SetStateAction<number>>;
   setAcceptedCount: React.Dispatch<React.SetStateAction<number>>;
-};
+}
 
 const SelectStatus: React.FC<SelectStatusProps> = ({
   name,

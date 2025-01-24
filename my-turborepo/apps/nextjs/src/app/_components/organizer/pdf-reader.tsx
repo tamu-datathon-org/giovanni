@@ -11,11 +11,11 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 
-type PDFReaderProps = {
+interface PDFReaderProps {
   pdfButtonTitle: string;
   pdfTitle: string;
   pdfUrl: string;
-};
+}
 
 export default function PDFReader(props: PDFReaderProps) {
   return (

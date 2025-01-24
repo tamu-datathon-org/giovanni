@@ -31,119 +31,152 @@ export default function Challenge() {
         </Paragraph>
         <Heading>Task</Heading>
         <Paragraph>
-          As a participant, you are tasked with the challenge of creating an AI that plays the game
-          <a className="underline text-blue-600" href="https://visualizer.challenges.tamudatathon.com/" target="_blank"> Push Battle</a>.  We will provide you with the API for the game and some starter code. We encourage you to be creative and explore new ways of “solving” the game as you will be playing against the other participants in the competition.
-        </Paragraph>
-
-        <Heading>
-          Important Links
-        </Heading>
-
-        <div className="flex flex-col gap-2 items-center justify-center pt-6">
-          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+          As a participant, you are tasked with the challenge of creating an AI
+          that plays the game
+          <a
+            className="text-blue-600 underline"
             href="https://visualizer.challenges.tamudatathon.com/"
-            target="_blank">Push Battle Visualizer</a>
-          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+            target="_blank"
+          >
+            {" "}
+            Push Battle
+          </a>
+          . We will provide you with the API for the game and some starter code.
+          We encourage you to be creative and explore new ways of “solving” the
+          game as you will be playing against the other participants in the
+          competition.
+        </Paragraph>
+        <Heading>Important Links</Heading>
+        <div className="flex flex-col items-center justify-center gap-2 pt-6">
+          <a
+            className="compStyling w-1/4 border border-black bg-[#f5f5f5] text-center text-black hover:bg-[#e4e3e4] hover:text-black"
+            href="https://visualizer.challenges.tamudatathon.com/"
+            target="_blank"
+          >
+            Push Battle Visualizer
+          </a>
+          <a
+            className="compStyling w-1/4 border border-black bg-[#f5f5f5] text-center text-black hover:bg-[#e4e3e4] hover:text-black"
             href="https://cdn.discordapp.com/attachments/1020473812422250606/1304874384825126963/Push_Battle_public-20241109T182246Z-001.zip?ex=6730fa78&is=672fa8f8&hm=c71b4a5f3479782d5a03e8bc8bfd08f6eba955c5371d94a8f2b832b4e5c85ee5&"
-            target="_blank">Challenge Starter Code</a>
-          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+            target="_blank"
+          >
+            Challenge Starter Code
+          </a>
+          <a
+            className="compStyling w-1/4 border border-black bg-[#f5f5f5] text-center text-black hover:bg-[#e4e3e4] hover:text-black"
             href="https://www.youtube.com/watch?v=3trBRh9PEmM"
-            target="_blank">Running Push Battle Locally Video</a>
-          <a className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black w-1/4 text-center"
+            target="_blank"
+          >
+            Running Push Battle Locally Video
+          </a>
+          <a
+            className="compStyling w-1/4 border border-black bg-[#f5f5f5] text-center text-black hover:bg-[#e4e3e4] hover:text-black"
             href="https://www.youtube.com/watch?v=x5Obcmm9IN4"
-            target="_blank">Push Battle Rules Video</a>
+            target="_blank"
+          >
+            Push Battle Rules Video
+          </a>
         </div>
-
-        <Heading>
-          Rules of the Game
-        </Heading>
-
-        <Bullet items={[
-          "Push Battle is a two player game played on an 8x8 grid",
-          "Each player will have eight pieces where players take turn placing pieces on the board",
-          "When a piece is placed on the board, all pieces adjacent to the placed piece are pushed away, unless there is another piece behind it preventing it from being pushed",
-          "If a piece gets pushed off the side of the board it will appear directly on the other side of the board",
-          "If all eight pieces are on the board, the player must pick up one of the pieces and move it to any other spot on the board",
-          "Players win when three of their pieces are in a row"
-        ]}
+        <Heading>Rules of the Game</Heading>
+        <Bullet
+          items={[
+            "Push Battle is a two player game played on an 8x8 grid",
+            "Each player will have eight pieces where players take turn placing pieces on the board",
+            "When a piece is placed on the board, all pieces adjacent to the placed piece are pushed away, unless there is another piece behind it preventing it from being pushed",
+            "If a piece gets pushed off the side of the board it will appear directly on the other side of the board",
+            "If all eight pieces are on the board, the player must pick up one of the pieces and move it to any other spot on the board",
+            "Players win when three of their pieces are in a row",
+          ]}
         />
         <Paragraph>
-          A further explanation of the rules of the game can be found <a href='https://www.youtube.com/watch?v=x5Obcmm9IN4'>here</a>.
+          A further explanation of the rules of the game can be found{" "}
+          <a href="https://www.youtube.com/watch?v=x5Obcmm9IN4">here</a>.
         </Paragraph>
-        <Heading>
-          Board
-        </Heading>
+        <Heading>Board</Heading>
         <Paragraph>
-          The board will be represented by an 8x8 2D array. In the placement stage of the game, the player places a piece on the board at [r, c].
-          Once all checkers have been placed, the player will make a move [r0, c0, r1, c1] which moves one of their existing pieces at (r0, c0) to (r1, c1).
+          The board will be represented by an 8x8 2D array. In the placement
+          stage of the game, the player places a piece on the board at [r, c].
+          Once all checkers have been placed, the player will make a move [r0,
+          c0, r1, c1] which moves one of their existing pieces at (r0, c0) to
+          (r1, c1).
           <br></br>
-
-          For readability purposes,the moves will be displayed on the visualizer in <a href="https://en.wikipedia.org/wiki/Algebraic_notation_(chess)">algebraic notation</a>.
+          For readability purposes,the moves will be displayed on the visualizer
+          in{" "}
+          <a href="https://en.wikipedia.org/wiki/Algebraic_notation_(chess)">
+            algebraic notation
+          </a>
+          .
         </Paragraph>
-
-        <Heading>
-          Restrictions
-        </Heading>
-
-        <Bullet items={[
-          "Agents will be given 5 seconds to make a move. If the time limit is exceeded, agents will be given another 5 seconds to make a fallback move. If the time limit is exceeded again, a random move will be made for the agent. If this occurs 5 times, the agent will forfeit. ",
-          "If your agent makes an invalid move (i.e. placing a piece out of bounds or on an existing piece, attempting to move an opponent's piece, etc.), it will immediately forfeit (lose) the game",
-          "No network access",
-          "1 CPU Core",
-          "1 GB RAM",
-          "1 GB VRAM"
-        ]}
+        <Heading>Restrictions</Heading>
+        <Bullet
+          items={[
+            "Agents will be given 5 seconds to make a move. If the time limit is exceeded, agents will be given another 5 seconds to make a fallback move. If the time limit is exceeded again, a random move will be made for the agent. If this occurs 5 times, the agent will forfeit. ",
+            "If your agent makes an invalid move (i.e. placing a piece out of bounds or on an existing piece, attempting to move an opponent's piece, etc.), it will immediately forfeit (lose) the game",
+            "No network access",
+            "1 CPU Core",
+            "1 GB RAM",
+            "1 GB VRAM",
+          ]}
         />
         <br></br>
-
-        <Heading>
-          Webhooks
-        </Heading>
+        <Heading>Webhooks</Heading>
         <Paragraph>
-
-          All webhooks are included in the starter code. Please consult that if you plan to make your own API or if you are unsure of how they work.
+          All webhooks are included in the starter code. Please consult that if
+          you plan to make your own API or if you are unsure of how they work.
         </Paragraph>
-
-        <Heading>
-          Submission
-        </Heading>
-
-        Download <a className="underline text-blue-600" href='https://drive.google.com/drive/folders/1i73nDhObfPq6-oI3DphWMRaYwgbGUUAz?usp=drive_link'>the starter code here</a>.
-        You will be exposing an API endpoint that makes a move given a game state. You must modify `start_game()` and `make_move()` to fit your implementation.
-        <Bullet items={[
-          "start_game() will instantiate your model",
-          "make_move() will be called when it is your model's turn to make a move. It will accept a game state and return a move"
-        ]}
+        <Heading>Submission</Heading>
+        Download{" "}
+        <a
+          className="text-blue-600 underline"
+          href="https://drive.google.com/drive/folders/1i73nDhObfPq6-oI3DphWMRaYwgbGUUAz?usp=drive_link"
+        >
+          the starter code here
+        </a>
+        . You will be exposing an API endpoint that makes a move given a game
+        state. You must modify `start_game()` and `make_move()` to fit your
+        implementation.
+        <Bullet
+          items={[
+            "start_game() will instantiate your model",
+            "make_move() will be called when it is your model's turn to make a move. It will accept a game state and return a move",
+          ]}
         />
         <br></br>
-        <Heading>
-          How it works:
-        </Heading>
+        <Heading>How it works:</Heading>
         <Paragraph>
-          When the game begins, the judge will send a POST request to your agent with the initial game state. You will receive information about the game, the board, if you have the first turn, and the maximum amount of latency you can expect before a timeout.
+          When the game begins, the judge will send a POST request to your agent
+          with the initial game state. You will receive information about the
+          game, the board, if you have the first turn, and the maximum amount of
+          latency you can expect before a timeout.
         </Paragraph>
-
         <Paragraph>
-          After submitting, your agent will be placed in a pool where it will continuously play agents from other team where its performance will be scored using an ELO system.
+          After submitting, your agent will be placed in a pool where it will
+          continuously play agents from other team where its performance will be
+          scored using an ELO system.
         </Paragraph>
-
-
-        <Heading>
-          Testing
-        </Heading>
-
+        <Heading>Testing</Heading>
         <Paragraph>
-          You will be given the game and the judge so that you can test locally. We strongly advise that you test locally before submitting to Richter. Please view
-          <a className="underline text-blue-600" href="https://youtu.be/3trBRh9PEmM"> this</a> video for guidance on how to run locally.
+          You will be given the game and the judge so that you can test locally.
+          We strongly advise that you test locally before submitting to Richter.
+          Please view
+          <a
+            className="text-blue-600 underline"
+            href="https://youtu.be/3trBRh9PEmM"
+          >
+            {" "}
+            this
+          </a>{" "}
+          video for guidance on how to run locally.
         </Paragraph>
-
-        <Heading>
-          Reading the Game String
-        </Heading>
+        <Heading>Reading the Game String</Heading>
         <Paragraph>
-          The game string is a list of all the events that took place during the game. Each is preceded with a dash followed by the alphanumeric value of where the piece was placed or moved.
-          If the move ends with an r (ex. -c4r or -c4b3r), that means the agent timed out and a random move was placed. If the move is a q (ex. -q) that means that the player forfeited.
-          Players forfeit either due to using too many random moves or making an invalid move as described earlier.
+          The game string is a list of all the events that took place during the
+          game. Each is preceded with a dash followed by the alphanumeric value
+          of where the piece was placed or moved. If the move ends with an r
+          (ex. -c4r or -c4b3r), that means the agent timed out and a random move
+          was placed. If the move is a q (ex. -q) that means that the player
+          forfeited. Players forfeit either due to using too many random moves
+          or making an invalid move as described earlier.
         </Paragraph>
         <Heading>Implementation Algorithms</Heading>
         Common ways to use algorithms to solve games are as follows:
@@ -193,18 +226,16 @@ export default function Challenge() {
             "Policy Networks: Output probability distributions over possible moves",
             "Value Networks: Evaluate how good a position is",
             "Often combined with other methods like MCTS (as in AlphaZero) or reinforcement learning",
-            "Can learn complex positional concepts but require significant training data/compute"
-          ]} />
-
-        <Heading>
-          Resources
-        </Heading>
-
-        <Bullet items={[
-          "https://sites.google.com/view/lazyy/home",
-          "https://www.neverstopbuilding.com/blog/minimax",
-          "https://www.lancaster.ac.uk/stor-i-student-sites/jordan-j-hood/2021/04/18/reinforcement-learning-the-end-game/"
-        ]}
+            "Can learn complex positional concepts but require significant training data/compute",
+          ]}
+        />
+        <Heading>Resources</Heading>
+        <Bullet
+          items={[
+            "https://sites.google.com/view/lazyy/home",
+            "https://www.neverstopbuilding.com/blog/minimax",
+            "https://www.lancaster.ac.uk/stor-i-student-sites/jordan-j-hood/2021/04/18/reinforcement-learning-the-end-game/",
+          ]}
         />
         <Heading>Prizes!!!</Heading>
         <Prizes

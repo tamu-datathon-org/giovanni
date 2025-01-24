@@ -1,13 +1,9 @@
 import React from "react";
 
 export default async function PassportLayout({
-    children
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <div className="bg-slate-400">
-            {children}
-        </div>
-    );
+  return <div className="bg-slate-400">{children}</div>;
 }

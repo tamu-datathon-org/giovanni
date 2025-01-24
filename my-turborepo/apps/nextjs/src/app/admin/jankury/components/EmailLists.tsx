@@ -1,7 +1,7 @@
 "use client";
 
+import type { z } from "zod";
 import { useFormContext } from "react-hook-form";
-import { z } from "zod";
 
 import {
   FormControl,
@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@vanni/ui/form";
 
-import { FormSchema } from "~/app/admin/jankury/formSchema";
+import type { FormSchema } from "~/app/admin/jankury/formSchema";
 import { Checkbox } from "~/components/ui/checkbox";
 import { api } from "~/trpc/react";
 
@@ -40,13 +40,13 @@ export default function EmailLists() {
                   >
                     <FormControl>
                       <Checkbox
-                        checked={field.value?.includes(listName)}
+                        checked={field.value.includes(listName)}
                         onCheckedChange={(checked) => {
                           console.log(field.value);
                           return checked
                             ? field.onChange([...field.value, listName])
                             : field.onChange(
-                                field.value?.filter(
+                                field.value.filter(
                                   (value: any) => value !== listName,
                                 ),
                               );
