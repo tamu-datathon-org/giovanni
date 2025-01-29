@@ -250,26 +250,18 @@ export default function HomePage() {
               focus={activeWindow}
               className="absolute lg:left-[18%] lg:top-[25%]"
             >
-              <WindowContainer 
-                isOpen={welcomeOpen} 
-                openFunc={setWelcomeOpen}
-                >
+              <WindowContainer isOpen={welcomeOpen} openFunc={setWelcomeOpen}>
                 <TAMUy2k />
                 <h1 className="mb-4 text-4xl">Recruiting!!!</h1>
                 <h3>
                   {/* Memorial Student Center - Bethancourt Ballroom (MSC 2300) */}
                   We are recruiting for new members!
                 </h3>
-                <h3>
-                  If you are interested in joining our team,
-                </h3>
-                <h3>
-                  please fill out the form below.
-                </h3>
+                <h3>If you are interested in joining our team,</h3>
+                <h3>please fill out the form below.</h3>
                 <a href="https://forms.gle/rXj4BhdmnQFH1Stw6">
-                  <Button
-                    className="hover:bg-cyan-700 hover:text-white bg-cyan-500 hover:cursor-grab text-white text-xl font-extrabold">
-                      Recruitment Form
+                  <Button className="bg-cyan-500 text-xl font-extrabold text-white hover:cursor-grab hover:bg-cyan-700 hover:text-white">
+                    Recruitment Form
                   </Button>
                 </a>
 
@@ -287,17 +279,17 @@ export default function HomePage() {
               focus={activeWindow}
               className="absolute lg:left-[18%] lg:top-[25%]"
             >
-              <WindowContainer 
-                isOpen={faqOpen} 
-                openFunc={setFaqOpen}
-                >
+              <WindowContainer isOpen={faqOpen} openFunc={setFaqOpen}>
                 <h1 className="mb-4 text-4xl">Informational</h1>
                 <h3>
                   {/* Memorial Student Center - Bethancourt Ballroom (MSC 2300) */}
                   We'll be hosting two informationals:
                   <ul>
                     <li>In-person - January 31st from 6-7 pm in PETR 118</li>
-                    <li>Online - February 4th from 6-7 pm via zoom <br /> (link will be sent out later on discord)</li>
+                    <li>
+                      Online - February 4th from 6-7 pm via zoom <br /> (link
+                      will be sent out later on discord)
+                    </li>
                   </ul>
                 </h3>
               </WindowContainer>
@@ -343,9 +335,9 @@ export default function HomePage() {
             // prizeFunc={setPrizesOpen}
             socialsFunc={setSocialsOpen}
             setFocus={setActiveWindow}
-          // helpQueueFunc={setHelpQueueOpen}
-          // scheduleFunc={setScheduleOpen}
-          // challengesFunc={setChallenegesOpen}
+            // helpQueueFunc={setHelpQueueOpen}
+            // scheduleFunc={setScheduleOpen}
+            // challengesFunc={setChallenegesOpen}
           />
         </div>
       </div>

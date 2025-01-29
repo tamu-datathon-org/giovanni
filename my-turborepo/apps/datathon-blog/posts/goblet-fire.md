@@ -1,6 +1,6 @@
 ---
-title: 'Synopsis of Harry Potter and the Goblet of Fire (READ ME)'
-date: '2024-08-02'
+title: "Synopsis of Harry Potter and the Goblet of Fire (READ ME)"
+date: "2024-08-02"
 ---
 
 Wait you mean to tell me this **ISN'T** the Prisoner of Azkaban??
