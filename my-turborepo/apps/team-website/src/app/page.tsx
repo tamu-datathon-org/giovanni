@@ -5,7 +5,6 @@ import ScrollUp from "@/app/template-components/Common/ScrollUp";
 import Contact from "@/app/template-components/Contact";
 import Features from "@/app/template-components/Features";
 import Hero from "@/app/template-components/Hero";
-import Pricing from "@/app/template-components/Pricing";
 import Testimonials from "@/app/template-components/Testimonials";
 import Video from "@/app/template-components/Video";
 import { Metadata } from "next";
@@ -26,7 +25,6 @@ export default function Home() {
       <Brands />
       <AboutSectionOne />
       <Testimonials />
-      <Pricing />
       <Blog />
       <Contact />
     </>
