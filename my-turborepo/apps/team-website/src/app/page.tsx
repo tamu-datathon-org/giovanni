@@ -1,5 +1,4 @@
 import AboutSectionOne from "@/app/template-components/About/AboutSectionOne";
-import AboutSectionTwo from "@/app/template-components/About/AboutSectionTwo";
 import Blog from "@/app/template-components/Blog";
 import Brands from "@/app/template-components/Brands";
 import ScrollUp from "@/app/template-components/Common/ScrollUp";
@@ -26,7 +25,6 @@ export default function Home() {
       <Video />
       <Brands />
       <AboutSectionOne />
-      <AboutSectionTwo />
       <Testimonials />
       <Pricing />
       <Blog />
