@@ -1,4 +1,5 @@
 import AboutSectionOne from "@/app/template-components/About/AboutSectionOne";
+import ApplySection from "@/app/template-components/Apply/ApplySection";
 import Blog from "@/app/template-components/Blog";
 import Brands from "@/app/template-components/Brands";
 import ScrollUp from "@/app/template-components/Common/ScrollUp";
@@ -24,6 +25,7 @@ export default function Home() {
       <Video />
       <Brands />
       <AboutSectionOne />
+      <ApplySection/>
       <Testimonials />
       <Blog />
       <Contact />
