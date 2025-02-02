@@ -1,3 +1,11 @@
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import Link from "next/link";
 
 const Hero = () => {
@@ -10,7 +18,7 @@ const Hero = () => {
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
-              <div className="mx-auto max-w-[800px] text-center">
+              <div className="mx-auto max-w-[800px] text-center ">
                 <h1 className="mb-5 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight">
                   <span className="text-[#6EFEEB] ">tamu</span>
                   <span className="text-[#2D69DF]">datathon</span>
@@ -38,6 +46,25 @@ const Hero = () => {
                     Star on GitHub
                   </Link>
                 </div> */}
+                <Carousel className="w-full max-w-xs mx-auto">
+                  <CarouselContent>
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <CarouselItem key={index}>
+                    <div className="p-1">
+                      <Card>
+                      <CardContent className="flex aspect-square items-center justify-center p-6">
+                        <span className="text-4xl font-semibold">
+                        {index + 1}
+                        </span>
+                      </CardContent>
+                      </Card>
+                    </div>
+                    </CarouselItem>
+                  ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
               </div>
             </div>
           </div>
