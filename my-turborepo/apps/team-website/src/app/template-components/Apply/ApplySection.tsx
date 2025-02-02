@@ -29,7 +29,7 @@ const ApplySection = () => {
                 src="/images/about/Organizer Recruitment.png"
                 alt="about image"
                 width={500}
-                height={500}
+                height={900}
                 className="drop-shadow-three dark:hidden dark:drop-shadow-none"
               /> */}
               <Image
@@ -48,8 +48,9 @@ const ApplySection = () => {
                   Logistics
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Manage finances, Order t-shirts, food,etc.
+                Plan & schedule day-of activities.
+                Gather judges, mentors, & more!
                 </p>
               </div>
               <div className="mb-9">
@@ -57,8 +58,10 @@ const ApplySection = () => {
                   Web Development
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt.
+                  Create & maintain software.
+                  Support the team with technical solutions.
+                  Track & analyze statistics regarding the event.
+                  Using/building open source software!
                 </p>
               </div>
               <div className="mb-9">
@@ -66,8 +69,9 @@ const ApplySection = () => {
                   Design
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt.
+                Set the design direction of the organization & event.
+                Create marketing materials, merchandise, & campaign plans.
+                Maintain & manage social media!
                 </p>
               </div>
               <div className="mb-9">
@@ -75,8 +79,9 @@ const ApplySection = () => {
                   Challenges
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt.
+                  Create Datathon-specific challenges.
+                  Work with sponsors to elevate sponsor-specific challenges.
+                  Serve as a main point of contact & liaison for day-of troubleshooting!
                 </p>
               </div>
               <div className="mb-1">
@@ -84,8 +89,10 @@ const ApplySection = () => {
                   Outreach
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt
-                  consectetur adipiscing elit setim.
+                  Assist current sponsers with
+                  various tasks. Day-of point of contact for 
+                  company representatives.
+                  Secure sponserships!
                 </p>
               </div>
             </div>
