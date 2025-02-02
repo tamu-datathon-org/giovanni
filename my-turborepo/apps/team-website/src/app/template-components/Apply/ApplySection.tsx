@@ -1,14 +1,23 @@
 import Image from "next/image";
 import SectionTitle from "../Common/SectionTitle";
+import Link from "next/link";
 
 const ApplySection = () => {
   return (
-    <section className="py-16 md:py-20 lg:py-28">
+    <section id="apply" className="py-16 md:py-20 lg:py-28">
       <SectionTitle
           title="Apply To Be An Organizer"
           paragraph="Apply to be a part of the TAMU Datathon team now!"
           center
         />
+      <div className="flex flex-row items-center mb-14 justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+        <Link
+          href="https://forms.gle/ngbF27FDQuKCTsKR8"
+          className="rounded-sm bg-primary px-8 py-4 text-base font-semibold text-white duration-300 ease-in-out hover:bg-primary/80"
+        >
+          Apply Here
+        </Link>
+      </div>
       <div className="container">
         <div className="-mx-4 flex flex-wrap items-center">
           <div className="w-full px-4 lg:w-1/2">
