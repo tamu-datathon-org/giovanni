@@ -13,11 +13,20 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.3.0",
+    "eslint": "^9.2.0",
+    "eslint-config-next": "14.2.3",
+    "lucide-react": "^0.439.0",
     "next": "14.2.3",
     "next-themes": "^0.3.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-modal-video": "^2.0.1"
+    "react-modal-video": "^2.0.1",
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.4.2",
