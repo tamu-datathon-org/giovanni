@@ -1,12 +1,13 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from './layout.module.css';
-import utilStyles from '../styles/utils.module.css';
-import Link from 'next/link';
-import React from 'react';
+import React from "react";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
 
-const name = 'TAMU Datathon Blog! 🤖';
-export const siteTitle = 'Official TAMU Datathon Blog';
+import utilStyles from "../styles/utils.module.css";
+import styles from "./layout.module.css";
+
+const name = "TAMU Datathon Blog! 🤖";
+export const siteTitle = "Official TAMU Datathon Blog";
 
 export default function Layout({
   children,
@@ -15,7 +16,6 @@ export default function Layout({
   children: React.ReactNode;
   home?: boolean;
 }) {
-
   return (
     <div className={styles.container}>
       <Head>

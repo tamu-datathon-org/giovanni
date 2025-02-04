@@ -1,11 +1,12 @@
-import Head from 'next/head';
-import Layout, { siteTitle } from '../components/layout';
-import utilStyles from '../styles/utils.module.css';
-import { getSortedPostsData } from '../lib/posts';
-import Link from 'next/link';
-import Date from '../components/date';
-import { GetStaticProps } from 'next';
-import React from 'react';
+import React from "react";
+import { GetStaticProps } from "next";
+import Head from "next/head";
+import Link from "next/link";
+
+import Date from "../components/date";
+import Layout, { siteTitle } from "../components/layout";
+import { getSortedPostsData } from "../lib/posts";
+import utilStyles from "../styles/utils.module.css";
 
 export default function Home({
   allPostsData,
@@ -22,9 +23,12 @@ export default function Home({
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
-        <p>Welcome to the official blog for the Texas A&M University Datathon!</p>
         <p>
-          Here, you'll be able to find our offical solutions to the challenges - Thanks to the challeneges officers!
+          Welcome to the official blog for the Texas A&M University Datathon!
+        </p>
+        <p>
+          Here, you'll be able to find our offical solutions to the challenges -
+          Thanks to the challeneges officers!
         </p>
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
