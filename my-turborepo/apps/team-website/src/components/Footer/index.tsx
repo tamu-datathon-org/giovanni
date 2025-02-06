@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { LuClipboard } from "react-icons/lu";
 
 const Footer = () => {
   return (
@@ -11,11 +12,11 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start">
             <Link href="/" className="mb-6 inline-block">
               <Image
-                src="/images/logo/logo-2.svg"
+                src="/images/logo/logoTD.png"
                 alt="logo"
                 className="w-full dark:hidden"
-                width={140}
-                height={30}
+                width={100}
+                height={20}
               />
               <Image
                 src="/images/logo/logoTD.png"
@@ -25,19 +26,48 @@ const Footer = () => {
                 height={20}
               />
             </Link>
+            <h3>TAMU Datathon</h3>
             <p className="mb-6 text-center text-sm text-gray-600 dark:text-gray-400 md:text-left">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              lobortis.
+              change learning with data
             </p>
           </div>
 
           <div className="flex flex-col items-center space-y-4 md:items-start">
-            <Button variant="outline" className="w-full md:w-auto">
-              <Link href="/sponsor">SPONSOR</Link>
-            </Button>
-            <Button variant="outline" className="w-full md:w-auto">
-              <Link href="/sponsor">EMAIL</Link>
-            </Button>
+            <h3 className="text-lg font-semibold">Contacts</h3>
+            {/* Contact for sponsors */}
+            <div>
+              Looking to sponsor? <br />
+              <span className="flex items-center space-x-2">
+                <a
+                  href="mailto:sponsor@tamudatathon.com"
+                  className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-900 mt-0">
+                  sponsor@tamudatathon.com
+                </a>
+                <button
+                  className="w-full md:w-auto"
+                  onClick={() => navigator.clipboard.writeText('sponsor@tamudatathon.com')}
+                >
+                  <LuClipboard className="mr-2" />
+                </button>
+              </span>
+            </div>
+            {/* Contact for questions */}
+            <div>
+              Any questions? <br />
+              <span className="flex items-center space-x-2">
+                <a
+                  href="mailto:connect@tamudatathon.com"
+                  className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-900 mt-0">
+                  connect@tamudatathon.com
+                </a>
+                <button
+                  className="w-full md:w-auto"
+                  onClick={() => navigator.clipboard.writeText('connect@tamudatathon.com')}
+                >
+                  <LuClipboard className="mr-2" />
+                </button>
+              </span>
+            </div>
           </div>
 
           <div className="flex flex-col items-center space-y-4 md:items-start">
@@ -54,12 +84,12 @@ const Footer = () => {
             >
               Contact
             </Link>
-            <Link
+            {/* <Link
               href="/faq"
               className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
               FAQ
-            </Link>
+            </Link> */}
           </div>
 
           <div className="flex flex-col items-center space-y-4 md:items-start">
@@ -131,7 +161,7 @@ const Footer = () => {
 
         <div className="mt-8 border-t border-gray-200 pt-8 dark:border-gray-700">
           <p className="text-center text-xs text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} Your Company Name. All rights
+            © {new Date().getFullYear()} TAMU Datathon. All rights
             reserved.
           </p>
         </div>
