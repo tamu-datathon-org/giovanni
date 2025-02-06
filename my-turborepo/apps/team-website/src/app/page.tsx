@@ -11,9 +11,8 @@ import Video from "@/app/template-components/Video";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Next.js Template for Startup and SaaS",
-  description: "This is Home for Startup Nextjs Template",
-  // other metadata
+  title: "TAMU Datathon",
+  description: "TAMU Datathon is a 24-hour hackathon hosted by Texas A&M University.",
 };
 
 export default function Home() {

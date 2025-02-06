@@ -11,11 +11,11 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start">
             <Link href="/" className="mb-6 inline-block">
               <Image
-                src="/images/logo/logo-2.svg"
+                src="/images/logo/logoTD.png"
                 alt="logo"
                 className="w-full dark:hidden"
-                width={140}
-                height={30}
+                width={100}
+                height={20}
               />
               <Image
                 src="/images/logo/logoTD.png"
