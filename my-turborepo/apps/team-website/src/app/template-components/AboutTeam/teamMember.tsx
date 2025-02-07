@@ -13,7 +13,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({ image, name, position }) => {
         <img
           src={image}
           alt={name}
-          className="mx-auto mb-4 w-32 h-32 object-cover rounded-full"
+          className="mx-auto mb-4 h-32 w-32 rounded-full object-cover"
         />
         <h3 className="text-xl font-semibold text-black dark:text-white">
           {name}
