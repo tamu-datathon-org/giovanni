@@ -311,33 +311,6 @@ const Hero = () => {
             </defs>
           </svg>
         </div>
-        <div className="container">
-        <div className="mx-auto max-w-[800px] text-center">
-          <h2 className="mb-8 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight">
-            About the Team
-          </h2>
-            <Carousel className="w-full">
-              <CarouselContent>
-                {teamChunks.map((chunk, chunkIndex) => (
-                  <CarouselItem key={chunkIndex}>
-          <div className="flex flex-wrap justify-center">
-                {chunk.slice(0, 4).map((member, index) => (
-            <TeamMember
-            key={index}
-                          image={member.image}
-                          name={member.name}
-                          position={member.position}
-            />
-              ))}
-          </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-        </div>
-      </div>
       </section>
     </>
   );

@@ -8,12 +8,12 @@ interface TeamMemberProps {
 
 const TeamMember: React.FC<TeamMemberProps> = ({ image, name, position }) => {
   return (
-    <div className="w-full px-4 md:w-1/3 lg:w-1/4">
-      <div className="mb-8">
+    <div className="w-full px-4">
+      <div className="mb-8 text-center">
         <img
           src={image}
           alt={name}
-                    className="mx-auto mb-4"
+          className="mx-auto mb-4 w-32 h-32 object-cover rounded-full"
         />
         <h3 className="text-xl font-semibold text-black dark:text-white">
           {name}
