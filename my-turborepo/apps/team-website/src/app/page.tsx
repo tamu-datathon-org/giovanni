@@ -9,6 +9,8 @@ import Hero from "@/app/template-components/Hero";
 import Testimonials from "@/app/template-components/Testimonials";
 import Video from "@/app/template-components/Video";
 import { Metadata } from "next";
+import AboutTeam from "./template-components/AboutTeam/AboutTeam";
+import { Carousel, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 export const metadata: Metadata = {
   title: "TAMU Datathon",
@@ -25,6 +27,7 @@ export default function Home() {
       {/* <Brands /> */}
       <AboutSectionOne />
       <ApplySection/>
+      <AboutTeam />
       {/* <Testimonials /> */}
       <Blog />
       <Contact />

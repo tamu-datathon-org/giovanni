@@ -7,8 +7,23 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Link from "next/link";
+import TeamMember from "../AboutTeam/teamMember";
+
+
 
 const Hero = () => {
+  const teamMembers = Array.from({ length: 25 }).map((_, index) => ({
+    image: `/images/teampics/placeholder.jpg`,
+    name: `Team Member ${index + 1}`,
+    position: "Position",
+  }));
+
+  const chunkSize = 8;
+  const teamChunks = [];
+  for (let i = 0; i < teamMembers.length; i += chunkSize) {
+    teamChunks.push(teamMembers.slice(i, i + chunkSize));
+  }
+
   return (
     <>
       <section
@@ -32,20 +47,6 @@ const Hero = () => {
                   mentorship. Join us as we push the boundaries of data-driven
                   innovation!
                 </p>
-                {/* <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-                  <Link
-                    href="https://nextjstemplates.com/templates/saas-starter-startup"
-                    className="rounded-sm bg-primary px-8 py-4 text-base font-semibold text-white duration-300 ease-in-out hover:bg-primary/80"
-                  >
-                    🔥 Get Pro
-                  </Link>
-                  <Link
-                    href="https://github.com/NextJSTemplates/startup-nextjs"
-                    className="inline-block rounded-sm bg-black px-8 py-4 text-base font-semibold text-white duration-300 ease-in-out hover:bg-black/90 dark:bg-white/10 dark:text-white dark:hover:bg-white/5"
-                  >
-                    Star on GitHub
-                  </Link>
-                </div> */}
                 <Carousel className="w-full max-w-xs mx-auto">
                   <CarouselContent>
                   {Array.from({ length: 5 }).map((_, index) => (
