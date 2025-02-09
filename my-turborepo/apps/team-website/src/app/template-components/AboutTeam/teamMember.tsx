@@ -1,6 +1,7 @@
+import Image from "next/image";
 import React from "react";
 
-interface TeamMemberProps {
+export interface TeamMemberProps {
   image: string;
   name: string;
   position: string;
@@ -8,14 +9,16 @@ interface TeamMemberProps {
 
 const TeamMember: React.FC<TeamMemberProps> = ({ image, name, position }) => {
   return (
-    <div className="w-full px-4">
-      <div className="mb-8 text-center">
-        <img
+    <div className="px-4">
+      <div className="text-center w-40">
+        <Image
           src={image}
           alt={name}
-          className="mx-auto mb-4 h-32 w-32 rounded-full object-cover"
+          width={100}
+          height={100}
+          className="mx-auto mb-4 h-40 w-40 rounded-full object-cover"
         />
-        <h3 className="text-xl font-semibold text-black dark:text-white">
+        <h3 className="text-base font-semibold text-black dark:text-white">
           {name}
         </h3>
         <p className="text-base text-body-color dark:text-body-color-dark">
