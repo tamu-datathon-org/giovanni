@@ -1,10 +1,10 @@
-#mod_d096fbc1_1 {
+/* #mod_d096fbc1_1 {
   background-image: url('/images/teampics/placeholder.jpg');
 }
 
 @media screen and (min-width: 768px) {
   #mod_d096fbc1_1 {
-    /* background-image: url('/images/teampics/placeholder.jpg'); */
+    background-image: url('/images/teampics/placeholder.jpg');
   }
 }
 
@@ -68,6 +68,12 @@
   #mod_d096fbc1_8 {
     background-image: url('/images/teampics/placeholder.jpg');
   }
+} */
+
+.large-layout-container .image-cell {
+  border-radius: 12px;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .large-layout-container {
@@ -82,7 +88,7 @@
     "d d";
 }
 
-.large-layout-container img:nth-of-type(1) {
+.large-layout-container div:nth-of-type(1) {
   grid-area: a;
   justify-self: flex-end;
   align-self: flex-end;
@@ -92,7 +98,7 @@
   display: flex;
 }
 
-.large-layout-container img:nth-of-type(2) {
+.large-layout-container div:nth-of-type(2) {
   grid-area: b;
   justify-self: flex-start;
   align-self: flex-start;
@@ -103,7 +109,7 @@
   display: flex;
 }
 
-.large-layout-container img:nth-of-type(3) {
+.large-layout-container div:nth-of-type(3) {
   grid-area: c;
   justify-self: flex-end;
   align-self: flex-start;
@@ -115,7 +121,7 @@
   display: flex;
 }
 
-.large-layout-container img:nth-of-type(4) {
+.large-layout-container div:nth-of-type(4) {
   grid-area: d;
   justify-self: flex-start;
   align-self: flex-start;
@@ -125,10 +131,10 @@
   display: flex;
 }
 
-.large-layout-container img:nth-of-type(5),
-.large-layout-container img:nth-of-type(6),
-.large-layout-container img:nth-of-type(7),
-.large-layout-container img:nth-of-type(8) {
+.large-layout-container div:nth-of-type(5),
+.large-layout-container div:nth-of-type(6),
+.large-layout-container div:nth-of-type(7),
+.large-layout-container div:nth-of-type(8) {
   display: none;
 }
 
@@ -145,12 +151,6 @@
       "a b b f f"
       "d d c c g"
       "d d h h h";
-  }
-
-  .large-layout-container .image-cell {
-    border-radius: 12px;
-    background-repeat: no-repeat;
-    background-size: cover;
   }
 
   .large-layout-container div:nth-of-type(1) {

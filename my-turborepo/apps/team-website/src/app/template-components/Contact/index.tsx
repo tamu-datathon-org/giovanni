@@ -2,12 +2,12 @@ import NewsLatterBox from "./NewsLatterBox";
 
 const Contact = () => {
   return (
-    <section id="contact" className="overflow-hidden py-8 md:py-20 lg:py-28">
+    <section id="contact" className="overflow-hidden py-8 md:py-20 lg:py-28 bg-gray-light dark:bg-bg-color-dark">
       <div className="container">
         <div className="-mx-4 flex justify-center items-center">
           <div className="px-4 sm:w-full lg:w-3/5">
             <div
-              className="mb-12 rounded-sm bg-white px-8 py-11 shadow-three dark:bg-gray-dark sm:p-[55px] lg:mb-5 lg:px-8 xl:p-[55px]"
+              className="mb-12 rounded-sm bg-white px-8 py-11 shadow-three dark:bg-dark sm:p-[55px] lg:mb-5 lg:px-8 xl:p-[55px]"
               data-wow-delay=".15s
               "
             >

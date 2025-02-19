@@ -31,7 +31,7 @@ export default function Home() {
       <ApplySection/>
       <AboutTeam />
       {/* <Testimonials /> */}
-      <Blog />
+      {/* <Blog /> */}
       <Contact />
       <ContactBackground />
     </>
