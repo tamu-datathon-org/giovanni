@@ -52,7 +52,7 @@ const AboutTeam = () => {
         { image: "/images/teampics/summer_headshot.jpg", name: "Summer Wong", position: "Logistics" },
         { image: "/images/teampics/brittney_headshot.jpg", name: "Brittney Sanchez", position: "Logistics" },
         { image: "/images/teampics/trey_headshot.jpg", name: "Trey Schaider", position: "Logistics" },
-        // { image: "/images/teampics/placeholder.jpg", name: "Cindy Lam", position: "Former Logistics" },
+        { image: "/images/teampics/cindy_headshot.jpg", name: "Cindy Lam", position: "Former Logistics" },
         { image: "/images/teampics/amber_headshot.jpg", name: "Amber Chang", position: "Former Logistics Lead" },
         { image: "/images/teampics/josh_headshot.jpg", name: "Josh Bittlestone", position: "Former Logistics" },
       ],
