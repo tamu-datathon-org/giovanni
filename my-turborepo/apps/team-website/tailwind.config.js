@@ -77,13 +77,13 @@ module.exports = {
         three: "0px 5px 15px rgba(6, 8, 15, 0.05)",
       },
       keyframes: {
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-20px)" },
+        floatx: {
+          "0%, 100%": { boxShadow: "none", transform: "translateY(0)" },
+          "50%": { boxShadow: "none",transform: "translateY(-20px)" },
         },
       },
       animation: {
-        float: "float 3s ease-in-out infinite",
+        float: "floatx 3s ease-in-out infinite",
       },
     },
   },

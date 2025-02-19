@@ -26,16 +26,16 @@ const Hero = () => {
     <>
       <section
         id="home"
-        className="relative z-10 overflow-hidden bg-white pb-16 pt-16 dark:bg-gray-dark md:pb-[60px] md:pt-[80px] xl:pb-[80px] xl:pt-[100px] 2xl:pb-[100px] 2xl:pt-[120px]"
+        className="relative z-10 overflow-hidden bg-white pb-0 pt-16 dark:bg-gray-dark md:pb-[0px] md:pt-[80px] xl:pb-[0px] xl:pt-[100px] 2xl:pb-[0px] 2xl:pt-[120px]"
       >
         <div className="container">
-          <div className="absolute inset-0 bg-[url('/background.JPG')] bg-cover bg-center bg-no-repeat opacity-50"></div>
+            <div className="absolute inset-0 bg-[url('/background2.JPG')] bg-cover bg-center bg-no-repeat aspect-w-16 aspect-h-9 opacity-50"></div>
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
               <div className="relative mx-auto max-w-[800px] text-center">
                 <div className="relative z-10">
-                  <h1 className="mb-5 pb-10   text-4xl font-bold leading-tight text-white sm:text-4xl sm:leading-tight md:text-7xl md:leading-tight">
+                  <h1 className="mb-5 pb-20 text-4xl font-bold leading-tight text-white sm:text-4xl sm:leading-tight md:text-7xl md:leading-tight">
                     <span className="text-[#6EFEEB]">tamu</span>
                     <span className="text-[#2D69DF]">datathon</span>
                   </h1>
@@ -48,10 +48,10 @@ const Hero = () => {
           mentorship. Join us as we push the boundaries of data-driven
           innovation!
         </p> */}
-                  <div className="flex h-fit w-full items-center justify-center ">
+                  <div className="flex h-fit w-full items-center justify-center">
                     <Image
-                      className="duration-2000 animate-float"
-                      src="/images/hero/floatbear.png"
+                      className="animate-float duration-2000 shadow-none"
+                      src="/images/hero/floatbear2.png"
                       alt="Bear"
                       width={600}
                       height={600}

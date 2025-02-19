@@ -26,13 +26,13 @@ const ApplySection = () => {
               className="relative mx-auto mb-12 aspect-[25/24] max-w-[500px] text-center lg:m-0"
               data-wow-delay=".15s"
             >
-              {/* <Image
+              <Image
                 src="/images/about/Organizer Recruitment.png"
                 alt="about image"
                 width={500}
                 height={900}
                 className="drop-shadow-three dark:hidden dark:drop-shadow-none"
-              /> */}
+              />
               <Image
                 src="/images/about/Organizer Recruitment.png"
                 alt="about image"
