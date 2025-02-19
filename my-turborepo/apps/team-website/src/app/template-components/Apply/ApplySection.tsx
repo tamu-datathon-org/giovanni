@@ -7,13 +7,14 @@ const ApplySection = () => {
     <section id="apply" className="py-16 md:py-20 lg:py-28">
       <SectionTitle
           title="Apply To Be An Organizer"
-          paragraph="Apply to be a part of the TAMU Datathon team now!"
+          // paragraph="Apply to be a part of the TAMU Datathon team now!"
+          paragraph="Thank you for applying! Decisions released on Feb 23, 2025"
           center
         />
       <div className="flex flex-row items-center mb-14 justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
         <Link
           href="https://forms.gle/ngbF27FDQuKCTsKR8"
-          className="rounded-sm bg-primary px-8 py-4 text-base font-semibold text-white duration-300 ease-in-out hover:bg-primary/80"
+          className="rounded-sm bg-primary px-8 py-4 text-base font-semibold text-white duration-300 ease-in-out hover:bg-primary/80 opacity-50 pointer-events-none"
         >
           Apply Here
         </Link>

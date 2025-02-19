@@ -3,11 +3,11 @@ import FloatingStats from "./FloatingStats";
 
 const AboutSectionTwo = () => {
   return (
-    <section className="py-16 md:py-20 lg:py-28">
+    <section className="py-16 md:py-20 lg:py-24">
       <div className="container">   
         <div className="-mx-4 flex flex-wrap items-center">
           <FloatingStats/>
-          <div className="w-full px-4 text-center lg:w-1/2">
+          <div className="w-full p-4 text-center lg:w-1/2">
             <div className="max-w-[700px]">
               <div className="mb-9">
                 <h3 className="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
