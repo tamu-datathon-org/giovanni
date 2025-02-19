@@ -29,30 +29,34 @@ const Hero = () => {
         className="relative z-10 overflow-hidden bg-white pb-16 pt-16 dark:bg-gray-dark md:pb-[60px] md:pt-[80px] xl:pb-[80px] xl:pt-[100px] 2xl:pb-[100px] 2xl:pt-[120px]"
       >
         <div className="container">
+          <div className="absolute inset-0 bg-[url('/background.JPG')] bg-cover bg-center bg-no-repeat opacity-50"></div>
+          <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
-              <div className="mx-auto max-w-[800px] text-center ">
-                <h1 className="mb-5 text-4xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight md:text-7xl md:leading-tight">
-                  <span className="text-[#6EFEEB] ">tamu</span>
-                  <span className="text-[#2D69DF]">datathon</span>
-                </h1>
-                {/* <p className="mb-12 text-base !leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg md:text-xl">
-                  At TAMU Datathon, we're passionate about data science and
-                  machine learning. We bring together students of all levels for
-                  an intense 24-hour hackathon at Texas A&M University. Our
-                  goal? To inspire, educate, and empower the next generation of
-                  data scientists through real-world challenges and expert
-                  mentorship. Join us as we push the boundaries of data-driven
-                  innovation!
-                </p> */}
-                <div className="flex h-fit w-full items-center justify-center">
-                  <Image
-                    className="duration-2000 animate-float "
-                    src="/images/about/FloatingBear.png"
-                    alt="Bear"
-                    width={600}
-                    height={600}
-                  />
+              <div className="relative mx-auto max-w-[800px] text-center">
+                <div className="relative z-10">
+                  <h1 className="mb-5 pb-10   text-4xl font-bold leading-tight text-white sm:text-4xl sm:leading-tight md:text-7xl md:leading-tight">
+                    <span className="text-[#6EFEEB]">tamu</span>
+                    <span className="text-[#2D69DF]">datathon</span>
+                  </h1>
+                  {/* <p className="mb-12 text-base !leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg md:text-xl">
+          At TAMU Datathon, we're passionate about data science and
+          machine learning. We bring together students of all levels for
+          an intense 24-hour hackathon at Texas A&M University. Our
+          goal? To inspire, educate, and empower the next generation of
+          data scientists through real-world challenges and expert
+          mentorship. Join us as we push the boundaries of data-driven
+          innovation!
+        </p> */}
+                  <div className="flex h-fit w-full items-center justify-center ">
+                    <Image
+                      className="duration-2000 animate-float"
+                      src="/images/hero/floatbear.png"
+                      alt="Bear"
+                      width={600}
+                      height={600}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
