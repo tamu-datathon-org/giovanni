@@ -48,7 +48,7 @@ const Hero = () => {
                 <div className="flex h-fit w-full items-center justify-center">
                   <Image
                     className="duration-2000 animate-float "
-                    src="/images/about/floatingBear.png"
+                    src="/images/about/FloatingBear.png"
                     alt="Bear"
                     width={600}
                     height={600}
