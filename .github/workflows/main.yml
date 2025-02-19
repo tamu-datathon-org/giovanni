@@ -1,4 +1,4 @@
-name: Typecheck, lint, format
+name: Typecheck, lint, format, and fix
 on:
   pull_request:
     branches: ["*"]
@@ -29,5 +29,12 @@ jobs:
         cache-dependency-path: ./my-turborepo
     - name: Install dependencies
       run: pnpm install
-    - name: Typecheck, lint, format
-      run: pnpm turbo typecheck lint format
+    - name: Typecheck
+      run: pnpm typecheck
+    - name: Fix linting issues
+      run: pnpm lint:fix
+    - name: Fix formatting issues
+      run: pnpm format:fix
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v5
+      
