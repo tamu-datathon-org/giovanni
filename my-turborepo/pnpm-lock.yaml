@@ -407,6 +407,9 @@ importers:
       eslint-config-next:
         specifier: 14.2.3
         version: 14.2.3(eslint@9.19.0)(typescript@5.7.3)
+      framer-motion:
+        specifier: ^11.11.9
+        version: 11.18.2(react-dom@18.3.1)(react@18.3.1)
       lucide-react:
         specifier: ^0.439.0
         version: 0.439.0(react@18.3.1)
@@ -422,6 +425,9 @@ importers:
       react-dom:
         specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
+      react-icons:
+        specifier: ^5.3.0
+        version: 5.4.0(react@18.3.1)
       react-modal-video:
         specifier: ^2.0.1
         version: 2.0.2(react-dom@18.3.1)(react@18.3.1)
@@ -456,6 +462,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.17
         version: 10.4.20(postcss@8.5.1)
+      dotenv-cli:
+        specifier: ^7.4.2
+        version: 7.4.4
       postcss:
         specifier: ^8.4.41
         version: 8.5.1
@@ -6531,6 +6540,7 @@ packages:
     resolution: {integrity: sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==}
     engines: {node: '>=0.10'}
     hasBin: true
+    requiresBuild: true
 
   /detect-libc@2.0.3:
     resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
@@ -9873,6 +9883,7 @@ packages:
 
   /node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
+    requiresBuild: true
 
   /node-fetch-native@1.6.6:
     resolution: {integrity: sha512-8Mc2HhqPdlIfedsuZoc3yioPuzp6b+L5jRCRY1QzuWZh2EGJVQrGppC6V6cF0bLdbW0+O2YpqCA25aF/1lvipQ==}
