@@ -1,3 +1,6 @@
+"use client";
+
+import { LuClipboard } from "react-icons/lu";
 import NewsLatterBox from "./NewsLatterBox";
 
 const Contact = () => {
@@ -7,11 +10,57 @@ const Contact = () => {
         <div className="-mx-4 flex justify-center items-center">
           <div className="px-4 sm:w-full lg:w-3/5">
             <div
-              className="mb-12 rounded-sm bg-white px-8 py-11 shadow-three dark:bg-dark sm:p-[55px] lg:mb-5 lg:px-8 xl:p-[55px]"
+              className="mb-12 rounded-sm bg-white px-8 py-16 shadow-three dark:bg-dark"
               data-wow-delay=".15s
               "
             >
               <h2 className="mb-3 text-2xl text-center font-bold text-black dark:text-white sm:text-3xl lg:text-2xl xl:text-3xl">
+                Interested in working with us?
+              </h2>
+              <p className="mb-12 font-medium text-body-color text-center text-base">
+                Get in touch with us for more information
+              </p>
+              <p className="mb-6 font-medium text-body-color text-center text-xl">
+                Start sponsoring with an email to 
+                <span className="ml-1 inline-flex items-center space-x-2">
+                <a
+                  href="mailto:sponsor@tamudatathon.com"
+                  className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-900 mt-0">
+                  sponsor@tamudatathon.com
+                </a>
+                <button
+                  className="w-full md:w-auto hover:opacity-50"
+                  title="Copy to clipboard"
+                  onClick={() => navigator.clipboard.writeText('sponsor@tamudatathon.com')}
+                >
+                  <LuClipboard className="mr-2" />
+                </button>
+                </span>
+              </p>
+
+              
+
+              <p className="font-medium text-body-color text-center text-xl">
+                For general inqueries, email us at
+                <span className="ml-1 inline-flex items-center space-x-2">
+                <a
+                  href="mailto:connect@tamudatathon.com"
+                  className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-900 mt-0">
+                  connect@tamudatathon.com
+                </a>
+                <button
+                  className="w-full md:w-auto hover:opacity-50"
+                  onClick={() => navigator.clipboard.writeText('connect@tamudatathon.com')}
+                  title="Copy to clipboard"
+                >
+                  <LuClipboard className="mr-2" />
+                </button>
+              </span>
+              </p>
+
+              
+
+              {/* <h2 className="mb-3 text-2xl text-center font-bold text-black dark:text-white sm:text-3xl lg:text-2xl xl:text-3xl">
                 Join Our Community
               </h2>
               <p className="mb-12 font-medium text-body-color text-center text-base">
@@ -34,11 +83,11 @@ const Contact = () => {
                     </button>
                   </div>
                 </div>
-              </form>
+              </form> */}
             </div>
           </div>
           {/* <div className="w-full px-4 lg:w-5/12 xl:w-4/12"> */}
-            {/* <NewsLatterBox /> */}
+          {/* <NewsLatterBox /> */}
           {/* </div> */}
         </div>
       </div>

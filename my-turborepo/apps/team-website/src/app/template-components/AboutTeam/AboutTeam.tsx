@@ -71,7 +71,7 @@ const AboutTeam = () => {
 
   return (
     <>
-      <div className="container mx-auto text-center py-12">
+      <div id="team" className="container mx-auto text-center py-12">
         <h2 className="mb-8 font-bold leading-tight text-black dark:text-white text-5xl">
           Meet the Team
         </h2>

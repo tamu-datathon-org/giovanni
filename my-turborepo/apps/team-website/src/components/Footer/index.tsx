@@ -44,7 +44,7 @@ const Footer = () => {
                   sponsor@tamudatathon.com
                 </a>
                 <button
-                  className="w-full md:w-auto"
+                  className="w-full md:w-auto hover:opacity-50"
                   onClick={() => navigator.clipboard.writeText('sponsor@tamudatathon.com')}
                 >
                   <LuClipboard className="mr-2" />
@@ -61,7 +61,7 @@ const Footer = () => {
                   connect@tamudatathon.com
                 </a>
                 <button
-                  className="w-full md:w-auto"
+                  className="w-full md:w-auto hover:opacity-50"
                   onClick={() => navigator.clipboard.writeText('connect@tamudatathon.com')}
                 >
                   <LuClipboard className="mr-2" />

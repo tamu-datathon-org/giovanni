@@ -21,10 +21,16 @@ const menuData: Menu[] = [
   },
   {
     id: 4,
-    title: "Blog",
-    path: "blog",
+    title: "Team",
+    path: "team",
     newTab: false,
-    submenu: [
+  },
+  // {
+  //   id: 4,
+  //   title: "Blog",
+  //   path: "blog",
+  //   newTab: false,
+  //   submenu: [
       // INSERT NEW BLOG POSTS HERE
       // {
       //   id: 41,
@@ -38,8 +44,8 @@ const menuData: Menu[] = [
       //   path: "/contact",
       //   newTab: false,
       // },
-    ],
-  },
+  //   ],
+  // },
   {
     id: 5,
     title: "Contact",
