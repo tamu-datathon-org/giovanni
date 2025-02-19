@@ -20,9 +20,9 @@ const AboutSectionOne = () => {
   return (
     <section id="about" className="pt-16 md:pt-20 lg:pt-28">
       <div className="container">
-        <div className="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
+        <div className="border-b border-body-color/[.5] pb-16 dark:border-white/[.5] md:pb-20 lg:pb-24">
           <div className="-mx-4 flex flex-wrap items-center">
-            <div className="w-full px-4 lg:w-1/2">
+            <div className="w-full px-4 lg:w-1/2 flex flex-col justify-center">
               <SectionTitle
                 title="About Us"
                 paragraph="We are the largest data science and machine learning focused hackathon in Texas located at Texas A&M University in College Station."
@@ -42,7 +42,7 @@ const AboutSectionOne = () => {
 
                   <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
                     <List text="TD Lite in Spring" />
-                    <List text="Many Sponsers Annually" />
+                    <List text="Sponsored Challenges" />
                     <List text="All Experiences Welcome" />
                   </div>
                 </div>
@@ -50,20 +50,20 @@ const AboutSectionOne = () => {
             </div>
 
             <div className="w-full px-4 lg:w-1/2">
-              <div className="relative mx-auto aspect-[25/24] max-w-[500px] lg:mr-0">
+                <div className="relative mx-auto aspect-[25/24] max-w-[400px] flex justify-center">
                 <Image
                   src="/images/about/y2k-logo.svg"
                   alt="about-image"
                   fill
-                  className="mx-auto max-w-full drop-shadow-three dark:hidden dark:drop-shadow-none lg:mr-0"
+                  className="mx-auto max-w-full drop-shadow-three dark:hidden dark:drop-shadow-none"
                 />
                 <Image
                   src="/images/about/y2k-logo.svg"
                   alt="about-image"
                   fill
-                  className="mx-auto hidden max-w-full drop-shadow-three dark:block dark:drop-shadow-none lg:mr-0"
+                  className="mx-auto hidden max-w-full drop-shadow-three dark:block dark:drop-shadow-none"
                 />
-              </div>
+                </div>
             </div>
           </div>
         </div>
