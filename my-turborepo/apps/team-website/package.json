@@ -38,6 +38,7 @@
     "@vanni/tailwind-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
     "autoprefixer": "^10.4.17",
+    "dotenv-cli": "^7.4.2",
     "eslint": "^9.2.0",
     "postcss": "^8.4.41",
     "prettier": "^3.2.5",
