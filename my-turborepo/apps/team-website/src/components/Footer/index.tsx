@@ -9,7 +9,7 @@ const Footer = () => {
   const { toast } = useToast();
 
   return (
-    <footer className="relative z-10 bg-[#ede8e1] pb-8 pt-12 dark:bg-gray-dark md:pt-16 lg:pt-20">
+    <footer className="relative z-10 bg-normal pb-8 pt-12 dark:bg-gray-dark md:pt-16 lg:pt-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col items-center md:items-start">

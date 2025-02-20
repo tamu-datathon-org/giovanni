@@ -16,7 +16,7 @@ const Hero = () => {
     <>
       <section
         id="home"
-        className="relative z-10 overflow-hidden bg-white pb-[40px] pt-16 dark:bg-gray-dark md:pb-[40px] md:pt-[80px] xl:pb-[40px] xl:pt-[100px] 2xl:pb-[40px] 2xl:pt-[120px]"
+        className="relative z-10 overflow-hidden bg-gray-dark pb-[40px] pt-16 md:pb-[40px] md:pt-[80px] xl:pb-[40px] xl:pt-[100px] 2xl:pb-[40px] 2xl:pt-[120px]"
       >
         <div className="container">
           <div className="absolute inset-0 bg-[url('/background2.JPG')] bg-cover bg-center bg-no-repeat aspect-w-16 aspect-h-9 opacity-50"></div>
