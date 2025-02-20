@@ -2,7 +2,7 @@
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import ScrollToTop from "@/app/template-components/ScrollToTop";
+import ScrollToTop from "@/components/ScrollToTop";
 import { Providers } from "./providers";
 import { Toaster } from "@/components/ui/toaster";
 import { Inter } from "next/font/google";
@@ -24,7 +24,7 @@ export default function RootLayout({
       */}
       <head />
 
-      <body className={`bg-[#FCFCFC] dark:bg-black ${inter.className}`}>
+      <body className={`bg-[#ede8e1] dark:bg-black ${inter.className}`}>
         <Providers>
           <Header />
           {children}

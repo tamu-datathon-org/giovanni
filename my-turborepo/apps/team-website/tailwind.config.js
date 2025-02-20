@@ -45,8 +45,8 @@ module.exports = {
         datablue: "#2C41DB",
         "bg-color-dark": "#171C28",
         "body-color": {
-          DEFAULT: "#788293",
-          dark: "#959CB1",
+          DEFAULT: "#212327",
+          dark: "#9da7b9",
         },
         stroke: {
           stroke: "#E3E8EF",
