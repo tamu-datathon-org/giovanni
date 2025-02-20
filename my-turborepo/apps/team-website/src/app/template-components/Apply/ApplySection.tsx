@@ -4,13 +4,13 @@ import Link from "next/link";
 
 const ApplySection = () => {
   return (
-    <section id="apply" className="py-16 md:py-20 lg:py-28">
+    <section id="apply" className="py-16 md:py-20 lg:py-24">
       <SectionTitle
-          title="Apply To Be An Organizer"
-          // paragraph="Apply to be a part of the TAMU Datathon team now!"
-          paragraph="Thank you for applying! Decisions released on Feb 23, 2025"
-          center
-        />
+        title="Apply To Be An Organizer"
+        // paragraph="Apply to be a part of the TAMU Datathon team now!"
+        paragraph="Thank you for applying! Decisions released on Feb 23, 2025"
+        center
+      />
       <div className="flex flex-row items-center mb-14 justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
         <Link
           href="https://forms.gle/ngbF27FDQuKCTsKR8"
@@ -49,9 +49,9 @@ const ApplySection = () => {
                   Logistics
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                Manage finances, Order t-shirts, food,etc.
-                Plan & schedule day-of activities.
-                Gather judges, mentors, & more!
+                  Manage finances, Order t-shirts, food,etc.
+                  Plan & schedule day-of activities.
+                  Gather judges, mentors, & more!
                 </p>
               </div>
               <div className="mb-9">
@@ -70,9 +70,9 @@ const ApplySection = () => {
                   Design
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                Set the design direction of the organization & event.
-                Create marketing materials, merchandise, & campaign plans.
-                Maintain & manage social media!
+                  Set the design direction of the organization & event.
+                  Create marketing materials, merchandise, & campaign plans.
+                  Maintain & manage social media!
                 </p>
               </div>
               <div className="mb-9">
@@ -91,7 +91,7 @@ const ApplySection = () => {
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
                   Assist current sponsers with
-                  various tasks. Day-of point of contact for 
+                  various tasks. Day-of point of contact for
                   company representatives.
                   Secure sponserships!
                 </p>

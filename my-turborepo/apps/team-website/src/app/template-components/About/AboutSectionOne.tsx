@@ -20,7 +20,7 @@ const AboutSectionOne = () => {
   return (
     <section id="about" className="pt-16 md:pt-20 lg:pt-28">
       <div className="container">
-        <div className="border-b border-body-color/[.5] pb-16 dark:border-white/[.5] md:pb-20 lg:pb-24">
+        <div className="border-b border-body-color/[.5] pb-8 dark:border-white/[.5] md:pb-12 lg:pb-16">
           <div className="-mx-4 flex flex-wrap items-center">
             <div className="w-full px-4 lg:w-1/2 flex flex-col justify-center">
               <SectionTitle
@@ -50,7 +50,7 @@ const AboutSectionOne = () => {
             </div>
 
             <div className="w-full px-4 lg:w-1/2">
-                <div className="relative mx-auto aspect-[25/24] max-w-[400px] flex justify-center">
+              <div className="relative mx-auto aspect-[25/24] max-w-[400px] flex justify-center">
                 <Image
                   src="/images/about/y2k-logo.svg"
                   alt="about-image"
@@ -63,7 +63,7 @@ const AboutSectionOne = () => {
                   fill
                   className="mx-auto hidden max-w-full drop-shadow-three dark:block dark:drop-shadow-none"
                 />
-                </div>
+              </div>
             </div>
           </div>
         </div>

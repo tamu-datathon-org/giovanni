@@ -3,8 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { LuClipboard } from "react-icons/lu";
+import { useToast } from "@/hooks/use-toast";
 
 const Footer = () => {
+  const { toast } = useToast();
+
   return (
     <footer className="relative z-10 bg-white pb-8 pt-12 dark:bg-gray-dark md:pt-16 lg:pt-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,16 +17,16 @@ const Footer = () => {
               <Image
                 src="/images/logo/logoTD.png"
                 alt="logo"
-                className="w-full dark:hidden"
+                className="w-[128px] mx-auto dark:hidden"
                 width={100}
-                height={20}
+                height={100}
               />
               <Image
                 src="/images/logo/logoTD.png"
                 alt="logo"
-                className="hidden w-full dark:block"
+                className="hidden w-[200px] md:w-[150px] lg:w-[128px] mx-auto dark:block"
                 width={100}
-                height={20}
+                height={100}
               />
             </Link>
             <h3>TAMU Datathon</h3>
@@ -45,7 +48,14 @@ const Footer = () => {
                 </a>
                 <button
                   className="w-full md:w-auto hover:opacity-50"
-                  onClick={() => navigator.clipboard.writeText('sponsor@tamudatathon.com')}
+                  onClick={() => {
+                    navigator.clipboard.writeText('sponsor@tamudatathon.com')
+                    toast({
+                      title: "Copied to clipboard",
+                      variant: "default",
+                      description: "sponsor@tamudatathon.com"
+                    })
+                  }}
                 >
                   <LuClipboard className="mr-2" />
                 </button>
@@ -62,7 +72,14 @@ const Footer = () => {
                 </a>
                 <button
                   className="w-full md:w-auto hover:opacity-50"
-                  onClick={() => navigator.clipboard.writeText('connect@tamudatathon.com')}
+                  onClick={() => {
+                    navigator.clipboard.writeText('connect@tamudatathon.com')
+                    toast({
+                      title: "Copied to clipboard",
+                      variant: "default",
+                      description: "connect@tamudatathon.com"
+                    })
+                  }}
                 >
                   <LuClipboard className="mr-2" />
                 </button>
@@ -73,13 +90,13 @@ const Footer = () => {
           <div className="flex flex-col items-center space-y-4 md:items-start">
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <Link
-              href="/about"
+              href="/#about"
               className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
               About Us
             </Link>
             <Link
-              href="/contact"
+              href="/#contact"
               className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
               Contact

@@ -8,15 +8,15 @@ const menuData: Menu[] = [
     newTab: false,
   },
   {
-    id: 2,
-    title: "Apply",
-    path: "apply",
-    newTab: false,
-  },
-  {
     id: 3,
     title: "About",
     path: "about",
+    newTab: false,
+  },
+  {
+    id: 2,
+    title: "Apply",
+    path: "apply",
     newTab: false,
   },
   {
@@ -31,19 +31,19 @@ const menuData: Menu[] = [
   //   path: "blog",
   //   newTab: false,
   //   submenu: [
-      // INSERT NEW BLOG POSTS HERE
-      // {
-      //   id: 41,
-      //   title: "About Page",
-      //   path: "/about",
-      //   newTab: false,
-      // },
-      // {
-      //   id: 42,
-      //   title: "Contact Page",
-      //   path: "/contact",
-      //   newTab: false,
-      // },
+  // INSERT NEW BLOG POSTS HERE
+  // {
+  //   id: 41,
+  //   title: "About Page",
+  //   path: "/about",
+  //   newTab: false,
+  // },
+  // {
+  //   id: 42,
+  //   title: "Contact Page",
+  //   path: "/contact",
+  //   newTab: false,
+  // },
   //   ],
   // },
   {
