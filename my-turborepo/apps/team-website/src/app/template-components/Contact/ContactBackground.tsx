@@ -25,7 +25,7 @@ const ContactBackground = () => {
           <Image src="/images/contact/stickers.JPG" className="image-cell object-cover" alt="Image 6" width={500} height={500} />
         </div>
         <div id="mod_d096fbc1_7" className="relative bg-center">
-          <Image src="/images/contact/y2k.JPG" className="image-cell object-cover" alt="Image 7" width={500} height={500} />
+          <Image src="/images/contact/chill.JPG" className="image-cell object-cover" alt="Image 7" width={500} height={500} />
         </div>
         <div id="mod_d096fbc1_8" className="relative bg-center">
           <Image src="/images/contact/snacks.JPG" className="image-cell object-cover" alt="Image 8" width={500} height={500} />
