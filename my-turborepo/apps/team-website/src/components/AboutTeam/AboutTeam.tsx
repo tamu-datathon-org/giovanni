@@ -23,7 +23,7 @@ const AboutTeam = () => {
           { image: "/images/teampics/caleb_headshot.jpg", name: "Caleb Xu", position: "Challenges" },
           { image: "/images/teampics/akil_headshot.jpg", name: "Akil Manivannan", position: "Former Challenges Lead" },
           { image: "/images/teampics/anthony_headshot.jpg", name: "Anthony Ciardelli", position: "Former Challenges" },
-          { image: "/images/teampics/zeshawn_headshot.jpg", name: "Zeeshan CHatur", position: "Former Challenges" },
+          { image: "/images/teampics/zeshawn_headshot.jpg", name: "Zeeshan Chatur", position: "Former Challenges" },
         ],
         description: "Challenges",
       },
