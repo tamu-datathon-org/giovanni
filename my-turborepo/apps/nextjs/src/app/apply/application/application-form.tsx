@@ -1,6 +1,6 @@
 "use client";
 
-import "./customCss.scss";
+import "../../_components/customCss.scss";
 
 import type { SubmitHandler } from "react-hook-form";
 import React, { useState } from "react";
@@ -19,7 +19,9 @@ import {
   FormMessage,
 } from "@vanni/ui/form";
 
-import type { ApplicationSchema } from "../apply/validation";
+import type { ApplicationSchema } from "../validation";
+import schools from "~/app/apply/application/application-data/schools.json";
+import schoolsJson from "~/app/apply/application/application-data/schools.json";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
@@ -38,12 +40,10 @@ import {
   SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
 import { api } from "~/trpc/react";
-import { applicationSchema } from "../apply/validation";
-import schools from "./application-data/schools.json";
-import schoolsJson from "./application-data/schools.json";
-import GenericCombobox from "./genericCombobox";
-import LoadingAnimation from "./loadingAnimation";
-import Title from "./title";
+import GenericCombobox from "../../_components/genericCombobox";
+import LoadingAnimation from "../../_components/loadingAnimation";
+import Title from "../../_components/title";
+import { applicationSchema } from "../validation";
 
 // Map schools to DropdownOption type
 const SCHOOL_OPTIONS = schools.map((school) => ({
@@ -745,6 +745,7 @@ export function ApplicationForm() {
                         field.onChange(e);
                         setDietaryRestrictionCount(e.target.value.length);
                       }}
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />

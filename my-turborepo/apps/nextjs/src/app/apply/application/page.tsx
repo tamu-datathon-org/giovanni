@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 
-import { ApplicationForm } from "~/app/_components/application-form";
+import { ApplicationForm } from "~/app/apply/application/application-form";
 
 // TODO: Replace this variable with an api route that checks the latest event
 const appsOpen = false;

@@ -13,7 +13,7 @@ import { ExitButton, Lines, TAMUy2k, TitleText } from "./preregistration-form"; 
 interface WindowContainerProps {
   children: React.ReactNode;
   isOpen?: boolean;
-  openFunc: (isOpen: boolean) => void;
+  openFunc?: (isOpen: boolean) => void;
   borderGradientStart?: string;
   borderGradientMiddle?: string;
   borderGradientEnd?: string;
@@ -30,6 +30,8 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
   const borderStyle = {
     backgroundImage: `linear-gradient(to bottom, ${borderGradientStart}, ${borderGradientMiddle}, ${borderGradientEnd})`,
   };
+
+  openFunc = openFunc ?? (() => {});
 
   return (
     isOpen && (
