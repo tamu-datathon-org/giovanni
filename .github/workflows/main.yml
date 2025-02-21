@@ -20,7 +20,7 @@ jobs:
     - name: Install pnpm
       uses: pnpm/action-setup@v4
       with:
-        version: 9
+        version: 10
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
@@ -28,7 +28,7 @@ jobs:
         cache: 'pnpm'
         cache-dependency-path: ./my-turborepo
     - name: Install dependencies
-      run: pnpm install
+      run: pnpm install --fix-lockfile
     - name: Typecheck
       run: pnpm typecheck
     - name: Fix linting issues
