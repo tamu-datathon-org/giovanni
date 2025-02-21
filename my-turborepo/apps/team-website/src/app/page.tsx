@@ -6,7 +6,7 @@ import ScrollUp from "@/components/Common/ScrollUp";
 import Contact from "@/components/Contact";
 import Hero from "@/components/Hero";
 import Video from "@/components/Video";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import AboutTeam from "../components/AboutTeam/AboutTeam";
 import ContactBackground from "../components/Contact/ContactBackground";
 import { Suspense } from "react";
