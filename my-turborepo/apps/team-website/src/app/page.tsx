@@ -9,6 +9,7 @@ import Video from "@/components/Video";
 import { Metadata } from "next";
 import AboutTeam from "../components/AboutTeam/AboutTeam";
 import ContactBackground from "../components/Contact/ContactBackground";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "TAMU Datathon",
@@ -24,13 +25,17 @@ export default function Home() {
       {/* <Video /> */}
       {/* <Brands /> */}
       <AboutSectionOne />
-      <AboutSectionTwo/>
-      <ApplySection/>
-      <AboutTeam />
+      <AboutSectionTwo />
+      <ApplySection />
+      <Suspense fallback={<p>Loading team...</p>}>
+        <AboutTeam />
+      </Suspense>
       {/* <Testimonials /> */}
       {/* <Blog /> */}
+      <Suspense fallback={<p>Loading gallery...</p>}>
+        <ContactBackground />
+      </Suspense>
       <Contact />
-      <ContactBackground />
     </>
   );
 }
