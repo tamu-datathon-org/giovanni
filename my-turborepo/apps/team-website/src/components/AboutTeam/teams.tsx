@@ -1,4 +1,5 @@
-import TeamMember, { TeamMemberProps } from "./teamMember";
+import type { TeamMemberProps } from "./teamMember";
+import TeamMember from "./teamMember";
 
 interface TeamsProps {
   teamMembers: TeamMemberProps[];
