@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.signOut = exports.signIn = exports.auth = exports.POST = exports.GET = void 0;
+var next_auth_1 = require("next-auth");
+var config_1 = require("./config");
+var _a = (0, next_auth_1.default)(config_1.authConfig), _b = _a.handlers, GET = _b.GET, POST = _b.POST, auth = _a.auth, signIn = _a.signIn, signOut = _a.signOut;
+exports.GET = GET;
+exports.POST = POST;
+exports.auth = auth;
+exports.signIn = signIn;
+exports.signOut = signOut;

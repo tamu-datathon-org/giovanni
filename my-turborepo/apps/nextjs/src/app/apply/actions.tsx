@@ -11,7 +11,11 @@ export async function ResumeForm() {
     return blob;
   }
   return (
-    <form action={uploadResume}>
+    <form
+      action={(formData: FormData) => {
+        uploadResume(formData);
+      }}
+    >
       <label>Upload Resume</label>
       <input type="file" name="resume" required />
       <button type="submit">Upload</button>
