@@ -7,6 +7,7 @@ import { baseURL, routes } from "@/app/resources";
 import { home, about, person, newsletter } from "@/app/resources/content";
 import { Mailchimp } from "@/components";
 import { Posts } from "@/components/blog/Posts";
+import TestTRPC from "@/components/test";
 
 export async function generateMetadata() {
   const title = home.title;
@@ -62,6 +63,7 @@ export default function Home() {
           }),
         }}
       />
+      <TestTRPC />
       <Column fillWidth paddingY="l" gap="m">
         <Column maxWidth="s">
           <RevealFx translateY="4" fillWidth horizontal="start" paddingBottom="m">
