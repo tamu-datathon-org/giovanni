@@ -1,5 +1,6 @@
 import "@/once-ui/styles/index.scss";
 import "@/once-ui/tokens/index.scss";
+// import "@/styles/index.css";
 
 import classNames from "classnames";
 
