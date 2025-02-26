@@ -1,6 +1,7 @@
 import "@/once-ui/styles/index.scss";
 import "@/once-ui/tokens/index.scss";
-// import "@/styles/index.css";
+import "../styles/index.css";
+
 
 import classNames from "classnames";
 
@@ -93,6 +94,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           code.variable,
         )}
       >
+        a
+        <div className="text-blue">
+          Hello
+        </div>
         <ToastProvider>
           <Column style={{ minHeight: "100vh" }} as="body" fillWidth margin="0" padding="0">
             <Background
