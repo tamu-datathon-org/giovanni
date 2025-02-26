@@ -7,12 +7,12 @@ export default async function AdminLayout({
 }) {
   const session = await auth();
 
-  if (!session) {
-    ("use server");
-    await signIn(undefined, { redirectTo: "/admin/jankury" });
-  }
+  // if (!session) {
+  //   ("use server");
+  //   await signIn(undefined, { redirectTo: "/admin/jankury" });
+  // }
 
   console.log("hello");
-  console.log(session);
+  // console.log(session);
   return <section>{children}</section>;
 }

@@ -9,7 +9,7 @@ import {
   Preregistration,
 } from "@vanni/db/schema";
 
-import { protectedProcedure } from "../trpc";
+import { protectedProcedure, publicProcedure } from "../trpc";
 
 export async function getEmailsByLabelList(input: string[]) {
   console.log(input);
@@ -29,7 +29,7 @@ export async function getEmailsByLabelList(input: string[]) {
 }
 
 export const emailRouter = {
-  getAllLabels: protectedProcedure.query(async ({ ctx }) => {
+  getAllLabels: publicProcedure.query(async ({ ctx }) => {
     const emailLabels = await ctx.db
       .select({
         name: EmailLabel.name,

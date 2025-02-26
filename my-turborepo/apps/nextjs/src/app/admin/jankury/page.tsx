@@ -17,6 +17,7 @@ import Content from "./components/Content";
 import EmailLists from "./components/EmailLists";
 import Preview from "./components/Preview";
 import Subject from "./components/Subject";
+import InputEmails from "./components/InputEmails";
 
 export const runtime = "edge";
 
@@ -94,6 +95,7 @@ export default function JankuryPage() {
                   className="overflow-x-hidden rounded-lg bg-slate-50 p-5 lg:px-16"
                 >
                   <EmailLists />
+                  <InputEmails />
                   <BatchSize />
                   <Subject />
                   <Content />
