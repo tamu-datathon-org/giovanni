@@ -1,15 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    domains: ["localhost"],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "cdn.sanity.io",
-        port: "",
-      },
-    ],
-  },
   reactStrictMode: true,
 
   /** Enables hot reloading for local packages without a build step */
@@ -27,4 +17,4 @@ const nextConfig = {
   output: "standalone",
 };
 
-module.exports = nextConfig;
+export default nextConfig;
