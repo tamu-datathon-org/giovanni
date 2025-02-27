@@ -94,10 +94,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           code.variable,
         )}
       >
-        a
-        <div className="text-blue">
-          Hello
-        </div>
         <ToastProvider>
           <Column style={{ minHeight: "100vh" }} as="body" fillWidth margin="0" padding="0">
             <Background

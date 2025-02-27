@@ -2,13 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
+
 @layer base {
     @font-face {
         font-family: "myfont";
-        src: url("./assets/w95fa.woff2") format("woff2");
+        src: url("/fonts/Game Of Squids.ttf") format("truetype");
     }
 
+    /* 
     body {
         background-size: cover;
         background-repeat: no-repeat;
@@ -17,9 +18,10 @@
 
     :root {
         --radius: 0.5rem;
-    }
+    } */
 }
 
+/*
 #mlh-trust-badge {
     display: block;
     max-width: 100px;

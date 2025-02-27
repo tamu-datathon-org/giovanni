@@ -34,6 +34,9 @@ module.exports = {
       // => @media (min-width: 1400px) { ... }
     },
     extend: {
+      fontFamily: {
+        "squid-game": ['myfont', 'sans-serif']
+      },
       colors: {
         current: "currentColor",
         transparent: "transparent",
