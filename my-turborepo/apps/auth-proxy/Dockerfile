@@ -51,8 +51,8 @@ WORKDIR /app
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nitro
-COPY --from=builder /app/apps/auth-proxy/.output ./.output
+COPY --from=installer /app/apps/auth-proxy/.output ./.output
 
 USER nitro
 
-CMD node apps/nextjs/server.js
+CMD node .output/server/index.mjs
