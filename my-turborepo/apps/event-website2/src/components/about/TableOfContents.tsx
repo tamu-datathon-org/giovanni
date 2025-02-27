@@ -47,6 +47,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) =
       gap="32"
       hide="m"
     >
+      <div className="text-lg font-bold">
+        Table of Contents
+      </div>
       {structure
         .filter((section) => section.display)
         .map((section, sectionIndex) => (

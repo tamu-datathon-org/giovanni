@@ -1,5 +1,6 @@
 module.exports = {
   plugins: [
+    "tailwindcss",
     [
       "@csstools/postcss-global-data",
       {
@@ -20,5 +21,11 @@ module.exports = {
         },
       },
     ],
-  ],
+ ],
 };
+
+// module.exports = {
+//   plugins: {
+//     tailwindcss: {},
+//   },
+// };
