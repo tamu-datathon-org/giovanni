@@ -51,7 +51,7 @@ WORKDIR /app
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nitro
-COPY --from=builder /app/.output ./.output
+COPY --from=builder /app/apps/auth-proxy/.output ./.output
 
 USER nitro
 
