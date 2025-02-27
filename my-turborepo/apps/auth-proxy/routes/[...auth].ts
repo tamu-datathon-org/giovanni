@@ -6,7 +6,7 @@ import Auth0 from "next-auth/providers/auth0";
 export default eventHandler(async (event) =>
   Auth(toWebRequest(event), {
     secret: process.env.AUTH_SECRET,
-    trustHost: !!process.env.VERCEL,
+    trustHost: !!process.env.AUTH_URL,
     redirectProxyUrl: process.env.AUTH_REDIRECT_PROXY_URL,
     providers: [
       Discord({
