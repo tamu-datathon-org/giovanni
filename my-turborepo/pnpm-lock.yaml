@@ -479,6 +479,9 @@ importers:
       scss:
         specifier: ^0.2.4
         version: 0.2.4
+      sharp:
+        specifier: ^0.33.4
+        version: 0.33.5
       styled-components:
         specifier: ^6.1.13
         version: 6.1.15(react-dom@18.3.1)(react@18.3.1)
@@ -612,6 +615,9 @@ importers:
       react-modal-video:
         specifier: ^2.0.1
         version: 2.0.2(react-dom@18.3.1)(react@18.3.1)
+      sharp:
+        specifier: ^0.33.4
+        version: 0.33.5
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.6.0
