@@ -4,12 +4,6 @@ export default function OrganizerPage() {
   return (
     <div>
       <h1>Welcome to the Organizer Page</h1>
-      <button onClick={ async () => {
-        ("use server");
-        await signOut({ redirectTo: "/" });
-      }}>
-        Sign Out!
-      </button>
     </div>
   );
 }
