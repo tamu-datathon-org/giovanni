@@ -18,6 +18,7 @@
     "@floating-ui/react-dom": "^2.1.1",
     "@mdx-js/loader": "^3.1.0",
     "@next/mdx": "14.2.3",
+    "@radix-ui/react-dialog": "^1.1.2",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tailwindcss/postcss": "^4.0.9",
     "@tanstack/react-query": "^5.35.5",
@@ -30,9 +31,12 @@
     "@vanni/db": "workspace:*",
     "@vanni/ui": "workspace:*",
     "@vanni/validators": "workspace:*",
+    "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
+    "clsx": "^2.1.1",
     "cookie": "^1.0.1",
     "gray-matter": "^4.0.3",
+    "lucide-react": "^0.439.0",
     "next": "14.2.3",
     "next-mdx-remote": "^5.0.0",
     "postcss": "^8.4.41",
@@ -46,7 +50,9 @@
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
     "sass": "^1.77.8",
-    "sharp": "^0.33.4"
+    "sharp": "^0.33.4",
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@csstools/postcss-global-data": "^2.1.1",
