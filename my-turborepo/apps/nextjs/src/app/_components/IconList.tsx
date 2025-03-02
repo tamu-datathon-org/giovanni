@@ -23,7 +23,7 @@ interface IconListProps {
   prizeFunc?: (isOpen: boolean) => void;
   scheduleFunc?: () => void;
   helpQueueFunc?: () => void;
-  setFocus: (focus: string) => void;
+  setFocus?: (focus: string) => void;
   challengesFunc?: () => void;
 }
 
@@ -51,6 +51,8 @@ const IconList: React.FC<IconListProps> = ({
   setFocus,
 }) => {
   const router = useRouter();
+
+  setFocus = setFocus ?? (() => {});
   return (
     // className='absolute top-0 grid grid-cols-2 pt-4 gap-1'
     <div className={className}>

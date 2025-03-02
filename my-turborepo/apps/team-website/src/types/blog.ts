@@ -1,10 +1,10 @@
-type Author = {
+interface Author {
   name: string;
   image: string;
   designation: string;
-};
+}
 
-export type Blog = {
+export interface Blog {
   id: number;
   title: string;
   paragraph: string;
@@ -12,4 +12,4 @@ export type Blog = {
   author: Author;
   tags: string[];
   publishDate: string;
-};
+}

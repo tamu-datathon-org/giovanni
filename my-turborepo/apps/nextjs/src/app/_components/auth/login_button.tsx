@@ -31,6 +31,7 @@ export function LoginButton({
           );
         } catch (error) {
           if (error instanceof AuthError) {
+            const SIGNIN_ERROR_URL = "/api/auth/error";
             return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
           }
           throw error;

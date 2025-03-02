@@ -30,7 +30,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import { Asterisk } from "./application-form";
+import { Asterisk } from "../apply/application/application-form";
 
 interface DropdownOption {
   value: string;

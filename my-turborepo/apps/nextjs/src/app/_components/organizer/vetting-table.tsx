@@ -89,7 +89,7 @@ export const columns: ColumnDef<TableData>[] = [
       );
     },
     cell: ({ row }) => {
-      const createdAt = row.getValue("createdAt");
+      const createdAt: Date = row.getValue("createdAt");
       return <div className="lowercase">{createdAt.toLocaleDateString()}</div>;
     },
     enableHiding: true,
