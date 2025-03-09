@@ -17,7 +17,7 @@ import { Input } from "~/components/ui/input";
 interface GenericInputProps {
   name: keyof ApplicationSchema;
   label?: string;
-  defaultValue?: string | undefined;
+  defaultValue?: string;
   required?: boolean;
   placeholder: string;
 }

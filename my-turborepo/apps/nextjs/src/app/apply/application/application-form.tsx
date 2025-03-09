@@ -256,7 +256,7 @@ export function ApplicationForm() {
                 name="firstName"
                 label="First Name"
                 required={true}
-                defaultValue={importedValues?.app?.firstName}
+                defaultValue={importedValues?.app?.firstName ?? ""}
                 placeholder="John"
               />
             </div>
@@ -267,7 +267,7 @@ export function ApplicationForm() {
                 name="lastName"
                 label="Last Name"
                 required={true}
-                defaultValue={importedValues?.app?.lastName}
+                defaultValue={importedValues?.app?.lastName ?? ""}
                 placeholder="Doe"
               />
             </div>
@@ -280,7 +280,7 @@ export function ApplicationForm() {
               name="email"
               label="Primary Email"
               required={true}
-              defaultValue={importedValues?.app?.email}
+              defaultValue={importedValues?.app?.email ?? ""}
               placeholder="abc123@gmail.com"
             />
           </div>
@@ -291,7 +291,7 @@ export function ApplicationForm() {
               name="phoneNumber"
               label="Phone Number"
               required={true}
-              defaultValue={importedValues?.app?.phoneNumber}
+              defaultValue={importedValues?.app?.phoneNumber ?? ""}
               placeholder="1234567890"
             />
           </div>
@@ -526,7 +526,7 @@ export function ApplicationForm() {
               name="address"
               label="Address"
               required={true}
-              defaultValue={importedValues?.app?.address}
+              defaultValue={importedValues?.app?.address ?? ""}
               placeholder="308 Negra Arroyo Lane, Albuquerque, New Mexico 87104"
             />
           </div>
@@ -575,6 +575,7 @@ export function ApplicationForm() {
               required={true}
             />
           </div>
+
           {/* Dietry Restrictions */}
           <div className="pt-4">
             <GenericTextArea
