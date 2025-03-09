@@ -7,6 +7,8 @@ import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
 import StaticWindowContainer from "../_components/StaticWindowContainer";
 
+export const appsOpen = true;
+
 export default function Page() {
   // TODO: Replace this with an API call to the correct router
   const { data, isLoading } = api.application.getApplicationStatus.useQuery(
@@ -47,9 +49,6 @@ export default function Page() {
     }
   }
 
-  // TODO: Replace this variable with an api route that checks the latest event
-  const appsOpen = false;
-
   return (
     <>
       {/* <IconList /> */}
@@ -84,7 +83,9 @@ export default function Page() {
                     : "No status available"}
               </div>
 
-              {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
+              <div>
+                {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
+              </div>
 
               <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
                 <Link href="/">Back to home</Link>
@@ -118,13 +119,13 @@ function AppsClosedMessage() {
 
 function AppsOpenMessage() {
   return (
-    <button className="editButton">
+    <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
       <Link
         className="dashboardText buttonText text-xl"
         href="/apply/application"
       >
         Edit your application
       </Link>
-    </button>
+    </Button>
   );
 }

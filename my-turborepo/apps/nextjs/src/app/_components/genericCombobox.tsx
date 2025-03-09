@@ -46,20 +46,20 @@ interface GenericDropdownProps {
   required?: boolean;
 }
 
-const GenericCombobox: React.FC<GenericDropdownProps> = ({
+const GenericCombobox: React.FC<GenericDropdownProps & { otherField?: boolean }> = ({
   name,
   label,
   options,
   filter,
   defaultOption,
   required,
+  otherField,
 }) => {
   const form = useFormContext<ApplicationSchema>();
   const [searchValue, setSearchValue] = useState("");
   const { debouncedValue, isDebouncing } = useDebounce(searchValue, 250);
   const [open, setOpen] = React.useState(false);
-
-  // form.setValue(name, defaultOption);
+  const [otherValue, setOtherValue] = useState("");
 
   const filter20Items = useMemo(() => {
     if (isDebouncing) {
@@ -67,7 +67,6 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
     }
 
     const query = debouncedValue;
-    // console.log("thing: ", query);
 
     if (filter) {
       return options
@@ -80,22 +79,6 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   }, [debouncedValue, options]);
 
   return (
-    //Basic Dropdown
-    // <div className='flex flex-col'>
-    //     {label && <Label htmlFor={name} className='text-xl pt-4'>{label}</Label>}
-    //     <Select {...register(name)}>
-    //         <SelectTrigger className="hover:border-cyan-500 focus:border-sky-700">
-    //             <SelectValue placeholder="---------" />
-    //         </SelectTrigger>
-    //         <SelectContent>
-    //             {options.map((option, index) => (
-    //                 <SelectItem key={index} value={option.value}>{option.label}</SelectItem>
-    //             ))}
-    //         </SelectContent>
-    //     </Select>
-    // </div>
-
-    // ComboBox
     <FormField
       control={form.control}
       name={name}
@@ -116,7 +99,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                 >
                   {field.value
                     ? options.find((option) => option.value === field.value)
-                        ?.label
+                      ?.label
                     : "Select ..."}
                   <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -161,6 +144,20 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
               </Command>
             </PopoverContent>
           </Popover>
+          {otherField && field.value === "Other (please specify)" && (
+            <div className="mt-2">
+              <FormLabel className="text-xl">Other</FormLabel>
+              <FormControl>
+                <input
+                  type="text"
+                  value={otherValue}
+                  onChange={(e) => setOtherValue(e.target.value)}
+                  className="border p-2"
+                  placeholder="Please specify..."
+                />
+              </FormControl>
+            </div>
+          )}
           <FormMessage />
         </FormItem>
       )}
