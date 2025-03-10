@@ -44,6 +44,11 @@ export const viewport: Viewport = {
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={w95fa.className}>
+      <head>
+        <script crossOrigin="anonymous"
+          src="//unpkg.com/react-scan/dist/auto.global.js" />
+      </head>
+
       <body
         className={cn("min-h-screen bg-background text-foreground antialiased")}
       >

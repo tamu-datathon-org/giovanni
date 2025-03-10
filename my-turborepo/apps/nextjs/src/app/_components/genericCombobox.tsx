@@ -1,5 +1,5 @@
 import type { ElementRef } from "react";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { useFormContext } from "react-hook-form";
 import { AiOutlineCheck } from "react-icons/ai";
@@ -30,6 +30,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
+
+import { Input } from "~/components/ui/input";
 import { Asterisk } from "../apply/application/application-form";
 
 interface DropdownOption {
@@ -59,11 +61,14 @@ const GenericCombobox: React.FC<GenericDropdownProps & { otherField?: boolean }>
   const [searchValue, setSearchValue] = useState("");
   const { debouncedValue, isDebouncing } = useDebounce(searchValue, 250);
   const [open, setOpen] = React.useState(false);
-  const [otherValue, setOtherValue] = useState("");
+  const [selectedOption, setSelectedOption] = React.useState<DropdownOption | null>(defaultOption ?? null);
+  const [otherValue, setOtherValue] = useState(defaultOption ?
+    (defaultOption.label === "Other (please specify)" ? defaultOption.value : "")
+    : "");
 
   const filter20Items = useMemo(() => {
     if (isDebouncing) {
-      return ["Loading..."];
+      return [{ label: "Loading...", value: "Loading..." }];
     }
 
     const query = debouncedValue;
@@ -97,9 +102,9 @@ const GenericCombobox: React.FC<GenericDropdownProps & { otherField?: boolean }>
                   role="combobox"
                   className="justify-between"
                 >
-                  {field.value
-                    ? options.find((option) => option.value === field.value)
-                      ?.label
+                  {selectedOption
+                    ? (selectedOption.label === "Other (please specify)" ? selectedOption.label
+                      : options.find((option) => option.value === selectedOption.value)?.label)
                     : "Select ..."}
                   <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -121,10 +126,12 @@ const GenericCombobox: React.FC<GenericDropdownProps & { otherField?: boolean }>
                         key={(option as DropdownOption).value}
                         value={(option as DropdownOption).value}
                         onSelect={(currentValue) => {
-                          form.setValue(
-                            name,
-                            currentValue === field.value ? "" : currentValue,
-                          );
+                          if (currentValue === "Other (please specify)") {
+                            setSelectedOption({ value: currentValue, label: "Other (please specify)" });
+                          } else {
+                            form.setValue(name, currentValue);
+                            setSelectedOption(option);
+                          }
                           setOpen(false);
                         }}
                       >
@@ -144,15 +151,16 @@ const GenericCombobox: React.FC<GenericDropdownProps & { otherField?: boolean }>
               </Command>
             </PopoverContent>
           </Popover>
-          {otherField && field.value === "Other (please specify)" && (
-            <div className="mt-2">
-              <FormLabel className="text-xl">Other</FormLabel>
+          {otherField && selectedOption && selectedOption.label === "Other (please specify)" && (
+            <div className="mt-2 flex flex-col">
               <FormControl>
-                <input
-                  type="text"
+                <Input
                   value={otherValue}
-                  onChange={(e) => setOtherValue(e.target.value)}
-                  className="border p-2"
+                  onChange={(e) => {
+                    setOtherValue(e.target.value);
+                    form.setValue(name, e.target.value);
+                  }}
+                  className="border p-2 bg-white"
                   placeholder="Please specify..."
                 />
               </FormControl>

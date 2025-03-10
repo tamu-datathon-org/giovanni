@@ -86,13 +86,6 @@ export function Asterisk() {
 }
 
 export function ApplicationForm() {
-  const [interestOneCount, setInterestOneCount] = useState(0);
-  const [interestTwoCount, setInterestTwoCount] = useState(0);
-  const [interestThreeCount, setInterestThreeCount] = useState(0);
-  const [dietaryRestrictionCount, setDietaryRestrictionCount] = useState(0);
-  const [referencesCount, setReferencesCount] = useState(0);
-  const [extraCount, setExtraCount] = useState(0);
-
   const [disableSubmit, setDisableSubmit] = useState(false);
 
   const { data: importedValues, isLoading } =
@@ -127,6 +120,7 @@ export function ApplicationForm() {
   const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
     let blob_name = undefined;
     let blob_url = undefined;
+    console.log(data)
 
     if (data.resumeFile) {
       await upload(data.resumeFile.name, data.resumeFile, {
@@ -368,9 +362,14 @@ export function ApplicationForm() {
               name={"major"}
               label={"What's your major?"}
               options={MAJOR}
-              defaultOption={MAJOR.find(
-                (option) => option.value === importedValues?.app?.major,
-              )}
+              defaultOption={
+                importedValues?.app?.major ? (
+                  MAJOR.find((option) => option.value === importedValues?.app?.major) ||
+                  {
+                    label: "Other (please specify)",
+                    value: importedValues?.app?.major || ""
+                  }) : undefined
+              }
               required={true}
               otherField={true}
             />
