@@ -6,10 +6,12 @@ import { Button } from "~/components/ui/button";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
 import StaticWindowContainer from "../_components/StaticWindowContainer";
+import { useSession } from "next-auth/react"
 
 export const appsOpen = true;
 
 export default function Page() {
+  const { data: session, update } = useSession()
   // TODO: Replace this with an API call to the correct router
   const { data, isLoading } = api.application.getApplicationStatus.useQuery(
     {
@@ -54,43 +56,40 @@ export default function Page() {
       {/* <IconList /> */}
       <div className="flex h-screen w-screen items-center justify-center">
         <StaticWindowContainer>
-          <div className="mainContent py-4">
-            <h1 className="text-3xl">DASHBOARD</h1>
-
-            <form
-              className="vertical boxShadowContainer"
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                height: "50vh",
-                width: "75vw",
-                padding: "10px",
-              }}
-            >
-              <div className="dashboardText text-2xl">
-                {" "}
-                YOUR APPLICATION STATUS:
-              </div>
-              <div
-                className={`dashStatus bg-gradient-to-b bg-clip-text text-transparent 
-                  ${gradient} text-xl
-                  `}
-              >
-                {isLoading
-                  ? "Loading...".toUpperCase()
-                  : data?.status
-                    ? data.status.toUpperCase()
-                    : "No status available"}
-              </div>
-
+          <div className="py-4 flex flex-col justify-center align-center h-[60vh] w-[75vw] p-6">
+            <div className="flex-1">
+              <h1 className="text-3xl pb-8">DASHBOARD</h1>
               <div>
-                {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
-              </div>
+                <div>
+                  Signed in as: {session?.user.email}
+                </div>
+                <div className="dashboardText text-2xl">
+                  {" "}
+                  YOUR APPLICATION STATUS:
+                </div>
+                <div
+                  className={`dashStatus bg-gradient-to-b bg-clip-text text-transparent 
+                    ${gradient} text-xl
+                    `}
+                >
+                  {isLoading
+                    ? "Loading...".toUpperCase()
+                    : data?.status
+                      ? data.status.toUpperCase()
+                      : "No status available"}
+                </div>
 
-              <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
-                <Link href="/">Back to home</Link>
+                <div>
+                  {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
+                </div>
+
+              </div>
+            </div>
+            <Link href="https://tamudatathon.com/" target="_blank">
+              <Button className="xpBorder submitBtn my-4 w-fit text-xl font-extrabold mx-auto">
+                Back to home
               </Button>
-            </form>
+            </Link>
           </div>
         </StaticWindowContainer>
       </div>

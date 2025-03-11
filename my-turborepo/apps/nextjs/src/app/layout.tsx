@@ -10,7 +10,7 @@ import { w95fa } from "~/app/_components/fonts";
 import { Toaster } from "~/components/ui/toaster";
 import { env } from "~/env";
 import { TRPCReactProvider } from "~/trpc/react";
-import BackgroundImage from "./_components/images/background";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -50,15 +50,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       </head>
 
       <body
-        className={cn("min-h-screen bg-background text-foreground antialiased")}
+        className={cn("min-h-screen bg-background text-foreground antialiased bg-gray-200")}
       >
         <TRPCReactProvider>
           <main>
-            <BackgroundImage
-              desktop_src={"/assets/wallpaper.png"}
-              mobile_src={"/assets/wallpaper-mobile.png"}
-              alt={"Preregistration background"}
-            />
             {props.children}
             <SpeedInsights />
           </main>
