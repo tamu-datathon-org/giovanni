@@ -40,10 +40,10 @@ import {
   SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
 import { api } from "~/trpc/react";
+import { applicationSchema } from "../validation";
 import GenericCombobox from "../../_components/genericCombobox";
 import LoadingAnimation from "../../_components/loadingAnimation";
 import Title from "../../_components/title";
-import { applicationSchema } from "../validation";
 import GenericInputField from "~/app/_components/genericInputField";
 import GenericTextArea from "~/app/_components/genericTextArea";
 
@@ -322,9 +322,13 @@ export function ApplicationForm() {
               name={"gender"}
               label={"Gender?"}
               options={GENDER_OPTIONS}
-              defaultOption={GENDER_OPTIONS.find(
-                (option) => option.value === importedValues?.app?.gender,
-              )}
+              defaultOption={importedValues?.app?.gender ? (
+                GENDER_OPTIONS.find((option) => option.value === importedValues?.app?.gender) ||
+                {
+                  label: "Other (please specify)",
+                  value: importedValues?.app?.gender || ""
+                }) : undefined
+              }
               required={true}
             />
           </div>
@@ -335,9 +339,13 @@ export function ApplicationForm() {
               name={"race"}
               label={"What ethnicity do you identify with?"}
               options={RACE_OPTIONS}
-              defaultOption={RACE_OPTIONS.find(
-                (option) => option.value === importedValues?.app?.race,
-              )}
+              defaultOption={importedValues?.app?.race ? (
+                RACE_OPTIONS.find((option) => option.value === importedValues?.app?.race) ||
+                {
+                  label: "Other (please specify)",
+                  value: importedValues?.app?.race || ""
+                }) : undefined
+              }
               required={true}
             />
           </div>
@@ -371,7 +379,6 @@ export function ApplicationForm() {
                   }) : undefined
               }
               required={true}
-              otherField={true}
             />
           </div>
 

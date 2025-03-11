@@ -1,6 +1,4 @@
-import type { ElementRef } from "react";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import * as PopoverPrimitive from "@radix-ui/react-popover";
+import React, { useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BsChevronExpand } from "react-icons/bs";
@@ -48,14 +46,13 @@ interface GenericDropdownProps {
   required?: boolean;
 }
 
-const GenericCombobox: React.FC<GenericDropdownProps & { otherField?: boolean }> = ({
+const GenericCombobox: React.FC<GenericDropdownProps> = ({
   name,
   label,
   options,
   filter,
   defaultOption,
   required,
-  otherField,
 }) => {
   const form = useFormContext<ApplicationSchema>();
   const [searchValue, setSearchValue] = useState("");
@@ -151,7 +148,7 @@ const GenericCombobox: React.FC<GenericDropdownProps & { otherField?: boolean }>
               </Command>
             </PopoverContent>
           </Popover>
-          {otherField && selectedOption && selectedOption.label === "Other (please specify)" && (
+          {selectedOption && selectedOption.label === "Other (please specify)" && (
             <div className="mt-2 flex flex-col">
               <FormControl>
                 <Input
