@@ -335,9 +335,9 @@ export default function HomePage() {
             // prizeFunc={setPrizesOpen}
             socialsFunc={setSocialsOpen}
             setFocus={setActiveWindow}
-            // helpQueueFunc={setHelpQueueOpen}
-            // scheduleFunc={setScheduleOpen}
-            // challengesFunc={setChallenegesOpen}
+          // helpQueueFunc={setHelpQueueOpen}
+          // scheduleFunc={setScheduleOpen}
+          // challengesFunc={setChallenegesOpen}
           />
         </div>
       </div>

@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .page {
   margin: 3%;
   max-width: 600px;
@@ -46,20 +48,20 @@ body {
 $total: 10;
 
 @for $i from 1 through $total {
-  $scale: random(2) - 0.4;
+  $scale: math.random(2) - 0.4;
 
   .svg:nth-child(#{$i}) {
-    left: random(120) * 1% - 20;
-    animation: raise#{$i} 6 + random(15) + s linear infinite;
-    animation-delay: random(5) - 5 + s;
-    transform: scale(0.3 * $i - 0.6) rotate(random(360) + deg);
+    left: math.random(120) * 1% - 20;
+    animation: raise#{$i} 6+math.random(15)+s linear infinite;
+    animation-delay: math.random(5) - 5 + s;
+    transform: scale(0.3 * $i - 0.6) rotate(math.random(360) + deg);
     z-index: $i - 7;
     filter: blur($i - 6 + px);
 
     @keyframes raise#{$i} {
       to {
         bottom: 100vh;
-        transform: scale(0.3 * $i - 0.6) rotate(random(360) + deg);
+        transform: scale(0.3 * $i - 0.6) rotate(math.random(360) + deg);
       }
     }
   }
@@ -146,11 +148,9 @@ $total: 10;
   }
 
   &:hover {
-    background-image: linear-gradient(
-      to bottom,
-      rgba(182, 221, 249, 0.5),
-      rgba(224, 227, 230, 0.5),
-      rgba(107, 162, 254, 0.5)
-    );
+    background-image: linear-gradient(to bottom,
+        rgba(182, 221, 249, 0.5),
+        rgba(224, 227, 230, 0.5),
+        rgba(107, 162, 254, 0.5));
   }
 }
