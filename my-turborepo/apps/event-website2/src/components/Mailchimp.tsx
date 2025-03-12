@@ -12,11 +12,11 @@ function debounce<T extends (...args: any[]) => void>(func: T, delay: number): T
   }) as T;
 }
 
-type NewsletterProps = {
+interface NewsletterProps {
   display: boolean;
   title: string | JSX.Element;
   description: string | JSX.Element;
-};
+}
 
 export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
   const [email, setEmail] = useState<string>("");
@@ -103,8 +103,8 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
         grid={{
           display: mailchimp.effects.grid.display,
           color: mailchimp.effects.grid.color,
-          width: mailchimp.effects.grid.width as any,
-          height: mailchimp.effects.grid.height as any,
+          width: mailchimp.effects.grid.width,
+          height: mailchimp.effects.grid.height,
           opacity: mailchimp.effects.grid.opacity as any,
         }}
         lines={{

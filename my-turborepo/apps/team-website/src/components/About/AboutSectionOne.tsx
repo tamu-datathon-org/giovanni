@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import SectionTitle from "../Common/SectionTitle";
 
 const checkIcon = (
@@ -8,8 +9,8 @@ const checkIcon = (
 );
 
 const AboutSectionOne = () => {
-  const List = ({ text }) => (
-    <p className="mb-5 flex items-center text-lg font-medium text-body-color dark:text-body-color-dark">
+  const List = ({ text }: { text: string }) => (
+    <p className="text-body-color dark:text-body-color-dark mb-5 flex items-center text-lg font-medium">
       <span className="mr-4 flex h-[30px] w-[30px] items-center justify-center rounded-md bg-primary bg-opacity-10 text-primary">
         {checkIcon}
       </span>
@@ -20,9 +21,9 @@ const AboutSectionOne = () => {
   return (
     <section id="about" className="pt-16 md:pt-20 lg:pt-28">
       <div className="container">
-        <div className="border-b border-body-color/[.5] pb-8 dark:border-white/[.5] md:pb-12 lg:pb-16">
+        <div className="border-body-color/[.5] border-b pb-8 dark:border-white/[.5] md:pb-12 lg:pb-16">
           <div className="-mx-4 flex flex-wrap items-center justify-center">
-            <div className="w-full px-4 lg:w-1/2 flex flex-col justify-center">
+            <div className="flex w-full flex-col justify-center px-4 lg:w-1/2">
               <SectionTitle
                 title="About Us"
                 paragraph="We are the largest data science and machine learning focused hackathon in Texas located at Texas A&M University in College Station."
@@ -50,18 +51,18 @@ const AboutSectionOne = () => {
             </div>
 
             <div className="w-2/3 px-4 lg:w-1/2">
-              <div className="relative mx-auto aspect-[25/24] max-w-[400px] flex justify-center">
+              <div className="relative mx-auto flex aspect-[25/24] max-w-[400px] justify-center">
                 <Image
                   src="/images/about/y2k-logo.svg"
                   alt="about-image"
                   fill
-                  className="mx-auto max-w-full drop-shadow-three dark:hidden dark:drop-shadow-none"
+                  className="drop-shadow-three mx-auto max-w-full dark:hidden dark:drop-shadow-none"
                 />
                 <Image
                   src="/images/about/y2k-logo.svg"
                   alt="about-image"
                   fill
-                  className="mx-auto hidden max-w-full drop-shadow-three dark:block dark:drop-shadow-none"
+                  className="drop-shadow-three mx-auto hidden max-w-full dark:block dark:drop-shadow-none"
                 />
               </div>
             </div>

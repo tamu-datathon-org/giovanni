@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState, useRef, useEffect, forwardRef, ReactNode } from "react";
+import type { ReactNode } from "react";
+import React, { useState, useRef, useEffect, forwardRef } from "react";
 import classNames from "classnames";
-import { DropdownWrapper, Flex, Icon, IconButton, Input, InputProps, Option } from ".";
+import type { InputProps} from ".";
+import { DropdownWrapper, Flex, Icon, IconButton, Input, Option } from ".";
 import inputStyles from "./Input.module.scss";
 import type { OptionProps } from "./Option";
 import type { DropdownWrapperProps } from "./DropdownWrapper";
-import { Placement } from "@floating-ui/react-dom";
+import type { Placement } from "@floating-ui/react-dom";
 
 type SelectOptionType = Omit<OptionProps, "selected">;
 
@@ -45,7 +47,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState<number | null>(() => {
-      if (!options?.length || !value) return null;
+      if (!options.length || !value) return null;
       return options.findIndex((option) => option.value === value);
     });
     const [searchQuery, setSearchQuery] = useState("");

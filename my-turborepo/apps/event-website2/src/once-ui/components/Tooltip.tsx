@@ -1,17 +1,18 @@
 "use client";
 
-import React, { forwardRef, ReactNode } from "react";
+import type { ReactNode } from "react";
+import React, { forwardRef } from "react";
 import classNames from "classnames";
 
 import { Flex, Icon } from ".";
 
-type TooltipProps = {
+interface TooltipProps {
   label: ReactNode;
   prefixIcon?: string;
   suffixIcon?: string;
   className?: string;
   style?: React.CSSProperties;
-};
+}
 
 const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
   ({ label, prefixIcon, suffixIcon, className, style }, ref) => {

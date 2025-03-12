@@ -19,7 +19,7 @@ const Accordion: React.FC<AccordionProps> = forwardRef(
     };
 
     useImperativeHandle(ref, () => ({
-      ...((ref as React.MutableRefObject<HTMLDivElement>)?.current ?? {}),
+      ...((ref as React.MutableRefObject<HTMLDivElement>).current ?? {}),
       toggle: toggleAccordion,
       open: () => {
         setIsOpen(true);

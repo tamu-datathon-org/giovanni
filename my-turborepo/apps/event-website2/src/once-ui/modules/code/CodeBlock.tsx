@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef, ReactNode } from "react";
+import type { ReactNode } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import "./CodeHighlight.css";
 import styles from "./CodeBlock.module.scss";
@@ -14,13 +15,13 @@ import "prismjs/components/prism-css";
 import "prismjs/components/prism-typescript";
 import "prismjs/components/prism-tsx";
 import classNames from "classnames";
-import { SpacingToken } from "@/once-ui/types";
+import type { SpacingToken } from "@/once-ui/types";
 
-type CodeInstance = {
+interface CodeInstance {
   code: string | { content: string; error: string | null };
   language: string;
   label: string;
-};
+}
 
 interface CodeBlockProps extends React.ComponentProps<typeof Flex> {
   highlight?: string;

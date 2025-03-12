@@ -1,7 +1,8 @@
 "use client";
 
 import React, { forwardRef } from "react";
-import { Text, Flex, IconButton, IconButtonProps } from ".";
+import type { IconButtonProps } from ".";
+import { Text, Flex, IconButton } from ".";
 
 interface InteractiveDetailsProps {
   label?: React.ReactNode;

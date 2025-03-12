@@ -3,7 +3,8 @@
 import React, { forwardRef } from "react";
 import classNames from "classnames";
 
-import { Flex, InteractiveDetails, InteractiveDetailsProps } from ".";
+import type { InteractiveDetailsProps } from ".";
+import { Flex, InteractiveDetails } from ".";
 import styles from "./Switch.module.scss";
 import commonStyles from "./SharedInteractiveStyles.module.scss";
 

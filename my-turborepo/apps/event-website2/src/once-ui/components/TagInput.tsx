@@ -1,14 +1,16 @@
 "use client";
 
-import React, {
-  useState,
+import type {
   KeyboardEventHandler,
   ChangeEventHandler,
-  FocusEventHandler,
+  FocusEventHandler} from "react";
+import React, {
+  useState,
   forwardRef,
 } from "react";
 
-import { Flex, Chip, Input, InputProps } from ".";
+import type { InputProps } from ".";
+import { Flex, Chip, Input } from ".";
 
 interface TagInputProps extends Omit<InputProps, "onChange" | "value"> {
   value: string[];

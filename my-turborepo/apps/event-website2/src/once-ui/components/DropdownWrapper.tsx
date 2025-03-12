@@ -1,21 +1,23 @@
 "use client";
 
+import type {
+  ReactNode} from "react";
 import React, {
   useState,
   useRef,
   useEffect,
-  ReactNode,
   forwardRef,
   useImperativeHandle,
 } from "react";
+import type {
+  Placement} from "@floating-ui/react-dom";
 import {
   useFloating,
   shift,
   offset,
   flip,
   size,
-  autoUpdate,
-  Placement,
+  autoUpdate
 } from "@floating-ui/react-dom";
 import { Flex, Dropdown } from ".";
 import styles from "./DropdownWrapper.module.scss";
@@ -92,7 +94,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       whileElementsMounted: autoUpdate,
     });
 
-    useImperativeHandle(ref, () => wrapperRef.current as HTMLDivElement);
+    useImperativeHandle(ref, () => wrapperRef.current!);
 
     useEffect(() => {
       if (wrapperRef.current) {

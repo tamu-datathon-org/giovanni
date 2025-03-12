@@ -63,7 +63,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
           <Icon
             onBackground="neutral-medium"
             name="person"
-            size={size as "xs" | "s" | "m" | "l" | "xl"}
+            size={size}
             className={styles.icon}
             aria-label="Empty avatar"
           />

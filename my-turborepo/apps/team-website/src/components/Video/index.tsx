@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
-import SectionTitle from "../Common/SectionTitle";
-
+import Image from "next/image";
 import ModalVideo from "react-modal-video";
+
+import SectionTitle from "../Common/SectionTitle";
 
 const Video = () => {
   const [isOpen, setOpen] = useState(false);
@@ -51,8 +51,7 @@ const Video = () => {
 
       <ModalVideo
         channel="youtube"
-        autoplay={true}
-        start={true}
+        youtube={{ autoplay: 1, start: 1 }}
         isOpen={isOpen}
         videoId="L61p2uyiMSo"
         onClose={() => setOpen(false)}

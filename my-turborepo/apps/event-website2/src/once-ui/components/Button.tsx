@@ -1,6 +1,7 @@
 "use client";
 
-import React, { ReactNode, forwardRef } from "react";
+import type { ReactNode} from "react";
+import React, { forwardRef } from "react";
 import { ElementType } from "./ElementType";
 import classNames from "classnames";
 

@@ -184,7 +184,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
 
     const isInRange = (date: Date) => {
       if (!range?.startDate) return false;
-      if (!range?.endDate) return false;
+      if (!range.endDate) return false;
       return date >= range.startDate && date <= range.endDate;
     };
 
@@ -223,8 +223,8 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         const currentDate = new Date(currentYear, currentMonth, day);
         const isSelected =
           (selectedDate?.getDate() === day &&
-            selectedDate?.getMonth() === currentMonth &&
-            selectedDate?.getFullYear() === currentYear) ||
+            selectedDate.getMonth() === currentMonth &&
+            selectedDate.getFullYear() === currentYear) ||
           (value instanceof Date && value.getTime() === currentDate.getTime()) ||
           range?.startDate?.getTime() === currentDate.getTime() ||
           range?.endDate?.getTime() === currentDate.getTime();

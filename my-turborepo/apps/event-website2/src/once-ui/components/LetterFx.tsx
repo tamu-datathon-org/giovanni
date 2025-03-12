@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useRef, useCallback, useEffect, forwardRef, ReactNode } from "react";
+import type { ReactNode } from "react";
+import React, { useState, useRef, useCallback, useEffect, forwardRef } from "react";
 import classNames from "classnames";
 
 const defaultCharset = ["X", "$", "@", "a", "H", "z", "o", "0", "y", "#", "?", "*", "0", "1", "+"];
@@ -71,7 +72,7 @@ function createEventHandler(
   };
 }
 
-type LetterFxProps = {
+interface LetterFxProps {
   children: ReactNode;
   trigger?: "hover" | "instant" | "custom";
   speed?: "fast" | "medium" | "slow";
@@ -79,7 +80,7 @@ type LetterFxProps = {
   onTrigger?: (triggerFn: () => void) => void;
   className?: string;
   style?: React.CSSProperties;
-};
+}
 
 const LetterFx = forwardRef<HTMLSpanElement, LetterFxProps>(
   (

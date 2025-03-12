@@ -1,6 +1,7 @@
 "use client";
 
-import React, { forwardRef, ReactNode } from "react";
+import type { ReactNode } from "react";
+import React, { forwardRef } from "react";
 import { IconButton, Button, Icon, Flex, Text } from ".";
 
 interface FeedbackProps extends Omit<React.ComponentProps<typeof Flex>, "title"> {
@@ -14,9 +15,7 @@ interface FeedbackProps extends Omit<React.ComponentProps<typeof Flex>, "title">
   children?: ReactNode;
 }
 
-const variantIconMap: {
-  [key in "info" | "danger" | "warning" | "success"]: string;
-} = {
+const variantIconMap: Record<"info" | "danger" | "warning" | "success", string> = {
   info: "infoCircle",
   danger: "errorCircle",
   warning: "warningTriangle",

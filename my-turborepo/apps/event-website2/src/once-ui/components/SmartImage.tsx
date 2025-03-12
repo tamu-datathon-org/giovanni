@@ -1,6 +1,7 @@
 "use client";
 
-import React, { CSSProperties, useState, useRef, useEffect } from "react";
+import type { CSSProperties} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
 import { Flex, Skeleton } from "@/once-ui/components";
@@ -90,15 +91,13 @@ const SmartImage: React.FC<SmartImageProps> = ({
   };
 
   const getYouTubeEmbedUrl = (url: string) => {
-    const match = url.match(
-      /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
-    );
+    const match = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/.exec(url);
     return match
       ? `https://www.youtube.com/embed/${match[1]}?controls=0&rel=0&modestbranding=1`
       : "";
   };
 
-  const isVideo = src?.endsWith(".mp4");
+  const isVideo = src.endsWith(".mp4");
   const isYouTube = isYouTubeVideo(src);
 
   return (

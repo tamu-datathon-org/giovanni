@@ -1,7 +1,10 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require("tailwindcss/colors");
+import colors from "tailwindcss/colors";
 
-module.exports = {
+// TODO: Might want to uncomment the next line
+import baseConfig from "@vanni/tailwind-config/web";
+
+export default {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -43,7 +46,7 @@ module.exports = {
         primary: "#4A6CF7",
         yellow: "#FBB040",
         datablue: "#2C41DB",
-        "normal" : "#f9feff",
+        normal: "#f9feff",
         "bg-color-dark": "#171C28",
         "body-color": {
           DEFAULT: "#212327",
@@ -80,7 +83,7 @@ module.exports = {
       keyframes: {
         floatx: {
           "0%, 100%": { boxShadow: "none", transform: "translateY(0)" },
-          "50%": { boxShadow: "none",transform: "translateY(-20px)" },
+          "50%": { boxShadow: "none", transform: "translateY(-20px)" },
         },
       },
       animation: {

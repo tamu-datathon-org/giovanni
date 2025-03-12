@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
+  "prettier": "@vanni/prettier-config",
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-slot": "^1.1.0",
@@ -39,6 +40,7 @@
     "@total-typescript/ts-reset": "^0.4.2",
     "@types/node": "^20.12.9",
     "@types/react": "^18.3.2",
+    "@types/react-modal-video": "^1.2.3",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tailwind-config": "workspace:*",

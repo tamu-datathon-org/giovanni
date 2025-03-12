@@ -1,6 +1,7 @@
 "use client";
 
-import React, { forwardRef, useState, useEffect, ReactNode } from "react";
+import type { ReactNode } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 import { ElementType } from "./ElementType";
 import { Flex, Icon, Tooltip } from ".";
 import buttonStyles from "./Button.module.scss";

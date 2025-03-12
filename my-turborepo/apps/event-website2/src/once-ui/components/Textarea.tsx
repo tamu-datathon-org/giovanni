@@ -1,12 +1,13 @@
 "use client";
 
+import type {
+  TextareaHTMLAttributes,
+  ReactNode} from "react";
 import React, {
   useState,
   useEffect,
   forwardRef,
-  TextareaHTMLAttributes,
-  useCallback,
-  ReactNode,
+  useCallback
 } from "react";
 import classNames from "classnames";
 import { Flex, Text } from ".";

@@ -634,6 +634,9 @@ importers:
       '@types/react':
         specifier: ^18.3.2
         version: 18.3.18
+      '@types/react-modal-video':
+        specifier: ^1.2.3
+        version: 1.2.3
       '@vanni/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint
@@ -6110,6 +6113,12 @@ packages:
       '@types/react': ^18.0.0
     dependencies:
       '@types/react': 18.3.18
+
+  /@types/react-modal-video@1.2.3:
+    resolution: {integrity: sha512-HzaySdWD7sECBHUtLMGx0ddj0a84Xoy6DKxUpLMCXrIhOehcoQLKvFFbfaBUtzoP3rmUaCsYkldFnVCkSZW8tw==}
+    dependencies:
+      '@types/react': 18.3.18
+    dev: true
 
   /@types/react@18.3.18:
     resolution: {integrity: sha512-t4yC+vtgnkYjNSKlFx1jkAhH8LgTo2N/7Qvi83kdEaUtMDiwpbLAktKDaAMlRcJ5eSxZkH74eEGt1ky31d7kfQ==}

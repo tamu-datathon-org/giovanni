@@ -9,10 +9,10 @@ import styles from "@/components/Header.module.scss";
 import { routes, display } from "@/app/resources";
 import { person, home, about, blog, work, gallery } from "@/app/resources/content";
 
-type TimeDisplayProps = {
+interface TimeDisplayProps {
   timeZone: string;
   locale?: string; // Optionally allow locale, defaulting to 'en-GB'
-};
+}
 
 const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" }) => {
   const [currentTime, setCurrentTime] = useState("");

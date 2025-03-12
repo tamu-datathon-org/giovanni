@@ -2,14 +2,14 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-type Team = {
+interface Team {
   name: string;
   role: string;
   avatar: string;
   linkedIn: string;
-};
+}
 
-type Metadata = {
+interface Metadata {
   title: string;
   publishedAt: string;
   summary: string;
@@ -18,7 +18,7 @@ type Metadata = {
   tag?: string;
   team: Team[];
   link?: string;
-};
+}
 
 import { notFound } from 'next/navigation';
 

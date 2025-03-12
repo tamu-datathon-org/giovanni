@@ -1,19 +1,21 @@
-import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
-import React, { ReactNode } from "react";
+import type { MDXRemoteProps } from "next-mdx-remote/rsc";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import type { ReactNode } from "react";
+import React from "react";
 
 import { SmartImage, SmartLink, Text } from "@/once-ui/components";
 import { CodeBlock } from "@/once-ui/modules";
 import { HeadingLink } from "@/components";
 
-import { TextProps } from "@/once-ui/interfaces";
-import { SmartImageProps } from "@/once-ui/components/SmartImage";
+import type { TextProps } from "@/once-ui/interfaces";
+import type { SmartImageProps } from "@/once-ui/components/SmartImage";
 
-type TableProps = {
+interface TableProps {
   data: {
     headers: string[];
     rows: string[][];
   };
-};
+}
 
 function Table({ data }: TableProps) {
   const headers = data.headers.map((header, index) => <th key={index}>{header}</th>);
