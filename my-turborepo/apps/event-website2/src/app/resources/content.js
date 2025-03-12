@@ -8,7 +8,7 @@ const person = {
   },
   role: "Design Engineer",
   avatar: "/images/avatar.jpg",
-  location: "Asia/Jakarta", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
+  location: "America/Chicago", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
   languages: ["English", "Bahasa"], // optional: Leave the array empty if you don't want to display languages
 };
 
@@ -295,4 +295,14 @@ const gallery = {
   ],
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery, schedule };
+export {
+  person,
+  social,
+  newsletter,
+  home,
+  about,
+  blog,
+  work,
+  gallery,
+  schedule,
+};
