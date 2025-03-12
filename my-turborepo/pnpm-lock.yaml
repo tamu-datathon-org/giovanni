@@ -74,7 +74,7 @@ importers:
         version: 4.0.3
       next:
         specifier: 14.2.3
-        version: 14.2.3(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
+        version: 14.2.3(@babel/core@7.26.9)(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
       remark:
         specifier: ^15.0.1
         version: 15.0.1
@@ -219,7 +219,7 @@ importers:
         version: 1.0.16(react@18.3.1)
       react-scan:
         specifier: ^0.1.3
-        version: 0.1.4(next@14.2.3)(react-dom@18.3.1)(react@18.3.1)
+        version: 0.1.4(next@14.2.3)(react-dom@18.3.1)(react-router-dom@6.30.0)(react@18.3.1)
       remark:
         specifier: ^15.0.1
         version: 15.0.1
@@ -433,7 +433,7 @@ importers:
         version: 0.439.0(react@18.3.1)
       next:
         specifier: 14.2.3
-        version: 14.2.3(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
+        version: 14.2.3(@babel/core@7.26.9)(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
       node-gyp:
         specifier: 10.0.0
         version: 10.0.0
@@ -464,6 +464,9 @@ importers:
       react-router-dom:
         specifier: ^6.26.1
         version: 6.30.0(react-dom@18.3.1)(react@18.3.1)
+      react-scan:
+        specifier: ^0.1.3
+        version: 0.1.4(next@14.2.3)(react-dom@18.3.1)(react-router-dom@6.30.0)(react@18.3.1)
       react95:
         specifier: ^4.0.0
         version: 4.0.0(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.15)
@@ -596,7 +599,7 @@ importers:
         version: 0.439.0(react@18.3.1)
       next:
         specifier: 14.2.3
-        version: 14.2.3(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
+        version: 14.2.3(@babel/core@7.26.9)(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1)(react@18.3.1)
@@ -724,7 +727,7 @@ importers:
         version: link:../db
       next:
         specifier: 14.2.3
-        version: 14.2.3(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
+        version: 14.2.3(@babel/core@7.26.9)(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
       next-auth:
         specifier: 5.0.0-beta.18
         version: 5.0.0-beta.18(next@14.2.3)(react@18.3.1)
@@ -6411,7 +6414,7 @@ packages:
       vue-router:
         optional: true
     dependencies:
-      next: 14.2.3(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
+      next: 14.2.3(@babel/core@7.26.9)(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
       react: 18.3.1
     dev: false
 
@@ -9104,7 +9107,7 @@ packages:
     peerDependencies:
       next: '>=13.2.0'
     dependencies:
-      next: 14.2.3(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
+      next: 14.2.3(@babel/core@7.26.9)(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
     dev: false
 
   /gensync@1.0.0-beta.2:
@@ -11291,7 +11294,7 @@ packages:
         optional: true
     dependencies:
       '@auth/core': 0.31.0
-      next: 14.2.3(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
+      next: 14.2.3(@babel/core@7.26.9)(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1)
       react: 18.3.1
     dev: false
 
@@ -11371,50 +11374,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /next@14.2.3(react-dom@18.3.1)(react@18.3.1)(sass@1.85.1):
-    resolution: {integrity: sha512-dowFkFTR8v79NPJO4QsBUtxv0g9BrS/phluVpMAt2ku7H+cbcBJlopXjkWlwxrk/xGqMemr7JkGPGemPrLLX7A==}
-    engines: {node: '>=18.17.0'}
-    hasBin: true
-    peerDependencies:
-      '@opentelemetry/api': ^1.1.0
-      '@playwright/test': ^1.41.2
-      react: ^18.2.0
-      react-dom: ^18.2.0
-      sass: ^1.3.0
-    peerDependenciesMeta:
-      '@opentelemetry/api':
-        optional: true
-      '@playwright/test':
-        optional: true
-      sass:
-        optional: true
-    dependencies:
-      '@next/env': 14.2.3
-      '@swc/helpers': 0.5.5
-      busboy: 1.6.0
-      caniuse-lite: 1.0.30001703
-      graceful-fs: 4.2.11
-      postcss: 8.4.31
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      sass: 1.85.1
-      styled-jsx: 5.1.1(@babel/core@7.26.9)(react@18.3.1)
-    optionalDependencies:
-      '@next/swc-darwin-arm64': 14.2.3
-      '@next/swc-darwin-x64': 14.2.3
-      '@next/swc-linux-arm64-gnu': 14.2.3
-      '@next/swc-linux-arm64-musl': 14.2.3
-      '@next/swc-linux-x64-gnu': 14.2.3
-      '@next/swc-linux-x64-musl': 14.2.3
-      '@next/swc-win32-arm64-msvc': 14.2.3
-      '@next/swc-win32-ia32-msvc': 14.2.3
-      '@next/swc-win32-x64-msvc': 14.2.3
-    transitivePeerDependencies:
-      - '@babel/core'
-      - babel-plugin-macros
-    dev: false
-
-  /nitropack@2.11.6(typescript@5.8.2):
+/nitropack@2.11.6(typescript@5.8.2):
     resolution: {integrity: sha512-iaLzOKYxsNL8G6h9cMFTC/hAN4RfhZsrFzFFzemr6Vfn57MooYEz6KLeUoRyTposlAeEWTVejz8naYOORIrnDg==}
     engines: {node: ^16.11.0 || >=17.0.0}
     hasBin: true
@@ -12925,7 +12885,7 @@ packages:
       react: 18.3.1
     dev: false
 
-  /react-scan@0.1.4(next@14.2.3)(react-dom@18.3.1)(react@18.3.1):
+  /react-scan@0.1.4(next@14.2.3)(react-dom@18.3.1)(react-router-dom@6.30.0)(react@18.3.1):
     resolution: {integrity: sha512-WaLrG4kHyWpYt07fHvMDeD2Berq/LueQfTBY03RQDmUsMn8QyLaKhzzFw1w33BbQFe26IlezTEBYetfFgbCQAw==}
     hasBin: true
     peerDependencies:
@@ -12964,6 +12924,7 @@ packages:
       preact: 10.26.4
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+      react-router-dom: 6.30.0(react-dom@18.3.1)(react@18.3.1)
       tsx: 4.19.3
     optionalDependencies:
       unplugin: 2.1.0
