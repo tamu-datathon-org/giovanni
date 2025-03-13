@@ -7,6 +7,7 @@ import { baseURL, routes } from "@/app/resources";
 import { home, about, person, newsletter } from "@/app/resources/content";
 import { Mailchimp } from "@/components";
 import { Posts } from "@/components/blog/Posts";
+import { FAQComponent } from "@/components/FAQ/FAQComponent";
 import TestTRPC from "@/components/test";
 
 export async function generateMetadata() {
@@ -41,6 +42,7 @@ export async function generateMetadata() {
 export default function Home() {
   return (
     <Column maxWidth="m" gap="xl" horizontal="center">
+      <FAQComponent/>
       <script
         type="application/ld+json"
         suppressHydrationWarning
