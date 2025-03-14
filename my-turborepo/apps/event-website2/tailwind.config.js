@@ -47,8 +47,7 @@ module.exports = {
         yellow: "#FBB040",
         datablue: "#2C41DB",
         dalgonabase: "#E69C39",
-        dalgonabasehover: "#D79236",
-        dalgonatext: "#9A5C24",
+        dalgonatext: "#C3732B",
         "normal" : "#f9feff",
         "bg-color-dark": "#171C28",
         "body-color": {
