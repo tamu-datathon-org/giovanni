@@ -2,19 +2,15 @@ import "@/once-ui/styles/index.scss";
 import "@/once-ui/tokens/index.scss";
 import "../styles/index.css";
 
-
-import classNames from "classnames";
-
-import { Footer, Header, RouteGuard } from "@/components";
+import { Inter, Source_Code_Pro } from "next/font/google";
 import { baseURL, effects, style } from "@/app/resources";
-
-import { Inter } from "next/font/google";
-import { Source_Code_Pro } from "next/font/google";
-
-import { person, home } from "@/app/resources/content";
+import { home, person } from "@/app/resources/content";
+import { Footer, Header, RouteGuard } from "@/components";
 import { Background, Column, Flex, ToastProvider } from "@/once-ui/components";
 import { TRPCReactProvider } from "@/trpc/react";
-import 'react-scan';
+import classNames from "classnames";
+
+import "react-scan";
 
 export async function generateMetadata() {
   return {
@@ -73,18 +69,20 @@ const dots = {
   opacity: 100,
   color: "rgb(255, 0, 0)",
   size: "40",
-}
+};
 
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export default async function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html>
       <head>
-        <script crossOrigin="anonymous"
-          src="//unpkg.com/react-scan/dist/auto.global.js" />
+        <script
+          crossOrigin="anonymous"
+          src="//unpkg.com/react-scan/dist/auto.global.js"
+        />
       </head>
       <body>
         <TRPCReactProvider>
@@ -109,7 +107,13 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             )}
           >
             <ToastProvider>
-              <Column style={{ minHeight: "100vh" }} as="body" fillWidth margin="0" padding="0">
+              <Column
+                style={{ minHeight: "100vh" }}
+                as="body"
+                fillWidth
+                margin="0"
+                padding="0"
+              >
                 <Background
                   mask={{
                     cursor: effects.mask.cursor,
