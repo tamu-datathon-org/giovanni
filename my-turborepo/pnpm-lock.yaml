@@ -11374,7 +11374,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-/nitropack@2.11.6(typescript@5.8.2):
+  /nitropack@2.11.6(typescript@5.8.2):
     resolution: {integrity: sha512-iaLzOKYxsNL8G6h9cMFTC/hAN4RfhZsrFzFFzemr6Vfn57MooYEz6KLeUoRyTposlAeEWTVejz8naYOORIrnDg==}
     engines: {node: ^16.11.0 || >=17.0.0}
     hasBin: true
