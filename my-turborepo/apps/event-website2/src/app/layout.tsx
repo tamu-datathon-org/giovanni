@@ -68,6 +68,13 @@ const code = Source_Code_Pro({
   display: "swap",
 });
 
+const dots = {
+  display: true,
+  opacity: 100,
+  color: "rgb(255, 0, 0)",
+  size: "40",
+}
+
 interface RootLayoutProps {
   children: React.ReactNode;
 }

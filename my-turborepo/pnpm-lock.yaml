@@ -11383,6 +11383,7 @@ packages:
     dev: false
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /next@14.2.3(react-dom@18.3.1)(react@18.3.1)(sass@1.84.0):
     resolution: {integrity: sha512-dowFkFTR8v79NPJO4QsBUtxv0g9BrS/phluVpMAt2ku7H+cbcBJlopXjkWlwxrk/xGqMemr7JkGPGemPrLLX7A==}
     engines: {node: '>=18.17.0'}
@@ -11428,8 +11429,14 @@ packages:
 
 =======
 >>>>>>> aace26e (FAQ component set up)
+=======
+>>>>>>> 0ab2e06 (added the landing-page)
   /nitropack@2.10.4(typescript@5.7.3):
     resolution: {integrity: sha512-sJiG/MIQlZCVSw2cQrFG1H6mLeSqHlYfFerRjLKz69vUfdu0EL2l0WdOxlQbzJr3mMv/l4cOlCCLzVRzjzzF/g==}
+=======
+  /nitropack@2.11.6(typescript@5.8.2):
+    resolution: {integrity: sha512-iaLzOKYxsNL8G6h9cMFTC/hAN4RfhZsrFzFFzemr6Vfn57MooYEz6KLeUoRyTposlAeEWTVejz8naYOORIrnDg==}
+>>>>>>> a05ab8a (added the landing-page)
     engines: {node: ^16.11.0 || >=17.0.0}
     hasBin: true
     peerDependencies:
