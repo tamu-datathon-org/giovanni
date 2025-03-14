@@ -138,10 +138,7 @@ function Schedule() {
   return (
     <div className="mx-auto flex w-full flex-col gap-2 px-4 md:w-4/5 lg:w-3/5">
       <h1 className="w-full pb-4 text-center font-[myfont] text-3xl sm:text-4xl md:text-5xl">
-        <div className="font-bold">Time till Event:</div>
-        <div className="font-count-down mt-2 inline-block rounded-md px-3 py-1 text-2xl text-white sm:px-4 sm:py-2 sm:text-3xl">
-          {timeUntilEvent}
-        </div>
+        
       </h1>
       {/* Rainbow border effect - adjusted for mobile */}
       <div className="rounded-[10%] border-[8px] border-red-500 sm:rounded-[16%] sm:border-[15px]">
