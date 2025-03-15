@@ -124,14 +124,14 @@ const LandingPage = () => {
           ))}
         </div>
       </div>
-      <div className="flex gap-56 pt-10">
+      <div className="flex flex-col gap-10 md:flex-row md:gap-56 pt-10 flex-wrap">
         <Link href="/apply">
-          <button className="aspect-[3/1] w-56 rounded-3xl border-2 border-white bg-[#FF0087] text-xl font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-[#FF0087] hover:shadow-[0_0_15px_rgba(255,0,135,0.7)]">
+          <button className="aspect-[3/1] w-56 font-squid-game rounded-3xl border-2 border-white bg-[#FF0087] text-xl font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-[#FF0087] hover:shadow-[0_0_15px_rgba(255,0,135,0.7)]">
             Apply
           </button>
         </Link>
         <Link href="/">
-          <button className="aspect-[3/1] w-56 rounded-3xl border-2 border-white bg-[#15F5BA] text-xl font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-[#15F5BA] hover:shadow-[0_0_15px_rgba(21,245,186,0.7)]">
+          <button className="aspect-[3/1] w-56 font-squid-game rounded-3xl border-2 border-white bg-[#15F5BA] text-xl font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-[#15F5BA] hover:shadow-[0_0_15px_rgba(21,245,186,0.7)]">
             Discord
           </button>
         </Link>

@@ -4,13 +4,9 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { display, routes } from "@/app/resources";
 import {
-  about,
-  blog,
-  gallery,
-  home,
-  person,
   schedule,
-  work,
+  challenges,
+  team,
 } from "@/app/resources/content";
 import styles from "@/components/Header.module.scss";
 import { Fade, Flex, Line, ToggleButton } from "@/once-ui/components";
@@ -75,14 +71,6 @@ export const Header = () => {
         padding="8"
         horizontal="center"
       >
-        <Flex
-          paddingLeft="12"
-          fillWidth
-          vertical="center"
-          textVariant="body-default-s"
-        >
-          {display.location && <Flex hide="s">{person.location}</Flex>}
-        </Flex>
         <Flex fillWidth horizontal="center">
           <Flex
             background="surface"
@@ -101,40 +89,6 @@ export const Header = () => {
                 />
               )}
               <Line vert maxHeight="24" />
-              {routes["/about"] && (
-                <>
-                  <ToggleButton
-                    className="s-flex-hide"
-                    prefixIcon="person"
-                    href="/about"
-                    label={about.label}
-                    selected={pathname === "/about"}
-                  />
-                  <ToggleButton
-                    className="s-flex-show"
-                    prefixIcon="person"
-                    href="/about"
-                    selected={pathname === "/about"}
-                  />
-                </>
-              )}
-              {routes["/work"] && (
-                <>
-                  <ToggleButton
-                    className="s-flex-hide"
-                    prefixIcon="grid"
-                    href="/work"
-                    label={work.label}
-                    selected={pathname.startsWith("/work")}
-                  />
-                  <ToggleButton
-                    className="s-flex-show"
-                    prefixIcon="grid"
-                    href="/work"
-                    selected={pathname.startsWith("/work")}
-                  />
-                </>
-              )}
               {routes["/schedule"] && (
                 <>
                   <ToggleButton
@@ -152,53 +106,40 @@ export const Header = () => {
                   />
                 </>
               )}
-              {routes["/blog"] && (
+              {routes["/challenges"] && (
                 <>
                   <ToggleButton
                     className="s-flex-hide"
-                    prefixIcon="book"
-                    href="/blog"
-                    label={blog.label}
-                    selected={pathname.startsWith("/blog")}
+                    prefixIcon="grid"
+                    href="/challenges"
+                    label={challenges.label}
+                    selected={pathname.startsWith("/challenges")}
                   />
                   <ToggleButton
                     className="s-flex-show"
-                    prefixIcon="book"
-                    href="/blog"
-                    selected={pathname.startsWith("/blog")}
+                    prefixIcon="grid"
+                    href="/challenges"
+                    selected={pathname.startsWith("/challenges")}
                   />
                 </>
               )}
-              {routes["/gallery"] && (
+              {routes["/team"] && (
                 <>
                   <ToggleButton
                     className="s-flex-hide"
-                    prefixIcon="gallery"
-                    href="/gallery"
-                    label={gallery.label}
-                    selected={pathname.startsWith("/gallery")}
+                    prefixIcon="grid"
+                    href="/team"
+                    label={team.label}
+                    selected={pathname.startsWith("/team")}
                   />
                   <ToggleButton
                     className="s-flex-show"
-                    prefixIcon="gallery"
-                    href="/gallery"
-                    selected={pathname.startsWith("/gallery")}
+                    prefixIcon="grid"
+                    href="/team"
+                    selected={pathname.startsWith("/team")}
                   />
                 </>
               )}
-            </Flex>
-          </Flex>
-        </Flex>
-        <Flex fillWidth horizontal="end" vertical="center">
-          <Flex
-            paddingRight="12"
-            horizontal="end"
-            vertical="center"
-            textVariant="body-default-s"
-            gap="20"
-          >
-            <Flex hide="s" className="font-count-down">
-              {display.time && <TimeDisplay timeZone={person.location} />}
             </Flex>
           </Flex>
         </Flex>
