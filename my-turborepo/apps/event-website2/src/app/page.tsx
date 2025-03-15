@@ -9,6 +9,7 @@ import { home, about, person, newsletter } from "@/app/resources/content";
 import { Mailchimp } from "@/components";
 import { Posts } from "@/components/blog/Posts";
 import FAQComponent from "@/components/FAQ/FAQComponent";
+import EventInfo from "@/components/eventinfo/EventInfoComponent";
 import LandingPage from "@/components/LandingPage";
 
 export async function generateMetadata() {
@@ -51,6 +52,7 @@ export default function Home() {
   ];
   return (
     <Column maxWidth="m" gap="xl" horizontal="center">
+      <EventInfo/>
       <FAQComponent faqData={faqData} />
       <script
         type="application/ld+json"
