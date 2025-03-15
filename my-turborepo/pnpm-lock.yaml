@@ -149,6 +149,9 @@ importers:
       '@next/mdx':
         specifier: 14.2.3
         version: 14.2.3(@mdx-js/loader@3.1.0)
+      '@radix-ui/react-dialog':
+        specifier: ^1.1.2
+        version: 1.1.6(@types/react-dom@18.3.5)(@types/react@18.3.18)(react-dom@18.3.1)(react@18.3.1)
       '@t3-oss/env-nextjs':
         specifier: ^0.10.1
         version: 0.10.1(typescript@5.7.3)(zod@3.24.1)
@@ -185,15 +188,24 @@ importers:
       '@vanni/validators':
         specifier: workspace:*
         version: link:../../packages/validators
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.1
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       cookie:
         specifier: ^1.0.1
         version: 1.0.2
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
+      lucide-react:
+        specifier: ^0.439.0
+        version: 0.439.0(react@18.3.1)
       next:
         specifier: 14.2.3
         version: 14.2.3(@babel/core@7.26.7)(react-dom@18.3.1)(react@18.3.1)(sass@1.84.0)
@@ -240,6 +252,12 @@ importers:
       sharp:
         specifier: ^0.33.4
         version: 0.33.5
+      tailwind-merge:
+        specifier: ^2.3.0
+        version: 2.6.0
+      tailwindcss-animate:
+        specifier: ^1.0.7
+        version: 1.0.7(tailwindcss@3.4.17)
     devDependencies:
       '@csstools/postcss-global-data':
         specifier: ^2.1.1
