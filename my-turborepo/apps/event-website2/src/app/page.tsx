@@ -1,4 +1,5 @@
 import React from "react";
+import { GetServerSideProps } from 'next';
 
 import { Heading, Flex, Text, Avatar, RevealFx, Arrow, Column } from "@/once-ui/components";
 import { Projects } from "@/components/work/Projects";
@@ -7,6 +8,7 @@ import { baseURL, routes } from "@/app/resources";
 import { home, about, person, newsletter } from "@/app/resources/content";
 import { Mailchimp } from "@/components";
 import { Posts } from "@/components/blog/Posts";
+import FAQComponent from "@/components/FAQ/FAQComponent";
 import LandingPage from "@/components/LandingPage";
 
 export async function generateMetadata() {
@@ -39,8 +41,17 @@ export async function generateMetadata() {
 }
 
 export default function Home() {
+  const faqData = [
+    { question: 'What is Next.js?', answer: 'Next.js is a React framework for production.' },
+    { question: 'How does Tailwind CSS work?', answer: 'Tailwind CSS is a utility-first CSS framework for styling.' },
+    { question: 'Is TypeScript required for Next.js?', answer: 'No, but it is highly recommended for type safety.' },
+    { question: 'How to create a Next.js project?', answer: 'Use the command `npx create-next-app@latest`.' },
+    { question: 'What is server-side rendering?', answer: 'It is a technique for rendering pages on the server, improving performance.' },
+    { question: 'Can I use Tailwind CSS with Next.js?', answer: 'Yes, you can easily integrate Tailwind with Next.js.' },
+  ];
   return (
     <Column maxWidth="m" gap="xl" horizontal="center">
+      <FAQComponent faqData={faqData} />
       <script
         type="application/ld+json"
         suppressHydrationWarning
