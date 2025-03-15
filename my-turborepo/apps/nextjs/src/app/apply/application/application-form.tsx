@@ -120,7 +120,6 @@ export function ApplicationForm() {
   const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
     let blob_name = undefined;
     let blob_url = undefined;
-    console.log(data)
 
     if (data.resumeFile) {
       await upload(data.resumeFile.name, data.resumeFile, {
@@ -268,7 +267,6 @@ export function ApplicationForm() {
 
           {/* Email */}
           <div className="pt-4">
-
             <GenericInputField
               name="email"
               label="Primary Email"
