@@ -9,12 +9,9 @@ export {
   baseURL,
 } from "@/app/resources/config";
 export {
-  person,
   social,
   newsletter,
   home,
-  about,
-  blog,
-  work,
+  challenges,
   gallery,
 } from "@/app/resources/content";
