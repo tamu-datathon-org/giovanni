@@ -223,7 +223,6 @@ export function ApplicationForm() {
     value: entry.schoolName,
     label: entry.schoolName,
   }));
-
   return (
     <div className="flex w-full relative justify-center lg:w-3/5 ">
       <div className="absolute left-10 top-10">
