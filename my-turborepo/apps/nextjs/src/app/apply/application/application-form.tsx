@@ -26,6 +26,7 @@ import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { toast } from "~/hooks/use-toast";
+import { LucideArrowBigLeft } from "lucide-react";
 import {
   AGE,
   COUNTRIES,
@@ -227,7 +228,15 @@ export function ApplicationForm() {
     label: entry.schoolName,
   }));
   return (
-    <div className="flex w-full justify-center lg:w-3/5 ">
+    <div className="flex w-full relative justify-center lg:w-3/5 ">
+      <div className="absolute left-10 top-10">
+        <a href="/apply">
+          <button className="flex flex-row">
+            <LucideArrowBigLeft />
+            BACK
+          </button>
+        </a>
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

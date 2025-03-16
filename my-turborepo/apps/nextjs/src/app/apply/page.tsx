@@ -8,6 +8,7 @@ import { api } from "~/trpc/react";
 import StaticWindowContainer from "../_components/StaticWindowContainer";
 
 export default function Page() {
+  const { data: session } = useSession()
   // TODO: Replace this with an API call to the correct router
   const { data, isLoading } = api.application.getApplicationStatus.useQuery(
     {
@@ -53,7 +54,7 @@ export default function Page() {
   return (
     <>
       {/* <IconList /> */}
-      <div className="flex h-screen w-screen items-center justify-center">
+      <div className="flex h-screen w-screen items-center justify-center bg-black bg-opacity-70">
         <StaticWindowContainer>
           <div className="mainContent py-4">
             <h1 className="text-3xl">DASHBOARD</h1>

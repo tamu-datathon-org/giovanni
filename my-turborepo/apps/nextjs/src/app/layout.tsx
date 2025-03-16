@@ -45,7 +45,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={w95fa.className}>
       <body
-        className={cn("min-h-screen bg-background text-foreground antialiased")}
+        className={cn("min-h-screen text-foreground antialiased bg-black bg-opacity-70")}
       >
         <TRPCReactProvider>
           <main>
