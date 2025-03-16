@@ -11320,13 +11320,8 @@ packages:
       - babel-plugin-macros
     dev: false
 
-<<<<<<< HEAD
   /nitropack@2.10.4(typescript@5.7.3):
     resolution: {integrity: sha512-sJiG/MIQlZCVSw2cQrFG1H6mLeSqHlYfFerRjLKz69vUfdu0EL2l0WdOxlQbzJr3mMv/l4cOlCCLzVRzjzzF/g==}
-=======
-  /nitropack@2.11.6(typescript@5.8.2):
-    resolution: {integrity: sha512-iaLzOKYxsNL8G6h9cMFTC/hAN4RfhZsrFzFFzemr6Vfn57MooYEz6KLeUoRyTposlAeEWTVejz8naYOORIrnDg==}
->>>>>>> a05ab8a (added the landing-page)
     engines: {node: ^16.11.0 || >=17.0.0}
     hasBin: true
     peerDependencies:
