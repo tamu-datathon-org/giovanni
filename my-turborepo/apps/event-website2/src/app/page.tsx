@@ -6,7 +6,6 @@ import { Heading, Flex, Text, Avatar, RevealFx, Arrow, Column } from "@/once-ui/
 import { baseURL, routes } from "@/app/resources";
 import { home, person, newsletter } from "@/app/resources/content";
 import FAQComponent from "@/components/FAQ/FAQComponent";
-import TestTRPC from "@/components/test";
 import LandingPage from "@/components/LandingPage";
 
 export async function generateMetadata() {
