@@ -36,7 +36,7 @@ module.exports = {
         primary: "#4A6CF7",
         yellow: "#FBB040",
         datablue: "#2C41DB",
-        dalgonabase: "#E69C39",
+        dalgonabase: "#B56119",
         dalgonatext: "#C3732B",
         offblacktext: "#36393E",
         "normal" : "#f9feff",

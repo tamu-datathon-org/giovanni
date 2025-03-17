@@ -1,13 +1,10 @@
 import React from "react";
-import { GetServerSideProps } from 'next';
-
+// import { GetServerSideProps } from 'next';
+import TableOfContents from "@/components/TableOfContents";
 import { Heading, Flex, Text, Avatar, RevealFx, Arrow, Column } from "@/once-ui/components";
-import { Projects } from "@/components/work/Projects";
 
 import { baseURL, routes } from "@/app/resources";
-import { home, about, person, newsletter } from "@/app/resources/content";
-import { Mailchimp } from "@/components";
-import { Posts } from "@/components/blog/Posts";
+import { home, person, newsletter } from "@/app/resources/content";
 import FAQComponent from "@/components/FAQ/FAQComponent";
 import EventInfo from "@/components/eventinfo/EventInfoComponent";
 import LandingPage from "@/components/LandingPage";
@@ -50,10 +47,24 @@ export default function Home() {
     { question: 'What is server-side rendering?', answer: 'It is a technique for rendering pages on the server, improving performance.' },
     { question: 'Can I use Tailwind CSS with Next.js?', answer: 'Yes, you can easily integrate Tailwind with Next.js.' },
   ];
+
+  const structure = [
+    {
+      title: "FAQ",
+      display: true,
+      items: [],
+    },
+  ];
+
+  const TOC = {
+    tableOfContent: {
+      display: true,
+      subItems: false,
+    }
+  };
+
   return (
     <Column maxWidth="m" gap="xl" horizontal="center">
-      <EventInfo/>
-      <FAQComponent faqData={faqData} />
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -76,6 +87,18 @@ export default function Home() {
           }),
         }}
       />
+      {
+        <Column
+          left="0"
+          style={{ top: "50%", transform: "translateY(-50%)" }}
+          position="fixed"
+          paddingLeft="24"
+          gap="32"
+          hide="s"
+        >
+          <TableOfContents structure={structure} about={TOC} />
+        </Column>
+      }
       <Column fillWidth paddingY="l" gap="m">
         <Column fillWidth>
           <RevealFx translateY="1" fillWidth horizontal="center" paddingBottom="m">
@@ -83,7 +106,9 @@ export default function Home() {
           </RevealFx>
         </Column>
       </Column>
-      <RevealFx translateY="16" delay={0.6}>
+      <EventInfo/>
+      <FAQComponent faqData={faqData} />
+      {/* <RevealFx translateY="16" delay={0.6}>
         <Projects range={[1, 1]} />
       </RevealFx>
       {routes["/blog"] && (
@@ -99,7 +124,7 @@ export default function Home() {
         </Flex>
       )}
       <Projects range={[2]} />
-      {newsletter.display && <Mailchimp newsletter={newsletter} />}
+      {newsletter.display && <Mailchimp newsletter={newsletter} />} */}
     </Column>
   );
 }

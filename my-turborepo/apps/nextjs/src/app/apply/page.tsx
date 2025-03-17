@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react"
 export const appsOpen = true;
 
 export default function Page() {
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
   // TODO: Replace this with an API call to the correct router
   const { data, isLoading } = api.application.getApplicationStatus.useQuery(
     {
@@ -54,7 +54,7 @@ export default function Page() {
   return (
     <>
       {/* <IconList /> */}
-      <div className="flex h-screen w-screen items-center justify-center">
+      <div className="flex h-screen w-screen items-center justify-center bg-black bg-opacity-70">
         <StaticWindowContainer>
           <div className="py-4 flex flex-col justify-center align-center h-[60vh] w-[75vw] p-6">
             <div className="flex-1">

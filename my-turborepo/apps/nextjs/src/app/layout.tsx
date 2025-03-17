@@ -50,7 +50,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       </head>
 
       <body
-        className={cn("min-h-screen bg-background text-foreground antialiased bg-gray-200")}
+        className={cn("min-h-screen text-foreground antialiased bg-black bg-opacity-70")}
       >
         <TRPCReactProvider>
           <main>
