@@ -60,7 +60,7 @@ const LandingPage = () => {
   }, [timeZone, locale]); // Depend on interval for updates
 
   return (
-    <div className="align-center relative flex w-full flex-col justify-center -p-3">
+    <div id="Home" className="align-center relative flex w-full flex-col justify-center -p-3">
       <div className="relative aspect-[16/9] h-[100px] w-full">
         <Image
           src="/images/landing-page/TAMU.png"
@@ -124,13 +124,13 @@ const LandingPage = () => {
           ))}
         </div>
       </div>
-      <div className="flex gap-56 pt-10">
-        <Link href="/apply">
+      <div className="font-[myfont] flex flex-col gap-5 md:flex-row md:gap-56 pt-10">
+        <Link href="https://tamudatathon.com" target="_blank" rel="noopener noreferrer">
           <button className="aspect-[3/1] w-56 rounded-3xl border-2 border-white bg-[#FF0087] text-xl font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-[#FF0087] hover:shadow-[0_0_15px_rgba(255,0,135,0.7)]">
             Apply
           </button>
         </Link>
-        <Link href="/">
+        <Link href="https://discord.gg/Mm5ssTJeUy" target="_blank" rel="noopener noreferrer">
           <button className="aspect-[3/1] w-56 rounded-3xl border-2 border-white bg-[#15F5BA] text-xl font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-[#15F5BA] hover:shadow-[0_0_15px_rgba(21,245,186,0.7)]">
             Discord
           </button>

@@ -1,16 +1,12 @@
 import React from "react";
-import { GetServerSideProps } from 'next';
-
 import { Heading, Flex, Text, Avatar, RevealFx, Arrow, Column } from "@/once-ui/components";
-import { Projects } from "@/components/work/Projects";
 
 import { baseURL, routes } from "@/app/resources";
-import { home, about, person, newsletter } from "@/app/resources/content";
-import { Mailchimp } from "@/components";
-import { Posts } from "@/components/blog/Posts";
+import { home, about, person } from "@/app/resources/content";
 import FAQComponent from "@/components/FAQ/FAQComponent";
 import EventInfo from "@/components/eventinfo/EventInfoComponent";
 import LandingPage from "@/components/LandingPage";
+import TableOfContents from "@/components/about/TableOfContents";
 
 export async function generateMetadata() {
   const title = home.title;
@@ -42,16 +38,36 @@ export async function generateMetadata() {
 }
 
 export default function Home() {
+  const structure = [
+    {
+      title: about.home.title,
+      display: about.home.display,
+      items: [],
+    },
+    {
+      title: about.event.title,
+      display: about.event.display,
+      items: [],
+    },
+    {
+      title: about.faq.title,
+      display: about.faq.display,
+      items: [],
+    },
+  ];
+
   const faqData = [
-    { question: 'What is Next.js?', answer: 'Next.js is a React framework for production.' },
-    { question: 'How does Tailwind CSS work?', answer: 'Tailwind CSS is a utility-first CSS framework for styling.' },
-    { question: 'Is TypeScript required for Next.js?', answer: 'No, but it is highly recommended for type safety.' },
-    { question: 'How to create a Next.js project?', answer: 'Use the command `npx create-next-app@latest`.' },
-    { question: 'What is server-side rendering?', answer: 'It is a technique for rendering pages on the server, improving performance.' },
-    { question: 'Can I use Tailwind CSS with Next.js?', answer: 'Yes, you can easily integrate Tailwind with Next.js.' },
+    { question: 'What is TAMU Datathon Lite?', answer: "TD Lite is a smaller, more beginner friendly version of our main event. It's a one-day event, but it will have everything Datathon normally has including free food, swag, workshops, and prizes!" },
+    { question: 'Where is the event?', answer: 'The event takes place at the ILCB. Once you enter the building, organizers will be there to guide you to the main room! If you have any questions regarding transportation or parking, please reach out to us on Discord.' },
+    { question: 'Why should I come?', answer: 'It is completely free! All you need is a laptop and a charger. We will even provide swag, food, Wi-Fi, workspaces, and more during the event.' },
+    { question: 'How do I sign up?', answer: 'Head over to tamudatathon.com/apply to get started! Admission decisions will be released shortly after registration closes.' },
+    { question: 'How much do I need to know?', answer: 'If you are new to data science, TD Lite is the perfect time and place to learn. We will provide introductory workshops and mentors to guide you throughout the competition. We are committed to helping you build something you can be proud of!' },
+    { question: 'Who can attend?', answer: 'TD Lite is open to any student currently enrolled at Texas A&M who is at least 18 years of age and any Aggie who has graduated within one year of the event. We welcome students from all majors!' },
+    { question: 'What should I bring?', answer: 'All you need is a laptop and a charger to get started at TD Lite! You may bring other items such as a pillow or a debugging duck if you wish to. Also make sure to check the weather in case you might need an umbrella :D.' },
+    { question: 'I have another question', answer: 'Send us an email at connect@tamudatathon.com or reach out to us on Discord!' },
   ];
   return (
-    <Column maxWidth="m" gap="xl" horizontal="center">
+    <Column fillWidth gap="xl" horizontal="center">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -74,6 +90,19 @@ export default function Home() {
           }),
         }}
       />
+      {about.tableOfContent.display && (
+        <Column
+          left="0"
+          style={{ top: "50%", transform: "translateY(-50%)" }}
+          position="fixed"
+          paddingLeft="24"
+          gap="32"
+          hide="s"
+        >
+          <TableOfContents structure={structure} about={about} />
+        </Column>
+      )}
+
       <Column fillWidth paddingY="l" gap="m">
         <Column fillWidth>
           <RevealFx translateY="1" fillWidth horizontal="center" paddingBottom="m">

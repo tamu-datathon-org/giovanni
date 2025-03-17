@@ -7,7 +7,7 @@ import { Flex, Spinner, Input, Button, Heading, Column, PasswordInput } from "@/
 import NotFound from "@/app/not-found";
 
 interface RouteGuardProps {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
@@ -33,7 +33,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
           return routes[pathname as keyof typeof routes];
         }
 
-        const dynamicRoutes = ["/blog", "/work"] as const;
+        const dynamicRoutes = [] as const;
         for (const route of dynamicRoutes) {
           if (pathname?.startsWith(route) && routes[route]) {
             return true;
@@ -85,8 +85,8 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
   }
 
   if (!isRouteEnabled) {
-		return <NotFound />;
-	}
+    return <NotFound />;
+  }
 
   if (isPasswordRequired && !isAuthenticated) {
     return (

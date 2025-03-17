@@ -167,8 +167,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   position="relative"
                   zIndex={0}
                   fillWidth
-                  paddingY="l"
-                  paddingX="l"
+                  paddingY="1"
+                  paddingX="4"
                   horizontal="center"
                   flex={1}
                 >
