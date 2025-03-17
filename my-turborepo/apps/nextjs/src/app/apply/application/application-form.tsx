@@ -39,12 +39,10 @@ import {
   SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
 import { api } from "~/trpc/react";
-import { applicationSchema } from "../validation";
 import GenericCombobox from "../../_components/genericCombobox";
 import LoadingAnimation from "../../_components/loadingAnimation";
 import Title from "../../_components/title";
-import GenericInputField from "~/app/_components/genericInputField";
-import GenericTextArea from "~/app/_components/genericTextArea";
+import { applicationSchema } from "../validation";
 
 // Map schools to DropdownOption type
 const SCHOOL_OPTIONS = schools.map((school) => ({
@@ -85,6 +83,13 @@ export function Asterisk() {
 }
 
 export function ApplicationForm() {
+  const [interestOneCount, setInterestOneCount] = useState(0);
+  const [interestTwoCount, setInterestTwoCount] = useState(0);
+  const [interestThreeCount, setInterestThreeCount] = useState(0);
+  const [dietaryRestrictionCount, setDietaryRestrictionCount] = useState(0);
+  const [referencesCount, setReferencesCount] = useState(0);
+  const [extraCount, setExtraCount] = useState(0);
+
   const [disableSubmit, setDisableSubmit] = useState(false);
 
   const { data: importedValues, isLoading } =
@@ -119,22 +124,22 @@ export function ApplicationForm() {
   useEffect(() => {
     const savedData = localStorage.getItem("applicationData"); //getting the previously saved data
     if (savedData) { //if there is previously saved data then the form will reset the null values to these values 
-      form.reset(JSON.parse(savedData));
+      form.reset(JSON.parse(savedData) as ApplicationSchema);
     }
-  }, 
-  [form] //dependent on the application form
-);
+  },
+    [form] //dependent on the application form
+  );
 
-  useEffect(() => { 
+  useEffect(() => {
     //this is the timer thing for the saves, saves every 30 secs 
     const interval = setInterval(() => {
       const data = form.getValues();
       localStorage.setItem("applicationData", JSON.stringify(data));
-    }, 30000); 
+    }, 30000);
     return () => clearInterval(interval);
-  }, 
-  [form] //dependent on the application form
-);
+  },
+    [form] //dependent on the application form
+  );
   
   const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
     let blob_name = undefined;
@@ -273,46 +278,102 @@ export function ApplicationForm() {
           <div className="flex w-full flex-row">
             {/* First Name */}
             <div className="flex w-1/2 flex-col pr-2">
-              <GenericInputField
+              <FormField
+                control={form.control}
                 name="firstName"
-                label="First Name"
-                required={true}
-                defaultValue={importedValues?.app?.firstName ?? ""}
-                placeholder="John"
-              />
+                defaultValue={importedValues?.app?.firstName}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xl">
+                      First Name
+                      <Asterisk />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-white"
+                        placeholder="John"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />{" "}
             </div>
 
             {/* Last Name */}
             <div className="flex w-1/2 flex-col pr-2">
-              <GenericInputField
+              <FormField
+                control={form.control}
                 name="lastName"
-                label="Last Name"
-                required={true}
-                defaultValue={importedValues?.app?.lastName ?? ""}
-                placeholder="Doe"
+                defaultValue={importedValues?.app?.lastName}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xl">
+                      Last Name
+                      <Asterisk />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-white"
+                        placeholder="Doe"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
           </div>
 
           {/* Email */}
           <div className="pt-4">
-            <GenericInputField
+            <FormField
+              control={form.control}
               name="email"
-              label="Primary Email"
-              required={true}
-              defaultValue={importedValues?.app?.email ?? ""}
-              placeholder="abc123@gmail.com"
+              defaultValue={importedValues?.app?.email}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Primary Email
+                    <Asterisk />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="bg-white"
+                      placeholder="abc123@gmail.com"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
 
           {/* Phone Number */}
           <div className="pt-4">
-            <GenericInputField
+            <FormField
+              control={form.control}
               name="phoneNumber"
-              label="Phone Number"
-              required={true}
-              defaultValue={importedValues?.app?.phoneNumber ?? ""}
-              placeholder="1234567890"
+              defaultValue={importedValues?.app?.phoneNumber}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Phone Number
+                    <Asterisk />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="bg-white"
+                      placeholder="1234567890"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
 
@@ -348,13 +409,9 @@ export function ApplicationForm() {
               name={"gender"}
               label={"Gender?"}
               options={GENDER_OPTIONS}
-              defaultOption={importedValues?.app?.gender ? (
-                GENDER_OPTIONS.find((option) => option.value === importedValues?.app?.gender) ||
-                {
-                  label: "Other (please specify)",
-                  value: importedValues?.app?.gender || ""
-                }) : undefined
-              }
+              defaultOption={GENDER_OPTIONS.find(
+                (option) => option.value === importedValues?.app?.gender,
+              )}
               required={true}
             />
           </div>
@@ -365,13 +422,9 @@ export function ApplicationForm() {
               name={"race"}
               label={"What ethnicity do you identify with?"}
               options={RACE_OPTIONS}
-              defaultOption={importedValues?.app?.race ? (
-                RACE_OPTIONS.find((option) => option.value === importedValues?.app?.race) ||
-                {
-                  label: "Other (please specify)",
-                  value: importedValues?.app?.race || ""
-                }) : undefined
-              }
+              defaultOption={RACE_OPTIONS.find(
+                (option) => option.value === importedValues?.app?.race,
+              )}
               required={true}
             />
           </div>
@@ -396,14 +449,9 @@ export function ApplicationForm() {
               name={"major"}
               label={"What's your major?"}
               options={MAJOR}
-              defaultOption={
-                importedValues?.app?.major ? (
-                  MAJOR.find((option) => option.value === importedValues?.app?.major) ||
-                  {
-                    label: "Other (please specify)",
-                    value: importedValues?.app?.major || ""
-                  }) : undefined
-              }
+              defaultOption={MAJOR.find(
+                (option) => option.value === importedValues?.app?.major,
+              )}
               required={true}
             />
           </div>
@@ -480,9 +528,9 @@ export function ApplicationForm() {
               defaultOption={
                 importedValues?.app?.hasTeam
                   ? {
-                    value: importedValues.app.hasTeam,
-                    label: importedValues.app.hasTeam,
-                  }
+                      value: importedValues.app.hasTeam,
+                      label: importedValues.app.hasTeam,
+                    }
                   : undefined
               }
               required={true}
@@ -554,82 +602,221 @@ export function ApplicationForm() {
 
           {/* Address */}
           <div className="pt-4">
-            <GenericInputField
+            <FormField
+              control={form.control}
               name="address"
-              label="Address"
-              required={true}
-              defaultValue={importedValues?.app?.address ?? ""}
-              placeholder="308 Negra Arroyo Lane, Albuquerque, New Mexico 87104"
+              defaultValue={importedValues?.app?.address}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Address
+                    <Asterisk />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="308 Negra Arroyo Lane, Albuquerque, New Mexico 87104"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
 
           <Title text="General Info" className="m-1" />
           {/* References */}
           <div className="pt-4">
-            <GenericTextArea
+            <FormField
+              control={form.control}
               name="references"
-              defaultValue={importedValues?.app?.references ?? ""}
-              label="Point us to anything you'd like us to look at while considering your application."
-              placeholder="Provide links or references here."
-              required={true}
+              defaultValue={importedValues?.app?.references}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Point us to anything you'd like us to look at while
+                    considering your application.
+                    <Asterisk />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      maxLength={250}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setReferencesCount(e.target.value.length);
+                      }}
+                      className="bg-white"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <p className="mt-1 text-sm text-gray-500">
+                    {referencesCount}/250 characters
+                  </p>
+                </FormItem>
+              )}
             />
           </div>
 
           {/* Tell us your best programming joke. */}
           <div className="pt-4">
-            <GenericTextArea
+            <FormField
+              control={form.control}
+              defaultValue={importedValues?.app?.interestOne}
               name="interestOne"
-              defaultValue={importedValues?.app?.interestOne ?? ""}
-              label="Tell us your best programming joke."
-              placeholder="Is your code running? Well, you better go catch it."
-              required={true}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Tell us your best programming joke.
+                    <Asterisk />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Is your code running? Well, you better go catch it."
+                      {...field}
+                      maxLength={250}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setInterestOneCount(e.target.value.length);
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <p className="mt-1 text-sm text-gray-500">
+                    {interestOneCount}/250 characters
+                  </p>
+                </FormItem>
+              )}
             />
           </div>
-
           {/* What is the one thing you'd build if you had unlimited resources? */}
           <div className="pt-4">
-            <GenericTextArea
+            <FormField
+              control={form.control}
               name="interestTwo"
-              defaultValue={importedValues?.app?.interestTwo ?? ""}
-              label="What is the one thing you'd build if you had unlimited resources?"
-              placeholder="More resources."
-              required={true}
+              defaultValue={importedValues?.app?.interestTwo}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    What is the one thing you'd build if you had unlimited
+                    resources?
+                    <Asterisk />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="More resources."
+                      {...field}
+                      maxLength={250}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setInterestTwoCount(e.target.value.length);
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <p className="mt-1 text-sm text-gray-500">
+                    {interestTwoCount}/250 characters
+                  </p>
+                </FormItem>
+              )}
             />
           </div>
 
           {/* What drives your interest in being a part of TAMU Datathon? */}
           <div className="pt-4">
-            <GenericTextArea
+            <FormField
+              control={form.control}
               name="interestThree"
-              defaultValue={importedValues?.app?.interestThree ?? ""}
-              label="Why do you want to participate in TAMU Datathon?"
-              placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
-              required={true}
+              defaultValue={importedValues?.app?.interestThree}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    What drives your interest in being a part of TAMU Datathon?
+                    <Asterisk />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
+                      {...field}
+                      maxLength={250}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setInterestThreeCount(e.target.value.length);
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <p className="mt-1 text-sm text-gray-500">
+                    {interestThreeCount}/250 characters
+                  </p>
+                </FormItem>
+              )}
             />
           </div>
-
           {/* Dietry Restrictions */}
           <div className="pt-4">
-            <GenericTextArea
+            <FormField
+              control={form.control}
               name="dietaryRestriction"
               defaultValue={importedValues?.app?.dietaryRestriction ?? ""}
-              label="Do you require any special accommodations at the event?
-                Please list all dietary restrictions here."
-              placeholder="Rock only diet."
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Do you require any special accommodations at the event?
+                    Please list all dietary restrictions here.
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Rock only diet."
+                      {...field}
+                      maxLength={250}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setDietaryRestrictionCount(e.target.value.length);
+                      }}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <p className="mt-1 text-sm text-gray-500">
+                    {dietaryRestrictionCount}/250 characters
+                  </p>
+                </FormItem>
+              )}
             />
           </div>
 
           {/* Extra Info */}
           <div className="pt-4">
-            <GenericTextArea
+            <FormField
+              control={form.control}
               name="extraInfo"
               defaultValue={importedValues?.app?.extraInfo ?? ""}
-              label="Anything else you would like us to know?"
-              placeholder="I love drywall!"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Anything else you would like us to know?
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="bg-white"
+                      placeholder="I love drywall!"
+                      {...field}
+                      maxLength={255}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setExtraCount(e.target.value.length);
+                      }}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
 
-          {/* MLH REQUIRED */}
+          {/* TODO: Add the waiver */}
           {/* Liability Waiver */}
           <div className="flex items-center space-x-2 pt-4">
             <FormField

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { display, routes } from "@/app/resources";
 import {
@@ -10,16 +9,17 @@ import {
 } from "@/app/resources/content";
 import styles from "@/components/Header.module.scss";
 import { Fade, Flex, Line, ToggleButton } from "@/once-ui/components";
+import styles from "@/components/Header.module.scss";
 
-export interface TimeDisplayProps {
+import { routes, display } from "@/app/resources";
+import { person, home, about, blog, work, gallery } from "@/app/resources/content";
+
+type TimeDisplayProps = {
   timeZone: string;
-  locale?: string; // Optionally allow locale, defaulting to 'en-US'
-}
+  locale?: string; // Optionally allow locale, defaulting to 'en-GB'
+};
 
-const TimeDisplay: React.FC<TimeDisplayProps> = ({
-  timeZone,
-  locale = "en-US",
-}) => {
+const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" }) => {
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
@@ -53,15 +53,7 @@ export const Header = () => {
   return (
     <>
       <Fade hide="s" fillWidth position="fixed" height="80" zIndex={9} />
-      <Fade
-        show="s"
-        fillWidth
-        position="fixed"
-        bottom="0"
-        to="top"
-        height="80"
-        zIndex={9}
-      />
+      <Fade show="s" fillWidth position="fixed" bottom="0" to="top" height="80" zIndex={9} />
       <Flex
         fitHeight
         className={styles.position}
@@ -82,11 +74,7 @@ export const Header = () => {
           >
             <Flex gap="4" vertical="center" textVariant="body-default-s">
               {routes["/"] && (
-                <ToggleButton
-                  prefixIcon="home"
-                  href="/"
-                  selected={pathname === "/"}
-                />
+                <ToggleButton prefixIcon="home" href="/" selected={pathname === "/"} />
               )}
               <Line vert maxHeight="24" />
               {routes["/schedule"] && (

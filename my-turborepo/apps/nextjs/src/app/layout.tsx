@@ -10,7 +10,7 @@ import { w95fa } from "~/app/_components/fonts";
 import { Toaster } from "~/components/ui/toaster";
 import { env } from "~/env";
 import { TRPCReactProvider } from "~/trpc/react";
-import { redirect } from "next/navigation";
+import BackgroundImage from "./_components/images/background";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -44,16 +44,16 @@ export const viewport: Viewport = {
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={w95fa.className}>
-      <head>
-        <script crossOrigin="anonymous"
-          src="//unpkg.com/react-scan/dist/auto.global.js" />
-      </head>
-
       <body
         className={cn("min-h-screen text-foreground antialiased bg-black bg-opacity-70")}
       >
         <TRPCReactProvider>
           <main>
+            <BackgroundImage
+              desktop_src={"/assets/wallpaper.png"}
+              mobile_src={"/assets/wallpaper-mobile.png"}
+              alt={"Preregistration background"}
+            />
             {props.children}
             <SpeedInsights />
           </main>

@@ -101,7 +101,7 @@ export default function Home() {
       }
       <Column fillWidth paddingY="l" gap="m">
         <Column fillWidth>
-          <RevealFx translateY="1" fillWidth horizontal="center" paddingBottom="m">
+          <RevealFx translateY="4" fillWidth horizontal="center" paddingBottom="m">
             <LandingPage />
           </RevealFx>
         </Column>

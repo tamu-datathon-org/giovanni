@@ -16,16 +16,26 @@ module.exports = {
 
     screens: {
       xs: "450px",
+      // => @media (min-width: 450px) { ... }
+
       sm: "575px",
+      // => @media (min-width: 576px) { ... }
+
       md: "768px",
+      // => @media (min-width: 768px) { ... }
+
       lg: "992px",
+      // => @media (min-width: 992px) { ... }
+
       xl: "1200px",
+      // => @media (min-width: 1200px) { ... }
+
       "2xl": "1400px",
+      // => @media (min-width: 1400px) { ... }
     },
     extend: {
       fontFamily: {
-        "squid-game": ["myfont", "sans-serif"],
-        "count-down": ["count", "sans-serif"],
+        "squid-game": ['myfont', 'sans-serif']
       },
       colors: {
         current: "currentColor",
@@ -38,7 +48,6 @@ module.exports = {
         datablue: "#2C41DB",
         dalgonabase: "#B56119",
         dalgonatext: "#C3732B",
-        offblacktext: "#36393E",
         "normal" : "#f9feff",
         "bg-color-dark": "#171C28",
         "body-color": {
@@ -55,6 +64,7 @@ module.exports = {
           light: "#F0F2F9",
         },
       },
+
       boxShadow: {
         signUp: "0px 5px 10px rgba(4, 10, 34, 0.2)",
         one: "0px 2px 3px rgba(7, 7, 77, 0.05)",
@@ -75,14 +85,11 @@ module.exports = {
       keyframes: {
         floatx: {
           "0%, 100%": { boxShadow: "none", transform: "translateY(0)" },
-          "50%": { boxShadow: "none", transform: "translateY(-20px)" },
+          "50%": { boxShadow: "none",transform: "translateY(-20px)" },
         },
       },
       animation: {
         float: "floatx 3s ease-in-out infinite",
-      },
-      backgroundImage: {
-        sandBox: "url('/sand&rainbow.svg')",
       },
     },
   },
