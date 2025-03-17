@@ -120,23 +120,23 @@ export function ApplicationForm() {
   useEffect(() => {
     const savedData = localStorage.getItem("applicationData"); //getting the previously saved data
     if (savedData) { //if there is previously saved data then the form will reset the null values to these values 
-      form.reset(JSON.parse(savedData));
+      form.reset(JSON.parse(savedData) as ApplicationSchema);
     }
-  }, 
-  [form] //dependent on the application form
-);
+  },
+    [form] //dependent on the application form
+  );
 
-  useEffect(() => { 
+  useEffect(() => {
     //this is the timer thing for the saves, saves every 30 secs 
     const interval = setInterval(() => {
       const data = form.getValues();
       localStorage.setItem("applicationData", JSON.stringify(data));
-    }, 30000); 
+    }, 30000);
     return () => clearInterval(interval);
-  }, 
-  [form] //dependent on the application form
-);
-  
+  },
+    [form] //dependent on the application form
+  );
+
   const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
     let blob_name = undefined;
     let blob_url = undefined;

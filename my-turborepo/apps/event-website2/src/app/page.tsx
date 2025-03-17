@@ -52,8 +52,6 @@ export default function Home() {
   ];
   return (
     <Column maxWidth="m" gap="xl" horizontal="center">
-      <EventInfo/>
-      <FAQComponent faqData={faqData} />
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -83,7 +81,9 @@ export default function Home() {
           </RevealFx>
         </Column>
       </Column>
-      <RevealFx translateY="16" delay={0.6}>
+      <EventInfo />
+      <FAQComponent faqData={faqData} />
+      {/* <RevealFx translateY="16" delay={0.6}>
         <Projects range={[1, 1]} />
       </RevealFx>
       {routes["/blog"] && (
@@ -99,7 +99,7 @@ export default function Home() {
         </Flex>
       )}
       <Projects range={[2]} />
-      {newsletter.display && <Mailchimp newsletter={newsletter} />}
+      {newsletter.display && <Mailchimp newsletter={newsletter} />} */}
     </Column>
   );
 }
