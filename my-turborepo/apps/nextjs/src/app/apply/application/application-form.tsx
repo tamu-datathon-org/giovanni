@@ -528,9 +528,9 @@ export function ApplicationForm() {
               defaultOption={
                 importedValues?.app?.hasTeam
                   ? {
-                    value: importedValues.app.hasTeam,
-                    label: importedValues.app.hasTeam,
-                  }
+                      value: importedValues.app.hasTeam,
+                      label: importedValues.app.hasTeam,
+                    }
                   : undefined
               }
               required={true}
