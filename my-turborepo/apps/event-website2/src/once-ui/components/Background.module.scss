@@ -1,14 +1,18 @@
 .mask {
   mask-size: 100% 100%;
-  mask-image: radial-gradient(var(--mask-radius) at var(--mask-position-x) var(--mask-position-y),
-      black 0%,
-      transparent 100%);
+  mask-image: radial-gradient(
+    var(--mask-radius) at var(--mask-position-x) var(--mask-position-y),
+    black 0%,
+    transparent 100%
+  );
 }
 
 .gradient {
-  background: radial-gradient(ellipse var(--gradient-width) var(--gradient-height) at var(--gradient-position-x) var(--gradient-position-y),
-      var(--gradient-color-start),
-      var(--gradient-color-end));
+  background: radial-gradient(
+        ellipse var(--gradient-width) var(--gradient-height) at var(--gradient-position-x) var(--gradient-position-y),
+        var(--gradient-color-start),
+        var(--gradient-color-end)
+      );
   width: 400%;
   height: 400%;
   left: -150%;

@@ -417,7 +417,7 @@ export const GENDER_OPTIONS = [
   { value: "M", label: "Male" },
   { value: "F", label: "Female" },
   { value: "NB", label: "Non-binary" },
-  { value: "Other (please specify)", label: "Other (please specify)" },
+  { value: "X", label: "Prefer to self-describe" },
 ];
 
 export const RACE_OPTIONS = [
@@ -446,7 +446,7 @@ export const RACE_OPTIONS = [
     label: "Other Asian (Thai, Cambodian, etc)",
   },
   { value: "Other Pacific Islander", label: "Other Pacific Islander" },
-  { value: "Other (please specify)", label: "Other (please specify)" },
+  { value: "Other (Please Specify)", label: "Other (Please Specify)" },
   { value: "Prefer Not to Answer", label: "Prefer Not to Answer" },
 ];
 
