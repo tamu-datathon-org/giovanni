@@ -1,5 +1,3 @@
-"use client";
-
 import "../../_components/customCss.scss";
 
 import type { SubmitHandler } from "react-hook-form";
