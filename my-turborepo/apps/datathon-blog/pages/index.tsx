@@ -1,5 +1,5 @@
-import React from "react";
 import type { GetStaticProps } from "next";
+import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -49,7 +49,7 @@ export default function Home({
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = () => {
   const allPostsData = getSortedPostsData();
   return {
     props: {

@@ -6,7 +6,9 @@ import { Event, Role, UserRole } from "@vanni/db/schema";
 
 import { protectedProcedure, publicProcedure } from "../trpc";
 
-export async function validateOrganizerAuth({ ctx }): TRPCResolver {
+// TODO: Fix the type of ctx
+/*  @ts-ignore */
+export async function validateOrganizerAuth({ ctx }) {
   const eventName = process.env.NEXT_PUBLIC_EVENT_NAME;
 
   // Verify the event name and user exists
