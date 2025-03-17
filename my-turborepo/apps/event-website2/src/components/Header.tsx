@@ -1,29 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { display, routes } from "@/app/resources";
-import {
-  about,
-  blog,
-  gallery,
-  home,
-  person,
-  schedule,
-  work,
-} from "@/app/resources/content";
-import styles from "@/components/Header.module.scss";
+import { useEffect, useState } from "react";
+
 import { Fade, Flex, Line, ToggleButton } from "@/once-ui/components";
+import styles from "@/components/Header.module.scss";
 
-export interface TimeDisplayProps {
+import { routes, display } from "@/app/resources";
+import { person, home, about, blog, work, gallery } from "@/app/resources/content";
+
+type TimeDisplayProps = {
   timeZone: string;
-  locale?: string; // Optionally allow locale, defaulting to 'en-US'
-}
+  locale?: string; // Optionally allow locale, defaulting to 'en-GB'
+};
 
-const TimeDisplay: React.FC<TimeDisplayProps> = ({
-  timeZone,
-  locale = "en-US",
-}) => {
+const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" }) => {
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
@@ -57,15 +48,7 @@ export const Header = () => {
   return (
     <>
       <Fade hide="s" fillWidth position="fixed" height="80" zIndex={9} />
-      <Fade
-        show="s"
-        fillWidth
-        position="fixed"
-        bottom="0"
-        to="top"
-        height="80"
-        zIndex={9}
-      />
+      <Fade show="s" fillWidth position="fixed" bottom="0" to="top" height="80" zIndex={9} />
       <Flex
         fitHeight
         className={styles.position}
@@ -75,12 +58,7 @@ export const Header = () => {
         padding="8"
         horizontal="center"
       >
-        <Flex
-          paddingLeft="12"
-          fillWidth
-          vertical="center"
-          textVariant="body-default-s"
-        >
+        <Flex paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s">
           {display.location && <Flex hide="s">{person.location}</Flex>}
         </Flex>
         <Flex fillWidth horizontal="center">
@@ -94,11 +72,7 @@ export const Header = () => {
           >
             <Flex gap="4" vertical="center" textVariant="body-default-s">
               {routes["/"] && (
-                <ToggleButton
-                  prefixIcon="home"
-                  href="/"
-                  selected={pathname === "/"}
-                />
+                <ToggleButton prefixIcon="home" href="/" selected={pathname === "/"} />
               )}
               <Line vert maxHeight="24" />
               {routes["/about"] && (
@@ -132,23 +106,6 @@ export const Header = () => {
                     prefixIcon="grid"
                     href="/work"
                     selected={pathname.startsWith("/work")}
-                  />
-                </>
-              )}
-              {routes["/schedule"] && (
-                <>
-                  <ToggleButton
-                    className="s-flex-hide"
-                    prefixIcon="grid"
-                    href="/schedule"
-                    label={schedule.label}
-                    selected={pathname.startsWith("/schedule")}
-                  />
-                  <ToggleButton
-                    className="s-flex-show"
-                    prefixIcon="grid"
-                    href="/schedule"
-                    selected={pathname.startsWith("/schedule")}
                   />
                 </>
               )}
@@ -197,9 +154,7 @@ export const Header = () => {
             textVariant="body-default-s"
             gap="20"
           >
-            <Flex hide="s" className="font-count-down">
-              {display.time && <TimeDisplay timeZone={person.location} />}
-            </Flex>
+            <Flex hide="s">{display.time && <TimeDisplay timeZone={person.location} />}</Flex>
           </Flex>
         </Flex>
       </Flex>

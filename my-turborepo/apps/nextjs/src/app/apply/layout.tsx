@@ -1,5 +1,4 @@
 import { auth, signIn } from "@vanni/auth";
-import { SessionProvider } from "next-auth/react";
 
 export default async function ApplyLayout({
   children, // will be a page or nested layout
@@ -15,11 +14,5 @@ export default async function ApplyLayout({
 
   console.log("hello");
   console.log(session);
-  return (
-    <SessionProvider session={session}>
-      <section>
-        {children}
-      </section>
-    </SessionProvider>
-  );
+  return <section>{children}</section>;
 }
