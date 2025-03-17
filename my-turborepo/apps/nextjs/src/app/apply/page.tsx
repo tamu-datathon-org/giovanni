@@ -54,7 +54,7 @@ export default function Page() {
   return (
     <>
       {/* <IconList /> */}
-      <div className="flex h-screen w-screen items-center justify-center">
+      <div className="flex h-screen w-screen items-center justify-center bg-black bg-opacity-70">
         <StaticWindowContainer>
           <div className="py-4 flex flex-col justify-center align-center h-[60vh] w-[75vw] p-6">
             <div className="flex-1">
@@ -85,9 +85,9 @@ export default function Page() {
 
               </div>
             </div>
-            <Link href="https://tamudatathon.com/" target="_blank">
+            <Link href="https://2025.tamudatathon.com/" target="_blank">
               <Button className="xpBorder submitBtn my-4 w-fit text-xl font-extrabold mx-auto">
-                Back to home
+                Back to event
               </Button>
             </Link>
           </div>

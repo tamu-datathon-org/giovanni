@@ -1,5 +1,3 @@
-"use client";
-
 import "../../_components/customCss.scss";
 
 import type { SubmitHandler } from "react-hook-form";
@@ -46,6 +44,7 @@ import LoadingAnimation from "../../_components/loadingAnimation";
 import Title from "../../_components/title";
 import GenericInputField from "~/app/_components/genericInputField";
 import GenericTextArea from "~/app/_components/genericTextArea";
+import { LucideArrowBigLeft } from "lucide-react";
 
 // Map schools to DropdownOption type
 const SCHOOL_OPTIONS = schools.map((school) => ({
@@ -244,7 +243,13 @@ export function ApplicationForm() {
     label: entry.schoolName,
   }));
   return (
-    <div className="flex w-full justify-center lg:w-3/5 ">
+    <div className="flex w-full justify-center lg:w-3/5 relative">
+      <a href="/apply">
+        <button className="absolute top-10 left-10 flex flex-row">
+          <LucideArrowBigLeft />
+          Back
+        </button>
+      </a>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
