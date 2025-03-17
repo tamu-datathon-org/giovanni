@@ -38,6 +38,7 @@ module.exports = {
         datablue: "#2C41DB",
         dalgonabase: "#B56119",
         dalgonatext: "#C3732B",
+        offblacktext: "#36393E",
         "normal" : "#f9feff",
         "bg-color-dark": "#171C28",
         "body-color": {

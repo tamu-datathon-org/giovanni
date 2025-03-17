@@ -6,6 +6,7 @@ import { Heading, Flex, Text, Avatar, RevealFx, Arrow, Column } from "@/once-ui/
 import { baseURL, routes } from "@/app/resources";
 import { home, person, newsletter } from "@/app/resources/content";
 import FAQComponent from "@/components/FAQ/FAQComponent";
+import EventInfo from "@/components/eventinfo/EventInfoComponent";
 import LandingPage from "@/components/LandingPage";
 
 export async function generateMetadata() {
@@ -105,6 +106,7 @@ export default function Home() {
           </RevealFx>
         </Column>
       </Column>
+      <EventInfo/>
       <FAQComponent faqData={faqData} />
       {/* <RevealFx translateY="16" delay={0.6}>
         <Projects range={[1, 1]} />
