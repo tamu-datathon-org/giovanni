@@ -167,7 +167,7 @@ export function ApplicationForm() {
 
     if (!importedValues?.app) {
       const createApplicationData = {
-        eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
+        eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "Datathon2025Spring",
         resumeUrl: blob_url ?? "",
         resumeName: blob_name ?? "",
         applicationData: {
