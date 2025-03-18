@@ -10,7 +10,7 @@ import { Background, Column, Flex, ToastProvider } from "@/once-ui/components";
 import { TRPCReactProvider } from "@/trpc/react";
 import classNames from "classnames";
 
-import "react-scan";
+// import "react-scan";
 
 export async function generateMetadata() {
   return {
@@ -79,10 +79,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html>
       <head>
-        <script
+        {/* <script
           crossOrigin="anonymous"
           src="//unpkg.com/react-scan/dist/auto.global.js"
-        />
+        /> */}
       </head>
       <body>
         <TRPCReactProvider>
