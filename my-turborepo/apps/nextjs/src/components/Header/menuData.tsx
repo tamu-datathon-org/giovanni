@@ -4,13 +4,13 @@ const menuData: Menu[] = [
   {
     id: 1,
     title: "Home",
-    path: "#home",
+    path: "/#home",
     newTab: false,
   },
   {
     id: 3,
     title: "About",
-    path: "#about",
+    path: "/#about",
     newTab: false,
   },
   // {
@@ -22,7 +22,7 @@ const menuData: Menu[] = [
   {
     id: 4,
     title: "Team",
-    path: "#team",
+    path: "/#team",
     newTab: false,
   },
   // submenu: [
@@ -44,7 +44,7 @@ const menuData: Menu[] = [
   {
     id: 5,
     title: "Contact",
-    path: "#contact",
+    path: "/#contact",
     newTab: false,
   },
   {

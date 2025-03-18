@@ -46,7 +46,7 @@ const Header = () => {
           : "absolute bg-transparent"
           }`}
       >
-        <Link className="w-full bg-[#2D69DF] text-xl text-center py-2" href="https://tamudatathon.com">
+        <Link className="w-full bg-[#2D69DF] text-lg text-center py-1" href="https://tamudatathon.com">
           Visit our 2025 TDLite Website
         </Link>
         <div className="container">
@@ -54,7 +54,7 @@ const Header = () => {
             <div className="w-[8rem] max-w-full px-4 xl:mr-12">
               <Link
                 href="/"
-                className={`header-logo block w-full ${sticky ? "py-5 lg:py-2" : "py-0"
+                className={`header-logo block w-full ${sticky ? "py-0 lg:py-2" : "py-0"
                   } `}
               >
                 <Image
@@ -62,14 +62,14 @@ const Header = () => {
                   alt="logo"
                   width={100}
                   height={50}
-                  className="w-full dark:hidden"
+                  className="w-[70px] dark:hidden"
                 />
                 <Image
                   src="/images/logo/logoTD.png"
                   alt="logo"
                   width={100}
                   height={50}
-                  className="hidden w-full dark:block"
+                  className="hidden w-[70px] dark:block"
                 />
               </Link>
             </div>
@@ -107,7 +107,7 @@ const Header = () => {
                         {menuItem.path ? (
                           <Link
                             href={menuItem.path}
-                            className={`flex py-2 text-lg lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 
+                            className={`flex py-2 text-lg lg:mr-0 lg:inline-flex
                               ${sticky ? "text-dark hover:text-dark/70 dark:text-white/70 dark:hover:text-white" : "text-white/70 dark:hover:text-white"}
                               `}
                           >
