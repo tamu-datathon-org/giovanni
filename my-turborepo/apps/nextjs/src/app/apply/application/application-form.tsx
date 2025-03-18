@@ -78,6 +78,8 @@ const SCHOOL_OPTIONS = schools.map((school) => ({
     Liability Waiver (checkbox)
 */
 
+export const EVENT_NAME = "Datathon2025Spring";
+
 const Loading = () => {
   return <LoadingAnimation />;
 };
@@ -91,7 +93,7 @@ export function ApplicationForm() {
 
   const { data: importedValues, isLoading } =
     api.application.getApplicationByEventName.useQuery(
-      { eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "" },
+      { eventName: EVENT_NAME },
       {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
@@ -167,7 +169,7 @@ export function ApplicationForm() {
 
     if (!importedValues?.app) {
       const createApplicationData = {
-        eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "Datathon2025Spring",
+        eventName: EVENT_NAME,
         resumeUrl: blob_url ?? "",
         resumeName: blob_name ?? "",
         applicationData: {

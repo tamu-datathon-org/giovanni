@@ -7,18 +7,19 @@ import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
 import StaticWindowContainer from "../_components/StaticWindowContainer";
 import { useSession } from "next-auth/react"
+import { EVENT_NAME } from "./application/application-form";
 
 export const appsOpen = true;
 
 export default function Page() {
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
   // TODO: Replace this with an API call to the correct router
   const { data, isLoading } = api.application.getApplicationStatus.useQuery(
     {
-      eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
+      eventName: EVENT_NAME,
     },
     {
-      enabled: !!process.env.NEXT_PUBLIC_EVENT_NAME,
+      enabled: !!EVENT_NAME,
       retry: 2,
     },
   );
