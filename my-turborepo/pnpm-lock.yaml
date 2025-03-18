@@ -134,8 +134,17 @@ importers:
         specifier: ^5.4.5
         version: 5.7.3
 
-  apps/event-website2:
+  apps/event-website:
     dependencies:
+      '@aws-sdk/client-ses':
+        specifier: ^3.669.0
+        version: 3.741.0
+      '@aws-sdk/client-sqs':
+        specifier: ^3.675.0
+        version: 3.741.0
+      '@aws-sdk/credential-provider-node':
+        specifier: ^3.669.0
+        version: 3.741.0
       '@floating-ui/react-dom':
         specifier: ^2.1.1
         version: 2.1.2(react-dom@18.3.1)(react@18.3.1)
@@ -184,6 +193,9 @@ importers:
       '@vanni/validators':
         specifier: workspace:*
         version: link:../../packages/validators
+      aws-sdk:
+        specifier: ^2.1691.0
+        version: 2.1692.0
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.1
@@ -208,6 +220,9 @@ importers:
       next-mdx-remote:
         specifier: ^5.0.0
         version: 5.0.0(@types/react@18.3.18)(acorn@8.14.0)(react@18.3.1)
+      node-gyp:
+        specifier: 10.0.0
+        version: 10.0.0
       postcss:
         specifier: ^8.4.41
         version: 8.5.1
@@ -251,6 +266,9 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.17)
     devDependencies:
+      '@aws-sdk/types':
+        specifier: ^3.664.0
+        version: 3.734.0
       '@csstools/postcss-global-data':
         specifier: ^2.1.1
         version: 2.1.1(postcss@8.5.1)
