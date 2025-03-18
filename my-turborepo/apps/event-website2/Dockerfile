@@ -54,7 +54,7 @@ RUN adduser --system --uid 1001 event-website
 USER event-website
 
 # Automatically leverage output traces to reduce image size
-# https://event-website2.org/docs/advanced-features/output-file-tracing
+# https://event-website.org/docs/advanced-features/output-file-tracing
 COPY --from=installer --chown=event-website:nodejs /app/apps/event-website2/.next/standalone ./
 COPY --from=installer --chown=event-website:nodejs /app/apps/event-website2/.next/static ./apps/event-website2/.next/static
 COPY --from=installer --chown=event-website:nodejs /app/apps/event-website2/public ./apps/event-website2/public
