@@ -210,7 +210,7 @@ export function ApplicationForm() {
         userId: importedValues.app.userId,
         resumeUrl: blob_url ?? "",
         resumeName: blob_name ?? "",
-        eventName: process.env.NEXT_PUBLIC_EVENT_NAME || "",
+        eventName: EVENT_NAME,
         application: {
           ...data,
           gradYear: Number(data.gradYear),

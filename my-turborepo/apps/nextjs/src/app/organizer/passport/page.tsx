@@ -87,7 +87,8 @@ export default function PassportPage() {
 
     const queryData = await statusMutation.mutateAsync(
       {
-        eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
+        eventName: "Datathon2025Spring",
+        // eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
         email: inputEmail,
         newStatus: newStatus,
         allowedStatuses: selectedStatuses,

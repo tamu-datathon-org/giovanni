@@ -142,7 +142,8 @@ export function VettingTable() {
 
   const { data, isLoading } =
     api.application.getAllApplicationsByEventName.useQuery(
-      process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
+      "Datathon2025Spring",
+      // process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
       {
         retry: false,
         refetchOnWindowFocus: false,

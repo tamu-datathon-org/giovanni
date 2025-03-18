@@ -42,7 +42,8 @@ const SelectStatus: React.FC<SelectStatusProps> = ({
       onValueChange={(value) => {
         mutation.mutateAsync(
           {
-            eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
+            eventName: "Datathon2025Spring",
+            // eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
             id: id,
             newStatus: value,
           },
