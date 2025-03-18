@@ -55,8 +55,8 @@ USER event-website
 
 # Automatically leverage output traces to reduce image size
 # https://event-website.org/docs/advanced-features/output-file-tracing
-COPY --from=installer --chown=event-website:nodejs /app/apps/event-website2/.next/standalone ./
-COPY --from=installer --chown=event-website:nodejs /app/apps/event-website2/.next/static ./apps/event-website2/.next/static
-COPY --from=installer --chown=event-website:nodejs /app/apps/event-website2/public ./apps/event-website2/public
+COPY --from=installer --chown=event-website:nodejs /app/apps/event-website/.next/standalone ./
+COPY --from=installer --chown=event-website:nodejs /app/apps/event-website/.next/static ./apps/event-website/.next/static
+COPY --from=installer --chown=event-website:nodejs /app/apps/event-website/public ./apps/event-website/public
 
-CMD node apps/event-website2/server.js
+CMD node apps/event-website/server.js
