@@ -63,7 +63,7 @@ export default function Page() {
                 <div>
                   Signed in as: {session?.user.email}
                 </div>
-                <div className="dashboardText text-2xl">
+                <div className="dashboardText text-xl">
                   {" "}
                   YOUR APPLICATION STATUS:
                 </div>
@@ -82,6 +82,11 @@ export default function Page() {
                 <div>
                   {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
                 </div>
+                <Link href="/api/auth/signout/" target="_blank">
+                  <Button className="xpBorder submitBtn my-4 w-fit text-xl font-extrabold mx-auto">
+                    Sign Out
+                  </Button>
+                </Link>
 
               </div>
             </div>
