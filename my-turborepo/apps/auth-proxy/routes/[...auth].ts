@@ -15,5 +15,6 @@ export default eventHandler(async (event) =>
       }),
     ],
     basePath: "/",
+    trustHost: true,
   }),
 );
