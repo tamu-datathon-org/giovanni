@@ -11,7 +11,7 @@ export default async function Page() {
 
   return (
     <>
-      <div className="min-h-screen px-4 font-XPfont flex justify-center py-16">
+      <div className="min-h-screen px-4 font-XPfont flex justify-center py-20">
         <Suspense fallback={<h1>Loading... please wait</h1>}>
           <ApplicationForm />
         </Suspense>

@@ -125,7 +125,7 @@ const LandingPage = () => {
         </div>
       </div>
       <div className="font-[myfont] flex flex-col gap-5 md:flex-row md:gap-56 pt-10">
-        <Link href="https://tamudatathon.com" target="_blank" rel="noopener noreferrer">
+        <Link href="https://team.coolify.tamudatathon.com/apply" target="_blank" rel="noopener noreferrer">
           <button className="aspect-[3/1] w-56 rounded-3xl border-2 border-white bg-[#FF0087] text-xl font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-[#FF0087] hover:shadow-[0_0_15px_rgba(255,0,135,0.7)]">
             Apply
           </button>

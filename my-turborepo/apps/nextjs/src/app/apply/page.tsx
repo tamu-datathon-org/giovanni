@@ -58,12 +58,12 @@ export default function Page() {
         <StaticWindowContainer>
           <div className="py-4 flex flex-col justify-center align-center h-[60vh] w-[75vw] p-6">
             <div className="flex-1">
-              <h1 className="text-3xl pb-8">DASHBOARD</h1>
+              <h1 className="text-3xl pb-8 text-black">DASHBOARD</h1>
               <div>
-                <div>
+                <div className="text-black">
                   Signed in as: {session?.user.email}
                 </div>
-                <div className="dashboardText text-xl">
+                <div className="dashboardText text-xl text-black">
                   {" "}
                   YOUR APPLICATION STATUS:
                 </div>
@@ -90,7 +90,7 @@ export default function Page() {
 
               </div>
             </div>
-            <Link href="https://2025.tamudatathon.com/" target="_blank">
+            <Link href="https://tamudatathon.com/" target="_blank">
               <Button className="xpBorder submitBtn my-4 w-fit text-xl font-extrabold mx-auto">
                 Back to event
               </Button>
