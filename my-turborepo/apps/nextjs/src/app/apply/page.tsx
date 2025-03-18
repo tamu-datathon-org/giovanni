@@ -24,11 +24,11 @@ export default function Page() {
   );
 
   if (!isLoading && data === undefined) {
-    toast({
-      variant: "destructive",
-      title: "Failed to load status",
-      description: "Please refresh the page.",
-    });
+    // toast({
+    //   variant: "destructive",
+    //   title: "Failed to load status",
+    //   description: "Please refresh the page.",
+    // });
   }
   let gradient = "from-blue-400 to-cyan-700";
   if (!isLoading) {
@@ -76,7 +76,7 @@ export default function Page() {
                     ? "Loading...".toUpperCase()
                     : data?.status
                       ? data.status.toUpperCase()
-                      : "No status available"}
+                      : "No Application Found"}
                 </div>
 
                 <div>

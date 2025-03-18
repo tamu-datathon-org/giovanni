@@ -257,7 +257,7 @@ export function ApplicationForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="overflow-x-hidden rounded-lg bg-slate-200 dark:bg-slate-400 p-5 lg:px-16"
         >
-          <h1 className="p-10 pb-3 text-center text-5xl font-bold lg:text-6xl">
+          <h1 className="p-10 pb-3 text-center text-4xl font-bold lg:text-6xl">
             <span className="odd:text-teal-400">H</span>
             <span className="even:text-cyan-700">A</span>
             <span className="odd:text-teal-400 ">C</span>
@@ -265,7 +265,7 @@ export function ApplicationForm() {
             <span className="odd:text-teal-400 ">E</span>
             <span className="even:text-cyan-700">R</span> APPLICATION
           </h1>
-          <div className="pb-4 text-center text-xl">
+          <div className="pb-4 text-center text-md">
             Please complete the following sections. Filling out this form should
             take about 10-15 minutes.
           </div>

@@ -13,19 +13,19 @@ const menuData: Menu[] = [
     path: "#about",
     newTab: false,
   },
-  {
-    id: 2,
-    title: "Apply",
-    path: "#apply",
-    newTab: false,
-  },
+  // {
+  //   id: 2,
+  //   title: "Apply",
+  //   path: "#apply",
+  //   newTab: false,
+  // },
   {
     id: 4,
     title: "Team",
     path: "#team",
     newTab: false,
   },
-    // submenu: [
+  // submenu: [
   // INSERT NEW BLOG POSTS HERE
   // {
   //   id: 41,
@@ -49,8 +49,8 @@ const menuData: Menu[] = [
   },
   {
     id: 7,
-    title: "Blog",
-    path: "/blog",
+    title: "TDLite Application",
+    path: "/apply",
     newTab: false,
   },
 ];
