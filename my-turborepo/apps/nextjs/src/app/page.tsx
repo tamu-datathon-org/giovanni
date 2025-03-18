@@ -1,13 +1,60 @@
-"use client";
+import AboutSectionOne from "~/components/About/AboutSectionOne";
+import AboutSectionTwo from "~/components/About/AboutSectionTwo";
+import ApplySection from "~/components/Apply/ApplySection";
+import ScrollUp from "~/components/Common/ScrollUp";
+import Contact from "~/components/Contact";
+import Hero from "~/components/Hero";
+import type { Metadata } from "next";
+import AboutTeam from "~/components/AboutTeam/AboutTeam";
+import ContactBackground from "~/components/Contact/ContactBackground";
+import { Suspense } from "react";
+import { env } from "~/env";
 
-import React from "react";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-export const runtime = "edge";
+export const metadata: Metadata = {
+  metadataBase: new URL(
+    env.VERCEL_ENV === "production"
+      ? "https://turbo.t3.gg"
+      : "http://localhost:3000",
+  ),
+  title: "TAMU Datathon",
+  description: "A&M's Data Science Hackathon",
+  openGraph: {
+    title: "TAMU Datathon",
+    description: "A&M's Data Science Hackathon",
+    url: "https://tamudatathon.com",
+    siteName: "TAMU Datathon",
+  },
+  // TODO: Find out if this is important
+  // twitter: {
+  //   card: "summary_large_image",
+  //   site: "@jullerino",
+  //   creator: "@jullerino",
+  // },
+};
 
 export default function HomePage() {
-  redirect("/apply");
   // You can await this here if you don't want to show Suspense fallback below
+  return (
+    <>
+      <ScrollUp />
+      <Hero />
+      {/* <Features /> */}
+      {/* <Video /> */}
+      {/* <Brands /> */}
+      <AboutSectionOne />
+      <AboutSectionTwo />
+      <ApplySection />
+      <Suspense fallback={<p>Loading team...</p>}>
+        <AboutTeam />
+      </Suspense>
+      {/* <Testimonials /> */}
+      {/* <Blog /> */}
+      <Suspense fallback={<p>Loading gallery...</p>}>
+        <ContactBackground />
+      </Suspense>
+      <Contact />
+    </>
+  );
   // return (
   //   <>
   //     <Link

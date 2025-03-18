@@ -1,45 +1,17 @@
+"use client";
 import "~/app/globals.css";
 
-import type { Metadata, Viewport } from "next";
-import Link from "next/link";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-
-import { cn } from "@vanni/ui";
-
+import Footer from "~/components/Footer";
+import Header from "~/components/Header";
+import ScrollToTop from "~/components/ScrollToTop";
+import { Providers } from "./providers";
 import { w95fa } from "~/app/_components/fonts";
 import { Toaster } from "~/components/ui/toaster";
-import { env } from "~/env";
 import { TRPCReactProvider } from "~/trpc/react";
-import { redirect } from "next/navigation";
+import { Inter } from "next/font/google";
+import "../styles/index.css";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(
-    env.VERCEL_ENV === "production"
-      ? "https://turbo.t3.gg"
-      : "http://localhost:3000",
-  ),
-  title: "TAMU Datathon",
-  description: "A&M's Data Science Hackathon",
-  openGraph: {
-    title: "TAMU Datathon",
-    description: "A&M's Data Science Hackathon",
-    url: "https://tamudatathon.com",
-    siteName: "TAMU Datathon",
-  },
-  // TODO: Find out if this is important
-  // twitter: {
-  //   card: "summary_large_image",
-  //   site: "@jullerino",
-  //   creator: "@jullerino",
-  // },
-};
-
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
-};
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
@@ -50,13 +22,17 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       </head>
 
       <body
-        className={cn("min-h-screen bg-background text-foreground antialiased bg-gray-200")}
+        className={`bg-normal dark:bg-black ${inter.className}`}
       >
         <TRPCReactProvider>
-          <main>
-            {props.children}
-            <SpeedInsights />
-          </main>
+          <Providers>
+            <main>
+              <Header />
+              {props.children}
+              <Footer />
+              <ScrollToTop />
+            </main>
+          </Providers>
         </TRPCReactProvider>
         <div className="absolute bottom-4 right-4"></div>
         <Toaster />
