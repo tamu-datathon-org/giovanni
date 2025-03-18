@@ -46,5 +46,5 @@ export const authConfig = {
       };
     },
   },
-  trustHost: env.AUTH_TRUST_HOST,
+  trustHost: true,
 } satisfies NextAuthConfig;
