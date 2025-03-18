@@ -42,7 +42,7 @@ const GenericInputField: React.FC<GenericInputProps> = ({
             {required ? <Asterisk /> : ""}
           </FormLabel>
           <Input
-            className="bg-white placeholder-gray-500"
+            className="bg-white placeholder-gray-500 text-black"
             placeholder={placeholder}
             value={typeof field.value === "string" || typeof field.value === "number" ? field.value : ""}
             onChange={field.onChange}

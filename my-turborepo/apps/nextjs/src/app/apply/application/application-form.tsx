@@ -1,3 +1,5 @@
+"use client";
+
 import "../../_components/customCss.scss";
 
 import type { SubmitHandler } from "react-hook-form";
@@ -253,7 +255,7 @@ export function ApplicationForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="overflow-x-hidden rounded-lg bg-slate-50 p-5 lg:px-16"
+          className="overflow-x-hidden rounded-lg bg-slate-200 dark:bg-slate-400 p-5 lg:px-16"
         >
           <h1 className="p-10 pb-3 text-center text-5xl font-bold lg:text-6xl">
             <span className="odd:text-teal-400">H</span>
@@ -263,7 +265,7 @@ export function ApplicationForm() {
             <span className="odd:text-teal-400 ">E</span>
             <span className="even:text-cyan-700">R</span> APPLICATION
           </h1>
-          <div className="pb-4 text-center text-xl text-gray-500">
+          <div className="pb-4 text-center text-xl">
             Please complete the following sections. Filling out this form should
             take about 10-15 minutes.
           </div>

@@ -94,7 +94,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
-                  variant="outline"
+                  variant="application"
                   role="combobox"
                   className="justify-between"
                 >
@@ -156,7 +156,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                     setOtherValue(e.target.value);
                     form.setValue(name, e.target.value);
                   }}
-                  className="border p-2 bg-white"
+                  className="border p-2 bg-white text-black"
                   placeholder="Please specify..."
                 />
               </FormControl>

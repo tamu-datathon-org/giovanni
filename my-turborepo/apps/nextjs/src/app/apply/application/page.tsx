@@ -1,5 +1,3 @@
-"use client";
-
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 
@@ -13,14 +11,10 @@ export default async function Page() {
 
   return (
     <>
-      <div className="absolute top-0 h-screen w-screen overflow-auto bg-black bg-opacity-70">
-        <div className="flex-grow lg:h-10" />
-        <div className="font-XPfont flex justify-center">
-          <Suspense fallback={<h1>Loading... please wait</h1>}>
-            <ApplicationForm />
-          </Suspense>
-        </div>
-        <div className="flex-grow lg:h-10" />
+      <div className="min-h-screen font-XPfont flex justify-center py-16">
+        <Suspense fallback={<h1>Loading... please wait</h1>}>
+          <ApplicationForm />
+        </Suspense>
       </div>
     </>
   );
