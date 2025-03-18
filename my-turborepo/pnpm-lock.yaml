@@ -193,6 +193,9 @@ importers:
       '@vanni/validators':
         specifier: workspace:*
         version: link:../../packages/validators
+      '@vercel/blob':
+        specifier: ^0.24.0
+        version: 0.24.1
       aws-sdk:
         specifier: ^2.1691.0
         version: 2.1692.0

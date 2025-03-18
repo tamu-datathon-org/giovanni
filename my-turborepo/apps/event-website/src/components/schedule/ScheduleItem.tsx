@@ -148,12 +148,12 @@ export function ScheduleItem({
   return (
     <div
       className={cn(
-        "group relative flex w-full items-center gap-2 px-1 py-1 sm:gap-3 sm:px-2",
+        "group relative flex w-4/5 items-center gap-2 sm:gap-3",
       )}
     >
       <div
         className={cn(
-          "flex w-full cursor-pointer flex-col rounded-lg border-l-4 bg-opacity-30 p-2 shadow-sm transition-all sm:p-3",
+          "flex w-full cursor-pointer flex-col rounded-lg border-l-4 bg-opacity-30 px-4 py-8 shadow-sm transition-all",
           hasTimePassed(currentTime, endTime) && tillevent === "00:00:00:00"
             ? EndedEvent.borderColor
             : typeConfig.borderColor,

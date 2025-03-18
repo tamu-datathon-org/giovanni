@@ -59,7 +59,11 @@ export default function EventInfoComponent({ }) {
                     </svg>
 
                     <div className="">
-                        <h2 className="text-xl md:text-3xl font-bold">April 5, 2025
+                        <h2 className="text-xl md:text-3xl font-bold">
+                            April 5, 2025
+                        </h2>
+                        <h2 className="text-xl md:text-3xl font-bold">
+                            10:00 AM - 6:00 PM
                         </h2>
                         <a href="https://maps.app.goo.gl/ZF6C7Fsd8xJNBSjM9"
                             className="text-xl md:text-3xl font-bold hover:cursor-pointer underline"

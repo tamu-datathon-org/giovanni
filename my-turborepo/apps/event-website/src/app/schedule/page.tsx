@@ -136,7 +136,7 @@ function Schedule() {
   }, [timeZone, locale]); // Depend on interval for updates
 
   return (
-    <div className="mx-auto flex w-full flex-col gap-2 px-4 md:w-4/5 lg:w-3/5">
+    <div className="mx-auto flex w-full flex-col gap-2 px-4 md:w-4/5 lg:w-1/2">
       <h1 className="w-full pb-4 text-center font-[myfont] text-3xl sm:text-4xl md:text-5xl">
         Schedule (TBD)
       </h1>
@@ -148,7 +148,7 @@ function Schedule() {
               <div className="rounded-[6%] border-[8px] border-blue-500 sm:rounded-[12%] sm:border-[15px]">
                 <div className="rounded-[5%] border-[8px] border-blue-950 sm:rounded-[11%] sm:border-[15px]">
                   {/* Schedule items container */}
-                  <div className="flex flex-col items-center gap-3 p-4 sm:gap-4 sm:p-6 md:p-9">
+                  <div className="flex flex-col items-center gap-3 py-20 md:20 sm:gap-4">
                     {events.map((event) => (
                       <ScheduleItem
                         key={event.id}
