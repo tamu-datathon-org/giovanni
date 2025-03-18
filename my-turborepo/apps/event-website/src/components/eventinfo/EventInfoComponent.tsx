@@ -58,7 +58,7 @@ export default function EventInfoComponent({ }) {
                         </defs>
                     </svg>
 
-                    <div className="">
+                    <div className="pb-8">
                         <h2 className="text-xl md:text-3xl font-bold">
                             April 5, 2025
                         </h2>

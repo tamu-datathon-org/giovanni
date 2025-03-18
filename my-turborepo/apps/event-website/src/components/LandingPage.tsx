@@ -98,7 +98,7 @@ const LandingPage = () => {
         {timeUntilEvent}
       </div> */}
       <div className="relative mb-2">
-        <div className="font-squid-game text-4xl font-bold tracking-tight text-white drop-shadow-[0_0_8px_rgba(255,0,135,0.7)]">
+        <div className="font-squid-game text-3xl md:text-4xl font-bold tracking-tight text-white drop-shadow-[0_0_8px_rgba(255,0,135,0.7)]">
           TIME TILL EVENT
         </div>
         <div className="absolute -inset-x-4 top-1/2 h-[1px] bg-[#FF0087]/50"></div>

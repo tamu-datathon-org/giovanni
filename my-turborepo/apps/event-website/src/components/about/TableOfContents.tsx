@@ -44,8 +44,8 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) =
       }}
       position="fixed"
       paddingLeft="24"
-      gap="32"
-      hide="m"
+      gap="20"
+      hide="s"
     >
       <div className="text-lg font-bold">
         Table of Contents
@@ -55,8 +55,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) =
         .map((section, sectionIndex) => (
           <Column key={sectionIndex} gap="12">
             <Flex
-              cursor="interactive"
-              className={styles.hover}
+              className="hover:cursor-pointer"
               gap="8"
               vertical="center"
               onClick={() => scrollTo(section.title, 80)}
