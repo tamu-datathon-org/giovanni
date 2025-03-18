@@ -536,7 +536,7 @@ export function ApplicationForm() {
                       {...fieldProps}
                       type="file"
                       accept="application/pdf"
-                      className="border bg-gray-200"
+                      className="border bg-gray-500"
                       onChange={(event) => {
                         form.setValue(
                           "resumeFile",

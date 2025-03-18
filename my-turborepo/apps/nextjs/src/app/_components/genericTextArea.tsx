@@ -45,7 +45,7 @@ const GenericTextArea: React.FC<GenericTextAreaProps> = ({
                     </FormLabel>
                     <FormControl>
                         <textarea
-                            className="bg-white w-full p-2 border rounded text-sm"
+                            className="bg-white w-full p-2 border rounded text-sm text-black"
                             placeholder={placeholder}
                             {...field}
                             maxLength={255}
