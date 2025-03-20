@@ -111,6 +111,8 @@ export const Header = () => {
                   />
                 </>
               )}
+              
+              {/*
               {routes["/challenges"] && (
                 <>
                   <ToggleButton
@@ -128,6 +130,8 @@ export const Header = () => {
                   />
                 </>
               )}
+              */}
+
               {routes["/gallery"] && (
                 <>
                   <ToggleButton
