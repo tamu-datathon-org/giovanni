@@ -78,7 +78,8 @@ export const Header = () => {
           vertical="center"
           textVariant="body-default-s"
         >
-          {display.location && <Flex hide="s">{person.location}</Flex>}
+          {/* {display.location && <Flex hide="s">{person.location}</Flex>} */}
+          {""}
         </Flex>
         <Flex fillWidth horizontal="center">
           <Flex
@@ -160,9 +161,9 @@ export const Header = () => {
             textVariant="body-default-s"
             gap="20"
           >
-            <Flex hide="s" className="font-count-down">
+            {/* <Flex hide="s" className="font-count-down">
               {display.time && <TimeDisplay timeZone={person.location} />}
-            </Flex>
+            </Flex> */}
           </Flex>
         </Flex>
       </Flex>
