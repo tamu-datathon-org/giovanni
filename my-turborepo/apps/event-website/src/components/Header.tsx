@@ -3,12 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { display, routes } from "@/app/resources";
-import {
-  gallery,
-  person,
-  schedule,
-  challenges,
-} from "@/app/resources/content";
+import { challenges, gallery, person, schedule } from "@/app/resources/content";
 import styles from "@/components/Header.module.scss";
 import { Fade, Flex, Line, ToggleButton } from "@/once-ui/components";
 
@@ -78,7 +73,8 @@ export const Header = () => {
           vertical="center"
           textVariant="body-default-s"
         >
-          {display.location && <Flex hide="s">{person.location}</Flex>}
+          {/* {display.location && <Flex hide="s">{person.location}</Flex>} */}
+          {""}
         </Flex>
         <Flex fillWidth horizontal="center">
           <Flex
@@ -160,9 +156,6 @@ export const Header = () => {
             textVariant="body-default-s"
             gap="20"
           >
-            <Flex hide="s" className="font-count-down">
-              {display.time && <TimeDisplay timeZone={person.location} />}
-            </Flex>
           </Flex>
         </Flex>
       </Flex>
