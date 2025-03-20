@@ -86,11 +86,11 @@ const LandingPage = () => {
           className="absolute z-0  h-[300px] w-[300px] md:h-[450px] md:w-[450px]"
         />
         <Image
-          src="/images/landing-page/bearicon.png"
+          src="/images/landing-page/TDHALFBEAR.png"
           alt="Bear Icon"
           width={300}
           height={300}
-          className="relative z-10 h-[200px] w-[200px] md:h-[300px] md:w-[300px]"
+          className="relative z-10 h-[275px] w-[200px] md:h-[375px] md:w-[300px]"
         />
       </div>
       {/* <div className="font-squid-game text-3xl">Time till Event:</div>
