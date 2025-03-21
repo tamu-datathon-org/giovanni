@@ -11,7 +11,7 @@ import TableOfContents from "@/components/about/TableOfContents";
 export async function generateMetadata() {
   const title = home.title;
   const description = home.description;
-  const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
+  const ogImage = "https://media.discordapp.net/attachments/1299168483980083332/1351584572739162175/TDHALFBEAR.png?ex=67dedd39&is=67dd8bb9&hm=78fb0c16927c57de5d48f65df3016e7f72c8ce20da5ea72d8b3ef7edd5c5813d&=&format=webp&quality=lossless&width=461&height=597";
 
   return {
     title,
