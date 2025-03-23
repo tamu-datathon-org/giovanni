@@ -11,6 +11,10 @@
     font-family: "count";
     src: url("/fonts/fs-sevegment.ttf") format("truetype");
   }
+  @font-face {
+    font-family: "FAQ";
+    src: url("/fonts/ADLaMDisplay-Regular.ttf") format("truetype");
+  }
 
   /* 
     body {
