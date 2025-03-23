@@ -62,14 +62,16 @@ export const emailSendingRouter = {
         mailing_lists: z.array(z.string()),
         subject: z.string(),
         content: z.string(),
+        additionalEmails: z.array(z.string()),
         maxBatchSize: z.number().int().min(1).max(10),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const emails = await getEmailsByLabelList(input.mailing_lists);
+      const finalEmails = emails.concat(input.additionalEmails);
 
       const failed = await queueBulkEmail(
-        emails,
+        finalEmails,
         input.subject,
         input.content,
         input.maxBatchSize,
