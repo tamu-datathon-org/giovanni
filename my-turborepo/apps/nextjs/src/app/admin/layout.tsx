@@ -14,13 +14,13 @@ export default async function AdminLayout({
     await signIn(undefined, { redirectTo: "/admin/jankury" });
   }
 
-    if (session) {
-      try {
-        await api.auth.validateOrganizerAuth();
-      } catch (e) {
-        redirect("/");
-      }
+  if (session) {
+    try {
+      await api.auth.validateOrganizerAuth();
+    } catch (e) {
+      redirect("/");
     }
+  }
 
   console.log("hello");
   console.log(session);
