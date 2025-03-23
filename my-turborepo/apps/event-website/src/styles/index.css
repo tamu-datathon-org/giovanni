@@ -16,6 +16,11 @@
     src: url("/fonts/ADLaMDisplay-Regular.ttf") format("truetype");
   }
 
+  @font-face {
+    font-family: "location";
+    src: url("/fonts/SpecialElite-Regular.ttf") format("truetype");
+  }
+
   /* 
     body {
         background-size: cover;

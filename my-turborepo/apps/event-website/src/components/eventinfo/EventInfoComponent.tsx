@@ -11,7 +11,7 @@ export default function EventInfoComponent({ }) {
                     className="gap-2 flex flex-col justify-center items-center w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 absolute  text-center mb-3">
                     <Shapes/>
 
-                    <div className="pb-8">
+                    <div className="pb-8 font-location">
                         <h2 className="text-xl md:text-2xl font-bold">
                             April 5, 2025
                         </h2>
