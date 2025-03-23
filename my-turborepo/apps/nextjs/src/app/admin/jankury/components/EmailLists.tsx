@@ -26,7 +26,7 @@ export default function EmailLists() {
       defaultValue={[]}
       render={() => (
         <FormItem>
-          <FormLabel>Mailing List</FormLabel>
+          <FormLabel className="text-white text-md">Mailing List</FormLabel>
           {lists?.map((listName) => (
             <FormField
               key={listName}
@@ -53,7 +53,7 @@ export default function EmailLists() {
                         }}
                       />
                     </FormControl>
-                    <FormLabel className="font-normal">{listName}</FormLabel>
+                    <FormLabel className="font-normal text-white text-md">{listName}</FormLabel>
                   </FormItem>
                 );
               }}
