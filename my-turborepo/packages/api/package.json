@@ -25,15 +25,15 @@
     "@vanni/db": "workspace:*",
     "@vanni/validators": "workspace:*",
     "superjson": "2.2.1",
-    "zod": "^3.23.8"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.4.2",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "eslint": "^9.2.0",
-    "prettier": "^3.2.5",
-    "typescript": "^5.4.5"
+    "eslint": "^9.23.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
   }
 }
