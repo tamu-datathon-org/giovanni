@@ -17,7 +17,7 @@ export interface ScheduleItemProps {
   description: string;
   startTime: string;
   endTime: string;
-  type: "game" | "meal" | "rest";
+  type: "directive" | "game" | "meal" | "minigame" | "workshop";
   shape: "circle" | "triangle" | "square";
   tillevent?: string;
   onClick?: () => void;
@@ -44,7 +44,25 @@ export function ScheduleItem({
           iconColor: "text-rose-600",
           label: "Game",
         };
-      case "meal":
+      case "directive":
+        return {
+          hoverColor: "hover:bg-zinc-400 bg-opacity-50",
+          cardColor: "bg-zinc-600",
+          textColor: "text-zinc-50",
+          borderColor: "border-zinc-400",
+          iconColor: "text-zinc-200",
+          label: "Directive",
+        };
+        case "workshop":
+          return {
+            hoverColor: "hover:bg-amber-500 bg-opacity-40",
+            cardColor: "bg-amber-600",
+            textColor: "text-amber-50",
+            borderColor: "border-amber-400",
+            iconColor: "text-amber-600",
+            label: "Workshop",
+          };
+        case "meal":
         return {
           hoverColor: "hover:bg-emerald-400",
           cardColor: "bg-emerald-600",
@@ -53,14 +71,14 @@ export function ScheduleItem({
           iconColor: "text-emerald-600",
           label: "Meal",
         };
-      case "rest":
+      case "minigame":
         return {
           hoverColor: "hover:bg-indigo-400",
           cardColor: "bg-indigo-600",
           textColor: "text-indigo-50",
           borderColor: "border-indigo-400",
           iconColor: "text-indigo-600",
-          label: "Rest",
+          label: "Minigame",
         };
       default:
         return {
