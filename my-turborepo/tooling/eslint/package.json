@@ -15,19 +15,19 @@
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
-    "@next/eslint-plugin-next": "^14.2.3",
-    "eslint-config-turbo": "^1.13.3",
-    "eslint-plugin-import": "^2.30.0",
-    "eslint-plugin-jsx-a11y": "^6.10.0",
-    "eslint-plugin-react": "^7.34.1",
+    "@next/eslint-plugin-next": "^14.2.25",
+    "eslint-config-turbo": "^1.13.4",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "beta",
-    "typescript-eslint": "^8.6.0"
+    "typescript-eslint": "^8.28.0"
   },
   "devDependencies": {
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "eslint": "^9.2.0",
-    "prettier": "^3.2.5",
-    "typescript": "^5.4.5"
+    "eslint": "^9.23.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
   }
 }
