@@ -55,7 +55,7 @@ export function ScheduleItem({
         };
         case "workshop":
           return {
-            hoverColor: "hover:bg-amber-400 bg-opacity-40",
+            hoverColor: "hover:bg-amber-500 bg-opacity-40",
             cardColor: "bg-amber-600",
             textColor: "text-amber-50",
             borderColor: "border-amber-400",
