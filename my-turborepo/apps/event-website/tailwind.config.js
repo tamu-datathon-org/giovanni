@@ -45,6 +45,12 @@ module.exports = {
           DEFAULT: "#212327",
           dark: "#9da7b9",
         },
+        customRed: "#DF4C4F",
+        customyellow: '#F9CE76',
+        customgreen: '#64E9A2',
+        customblue: '#3C96E3',
+        custompurple: '#CE86D1',
+
         stroke: {
           stroke: "#E3E8EF",
           dark: "#353943",
