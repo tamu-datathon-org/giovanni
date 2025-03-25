@@ -10,10 +10,10 @@ try:
     cursor = connection.cursor()
     print("Connected to the database successfully")
     
-    emails = ["redninjale@gmail.com"]
+    emails = []
 
     # Fetch user_id for the given emails
-    query = sql.SQL("SELECT DISTINCT user_id FROM Application WHERE email = ANY(%s);")
+    query = sql.SQL("SELECT DISTINCT email, user_id FROM Application WHERE email = ANY(%s);")
     cursor.execute(query, (emails,))
     email_user_id = cursor.fetchall()
     
@@ -48,7 +48,7 @@ try:
     
     print(f"\nStart processing:")
     if email_user_id and user_role_query and possible_roles:
-        for email in emails:
+        for email, user_id in email_user_id:
             email_roles = set([role[0] for role in user_role_query if role[2] == email])
             print(f"Email: {email} \nEmail Roles: {email_roles}")
             
@@ -64,7 +64,7 @@ try:
                 if current_role[0] != Desired_role_id:
                     cursor.execute(
                         "UPDATE user_role SET role_id = %s WHERE user_id = %s AND role_id = %s;",
-                        (Desired_role_id, email_user_id[0][0], current_role[0])
+                        (Desired_role_id, user_id, current_role[0])
                     )
                     print(f"Updated role for user {email} to {Desired_role}")
                 else:
@@ -72,7 +72,7 @@ try:
             else:
                 cursor.execute(
                     "INSERT INTO user_role (user_id, role_id) VALUES (%s, %s);",
-                    (email_user_id[0][0], Desired_role_id)
+                    (user_id, Desired_role_id)
                 )
                 print(f"Inserted new role for user {email}")
         connection.commit()
