@@ -141,22 +141,20 @@ function Schedule() {
         Schedule (TBD)
       </h1>
       {/* Rainbow border effect - adjusted for mobile */}
-      <div className="rounded-[10%] border-[8px] border-red-500 sm:rounded-[16%] sm:border-[15px]">
-        <div className="rounded-[9%] border-[8px] border-orange-500 sm:rounded-[15%] sm:border-[15px]">
-          <div className="border-yellow rounded-[8%] border-[8px] sm:rounded-[14%] sm:border-[15px]">
-            <div className="rounded-[7%] border-[8px] border-green-500 sm:rounded-[13%] sm:border-[15px]">
-              <div className="rounded-[6%] border-[8px] border-blue-500 sm:rounded-[12%] sm:border-[15px]">
-                <div className="rounded-[5%] border-[8px] border-blue-950 sm:rounded-[11%] sm:border-[15px]">
-                  {/* Schedule items container */}
-                  <div className="flex flex-col items-center gap-3 py-20 md:20 sm:gap-4">
-                    {events.map((event) => (
-                      <ScheduleItem
-                        key={event.id}
-                        {...event}
-                        tillevent={timeUntilEvent}
-                      />
-                    ))}
-                  </div>
+      <div className="rounded-[10%] border-[8px] border-customRed sm:rounded-[16%] sm:border-[15px]">
+        <div className="rounded-[9%] border-[8px] border-customyellow sm:rounded-[14%] sm:border-[15px]">
+          <div className="rounded-[8%] border-[8px] border-customgreen sm:rounded-[12%] sm:border-[15px]">
+            <div className="rounded-[7%] border-[8px] border-customblue sm:rounded-[10%] sm:border-[15px]">
+              <div className="rounded-[6%] border-[8px] border-custompurple sm:rounded-[7%] sm:border-[15px]">
+                {/* Schedule items container */}
+                <div className="flex flex-col items-center gap-3 py-20 md:20 sm:gap-4">
+                  {events.map((event) => (
+                    <ScheduleItem
+                      key={event.id}
+                      {...event}
+                      tillevent={timeUntilEvent}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
