@@ -122,7 +122,7 @@ export default function EventInfoComponent() {
           <div className="pb-8">
             <h2 className="text-xl font-bold md:text-3xl">April 5, 2025</h2>
             <h2 className="text-xl font-bold md:text-3xl">
-              10:00 AM - 6:00 PM
+              8:30 AM - 4:30 PM
             </h2>
             <a
               href="https://maps.app.goo.gl/ZF6C7Fsd8xJNBSjM9"
