@@ -48,3 +48,5 @@ yarn-error.log*
 venv/
 
 .vscode/
+.idea/
+.github/
