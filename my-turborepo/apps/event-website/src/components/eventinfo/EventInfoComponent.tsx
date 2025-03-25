@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function EventInfoComponent() {
   return (
     <div id="Event Info" className="flex flex-col items-center gap-10">
@@ -143,22 +145,27 @@ export default function EventInfoComponent() {
       </div>
       <h2 className="font-squid-game align-center flex flex-col pt-6 text-4xl font-bold md:text-4xl">
         Parking <span>Information</span>
-        <p className="font-squid-game text-lg text-white/90 md:text-xl">
-          SBG Parking Fee: $10
+        <p className="mt-8 font-inter text-sm text-white/90 max-w-md text-center">
+          Unfortunately, due to Ring Weekend, parking will be limited. <br />We
+          recommend parking at the <a href="https://maps.app.goo.gl/EbAriecKyqa6r8bXA" className="underline font-bold text-lg" >SBG parking garage</a> for $10.
         </p>
       </h2>
       <div className="relative flex flex-col items-center justify-center gap-4 overflow-hidden rounded-lg p-8">
-        <img
+        <Image
           src="/images/locationcard.png"
           alt="Location background"
+          width={1000}
+          height={800}
           className="absolute inset-0 h-full w-full object-cover "
         />
         <div className="relative z-10 flex flex-col items-center justify-center gap-4">
           <div className="relative w-full max-w-xl">
             <div className="absolute inset-0 rounded-lg"></div>
-            <img
+            <Image
               src="/images/map.png"
               alt="Parking map"
+              width={1400}
+              height={800}
               className="mt-4 h-auto w-full rounded-lg shadow-lg"
             />
           </div>

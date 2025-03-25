@@ -26,6 +26,7 @@ module.exports = {
       fontFamily: {
         "squid-game": ["myfont", "sans-serif"],
         "count-down": ["count", "sans-serif"],
+        "inter": ["__Inter_d65c78", "__Inter_Fallback_d65c78", "sans-serif"],
       },
       colors: {
         current: "currentColor",
