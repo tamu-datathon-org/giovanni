@@ -177,11 +177,11 @@ function Schedule() {
         Schedule
       </h1>
       {/* Rainbow border effect - adjusted for mobile */}
-      <div className="rounded-[10%] border-[8px] border-customRed sm:rounded-[16%] sm:border-[15px]">
-        <div className="rounded-[9%] border-[8px] border-customyellow sm:rounded-[14%] sm:border-[15px]">
-          <div className="rounded-[8%] border-[8px] border-customgreen sm:rounded-[12%] sm:border-[15px]">
-            <div className="rounded-[7%] border-[8px] border-customblue sm:rounded-[10%] sm:border-[15px]">
-              <div className="rounded-[6%] border-[8px] border-custompurple sm:rounded-[7%] sm:border-[15px]">
+      <div className="rounded-[100px] border-[8px] border-customRed sm:rounded-[150px] sm:border-[20px]">
+        <div className="rounded-[90px] border-[8px] border-customyellow sm:rounded-[130px] sm:border-[20px]">
+          <div className="rounded-[80px] border-[8px] border-customgreen sm:rounded-[110px] sm:border-[20px]">
+            <div className="rounded-[70px] border-[8px] border-customblue sm:rounded-[90px] sm:border-[20px]">
+              <div className="rounded-[63px] border-[8px] border-custompurple sm:rounded-[70px] sm:border-[20px]">
                 {/* Schedule items container */}
                 <div className="flex flex-col items-center gap-3 py-20 md:20 sm:gap-4">
                   {events.map((event) => (
