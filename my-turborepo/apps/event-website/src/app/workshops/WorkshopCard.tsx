@@ -20,15 +20,15 @@ const WorkshopSection: React.FC = () => {
   const workshops = [
     {
       title: "ETAM Workshop",
-      description: " info",
+      description: "Focusing on ETAM applications, resunme buiding and intership prep along with headshots",
     },
     {
       title: "Python Beginner Workshop",
-      description: "info",
+      description: "Learn skills to conquer challenges at TD Lite!",
     },
     {
       title: "Challenge Walkthrough",
-      description: "info",
+      description: "We'll teach you the steps taking on a challenge aon with takin on NEW chaenge ourselves",
     },
   ];
 

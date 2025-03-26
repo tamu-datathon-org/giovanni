@@ -7,6 +7,7 @@ import FAQComponent from "@/components/FAQ/FAQComponent";
 import EventInfo from "@/components/eventinfo/EventInfoComponent";
 import LandingPage from "@/components/LandingPage";
 import TableOfContents from "@/components/about/TableOfContents";
+import WorkshopSection from "./workshops/WorkshopCard";
 
 export async function generateMetadata() {
   const title = home.title;
@@ -109,6 +110,7 @@ export default function Home() {
       </Column>
       <EventInfo />
       <FAQComponent faqData={faqData} />
+      <WorkshopSection/>
       {/* <RevealFx translateY="16" delay={0.6}>
         <Projects range={[1, 1]} />
       </RevealFx>
