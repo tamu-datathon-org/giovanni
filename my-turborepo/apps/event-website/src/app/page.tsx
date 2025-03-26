@@ -16,6 +16,7 @@ import {
   RevealFx,
   Text,
 } from "@/once-ui/components";
+import WorkshopSection from "./workshops/WorkshopCard";
 
 export async function generateMetadata() {
   const title = home.title;
@@ -182,6 +183,7 @@ export default function Home() {
       <FAQComponent faqData={faqData} />
       <WorkshopSection/>
       <Prizes prizesData={prizesData} />
+      <WorkshopSection/>
       {/* <RevealFx translateY="16" delay={0.6}>
         <Projects range={[1, 1]} />
       </RevealFx>
