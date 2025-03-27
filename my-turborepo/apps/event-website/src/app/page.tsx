@@ -6,6 +6,7 @@ import WorkshopSection from "./workshops/WorkshopCard";
 import EventInfo from "@/components/eventinfo/EventInfoComponent";
 import FAQComponent from "@/components/FAQ/FAQComponent";
 import LandingPage from "@/components/LandingPage";
+import Prizes from "@/components/prizes/prizeComponent";
 import {
   Arrow,
   Avatar,
@@ -112,6 +113,25 @@ export default function Home() {
         "Send us an email at connect@tamudatathon.com or reach out to us on Discord!",
     },
   ];
+
+  const prizesData = [
+    {
+      title: "1st Prize: Ergonomic Chair",
+      description: "$109.99 - A comfortable ergonomic chair.",
+      image: "https://m.media-amazon.com/images/I/61ZsVdGBYJL._AC_SL1500_.jpg",
+    },
+    {
+      title: "2nd Prize: Drone",
+      description: "$79.98 - A high-quality drone.",
+      image: "https://m.media-amazon.com/images/I/71z5UVYhJ-L._AC_SL1500_.jpg",
+    },
+    {
+      title: "3rd Prize: Weighted Blanket",
+      description: "$49.99 - A cozy weighted blanket.",
+      image: "https://m.media-amazon.com/images/I/81V7L6auixL._AC_SL1500_.jpg",
+    },
+  ];
+
   return (
     <Column fillWidth gap="xl" horizontal="center">
       <script
@@ -161,6 +181,7 @@ export default function Home() {
       <EventInfo />
       <FAQComponent faqData={faqData} />
       <WorkshopSection/>
+      <Prizes prizesData={prizesData} />
       {/* <RevealFx translateY="16" delay={0.6}>
         <Projects range={[1, 1]} />
       </RevealFx>
