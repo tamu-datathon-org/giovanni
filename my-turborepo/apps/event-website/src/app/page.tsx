@@ -117,17 +117,17 @@ export default function Home() {
     {
       title: "1st Prize: Ergonomic Chair",
       description: "$109.99 - A comfortable ergonomic chair.",
-      image: "https://m.media-amazon.com/images/I/61ZsVdGBYJL._AC_SL1500_.jpg",
+      image: "/images/prizes/prize1.png",
     },
     {
       title: "2nd Prize: Drone",
       description: "$79.98 - A high-quality drone.",
-      image: "https://m.media-amazon.com/images/I/71z5UVYhJ-L._AC_SL1500_.jpg",
+      image: "/images/prizes/prize2.png",
     },
     {
       title: "3rd Prize: Weighted Blanket",
       description: "$49.99 - A cozy weighted blanket.",
-      image: "https://m.media-amazon.com/images/I/81V7L6auixL._AC_SL1500_.jpg",
+      image: "/images/prizes/prize3.png",
     },
   ];
 
