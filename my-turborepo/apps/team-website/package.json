@@ -45,7 +45,7 @@
     "@vanni/tsconfig": "workspace:*",
     "autoprefixer": "^10.4.21",
     "dotenv-cli": "^7.4.4",
-    "eslint": "^9.2.0",
+    "eslint": "^9.23.0",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.5.14",

@@ -89,6 +89,10 @@ const about = {
     display: true, // set to false to hide this section
     title: "FAQ",
   },
+  prizes: {
+    display: true, // set to false to hide this section
+    title: "Prizes",
+  },
 };
 
 const blog = {

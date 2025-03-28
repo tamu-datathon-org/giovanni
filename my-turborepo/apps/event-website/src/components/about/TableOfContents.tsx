@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Column, Flex, Text } from "@/once-ui/components";
+
 import styles from "./about.module.scss";
 
 interface TableOfContentsProps {
@@ -18,7 +19,10 @@ interface TableOfContentsProps {
   };
 }
 
-const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) => {
+const TableOfContents: React.FC<TableOfContentsProps> = ({
+  structure,
+  about,
+}) => {
   const scrollTo = (id: string, offset: number) => {
     const element = document.getElementById(id);
     if (element) {
@@ -47,9 +51,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) =
       gap="20"
       hide="s"
     >
-      <div className="text-lg font-bold">
-        Table of Contents
-      </div>
+      <div className="text-lg font-bold">Table of Contents</div>
       {structure
         .filter((section) => section.display)
         .map((section, sectionIndex) => (
@@ -76,7 +78,11 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) =
                     vertical="center"
                     onClick={() => scrollTo(item, 80)}
                   >
-                    <Flex height="1" minWidth="8" background="neutral-strong"></Flex>
+                    <Flex
+                      height="1"
+                      minWidth="8"
+                      background="neutral-strong"
+                    ></Flex>
                     <Text>{item}</Text>
                   </Flex>
                 ))}
