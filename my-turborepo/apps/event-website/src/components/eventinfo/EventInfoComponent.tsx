@@ -1,5 +1,6 @@
 import EventTitle from './EventTitle';
 import Shapes from "@/components/eventinfo/Shapes";
+import Image from 'next/image';
 
 export default function EventInfoComponent({ }) {
 
@@ -16,7 +17,7 @@ export default function EventInfoComponent({ }) {
                             April 5, 2025
                         </h2>
                         <h2 className="text-xl md:text-2xl font-bold">
-                            10:00 AM - 6:00 PM
+                            8:30 AM - 4:30 PM
                         </h2>
                         <a href="https://maps.app.goo.gl/ZF6C7Fsd8xJNBSjM9"
                             className="text-xl md:text-2xl font-bold hover:cursor-pointer underline"
@@ -24,14 +25,11 @@ export default function EventInfoComponent({ }) {
                             rel="noopener noreferrer">
                             ILCB 207
                         </a>
-                        <h2 className="text-2xl font-bold">
-                            <a href=""></a>
-                        </h2>
                     </div>
                 </div>
         <img src="/images/locationcard.png" alt="Location info" />
       </div>
-      <h2 className="font-squid-game align-center flex flex-col pt-6 text-4xl font-bold md:text-4xl">
+      <h2 className="font-squid-game align-center flex flex-col pt-6 text-3xl font-bold md:text-4xl">
         Parking <span>Information</span>
         <p className="mt-8 font-inter text-sm text-white/90 max-w-md text-center">
           Unfortunately, due to Ring Weekend, parking will be limited. <br />We
@@ -46,7 +44,7 @@ export default function EventInfoComponent({ }) {
           height={800}
           className="absolute inset-0 h-full w-full object-cover "
         />
-        <div className="relative z-10 flex flex-col items-center justify-center gap-4">
+        <div className="relative z-5 flex flex-col items-center justify-center gap-4">
           <div className="relative w-full max-w-xl">
             <div className="absolute inset-0 rounded-lg"></div>
             <Image

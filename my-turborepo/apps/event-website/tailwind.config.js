@@ -27,7 +27,7 @@ module.exports = {
         "squid-game": ["myfont", "sans-serif"],
         "count-down": ["count", "sans-serif"],
         "FAQ": ["FAQ"],
-        "location":["location"]
+        "location":["location"],
         "inter": ["__Inter_d65c78", "__Inter_Fallback_d65c78", "sans-serif"],
       },
       colors: {
