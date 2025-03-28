@@ -39,12 +39,12 @@ const WorkshopSection: React.FC = () => {
       title: "Challenge Walkthrough",
       date: "April 3 7:00 - 8:00 PM",
       location: "ILCB 206",
-      description: "We'll teach you the steps taking on a challenge aon with takin on NEW chaenge ourselves",
+      description: "We'll teach you the steps taking on a challenge and with taking on NEW challenges ourselves!",
     },
   ];
 
   return (
-    <div>
+    <div id="workshops">
       <h1 className="w-full text-center text-3xl sm:text-4xl font-[myfont]">Workshops</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
         {workshops.map((workshop, index) => (

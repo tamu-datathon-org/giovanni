@@ -2,7 +2,6 @@ import React from "react";
 import { baseURL, routes } from "@/app/resources";
 import { about, home, person } from "@/app/resources/content";
 import TableOfContents from "@/components/about/TableOfContents";
-import WorkshopSection from "./workshops/WorkshopCard";
 import EventInfo from "@/components/eventinfo/EventInfoComponent";
 import FAQComponent from "@/components/FAQ/FAQComponent";
 import LandingPage from "@/components/LandingPage";
@@ -180,10 +179,9 @@ export default function Home() {
         </Column>
       </Column>
       <EventInfo />
-      <FAQComponent faqData={faqData} />
       <WorkshopSection/>
       <Prizes prizesData={prizesData} />
-      <WorkshopSection/>
+      <FAQComponent faqData={faqData} />
       {/* <RevealFx translateY="16" delay={0.6}>
         <Projects range={[1, 1]} />
       </RevealFx>
