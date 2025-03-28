@@ -15,6 +15,7 @@ import {
   RevealFx,
   Text,
 } from "@/once-ui/components";
+import WorkshopSection from "./workshops/WorkshopCard";
 
 export async function generateMetadata() {
   const title = home.title;
@@ -56,6 +57,16 @@ export default function Home() {
     {
       title: about.event.title,
       display: about.event.display,
+      items: [],
+    },
+    {
+      title: about.workshops.title,
+      display: about.workshops.display,
+      items: [],
+    },
+    {
+      title: about.prizes.title,
+      display: about.prizes.display,
       items: [],
     },
     {
@@ -131,6 +142,7 @@ export default function Home() {
     },
   ];
 
+
   return (
     <Column fillWidth gap="xl" horizontal="center">
       <script
@@ -178,6 +190,8 @@ export default function Home() {
         </Column>
       </Column>
       <EventInfo />
+      <WorkshopSection/>
+      <Prizes prizesData={prizesData} />
       <FAQComponent faqData={faqData} />
       <Prizes prizesData={prizesData} />
       {/* <RevealFx translateY="16" delay={0.6}>

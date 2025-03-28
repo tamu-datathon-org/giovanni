@@ -61,6 +61,15 @@ module.exports = {
           dark: "#1E232E",
           light: "#F0F2F9",
         },
+        
+
+
+          customRed: "#DF4C4F",
+          customyellow: '#F9CE76',
+          customgreen: '#64E9A2',
+          customblue: '#3C96E3',
+          custompurple: '#CE86D1',
+
       },
       boxShadow: {
         signUp: "0px 5px 10px rgba(4, 10, 34, 0.2)",
