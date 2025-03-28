@@ -117,18 +117,18 @@ export default function Home() {
   const prizesData = [
     {
       title: "1st Prize: Ergonomic Chair",
-      description: "$109.99 - A comfortable ergonomic chair.",
-      image: "/images/prizes/prize1.png",
+      description: "Comfortable Ergonomic Chair",
+      image: "/images/prizes/gaming_chair.png",
     },
     {
-      title: "2nd Prize: Drone",
-      description: "$79.98 - A high-quality drone.",
-      image: "/images/prizes/prize2.png",
+      title: "2nd Prize: Mechanical Keyboard",
+      description: "Wireless Mechanical Keyboard",
+      image: "/images/prizes/keyboard.webp",
     },
     {
       title: "3rd Prize: Weighted Blanket",
-      description: "$49.99 - A cozy weighted blanket.",
-      image: "/images/prizes/prize3.png",
+      description: "Cozy weighted blanket.",
+      image: "/images/prizes/heated_blanket.png",
     },
   ];
 
