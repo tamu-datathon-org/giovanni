@@ -8,7 +8,7 @@ export default function PrizesComponent({ prizesData }: PrizeProps) {
   return (
     <div
       id="Prizes"
-      className="mx-auto flex max-w-4xl flex-col items-center gap-8 p-4"
+      className="mx-auto flex max-w-4xl flex-col items-center gap-8 p-4 mb-40"
     >
       <h2 className="font-squid-game text-5xl font-bold text-white">
         <span className="text-pink-500">[</span> Prizes{" "}
