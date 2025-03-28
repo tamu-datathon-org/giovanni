@@ -74,11 +74,6 @@ export default function Home() {
       display: about.faq.display,
       items: [],
     },
-    {
-      title: about.prizes.title,
-      display: about.prizes.display,
-      items: [],
-    },
   ];
 
   const faqData = [
@@ -193,7 +188,6 @@ export default function Home() {
       <WorkshopSection/>
       <Prizes prizesData={prizesData} />
       <FAQComponent faqData={faqData} />
-      <Prizes prizesData={prizesData} />
       {/* <RevealFx translateY="16" delay={0.6}>
         <Projects range={[1, 1]} />
       </RevealFx>
