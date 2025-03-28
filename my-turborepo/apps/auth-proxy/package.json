@@ -14,15 +14,15 @@
     "@auth/core": "0.31.0"
   },
   "devDependencies": {
-    "@types/node": "^20.12.9",
+    "@types/node": "^20.17.27",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tailwind-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "eslint": "^9.2.0",
-    "h3": "^1.11.1",
-    "nitropack": "^2.9.6",
-    "prettier": "^3.2.5",
-    "typescript": "^5.4.5"
+    "eslint": "^9.23.0",
+    "h3": "^1.15.1",
+    "nitropack": "^2.11.7",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
   }
 }

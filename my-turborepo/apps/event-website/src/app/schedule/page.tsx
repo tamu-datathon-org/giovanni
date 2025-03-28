@@ -8,76 +8,112 @@ import { ScheduleItem } from "@/components/schedule/ScheduleItem";
 // Sample data for the schedule
 const events: ScheduleItemProps[] = [
   {
-    id: 3,
-    title: "Tug of War",
-    description: "Work as a team to pull your opponents over the edge.",
-    startTime: "09:00",
-    endTime: "12:00",
-    type: "game",
-    shape: "square",
-  },
-  {
     id: 1,
-    title: "Red Light, Green Light",
-    description: "Don't move when the doll turns around!",
-    startTime: "10:00",
-    endTime: "11:30",
-    type: "game",
-    shape: "circle",
-  },
-  {
-    id: 8,
-    title: "Final Game",
-    description: "The Squid Game itself. Winner takes all.",
-    startTime: "10:00",
-    endTime: "14:00",
-    type: "game",
+    title: "Check-in Begins",
+    description: "Come check in.",
+    startTime: "08:30am",
+    endTime: "09:00am",
+    type: "directive",
     shape: "square",
-  },
-  {
-    id: 4,
-    title: "Marbles",
-    description: "Play marbles with your partner. Winner takes all.",
-    startTime: "13:00",
-    endTime: "15:30",
-    type: "game",
-    shape: "circle",
   },
   {
     id: 2,
-    title: "Sugar Honeycomb",
-    description: "Carefully cut out the shape without breaking it.",
-    startTime: "14:00",
-    endTime: "16:00",
-    type: "game",
-    shape: "triangle",
-  },
-  {
-    id: 5,
-    title: "Glass Stepping Stones",
-    description: "Choose the right glass panel to step on.",
-    startTime: "16:00",
-    endTime: "18:00",
-    type: "game",
-    shape: "triangle",
-  },
-  {
-    id: 6,
-    title: "Dinner",
-    description: "Enjoy your meal with other players.",
-    startTime: "18:00",
-    endTime: "19:00",
-    type: "meal",
+    title: "Opening Ceremony Begins",
+    description: "Let the games begin.",
+    startTime: "09:00am",
+    endTime: "09:30am",
+    type: "directive",
     shape: "square",
   },
   {
-    id: 7,
-    title: "Rest Period",
-    description: "Time to rest before the next challenge.",
-    startTime: "19:00",
-    endTime: "21:00",
-    type: "rest",
+    id: 30,
+    title: "Hacking Begins",
+    description: "TBA",
+    startTime: "9:30am",
+    endTime: "3:30pm",
+    type: "game",
+    shape: "triangle",
+  },
+  {
+    id: 40,
+    title: "Pandas + Polars Workshop",
+    description: "Knowledge",
+    startTime: "10:30am",
+    endTime: "11:00am",
+    type: "workshop",
+    shape: "triangle",
+  },
+  {
+    id: 1,
+    title: "Prompting Workshop",
+    description: "Knowledge",
+    startTime: "11:00am",
+    endTime: "11:30am",
+    type: "workshop",
+    shape: "triangle",
+  },
+  {
+    id: 1,
+    title: "Machine Learning Workshop",
+    description: "Knowledge",
+    startTime: "11:30am",
+    endTime: "12:00pm",
+    type: "workshop",
+    shape: "triangle",
+  },
+  {
+    id: 60,
+    title: "Lunch",
+    description: "Scrumdiddilyumptious",
+    startTime: "12:00pm",
+    endTime: "01:00pm",
+    type: "meal",
     shape: "circle",
+  },
+  {
+    id: 1,
+    title: "Webscraping Workshop",
+    description: "Knowledge",
+    startTime: "1:30pm",
+    endTime: "2:00pm",
+    type: "workshop",
+    shape: "triangle",
+  },
+  {
+    id: 1,
+    title: "Third-party ML Models Workshop",
+    description: "Knowledge",
+    startTime: "2:00pm",
+    endTime: "2:30pm",
+    type: "workshop",
+    shape: "triangle",
+  },
+  {
+    id: 1,
+    title: "Command Line/Terminal Workshop",
+    description: "Knowledge",
+    startTime: "2:30pm",
+    endTime: "3:00pm",
+    type: "workshop",
+    shape: "triangle",
+  },
+  {
+    id: 100,
+    title: "Submissions Close",
+    description: "That's a wrap!",
+    startTime: "04:00pm",
+    endTime: "",
+    type: "game",
+    shape: "square",
+  },
+  {
+    id: 100,
+    title: "Closing Ceremony Begins",
+    description: "That's a wrap!",
+    startTime: "04:00pm",
+    endTime: "04:30am",
+    type: "directive",
+    shape: "square",
   },
 ];
 
@@ -138,25 +174,23 @@ function Schedule() {
   return (
     <div className="mx-auto flex w-full flex-col gap-2 px-4 md:w-4/5 lg:w-1/2">
       <h1 className="w-full pb-4 text-center font-[myfont] text-3xl sm:text-4xl md:text-5xl">
-        Schedule (TBD)
+        Schedule
       </h1>
       {/* Rainbow border effect - adjusted for mobile */}
-      <div className="rounded-[10%] border-[8px] border-red-500 sm:rounded-[16%] sm:border-[15px]">
-        <div className="rounded-[9%] border-[8px] border-orange-500 sm:rounded-[15%] sm:border-[15px]">
-          <div className="border-yellow rounded-[8%] border-[8px] sm:rounded-[14%] sm:border-[15px]">
-            <div className="rounded-[7%] border-[8px] border-green-500 sm:rounded-[13%] sm:border-[15px]">
-              <div className="rounded-[6%] border-[8px] border-blue-500 sm:rounded-[12%] sm:border-[15px]">
-                <div className="rounded-[5%] border-[8px] border-blue-950 sm:rounded-[11%] sm:border-[15px]">
-                  {/* Schedule items container */}
-                  <div className="flex flex-col items-center gap-3 py-20 md:20 sm:gap-4">
-                    {events.map((event) => (
-                      <ScheduleItem
-                        key={event.id}
-                        {...event}
-                        tillevent={timeUntilEvent}
-                      />
-                    ))}
-                  </div>
+      <div className="rounded-[100px] border-[8px] border-customRed sm:rounded-[150px] sm:border-[20px]">
+        <div className="rounded-[90px] border-[8px] border-customyellow sm:rounded-[130px] sm:border-[20px]">
+          <div className="rounded-[80px] border-[8px] border-customgreen sm:rounded-[110px] sm:border-[20px]">
+            <div className="rounded-[70px] border-[8px] border-customblue sm:rounded-[90px] sm:border-[20px]">
+              <div className="rounded-[63px] border-[8px] border-custompurple sm:rounded-[70px] sm:border-[20px]">
+                {/* Schedule items container */}
+                <div className="flex flex-col items-center gap-3 py-20 md:20 sm:gap-4">
+                  {events.map((event) => (
+                    <ScheduleItem
+                      key={event.id}
+                      {...event}
+                      tillevent={timeUntilEvent}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
@@ -166,5 +200,6 @@ function Schedule() {
     </div>
   );
 }
+
 
 export default Schedule;

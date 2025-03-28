@@ -28,6 +28,7 @@ module.exports = {
         "count-down": ["count", "sans-serif"],
         "FAQ": ["FAQ"],
         "location":["location"]
+        "inter": ["__Inter_d65c78", "__Inter_Fallback_d65c78", "sans-serif"],
       },
       colors: {
         current: "currentColor",
@@ -47,6 +48,12 @@ module.exports = {
           DEFAULT: "#212327",
           dark: "#9da7b9",
         },
+        customRed: "#DF4C4F",
+        customyellow: '#F9CE76',
+        customgreen: '#64E9A2',
+        customblue: '#3C96E3',
+        custompurple: '#CE86D1',
+
         stroke: {
           stroke: "#E3E8EF",
           dark: "#353943",
@@ -56,6 +63,15 @@ module.exports = {
           dark: "#1E232E",
           light: "#F0F2F9",
         },
+        
+
+
+          customRed: "#DF4C4F",
+          customyellow: '#F9CE76',
+          customgreen: '#64E9A2',
+          customblue: '#3C96E3',
+          custompurple: '#CE86D1',
+
       },
       boxShadow: {
         signUp: "0px 5px 10px rgba(4, 10, 34, 0.2)",
