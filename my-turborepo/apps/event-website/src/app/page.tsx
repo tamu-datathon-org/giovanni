@@ -60,13 +60,18 @@ export default function Home() {
       items: [],
     },
     {
-      title: about.faq.title,
-      display: about.faq.display,
+      title: about.workshops.title,
+      display: about.workshops.display,
       items: [],
     },
     {
       title: about.prizes.title,
       display: about.prizes.display,
+      items: [],
+    },
+    {
+      title: about.faq.title,
+      display: about.faq.display,
       items: [],
     },
   ];

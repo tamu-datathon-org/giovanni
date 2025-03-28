@@ -44,11 +44,11 @@ const WorkshopSection: React.FC = () => {
   ];
 
   return (
-    <div id="workshops">
-      <h1 className="w-full text-center text-3xl sm:text-4xl font-[myfont]">Workshops</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
+    <div id="Workshops">
+      <h1 className="w-full text-center text-4xl sm:text-5xl font-[myfont] mb-24">Workshops</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {workshops.map((workshop, index) => (
-          <WorkshopCard workshop={workshop}/>
+          <WorkshopCard key={index} workshop={workshop}/>
         ))}
       </div>
     </div>

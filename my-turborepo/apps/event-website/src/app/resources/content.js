@@ -85,13 +85,13 @@ const about = {
     display: true, // set to false to hide this section
     title: "Event Info",
   },
+  workshops: {
+    display: true, // set to false to hide this section
+    title: "Workshops",
+  },
   faq: {
     display: true, // set to false to hide this section
     title: "FAQ",
-  },
-  workshop: {
-    display: true, // set to false to hide this section
-    title: "Workshops",
   },
   prizes: {
     display: true, // set to false to hide this section
