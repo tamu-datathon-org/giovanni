@@ -40,6 +40,8 @@ module.exports = {
         dalgonabase: "#EBAD5C",
         dalgonatext: "#B86B28",
         offblacktext: "#36393E",
+        datapink: "#D43B81",
+        datapinkdark: "#BD3473",
         "normal" : "#f9feff",
         "bg-color-dark": "#171C28",
         "body-color": {

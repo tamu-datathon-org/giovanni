@@ -42,7 +42,7 @@ export default function ChallengeCard({ title, desc, details }) {
 
                         <button
                             onClick={() => setIsOpen(false)}
-                            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                            className="mt-4 px-4 py-2 bg-datapink text-white rounded hover:bg-datapinkdark"
                         >
                             Close
                         </button>
