@@ -308,19 +308,22 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .string()
     .min(1, "Address is missing")
     .max(100, "Address is too long"),
-  references: z.string().min(1, "References is missing").max(255),
+  references: z
+    .string()
+    .max(255)
+    .optional(),
   interestOne: z
     .string()
-    .min(1, "Interest One is missing")
-    .max(500, "Interest One is too long"),
+    .max(500, "Interest One is too long")
+    .optional(),
   interestTwo: z
     .string()
-    .min(1, "Interest Two is missing")
-    .max(500, "Interest Two is too long"),
+    .max(500, "Interest Two is too long")
+    .optional(),
   interestThree: z
     .string()
-    .min(1, "Interest Three is missing")
-    .max(500, "Interest Three is too long"),
+    .max(500, "Interest Three is too long")
+    .optional(),
   dietaryRestriction: z
     .string()
     .max(255, "Dietary Restriction is too long")
