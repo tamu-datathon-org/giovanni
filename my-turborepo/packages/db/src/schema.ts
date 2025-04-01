@@ -311,19 +311,23 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
   references: z
     .string()
     .max(255)
-    .optional(),
+    .optional()
+    .default(""),
   interestOne: z
     .string()
     .max(500, "Interest One is too long")
-    .optional(),
+    .optional()
+    .default(""),
   interestTwo: z
     .string()
     .max(500, "Interest Two is too long")
-    .optional(),
+    .optional()
+    .default(""),
   interestThree: z
     .string()
     .max(500, "Interest Three is too long")
-    .optional(),
+    .optional()
+    .default(""),
   dietaryRestriction: z
     .string()
     .max(255, "Dietary Restriction is too long")
