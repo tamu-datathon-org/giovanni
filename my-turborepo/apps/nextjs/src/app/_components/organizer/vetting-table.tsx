@@ -284,6 +284,7 @@ export function VettingTable() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="relative"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="max-w-[500px]">
