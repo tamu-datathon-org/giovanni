@@ -87,7 +87,7 @@ export default function JankuryPage() {
       <div className="overflow-auto mt-40 mb-20">
         <div className="font-XPfont flex justify-center">
           <div className="flex h-full w-full justify-center">
-            {/* <Button onClick={handleSendStatus}>HELPPP</Button> */}
+            <Button onClick={handleSendStatus}>Send Email Status</Button>
             <Suspense fallback={<h1>Loading... please wait</h1>}>
               <Form {...form}>
                 <form
