@@ -183,7 +183,7 @@ export function VettingTable() {
   });
 
   return (
-    <div className="h-full w-full px-5">
+    <div className="h-full w-full px-5 pt-16">
       <div className="flex items-center py-2">
         <Input
           placeholder="Filter firstName..."
@@ -268,9 +268,9 @@ export function VettingTable() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                     </TableHead>
                   );
                 })}
