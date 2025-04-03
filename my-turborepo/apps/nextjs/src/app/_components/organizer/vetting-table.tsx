@@ -183,7 +183,7 @@ export function VettingTable() {
   });
 
   return (
-    <div className="h-full w-full px-5 pt-16">
+    <div className="w-full px-5 pt-16">
       <div className="flex items-center py-2">
         <Input
           placeholder="Filter firstName..."
@@ -257,7 +257,7 @@ export function VettingTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="block h-full max-h-[80vh] max-w-full overflow-y-auto rounded-md border bg-indigo-900">
+      <div className="block h-full max-h-[70vh] max-w-full overflow-y-auto rounded-md border bg-indigo-900">
         <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
