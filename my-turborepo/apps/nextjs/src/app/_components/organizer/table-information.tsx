@@ -3,6 +3,8 @@ import { Application } from "@vanni/db/schema";
 import type { TableData } from "./schema";
 import { Card, CardContent } from "~/components/ui/card";
 import PDFReader from "./pdf-reader";
+import { Button } from "@vanni/ui/button";
+import { ClipboardIcon } from "lucide-react";
 
 interface CardInformationProps {
   children: React.ReactNode;
@@ -53,41 +55,53 @@ export const PersonalInformation: React.FC<InformationProps> = ({
   application,
 }) => {
   return (
-    <CardInformation>
-      <p>
-        <span className="font-bold">First Name:</span> {application.firstName}
-      </p>
-      <p>
-        <span className="font-bold">Last Name:</span> {application.lastName}
-      </p>
-      <p>
-        <span className="font-bold">Email:</span> {application.email}
-      </p>
-      <p>
-        <span className="font-bold">Age:</span> {application.age}
-      </p>
-      <p>
-        <span className="font-bold">Country:</span> {application.country}
-      </p>
-      <p>
-        <span className="font-bold">Race:</span> {application.race}
-      </p>
-      <p>
-        <span className="font-bold">Phone Number:</span>{" "}
-        {application.phoneNumber}
-      </p>
-      <p>
-        <span className="font-bold">Shirt Size:</span> {application.shirtSize}
-      </p>
-      <p>
-        <span className="font-bold">Event Source:</span>{" "}
-        {application.eventSource}
-      </p>
-      <p>
-        <span className="font-bold">Dietary Restrictions:</span>{" "}
-        {application.dietaryRestriction}
-      </p>
-    </CardInformation>
+    <div className="relative">
+      <CardInformation>
+        <p>
+          <span className="font-bold">First Name:</span> {application.firstName}
+        </p>
+        <p>
+          <span className="font-bold">Last Name:</span> {application.lastName}
+        </p>
+        <p>
+          <span className="font-bold">Email:</span> {application.email}
+        </p>
+        <p>
+          <span className="font-bold">Age:</span> {application.age}
+        </p>
+        <p>
+          <span className="font-bold">Country:</span> {application.country}
+        </p>
+        <p>
+          <span className="font-bold">Race:</span> {application.race}
+        </p>
+        <p>
+          <span className="font-bold">Phone Number:</span>{" "}
+          {application.phoneNumber}
+        </p>
+        <p>
+          <span className="font-bold">Shirt Size:</span> {application.shirtSize}
+        </p>
+        <p>
+          <span className="font-bold">Event Source:</span>{" "}
+          {application.eventSource}
+        </p>
+        <p>
+          <span className="font-bold">Dietary Restrictions:</span>{" "}
+          {application.dietaryRestriction}
+        </p>
+      </CardInformation>
+      <button
+        onClick={() => {
+          const fullName = `${application.firstName} ${application.lastName}`;
+          navigator.clipboard.writeText(fullName).catch(console.error);
+        }}
+        title="Copy full name"
+        className="absolute right-0 top-2"
+      >
+        <ClipboardIcon className="h-6 w-6 mr-2" />
+      </button>
+    </div>
   );
 };
 

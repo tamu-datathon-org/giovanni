@@ -17,6 +17,7 @@ import Content from "./components/Content";
 import EmailLists from "./components/EmailLists";
 import Preview from "./components/Preview";
 import Subject from "./components/Subject";
+import InputEmails from "./components/InputEmails";
 
 export const runtime = "edge";
 
@@ -30,7 +31,10 @@ export default function JankuryPage() {
 
   function handleSendStatus() {
     sendStatus.mutate(
-      {},
+      {
+        statusBatchSize: 100,
+        emailBatchSize: 4,
+      },
       {
         onSuccess: () => {
           toast({
@@ -83,17 +87,18 @@ export default function JankuryPage() {
   }
   return (
     <>
-      <div className="absolute top-0 h-screen w-screen overflow-auto bg-black bg-opacity-70">
+      <div className="overflow-auto mt-40 mb-20">
         <div className="font-XPfont flex justify-center">
-          <div className="flex h-full w-full justify-center lg:w-3/5">
-            <Button onClick={handleSendStatus}>HELPPP</Button>
+          <div className="flex h-full w-full justify-center">
+            <Button onClick={handleSendStatus}>Send Email Status</Button>
             <Suspense fallback={<h1>Loading... please wait</h1>}>
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
-                  className="overflow-x-hidden rounded-lg bg-slate-50 p-5 lg:px-16"
+                  className="w-3/5 bg-gray-700 overflow-x-hidden rounded-lg p-5 lg:px-16"
                 >
                   <EmailLists />
+                  <InputEmails />
                   <BatchSize />
                   <Subject />
                   <Content />

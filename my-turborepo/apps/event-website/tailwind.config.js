@@ -26,6 +26,9 @@ module.exports = {
       fontFamily: {
         "squid-game": ["myfont", "sans-serif"],
         "count-down": ["count", "sans-serif"],
+        "FAQ": ["FAQ"],
+        "location":["location"],
+        "inter": ["__Inter_d65c78", "__Inter_Fallback_d65c78", "sans-serif"],
       },
       colors: {
         current: "currentColor",
@@ -39,12 +42,20 @@ module.exports = {
         dalgonabase: "#EBAD5C",
         dalgonatext: "#B86B28",
         offblacktext: "#36393E",
+        datapink: "#D43B81",
+        datapinkdark: "#BD3473",
         "normal" : "#f9feff",
         "bg-color-dark": "#171C28",
         "body-color": {
           DEFAULT: "#212327",
           dark: "#9da7b9",
         },
+        customRed: "#DF4C4F",
+        customyellow: '#F9CE76',
+        customgreen: '#64E9A2',
+        customblue: '#3C96E3',
+        custompurple: '#CE86D1',
+
         stroke: {
           stroke: "#E3E8EF",
           dark: "#353943",
@@ -54,6 +65,15 @@ module.exports = {
           dark: "#1E232E",
           light: "#F0F2F9",
         },
+        
+
+
+          customRed: "#DF4C4F",
+          customyellow: '#F9CE76',
+          customgreen: '#64E9A2',
+          customblue: '#3C96E3',
+          custompurple: '#CE86D1',
+
       },
       boxShadow: {
         signUp: "0px 5px 10px rgba(4, 10, 34, 0.2)",

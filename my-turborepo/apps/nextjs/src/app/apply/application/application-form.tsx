@@ -571,9 +571,9 @@ export function ApplicationForm() {
             <GenericTextArea
               name="references"
               defaultValue={importedValues?.app?.references ?? ""}
-              label="Point us to anything you'd like us to look at while considering your application."
+              label="Point us to anything you'd like us to look at while considering your application. (Optional)"
               placeholder="Provide links or references here."
-              required={true}
+              required={false}
             />
           </div>
 
@@ -582,9 +582,9 @@ export function ApplicationForm() {
             <GenericTextArea
               name="interestOne"
               defaultValue={importedValues?.app?.interestOne ?? ""}
-              label="Tell us your best programming joke."
+              label="Tell us your best programming joke. (Optional)"
               placeholder="Is your code running? Well, you better go catch it."
-              required={true}
+              required={false}
             />
           </div>
 
@@ -593,9 +593,9 @@ export function ApplicationForm() {
             <GenericTextArea
               name="interestTwo"
               defaultValue={importedValues?.app?.interestTwo ?? ""}
-              label="What is the one thing you'd build if you had unlimited resources?"
+              label="What is the one thing you'd build if you had unlimited resources? (Optional)"
               placeholder="More resources."
-              required={true}
+              required={false}
             />
           </div>
 
@@ -604,9 +604,9 @@ export function ApplicationForm() {
             <GenericTextArea
               name="interestThree"
               defaultValue={importedValues?.app?.interestThree ?? ""}
-              label="Why do you want to participate in TAMU Datathon?"
+              label="Why do you want to participate in TAMU Datathon? (Optional)"
               placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
-              required={true}
+              required={false}
             />
           </div>
 

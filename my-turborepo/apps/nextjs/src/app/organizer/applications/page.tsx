@@ -4,7 +4,7 @@ import { VettingTable } from "~/app/_components/organizer/vetting-table";
 
 export default function Page() {
   return (
-    <div className="flex h-full max-h-screen w-screen justify-center overflow-hidden">
+    <div className="flex max-h-screen w-screen justify-center overflow-hidden">
       <Suspense fallback={<div>Loading...</div>}>
         <VettingTable />
       </Suspense>

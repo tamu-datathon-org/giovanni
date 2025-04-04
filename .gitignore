@@ -46,3 +46,7 @@ yarn-error.log*
 
 # Python scripts
 venv/
+
+.vscode/
+.idea/
+.github/
