@@ -1,18 +1,40 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { toDataURL } from "qrcode";
 
 import { Button } from "~/components/ui/button";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
 import StaticWindowContainer from "../_components/StaticWindowContainer";
-import { useSession } from "next-auth/react"
 import { EVENT_NAME } from "./application/application-form";
 
 export const appsOpen = true;
 
 export default function Page() {
-  const { data: session } = useSession()
+  const generateQR = async (text: string): Promise<string> => {
+    try {
+      return await toDataURL(text);
+    } catch (err) {
+      console.error(err);
+      return "";
+    }
+  };
+  const [qrCode, setQrCode] = useState<string>("");
+
+  useEffect(() => {
+    const fetchQRCode = async () => {
+      if (data?.status === "accepted" || data?.status === "checkedin") {
+        const qr = await generateQR(session?.user.email ?? "");
+        setQrCode(qr);
+      }
+    };
+    void fetchQRCode();
+  }, []);
+  const { data: session } = useSession();
   // TODO: Replace this with an API call to the correct router
   const { data, isLoading } = api.application.getApplicationStatus.useQuery(
     {
@@ -51,15 +73,16 @@ export default function Page() {
         break;
     }
   }
-
+  if (data?.status === "accepted" || data?.status === "checkedin") {
+  }
   return (
     <>
       {/* <IconList /> */}
       <div className="flex h-screen w-screen items-center justify-center bg-black bg-opacity-70">
         <StaticWindowContainer>
-          <div className="py-4 flex flex-col justify-center align-center h-[60vh] w-[75vw] p-6">
+          <div className="align-center flex h-[60vh] w-[75vw] flex-col justify-center p-6 py-4">
             <div className="flex-1">
-              <h1 className="text-3xl pb-8 text-black">DASHBOARD</h1>
+              <h1 className="pb-8 text-3xl text-black">DASHBOARD</h1>
               <div>
                 <div className="text-black">
                   Signed in as: {session?.user.email}
@@ -79,20 +102,26 @@ export default function Page() {
                       ? data.status.toUpperCase()
                       : "No Application Found"}
                 </div>
-
+                <div className="relative h-52 w-52">
+                  <Image
+                    src={qrCode || "/placeholder.png"}
+                    alt="example.com"
+                    layout="fill"
+                    className="object-cover"
+                  />
+                </div>
                 <div>
                   {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
                 </div>
                 <Link href="/api/auth/signout/" target="_blank">
-                  <Button className="xpBorder submitBtn my-4 w-fit text-xl font-extrabold mx-auto">
+                  <Button className="xpBorder submitBtn mx-auto my-4 w-fit text-xl font-extrabold">
                     Sign Out
                   </Button>
                 </Link>
-
               </div>
             </div>
             <Link href="https://tamudatathon.com/" target="_blank">
-              <Button className="xpBorder submitBtn my-4 w-fit text-xl font-extrabold mx-auto">
+              <Button className="xpBorder submitBtn mx-auto my-4 w-fit text-xl font-extrabold">
                 Back to event
               </Button>
             </Link>
