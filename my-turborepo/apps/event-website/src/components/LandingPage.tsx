@@ -27,11 +27,11 @@ const LandingPage = () => {
       const timeString = new Intl.DateTimeFormat(locale, options).format(now);
       setCurrentTime(timeString);
 
-      // Calculate time until April 5th
+      // Calculate time until April 5th at 8:00 AM
       const currentYear = now.getFullYear();
-      const eventDate = new Date(currentYear, 3, 5); // Month is 0-indexed, so 3 = April
+      const eventDate = new Date(currentYear, 3, 5, 8, 0, 0); // Month (0-indexed), Day, Hour, Minute, Second
 
-      // If April 5th has already passed this year, use next year's date
+      // If April 5th 8:00 AM has already passed this year, use next year's date
       if (now > eventDate) {
         eventDate.setFullYear(currentYear + 1);
       }
