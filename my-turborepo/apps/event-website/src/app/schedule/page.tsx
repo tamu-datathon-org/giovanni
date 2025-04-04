@@ -112,7 +112,7 @@ const events: ScheduleItemProps[] = [
     description: "Have Fun!",
     startTime: "3:30pm",
     endTime: "4:00pm",
-    type: "game",
+    type: "minigame",
     shape: "square",
   },
   {
