@@ -10,7 +10,7 @@ const events: ScheduleItemProps[] = [
   {
     id: 1,
     title: "Check-in Begins",
-    description: "Come check in.",
+    description: "Just inside the big doors of the ILCB",
     startTime: "08:00am",
     endTime: "09:00am",
     type: "directive",
@@ -19,7 +19,7 @@ const events: ScheduleItemProps[] = [
   {
     id: 2,
     title: "Opening Ceremony Begins",
-    description: "Let the games begin.",
+    description: "ILCB 229",
     startTime: "09:00am",
     endTime: "09:30am",
     type: "directive",
@@ -37,7 +37,7 @@ const events: ScheduleItemProps[] = [
   {
     id: 31,
     title: "Scavenger Hunt Begins",
-    description: "Find the items!",
+    description: "Find the items all over the ILCB!",
     startTime: "9:30am",
     endTime: "3:30pm",
     type: "game",
@@ -46,7 +46,7 @@ const events: ScheduleItemProps[] = [
   {
     id: 40,
     title: "Beginner ML Workshop",
-    description: "Knowledge",
+    description: "ILCB 112!",
     startTime: "9:50am",
     endTime: "11:10am",
     type: "workshop",
@@ -55,7 +55,7 @@ const events: ScheduleItemProps[] = [
   {
     id: 1,
     title: "Web Scraping Workshop",
-    description: "Knowledge",
+    description: "Also in ILCB 112!",
     startTime: "10:30am",
     endTime: "10:50am",
     type: "workshop",
@@ -64,7 +64,7 @@ const events: ScheduleItemProps[] = [
   {
     id: 1,
     title: "Prompting Workshop",
-    description: "Knowledge",
+    description: "Weirdly, also in ILCB 112!!",
     startTime: "11:20am",
     endTime: "11:40pm",
     type: "workshop",
@@ -73,7 +73,7 @@ const events: ScheduleItemProps[] = [
   {
     id: 60,
     title: "Lunch",
-    description: "Scrumdiddilyumptious",
+    description: "Scrumdiddilyumptious outside ILCB 229 (main hacking room).",
     startTime: "12:00pm",
     endTime: "01:00pm",
     type: "meal",
@@ -82,7 +82,7 @@ const events: ScheduleItemProps[] = [
   {
     id: 1,
     title: "3rd Party ML Workshop",
-    description: "Knowledge",
+    description: "Come back to 112!",
     startTime: "1:30pm",
     endTime: "1:50pm",
     type: "workshop",
@@ -91,7 +91,7 @@ const events: ScheduleItemProps[] = [
   {
     id: 1,
     title: "Command Line / Terminal Workshop",
-    description: "Knowledge",
+    description: "One more time at ILCB 112!",
     startTime: "2:10pm",
     endTime: "2:30pm",
     type: "workshop",
@@ -109,7 +109,7 @@ const events: ScheduleItemProps[] = [
   {
     id: 102,
     title: "Mini Event",
-    description: "Have Fun!",
+    description: "Giant showdown in the main hacking room!",
     startTime: "3:30pm",
     endTime: "4:00pm",
     type: "minigame",
@@ -118,7 +118,7 @@ const events: ScheduleItemProps[] = [
   {
     id: 100,
     title: "Closing Ceremony Begins",
-    description: "That's a wrap!",
+    description: "That's a wrap! LEAVE 229 >:)!",
     startTime: "4:00pm",
     endTime: "4:30am",
     type: "directive",

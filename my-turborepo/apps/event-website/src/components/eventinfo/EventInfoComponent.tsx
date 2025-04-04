@@ -23,7 +23,7 @@ export default function EventInfoComponent({ }) {
                             className="text-xl md:text-2xl font-bold hover:cursor-pointer underline"
                             target="_blank"
                             rel="noopener noreferrer">
-                            ILCB 207
+                            ILCB 229
                         </a>
                     </div>
                 </div>

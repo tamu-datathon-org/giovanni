@@ -221,10 +221,8 @@ export function ScheduleItem({
         </div>
 
         {/* Description */}
-        <p className="mt-1 line-clamp-2 text-xs text-slate-600 sm:mt-2 sm:text-sm">
-          {hasTimePassed(currentTime, startTime) && tillevent === "00:00:00:00"
-            ? description
-            : "???"}
+        <p className="mt-1 line-clamp-2 text-xs text-slate-400 sm:mt-2 sm:text-sm">
+          {description}
         </p>
       </div>
     </div>
