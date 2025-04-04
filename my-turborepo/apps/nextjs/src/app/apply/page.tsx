@@ -102,14 +102,16 @@ export default function Page() {
                       ? data.status.toUpperCase()
                       : "No Application Found"}
                 </div>
-                <div className="relative h-52 w-52">
-                  <Image
-                    src={qrCode || "/placeholder.png"}
-                    alt="example.com"
-                    layout="fill"
-                    className="object-cover"
-                  />
-                </div>
+                {qrCode && (
+                  <div className="relative h-52 w-52">
+                    <Image
+                      src={qrCode}
+                      alt="example.com"
+                      layout="fill"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
                 <div>
                   {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
                 </div>
