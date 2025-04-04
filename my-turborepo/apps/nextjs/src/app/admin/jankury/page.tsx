@@ -31,7 +31,10 @@ export default function JankuryPage() {
 
   function handleSendStatus() {
     sendStatus.mutate(
-      {},
+      {
+        statusBatchSize: 100,
+        emailBatchSize: 4,
+      },
       {
         onSuccess: () => {
           toast({
