@@ -17,7 +17,7 @@ export default function Page() {
 
   const generateQR = async (text: string): Promise<string> => {
     try {
-      const parseText = text.replace("Email : ", "");
+      const parseText = btoa(text);
       return await toDataURL(parseText);
     } catch (err) {
       console.error(err);
@@ -103,7 +103,7 @@ export default function Page() {
                       Scan this QR code at the check-in desk!
                     </div>
                   </div>
-                  <div className="mx-auto relative h-52 w-52">
+                  <div className="mx-auto relative w-40 h-40 md:h-52 md:w-52">
                     <Image
                       src={qrCode}
                       alt="example.com"
