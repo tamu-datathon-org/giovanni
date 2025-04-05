@@ -473,6 +473,43 @@ export const applicationRouter = {
 
       return application;
     }),
+  getCheckInStatus: protectedProcedure
+    .input(z.object({ eventName: z.string(), email: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { eventName, email } = input;
+
+      const event = await getEventData({ ctx, eventName });
+
+      const emailUser = await ctx.db.query.User.findFirst({
+        where: eq(User.email, email),
+      });
+
+      if (!emailUser) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Email not found",
+        });
+      }
+
+      const application = await ctx.db.query.Application.findFirst({
+        columns: {
+          id: true,
+          status: true,
+          email: true,
+          checkedIn: true,
+          dietaryRestriction: true,
+          extraInfo: true,
+          firstName: true,
+          lastName: true,
+        },
+        where: and(
+          eq(Application.eventId, event.id),
+          eq(Application.userId, emailUser.id),
+        ),
+      });
+
+      return application;
+    }),
   updateCheckInStatus: organizerProcedure
     .input(
       z.object({

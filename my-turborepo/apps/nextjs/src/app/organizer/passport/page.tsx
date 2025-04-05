@@ -66,6 +66,29 @@ export default function PassportPage() {
       icon: Fish,
     },
   ];
+  React.useEffect(() => {
+    if (scannerData) {
+      queryData.refetch();
+    }
+  }, [scannerData]);
+
+  const queryData = api.application.getCheckInStatus.useQuery(
+    {
+      eventName: "Datathon2025Spring",
+      email: scannerData,
+    },
+    {
+      enabled: !!scannerData, // Only enable the query if scannerData exists
+    },
+  );
+
+  React.useEffect(() => {
+    if (queryData.isSuccess && queryData.data) {
+      setParticipantData(queryData.data as unknown as participantDataSchema);
+    } else if (queryData.isError) {
+      setParticipantData(defaultParticipantData);
+    }
+  }, [queryData.isSuccess, queryData.isError, queryData.data]);
 
   const statusMutation = api.application.updateCheckInStatus.useMutation();
   const updateCheckIn = async (newStatus: boolean) => {
@@ -85,7 +108,7 @@ export default function PassportPage() {
       return;
     }
 
-    const queryData = await statusMutation.mutateAsync(
+    const mutateData = await statusMutation.mutateAsync(
       {
         eventName: "Datathon2025Spring",
         // eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
@@ -114,8 +137,8 @@ export default function PassportPage() {
       },
     );
 
-    if (queryData) {
-      setParticipantData(queryData as unknown as participantDataSchema);
+    if (mutateData) {
+      setParticipantData(mutateData as unknown as participantDataSchema);
     } else {
       setParticipantData(defaultParticipantData);
     }
