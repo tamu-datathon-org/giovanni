@@ -29,7 +29,7 @@ export default async function OrganizerLayout({
 
   return (
     <>
-      <div className="h-screen bg-slate-400 font-mono">
+      <div className="min-h-screen bg-slate-400 font-mono pt-24 pb-24">
         <OrganizerNavBar></OrganizerNavBar>
         {children}
       </div>

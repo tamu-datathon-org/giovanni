@@ -183,7 +183,7 @@ export function VettingTable() {
   });
 
   return (
-    <div className="w-full px-5 pt-16">
+    <div className="w-full px-5">
       <div className="flex items-center py-2">
         <Input
           placeholder="Filter firstName..."

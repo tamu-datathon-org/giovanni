@@ -9,8 +9,7 @@ import AboutTeam from "~/components/AboutTeam/AboutTeam";
 import ContactBackground from "~/components/Contact/ContactBackground";
 import { Suspense } from "react";
 import { env } from "~/env";
-import Footer from "~/components/Footer";
-import Header from "~/components/Header";
+
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -38,7 +37,6 @@ export default function HomePage() {
   // You can await this here if you don't want to show Suspense fallback below
   return (
     <>
-      <Header />
       <ScrollUp />
       <Hero />
       {/* <Features /> */}
@@ -56,7 +54,6 @@ export default function HomePage() {
         <ContactBackground />
       </Suspense>
       <Contact />
-      <Footer />
     </>
   );
   // return (

@@ -132,12 +132,12 @@ export default function PassportPage() {
   };
 
   return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 p-4">
+    <div className="relative flex w-full flex-col items-center justify-center gap-2 p-4">
       <h1 className="text-3xl font-bold">Check-in System</h1>
       <div className="flex flex-col items-center gap-2">
         Currently Scanning: {scannerData}
         <QRScanner onScan={setScannerData} />
-        <label htmlFor="">Manual Override Input:</label>
+        <label>Manual Override Input:</label>
         <Input
           className="border border-black bg-orange-100"
           ref={inputRef}

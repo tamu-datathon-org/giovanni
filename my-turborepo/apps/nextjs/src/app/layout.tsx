@@ -1,6 +1,8 @@
 "use client";
 import "~/app/globals.css";
 
+import Footer from "~/components/Footer";
+import Header from "~/components/Header";
 import ScrollToTop from "~/components/ScrollToTop";
 import { Providers } from "./providers";
 import { w95fa } from "~/app/_components/fonts";
@@ -25,8 +27,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         <TRPCReactProvider>
           <Providers>
             <main>
+              <Header />
               {props.children}
               <ScrollToTop />
+              <Footer />
             </main>
           </Providers>
         </TRPCReactProvider>
