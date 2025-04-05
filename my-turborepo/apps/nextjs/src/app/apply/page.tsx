@@ -12,7 +12,7 @@ import { api } from "~/trpc/react";
 import StaticWindowContainer from "../_components/StaticWindowContainer";
 import { EVENT_NAME } from "./application/application-form";
 
-export const appsOpen = true;
+export const appsOpen = false;
 
 export default function Page() {
   const generateQR = async (text: string): Promise<string> => {
