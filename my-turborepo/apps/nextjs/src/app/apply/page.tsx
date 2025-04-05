@@ -26,15 +26,6 @@ export default function Page() {
   };
   const [qrCode, setQrCode] = useState<string>("");
 
-  useEffect(() => {
-    const fetchQRCode = async () => {
-      if (data?.status === "accepted" || data?.status === "checkedin") {
-        const qr = await generateQR(session?.user.email ?? "");
-        setQrCode(qr);
-      }
-    };
-    void fetchQRCode();
-  }, []);
   // TODO: Replace this with an API call to the correct router
   const { data, isLoading } = api.application.getApplicationStatus.useQuery(
     {
@@ -45,6 +36,16 @@ export default function Page() {
       retry: 2,
     },
   );
+
+  useEffect(() => {
+    const fetchQRCode = async () => {
+      if (data?.status === "accepted" || data?.status === "checkedin") {
+        const qr = await generateQR(session?.user.email ?? "");
+        setQrCode(qr);
+      }
+    };
+    void fetchQRCode();
+  }, [data]);
 
   if (!isLoading && data === undefined) {
     // toast({
