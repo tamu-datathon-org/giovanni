@@ -87,6 +87,11 @@ export default function PassportPage() {
       setParticipantData(queryData.data as unknown as participantDataSchema);
     } else if (queryData.isError) {
       setParticipantData(defaultParticipantData);
+      toast({
+        variant: "destructive",
+        title: "Check-in Failed",
+        description: "Participant not found",
+      });
     }
   }, [queryData.isSuccess, queryData.isError, queryData.data]);
 
