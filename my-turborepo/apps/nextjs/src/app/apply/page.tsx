@@ -17,7 +17,8 @@ export default function Page() {
 
   const generateQR = async (text: string): Promise<string> => {
     try {
-      return await toDataURL(text);
+      const parseText = text.replace("Email : ", "");
+      return await toDataURL(parseText);
     } catch (err) {
       console.error(err);
       return "";
