@@ -15,6 +15,7 @@ import { EVENT_NAME } from "./application/application-form";
 export const appsOpen = true;
 
 export default function Page() {
+  const { data: session } = useSession();
   const generateQR = async (text: string): Promise<string> => {
     try {
       return await toDataURL(text);
@@ -34,7 +35,6 @@ export default function Page() {
     };
     void fetchQRCode();
   }, []);
-  const { data: session } = useSession();
   // TODO: Replace this with an API call to the correct router
   const { data, isLoading } = api.application.getApplicationStatus.useQuery(
     {
@@ -72,8 +72,6 @@ export default function Page() {
         gradient = "from-yellow-500 to-cyan-700";
         break;
     }
-  }
-  if (data?.status === "accepted" || data?.status === "checkedin") {
   }
   return (
     <>
