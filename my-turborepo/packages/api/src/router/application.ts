@@ -505,7 +505,7 @@ export const applicationRouter = {
         },
         where: and(
           eq(Application.eventId, event.id),
-          eq(Application.userId, email),
+          eq(Application.email, email),
         ),
       });
 
