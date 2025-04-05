@@ -111,14 +111,14 @@ export const Header = () => {
                   />
                 </>
               )}
-              
-              {/*
+
+
               {routes["/challenges"] && (
                 <>
                   <ToggleButton
                     className="s-flex-hide"
                     prefixIcon="grid"
-                    href="/challenges"
+                    href="http://45.56.124.144/"
                     label={challenges.label}
                     selected={pathname.startsWith("/challenges")}
                   />
@@ -130,7 +130,7 @@ export const Header = () => {
                   />
                 </>
               )}
-              */}
+
 
               {routes["/gallery"] && (
                 <>
