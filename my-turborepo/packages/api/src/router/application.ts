@@ -464,6 +464,7 @@ export const applicationRouter = {
         columns: {
           id: true,
           status: true,
+          email: true,
         },
         where: and(
           eq(Application.eventId, event.id),
@@ -480,16 +481,16 @@ export const applicationRouter = {
 
       const event = await getEventData({ ctx, eventName });
 
-      const emailUser = await ctx.db.query.User.findFirst({
-        where: eq(User.email, email),
-      });
+      // const emailUser = await ctx.db.query.User.findFirst({
+      //   where: eq(User.email, email),
+      // });
 
-      if (!emailUser) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Email not found",
-        });
-      }
+      // if (!emailUser) {
+      //   throw new TRPCError({
+      //     code: "NOT_FOUND",
+      //     message: "Email not found",
+      //   });
+      // }
 
       const application = await ctx.db.query.Application.findFirst({
         columns: {
@@ -504,7 +505,7 @@ export const applicationRouter = {
         },
         where: and(
           eq(Application.eventId, event.id),
-          eq(Application.userId, emailUser.id),
+          eq(Application.userId, email),
         ),
       });
 

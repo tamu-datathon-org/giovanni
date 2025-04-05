@@ -40,7 +40,7 @@ export default function Page() {
   useEffect(() => {
     const fetchQRCode = async () => {
       if (data?.status === "accepted" || data?.status === "checkedin") {
-        const qr = await generateQR(session?.user.email ?? "");
+        const qr = await generateQR(data?.email ?? "");
         setQrCode(qr);
       }
     };
