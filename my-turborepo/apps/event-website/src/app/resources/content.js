@@ -131,6 +131,14 @@ const challenges = {
   // All projects will be listed on the /home and /work routes
 };
 
+const helpqueue = {
+  label: "Help Queue",
+  title: "Help Queue",
+  // description: `Design and dev projects by ${person.name}`,
+  // Create new project pages by adding a new .mdx file to app/blog/posts
+  // All projects will be listed on the /home and /work routes
+};
+
 const gallery = {
   label: "Gallery",
   title: "My photo gallery",
@@ -221,4 +229,5 @@ export {
   gallery,
   schedule,
   challenges,
+  helpqueue
 };

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { display, routes } from "@/app/resources";
-import { challenges, gallery, person, schedule } from "@/app/resources/content";
+import { challenges, gallery, helpqueue, person, schedule } from "@/app/resources/content";
 import styles from "@/components/Header.module.scss";
 import { Fade, Flex, Line, ToggleButton } from "@/once-ui/components";
 
@@ -98,14 +98,14 @@ export const Header = () => {
                 <>
                   <ToggleButton
                     className="s-flex-hide"
-                    prefixIcon="grid"
+                    prefixIcon="calendar"
                     href="/schedule"
                     label={schedule.label}
                     selected={pathname.startsWith("/schedule")}
                   />
                   <ToggleButton
                     className="s-flex-show"
-                    prefixIcon="grid"
+                    prefixIcon="calendar"
                     href="/schedule"
                     selected={pathname.startsWith("/schedule")}
                   />
@@ -117,16 +117,34 @@ export const Header = () => {
                 <>
                   <ToggleButton
                     className="s-flex-hide"
-                    prefixIcon="grid"
+                    prefixIcon="person"
                     href="http://45.56.124.144/"
                     label={challenges.label}
                     selected={pathname.startsWith("/challenges")}
                   />
                   <ToggleButton
                     className="s-flex-show"
-                    prefixIcon="grid"
-                    href="/challenges"
+                    prefixIcon="person"
+                    href="http://45.56.124.144/"
                     selected={pathname.startsWith("/challenges")}
+                  />
+                </>
+              )}
+
+              {routes["/helpqueue"] && (
+                <>
+                  <ToggleButton
+                    className="s-flex-hide"
+                    prefixIcon="helpCircle"
+                    href="https://helpqueue.tamudatathon.com"
+                    label={helpqueue.label}
+                    selected={pathname.startsWith("/helpqueue")}
+                  />
+                  <ToggleButton
+                    className="s-flex-show"
+                    prefixIcon="helpCircle"
+                    href="https://helpqueue.tamudatathon.com"
+                    selected={pathname.startsWith("/helpqueue")}
                   />
                 </>
               )}

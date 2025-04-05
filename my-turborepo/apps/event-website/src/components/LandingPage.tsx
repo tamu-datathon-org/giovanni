@@ -29,7 +29,7 @@ const LandingPage = () => {
 
       // Calculate time until April 5th at 8:00 AM
       const currentYear = now.getFullYear();
-      const eventDate = new Date(currentYear, 3, 5, 8, 0, 0); // Month (0-indexed), Day, Hour, Minute, Second
+      const eventDate = new Date(currentYear, 3, 5, 15, 30, 0); // Month (0-indexed), Day, Hour, Minute, Second
 
       // If April 5th 8:00 AM has already passed this year, use next year's date
       if (now > eventDate) {
@@ -99,7 +99,7 @@ const LandingPage = () => {
       </div> */}
       <div className="relative mb-2">
         <div className="font-squid-game text-3xl md:text-4xl font-bold tracking-tight text-white drop-shadow-[0_0_8px_rgba(255,0,135,0.7)]">
-          TIME TILL EVENT
+          TIME TILL SUBMISSION
         </div>
         <div className="absolute -inset-x-4 top-1/2 h-[1px] bg-[#FF0087]/50"></div>
       </div>
