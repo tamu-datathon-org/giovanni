@@ -17,6 +17,7 @@ export default function QRScanner(props: {
     container: {
       width: "400px",
       height: "400px",
+      maxWidth: "100vw",
     },
     video: {
       maxWidth: "400px",

@@ -132,17 +132,19 @@ export default function PassportPage() {
   };
 
   return (
-    <div className="relative flex w-full flex-col items-center justify-center gap-2 p-4">
+    <div className="relative flex flex-col items-center justify-center gap-2 p-4 text-black dark:text-white">
       <h1 className="text-3xl font-bold">Check-in System</h1>
       <div className="flex flex-col items-center gap-2">
         Currently Scanning: {scannerData}
         <QRScanner onScan={setScannerData} />
-        <label>Manual Override Input:</label>
-        <Input
-          className="border border-black bg-orange-100"
-          ref={inputRef}
-          placeholder="enter email here"
-        ></Input>
+        <div className="w-full sm:w-1/2 text-center p-4">
+          <label>Manual Override Input:</label>
+          <Input
+            className="border border-black bg-orange-100"
+            ref={inputRef}
+            placeholder="enter email here"
+          ></Input>
+        </div>
         <Button
           className="bg-cyan-700 hover:bg-opacity-50"
           onClick={handleCheckIn}
@@ -151,7 +153,7 @@ export default function PassportPage() {
         </Button>
       </div>
 
-      <div className="flex flex-col items-center rounded-md bg-orange-100 p-4">
+      <div className="flex flex-col items-center rounded-md bg-orange-100 dark:bg-orange-400 p-4">
         <h2 className="mb-1 text-2xl font-bold">Participant's Data</h2>
         <p>
           Name: {participantData.firstName} {participantData.lastName}
