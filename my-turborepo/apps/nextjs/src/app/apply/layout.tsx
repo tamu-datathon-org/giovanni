@@ -1,3 +1,5 @@
+import Footer from "~/components/Footer";
+import Header from "~/components/Header";
 import { auth, signIn } from "@vanni/auth";
 import { SessionProvider } from "next-auth/react";
 
@@ -17,8 +19,10 @@ export default async function ApplyLayout({
   console.log(session);
   return (
     <SessionProvider session={session}>
-      <section>
+      <section className="bg-black bg-opacity-70 dark:bg-black">
+        <Header />
         {children}
+        <Footer />
       </section>
     </SessionProvider>
   );

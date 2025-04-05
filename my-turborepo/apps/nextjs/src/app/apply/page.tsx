@@ -7,15 +7,14 @@ import { useSession } from "next-auth/react";
 import { toDataURL } from "qrcode";
 
 import { Button } from "~/components/ui/button";
-import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
-import StaticWindowContainer from "../_components/StaticWindowContainer";
 import { EVENT_NAME } from "./application/application-form";
 
 export const appsOpen = false;
 
 export default function Page() {
   const { data: session } = useSession();
+
   const generateQR = async (text: string): Promise<string> => {
     try {
       return await toDataURL(text);
@@ -47,13 +46,6 @@ export default function Page() {
     void fetchQRCode();
   }, [data]);
 
-  if (!isLoading && data === undefined) {
-    // toast({
-    //   variant: "destructive",
-    //   title: "Failed to load status",
-    //   description: "Please refresh the page.",
-    // });
-  }
   let gradient = "from-blue-400 to-cyan-700";
   if (!isLoading) {
     switch (data?.status) {
@@ -77,32 +69,40 @@ export default function Page() {
   return (
     <>
       {/* <IconList /> */}
-      <div className="flex h-screen w-screen items-center justify-center bg-black bg-opacity-70">
-        <StaticWindowContainer>
-          <div className="align-center flex h-[60vh] w-[75vw] flex-col justify-center p-6 py-4">
-            <div className="flex-1">
-              <h1 className="pb-8 text-3xl text-black">DASHBOARD</h1>
-              <div>
-                <div className="text-black">
-                  Signed in as: {session?.user.email}
-                </div>
-                <div className="dashboardText text-xl text-black">
-                  {" "}
-                  YOUR APPLICATION STATUS:
-                </div>
-                <div
-                  className={`dashStatus bg-gradient-to-b bg-clip-text text-transparent 
+      <div className="flex w-screen items-center justify-center pt-24 pb-24">
+        <div className="text-center align-center flex w-[75vw] flex-col justify-center p-6 py-4 bg-slate-200 rounded-lg dark:bg-slate-400">
+          <div className="flex-1 text-black dark:text-white">
+            <h1 className="pb-8 text-3xl font-bold">DASHBOARD</h1>
+            <div>
+              <div className="">
+                Signed in as: {session?.user.email}
+              </div>
+              <div className="text-xl font-bold">
+                {" "}
+                YOUR APPLICATION STATUS:
+              </div>
+              <div
+                className={`dashStatus bg-gradient-to-b bg-clip-text text-transparent 
                     ${gradient} text-xl
                     `}
-                >
-                  {isLoading
-                    ? "Loading...".toUpperCase()
-                    : data?.status
-                      ? data.status.toUpperCase()
-                      : "No Application Found"}
-                </div>
-                {qrCode && (
-                  <div className="relative h-52 w-52">
+              >
+                {isLoading
+                  ? "Loading...".toUpperCase()
+                  : data?.status
+                    ? data.status.toUpperCase()
+                    : "No Application Found"}
+              </div>
+              {qrCode && (
+                <div className="border-4 border-gray-300 rounded-lg p-4 my-4 mx-auto w-fit">
+                  <div>
+                    <div className="dashboardText text-xl">
+                      QR Code for Check-in:
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-200">
+                      Scan this QR code at the check-in desk!
+                    </div>
+                  </div>
+                  <div className="mx-auto relative h-52 w-52">
                     <Image
                       src={qrCode}
                       alt="example.com"
@@ -110,24 +110,24 @@ export default function Page() {
                       className="object-cover"
                     />
                   </div>
-                )}
-                <div>
-                  {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
                 </div>
-                <Link href="/api/auth/signout/" target="_blank">
-                  <Button className="xpBorder submitBtn mx-auto my-4 w-fit text-xl font-extrabold">
-                    Sign Out
-                  </Button>
-                </Link>
+              )}
+              <div>
+                {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
               </div>
+              <Link href="/api/auth/signout/" target="_blank">
+                <Button className="mx-auto my-4 w-fit text-xl font-extrabold bg-cyan-700 hover:bg-cyan-700 hover:bg-opacity-70">
+                  Sign Out
+                </Button>
+              </Link>
             </div>
-            <Link href="https://tamudatathon.com/" target="_blank">
-              <Button className="xpBorder submitBtn mx-auto my-4 w-fit text-xl font-extrabold">
-                Back to event
-              </Button>
-            </Link>
           </div>
-        </StaticWindowContainer>
+          <Link href="https://tamudatathon.com/" target="_blank">
+            <Button className="mx-auto my-4 w-fit text-xl font-extrabold bg-cyan-700 hover:bg-cyan-700 hover:bg-opacity-70">
+              Back to event
+            </Button>
+          </Link>
+        </div>
       </div>
     </>
   );
