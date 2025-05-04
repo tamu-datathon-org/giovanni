@@ -1,21 +1,16 @@
 import React from "react";
-import { baseURL, routes } from "@/app/resources";
+import { baseURL } from "@/app/resources";
 import { about, home, person } from "@/app/resources/content";
-import TableOfContents from "@/components/about/TableOfContents";
+import TableOfContents from "@/components/toc/TableOfContents";
 import EventInfo from "@/components/eventinfo/EventInfoComponent";
 import FAQComponent from "@/components/FAQ/FAQComponent";
 import LandingPage from "@/components/LandingPage";
 import Prizes from "@/components/prizes/prizeComponent";
+import WorkshopSection from "@/components/WorkshopCard";
 import {
-  Arrow,
-  Avatar,
   Column,
-  Flex,
-  Heading,
   RevealFx,
-  Text,
 } from "@/once-ui/components";
-import WorkshopSection from "./workshops/WorkshopCard";
 
 export async function generateMetadata() {
   const title = home.title;
@@ -188,23 +183,6 @@ export default function Home() {
       <WorkshopSection/>
       <Prizes prizesData={prizesData} />
       <FAQComponent faqData={faqData} />
-      {/* <RevealFx translateY="16" delay={0.6}>
-        <Projects range={[1, 1]} />
-      </RevealFx>
-      {routes["/blog"] && (
-        <Flex fillWidth gap="24" mobileDirection="column">
-          <Flex flex={1} paddingLeft="l">
-            <Heading as="h2" variant="display-strong-xs" wrap="balance">
-              Latest from the blog
-            </Heading>
-          </Flex>
-          <Flex flex={3} paddingX="20">
-            <Posts range={[1, 2]} columns="2" />
-          </Flex>
-        </Flex>
-      )}
-      <Projects range={[2]} />
-      {newsletter.display && <Mailchimp newsletter={newsletter} />} */}
     </Column>
   );
 }

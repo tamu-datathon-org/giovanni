@@ -116,16 +116,16 @@ export const Header = () => {
               {routes["/challenges"] && (
                 <>
                   <ToggleButton
-                    className="s-flex-hide"
+                    disabled={true}
+                    className="s-flex-hide opacity-50"
                     prefixIcon="person"
-                    href="http://45.56.124.144/"
                     label={challenges.label}
                     selected={pathname.startsWith("/challenges")}
                   />
                   <ToggleButton
-                    className="s-flex-show"
+                    disabled={true}
+                    className="s-flex-show opacity-50"
                     prefixIcon="person"
-                    href="http://45.56.124.144/"
                     selected={pathname.startsWith("/challenges")}
                   />
                 </>
@@ -134,36 +134,19 @@ export const Header = () => {
               {routes["/helpqueue"] && (
                 <>
                   <ToggleButton
-                    className="s-flex-hide"
+                    disabled={true}
+                    className="s-flex-hide opacity-50"
                     prefixIcon="helpCircle"
-                    href="https://helpqueue.tamudatathon.com"
+                    // href="https://helpqueue.tamudatathon.com"
                     label={helpqueue.label}
                     selected={pathname.startsWith("/helpqueue")}
                   />
                   <ToggleButton
-                    className="s-flex-show"
+                    disabled={true}
+                    className="s-flex-show opacity-50"
                     prefixIcon="helpCircle"
-                    href="https://helpqueue.tamudatathon.com"
+                    // href="https://helpqueue.tamudatathon.com"
                     selected={pathname.startsWith("/helpqueue")}
-                  />
-                </>
-              )}
-
-
-              {routes["/gallery"] && (
-                <>
-                  <ToggleButton
-                    className="s-flex-hide"
-                    prefixIcon="gallery"
-                    href="/gallery"
-                    label={gallery.label}
-                    selected={pathname.startsWith("/gallery")}
-                  />
-                  <ToggleButton
-                    className="s-flex-show"
-                    prefixIcon="gallery"
-                    href="/gallery"
-                    selected={pathname.startsWith("/gallery")}
                   />
                 </>
               )}

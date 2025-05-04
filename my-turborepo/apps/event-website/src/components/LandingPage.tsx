@@ -9,55 +9,55 @@ const LandingPage = () => {
   const timeZone = person.location;
   const locale = "en-US";
   const [currentTime, setCurrentTime] = useState("");
-  const [timeUntilEvent, setTimeUntilEvent] = useState("");
+  const [timeUntilEvent, setTimeUntilEvent] = useState("00:00:00:00");
 
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
+  // useEffect(() => {
+  //   const updateTime = () => {
+  //     const now = new Date();
 
-      // Format current time
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      };
+  //     // Format current time
+  //     const options: Intl.DateTimeFormatOptions = {
+  //       timeZone,
+  //       hour: "2-digit",
+  //       minute: "2-digit",
+  //       second: "2-digit",
+  //       hour12: false,
+  //     };
 
-      const timeString = new Intl.DateTimeFormat(locale, options).format(now);
-      setCurrentTime(timeString);
+  //     const timeString = new Intl.DateTimeFormat(locale, options).format(now);
+  //     setCurrentTime(timeString);
 
-      // Calculate time until April 5th at 8:00 AM
-      const currentYear = now.getFullYear();
-      const eventDate = new Date(currentYear, 3, 5, 15, 30, 0); // Month (0-indexed), Day, Hour, Minute, Second
+  //     // Calculate time until April 5th at 8:00 AM
+  //     const currentYear = now.getFullYear();
+  //     const eventDate = new Date(currentYear, 3, 5, 15, 30, 0); // Month (0-indexed), Day, Hour, Minute, Second
 
-      // If April 5th 8:00 AM has already passed this year, use next year's date
-      if (now > eventDate) {
-        eventDate.setFullYear(currentYear + 1);
-      }
+  //     // If April 5th 8:00 AM has already passed this year, use next year's date
+  //     if (now > eventDate) {
+  //       eventDate.setFullYear(currentYear + 1);
+  //     }
 
-      const timeDiff = eventDate.getTime() - now.getTime();
+  //     const timeDiff = eventDate.getTime() - now.getTime();
 
-      // Convert time difference to days, hours, minutes, seconds
-      const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-      );
-      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+  //     // Convert time difference to days, hours, minutes, seconds
+  //     const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  //     const hours = Math.floor(
+  //       (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+  //     );
+  //     const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+  //     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-      // Add leading zeros to single digits
-      const padZero = (num: number) => (num < 10 ? `0${num}` : num);
-      setTimeUntilEvent(
-        `${padZero(days)}:${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`,
-      );
-    };
+  //     // Add leading zeros to single digits
+  //     const padZero = (num: number) => (num < 10 ? `0${num}` : num);
+  //     setTimeUntilEvent(
+  //       `${padZero(days)}:${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`,
+  //     );
+  //   };
 
-    updateTime(); // Initial run to set current time immediately
-    const intervalId = setInterval(updateTime, 1000);
+  //   updateTime(); // Initial run to set current time immediately
+  //   const intervalId = setInterval(updateTime, 1000);
 
-    return () => clearInterval(intervalId);
-  }, [timeZone, locale]); // Depend on interval for updates
+  //   return () => clearInterval(intervalId);
+  // }, [timeZone, locale]); // Depend on interval for updates
 
   return (
     <div id="Home" className="align-center relative flex w-full flex-col justify-center -p-3">
@@ -126,7 +126,7 @@ const LandingPage = () => {
       </div>
       <div className="font-[myfont] flex flex-col gap-5 md:flex-row md:gap-56 pt-10">
         <Link href="https://giovanni.coolify.tamudatathon.com/apply" target="_blank" rel="noopener noreferrer">
-          <button className="aspect-[3/1] w-56 rounded-3xl border-2 border-white bg-[#FF0087] text-xl font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-[#FF0087] hover:shadow-[0_0_15px_rgba(255,0,135,0.7)]">
+          <button disabled className="aspect-[3/1] w-56 rounded-3xl border-2 border-white bg-[#FF0087] text-xl font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-[#FF0087] hover:shadow-[0_0_15px_rgba(255,0,135,0.7)] opacity-50 cursor-not-allowed">
             Apply
           </button>
         </Link>
