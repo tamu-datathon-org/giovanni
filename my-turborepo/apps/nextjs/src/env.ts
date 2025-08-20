@@ -3,10 +3,10 @@ import { createEnv } from "@t3-oss/env-nextjs";
 import { vercel } from "@t3-oss/env-nextjs/presets";
 import { z } from "zod";
 
-import { env as authEnv } from "@vanni/auth/env";
+import { authEnv } from "@vanni/auth/env";
 
 export const env = createEnv({
-  extends: [authEnv, vercel()],
+  extends: [authEnv(), vercel()],
   shared: {
     NODE_ENV: z
       .enum(["development", "production", "test"])
@@ -18,6 +18,10 @@ export const env = createEnv({
    */
   server: {
     POSTGRES_URL: z.string().url(),
+    AUTH_SECRET: z.string(),
+    AUTH_DISCORD_ID: z.string(),
+    AUTH_DISCORD_SECRET: z.string(),
+
     JWT_SECRET: z.string(),
     JWT_EXPIRES_IN: z.string(),
 

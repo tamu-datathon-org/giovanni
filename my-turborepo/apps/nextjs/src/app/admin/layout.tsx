@@ -1,4 +1,4 @@
-import { auth, signIn } from "@vanni/auth";
+import { auth, getSession } from "~/auth/server";
 import { redirect } from "next/navigation";
 import { api } from "~/trpc/server";
 
@@ -7,11 +7,18 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  const session = await getSession();
 
   if (!session) {
     ("use server");
-    await signIn(undefined, { redirectTo: "/admin/jankury" });
+    const signIn = auth.api.getSignInUrl({
+      redirectTo: "/admin/jankury",
+      provider: "google",
+    });
+    if (!signIn) {
+      throw new Error("No sign-in URL found");
+    }
+    redirect("/");
   }
 
   if (session) {

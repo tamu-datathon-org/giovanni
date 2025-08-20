@@ -10,7 +10,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import type { Session } from "@vanni/auth";
+import { Auth } from "@vanni/auth";
 import { and, eq } from "@vanni/db";
 import { db } from "@vanni/db/client";
 import { Event, Role, UserRole } from "@vanni/db/schema";
@@ -29,16 +29,20 @@ import { validateOrganizerAuth } from "./router/auth";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = (opts: {
+export const createTRPCContext = async (opts: {
   headers: Headers;
-  session: Session | null;
+  auth: Auth;
 }) => {
-  const session = opts.session;
-  const source = opts.headers.get("x-trpc-source") ?? "unknown";
+  const authApi = opts.auth.api;
+  const session = await authApi.getSession({
+    headers: opts.headers,
+  });
 
+  const source = opts.headers.get("x-trpc-source") ?? "unknown";
   console.log(">>> tRPC Request from", source, "by", session?.user);
 
   return {
+    authApi,
     session,
     db,
   };
