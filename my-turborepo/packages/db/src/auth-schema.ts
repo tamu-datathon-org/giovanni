@@ -16,7 +16,9 @@ export const User = pgTable("user", {
 	name: varchar("name", { length: 255 }),
 	email: varchar("email", { length: 255 }).notNull(),
 	emailVerified: boolean("emailVerified").notNull().default(false),
-	image: varchar("image", { length: 255 })
+	image: varchar("image", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Account Table
@@ -49,6 +51,16 @@ export const Session = pgTable("session", {
 	createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
 	updatedAt: timestamp("updatedAt", { withTimezone: true }).notNull().defaultNow(),
 });
+
+export const verification = pgTable("verification", {
+  id: text("id").primaryKey(),
+  identifier: text("identifier").notNull(),
+  value: text("value").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 
 // Relations
 export const AccountRelations = relations(Account, ({ one }) => ({
