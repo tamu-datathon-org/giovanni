@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { eq } from "@vanni/db";
-import { Account, User } from "@vanni/db/schema";
+import { Account, User } from "@vanni/db/auth-schema";
 
 import { protectedProcedure } from "../trpc";
 

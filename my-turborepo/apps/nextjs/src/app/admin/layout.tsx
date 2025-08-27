@@ -1,4 +1,4 @@
-import { auth, getSession } from "~/auth/server";
+import { authClient } from "@vanni/auth/client";
 import { redirect } from "next/navigation";
 import { api } from "~/trpc/server";
 
@@ -7,29 +7,32 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getSession();
+  const { data } = await authClient.getSession();
 
-  if (!session) {
+  if (!data) {
     ("use server");
-    const signIn = auth.api.getSignInUrl({
-      redirectTo: "/admin/jankury",
+    const signIn = authClient.signIn.social({
       provider: "google",
     });
-    if (!signIn) {
-      throw new Error("No sign-in URL found");
-    }
-    redirect("/");
+
+    console.log("signIn", signIn);
+    // if (!signIn) {
+    //   throw new Error("No sign-in URL found");
+    // }
+    // redirect("/");
   }
 
-  if (session) {
-    try {
-      await api.auth.validateOrganizerAuth();
-    } catch (e) {
-      redirect("/");
-    }
+  if (data) {
+    console.log(data)
+
+    // try {
+    // await api.auth.validateOrganizerAuth();
+    // } catch (e) {
+    //   redirect("/");
+    // }
   }
 
   console.log("hello");
-  console.log(session);
+  console.log(data);
   return <section>{children}</section>;
 }

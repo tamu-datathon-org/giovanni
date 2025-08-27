@@ -1,7 +1,5 @@
 import { redirect } from "next/navigation";
-import { AuthError } from "next-auth";
-
-import { signIn } from "@vanni/auth";
+import { authClient } from "@vanni/auth/client";
 import { Button } from "@vanni/ui/button";
 
 export function LoginButton({
@@ -19,23 +17,9 @@ export function LoginButton({
       size="lg"
       formAction={async (formData) => {
         "use server";
-        try {
-          await signIn(
-            "auth0",
-            {
-              redirectTo: searchParams?.callbackUrl ?? "",
-            },
-            {
-              connection: connectionId,
-            },
-          );
-        } catch (error) {
-          if (error instanceof AuthError) {
-            const SIGNIN_ERROR_URL = "/api/auth/error";
-            return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
-          }
-          throw error;
-        }
+        await authClient.signIn.social({
+          provider: "google"
+        });
       }}
     >
       {buttonText}

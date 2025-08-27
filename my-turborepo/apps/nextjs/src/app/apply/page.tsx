@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import { toDataURL } from "qrcode";
 
 import { Button } from "~/components/ui/button";
@@ -13,7 +13,7 @@ import { EVENT_NAME } from "./application/application-form";
 export const appsOpen = false;
 
 export default function Page() {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   const generateQR = async (text: string): Promise<string> => {
     try {
@@ -76,7 +76,7 @@ export default function Page() {
             <h1 className="pb-8 text-3xl font-bold">DASHBOARD</h1>
             <div>
               <div className="">
-                Signed in as: {session?.user.email}
+                {/* Signed in as: {session?.user.email} */}
               </div>
               <div className="text-xl font-bold">
                 {" "}

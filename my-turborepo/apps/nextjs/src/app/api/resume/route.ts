@@ -2,7 +2,7 @@ import type { HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 import { handleUpload } from "@vercel/blob/client";
 
-import { auth } from "@vanni/auth";
+import { getSession } from "@vanni/auth";
 import { db } from "@vanni/db/client";
 import { CreateUserResumeSchema, UserResume } from "@vanni/db/schema";
 
@@ -20,7 +20,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         // Generate a client token for the browser to upload the file
         // ⚠️ Authenticate and authorize users before generating the token.
         // Otherwise, you're allowing anonymous uploads.
-        const session = await auth();
+        const session = await getSession();
         if (!session) {
           throw new Error("User not signed in");
         }

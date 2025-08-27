@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { User } from "./auth-schema";
+import { Account, User } from "./auth-schema";
 import {
   boolean,
   serial,
@@ -190,8 +190,8 @@ export const UserResume = pgTable("user_resume", {
   resumeName: varchar("resume_name", { length: 255 }).notNull(),
 });
 
-export const UserRelations = relations(User, ({ one }) => ({
-  // accounts: many(Account), // moved to auth-schema.ts
+export const UserRelations = relations(User, ({ one, many }) => ({
+  accounts: many(Account),
   userResume: one(UserResume, {
     fields: [User.id],
     references: [UserResume.userId],

@@ -1,36 +1,51 @@
 import { redirect } from "next/navigation";
 
-import { auth, signIn } from "@vanni/auth";
+// import { auth, signIn } from "@vanni/auth";
 
 import { api } from "~/trpc/server";
-import OrganizerNavBar from "../_components/organizer/navigation-bar";
+// import OrganizerNavBar from "../_components/organizer/navigation-bar";
+import { authClient } from "@vanni/auth/client";
 
 export default async function OrganizerLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  console.log("how are you");
+  const { data } = await authClient.getSession();
 
-  if (!session) {
+  if (!data) {
     ("use server");
-    await signIn(undefined, { redirectTo: "/organizer" });
-  }
+    console.log("no data");
+    const signIn = await authClient.signIn.social({
+      provider: "google",
+    });
 
-  if (session) {
-    try {
-      await api.auth.validateOrganizerAuth();
-    } catch (e) {
-      redirect("/");
+      console.log("no data");
+
+    if (!signIn) {
+      throw new Error("No sign-in URL found");
     }
+    // redirect("/");
   }
 
-  // console.log(session);
+  if (data) {
+    console.log("Data: " + JSON.stringify(data));
+
+    // try {
+    // await api.auth.validateOrganizerAuth();
+    // } catch (e) {
+    //   redirect("/");
+    // }
+  }
+
+  console.log("hello");
+  // console.log(data);
 
   return (
     <>
       <div className="min-h-screen bg-slate-400 font-mono pt-24 pb-24">
-        <OrganizerNavBar></OrganizerNavBar>
+        {/* <OrganizerNavBar></OrganizerNavBar> */}
         {children}
       </div>
     </>

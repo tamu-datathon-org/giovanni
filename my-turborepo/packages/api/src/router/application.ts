@@ -11,10 +11,11 @@ import {
   CreateApplicationSchema,
   Event,
   Role,
-  User,
   UserResume,
   UserRole,
 } from "@vanni/db/schema";
+
+import { User } from "@vanni/db/auth-schema";
 
 import { organizerProcedure, protectedProcedure } from "../trpc";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";

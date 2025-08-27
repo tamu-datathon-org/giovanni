@@ -1,25 +1,25 @@
-import { auth, signIn } from "@vanni/auth";
-import { SessionProvider } from "next-auth/react";
+// import { auth, signIn } from "@vanni/auth";
+// import { SessionProvider } from "next-auth/react";
 
 export default async function ApplyLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  // const session = await auth();
 
-  if (!session) {
-    ("use server");
-    await signIn(undefined, { redirectTo: "/apply" });
-  }
+  // if (!session) {
+  //   ("use server");
+  //   await signIn(undefined, { redirectTo: "/apply" });
+  // }
 
-  console.log("hello");
-  console.log(session);
+  // console.log("hello");
+  // console.log(session);
   return (
-    <SessionProvider session={session}>
+    // <SessionProvider session={session}>
       <section className="bg-black bg-opacity-70 dark:bg-black">
         {children}
       </section>
-    </SessionProvider>
+    // </SessionProvider>
   );
 }
