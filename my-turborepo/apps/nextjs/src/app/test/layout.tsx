@@ -1,28 +1,27 @@
-"use client";
-
+'use client';
 import { authClient } from '@vanni/auth/client';
-import React from 'react'
+import { useAuthRedirect } from '~/app/_components/auth/useAuthRedirect';
 
-async function layout() {
-  async function signInHandler() {
+function Layout() {
+  const { session, setSession } = useAuthRedirect();
+  async function signOutHandler() {
     try {
-      const result = await authClient.signIn.social({
-        provider: 'google',
-      });
-      console.log('Sign-in successful:', result);
+      await authClient.signOut();
+      setSession(null);
+      console.log('Sign-out successful');
     } catch (error) {
-      console.error('Sign-in failed:', error);
+      console.error('Sign-out failed:', error);
     }
   }
 
   return (
     <div className='m-48'>
-      <p>layout BIG LAYOUTS</p>
-      <button onClick={signInHandler} className='btn-primary'>
-        Sign In
+      <p>hello {session?.user?.name ?? 'Guest'}</p>
+      <button onClick={signOutHandler} className='btn-secondary'>
+        Sign Out
       </button>
     </div>
   );
 }
 
-export default layout
+export default Layout

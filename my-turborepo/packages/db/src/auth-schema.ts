@@ -4,7 +4,6 @@ import {
 	uuid,
 	varchar,
 	timestamp,
-	integer,
 	boolean,
 	text,
 	primaryKey
@@ -17,48 +16,49 @@ export const User = pgTable("user", {
 	email: varchar("email", { length: 255 }).notNull(),
 	emailVerified: boolean("emailVerified").notNull().default(false),
 	image: varchar("image", { length: 255 }),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+	createdAt: timestamp("created_at").defaultNow(),
+	updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Account Table
 export const Account = pgTable(
 	"account",
 	{
-		userId: uuid("userId").notNull().references(() => User.id, { onDelete: "cascade" }),
-		providerId: varchar("providerId", { length: 255 }).notNull(),
+		id: uuid("id").notNull().primaryKey().defaultRandom(),
 		accountId: varchar("accountId", { length: 255 }).notNull(),
-		refreshToken: varchar("refreshToken", { length: 255 }),
+		providerId: varchar("providerId", { length: 255 }).notNull(),
+		userId: uuid("userId").notNull().references(() => User.id, { onDelete: "cascade" }),
 		accessToken: text("accessToken"),
-		accessTokenExpiresAt: timestamp("accessTokenExpiresAt", { withTimezone: true }),
-		scope: varchar("scope", { length: 255 }),
+		refreshToken: varchar("refreshToken", { length: 255 }),
 		idToken: text("idToken"),
+		accessTokenExpiresAt: timestamp("accessTokenExpiresAt", { withTimezone: true }),
+		refreshTokenExpiresAt: timestamp("refreshTokenExpiresAt", { withTimezone: true }),
+		scope: varchar("scope", { length: 255 }),
+		password: text("password"),
 		createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
 		updatedAt: timestamp("updatedAt", { withTimezone: true }).notNull().defaultNow(),
-	},
-	(account) => ({
-		compoundKey: primaryKey({
-			columns: [account.providerId, account.accountId],
-		}),
-	})
+	}
 );
 
 // Session Table
 export const Session = pgTable("session", {
-	token: varchar("token", { length: 255 }).notNull().primaryKey(),
-	userId: uuid("userId").notNull().references(() => User.id, { onDelete: "cascade" }),
+	id: uuid("id").notNull().primaryKey().defaultRandom(),
 	expiresAt: timestamp("expiresAt", { withTimezone: true }).notNull(),
+	token: varchar("token", { length: 255 }).notNull(),
 	createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
 	updatedAt: timestamp("updatedAt", { withTimezone: true }).notNull().defaultNow(),
+	ipAddress: text("ip_address"),
+	userAgent: text("user_agent"),
+	userId: uuid("userId").notNull().references(() => User.id, { onDelete: "cascade" }),
 });
 
 export const verification = pgTable("verification", {
-  id: text("id").primaryKey(),
-  identifier: text("identifier").notNull(),
-  value: text("value").notNull(),
-  expiresAt: timestamp("expires_at").notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+	id: uuid("id").notNull().primaryKey().defaultRandom(),
+	identifier: text("identifier").notNull(),
+	value: text("value").notNull(),
+	expiresAt: timestamp("expires_at").notNull(),
+	createdAt: timestamp("created_at").defaultNow(),
+	updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 

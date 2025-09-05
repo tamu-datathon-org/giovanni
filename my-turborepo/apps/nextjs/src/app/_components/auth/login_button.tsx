@@ -1,28 +1,32 @@
-import { redirect } from "next/navigation";
+"use client";
 import { authClient } from "@vanni/auth/client";
 import { Button } from "@vanni/ui/button";
 
-export function LoginButton({
-  connectionId,
-  searchParams,
-  buttonText,
-}: {
+interface LoginButtonProps {
+  title: string;
   connectionId: string;
-  searchParams?: { callbackUrl: string | undefined };
-  buttonText: string;
-}) {
-  return (
-    <Button
-      className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black"
-      size="lg"
-      formAction={async (formData) => {
-        "use server";
-        await authClient.signIn.social({
-          provider: "google"
-        });
-      }}
-    >
-      {buttonText}
-    </Button>
-  );
+  callbackUrl?: string;
 }
+
+const LoginButton = ({ connectionId, callbackUrl, title }: LoginButtonProps) => {
+  async function signInHandler() {
+    try {
+      const result = await authClient.signIn.oauth2({
+        providerId: `auth0-${connectionId}`,
+        callbackURL: callbackUrl ?? "/",
+        disableRedirect: false,
+      });
+      console.log('Sign-in successful:', result);
+    } catch (error) {
+      console.error('Sign-in failed:', error);
+    }
+  }
+
+  return (
+    <Button size="lg" type="button" onClick={signInHandler}>
+      {`Sign in with ${title}`}
+    </Button>
+  )
+}
+
+export default LoginButton;

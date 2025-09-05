@@ -1,5 +1,3 @@
-import { signOut } from "@vanni/auth";
-
 export default function OrganizerPage() {
   return (
     <div>

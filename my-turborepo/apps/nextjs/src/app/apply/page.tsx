@@ -3,17 +3,40 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-// import { useSession } from "next-auth/react";
 import { toDataURL } from "qrcode";
 
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import { EVENT_NAME } from "./application/application-form";
+import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
+import { authClient } from '@vanni/auth/client';
+import { useRouter } from "next/navigation";
+import { toast } from "~/hooks/use-toast";
 
 export const appsOpen = false;
 
 export default function Page() {
-  // const { data: session } = useSession();
+  const { session, setSession } = useAuthRedirect();
+  const router = useRouter();
+
+  async function signOutHandler() {
+    try {
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            setSession(null);
+            router.push('/login?callbackUrl=/apply');
+          }
+        }
+      });
+    } catch (error) {
+      toast({
+        title: "Sign-Out Error",
+        description: "There was an error signing out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }
 
   const generateQR = async (text: string): Promise<string> => {
     try {
@@ -76,7 +99,7 @@ export default function Page() {
             <h1 className="pb-8 text-3xl font-bold">DASHBOARD</h1>
             <div>
               <div className="">
-                {/* Signed in as: {session?.user.email} */}
+                Signed in as: {session?.user.email}
               </div>
               <div className="text-xl font-bold">
                 {" "}
@@ -116,11 +139,9 @@ export default function Page() {
               <div>
                 {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
               </div>
-              <Link href="/api/auth/signout/" target="_blank">
-                <Button className="mx-auto my-4 w-fit text-xl font-extrabold bg-cyan-700 hover:bg-cyan-700 hover:bg-opacity-70">
-                  Sign Out
-                </Button>
-              </Link>
+              <Button onClick={signOutHandler} className="mx-auto my-4 w-fit text-xl font-extrabold bg-cyan-700 hover:bg-cyan-700 hover:bg-opacity-70">
+                Sign Out
+              </Button>
             </div>
           </div>
           <Link href="https://tamudatathon.com/" target="_blank">

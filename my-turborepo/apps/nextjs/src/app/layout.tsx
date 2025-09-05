@@ -26,7 +26,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       >
         <TRPCReactProvider>
           <Providers>
-            <main>
+            <main className="min-h-screen">
               <Header />
               {props.children}
               <ScrollToTop />

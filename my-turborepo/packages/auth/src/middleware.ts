@@ -4,22 +4,29 @@ import { NextResponse } from 'next/server';
 
 export const client = createAuthClient();
 
+// Configurable list of protected routes (can be regex or string match)
+const protectedRoutes: (string | RegExp)[] = [
+    '/test',
+    /^\/admin/,
+];
+
+function isProtectedRoute(pathname: string) {
+    return protectedRoutes.some(route =>
+        typeof route === 'string' ? pathname.startsWith(route) : route.test(pathname)
+    );
+}
+
 export async function authMiddleware(request: NextRequest) {
-    /**
-     * This is an example of how you can use the client to get the session
-     * from the request headers.
-     * 
-     * You can then use this session to make decisions about the request
-     */
     const { data: session } = await client.getSession({
         fetchOptions: {
             headers: {
                 cookie: request.headers.get('cookie') ?? ""
             }
         }
-    })
-    if (!session) {
-        NextResponse.redirect(new URL("/sign-in", request.url));
+    });
+    const { pathname } = new URL(request.url);
+    if (!session && isProtectedRoute(pathname)) {
+        return NextResponse.redirect(new URL(`login?callbackUrl=${encodeURIComponent(request.url)}`, request.url));
     }
     return NextResponse.next();
 }
