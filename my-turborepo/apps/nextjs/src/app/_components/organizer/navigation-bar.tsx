@@ -1,22 +1,16 @@
+import { Button } from "@vanni/ui/button";
 import Link from "next/link";
-
-import { auth } from "@vanni/auth";
+import { signOutAction } from "../auth/signOutAction";
 
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-  NavigationMenuViewport,
 } from "~/components/ui/navigation-menu";
 
 const OrganizerNavBar = () => {
-  const authUser = auth();
-
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -42,11 +36,11 @@ const OrganizerNavBar = () => {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/api/auth/signout" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+          <form action={signOutAction.bind(null, "/organizer")}> 
+            <Button variant="ghost" type="submit">
               Signout
-            </NavigationMenuLink>
-          </Link>
+            </Button>
+          </form>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
