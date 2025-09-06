@@ -6,9 +6,11 @@ interface LoginButtonProps {
   title: string;
   connectionId: string;
   callbackUrl?: string;
+  className?: string;
+  logo?: React.ReactNode;
 }
 
-const LoginButton = ({ connectionId, callbackUrl, title }: LoginButtonProps) => {
+const LoginButton = ({ connectionId, callbackUrl, title, className, logo }: LoginButtonProps) => {
   async function signInHandler() {
     try {
       const result = await authClient.signIn.oauth2({
@@ -23,8 +25,9 @@ const LoginButton = ({ connectionId, callbackUrl, title }: LoginButtonProps) => 
   }
 
   return (
-    <Button size="lg" type="button" onClick={signInHandler}>
-      {`Sign in with ${title}`}
+    <Button size="lg" type="button" onClick={signInHandler} className={className}>
+      {logo && <span className="mr-2">{logo}</span>}
+      {`Continue with ${title}`}
     </Button>
   )
 }
