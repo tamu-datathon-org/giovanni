@@ -47,6 +47,7 @@ import {
   Pagination,
   SelectStatusCell,
 } from "./table-interactives";
+import { env } from "~/env";
 
 export const columns: ColumnDef<TableData>[] = [
   {
@@ -142,8 +143,7 @@ export function VettingTable() {
 
   const { data, isLoading } =
     api.application.getAllApplicationsByEventName.useQuery(
-      "Datathon2025Spring",
-      // process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
+        env.NEXT_PUBLIC_EVENT_NAME,
       {
         retry: false,
         refetchOnWindowFocus: false,

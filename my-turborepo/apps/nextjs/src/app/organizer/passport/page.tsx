@@ -9,6 +9,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
+import { env } from "~/env";
 
 interface participantDataSchema {
   userId: string;
@@ -115,8 +116,7 @@ export default function PassportPage() {
 
     const mutateData = await statusMutation.mutateAsync(
       {
-        eventName: "Datathon2025Spring",
-        // eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
+        eventName: env.NEXT_PUBLIC_EVENT_NAME,
         email: inputEmail,
         newStatus: newStatus,
         allowedStatuses: selectedStatuses,
