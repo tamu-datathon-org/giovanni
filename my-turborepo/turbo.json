@@ -1,25 +1,16 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "globalDependencies": [
-    "**/.env"
-  ],
+  "globalDependencies": ["**/.env"],
   "globalEnv": [
     "DATABASE_URL",
-    "AUTH_AUTH0_ID",
-    "AUTH_AUTH0_SECRET",
-    "AUTH_REDIRECT_PROXY_URL",
-    "AUTH_SECRET"
+    "AUTH_REDIRECT_PROXY_URL"
   ],
   "tasks": {
     "topo": {
-      "dependsOn": [
-        "^topo"
-      ]
+      "dependsOn": ["^topo"]
     },
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "outputs": [
         ".next/**",
         "!.next/cache/**",
@@ -27,6 +18,13 @@
         ".expo/**",
         ".output/**",
         ".vercel/output/**"
+      ],
+      "env": [
+        "AUTH_AUTH0_ID",
+        "AUTH_AUTH0_SECRET",
+        "AUTH_AUTH0_DOMAIN",
+        "BETTER_AUTH_URL",
+        "AUTH_SECRET"
       ]
     },
     "dev": {
@@ -34,28 +32,16 @@
       "cache": false
     },
     "format": {
-      "outputs": [
-        "node_modules/.cache/.prettiercache"
-      ],
+      "outputs": ["node_modules/.cache/.prettiercache"],
       "outputLogs": "new-only"
     },
     "lint": {
-      "dependsOn": [
-        "^topo",
-        "^build"
-      ],
-      "outputs": [
-        "node_modules/.cache/.eslintcache"
-      ]
+      "dependsOn": ["^topo", "^build"],
+      "outputs": ["node_modules/.cache/.eslintcache"]
     },
     "typecheck": {
-      "dependsOn": [
-        "^topo",
-        "^build"
-      ],
-      "outputs": [
-        "node_modules/.cache/tsbuildinfo.json"
-      ]
+      "dependsOn": ["^topo", "^build"],
+      "outputs": ["node_modules/.cache/tsbuildinfo.json"]
     },
     "clean": {
       "cache": false
@@ -64,9 +50,7 @@
       "cache": false
     },
     "start": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "persistent": true,
       "cache": false
     }
