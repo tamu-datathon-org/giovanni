@@ -20,7 +20,6 @@ import {
 } from "@vanni/ui/form";
 
 import type { ApplicationSchema } from "../validation";
-import schools from "~/app/apply/application/application-data/schools.json";
 import schoolsJson from "~/app/apply/application/application-data/schools.json";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
@@ -47,12 +46,8 @@ import Title from "../../_components/title";
 import GenericInputField from "~/app/_components/genericInputField";
 import GenericTextArea from "~/app/_components/genericTextArea";
 import { LucideArrowBigLeft } from "lucide-react";
-
-// Map schools to DropdownOption type
-const SCHOOL_OPTIONS = schools.map((school) => ({
-  value: school.schoolName,
-  label: school.schoolName,
-}));
+import { env } from "~/env";
+import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
 
 /*
     First Name
@@ -78,7 +73,7 @@ const SCHOOL_OPTIONS = schools.map((school) => ({
     Liability Waiver (checkbox)
 */
 
-export const EVENT_NAME = "Datathon2025Spring";
+export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME as string;
 
 const Loading = () => {
   return <LoadingAnimation />;
@@ -90,16 +85,20 @@ export function Asterisk() {
 
 export function ApplicationForm() {
   const [disableSubmit, setDisableSubmit] = useState(false);
+  const { session, setSession } = useAuthRedirect();
 
-  const { data: importedValues, isLoading } =
-    api.application.getApplicationByEventName.useQuery(
-      { eventName: EVENT_NAME },
-      {
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        retry: 1, // Retry failed requests once
-      },
-    );
+  const {
+    data: importedValues,
+    isLoading,
+    refetch: refetchApplication
+  } = api.application.getApplicationByEventName.useQuery(
+    { eventName: EVENT_NAME },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: 1, // Retry failed requests once
+    },
+  );
 
   const form = useForm<ApplicationSchema>({
     mode: "onSubmit",
@@ -117,28 +116,33 @@ export function ApplicationForm() {
     resolver: zodResolver(applicationSchema), // match it to an endpoint because it allows async or use values
   });
 
+  useEffect(() => {
+    if (session?.user?.email) {
+      form.setValue("email", session.user.email);
+    }
+  }, [session?.user?.email, form]);
+
   const createApplication = api.application.create.useMutation();
   const updateApplication = api.application.update.useMutation();
 
-  // useEffect(() => {
-  //   const savedData = localStorage.getItem("applicationData"); //getting the previously saved data
-  //   if (savedData) { //if there is previously saved data then the form will reset the null values to these values 
-  //     form.reset(JSON.parse(savedData) as ApplicationSchema);
-  //   }
-  // },
-  //   [form] //dependent on the application form
-  // );
+  useEffect(() => {
+    // Restore from localStorage only if there are no imported values
+    if (importedValues?.app) return;
 
-  // useEffect(() => {
-  //   //this is the timer thing for the saves, saves every 30 secs 
-  //   const interval = setInterval(() => {
-  //     const data = form.getValues();
-  //     localStorage.setItem("applicationData", JSON.stringify(data));
-  //   }, 30000);
-  //   return () => clearInterval(interval);
-  // },
-  //   [form] //dependent on the application form
-  // );
+    const savedData = localStorage.getItem("applicationData");
+    if (savedData) {
+      form.reset(JSON.parse(savedData) as ApplicationSchema);
+    }
+
+    // Set up autosave interval
+    const interval = setInterval(() => {
+      const data = form.getValues();
+      localStorage.setItem("applicationData", JSON.stringify(data));
+    }, 5000);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(interval);
+  }, [form, importedValues?.app]);
 
   const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
     let blob_name = undefined;
@@ -179,20 +183,18 @@ export function ApplicationForm() {
       };
 
       await createApplication.mutateAsync(createApplicationData, {
-        onSuccess: () => {
+        onSuccess: async () => {
           toast({
             variant: "success",
             title: "Application submitted successfully!",
-            description:
-              "Your application has been received. Reloading page...",
+            description: "Your application has been received. You can now update and resubmit.",
           });
 
-          localStorage.removeItem("applicationData") //deletes the data in local storage once they submitted
+          localStorage.removeItem("applicationData"); //deletes the data in local storage once they submitted
 
           setDisableSubmit(true);
-          setTimeout(() => {
-            window.location.reload();
-          }, 5000);
+          await refetchApplication(); // Refetch to update importedValues?.app
+          setDisableSubmit(false); // Re-enable submit for updates
         },
         onError: (error: { message: any }) => {
           if (error instanceof TRPCClientError) {
@@ -302,6 +304,7 @@ export function ApplicationForm() {
               name="email"
               label="Primary Email"
               required={true}
+              disabled={true}
               defaultValue={importedValues?.app?.email ?? ""}
               placeholder="abc123@gmail.com"
             />
@@ -525,7 +528,7 @@ export function ApplicationForm() {
               render={({ field: { value, onChange, ...fieldProps } }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
-                    <span className="text-gray-500">(Optional) </span>
+                    <span className="text-gray-500">(Optional)</span>
                     Upload Resume (PDF Only):
                     <br />
                     Current Resume:{" "}
@@ -547,8 +550,6 @@ export function ApplicationForm() {
                       }}
                     />
                   </FormControl>
-                  {/* I removed this because there is already a toast */}
-                  {/* <FormMessage /> */}
                 </FormItem>
               )}
             />

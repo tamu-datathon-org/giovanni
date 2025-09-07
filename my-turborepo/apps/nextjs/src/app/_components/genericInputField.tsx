@@ -1,7 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 
-import { cn } from "@vanni/ui";
 import {
   FormControl,
   FormField,
@@ -20,6 +19,7 @@ interface GenericInputProps {
   defaultValue?: string;
   required?: boolean;
   placeholder: string;
+  disabled?: boolean;
 }
 
 const GenericInputField: React.FC<GenericInputProps> = ({
@@ -27,7 +27,8 @@ const GenericInputField: React.FC<GenericInputProps> = ({
   label,
   defaultValue,
   required,
-  placeholder
+  placeholder,
+  disabled,
 }) => {
   const form = useFormContext<ApplicationSchema>();
   return (
@@ -48,6 +49,7 @@ const GenericInputField: React.FC<GenericInputProps> = ({
             onChange={field.onChange}
             onBlur={field.onBlur}
             name={field.name}
+            disabled={disabled}
           />
           <FormMessage />
         </FormItem>

@@ -75,7 +75,7 @@ export default function PassportPage() {
 
   const queryData = api.application.getCheckInStatus.useQuery(
     {
-      eventName: "Datathon2025Spring",
+      eventName: process.env.NEXT_PUBLIC_EVENT_NAME as string,
       email: scannerData,
     },
     {

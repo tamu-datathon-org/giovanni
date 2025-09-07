@@ -162,26 +162,26 @@ export const applicationRouter = {
             .where(eq(UserResume.userId, ctx.session.user.id));
           await del(resume.resumeUrl);
         }
+      }
 
-        // query for the role based on event
-        const role = await ctx.db.query.Role.findFirst({
-          where: and(eq(Role.eventId, event.id), eq(Role.name, "Applicant")),
-        });
+      // query for the role based on event
+      const role = await ctx.db.query.Role.findFirst({
+        where: and(eq(Role.eventId, event.id), eq(Role.name, "Applicant")),
+      });
 
-        if (role == undefined) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message:
-              "Role query was not successful. Contact a datathon officer.",
-          });
-        }
-
-        // user roles insertion
-        await ctx.db.insert(UserRole).values({
-          userId: ctx.session.user.id,
-          roleId: role.id,
+      if (role == undefined) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message:
+            "Role query was not successful. Contact a datathon officer.",
         });
       }
+
+      // user roles insertion
+      await ctx.db.insert(UserRole).values({
+        userId: ctx.session.user.id,
+        roleId: role.id,
+      });
 
       const response = await db.insert(Application).values({
         ...applicationData,
@@ -225,19 +225,20 @@ export const applicationRouter = {
         where: eq(UserResume.userId, ctx.session.user.id),
       });
 
-      if (resumeUrl !== "" && resumeName !== "") {
-        if (resume && resume.resumeUrl !== resumeUrl) {
-          await db
-            .update(UserResume)
-            .set({ resumeUrl: resumeUrl, resumeName: resumeName })
-            .where(eq(UserResume.userId, ctx.session.user.id));
-          await del(resume.resumeUrl);
-        } else {
+      // Resume handling
+      if (input.resumeUrl !== "" && input.resumeName !== "") {
+        if (!resume) {
           await db.insert(UserResume).values({
             userId: ctx.session.user.id,
             resumeUrl: input.resumeUrl,
             resumeName: input.resumeName,
           });
+        } else if (resume.resumeUrl !== input.resumeUrl) {
+          await db
+            .update(UserResume)
+            .set({ resumeUrl: input.resumeUrl })
+            .where(eq(UserResume.userId, ctx.session.user.id));
+          await del(resume.resumeUrl);
         }
       }
 
