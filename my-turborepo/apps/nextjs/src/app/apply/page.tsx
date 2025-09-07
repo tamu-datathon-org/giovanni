@@ -13,6 +13,7 @@ import { authClient } from '@vanni/auth/client';
 import { useRouter } from "next/navigation";
 import { toast } from "~/hooks/use-toast";
 import BackgroundContainer from "../_components/BackgroundContainer";
+import { GradientButton } from "../_components/GradientButton";
 
 export const appsOpen = true;
 
@@ -63,7 +64,7 @@ export default function Page() {
 
   useEffect(() => {
     const fetchQRCode = async () => {
-      if (data?.status === "accepted" || data?.status === "checkedin") {
+      if (data?.status === "accepted" || data?.status === "checkedin" || data?.status === "waitlisted") {
         const qr = await generateQR(data?.email ?? "");
         setQrCode(qr);
       }
@@ -94,7 +95,7 @@ export default function Page() {
   return (
     <>
       {/* <IconList /> */}
-      <div className="flex w-screen items-center justify-center mb-24">
+      <div className="flex w-screen items-center justify-center my-24">
         <BackgroundContainer className="">
           <div className="text-center items-center flex w-[75vw] flex-col justify-center gap-4 text-white dark:text-black">
             <div className="mb-4">
@@ -134,7 +135,7 @@ export default function Page() {
                   </div>
                 </div>
               )}
-              {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
+              {appsOpen ? <AppsOpenMessage status={data?.status}/> : <AppsClosedMessage />}
             </div>
             <Button onClick={signOutHandler} className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
               Change Accounts
@@ -169,14 +170,14 @@ function AppsClosedMessage() {
   );
 }
 
-function AppsOpenMessage() {
+function AppsOpenMessage({ status }: { status?: string }) {
   return (
-    <Button className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
+    <GradientButton className="text-white dark:text-black bg-datadarkblue hover:bg-datadarkblue/70 w-fit dark:bg-datadarkblue dark:hover:bg-datadarkblue/70" size="lg" type="button">
       <Link
         href="/apply/application"
       >
-        Edit Application
+        {status ? "View/Edit Application" : "Start Application"}
       </Link>
-    </Button>
+    </GradientButton>
   );
 }
