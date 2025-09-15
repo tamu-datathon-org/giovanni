@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
@@ -36,8 +35,6 @@ const Header = () => {
     }
   };
 
-  const usePathName = usePathname();
-
   return (
     <>
       <header
@@ -54,22 +51,21 @@ const Header = () => {
             <div className="w-[8rem] max-w-full px-4 xl:mr-12">
               <Link
                 href="/"
-                className={`header-logo block w-full ${sticky ? "py-0 lg:py-2" : "py-0"
-                  } `}
+                className={`header-logo block w-full`}
               >
                 <Image
                   src="/images/logo/logoTD.png"
                   alt="logo"
                   width={100}
                   height={50}
-                  className="w-[70px] dark:hidden"
+                  className="w-[60px] dark:hidden"
                 />
                 <Image
                   src="/images/logo/logoTD.png"
                   alt="logo"
                   width={100}
                   height={50}
-                  className="hidden w-[70px] dark:block"
+                  className="hidden w-[60px] dark:block"
                 />
               </Link>
             </div>
