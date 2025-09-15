@@ -11,14 +11,51 @@ import {
   CreateApplicationSchema,
   Event,
   Role,
-  User,
   UserResume,
   UserRole,
 } from "@vanni/db/schema";
 
+import { User } from "@vanni/db/auth-schema";
+
 import { organizerProcedure, protectedProcedure } from "../trpc";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 import { getEventData } from "./event";
+
+const RESUME_OPTIONAL = false;
+
+const resumeHandler = async (
+  input: { resumeUrl: string; resumeName: string },
+  ctx: any,
+  resume: typeof UserResume.$inferSelect | undefined,
+) => {
+  // Check if resume is required
+  if (!RESUME_OPTIONAL && !input.resumeUrl && !resume) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Resume is required",
+    });
+  }
+
+  // Handle resume upload/update
+  if (input.resumeUrl) {
+    const resumeData = {
+      userId: ctx.session.user.id,
+      resumeUrl: input.resumeUrl,
+      resumeName: input.resumeName,
+    };
+
+    if (resume) {
+      if (resume && resume.resumeUrl && resume.resumeUrl !== input.resumeUrl) {
+        await ctx.db.update(UserResume)
+          .set(resumeData)
+          .where(eq(UserResume.userId, ctx.session.user.id));
+        await del(resume.resumeUrl);
+      }
+    } else {
+      await db.insert(UserResume).values(resumeData);
+    }
+  }
+};
 
 export async function getBatchStatus(
   page: number,
@@ -138,7 +175,7 @@ export const applicationRouter = {
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { eventName, applicationData } = input;
+      const { eventName, applicationData, resumeUrl, resumeName } = input;
 
       const event = await getEventData({ ctx, eventName });
 
@@ -146,41 +183,26 @@ export const applicationRouter = {
         where: eq(UserResume.userId, ctx.session.user.id),
       });
 
-      // No resume at all
-      if (input.resumeUrl !== "" && input.resumeName !== "") {
-        if (!resume) {
-          await db.insert(UserResume).values({
-            userId: ctx.session.user.id,
-            resumeUrl: input.resumeUrl,
-            resumeName: input.resumeName,
-          });
-        } else if (resume.resumeUrl !== input.resumeUrl) {
-          await db
-            .update(UserResume)
-            .set({ resumeUrl: input.resumeUrl })
-            .where(eq(UserResume.userId, ctx.session.user.id));
-          await del(resume.resumeUrl);
-        }
+      await resumeHandler({ resumeUrl, resumeName }, ctx, resume);
 
-        // query for the role based on event
-        const role = await ctx.db.query.Role.findFirst({
-          where: and(eq(Role.eventId, event.id), eq(Role.name, "Applicant")),
-        });
+      // query for the role based on event
+      const role = await ctx.db.query.Role.findFirst({
+        where: and(eq(Role.eventId, event.id), eq(Role.name, "Applicant")),
+      });
 
-        if (role == undefined) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message:
-              "Role query was not successful. Contact a datathon officer.",
-          });
-        }
-
-        // user roles insertion
-        await ctx.db.insert(UserRole).values({
-          userId: ctx.session.user.id,
-          roleId: role.id,
+      if (role == undefined) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message:
+            "Role query was not successful. Contact a datathon officer.",
         });
       }
+
+      // user roles insertion
+      await ctx.db.insert(UserRole).values({
+        userId: ctx.session.user.id,
+        roleId: role.id,
+      });
 
       const response = await db.insert(Application).values({
         ...applicationData,
@@ -224,19 +246,22 @@ export const applicationRouter = {
         where: eq(UserResume.userId, ctx.session.user.id),
       });
 
-      if (resumeUrl !== "" && resumeName !== "") {
-        if (resume && resume.resumeUrl !== resumeUrl) {
-          await db
-            .update(UserResume)
-            .set({ resumeUrl: resumeUrl, resumeName: resumeName })
-            .where(eq(UserResume.userId, ctx.session.user.id));
-          await del(resume.resumeUrl);
-        } else {
+      await resumeHandler({ resumeUrl, resumeName }, ctx, resume);
+
+      // Resume handling
+      if (input.resumeUrl !== "" && input.resumeName !== "") {
+        if (!resume) {
           await db.insert(UserResume).values({
             userId: ctx.session.user.id,
             resumeUrl: input.resumeUrl,
             resumeName: input.resumeName,
           });
+        } else if (resume.resumeUrl !== input.resumeUrl) {
+          await db
+            .update(UserResume)
+            .set({ resumeUrl: input.resumeUrl })
+            .where(eq(UserResume.userId, ctx.session.user.id));
+          await del(resume.resumeUrl);
         }
       }
 

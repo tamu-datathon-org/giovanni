@@ -1,4 +1,5 @@
-import { auth, signIn } from "@vanni/auth";
+import { auth } from "@vanni/auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { api } from "~/trpc/server";
 
@@ -7,22 +8,19 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-
-  if (!session) {
-    ("use server");
-    await signIn(undefined, { redirectTo: "/admin/jankury" });
-  }
+  const session = await auth.api.getSession({
+    headers: headers(),
+  });
 
   if (session) {
     try {
       await api.auth.validateOrganizerAuth();
     } catch (e) {
-      redirect("/");
+      redirect("/login?callbackUrl=/admin&message=unauthorized");
     }
+  } else {
+    redirect("/login?callbackUrl=/admin");
   }
 
-  console.log("hello");
-  console.log(session);
   return <section>{children}</section>;
 }

@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-
-import { auth, signIn } from "@vanni/auth";
-
 import { api } from "~/trpc/server";
+import { auth } from "@vanni/auth";
+import { headers } from "next/headers";
+
 import OrganizerNavBar from "../_components/organizer/navigation-bar";
 
 export default async function OrganizerLayout({
@@ -10,22 +10,19 @@ export default async function OrganizerLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-
-  if (!session) {
-    ("use server");
-    await signIn(undefined, { redirectTo: "/organizer" });
-  }
+  const session = await auth.api.getSession({
+    headers: headers(),
+  });
 
   if (session) {
     try {
       await api.auth.validateOrganizerAuth();
     } catch (e) {
-      redirect("/");
+      redirect("/login?callbackUrl=/organizer&message=unauthorized");
     }
+  } else {
+    redirect("/login?callbackUrl=/organizer");
   }
-
-  // console.log(session);
 
   return (
     <>

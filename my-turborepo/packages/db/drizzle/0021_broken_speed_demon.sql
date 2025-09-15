@@ -1,0 +1,1 @@
+ALTER TABLE "application" ADD COLUMN "linkedin_url" varchar(255) DEFAULT '';

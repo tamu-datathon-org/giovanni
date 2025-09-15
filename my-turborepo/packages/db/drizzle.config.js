@@ -5,7 +5,7 @@ if (!process.env.POSTGRES_URL) {
 }
 var nonPoolingUrl = process.env.POSTGRES_URL.replace(":6543", ":5432");
 exports.default = {
-  schema: "./src/schema.ts",
+  schema: ["./src/schema.ts", "./src/auth-schema.ts"],
   dialect: "postgresql",
   dbCredentials: { url: nonPoolingUrl },
   tablesFilter: ["t3turbo_*"],

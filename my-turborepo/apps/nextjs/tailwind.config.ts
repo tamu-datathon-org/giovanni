@@ -68,7 +68,8 @@ export default {
         dark: "#1D2430",
         primary: "#4A6CF7",
         yellow: "#FBB040",
-        datablue: "#2C41DB",
+        datalightblue: "#6EFEEB",
+        datadarkblue: "#2D69DF",
         normal: "#f9feff",
         "bg-color-dark": "#171C28",
         "body-color": {

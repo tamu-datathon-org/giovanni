@@ -1,44 +1,35 @@
-import { redirect } from "next/navigation";
-import { AuthError } from "next-auth";
-
-import { signIn } from "@vanni/auth";
+"use client";
+import { authClient } from "@vanni/auth/client";
 import { Button } from "@vanni/ui/button";
 
-export function LoginButton({
-  connectionId,
-  searchParams,
-  buttonText,
-}: {
+interface LoginButtonProps {
+  title: string;
   connectionId: string;
-  searchParams?: { callbackUrl: string | undefined };
-  buttonText: string;
-}) {
-  return (
-    <Button
-      className="compStyling border border-black bg-[#f5f5f5] text-black hover:bg-[#e4e3e4] hover:text-black"
-      size="lg"
-      formAction={async (formData) => {
-        "use server";
-        try {
-          await signIn(
-            "auth0",
-            {
-              redirectTo: searchParams?.callbackUrl ?? "",
-            },
-            {
-              connection: connectionId,
-            },
-          );
-        } catch (error) {
-          if (error instanceof AuthError) {
-            const SIGNIN_ERROR_URL = "/api/auth/error";
-            return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
-          }
-          throw error;
-        }
-      }}
-    >
-      {buttonText}
-    </Button>
-  );
+  callbackUrl?: string;
+  className?: string;
+  logo?: React.ReactNode;
 }
+
+const LoginButton = ({ connectionId, callbackUrl, title, className, logo }: LoginButtonProps) => {
+  async function signInHandler() {
+    try {
+      const result = await authClient.signIn.oauth2({
+        providerId: `auth0-${connectionId}`,
+        callbackURL: callbackUrl ?? "/",
+        disableRedirect: false,
+      });
+      console.log('Sign-in successful:', result);
+    } catch (error) {
+      console.error('Sign-in failed:', error);
+    }
+  }
+
+  return (
+    <Button size="lg" type="button" onClick={signInHandler} className={className}>
+      {logo && <span className="mr-2">{logo}</span>}
+      {`Continue with ${title}`}
+    </Button>
+  )
+}
+
+export default LoginButton;

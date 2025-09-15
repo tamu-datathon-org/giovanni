@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { env } from "~/env";
 import { toast } from "~/hooks/use-toast";
 
 interface SelectStatusProps {
@@ -42,8 +43,7 @@ const SelectStatus: React.FC<SelectStatusProps> = ({
       onValueChange={(value) => {
         mutation.mutateAsync(
           {
-            eventName: "Datathon2025Spring",
-            // eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "",
+            eventName: env.NEXT_PUBLIC_EVENT_NAME,
             id: id,
             newStatus: value,
           },

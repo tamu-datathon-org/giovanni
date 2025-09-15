@@ -319,6 +319,10 @@ export const MAJOR = [
     label: "Computer science, computer engineering, or software engineering",
   },
   {
+    value: "Data science, data analytics, or data engineering",
+    label: "Data science, data analytics, or data engineering",
+  },
+  {
     value: "Another engineering discipline",
     label:
       "Another engineering discipline (such as civil, electrical, mechanical, etc.)",
@@ -333,7 +337,10 @@ export const MAJOR = [
     value: "A natural science (such as biology, chemistry, physics, etc.)",
     label: "A natural science (such as biology, chemistry, physics, etc.)",
   },
-  { value: "Mathematics or statistics", label: "Mathematics or statistics" },
+  {
+    value: "Mathematics or statistics",
+    label: "Mathematics or statistics"
+  },
   {
     value: "Web development or web design",
     label: "Web development or web design",

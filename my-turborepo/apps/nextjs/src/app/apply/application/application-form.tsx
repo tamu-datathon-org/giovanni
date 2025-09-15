@@ -20,7 +20,6 @@ import {
 } from "@vanni/ui/form";
 
 import type { ApplicationSchema } from "../validation";
-import schools from "~/app/apply/application/application-data/schools.json";
 import schoolsJson from "~/app/apply/application/application-data/schools.json";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
@@ -46,13 +45,10 @@ import LoadingAnimation from "../../_components/loadingAnimation";
 import Title from "../../_components/title";
 import GenericInputField from "~/app/_components/genericInputField";
 import GenericTextArea from "~/app/_components/genericTextArea";
+import GenericMultiSelect from "../../_components/genericMultiSelect";
 import { LucideArrowBigLeft } from "lucide-react";
-
-// Map schools to DropdownOption type
-const SCHOOL_OPTIONS = schools.map((school) => ({
-  value: school.schoolName,
-  label: school.schoolName,
-}));
+import { env } from "~/env";
+import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
 
 /*
     First Name
@@ -78,7 +74,8 @@ const SCHOOL_OPTIONS = schools.map((school) => ({
     Liability Waiver (checkbox)
 */
 
-export const EVENT_NAME = "Datathon2025Spring";
+export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME as string;
+const RESUME_OPTIONAL = false;
 
 const Loading = () => {
   return <LoadingAnimation />;
@@ -90,16 +87,20 @@ export function Asterisk() {
 
 export function ApplicationForm() {
   const [disableSubmit, setDisableSubmit] = useState(false);
+  const { session, setSession } = useAuthRedirect();
 
-  const { data: importedValues, isLoading } =
-    api.application.getApplicationByEventName.useQuery(
-      { eventName: EVENT_NAME },
-      {
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        retry: 1, // Retry failed requests once
-      },
-    );
+  const {
+    data: importedValues,
+    isLoading,
+    refetch: refetchApplication
+  } = api.application.getApplicationByEventName.useQuery(
+    { eventName: EVENT_NAME },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: 1, // Retry failed requests once
+    },
+  );
 
   const form = useForm<ApplicationSchema>({
     mode: "onSubmit",
@@ -117,28 +118,33 @@ export function ApplicationForm() {
     resolver: zodResolver(applicationSchema), // match it to an endpoint because it allows async or use values
   });
 
+  useEffect(() => {
+    if (session?.user?.email) {
+      form.setValue("email", session.user.email);
+    }
+  }, [session?.user?.email, form]);
+
   const createApplication = api.application.create.useMutation();
   const updateApplication = api.application.update.useMutation();
 
-  // useEffect(() => {
-  //   const savedData = localStorage.getItem("applicationData"); //getting the previously saved data
-  //   if (savedData) { //if there is previously saved data then the form will reset the null values to these values 
-  //     form.reset(JSON.parse(savedData) as ApplicationSchema);
-  //   }
-  // },
-  //   [form] //dependent on the application form
-  // );
+  useEffect(() => {
+    // Restore from localStorage only if there are no imported values
+    if (importedValues?.app) return;
 
-  // useEffect(() => {
-  //   //this is the timer thing for the saves, saves every 30 secs 
-  //   const interval = setInterval(() => {
-  //     const data = form.getValues();
-  //     localStorage.setItem("applicationData", JSON.stringify(data));
-  //   }, 30000);
-  //   return () => clearInterval(interval);
-  // },
-  //   [form] //dependent on the application form
-  // );
+    const savedData = localStorage.getItem("applicationData");
+    if (savedData) {
+      form.reset(JSON.parse(savedData) as ApplicationSchema);
+    }
+
+    // Set up autosave interval
+    const interval = setInterval(() => {
+      const data = form.getValues();
+      localStorage.setItem("applicationData", JSON.stringify(data));
+    }, 5000);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(interval);
+  }, [form, importedValues?.app]);
 
   const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
     let blob_name = undefined;
@@ -167,6 +173,15 @@ export function ApplicationForm() {
       blob_url = importedValues?.resume?.resumeUrl ?? undefined;
     }
 
+    if (!RESUME_OPTIONAL && (blob_name === undefined || blob_url === undefined)) {
+      toast({
+        variant: "destructive",
+        title: "Resume Missing",
+        description: "Please upload your resume.",
+      });
+      return;
+    }
+
     if (!importedValues?.app) {
       const createApplicationData = {
         eventName: EVENT_NAME,
@@ -179,20 +194,18 @@ export function ApplicationForm() {
       };
 
       await createApplication.mutateAsync(createApplicationData, {
-        onSuccess: () => {
+        onSuccess: async () => {
           toast({
             variant: "success",
             title: "Application submitted successfully!",
-            description:
-              "Your application has been received. Reloading page...",
+            description: "Your application has been received. You can now update and resubmit.",
           });
 
-          localStorage.removeItem("applicationData") //deletes the data in local storage once they submitted
+          localStorage.removeItem("applicationData"); //deletes the data in local storage once they submitted
 
           setDisableSubmit(true);
-          setTimeout(() => {
-            window.location.reload();
-          }, 5000);
+          await refetchApplication(); // Refetch to update importedValues?.app
+          setDisableSubmit(false); // Re-enable submit for updates
         },
         onError: (error: { message: any }) => {
           if (error instanceof TRPCClientError) {
@@ -257,7 +270,7 @@ export function ApplicationForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="overflow-x-hidden rounded-lg bg-slate-200 dark:bg-slate-400 p-5 lg:px-16"
+          className="overflow-x-hidden rounded-lg bg-slate-400 dark:bg-slate-400 p-5 lg:px-16"
         >
           <h1 className="p-10 pb-3 text-center text-4xl font-bold lg:text-6xl">
             <span className="odd:text-teal-400">H</span>
@@ -269,7 +282,7 @@ export function ApplicationForm() {
           </h1>
           <div className="pb-4 text-center text-md">
             Please complete the following sections. Filling out this form should
-            take about 10-15 minutes.
+            take about 5-8 minutes.
           </div>
 
           <div className="flex w-full flex-row">
@@ -302,6 +315,7 @@ export function ApplicationForm() {
               name="email"
               label="Primary Email"
               required={true}
+              disabled={true}
               defaultValue={importedValues?.app?.email ?? ""}
               placeholder="abc123@gmail.com"
             />
@@ -525,8 +539,8 @@ export function ApplicationForm() {
               render={({ field: { value, onChange, ...fieldProps } }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
-                    <span className="text-gray-500">(Optional) </span>
                     Upload Resume (PDF Only):
+                    {RESUME_OPTIONAL ? null : <Asterisk />}
                     <br />
                     Current Resume:{" "}
                     <span className="text-cyan-700">
@@ -547,8 +561,6 @@ export function ApplicationForm() {
                       }}
                     />
                   </FormControl>
-                  {/* I removed this because there is already a toast */}
-                  {/* <FormMessage /> */}
                 </FormItem>
               )}
             />
@@ -566,14 +578,14 @@ export function ApplicationForm() {
           </div>
 
           <Title text="General Info" className="m-1" />
-          {/* References */}
+          {/* Linkedin Profile */}
           <div className="pt-4">
-            <GenericTextArea
-              name="references"
-              defaultValue={importedValues?.app?.references ?? ""}
-              label="Point us to anything you'd like us to look at while considering your application. (Optional)"
-              placeholder="Provide links or references here."
-              required={false}
+            <GenericInputField
+              name="linkedinUrl"
+              defaultValue={importedValues?.app?.linkedinUrl ?? ""}
+              label="LinkedIn Profile"
+              placeholder="www.linkedin.com/in/john-doe"
+              required={true}
             />
           </div>
 
@@ -582,9 +594,9 @@ export function ApplicationForm() {
             <GenericTextArea
               name="interestOne"
               defaultValue={importedValues?.app?.interestOne ?? ""}
-              label="Tell us your best programming joke. (Optional)"
+              label="Tell us your best programming joke."
               placeholder="Is your code running? Well, you better go catch it."
-              required={false}
+              required={true}
             />
           </div>
 
@@ -593,9 +605,9 @@ export function ApplicationForm() {
             <GenericTextArea
               name="interestTwo"
               defaultValue={importedValues?.app?.interestTwo ?? ""}
-              label="What is the one thing you'd build if you had unlimited resources? (Optional)"
+              label="What is the one thing you'd build if you had unlimited resources?"
               placeholder="More resources."
-              required={false}
+              required={true}
             />
           </div>
 
@@ -604,20 +616,40 @@ export function ApplicationForm() {
             <GenericTextArea
               name="interestThree"
               defaultValue={importedValues?.app?.interestThree ?? ""}
-              label="Why do you want to participate in TAMU Datathon? (Optional)"
+              label="Why do you want to participate in TAMU Datathon?"
               placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
+              required={true}
+            />
+          </div>
+
+          {/* References */}
+          <div className="pt-4">
+            <GenericTextArea
+              name="references"
+              defaultValue={importedValues?.app?.references ?? ""}
+              label="Point us to anything you'd like us to look at while considering your application."
+              placeholder="Provide other links or references here."
               required={false}
             />
           </div>
 
           {/* Dietry Restrictions */}
           <div className="pt-4">
-            <GenericTextArea
+            <GenericMultiSelect
               name="dietaryRestriction"
-              defaultValue={importedValues?.app?.dietaryRestriction ?? ""}
-              label="Do you require any special accommodations at the event?
-                Please list all dietary restrictions here."
-              placeholder="Rock only diet."
+              placeholder="Select all that apply"
+              label="Do you have any dietary restrictions? (Select all that apply)"
+              options={[
+                { value: "Vegetarian", label: "Vegetarian" },
+                { value: "Vegan", label: "Vegan" },
+                { value: "Gluten-Free", label: "Gluten-Free" },
+                { value: "Dairy-Free", label: "Dairy-Free" },
+                { value: "Nut-Free", label: "Nut-Free" },
+                { value: "Halal", label: "Halal" },
+                { value: "Kosher", label: "Kosher" },
+                { value: "Pescatarian", label: "Pescatarian" }
+              ]}
+              defaultOption={importedValues?.app?.dietaryRestriction ?? ""}
             />
           </div>
 

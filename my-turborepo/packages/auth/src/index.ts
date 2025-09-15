@@ -1,14 +1,8 @@
-import NextAuth from "next-auth";
+import { headers } from "next/headers";
+import { auth } from "./auth";
 
-import { authConfig } from "./config";
+export const getSession = async () => auth.api.getSession({
+    headers: headers()
+});
 
-export type { Session } from "next-auth";
-
-const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-} = NextAuth(authConfig);
-
-export { GET, POST, auth, signIn, signOut };
+export * from "./auth";

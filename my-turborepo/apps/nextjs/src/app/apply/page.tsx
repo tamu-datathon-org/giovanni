@@ -3,17 +3,42 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { toDataURL } from "qrcode";
 
-import { Button } from "~/components/ui/button";
+import { Button } from "@vanni/ui/button";
 import { api } from "~/trpc/react";
 import { EVENT_NAME } from "./application/application-form";
+import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
+import { authClient } from '@vanni/auth/client';
+import { useRouter } from "next/navigation";
+import { toast } from "~/hooks/use-toast";
+import BackgroundContainer from "../_components/BackgroundContainer";
+import { GradientButton } from "../_components/GradientButton";
 
-export const appsOpen = false;
+export const appsOpen = true;
 
 export default function Page() {
-  const { data: session } = useSession();
+  const { session, setSession } = useAuthRedirect();
+  const router = useRouter();
+
+  async function signOutHandler() {
+    try {
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            setSession(null);
+            router.push('/login?callbackUrl=/apply');
+          }
+        }
+      });
+    } catch (error) {
+      toast({
+        title: "Sign-Out Error",
+        description: "There was an error signing out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }
 
   const generateQR = async (text: string): Promise<string> => {
     try {
@@ -39,7 +64,7 @@ export default function Page() {
 
   useEffect(() => {
     const fetchQRCode = async () => {
-      if (data?.status === "accepted" || data?.status === "checkedin") {
+      if (data?.status === "accepted" || data?.status === "checkedin" || data?.status === "waitlisted") {
         const qr = await generateQR(data?.email ?? "");
         setQrCode(qr);
       }
@@ -70,15 +95,15 @@ export default function Page() {
   return (
     <>
       {/* <IconList /> */}
-      <div className="flex w-screen items-center justify-center pt-24 pb-24">
-        <div className="text-center align-center flex w-[75vw] flex-col justify-center p-6 py-4 bg-slate-200 rounded-lg dark:bg-slate-400">
-          <div className="flex-1 text-black dark:text-white">
-            <h1 className="pb-8 text-3xl font-bold">DASHBOARD</h1>
-            <div>
+      <div className="flex w-screen items-center justify-center my-24">
+        <BackgroundContainer className="">
+          <div className="text-center items-center flex w-[75vw] flex-col justify-center gap-4 text-white dark:text-black">
+            <div className="mb-4">
+              <h1 className="text-2xl md:text-3xl font-medium">Applicant Dashboard</h1>
               <div className="">
-                Signed in as: {session?.user.email}
+                Logged in as: {session?.user.email}
               </div>
-              <div className="text-xl font-bold">
+              <div className="text-xl font-medium">
                 {" "}
                 YOUR APPLICATION STATUS:
               </div>
@@ -94,13 +119,10 @@ export default function Page() {
                     : "No Application Found"}
               </div>
               {qrCode && (
-                <div className="border-4 border-gray-300 rounded-lg p-4 my-4 mx-auto w-fit">
+                <div className="border-4 border-gray-400 rounded-lg p-2 my-2 mx-auto w-fit">
                   <div>
-                    <div className="dashboardText text-xl">
-                      QR Code for Check-in:
-                    </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-200">
-                      Scan this QR code at the check-in desk!
+                    <div className="text-xl">
+                      Scan this QR Code for Check-in:
                     </div>
                   </div>
                   <div className="mx-auto relative w-40 h-40 md:h-52 md:w-52">
@@ -113,22 +135,18 @@ export default function Page() {
                   </div>
                 </div>
               )}
-              <div>
-                {appsOpen ? <AppsOpenMessage /> : <AppsClosedMessage />}
-              </div>
-              <Link href="/api/auth/signout/" target="_blank">
-                <Button className="mx-auto my-4 w-fit text-xl font-extrabold bg-cyan-700 hover:bg-cyan-700 hover:bg-opacity-70">
-                  Sign Out
-                </Button>
-              </Link>
+              {appsOpen ? <AppsOpenMessage status={data?.status}/> : <AppsClosedMessage />}
             </div>
-          </div>
-          <Link href="https://tamudatathon.com/" target="_blank">
-            <Button className="mx-auto my-4 w-fit text-xl font-extrabold bg-cyan-700 hover:bg-cyan-700 hover:bg-opacity-70">
-              Back to event
+            <Button onClick={signOutHandler} className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
+              Change Accounts
             </Button>
-          </Link>
-        </div>
+            <Button className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
+              <Link href="https://tamudatathon.com/" target="_blank">
+                Visit Event Website
+              </Link>
+            </Button>
+          </div>
+        </BackgroundContainer>
       </div>
     </>
   );
@@ -136,14 +154,13 @@ export default function Page() {
 
 function AppsClosedMessage() {
   return (
-    <div className="dashboardText text-xl">
+    <div className="text-md">
       <br />
       Applications are currently closed.
       <br />
       We are currently reviewing applications.
       <br />
       Keep an eye out for an email!
-      <br />
       <br />
       <br />
       Feel free to contact{" "}
@@ -153,15 +170,14 @@ function AppsClosedMessage() {
   );
 }
 
-function AppsOpenMessage() {
+function AppsOpenMessage({ status }: { status?: string }) {
   return (
-    <Button className="xpBorder submitBtn my-4 w-fit bg-cyan-700 text-xl font-extrabold">
+    <GradientButton className="text-white dark:text-black bg-datadarkblue hover:bg-datadarkblue/70 w-fit dark:bg-datadarkblue dark:hover:bg-datadarkblue/70" size="lg" type="button">
       <Link
-        className="dashboardText buttonText text-xl"
         href="/apply/application"
       >
-        Edit your application
+        {status ? "View/Edit Application" : "Start Application"}
       </Link>
-    </Button>
+    </GradientButton>
   );
 }

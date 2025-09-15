@@ -26,8 +26,8 @@ const Hero = () => {
               <div className="relative mx-auto max-w-[800px] text-center">
                 <div className="relative z-10">
                   <h1 className="mb-5 pb-16 text-4xl font-bold leading-tight text-white sm:text-4xl sm:leading-tight md:text-7xl md:leading-tight">
-                    <span className="text-[#6EFEEB]">tamu</span>
-                    <span className="text-[#2D69DF]">datathon</span>
+                    <span className="text-datalightblue">tamu</span>
+                    <span className="text-datadarkblue">datathon</span>
                   </h1>
                   {/* <p className="mb-12 text-base !leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg md:text-xl">
           At TAMU Datathon, we're passionate about data science and
