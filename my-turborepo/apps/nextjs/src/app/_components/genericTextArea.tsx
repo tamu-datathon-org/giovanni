@@ -47,7 +47,7 @@ const GenericTextArea: React.FC<GenericTextAreaProps> = ({
                             className="bg-white w-full p-2 border rounded text-sm text-black"
                             placeholder={placeholder}
                             {...field}
-                            maxLength={255}
+                            maxLength={155}
                             onChange={(e) => {
                                 field.onChange(e);
                                 setCharCounter(e.target.value.length);
@@ -57,7 +57,7 @@ const GenericTextArea: React.FC<GenericTextAreaProps> = ({
                     </FormControl>
                     <FormMessage />
                     <p className="mt-1 text-sm text-gray-500">
-                        {charCounter}/250 characters
+                        {charCounter}/150 characters
                     </p>
                 </FormItem>
             )}
