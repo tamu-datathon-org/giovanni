@@ -12,7 +12,6 @@ import {
 
 import type { ApplicationSchema } from "~/app/apply/validation";
 import { Asterisk } from "../apply/application/application-form";
-import { Input } from "~/components/ui/input";
 
 interface GenericTextAreaProps {
     name: keyof ApplicationSchema;

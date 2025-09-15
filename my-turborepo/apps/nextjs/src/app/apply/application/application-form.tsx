@@ -45,6 +45,7 @@ import LoadingAnimation from "../../_components/loadingAnimation";
 import Title from "../../_components/title";
 import GenericInputField from "~/app/_components/genericInputField";
 import GenericTextArea from "~/app/_components/genericTextArea";
+import GenericMultiSelect from "../../_components/genericMultiSelect";
 import { LucideArrowBigLeft } from "lucide-react";
 import { env } from "~/env";
 import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
@@ -74,6 +75,7 @@ import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
 */
 
 export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME as string;
+const RESUME_OPTIONAL = false;
 
 const Loading = () => {
   return <LoadingAnimation />;
@@ -169,6 +171,15 @@ export function ApplicationForm() {
     } else {
       blob_name = importedValues?.resume?.resumeName ?? undefined;
       blob_url = importedValues?.resume?.resumeUrl ?? undefined;
+    }
+
+    if (!RESUME_OPTIONAL && (blob_name === undefined || blob_url === undefined)) {
+      toast({
+        variant: "destructive",
+        title: "Resume Missing",
+        description: "Please upload your resume.",
+      });
+      return;
     }
 
     if (!importedValues?.app) {
@@ -528,8 +539,8 @@ export function ApplicationForm() {
               render={({ field: { value, onChange, ...fieldProps } }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
-                    <span className="text-gray-500">(Optional)</span>
                     Upload Resume (PDF Only):
+                    {RESUME_OPTIONAL ? null : <Asterisk />}
                     <br />
                     Current Resume:{" "}
                     <span className="text-cyan-700">
@@ -567,14 +578,14 @@ export function ApplicationForm() {
           </div>
 
           <Title text="General Info" className="m-1" />
-          {/* References */}
+          {/* Linkedin Profile */}
           <div className="pt-4">
-            <GenericTextArea
-              name="references"
-              defaultValue={importedValues?.app?.references ?? ""}
-              label="Point us to anything you'd like us to look at while considering your application. (Optional)"
-              placeholder="Provide links or references here."
-              required={false}
+            <GenericInputField
+              name="linkedinUrl"
+              defaultValue={importedValues?.app?.linkedinUrl ?? ""}
+              label="LinkedIn Profile"
+              placeholder="www.linkedin.com/in/john-doe"
+              required={true}
             />
           </div>
 
@@ -583,9 +594,9 @@ export function ApplicationForm() {
             <GenericTextArea
               name="interestOne"
               defaultValue={importedValues?.app?.interestOne ?? ""}
-              label="Tell us your best programming joke. (Optional)"
+              label="Tell us your best programming joke."
               placeholder="Is your code running? Well, you better go catch it."
-              required={false}
+              required={true}
             />
           </div>
 
@@ -594,9 +605,9 @@ export function ApplicationForm() {
             <GenericTextArea
               name="interestTwo"
               defaultValue={importedValues?.app?.interestTwo ?? ""}
-              label="What is the one thing you'd build if you had unlimited resources? (Optional)"
+              label="What is the one thing you'd build if you had unlimited resources?"
               placeholder="More resources."
-              required={false}
+              required={true}
             />
           </div>
 
@@ -605,20 +616,40 @@ export function ApplicationForm() {
             <GenericTextArea
               name="interestThree"
               defaultValue={importedValues?.app?.interestThree ?? ""}
-              label="Why do you want to participate in TAMU Datathon? (Optional)"
+              label="Why do you want to participate in TAMU Datathon?"
               placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
+              required={true}
+            />
+          </div>
+
+          {/* References */}
+          <div className="pt-4">
+            <GenericTextArea
+              name="references"
+              defaultValue={importedValues?.app?.references ?? ""}
+              label="Point us to anything you'd like us to look at while considering your application."
+              placeholder="Provide other links or references here."
               required={false}
             />
           </div>
 
           {/* Dietry Restrictions */}
           <div className="pt-4">
-            <GenericTextArea
+            <GenericMultiSelect
               name="dietaryRestriction"
-              defaultValue={importedValues?.app?.dietaryRestriction ?? ""}
-              label="Do you require any special accommodations at the event?
-                Please list all dietary restrictions here."
-              placeholder="Rock only diet."
+              placeholder="Select all that apply"
+              label="Do you have any dietary restrictions? (Select all that apply)"
+              options={[
+                { value: "Vegetarian", label: "Vegetarian" },
+                { value: "Vegan", label: "Vegan" },
+                { value: "Gluten-Free", label: "Gluten-Free" },
+                { value: "Dairy-Free", label: "Dairy-Free" },
+                { value: "Nut-Free", label: "Nut-Free" },
+                { value: "Halal", label: "Halal" },
+                { value: "Kosher", label: "Kosher" },
+                { value: "Pescatarian", label: "Pescatarian" }
+              ]}
+              defaultOption={importedValues?.app?.dietaryRestriction ?? ""}
             />
           </div>
 

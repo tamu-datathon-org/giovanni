@@ -168,6 +168,7 @@ export const Application = pgTable("application", {
     .notNull(),
   address: varchar("address", { length: 100 }).notNull(),
   references: varchar("references", { length: 255 }).notNull(),
+  linkedinUrl: varchar("linkedin_url", { length: 255 }).default(""),
   interestOne: varchar("interest_one", { length: 500 }).notNull(),
   interestTwo: varchar("interest_two", { length: 500 }).notNull(),
   interestThree: varchar("interest_three", { length: 500 }).notNull(),
@@ -266,6 +267,11 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .string()
     .max(255)
     .optional()
+    .default(""),
+  linkedinUrl: z
+    .string()
+    .min(1, "Linkedin URL is missing")
+    .max(255, "Linkedin URL is too long")
     .default(""),
   interestOne: z
     .string()
