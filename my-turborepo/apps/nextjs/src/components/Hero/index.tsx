@@ -25,7 +25,7 @@ const Hero = () => {
             <div className="w-full px-4">
               <div className="relative mx-auto max-w-[800px] text-center">
                 <div className="relative z-10">
-                  <h1 className="mb-5 pb-16 text-4xl font-bold leading-tight text-white sm:text-4xl sm:leading-tight md:text-7xl md:leading-tight">
+                  <h1 className="mb-5 py-8 md:py-10 font-bold leading-tight text-white text-5xl md:text-7xl sm:leading-tight md:leading-tight">
                     <span className="text-datalightblue">tamu</span>
                     <span className="text-datadarkblue">datathon</span>
                   </h1>
