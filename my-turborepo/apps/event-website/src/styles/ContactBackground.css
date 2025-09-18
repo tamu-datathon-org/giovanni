@@ -1,0 +1,237 @@
+/* #mod_d096fbc1_1 {
+  background-image: url('/images/teampics/placeholder.jpg');
+}
+
+@media screen and (min-width: 768px) {
+  #mod_d096fbc1_1 {
+    background-image: url('/images/teampics/placeholder.jpg');
+  }
+}
+
+#mod_d096fbc1_2 {
+  background-image: url('/images/teampics/placeholder.jpg');
+}
+
+@media screen and (min-width: 768px) {
+  #mod_d096fbc1_2 {
+    background-image: url('/images/teampics/placeholder.jpg');
+  }
+}
+
+#mod_d096fbc1_3 {
+  background-image: url('/images/teampics/placeholder.jpg');
+}
+@media screen and (min-width: 768px) {
+  #mod_d096fbc1_3 {
+    background-image: url('/images/teampics/placeholder.jpg');
+  }
+}
+#mod_d096fbc1_4 {
+  background-image: url('/images/teampics/placeholder.jpg');
+}
+@media screen and (min-width: 768px) {
+  #mod_d096fbc1_4 {
+    background-image: url('/images/teampics/placeholder.jpg');
+  }
+}
+#mod_d096fbc1_5 {
+  background-image: url('/images/teampics/placeholder.jpg');
+}
+@media screen and (min-width: 768px) {
+  #mod_d096fbc1_5 {
+    background-image: url('/images/teampics/placeholder.jpg');
+  }
+}
+#mod_d096fbc1_6 {
+  background-image: url('/images/teampics/placeholder.jpg');
+}
+@media screen and (min-width: 768px) {
+  #mod_d096fbc1_6 {
+    background-image: url('/images/teampics/placeholder.jpg');
+  }
+}
+#mod_d096fbc1_7 {
+  background-image: url('/images/teampics/placeholder.jpg');
+}
+
+@media screen and (min-width: 768px) {
+  #mod_d096fbc1_7 {
+    background-image: url('/images/teampics/placeholder.jpg');
+  }
+}
+
+#mod_d096fbc1_8 {
+  background-image: url('/images/teampics/placeholder.jpg');
+}
+
+@media screen and (min-width: 768px) {
+  #mod_d096fbc1_8 {
+    background-image: url('/images/teampics/placeholder.jpg');
+  }
+} */
+
+.large-layout-container .image-cell {
+  border-radius: 12px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.large-layout-container {
+  display: grid;
+  grid-gap: 0px;
+  height: auto;
+  grid-template-columns: calc(100% * (171 / 375)) 1fr;
+  grid-template-rows: calc(100% * (80 / 457)) 1fr calc(100% * (253 / 457));
+  grid-template-areas:
+    "a b"
+    "a c"
+    "d d";
+}
+
+.large-layout-container div:nth-of-type(1) {
+  grid-area: a;
+  justify-self: flex-end;
+  align-self: flex-end;
+  margin-bottom: calc(100% * (27 / 454));
+  width: calc(100% * (344 / 372));
+  aspect-ratio: 1 / 1;
+  display: flex;
+}
+
+.large-layout-container div:nth-of-type(2) {
+  grid-area: b;
+  justify-self: flex-start;
+  align-self: flex-start;
+  margin-left: calc(100% * (24 / 396));
+  margin-bottom: calc(100% * (35 / 175));
+  width: calc(100% * (310 / 396));
+  aspect-ratio: 310 / 175;
+  display: flex;
+}
+
+.large-layout-container div:nth-of-type(3) {
+  grid-area: c;
+  justify-self: flex-end;
+  align-self: flex-start;
+  margin-right: calc(100% * (28 / 396));
+  margin-top: calc(100% * (28 / 454));
+  width: calc(100% * (310 / 396));
+  margin-bottom: calc(100% * (92 / 454));
+  aspect-ratio: 310 / 175;
+  display: flex;
+}
+
+.large-layout-container div:nth-of-type(4) {
+  grid-area: d;
+  justify-self: flex-start;
+  align-self: flex-start;
+  margin-left: calc(100% * (64 / 768));
+  width: calc(100% * (640 / 768));
+  aspect-ratio: 640 / 427;
+  display: flex;
+}
+
+.large-layout-container div:nth-of-type(5),
+.large-layout-container div:nth-of-type(6),
+.large-layout-container div:nth-of-type(7),
+.large-layout-container div:nth-of-type(8) {
+  display: none;
+}
+
+
+
+@media screen and (min-width: 992px) {
+  .large-layout-container {
+    display: grid;
+    grid-gap: 0px;
+    height: auto;
+    grid-template-columns: calc(100% * (418 / 1440)) calc(100% * (218 / 1440)) calc(100% * (390 / 1440)) 1fr calc(100% * (344 / 1440));
+    grid-template-rows: calc(100% * (240 / 1210)) calc(100% * (248 / 1210)) calc(100% * (288 / 1210)) 1fr;
+    grid-template-areas:
+      "a e e f f"
+      "a b b f f"
+      "d d c c g"
+      "d d h h h";
+  }
+
+  .large-layout-container div:nth-of-type(1) {
+    grid-area: a;
+    justify-self: flex-end;
+    align-self: flex-start;
+    margin-top: calc(100% * (1 / 488));
+    width: calc(100% * (367 / 418));
+    aspect-ratio: 1 / 1;
+  }
+
+  .large-layout-container div:nth-of-type(2) {
+    grid-area: b;
+    justify-self: flex-start;
+    align-self: flex-end;
+    margin-left: calc(100% * (16 / 608));
+    margin-bottom: 0%;
+    margin-top: calc(100% * (45 / 248));
+    width: calc(100% * (412 / 608));
+    aspect-ratio: 412 / 232;
+  }
+
+  .large-layout-container div:nth-of-type(3) {
+    grid-area: c;
+    justify-self: flex-start;
+    align-self: flex-end;
+    margin-left: calc(100% * (16 / 460));
+    margin-bottom: 0%;
+    width: calc(100% * (428 / 460));
+    aspect-ratio: 428 / 242;
+  }
+
+  .large-layout-container div:nth-of-type(4) {
+    grid-area: d;
+    justify-self: flex-end;
+    align-self: flex-start;
+    margin-top: calc(100% * (18 / 722));
+    width: calc(100% * (600 / 636));
+    aspect-ratio: 6 / 4;
+    display: flex;
+  }
+
+  .large-layout-container div:nth-of-type(5) {
+    grid-area: e;
+    justify-self: flex-end;
+    align-self: flex-start;
+    margin-right: calc(100% * (16 / 608));
+    width: calc(100% * (426 / 608));
+    aspect-ratio: 426 / 240;
+    display: flex;
+  }
+
+  .large-layout-container div:nth-of-type(6) {
+    grid-area: f;
+    justify-self: flex-start;
+    align-self: flex-start;
+    margin-top: calc(100% * (28 / 488));
+    width: calc(100% * (332 / 414));
+    aspect-ratio: 1 / 1;
+    display: flex;
+  }
+
+  .large-layout-container div:nth-of-type(7) {
+    grid-area: g;
+    justify-self: flex-start;
+    align-self: flex-end;
+    margin-bottom: calc(100% * (1 / 287));
+    width: calc(100% * (288 / 344));
+    aspect-ratio: 288 / 289;
+    display: flex;
+  }
+
+  .large-layout-container div:nth-of-type(8) {
+    grid-area: h;
+    justify-self: flex-end;
+    align-self: flex-start;
+    margin-right: calc(100% * (36 / 804));
+    margin-top: calc(100% * (24 / 1210));
+    width: calc(100% * (484 / 804));
+    aspect-ratio: 484 / 322;
+    display: flex;
+  }
+}
