@@ -1,48 +1,28 @@
-"use client";
-
-import Footer from "@/components/Footer";
-import { useRouter } from 'next/navigation';
+import { Button } from '@vanni/ui/button';
 
 export default function Home() {
-  const router = useRouter()
-
-  const handleApplyClick = () => {
-    // Redirect to team website application page
-    window.open('https://tamudatathon.org/apply', '_blank')
-    // Or use Next.js router for internal navigation:
-    // router.push('/apply')
-  }
 
   return (
     <div
-        className="flex flex-col min-h-screen w-full"
-        style={{
-            backgroundImage: "url('/images/landing-page/LandingPage.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-        }}
+      className="flex flex-col min-h-screen w-full"
+      style={{
+        backgroundImage: "url('/images/landing-page/LandingPage.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="flex-1 relative">
+        <a
+          href="https://tamudatathon.org/apply"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-        <div className="flex-1 relative">
-            <button
-                onClick={handleApplyClick}
-                className="appbutton"
-                style={{
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                zIndex: 10,
-                }}
-            >
-                Apply Now
-            </button>
-        </div>
-
-        <footer className="mt-auto">
-            <Footer />
-        </footer>
+          <Button className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+            Apply Now
+          </Button>
+        </a>
+      </div>
     </div>
-
-
-  )
-}
+  );
+};
