@@ -61,24 +61,3 @@ html {
   animation: float 6s ease-in-out infinite;
 }
 */
-.appbutton {
-  position: absolute; /* ⬅ needed for your top/left transform */
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.appbutton:hover {
-  background-color: #822323;
-  color: #D9D9D9;
-}
-
-.appbutton.primary {
-  background-color: #D9D9D9;
-  color: black;
-}
