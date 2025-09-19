@@ -19,7 +19,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen w-full items-center justify-center">
       <div
         className="absolute inset-0 bg-no-repeat bg-center bg-contain
-                   bg-[url('/images/landing-page/LandingPage-mobile.png')]
+                   bg-[url('/images/landing-page/Landing-Page-phone.png')]
                    sm:bg-[url('/images/landing-page/LandingPage.png')]
                    sm:bg-cover sm:bg-center"
       />
