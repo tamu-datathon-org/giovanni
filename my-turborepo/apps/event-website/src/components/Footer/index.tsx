@@ -85,6 +85,15 @@ const Footer = () => {
                 </button>
               </span>
             </div>
+            <div>
+              Review the{" "}
+              <a
+                href="http://mlh.io/code-of-conduct"
+                className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-900 mt-0"
+              >
+                MLH Code of Conduct
+              </a>
+            </div>
           </div>
 
           <div className="flex flex-col items-center space-y-4 md:items-start">
@@ -101,12 +110,6 @@ const Footer = () => {
             >
               Contact
             </Link>
-            {/* <Link
-              href="/faq"
-              className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-            >
-              FAQ
-            </Link> */}
           </div>
 
           <div className="flex flex-col items-center space-y-4 md:items-start">
