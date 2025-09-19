@@ -22,7 +22,7 @@ export default function Home() {
                    bg-[url('/images/landing-page/LandingPage-mobile.png')]
                    sm:bg-[url('/images/landing-page/LandingPage.png')]
                    sm:bg-cover sm:bg-center"
-    />
+      />
 
 
 
