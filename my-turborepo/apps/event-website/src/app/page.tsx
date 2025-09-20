@@ -4,15 +4,15 @@ import { ThemedButton } from "@/components/ui/themed-button";
 export default function Home() {
 
   return (
-    <div className="flex flex-col min-h-screen w-full items-center justify-center">
+    <div className="flex flex-col h-screen w-full items-center justify-center">
       <div
         className="absolute inset-0 bg-no-repeat bg-center bg-cover
                    bg-[url('/images/landing-page/LandingPage-phone.png')]
                    sm:bg-[url('/images/landing-page/LandingPage.png')]
                    sm:bg-center block"
       />
-      <div className="ml-2 flex-1 absolute w-full top-[47vh] left-[50%] translate-y-[-50%] translate-x-[-50%] sm:top-[65vh] transform rotate-[0.5deg]">
-        <p className="text-xl sm:text-4xl font-semi text-foreground text-center mb-2 sm:mb-6 font-['KoPub_Batang']">APPLICATIONS CLOSE OCT. 24</p>
+      <div className="pl-2 flex-1 absolute w-full top-[47vh] left-[50%] translate-y-[-50%] translate-x-[-50%] sm:top-[65vh] transform rotate-[0.5deg]">
+        <p className="text-xl sm:text-4xl font-semi text-foreground text-center mb-2 sm:mb-6 font-['KoPub_Batang']">APPLICATIONS CLOSE OCT. 25</p>
         <div className="flex flex-row justify-center items-center w-full">
           <a
             href="https://tamudatathon.org/apply"
