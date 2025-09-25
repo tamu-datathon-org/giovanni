@@ -182,10 +182,11 @@ const Footer = () => {
                 </svg>
               </a>
             </div>
-            <img
+            <Image
                 src="/images/Pure-Buttons-Blue-Gradient-Logo-RGB.png" // put logo.png inside your project's public/ folder
-                alt="Site Logo"
-                style={{display: "block", maxWidth: "200px"}}
+                alt="Pure Sticker Logo"
+                width={100}
+                height={100}
             />
           </div>
         </div>
