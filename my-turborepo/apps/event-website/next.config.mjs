@@ -11,9 +11,6 @@ const nextConfig = {
 
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
-    "@vanni/api",
-    "@vanni/auth",
-    "@vanni/db",
     "@vanni/ui",
     "@vanni/validators",
   ],
