@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { redirect } from "next/dist/server/api-utils";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";

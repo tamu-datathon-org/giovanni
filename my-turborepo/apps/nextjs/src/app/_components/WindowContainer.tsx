@@ -2,12 +2,6 @@
 
 // Ensure the component is treated as a client component
 import React from "react";
-import Image from "next/image";
-import { isMobile } from "react-device-detect";
-
-import { Button } from "@vanni/ui/button";
-
-import { toast } from "~/hooks/use-toast";
 import { ExitButton, Lines, TAMUy2k, TitleText } from "./preregistration-form"; // Ensure these imports are correct
 
 interface WindowContainerProps {
