@@ -100,11 +100,10 @@ export default function Page() {
           <div className="text-center items-center flex w-[75vw] flex-col justify-center gap-4 text-white dark:text-black">
             <div className="mb-4">
               <h1 className="text-2xl md:text-3xl font-medium">Applicant Dashboard</h1>
-              <div className="">
+              <div className="mb-2">
                 Logged in as: {session?.user.email}
               </div>
               <div className="text-xl font-medium">
-                {" "}
                 YOUR APPLICATION STATUS:
               </div>
               <div
