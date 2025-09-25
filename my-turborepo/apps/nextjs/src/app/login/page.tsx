@@ -34,7 +34,7 @@ export default function LoginPage({
             tamu
             <span className="text-datadarkblue">datathon</span>
           </h1>
-          <p className="text-sm mb-20 text-white dark:text-black text-center">
+          <p className="text-sm mb-20 text-white text-center">
             Sign in with a provider below
           </p>
         </div>
