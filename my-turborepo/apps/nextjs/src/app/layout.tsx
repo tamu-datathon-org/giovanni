@@ -22,7 +22,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       </head>
 
       <body
-        className={`bg-slate-200 dark:bg-black ${inter.className}`}
+        className={`bg-black ${inter.className}`}
       >
         <TRPCReactProvider>
           <Providers>

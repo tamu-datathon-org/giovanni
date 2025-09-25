@@ -97,7 +97,7 @@ export default function Page() {
       {/* <IconList /> */}
       <div className="flex w-screen items-center justify-center my-24">
         <BackgroundContainer className="">
-          <div className="text-center items-center flex w-[75vw] flex-col justify-center gap-4 text-white dark:text-black">
+          <div className="text-center items-center flex w-[75vw] flex-col justify-center gap-4 text-white">
             <div className="mb-4">
               <h1 className="text-2xl md:text-3xl font-medium">Applicant Dashboard</h1>
               <div className="mb-2">
@@ -171,7 +171,7 @@ function AppsClosedMessage() {
 
 function AppsOpenMessage({ status }: { status?: string }) {
   return (
-    <GradientButton className="text-white dark:text-black bg-datadarkblue hover:bg-datadarkblue/70 w-fit dark:bg-datadarkblue dark:hover:bg-datadarkblue/70" size="lg" type="button">
+    <GradientButton className="text-white bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
       <Link
         href="/apply/application"
       >
