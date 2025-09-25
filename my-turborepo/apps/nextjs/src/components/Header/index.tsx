@@ -44,7 +44,7 @@ const Header = () => {
           }`}
       >
         <Link className="w-full bg-[#2D69DF] text-lg text-center py-1" href="https://tamudatathon.com">
-          Visit our 2025 TDLite Website
+          Visit our Fall 2025 TAMU Datathon Event Website
         </Link>
         <div className="container">
           <div className="relative -mx-4 flex items-center justify-between">
@@ -161,9 +161,6 @@ const Header = () => {
                 >
                   Sign Up
                 </Link> */}
-                <div>
-                  <ThemeToggler />
-                </div>
               </div>
             </div>
           </div>
