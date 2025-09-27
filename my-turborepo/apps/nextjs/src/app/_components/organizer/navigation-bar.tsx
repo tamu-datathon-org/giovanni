@@ -36,6 +36,13 @@ const OrganizerNavBar = () => {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
+          <Link href="/organizer/schedule-manager" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Schedule Manager
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
           <form action={signOutAction.bind(null, "/organizer")}> 
             <Button variant="ghost" type="submit">
               Signout
