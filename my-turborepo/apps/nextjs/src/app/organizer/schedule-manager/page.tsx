@@ -1,10 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { env } from "~/env";
 
 interface Event {
-    id: string;
-    date: string;
+    id: string | number;
+    date: string | number;
     title: string;
     description: string;
 }
@@ -18,35 +17,77 @@ export default function CMSPage() {
         title: "",
         description: "",
     });
+    const [editingId, setEditingId] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
+    // ✅ Always coerce to string before validating
     const isFormValid =
-        form.id.trim() !== "" &&
-        form.date.trim() !== "" &&
-        form.title.trim() !== "" &&
-        form.description.trim() !== "";
+        String(form.id).trim() !== "" &&
+        String(form.date).trim() !== "" &&
+        String(form.title).trim() !== "" &&
+        String(form.description).trim() !== "";
 
     // Fetch events
     const loadEvents = async () => {
-        const res = await fetch(API_URL);
-        const data: Event[] = await res.json();
-        setEvents(data);
+        setLoading(true);
+        try {
+            const res = await fetch(API_URL);
+            const data: Event[] = await res.json();
+            setEvents(data);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    // Add event
-    const addEvent = async () => {
-        if(!isFormValid){ return; } // prevent submission of invalid form
-        setLoading(true); // show loading spinner/screen
-        try{
+    // Add or edit event
+    const handleSubmit = async () => {
+        if (!isFormValid) return;
+        setLoading(true);
+        try {
+            const action = editingId ? "edit" : "add";
             await fetch(API_URL, {
                 method: "POST",
-                body: JSON.stringify(form),
+                body: JSON.stringify({
+                    action,
+                    id: String(form.id),
+                    date: String(form.date),
+                    title: String(form.title),
+                    description: String(form.description),
+                }),
             });
+
+            // Reset form
             setForm({ id: "", date: "", title: "", description: "" });
-            loadEvents();
+            setEditingId(null);
+            await loadEvents();
         } finally {
-            setLoading(false); // hide loading spinner/screen
+            setLoading(false);
         }
+    };
+
+    // Delete event
+    const handleDelete = async (id: string | number) => {
+        setLoading(true);
+        try {
+            await fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "delete", id: String(id) }),
+            });
+            await loadEvents();
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Enter edit mode
+    const handleEdit = (event: Event) => {
+        setForm({
+            id: String(event.id),
+            date: String(event.date),
+            title: String(event.title),
+            description: String(event.description),
+        });
+        setEditingId(String(event.id));
     };
 
     useEffect(() => {
@@ -54,64 +95,102 @@ export default function CMSPage() {
     }, []);
 
     return (
-        <main className="max-w-xl mx-auto p-6">
+        <main className="max-w-xl mx-auto p-6 relative">
+            {/* 🔹 Loading overlay */}
             {loading && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
                     <div className="text-center">
                         <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-                        <p className="text-lg font-semibold">Submitting...</p>
+                        <p className="text-lg font-semibold">Loading...</p>
                     </div>
                 </div>
             )}
+
             <h1 className="text-2xl font-bold mb-6">Schedule CMS</h1>
 
+            {/* Form */}
             <div className="mb-8">
-                <h2 className="text-xl mb-2">Add Event</h2>
+                <h2 className="text-xl mb-2">{editingId ? "Edit Event" : "Add Event"}</h2>
                 <input
                     className="border p-2 w-full mb-2"
                     placeholder="ID"
-                    value={form.id}
-                    onChange={(e) => setForm({...form, id: e.target.value})}
+                    value={String(form.id)}
+                    onChange={(e) => setForm({ ...form, id: e.target.value })}
+                    disabled={!!editingId}
                 />
                 <input
                     type="date"
                     className="border p-2 w-full mb-2"
-                    value={form.date}
-                    onChange={(e) => setForm({...form, date: e.target.value})}
+                    value={String(form.date)}
+                    onChange={(e) => setForm({ ...form, date: e.target.value })}
                 />
                 <input
                     className="border p-2 w-full mb-2"
                     placeholder="Title"
-                    value={form.title}
-                    onChange={(e) => setForm({...form, title: e.target.value})}
+                    value={String(form.title)}
+                    onChange={(e) => setForm({ ...form, title: e.target.value })}
                 />
                 <textarea
                     className="border p-2 w-full mb-2"
                     placeholder="Description"
-                    value={form.description}
-                    onChange={(e) => setForm({...form, description: e.target.value})}
+                    value={String(form.description)}
+                    onChange={(e) => setForm({ ...form, description: e.target.value })}
                 />
-                <button
-                    onClick={addEvent}
-                    disabled={!isFormValid || loading}
-                    className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
-                >
-                    {loading ? "Submitting..." : "Add Event"}
-                </button>
+
+                <div className="flex gap-2">
+                    <button
+                        onClick={handleSubmit}
+                        disabled={!isFormValid || loading}
+                        className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                    >
+                        {editingId ? "Save Changes" : "Add Event"}
+                    </button>
+                    {editingId && (
+                        <button
+                            onClick={() => {
+                                setForm({ id: "", date: "", title: "", description: "" });
+                                setEditingId(null);
+                            }}
+                            disabled={loading}
+                            className="bg-gray-500 text-white px-4 py-2 rounded"
+                        >
+                            Cancel
+                        </button>
+                    )}
+                </div>
             </div>
 
+            {/* Event list */}
             <div className="text-black">
                 <h2 className="text-xl mb-2">Current Events</h2>
                 {events.map((e) => (
                     <div
-                        key={e.id}
-                        className="border rounded p-3 mb-2 bg-gray-50 shadow-sm"
+                        key={String(e.id)}
+                        className="border rounded p-3 mb-2 bg-gray-50 shadow-sm flex justify-between items-center"
                     >
-                        <p className="font-semibold">{e.date}</p>
-                        <p>
-                            <b>{e.title}</b>
-                        </p>
-                        <p>{e.description}</p>
+                        <div>
+                            <p className="font-semibold">{String(e.date)}</p>
+                            <p>
+                                <b>{e.title}</b>
+                            </p>
+                            <p>{e.description}</p>
+                        </div>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => handleEdit(e)}
+                                disabled={loading}
+                                className="bg-blue-600 text-white px-3 py-1 rounded"
+                            >
+                                Edit
+                            </button>
+                            <button
+                                onClick={() => handleDelete(e.id)}
+                                disabled={loading}
+                                className="bg-red-600 text-white px-3 py-1 rounded"
+                            >
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>
