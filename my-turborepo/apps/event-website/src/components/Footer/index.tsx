@@ -4,7 +4,10 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { LuClipboard } from "react-icons/lu";
 import { useToast } from "@/hooks/use-toast";
+/*
+TODO: change it to theme this is just a copy of the one from the team page
 
+*/
 const Footer = () => {
   const { toast } = useToast();
 

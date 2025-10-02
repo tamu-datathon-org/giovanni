@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import Footer from "@/components/Footer";
 import "../styles/index.css";
-
+import Header from "@/components/Header";
+import ScrollToTop from "@/components/ScrollToTop";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -33,8 +34,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
             style={{ width: "100%" }}
           />
         </a>
+        <Header />
         {children}
         <Footer />
+        <ScrollToTop />
       </body>
     </html>
   );
