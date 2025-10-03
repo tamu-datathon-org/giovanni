@@ -29,6 +29,7 @@ module.exports = {
         "FAQ": ["FAQ"],
         "location":["location"],
         "inter": ["__Inter_d65c78", "__Inter_Fallback_d65c78", "sans-serif"],
+        "kopub": ['"KoPub Batang"', 'serif'],
       },
       colors: {
         current: "currentColor",
@@ -65,7 +66,7 @@ module.exports = {
           dark: "#1E232E",
           light: "#F0F2F9",
         },
-        
+
 
 
           customRed: "#DF4C4F",
