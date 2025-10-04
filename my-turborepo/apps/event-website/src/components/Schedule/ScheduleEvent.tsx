@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 
 interface Event {
     id: string | number;
@@ -12,7 +13,8 @@ interface ScheduleEventProps {
 }
 
 export default function ScheduleEvent({ event }: ScheduleEventProps) {
-    // Format date nicely
+    const [expanded, setExpanded] = useState(false);
+
     function formatDate(dateString: string) {
         const d = new Date(dateString);
         if (isNaN(d.getTime())) return dateString;
@@ -24,12 +26,28 @@ export default function ScheduleEvent({ event }: ScheduleEventProps) {
 
     return (
         <div
-            key={String(event.id)}
-            className="border rounded-lg p-4 bg-gray-50 shadow-sm hover:shadow-md transition"
+            className="border rounded-lg p-4 bg-gray-50 shadow-sm hover:shadow-md transition cursor-pointer"
+            onClick={() => setExpanded(!expanded)}
         >
-            <p className="text-sm text-gray-600 mb-1">{formatDate(event.date)}</p>
-            <h2 className="text-lg font-semibold mb-2">{event.title}</h2>
-            <p className="text-gray-700">{event.description}</p>
+            <div className="flex justify-between items-center">
+                <div>
+                    <p className="text-sm text-gray-600">{formatDate(event.date)}</p>
+                    <h2 className="text-lg font-semibold">{event.title}</h2>
+                </div>
+                <span
+                    className={`text-sm text-gray-500 transition-transform ${
+                        expanded ? "rotate-180" : ""
+                    }`}
+                >
+          ▼
+        </span>
+            </div>
+
+            {expanded && (
+                <div className="mt-3 border-t border-gray-200 pt-3 text-gray-700 animate-fadeIn">
+                    <p className="whitespace-pre-wrap">{event.description}</p>
+                </div>
+            )}
         </div>
     );
 }
