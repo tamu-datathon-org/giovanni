@@ -14,14 +14,14 @@ const Header = () => {
     return (
     <header className="top-0 left-0 z-40 w-full bg-[#1C0808]">
         <div className="relative flex items-center justify-between px-4">
-            <div className="flex items-end gap-6 py-3">
+            <div className="flex items-end gap-6 py-2">
                 <a href="/" className="inline-flex items-center" aria-label="Home">
                     <Image
                         src="/images/logo/event-logo.svg"
                         alt="logo"
                         width={200}
                         height={100}
-                        className="h-16 w-auto shrink-0 drop-shadow"
+                        className="h-8 w-auto shrink-0 drop-shadow"
                         priority
                     />
                 </a>

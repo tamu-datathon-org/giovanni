@@ -4,7 +4,7 @@ import Image from "next/image";
 //import Card from "./card";
 const Hero = () => {
   return (
-    <div className="relative grid grid-cols-12 grid-rows-12 min-h-fit w-full overflow-hidden pb-8">
+    <div className="relative grid grid-cols-10 [grid-template-rows:repeat(10,)] md:[grid-template-rows:repeat(14,80px)] min-h-fit w-full overflow-hidden pb-8">
         {/* Desk background */}
         <div className="absolute inset-0 bg-[#2A2523] bg-cover bg-center bg-no-repeat" />
 
@@ -15,12 +15,12 @@ const Hero = () => {
         {/* <div className="absolute -top-1/2 -left-1/2 w-[957px] h-[913px] opacity-60 bg-blend-overlay bg-[#FFF2AA] rounded-full blur-[350px]" /> */}
 
         {/*Newspaper section - centered in grid*/}
-        <div className="relative z-10 col-start-2 col-span-10 row-start-3 row-span-8 flex items-top justify-center ">
+        <div className="relative z-10 col-start-1 col-span-10 row-start-2 row-span-8 flex items-top justify-center ">
             <NewspaperSection />
         </div>
 
         {/* cup - bottom left */}
-        <div className="relative z-20 col-start-2 col-span-3 row-start-6 row-span-2 w-full aspect-square ">
+        <div className="relative z-20 col-start-2 col-span-3 row-start-9 row-span-2 w-full aspect-square max-w-[325px]">
             <Image
                 src="/images/elements/cup.svg"
                 alt="cup"
@@ -31,7 +31,7 @@ const Hero = () => {
         </div>
 
         {/* magnifying glass - top right */}
-        <div className="relative z-20 col-start-8 col-span-3 row-start-2 row-span-2 w-full aspect-square ">
+        <div className="relative z-20 col-start-8 col-span-2 row-start-1 row-span-2 w-full aspect-square ">
             <Image
                 src="/images/elements/mag.svg"
                 alt="mag"
@@ -40,12 +40,12 @@ const Hero = () => {
                 className="object-contain"
             />
         </div>
-        <div className="relative z-20 col-start-1 col-span-2 row-start-1 row-span-2 w-full aspect-square ">
+        <div className="relative z-20 col-start-1 col-span-8 row-start-1 row-span-8 w-full aspect-square pointer-events-none">
             <Image
-                src="/images/elements/lamp.svg"
+                src="/images/elements/Lamp.svg"
                 alt="mag"
-                width={600}
-                height={600}
+                width={1000}
+                height={1000}
                 className="object-contain"
             />
         </div>

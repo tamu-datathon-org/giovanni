@@ -1,10 +1,8 @@
-
-
 export default function NewspaperSection() {
   return (
-    <div className="container mx-auto px-4">
+    <div className="w-full max-w-[1150px] mx-auto px-4">
       <svg
-        viewBox="0 0 1200 800"
+        viewBox="0 0 1400 1000"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-auto"
       >
@@ -51,7 +49,7 @@ export default function NewspaperSection() {
 
         {/* Button (using foreignObject so HTML can go inside SVG) */}
         <foreignObject x="35%" y="42%" width="30%" height="10%">
-          <div className="flex items-center justify-center w-full h-full">
+          <div className="flex items-center justify-center w-full h-full z-50">
             <a
               href="https://tamudatathon.org/apply"
               target="_blank"
@@ -69,7 +67,7 @@ export default function NewspaperSection() {
           x="50%"
           y="67%"
           textAnchor="middle"
-          fontFamily="sans-serif"
+          fontFamily="KoPub_Batang"
           fontSize="35"
           fontWeight="900"
           fill="black"
@@ -79,7 +77,7 @@ export default function NewspaperSection() {
 
         {/* Description (multi-line text) */}
         <foreignObject x="25%" y="70%" width="50%" height="20%">
-          <p className="font-serif text-black text-center text-lg leading-relaxed">
+          <p className="font-kopub text-black text-center text-xl leading-relaxed">
             We are the largest data science and machine learning focused hackathon
             in Texas located at Texas A&M University in College Station.
           </p>
