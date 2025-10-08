@@ -13,7 +13,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   // redirect("https://tamudatathon.org/apply");
   return (
     <html lang="en">
-      <body className="h-full m-0">
+      <body className="h-full m-0 w-full">
         <a
           id="mlh-trust-badge"
           style={{

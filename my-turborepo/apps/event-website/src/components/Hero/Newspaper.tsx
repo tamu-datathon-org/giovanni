@@ -51,7 +51,7 @@ export default function NewspaperSection() {
           </text>
 
           {/* Button */}
-          <foreignObject x="30%" y="44%" width="40%" height="8%" rotate={0.38}>
+          <foreignObject x="26%" y="44%" width="50%" height="8%" rotate={0.38}>
             <div className="flex items-center justify-center w-full h-full">
               <a
                 href="https://tamudatathon.org/apply"
@@ -59,7 +59,7 @@ export default function NewspaperSection() {
                 rel="noopener noreferrer"
               >
                 <ThemedButton
-                  className="w-[400px] h-24 text-4xl  px-8"
+                  className="w-[600px] h-24 text-4xl  px-8"
                 >
                   Apply Now!
                 </ThemedButton>
@@ -134,16 +134,18 @@ export default function NewspaperSection() {
           </text>
 
           {/* Button */}
-          <foreignObject x="35%" y="42%" width="30%" height="10%">
-            <div className="flex items-center justify-center w-full h-full z-50">
+          <foreignObject x="26%" y="44%" width="50%" height="10%" rotate={0.38}>
+            <div className="flex items-center justify-center w-full h-full">
               <a
                 href="https://tamudatathon.org/apply"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <button className="bg-black text-white px-6 py-3 text-lg rounded">
+                <ThemedButton
+                  className="w-[450px] h-20 text-4xl  px-8"
+                >
                   Apply Now!
-                </button>
+                </ThemedButton>
               </a>
             </div>
           </foreignObject>
@@ -163,7 +165,7 @@ export default function NewspaperSection() {
 
           {/* Description */}
           <foreignObject x="25%" y="70%" width="50%" height="20%">
-            <p className="font-kopub text-black text-center text-xl leading-relaxed">
+            <p className="font-kopub text-black text-center text-2xl leading-relaxed">
               We are the largest data science and machine learning focused hackathon
               in Texas located at Texas A&M University in College Station.
             </p>

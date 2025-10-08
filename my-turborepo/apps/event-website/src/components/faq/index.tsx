@@ -6,14 +6,14 @@ type FaqItem = { question: string; answer: string };
 
 const ITEMS: FaqItem[] = [
   { question: "What is the Datathon?", answer: "A weekend-long event where students build data-driven projects and compete for prizes." },
-  { question: "Who can participate?", answer: "Any currently enrolled college/university student—beginners welcome." },
-  { question: "How do teams work?", answer: "Teams up to 4. Form ahead of time or join one during the event." },
-  { question: "What should I bring?", answer: "Just your laptop—no special hardware required." },
+  { question: "How much should I know?", answer: "If you are new or advanced in data science, TAMU Datathon is the perfect time and place to learn. We are committed to helping you build something you can be proud of!" },
+  { question: "Who can attend?", answer: "We welcome students from all across the world and from all majors! Undergraduate or graduate student at least 18 years of age and anyone who has graduated within one year of the event." },
+  { question: "How do teams work?", answer: "Teams up to 4. We encourage working with a team, it's more fun! Form ahead of time or join one during the event." },
+  { question: "What should I bring?", answer: "Please remember to bring your laptop and charger. Since the event lasts overnight, it is a good idea to bring a pillow and sleeping bag." },
   { question: "Are there workshops?", answer: "Yes. We host beginner-friendly workshops on data tools and ML all weekend." },
-  { question: "How are projects judged?", answer: "Creativity, technical difficulty, impact, and presentation quality." },
   { question: "Is it free to attend?", answer: "Yes attendance is free. Meals, snacks, and swag are provided." },
   { question: "What’s the schedule?", answer: "Opening Saturday morning hacking through the weekend with judging Sunday." },
-  { question: "Where is it held?", answer: "Exact venue details will be emailed to accepted participants." },
+  { question: "I have another question?", answer: "Send us an email at connect@tamudatathon.com." },
 ];
 
 export default function FAQ() {
@@ -25,7 +25,7 @@ export default function FAQ() {
         <h2 className="text-5xl font-bold mb-40 text-center text-white ">FAQ</h2>
 
         {/* 1/row mobile, 2/row sm, 3/row lg (9 items total makes a 3x3 on desktop) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-40 justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-36 justify-items-center">
           {ITEMS.map((it, i) => (
             <FaqCard
               key={i}
@@ -63,16 +63,16 @@ const FaqCard: React.FC<CardProps> = ({
   return (
     <div className="card">
       <div
-        className={["relative bg-black", widthClass, "transition-all duration-700 aspect-[21/9] flex items-center justify-center"].join(
+        className={["relative bg-black", widthClass, "transition-all duration-700 aspect-[21/10] flex items-center justify-center"].join(
           " "
         )}
       >
         <div
             className={`transition-all flex flex-col items-center py-5 justify-start duration-300 bg-white w-[90%] h-full absolute z-10 ${
-                isOpen ? "-translate-y-24 duration-700" : "-translate-y-10 duration-300"}`}
+                isOpen ? "-translate-y-32 duration-700" : "-translate-y-10 duration-300"}`}
             onClick={onToggle}
         >
-          <p className="text-xl sm:text-2xl font-semibold text-gray-500 font-serif">
+          <p className="text-xl font-semibold text-gray-500 font-serif">
             {title}
           </p>
           <p className="mt-5 px-10 text-[10px] sm:text-[12px] text-gray-700">
