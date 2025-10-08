@@ -5,6 +5,7 @@ import ScrollUp from "@/components/Common/ScrollUp";
 import type { Metadata } from "next";
 import Location from "@/components/location";
 import FAQ from "@/components/faq"
+import Prizes from "@/components/prizes"
 
 export const metadata: Metadata = {
   title: "TAMU Datathon",
@@ -19,7 +20,7 @@ export default function Home() {
         <ScrollUp />
         <Hero />
         <Location />
-        {/* prizes */}
+        <Prizes/>
         {/* sponsers */}
         <FAQ/>
 
