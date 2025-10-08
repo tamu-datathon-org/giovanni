@@ -185,11 +185,17 @@ const Footer = () => {
                 </svg>
               </a>
             </div>
-            <img
-                src="/images/Pure-Buttons-Blue-Gradient-Logo-RGB.png" // put logo.png inside your project's public/ folder
+            <a
+              href="http://mlh.link/MLH-PureButtons-hackathons"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/images/Pure-Buttons-Blue-Gradient-Logo-RGB.png"
                 alt="Site Logo"
-                style={{display: "block", maxWidth: "200px"}}
-            />
+                style={{ display: "block", maxWidth: "200px" }}
+              />
+            </a>
           </div>
         </div>
 
