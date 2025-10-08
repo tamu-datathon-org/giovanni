@@ -20,6 +20,18 @@ const Location = () => {
                     />
                 </div>
             </div>
+
+            <div className="relative z-10 col-start-7 col-span-8 row-start-8 md:row-start-9 row-span-4 flex items-center justify-center">
+                <div className="relative w-full h-full">
+                    <Image
+                        src="/images/elements/pen.svg"
+                        alt="location folder"
+                        fill
+                        className="object-contain"
+                        priority
+                    />
+                </div>
+            </div>
         </div>
    );
 };

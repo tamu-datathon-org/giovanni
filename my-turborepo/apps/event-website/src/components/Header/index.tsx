@@ -25,7 +25,7 @@ const Header = () => {
                         priority
                     />
                 </a>
-                <Link
+                {/* <Link
                     href="/schedule"
                     className="inline-flex place-content-center
                         text-3xl
@@ -38,7 +38,7 @@ const Header = () => {
                         focus-visible:ring-white/60"
                     >
                     Schedule
-                </Link>
+                </Link> */}
             </div>
 
         </div>
