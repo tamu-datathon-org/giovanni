@@ -21,7 +21,7 @@ import { organizerProcedure, protectedProcedure } from "../trpc";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 import { getEventData } from "./event";
 
-const RESUME_OPTIONAL = false;
+const RESUME_OPTIONAL = true;
 
 const resumeHandler = async (
   input: { resumeUrl: string; resumeName: string },
