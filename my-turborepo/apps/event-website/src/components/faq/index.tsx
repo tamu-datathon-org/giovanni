@@ -95,12 +95,16 @@ const FaqCard: React.FC<CardProps> = ({
         />
         <svg viewBox="0 0 100 100" className="absolute w-full h-full z-30" onClick={onToggle}>
           <polygon
-            points="-20,20 120,20 150,120 -50,120"
+            points="-20,20 120,20 200,75 -100,75"
             fill="none"
             stroke="#947536"
             strokeWidth="3"
           />
         </svg>
+        <div
+          className={`btm transition-all duration-700 absolute w-full h-full bg-[#BB9B5B] [clip-path:polygon(0%_70%,_100%_70%,_100%_100%,_0%_100%)] z-30`}
+          onClick={onToggle}
+        />
       </div>
     </div>
   );
