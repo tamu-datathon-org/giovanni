@@ -51,7 +51,6 @@ export default function Page() {
   };
   const [qrCode, setQrCode] = useState<string>("");
 
-  // TODO: Replace this with an API call to the correct router
   const { data, isLoading } = api.application.getApplicationStatus.useQuery(
     {
       eventName: EVENT_NAME,

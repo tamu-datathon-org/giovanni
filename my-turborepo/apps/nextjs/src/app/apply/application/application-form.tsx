@@ -1,7 +1,5 @@
 "use client";
 
-import "../../_components/customCss.scss";
-
 import type { SubmitHandler } from "react-hook-form";
 import React, { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -75,7 +73,7 @@ import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
 */
 
 export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME as string;
-const RESUME_OPTIONAL = false;
+const RESUME_OPTIONAL = true;
 
 const Loading = () => {
   return <LoadingAnimation />;
@@ -452,10 +450,47 @@ export function ApplicationForm() {
             />
           </div>
 
-          {/* Figure out how to do other */}
-          {/* Hackathons Attended */}
+          {/* Resume */}
           <div className="pt-4">
             <Title text="Experience" className="m-1" />
+            <FormField
+              control={form.control}
+              name="resumeFile"
+              render={({ field: { value, onChange, ...fieldProps } }) => (
+                <FormItem>
+                  <FormLabel className="text-xl">
+                    Resume sent to Sponsors (PDF Only) (Optional):
+                    {RESUME_OPTIONAL ? null : <Asterisk />}
+                    <br />
+                    <span className="text-sm">
+                      Current Resume:{" "}
+                      <span className="text-cyan-700">
+                        {importedValues?.resume?.resumeName || "None"}
+                      </span>
+                    </span>
+
+                  </FormLabel>
+                  <FormControl className="hover:cursor-pointer">
+                    <Input
+                      {...fieldProps}
+                      type="file"
+                      accept="application/pdf"
+                      className="border bg-gray-500"
+                      onChange={(event) => {
+                        form.setValue(
+                          "resumeFile",
+                          event.target.files ? event.target.files[0]! : null,
+                        );
+                      }}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Hackathons Attended */}
+          <div className="pt-4">
             <GenericCombobox
               name={"hackathonsAttended"}
               label={"How many hackathons have you attended?"}
@@ -528,41 +563,6 @@ export function ApplicationForm() {
                 (option) => option.value === importedValues?.app?.shirtSize,
               )}
               required={true}
-            />
-          </div>
-
-          {/* Resume */}
-          <div className="pt-4">
-            <FormField
-              control={form.control}
-              name="resumeFile"
-              render={({ field: { value, onChange, ...fieldProps } }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">
-                    Upload Resume (PDF Only):
-                    {RESUME_OPTIONAL ? null : <Asterisk />}
-                    <br />
-                    Current Resume:{" "}
-                    <span className="text-cyan-700">
-                      {importedValues?.resume?.resumeName || "None"}
-                    </span>
-                  </FormLabel>
-                  <FormControl className="hover:cursor-pointer">
-                    <Input
-                      {...fieldProps}
-                      type="file"
-                      accept="application/pdf"
-                      className="border bg-gray-500"
-                      onChange={(event) => {
-                        form.setValue(
-                          "resumeFile",
-                          event.target.files ? event.target.files[0]! : null,
-                        );
-                      }}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
             />
           </div>
 

@@ -5,7 +5,7 @@ import { z } from "zod";
 import { env as authEnv } from "@vanni/auth/env";
 
 export const env = createEnv({
-  extends: [authEnv, vercel()],
+  extends: [authEnv, vercel],
   shared: {
     NODE_ENV: z
       .enum(["development", "production", "test"])
