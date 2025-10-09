@@ -1,5 +1,5 @@
 "use client";
-import { redirect } from "next/navigation";
+
 import Footer from "@/components/Footer";
 import "../styles/index.css";
 import Header from "@/components/Header";
@@ -15,9 +15,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en">
       <body className="h-full m-0 w-full">
         <a
-      <html lang="en">
-      <body>
-      <a
           id="mlh-trust-badge"
           style={{
             display: "block",
@@ -42,16 +39,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         {children}
         <Footer />
         <ScrollToTop />
-      >
-        <img
-            src="https://s3.amazonaws.com/logged-assets/trust-badge/2026/mlh-trust-badge-2026-white.svg"
-            alt="Major League Hacking 2026 Hackathon Season"
-            style={{ width: "100%" }}
-        />
-      </a>
-      {children}
-      <Footer />
       </body>
-      </html>
+    </html >
   );
 }
