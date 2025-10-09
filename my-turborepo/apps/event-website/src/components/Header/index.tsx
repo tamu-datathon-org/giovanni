@@ -21,7 +21,7 @@ const Header = () => {
                         alt="logo"
                         width={200}
                         height={100}
-                        className="h-8 w-auto shrink-0 drop-shadow"
+                        className="h-6 w-auto shrink-0 drop-shadow"
                         priority
                     />
                 </a>

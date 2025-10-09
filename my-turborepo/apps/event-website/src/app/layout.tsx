@@ -16,7 +16,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en">
       <body className="h-full m-0 w-full">
         <a
-        <a
           id="mlh-trust-badge"
           style={{
             display: "block",

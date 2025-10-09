@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import Location from "@/components/location";
 import FAQ from "@/components/faq"
 import Prizes from "@/components/prizes"
+import Sponsors from "@/components/sponsor";
 
 export const metadata: Metadata = {
   title: "TAMU Datathon",
@@ -21,7 +22,7 @@ export default function Home() {
         <Hero />
         <Location />
         <Prizes/>
-        {/* sponsers */}
+        <Sponsors/>
         <FAQ/>
     </>
 

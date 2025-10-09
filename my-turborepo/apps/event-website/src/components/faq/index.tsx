@@ -6,14 +6,14 @@ type FaqItem = { question: string; answer: string };
 
 const ITEMS: FaqItem[] = [
   { question: "What is the Datathon?", answer: "A weekend-long event where students build data-driven projects and compete for prizes." },
-  { question: "How much should I know?", answer: "If you are new or advanced in data science, TAMU Datathon is the perfect time and place to learn. We are committed to helping you build something you can be proud of!" },
+  { question: "How much should I know?", answer: "We have challenges for beginners to advanced. TAMU Datathon is the perfect time and place to learn." },
   { question: "Who can attend?", answer: "We welcome students from all across the world and from all majors! Undergraduate or graduate student at least 18 years of age and anyone who has graduated within one year of the event." },
   { question: "How do teams work?", answer: "Teams up to 4. We encourage working with a team, it's more fun! Form ahead of time or join one during the event." },
   { question: "What should I bring?", answer: "Please remember to bring your laptop and charger. Since the event lasts overnight, it is a good idea to bring a pillow and sleeping bag." },
   { question: "Are there workshops?", answer: "Yes. We host beginner-friendly workshops on data tools and ML all weekend." },
   { question: "Is it free to attend?", answer: "Yes attendance is free. Meals, snacks, and swag are provided." },
   { question: "What’s the schedule?", answer: "Opening Saturday morning hacking through the weekend with judging Sunday." },
-  { question: "I have another question?", answer: "Send us an email at connect@tamudatathon.com." },
+  { question: "Have another question?", answer: "Send us an email at connect@tamudatathon.com." },
 ];
 
 export default function FAQ() {
@@ -63,7 +63,7 @@ const FaqCard: React.FC<CardProps> = ({
   return (
     <div className="card">
       <div
-        className={["relative bg-black", widthClass, "transition-all duration-700 aspect-[21/10] flex items-center justify-center"].join(
+        className={["relative bg-black", widthClass, "transition-all duration-700 aspect-[21/11] sm:aspect-[21/10] flex items-center justify-center"].join(
           " "
         )}
       >
@@ -72,10 +72,10 @@ const FaqCard: React.FC<CardProps> = ({
                 isOpen ? "-translate-y-32 duration-700" : "-translate-y-10 duration-300"}`}
             onClick={onToggle}
         >
-          <p className="text-xl font-semibold text-gray-500 font-serif">
+          <p className="text-xl font-semibold text-gray-500 font-serif text-center">
             {title}
           </p>
-          <p className="mt-5 px-10 text-[10px] sm:text-[12px] text-gray-700">
+          <p className="mt-5 px-10 text-[10px] sm:text-[12px] text-gray-700 text-center">
             {subtitle1}
           </p>
         </div>
