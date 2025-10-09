@@ -91,7 +91,7 @@ export default function NewspaperSection() {
         </svg>
 
         {/* Desktop */}
-        <svg viewBox="0 0 1400 1000" xmlns="http://www.w3.org/2000/svg" className="w-full h-[800px] hidden md:block">
+        <svg viewBox="0 0 1400 1000" xmlns="http://www.w3.org/2000/svg" className="w-full max-h-[800px] hidden sm:block">
           {/* Background Newspaper Illustration */}
           <image href="/images/newspaper.svg" width="100%" height="100%" />
 

@@ -1,9 +1,9 @@
 "use client";
 
 import Footer from "@/components/Footer";
-import "../styles/index.css";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
+import "../styles/index.css";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -11,6 +11,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   // redirect("https://tamudatathon.org/apply");
+
   return (
     <html lang="en">
       <body className="h-full m-0 w-full">
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             style={{ width: "100%" }}
           />
         </a>
+
         <Header />
         {children}
         <Footer />
