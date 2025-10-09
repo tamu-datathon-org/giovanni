@@ -1,6 +1,5 @@
 "use client";
 
-import { redirect } from "next/navigation";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -16,6 +15,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className="h-full m-0 w-full">
+        <a
         <a
           id="mlh-trust-badge"
           style={{
@@ -43,6 +43,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Footer />
         <ScrollToTop />
       </body>
-    </html>
+    </html >
   );
 }

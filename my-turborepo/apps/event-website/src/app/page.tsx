@@ -23,7 +23,6 @@ export default function Home() {
         <Prizes/>
         {/* sponsers */}
         <FAQ/>
-
     </>
 
   );
