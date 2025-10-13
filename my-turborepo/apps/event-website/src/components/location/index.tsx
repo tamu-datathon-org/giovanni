@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Location = () => {
     return (
-        <div className="relative grid grid-cols-12 grid-rows-12 min-h-[50vh] sm:min-h-screen w-full overflow-hidden py-8 md:py-16">
+        <div className="relative grid grid-cols-12 grid-rows-12 min-h-[50vh] sm:min-h-screen w-full overflow-hidden py-12 md:py-20" id="location">
             <div className="absolute inset-0 bg-[#1C0808] bg-cover bg-center bg-no-repeat" />
             {/* <div className="absolute inset-0 bg-[#2A2523] bg-cover bg-center bg-no-repeat" /> */}
 
