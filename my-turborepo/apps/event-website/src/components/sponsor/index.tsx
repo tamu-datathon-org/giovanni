@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 function Sponsors() {
     return (
-        <div className='w-full bg-[#322C29]'>
+        <div className='w-full bg-[#322C29] pt-12 md:pt-20' id='sponsors'>
             <div className='w-full flex flex-col justify-center items-center gap-y-4 md:gap-y-8'>
                 <span className='font-kopub bold text-white text-3xl md:text-[80px]'>Thanks To Our</span>
                 <Image
@@ -26,7 +26,7 @@ function Sponsors() {
                     priority // optional: loads it faster
                 />
 
-                <div className='relative z-10 col-start-2 row-start-7 col-span-6 row-span-1 transform scale-[0.7] translate-y-[-40px]'>
+                <div className='relative z-10 col-start-1 row-start-7 col-span-10 row-span-1 transform scale-[0.7] translate-y-[-10vw] md:translate-y-[-10vw]'>
                     <Image
                         src="/images/sponsor-logo/textured/hitachi_textured.png"
                         alt="hitachi"
@@ -36,7 +36,7 @@ function Sponsors() {
                     />
                 </div>
 
-                <div className='relative z-10 col-start-2 row-start-7 col-span-3 row-span-2 transform scale-[0.8] translate-y-4 md:translate-y-10'>
+                <div className='relative z-10 col-start-2 row-start-7 col-span-2 row-span-1 transform scale-[1.2] translate-y-4 md:translate-y-10'>
                     <Image
                         src="/images/sponsor-logo/textured/sec_textured.png"
                         alt="hitachi"

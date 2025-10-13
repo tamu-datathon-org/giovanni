@@ -20,7 +20,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section aria-label="Frequently Asked Questions" className="w-full bg-gradient-to-b from-[#322C29] to-[#1B0706] pb-20">
+    <section aria-label="Frequently Asked Questions" className="w-full bg-gradient-to-b from-[#322C29] to-[#1B0706] pb-20" id="faq">
       <div className="max-w-6xl mx-auto px-4 py-12">
         <h2 className="text-5xl font-bold mb-40 text-center text-white ">FAQ</h2>
 
