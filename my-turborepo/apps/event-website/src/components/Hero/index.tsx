@@ -17,7 +17,7 @@ const Hero = () => {
                     <NewspaperSection />
 
                     {/* magnifying glass - top right of newspaper */}
-                    <div className="absolute top-0 right-20 -translate-y-8 w-[450px] h-[450px] hidden md:block">
+                    <div className="absolute top-0 right-20 -translate-y-8 w-[450px] h-[450px] pointer-events-none hidden md:block">
                         <Image
                             src="/images/elements/mag.svg"
                             alt="mag"
@@ -38,7 +38,7 @@ const Hero = () => {
                     />
                 </div>
                 {/* lamp - top area */}
-                <div className="absolute top-0 left--10 z-20 w-[1200px] h-[1200px] hidden md:block">
+                <div className="absolute top-0 left--10 z-10 w-[1200px] h-[1200px] pointer-events-none hidden md:block">
                 <Image src="/images/elements/Lamp.svg"
                        alt="lamp"
                        width={1500}

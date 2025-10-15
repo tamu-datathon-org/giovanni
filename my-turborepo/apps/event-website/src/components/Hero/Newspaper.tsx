@@ -152,8 +152,9 @@ export default function NewspaperSection() {
 
           {/* What is Datathon Heading */}
           <text
+
             x="50%"
-            y="67%"
+            y="68%"
             textAnchor="middle"
             fontFamily="KoPub_Batang"
             fontSize="50"
@@ -164,7 +165,7 @@ export default function NewspaperSection() {
           </text>
 
           {/* Description */}
-          <foreignObject x="25%" y="70%" width="50%" height="20%">
+          <foreignObject x="25%" y="71%" width="50%" height="20%">
             <p className="text-center font-kopub text-black text-center text-3xl leading-relaxed">
               We are the largest data science and machine learning focused hackathon
               in Texas located at Texas A&M University in College Station.
