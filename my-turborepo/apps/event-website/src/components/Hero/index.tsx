@@ -38,11 +38,11 @@ const Hero = () => {
                     />
                 </div>
                 {/* lamp - top area */}
-                <div className="relative z-20 col-start-1 col-span-8 row-start-1 row-span-8 w-full aspect-square pointer-events-none">
+                <div className="absolute top-0 left--10 z-20 w-[1200px] h-[1200px] hidden md:block">
                 <Image src="/images/elements/Lamp.svg"
                        alt="lamp"
-                       width={1000}
-                       height={1000}
+                       width={1500}
+                       height={1500}
                        className="object-contain" />
                 </div>
 
