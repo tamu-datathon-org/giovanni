@@ -1,4 +1,5 @@
 import { ThemedButton } from "../ui/themed-button";
+import { event } from "@/lib/gtag";
 
 export default function NewspaperSection() {
   return (
@@ -57,6 +58,7 @@ export default function NewspaperSection() {
                 href="https://tamudatathon.org/apply"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => event('apply_click', { event_category: 'engagement', event_label: 'apply_newspaper_mobile' })}
               >
                 <ThemedButton
                   className="w-[600px] h-24 text-4xl  px-8"
@@ -140,6 +142,7 @@ export default function NewspaperSection() {
                 href="https://tamudatathon.org/apply"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => event('apply_click', { event_category: 'engagement', event_label: 'apply_newspaper_desktop' })}
               >
                 <ThemedButton
                   className="w-[450px] h-20 text-4xl  px-8"
