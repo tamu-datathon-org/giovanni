@@ -12,6 +12,7 @@
   box-sizing: border-box;
 }
 
+/* AnonymousPro font - typewriter font */
 @font-face {
   font-family: "anonymous";
   src: url("/fonts/AnonymousPro-Regular.ttf") format("truetype");
