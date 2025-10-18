@@ -1690,7 +1690,8 @@ Until then, please reach out to <a href="mailto:connect@tamudatathon.com" target
 
 export const accepted_title = `Congratulations on being accepted to TAMU Datathon Fall 2025!`;
 
-export const accepted_content = `<!doctype html>
+export const accepted_content = `
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
   xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -2329,12 +2330,29 @@ neue,helvetica,arial,sans-serif">TAMU DATATHON</span></span></strong></span>
                                       style="padding:0px 18px 9px;color:#FFFFFF;text-align:left;"> <span
                                         style="font-size:17px"><span
                                           style="font-family:lato,helvetica neue,helvetica,arial,sans-serif"><span
-                                            style="color:#555555">Congratulations!<br> We’re excited to inform you that
+                                            style="color:#555555"><b>Congratulations!</b><br> We’re excited to inform you that
                                             you’ve been accepted to the TAMU Datathon Fall 2025! Your
-                                            application truly impressed us, and we can’t wait to see you this weekend,
-                                            April 5, 2025. 
+                                            application truly impressed us, and we can’t wait to see you at the <b>MSC 2300</b> on
+                                            <b>November 8-9, 2025</b>.
+                                            <br>
+                                            <br>
+                                            <b>What's Next?</b>
+                                            <br>
+                                            We will be sending qrcodes closer to the event for check-in, but they can also be accessed through 
+                                            <a href="https://tamudatathon.com/apply">https://tamudatathon.com/apply</a>
+                                            . As well as a document to prepare for hacking!
+                                            <br>
+                                            <br>
+                                            <b>Schedules</b> will be posted soon for event check-in and food.
+
                                             <br><br>
-                                            <b>Check-in</b> is from <b>8:00 AM to 9:00 AM</b> at the ILCB lobby. Then, make your way to the <b>ILCB 229</b> for the opening ceremony at 9:00 AM.</span></span></span>
+                                            <b>As a reminder, we provide:</b>
+                                            <ul style="margin: 0;">
+                                              <li>6000+ in prizes</li>
+                                              <li>Free food, merch, and mini-events</li>
+                                              <li>Meet company sponsors like databricks, heb, hitachi, and more!</li>
+                                            </ul>
+                                            </span></span></span>
                                             </span>
                                           </span>
                                         </span>
@@ -2456,8 +2474,8 @@ neue,helvetica,arial,sans-serif">TAMU DATATHON</span></span></strong></span>
                                           <tr>
                                             <td class="mcnCaptionLeftImageContent" align="center" valign="top"> <img
                                                 alt=""
-                                                src="https://mcusercontent.com/36d73585139760aa245837bb2/images/386e8ab8-96d9-7b1f-c2fe-e999573fcbb6.png"
-                                                width="176" style="max-width:5959px;" class="mcnImage">
+                                                src="https://media.discordapp.net/attachments/637030693867749387/1428945785453674678/DETECTIVE_BEARTHOLOMEW.png?ex=68f458f7&is=68f30777&hm=47f7a46d1349cb76b63f6ca39933b2236c3ffb27cb2087482e42be97f5145523&=&format=webp&quality=lossless&width=459&height=555"
+                                                width="176" style="max-width:80px;" class="mcnImage">
                                             </td>
                                           </tr>
                                         </tbody>
@@ -2897,6 +2915,7 @@ neue,helvetica,arial,sans-serif">TAMU DATATHON</span></span></strong></span>
   </center>
   <script type="text/javascript" src="/PhGe4s/_b/yr/D-n0/DqUZP7gD5k/DEh9kkVwmDmpD3b5/KSsCAQ/T34J/R1BJKCwB"></script>
 </body>
+
 </html>
 `;
 
