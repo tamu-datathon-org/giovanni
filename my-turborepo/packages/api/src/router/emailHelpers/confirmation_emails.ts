@@ -2474,7 +2474,7 @@ neue,helvetica,arial,sans-serif">TAMU DATATHON</span></span></strong></span>
                                           <tr>
                                             <td class="mcnCaptionLeftImageContent" align="center" valign="top"> <img
                                                 alt=""
-                                                src="https://media.discordapp.net/attachments/637030693867749387/1428945785453674678/DETECTIVE_BEARTHOLOMEW.png?ex=68f458f7&is=68f30777&hm=47f7a46d1349cb76b63f6ca39933b2236c3ffb27cb2087482e42be97f5145523&=&format=webp&quality=lossless&width=459&height=555"
+                                                src="https://r8cfjk8cd72arhv8.public.blob.vercel-storage.com/datathon_pictures/DETECTIVE%20BEARTHOLOMEW.png"
                                                 width="176" style="max-width:80px;" class="mcnImage">
                                             </td>
                                           </tr>
