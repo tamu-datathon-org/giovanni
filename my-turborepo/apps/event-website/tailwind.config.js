@@ -30,6 +30,7 @@ module.exports = {
         "location":["location"],
         "inter": ["__Inter_d65c78", "__Inter_Fallback_d65c78", "sans-serif"],
         "kopub": ['"KoPub Batang"', 'serif'],
+        "anonymous": ['"anonymous"']
       },
       colors: {
         current: "currentColor",

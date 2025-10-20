@@ -21,8 +21,8 @@ export default function FAQ() {
 
   return (
     <section aria-label="Frequently Asked Questions" className="w-full bg-gradient-to-b from-[#322C29] to-[#1B0706] pb-20" id="faq">
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        <h2 className="text-5xl font-bold mb-40 text-center text-white ">FAQ</h2>
+      <div className="flex flex-col gap-y-36 max-w-6xl mx-auto px-4 py-24">
+        <h2 className="text-6xl font-bold text-center text-white">FAQ</h2>
 
         {/* 1/row mobile, 2/row sm, 3/row lg (9 items total makes a 3x3 on desktop) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-36 justify-items-center">
@@ -63,7 +63,7 @@ const FaqCard: React.FC<CardProps> = ({
   return (
     <div className="card">
       <div
-        className={["relative bg-black", widthClass, "transition-all duration-700 aspect-[21/11] sm:aspect-[21/10] flex items-center justify-center"].join(
+        className={["relative bg-black", widthClass, "font-anonymous transition-all duration-700 aspect-[21/11] sm:aspect-[21/10] flex items-center justify-center"].join(
           " "
         )}
       >
@@ -72,10 +72,10 @@ const FaqCard: React.FC<CardProps> = ({
                 isOpen ? "-translate-y-32 duration-700" : "-translate-y-10 duration-300"}`}
             onClick={onToggle}
         >
-          <p className="text-xl font-semibold text-gray-500 font-serif text-center">
+          <p className="text-xl font-semibold text-gray-700 text-center">
             {title}
           </p>
-          <p className="mt-5 px-10 text-[10px] sm:text-[12px] text-gray-700 text-center">
+          <p className="mt-5 px-3 text-[10px] sm:text-[12px] text-gray-700 text-center">
             {subtitle1}
           </p>
         </div>

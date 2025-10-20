@@ -38,12 +38,12 @@ export default function NewspaperSection() {
 
           {/* Applications Deadline */}
           <text
-            x="52%"
-            y="41%"
+            x="53%"
+            y="40%"
             textAnchor="middle"
             fontFamily="KoPub_Batang"
-            fontSize="60"
-            fontWeight="800"
+            fontSize="65"
+            fontWeight="400"
             fill="black"
             transform="rotate(0.38)"
           >
@@ -59,9 +59,9 @@ export default function NewspaperSection() {
                 rel="noopener noreferrer"
               >
                 <ThemedButton
-                  className="w-[600px] h-24 text-4xl  px-8"
+                  className="w-[430px] h-24 text-4xl  px-8"
                 >
-                  Apply Now!
+                  APPLY
                 </ThemedButton>
               </a>
             </div>
@@ -73,8 +73,8 @@ export default function NewspaperSection() {
             y="67%"
             textAnchor="middle"
             fontFamily="KoPub_Batang"
-            fontSize="55"
-            fontWeight="900"
+            fontSize="70"
+            fontWeight="400"
             fill="black"
             transform="rotate(0.38)"
           >
@@ -82,8 +82,8 @@ export default function NewspaperSection() {
           </text>
 
           {/* Description */}
-          <foreignObject x="15%" y="70%" width="70%" height="25%" rotate={0.38}>
-            <p className="font-kopub text-black text-center text-3xl leading-relaxed">
+          <foreignObject x="15%" y="71%" width="70%" height="25%" rotate={0.38}>
+            <p className="font-kopub text-black text-center text-4xl leading-relaxed">
               We are the largest data science and machine learning focused hackathon
               in Texas located at Texas A&M University in College Station.
             </p>
@@ -98,10 +98,10 @@ export default function NewspaperSection() {
           {/* Title Text */}
           <text
             x="50%"
-            y="20%"
+            y="21%"
             textAnchor="middle"
             fontFamily="KoPub_Batang"
-            fontSize="60"
+            fontSize="85"
             fontWeight="normal"
             fill="black"
           >
@@ -126,8 +126,8 @@ export default function NewspaperSection() {
             y="40%"
             textAnchor="middle"
             fontFamily="KoPub_Batang"
-            fontSize="40"
-            fontWeight="800"
+            fontSize="50"
+            fontWeight="400"
             fill="black"
           >
             APPLICATIONS CLOSE OCT. 24
@@ -142,9 +142,9 @@ export default function NewspaperSection() {
                 rel="noopener noreferrer"
               >
                 <ThemedButton
-                  className="w-[450px] h-20 text-4xl  px-8"
+                  className="w-[350px] h-20 text-4xl px-8"
                 >
-                  Apply Now!
+                  APPLY
                 </ThemedButton>
               </a>
             </div>
@@ -152,20 +152,21 @@ export default function NewspaperSection() {
 
           {/* What is Datathon Heading */}
           <text
+
             x="50%"
-            y="67%"
+            y="68%"
             textAnchor="middle"
             fontFamily="KoPub_Batang"
-            fontSize="35"
-            fontWeight="900"
+            fontSize="50"
+            fontWeight="400"
             fill="black"
           >
             WHAT IS DATATHON?
           </text>
 
           {/* Description */}
-          <foreignObject x="25%" y="70%" width="50%" height="20%">
-            <p className="font-kopub text-black text-center text-2xl leading-relaxed">
+          <foreignObject x="25%" y="71%" width="50%" height="20%">
+            <p className="text-center font-kopub text-black text-center text-3xl leading-relaxed">
               We are the largest data science and machine learning focused hackathon
               in Texas located at Texas A&M University in College Station.
             </p>
