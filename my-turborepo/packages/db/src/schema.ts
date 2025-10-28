@@ -10,6 +10,9 @@ import {
   primaryKey,
   integer,
   pgTable,
+    pgEnum,
+    uniqueIndex,
+    index,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -181,6 +184,74 @@ export const Application = pgTable("application", {
 
   checkedIn: boolean("checked_in").notNull().default(false),
 });
+
+// --- New enum for phases (matches your PHASE_OPTIONS in page.tsx) ---
+export const attendancePhaseEnum = pgEnum("attendance_phase", [
+  "main",
+  "meal1",
+  "meal2",
+  "meal3",
+  "meal4",
+]);
+
+export const Attendance = pgTable(
+    "attendance",
+    {
+      id: uuid("id").notNull().primaryKey().defaultRandom(),
+
+      applicationId: uuid("application_id")
+          .notNull()
+          .references(() => Application.id, { onDelete: "cascade" }),
+
+      eventId: uuid("event_id")
+          .notNull()
+          .references(() => Event.id, { onDelete: "cascade" }),
+
+      phase: attendancePhaseEnum("phase").notNull(),
+
+      checkedIn: boolean("checked_in").notNull().default(false),
+      checkedInAt: timestamp("checked_in_at", {
+        mode: "date",
+        withTimezone: true,
+      }),
+
+      updatedAt: timestamp("updated_at", {
+        mode: "date",
+        withTimezone: true,
+      })
+          .notNull()
+          .$onUpdateFn(() => sql`now()`),
+    },
+    (t) => ({
+      // One record per (application, event, phase)
+      uniq: uniqueIndex("attendance_application_event_phase_uniq").on(
+          t.applicationId,
+          t.eventId,
+          t.phase,
+      ),
+      appIdx: index("attendance_application_idx").on(t.applicationId),
+      evtIdx: index("attendance_event_idx").on(t.eventId),
+      phaseIdx: index("attendance_phase_idx").on(t.phase),
+    }),
+);
+
+// --- Relations (optional but nice for typed joins) ---
+export const AttendanceRelations = relations(Attendance, ({ one }) => ({
+  application: one(Application, {
+    fields: [Attendance.applicationId],
+    references: [Application.id],
+  }),
+  event: one(Event, {
+    fields: [Attendance.eventId],
+    references: [Event.id],
+  }),
+}));
+
+// (Optional) In Application relations if you keep them:
+export const ApplicationRelations = relations(Application, ({ many }) => ({
+  // ...your existing relations
+  attendance: many(Attendance),
+}));
 
 export const UserResume = pgTable("user_resume", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
