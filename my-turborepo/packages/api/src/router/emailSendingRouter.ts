@@ -67,7 +67,7 @@ export const emailSendingRouter = {
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const emails = await getEmailsByLabelList(input.mailing_lists);
+      const emails = await getEmailsByLabelList(ctx, input.mailing_lists);
       const finalEmails = emails.concat(input.additionalEmails);
 
       const failed = await queueBulkEmail(

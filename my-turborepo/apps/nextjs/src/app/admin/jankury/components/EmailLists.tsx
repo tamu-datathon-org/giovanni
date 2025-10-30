@@ -2,6 +2,7 @@
 
 import type { z } from "zod";
 import { useFormContext } from "react-hook-form";
+import { env } from "~/env";
 
 import {
   FormControl,
@@ -19,6 +20,16 @@ export default function EmailLists() {
   const lists = api.email.getAllLabels.useQuery().data;
   const form = useFormContext<z.infer<typeof FormSchema>>();
 
+  const hardcodedLists = [
+    `Current ${env.NEXT_PUBLIC_EVENT_NAME} accepted`,
+    `Current ${env.NEXT_PUBLIC_EVENT_NAME} pending`,
+    `Current ${env.NEXT_PUBLIC_EVENT_NAME} rejected`,
+    `Current ${env.NEXT_PUBLIC_EVENT_NAME} waitlisted`,
+    `Current ${env.NEXT_PUBLIC_EVENT_NAME} all`,
+  ];
+
+  const mergedLists = [...(lists ?? []), ...hardcodedLists];
+
   return (
     <FormField
       control={form.control}
@@ -27,7 +38,7 @@ export default function EmailLists() {
       render={() => (
         <FormItem>
           <FormLabel className="text-white text-md">Mailing List</FormLabel>
-          {lists?.map((listName) => (
+          {mergedLists?.map((listName) => (
             <FormField
               key={listName}
               control={form.control}
@@ -46,10 +57,10 @@ export default function EmailLists() {
                           return checked
                             ? field.onChange([...field.value, listName])
                             : field.onChange(
-                                field.value.filter(
-                                  (value: any) => value !== listName,
-                                ),
-                              );
+                              field.value.filter(
+                                (value: any) => value !== listName,
+                              ),
+                            );
                         }}
                       />
                     </FormControl>

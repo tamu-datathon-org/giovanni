@@ -7,25 +7,68 @@ import {
   EmailLabel,
   EmailList,
   Preregistration,
+  Event
 } from "@vanni/db/schema";
 
 import { protectedProcedure } from "../trpc";
 
-export async function getEmailsByLabelList(input: string[]) {
+export async function getEmailsByLabelList(ctx: any, input: string[]) {
   console.log(input);
 
   const emails = new Set<string>();
   for (const label of input) {
-    const emailLabel = await db.query.EmailLabel.findFirst({
-      where: eq(EmailLabel.name, label),
-      with: {
-        emails: true,
-      },
-    });
-    emailLabel?.emails.forEach((email) => emails.add(email.email));
+    // Check if the label is a specialized label
+    const parts = label.split(" ");
+    if (parts.length === 3 && parts[0] === "Current") {
+      const eventName = parts[1];
+      if (!eventName) throw new Error("Event name is required");
+
+      let status = parts[2];
+
+      // Match case of Application.status
+      if (status) {
+        status = status.toLowerCase();
+      }
+
+      const emails_arr = await getApplicationEmailsByEvent(ctx, eventName, status);
+      console.log(emails_arr)
+      emails_arr.forEach((email: string) => emails.add(email));
+    } else {
+      const emailLabel = await db.query.EmailLabel.findFirst({
+        where: eq(EmailLabel.name, label),
+        with: {
+          emails: true,
+        },
+      });
+      emailLabel?.emails.forEach((email) => emails.add(email.email));
+    }
   }
 
   return Array.from(emails);
+}
+
+export async function getApplicationEmailsByEvent(
+  ctx: any,
+  eventName: string,
+  status?: string,
+) {
+  const validStatuses = ['accepted', 'rejected', 'pending', 'checkedin', 'waitlisted'] as const;
+  if (status && status !== 'all' && !validStatuses.includes(status as typeof validStatuses[number])) {
+    throw new Error(`Invalid status: ${status}. Must be one of ${validStatuses.join(', ')} or 'all'`);
+  }
+
+  let q = ctx.db
+    .selectDistinct({ email: Application.email })
+    .from(Application)
+    .innerJoin(Event, eq(Application.eventId, Event.id))
+    .where(eq(Event.name, eventName));
+
+  if (status !== "all") {
+    q = q.where(eq(Application.status, status as typeof validStatuses[number]));
+  }
+
+  const rows = await q.orderBy(asc(Application.email));
+  return rows.map((r: { email: string }) => r.email);
 }
 
 export const emailRouter = {
@@ -102,5 +145,5 @@ export const emailRouter = {
   // This takes a list of labels and returns all emails that are in any of the labels
   getEmailsByLabelList: protectedProcedure
     .input(z.array(z.string()))
-    .query(({ input }) => getEmailsByLabelList(input)),
+    .query(async ({ ctx, input }) => await getEmailsByLabelList(ctx, input)),
 };
