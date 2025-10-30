@@ -10,7 +10,7 @@ import {
   Event
 } from "@vanni/db/schema";
 
-import { protectedProcedure } from "../trpc";
+import { adminProcedure } from "../trpc";
 
 export async function getEmailsByLabelList(ctx: any, input: string[]) {
   console.log(input);
@@ -72,7 +72,7 @@ export async function getApplicationEmailsByEvent(
 }
 
 export const emailRouter = {
-  getAllLabels: protectedProcedure.query(async ({ ctx }) => {
+  getAllLabels: adminProcedure.query(async ({ ctx }) => {
     const emailLabels = await ctx.db
       .select({
         name: EmailLabel.name,
@@ -83,7 +83,7 @@ export const emailRouter = {
 
     return emailLabels.map((label) => label.name);
   }),
-  getAllEmails: protectedProcedure.query(async ({ ctx }) => {
+  getAllEmails: adminProcedure.query(async ({ ctx }) => {
     const preregisterSQL = ctx.db
       .select({
         email: Preregistration.email,
@@ -105,7 +105,7 @@ export const emailRouter = {
       .orderBy(asc(EmailList.email));
     return queryResult;
   }),
-  getEmailByLabel: protectedProcedure
+  getEmailByLabel: adminProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
       console.log(input);
@@ -134,7 +134,7 @@ export const emailRouter = {
           return emailLabel?.emails ?? [];
       }
     }),
-  getAllEmailList: protectedProcedure.query(async ({ ctx }) => {
+  getAllEmailList: adminProcedure.query(async ({ ctx }) => {
     return await ctx.db
       .selectDistinct({
         email: EmailList.email,
@@ -143,7 +143,7 @@ export const emailRouter = {
   }),
 
   // This takes a list of labels and returns all emails that are in any of the labels
-  getEmailsByLabelList: protectedProcedure
+  getEmailsByLabelList: adminProcedure
     .input(z.array(z.string()))
     .query(async ({ ctx, input }) => await getEmailsByLabelList(ctx, input)),
 };

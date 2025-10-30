@@ -17,7 +17,7 @@ import {
 
 import { User } from "@vanni/db/auth-schema";
 
-import { organizerProcedure, protectedProcedure } from "../trpc";
+import { organizerProcedure } from "../trpc";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 import { getEventData } from "./event";
 
@@ -165,7 +165,7 @@ export async function updateBatchStatus(
 // email router needs the batch and trickles it down
 
 export const applicationRouter = {
-  create: protectedProcedure
+  create: organizerProcedure
     .input(
       z.object({
         eventName: z.string(),
@@ -218,7 +218,7 @@ export const applicationRouter = {
 
       return response;
     }),
-  update: protectedProcedure
+  update: organizerProcedure
     .input(
       z.object({
         id: z.string(),
@@ -277,7 +277,7 @@ export const applicationRouter = {
 
       return response;
     }),
-  getApplicationByEventName: protectedProcedure
+  getApplicationByEventName: organizerProcedure
     .input(z.object({ eventName: z.string() }))
     .query(async ({ ctx, input }) => {
       const { eventName } = input;
@@ -478,7 +478,7 @@ export const applicationRouter = {
         .set({ acceptedEmail: finalSql })
         .where(inArray(Application.id, ids));
     }),
-  getApplicationStatus: protectedProcedure
+  getApplicationStatus: organizerProcedure
     .input(z.object({ eventName: z.string() }))
     .query(async ({ ctx, input }) => {
       const { eventName } = input;
@@ -499,7 +499,7 @@ export const applicationRouter = {
 
       return application;
     }),
-  getCheckInStatus: protectedProcedure
+  getCheckInStatus: organizerProcedure
     .input(z.object({ eventName: z.string(), email: z.string() }))
     .query(async ({ ctx, input }) => {
       const { eventName, email } = input;
