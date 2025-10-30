@@ -23,7 +23,7 @@ function Sponsors() {
                     height={800}
                     quality={100}
                     className="col-start-1 row-start-1 col-span-12 row-span-12 h-auto" // Ensures it covers the container
-                    priority // optional: loads it faster
+                    priority
                 />
 
                 <div className='relative z-10 col-start-1 row-start-7 col-span-10 row-span-1 transform scale-[0.7] translate-y-[-10vw] md:translate-y-[-10vw]'>
@@ -32,7 +32,6 @@ function Sponsors() {
                         alt="hitachi"
                         fill
                         quality={100}
-                        priority // optional: loads it faster
                     />
                 </div>
 
@@ -42,7 +41,6 @@ function Sponsors() {
                         alt="hitachi"
                         fill
                         quality={100}
-                        priority // optional: loads it faster
                     />
                 </div>
 
@@ -52,7 +50,6 @@ function Sponsors() {
                         alt="msy"
                         fill
                         quality={100}
-                        priority // optional: loads it faster
                     />
                 </div>
 
@@ -72,7 +69,6 @@ function Sponsors() {
                         alt="hitachi"
                         fill
                         quality={100}
-                        priority // optional: loads it faster
                     />
                 </div>
 
@@ -82,7 +78,6 @@ function Sponsors() {
                         alt="hitachi"
                         fill
                         quality={100}
-                        priority // optional: loads it faster
                     />
                 </div>
 
@@ -92,17 +87,15 @@ function Sponsors() {
                         alt="p66"
                         fill
                         quality={100}
-                        priority // optional: loads it faster
                     />
                 </div>
 
-                <div className='relative z-10 col-start-8 row-start-10 col-span-2 row-span-1 transform scale-[0.7]'>
+                <div className='relative z-10 col-start-7 row-start-10 col-span-3 row-span-1 transform scale-[0.5]'>
                     <Image
-                        src="/images/sponsor-logo/textured/tamu_textured.png"
+                        src="/images/sponsor-logo/textured/tamid_textured.png"
                         alt="tamu"
                         fill
                         quality={100}
-                        priority // optional: loads it faster
                     />
                 </div>
 
@@ -113,9 +106,17 @@ function Sponsors() {
                             alt="pure buttons"
                             fill
                             quality={100}
-                            priority // optional: loads it faster
                         />
                     </a>
+                </div>
+
+                <div className='relative z-10 col-start-10 row-start-5 col-span-3 row-span-2 transform scale-[0.5]'>
+                    <Image
+                        src="/images/sponsor-logo/textured/tamu_statistics.png"
+                        alt="tamu statistics"
+                        fill
+                        quality={100}
+                    />
                 </div>
             </div>
         </div>
