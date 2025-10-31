@@ -11,13 +11,13 @@ interface Event {
 }
 
 function formatTime(dateString: string) {
-  const d = new Date(dateString);
-  if (isNaN(d.getTime())) return dateString;
-  let hours = d.getHours();
-  const minutes = String(d.getMinutes()).padStart(2, "0");
-  const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12 || 12;
-  return `${hours}:${minutes} ${ampm}`;
+    const d = new Date(dateString);
+    if (isNaN(d.getTime())) return dateString;
+    let hours = d.getHours();
+    const minutes = String(d.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+    return `${hours}:${minutes} ${ampm}`;
 }
 
 function TimelineDay({ dayNumber, dayName, events }: { dayNumber: number; dayName: string; events: Event[] }) {
@@ -42,9 +42,8 @@ function TimelineDay({ dayNumber, dayName, events }: { dayNumber: number; dayNam
                             <div key={event.id} className="flex gap-4 md:gap-6 relative group">
                                 {/* Time */}
                                 <div className="w-24 md:w-28 flex-shrink-0 text-right pt-1">
-                                    <span className={`text-base md:text-lg font-medium ${
-                                        index === highlightIndex ? 'text-red-600' : 'text-black'
-                                    }`}>
+                                    <span className={`text-base md:text-lg font-medium ${index === highlightIndex ? 'text-red-600' : 'text-black'
+                                        }`}>
                                         {formatTime(event.startTime)}
                                     </span>
                                 </div>
@@ -52,11 +51,10 @@ function TimelineDay({ dayNumber, dayName, events }: { dayNumber: number; dayNam
                                 {/* Timeline */}
                                 <div className="flex flex-col items-center relative">
                                     {/* Circle */}
-                                    <div className={`w-5 h-5 rounded-full z-10 flex-shrink-0 mt-1 ${
-                                        index === highlightIndex
+                                    <div className={`w-5 h-5 rounded-full z-10 flex-shrink-0 mt-1 ${index === highlightIndex
                                             ? 'bg-red-600 border-4 border-red-600'
                                             : 'bg-black border-4 border-black'
-                                    }`} />
+                                        }`} />
 
                                     {/* Vertical Line */}
                                     {index < events.length - 1 && (
@@ -69,9 +67,8 @@ function TimelineDay({ dayNumber, dayName, events }: { dayNumber: number; dayNam
 
                                 {/* Event Details */}
                                 <div className="flex-1 pb-4 pt-0.5">
-                                    <h2 className={`text-lg md:text-xl font-normal ${
-                                        index === highlightIndex ? 'text-red-600 font-medium' : 'text-black'
-                                    }`}>
+                                    <h2 className={`text-lg md:text-xl font-normal ${index === highlightIndex ? 'text-red-600 font-medium' : 'text-black'
+                                        }`}>
                                         {event.title}
                                     </h2>
                                 </div>
@@ -86,7 +83,7 @@ function TimelineDay({ dayNumber, dayName, events }: { dayNumber: number; dayNam
 
 
 const CACHE_KEY = "cachedScheduleData";
-const CACHE_TIME = 10000; // 10 seconds
+const CACHE_TIME = 20000; // 10 seconds
 
 export default function SchedulePage() {
     const [events, setEvents] = useState<Event[]>([]);
@@ -94,10 +91,8 @@ export default function SchedulePage() {
     const [error, setError] = useState<string | null>(null);
     const [lastUpdated, setLastUpdated] = useState<number | null>(null);
 
-    // Get API URL with fallback
-    const API_URL = typeof process !== 'undefined'
-        ? process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_URL
-        : '';
+    // Use local API endpoint instead of Google Sheets directly
+    const API_URL = '/api/schedule';
 
     // sorts by time and day
     const sortEvents = (data: Event[]) =>
