@@ -4,7 +4,7 @@ export default function Prizes() {
 
   return (
     <section aria-label="Prizes" className="font-anonymous py-20 text-gray-400 w-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#2A2523] to-[#322C29]" id="prizes">
-      <h2 className="text-white py-4">
+      <h2 className="text-white py-4 text-5xl">
         Prizes
       </h2>
       <div className="relative w-[90vw] sm:w-[70vw] aspect-[10/13] mx-auto">

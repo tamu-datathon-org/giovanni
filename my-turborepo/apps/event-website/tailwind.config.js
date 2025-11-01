@@ -13,7 +13,6 @@ module.exports = {
       center: true,
       padding: "1rem",
     },
-
     screens: {
       xs: "450px",
       sm: "575px",
@@ -27,10 +26,11 @@ module.exports = {
         "squid-game": ["myfont", "sans-serif"],
         "count-down": ["count", "sans-serif"],
         "FAQ": ["FAQ"],
-        "location":["location"],
+        "location": ["location"],
         "inter": ["__Inter_d65c78", "__Inter_Fallback_d65c78", "sans-serif"],
         "kopub": ['"KoPub Batang"', 'serif'],
-        "anonymous": ['"anonymous"']
+        "anonymous": ['"anonymous"'],
+        serif: ['"PT Serif"', 'Times New Roman', 'serif'],
       },
       colors: {
         current: "currentColor",
@@ -46,18 +46,17 @@ module.exports = {
         offblacktext: "#36393E",
         datapink: "#D43B81",
         datapinkdark: "#BD3473",
-        "normal" : "#f9feff",
+        normal: "#f9feff",
         "bg-color-dark": "#171C28",
         "body-color": {
           DEFAULT: "#212327",
           dark: "#9da7b9",
         },
         customRed: "#DF4C4F",
-        customyellow: '#F9CE76',
-        customgreen: '#64E9A2',
-        customblue: '#3C96E3',
-        custompurple: '#CE86D1',
-
+        customyellow: "#F9CE76",
+        customgreen: "#64E9A2",
+        customblue: "#3C96E3",
+        custompurple: "#CE86D1",
         stroke: {
           stroke: "#E3E8EF",
           dark: "#353943",
@@ -67,15 +66,6 @@ module.exports = {
           dark: "#1E232E",
           light: "#F0F2F9",
         },
-
-
-
-          customRed: "#DF4C4F",
-          customyellow: '#F9CE76',
-          customgreen: '#64E9A2',
-          customblue: '#3C96E3',
-          custompurple: '#CE86D1',
-
       },
       boxShadow: {
         signUp: "0px 5px 10px rgba(4, 10, 34, 0.2)",

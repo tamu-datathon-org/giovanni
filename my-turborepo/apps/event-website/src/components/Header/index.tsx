@@ -46,7 +46,7 @@ const Header = () => {
                 <a href="#prizes" onClick={() => setNavbarOpen(false)} className="py-2 md:py-0 hover:text-gray-300">Prizes</a>
                 <a href="#sponsors" onClick={() => setNavbarOpen(false)} className="py-2 md:py-0 hover:text-gray-300">Sponsors</a>
                 <a href="#faq" onClick={() => setNavbarOpen(false)} className="py-2 md:py-0 hover:text-gray-300">FAQ</a>
-                {/* <a href="../schedule" onClick={() => setNavbarOpen(false)} className="py-2 md:py-0 hover:text-gray-300">Schedule</a> */}
+                <a href="/schedule" onClick={() => setNavbarOpen(false)} className="py-2 md:py-0 hover:text-gray-300">Schedule</a>
             </div>
         </div>
     </header>
