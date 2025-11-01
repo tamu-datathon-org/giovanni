@@ -15,11 +15,11 @@ const Header = () => {
     <header className="top-0 left-0 z-50 w-full bg-[#1C0808] sticky font-anonymous">
         <div className="relative flex items-center justify-between px-4 py-4 pr-32 md:pr-40">
             <div className="flex items-end gap-6">
-                <a href="/" className="inline-flex items-center" aria-label="Home">
+                <a href="https://tamudatathon.org/" className="inline-flex items-center" aria-label="Home">
                     <Image
                         src="/images/logo/event-logo.svg"
                         alt="logo"
-                        width={200}
+                        width={300}
                         height={100}
                         className="h-6 w-auto shrink-0 drop-shadow"
                         priority
@@ -46,6 +46,7 @@ const Header = () => {
                 <a href="#prizes" onClick={() => setNavbarOpen(false)} className="py-2 md:py-0 hover:text-gray-300">Prizes</a>
                 <a href="#sponsors" onClick={() => setNavbarOpen(false)} className="py-2 md:py-0 hover:text-gray-300">Sponsors</a>
                 <a href="#faq" onClick={() => setNavbarOpen(false)} className="py-2 md:py-0 hover:text-gray-300">FAQ</a>
+                <a href="/schedule" onClick={() => setNavbarOpen(false)} className="py-2 md:py-0 hover:text-gray-300">Schedule</a>
             </div>
         </div>
     </header>
@@ -53,3 +54,4 @@ const Header = () => {
 }
 
 export default Header;
+
