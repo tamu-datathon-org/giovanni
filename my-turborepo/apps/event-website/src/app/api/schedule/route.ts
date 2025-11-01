@@ -14,6 +14,8 @@ export async function GET() {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
+      // ensure we do not cache this request on the server
+      cache: "no-store",
     });
 
     // Get the response as text first
@@ -29,7 +31,12 @@ export async function GET() {
         throw new Error("API did not return an array");
       }
 
-      return NextResponse.json(data);
+      return NextResponse.json(data, {
+        headers: {
+          // tell clients and any intermediate caches not to store this response
+          "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0, s-maxage=0",
+        },
+      });
     } catch (parseError) {
       console.error("JSON parsing error:", parseError);
       throw new Error("Failed to parse response as JSON");
@@ -41,7 +48,12 @@ export async function GET() {
         error:
           error instanceof Error ? error.message : "Failed to fetch schedule",
       },
-      { status: 500 },
+      {
+        status: 500,
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0, s-maxage=0",
+        },
+      },
     );
   }
 }

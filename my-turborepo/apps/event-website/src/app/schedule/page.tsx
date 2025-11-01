@@ -63,9 +63,8 @@ function TimelineDay({ dayNumber, dayName, events }: { dayNumber: number; dayNam
                                 {/* Time */}
                                 <div className="w-24 md:w-28 flex-shrink-0 text-right pt-1">
                                     <span
-                                        className={`text-base md:text-lg font-medium font-serif ${
-                                            index === highlightIndex ? 'text-red-600' : 'text-black'
-                                        }`}
+                                        className={`text-base md:text-lg font-medium font-serif ${index === highlightIndex ? 'text-red-600' : 'text-black'
+                                            }`}
                                     >
                                         {formatTime(event.startTime)}
                                     </span>
@@ -74,11 +73,10 @@ function TimelineDay({ dayNumber, dayName, events }: { dayNumber: number; dayNam
                                 {/* Timeline */}
                                 <div className="flex flex-col items-center relative">
                                     <div
-                                        className={`w-5 h-5 rounded-full z-10 flex-shrink-0 mt-1 ${
-                                            index === highlightIndex
-                                                ? 'bg-red-600 border-4 border-red-600'
-                                                : 'bg-black border-4 border-black'
-                                        }`}
+                                        className={`w-5 h-5 rounded-full z-10 flex-shrink-0 mt-1 ${index === highlightIndex
+                                            ? 'bg-red-600 border-4 border-red-600'
+                                            : 'bg-black border-4 border-black'
+                                            }`}
                                     />
                                     {index < events.length - 1 && (
                                         <div
@@ -91,11 +89,10 @@ function TimelineDay({ dayNumber, dayName, events }: { dayNumber: number; dayNam
                                 {/* Event Details */}
                                 <div className="flex-1 pb-4 pt-0.5">
                                     <h2
-                                        className={`text-lg md:text-xl font-serif ${
-                                            index === highlightIndex
-                                                ? 'text-red-600 font-medium'
-                                                : 'text-black'
-                                        }`}
+                                        className={`text-lg md:text-xl font-serif ${index === highlightIndex
+                                            ? 'text-red-600 font-medium'
+                                            : 'text-black'
+                                            }`}
                                     >
                                         {event.title}
                                     </h2>
@@ -179,7 +176,6 @@ export default function SchedulePage() {
         }
 
         try {
-            console.log('Fetching from:', API_URL);
             const res = await fetch(API_URL);
 
             if (!res.ok) {
@@ -188,7 +184,7 @@ export default function SchedulePage() {
 
             const data: Event[] = await res.json();
             console.log('Received data:', data);
-            console.log('First event location:', data[0]?.location);
+            // console.log('First event location:', data[0]?.location);
 
             if (!Array.isArray(data)) {
                 throw new Error('API did not return an array');
@@ -212,10 +208,10 @@ export default function SchedulePage() {
                 setError(null);
 
                 if (checkForChanges && changed) {
-                    console.log("🔄 Schedule changed — reloading UI.");
+                    console.log("Schedule changed — reloading UI.");
                 }
             } else {
-                console.log("✅ No changes detected — skipping reload.");
+                console.log("No changes detected — skipping reload.");
             }
         } catch (err) {
             console.error("Error fetching schedule:", err);
