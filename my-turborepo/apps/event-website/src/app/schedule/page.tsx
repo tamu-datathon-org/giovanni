@@ -251,7 +251,7 @@ export default function SchedulePage() {
     const day2Events = events.filter(e => e.day === 2);
 
     return (
-        <main className="min-h-screen bg-[#3A3A3A] p-4 md:p-8 font-serif">
+        <main className="min-h-screen bg-[#322C29] p-4 md:p-8 font-serif">
             <div className="max-w-7xl mx-auto">
                 {/* SVG Title Container */}
                 <div className="flex justify-center mb-8">
