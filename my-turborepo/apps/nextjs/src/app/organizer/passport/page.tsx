@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Cat, Dog, Fish, Turtle } from "lucide-react";
+import { Cat, Dog, Fish, Turtle, Loader2 } from "lucide-react";
 
 import QRScanner from "~/app/_components/organizer/qr-scanner";
 import { MultiSelect } from "~/app/_components/multiselect";
@@ -62,24 +62,37 @@ const DEFAULT_PARTICIPANT: ParticipantData = {
   checkedInAt: null,
 };
 
+/** ---------------------------------------------
+ * Loading Overlay
+ * ----------------------------------------------*/
+function LoadingOverlay({ show, label }: { show: boolean; label: string }) {
+  if (!show) return null;
+  return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div className="flex items-center gap-3 rounded-xl bg-white px-5 py-4 shadow-lg dark:bg-neutral-900">
+          <Loader2 className="h-5 w-5 animate-spin" />
+          <span className="text-sm font-medium">{label}</span>
+        </div>
+      </div>
+  );
+}
+
 export default function PassportPage() {
   /** ---------------- Env ---------------- */
   const eventName = process.env.NEXT_PUBLIC_EVENT_NAME as string | undefined;
 
   /** ---------------- State ---------------- */
   const [participant, setParticipant] = useState<ParticipantData>(DEFAULT_PARTICIPANT);
-
   const [selectedPhase, setSelectedPhase] = useState<Phase>("main");
-
-  const [allowedStatuses, setAllowedStatuses] = useState<string[]>([
-    "accepted",
-    "waitlisted",
-  ]);
+  const [allowedStatuses, setAllowedStatuses] = useState<string[]>(["accepted", "waitlisted"]);
 
   // Manual & Scanner email handling
   const [manualEmail, setManualEmail] = useState<string>("");
   const [scannerEmail, setScannerEmail] = useState<string>("");
   const [submittedEmail, setSubmittedEmail] = useState<string>("");
+
+  // Tracks why we're loading (null | "scan" | "manual" | "phase")
+  const [pendingSource, setPendingSource] = useState<null | "scan" | "manual" | "phase">(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -101,7 +114,7 @@ export default function PassportPage() {
       },
   );
 
-  /** Apply query outcome to UI */
+  /** Apply query outcome to UI & clear loading flag when fetch completes */
   useEffect(() => {
     if (queryData.isSuccess && queryData.data) {
       setParticipant(queryData.data as unknown as ParticipantData);
@@ -118,9 +131,17 @@ export default function PassportPage() {
     }
   }, [queryData.isSuccess, queryData.isError, queryData.data, effectiveEmail]);
 
-  /** When the phase changes and we have an email, refetch */
+  // Clear the overlay once network fetch settles
+  useEffect(() => {
+    if (!queryData.isFetching && pendingSource) {
+      setPendingSource(null);
+    }
+  }, [queryData.isFetching, pendingSource]);
+
+  /** When the phase changes and we have an email, refetch with overlay */
   useEffect(() => {
     if (effectiveEmail && queryData.refetch) {
+      setPendingSource("phase");
       void queryData.refetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -191,6 +212,7 @@ export default function PassportPage() {
   const handleSearch = () => {
     const val = manualEmail.trim();
     if (!val) return;
+    setPendingSource("manual");
     setSubmittedEmail(val);
   };
 
@@ -226,14 +248,34 @@ export default function PassportPage() {
     );
   }
 
+  // Overlay label based on what triggered the fetch
+  const overlayLabel =
+      pendingSource === "scan"
+          ? "Looking up participant from QR…"
+          : pendingSource === "manual"
+              ? "Searching participant by email…"
+              : pendingSource === "phase"
+                  ? `Loading ${currentPhaseLabel}…`
+                  : "Loading…";
+
+  const anyBlockingLoad = Boolean(pendingSource) && queryData.isFetching;
+
   return (
       <div className="relative flex flex-col items-center justify-center gap-4 p-4 text-black dark:text-white">
+        {/* Loading Overlay */}
+        <LoadingOverlay show={anyBlockingLoad} label={overlayLabel} />
+
         <h1 className="text-3xl font-bold">Check-in System</h1>
 
         {/* Phase Selector */}
         <div className="w-full sm:w-1/2 text-center p-4">
           <label className="mr-2 font-medium">Phase</label>
-          <Select value={selectedPhase} onValueChange={(v) => setSelectedPhase(v as Phase)}>
+          <Select
+              value={selectedPhase}
+              onValueChange={(v) => setSelectedPhase(v as Phase)}
+              // disable while we are fetching to avoid rapid refetch storms
+              disabled={anyBlockingLoad || statusMutation.isPending}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select phase" />
             </SelectTrigger>
@@ -257,7 +299,10 @@ export default function PassportPage() {
               onScan={(val) => {
                 const v = String(val || "").trim();
                 setScannerEmail(v);
-                if (v) setSubmittedEmail(v); // auto-submit scanned email
+                if (v) {
+                  setPendingSource("scan");
+                  setSubmittedEmail(v); // auto-submit scanned email
+                }
               }}
           />
 
@@ -277,25 +322,30 @@ export default function PassportPage() {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleSearch();
                   }}
+                  disabled={anyBlockingLoad || statusMutation.isPending}
               />
-              <Button
-                  type="button"
-                  variant="default"
-                  onClick={handleSearch}
-                  disabled={!manualEmail.trim()}
-              >
-                Search
-              </Button>
-              <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={handleClear}
-                  disabled={
-                      !manualEmail && !scannerEmail && !submittedEmail && participant === DEFAULT_PARTICIPANT
-                  }
-              >
-                Clear
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                    type="button"
+                    variant="default"
+                    onClick={handleSearch}
+                    disabled={!manualEmail.trim() || anyBlockingLoad || statusMutation.isPending}
+                >
+                  Search
+                </Button>
+                <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={handleClear}
+                    disabled={
+                        anyBlockingLoad ||
+                        statusMutation.isPending ||
+                        (!manualEmail && !scannerEmail && !submittedEmail)
+                    }
+                >
+                  Clear
+                </Button>
+              </div>
             </div>
 
             {/* Currently selected/queried email */}
@@ -308,14 +358,14 @@ export default function PassportPage() {
             <Button
                 className="bg-cyan-700 hover:bg-opacity-50"
                 onClick={handleCheckIn}
-                disabled={statusMutation.isPending || !effectiveEmail}
+                disabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail}
             >
               {statusMutation.isPending ? "Loading..." : "Check-in Participant"}
             </Button>
             <Button
                 variant="secondary"
                 onClick={handleRemove}
-                disabled={statusMutation.isPending || !effectiveEmail}
+                disabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail}
             >
               {statusMutation.isPending ? "Loading..." : "Remove Participant"}
             </Button>
@@ -326,9 +376,7 @@ export default function PassportPage() {
         <div className="flex flex-col items-center rounded-md bg-orange-100 dark:bg-orange-400 p-4 w-full sm:w-2/3">
           <h2 className="mb-1 text-2xl font-bold">Participant&apos;s Data</h2>
           <p className="text-sm opacity-80 mb-2">Phase: {currentPhaseLabel}</p>
-          <p>
-            Name: {participant.firstName} {participant.lastName}
-          </p>
+          <p>Name: {participant.firstName} {participant.lastName}</p>
           <p className="text-cyan-600">Status: {participant.status}</p>
           <p className="text-indigo-500">
             Checked In:{" "}
@@ -339,9 +387,7 @@ export default function PassportPage() {
           {participant.checkedInAt && (
               <p className="text-sm opacity-80">
                 Checked In At:{" "}
-                {new Date(participant.checkedInAt).toLocaleString(undefined, {
-                  hour12: true,
-                })}
+                {new Date(participant.checkedInAt).toLocaleString(undefined, { hour12: true })}
               </p>
           )}
           <p>
@@ -355,7 +401,7 @@ export default function PassportPage() {
         {/* Divider */}
         <div className="my-2 w-1/2 border-2 border-black" />
 
-        {/* Allowed statuses & Remove */}
+        {/* Allowed statuses */}
         <div className="mx-4 w-full text-center sm:w-1/2 flex flex-col items-center gap-3">
           <div className="w-full">
             <h2 className="mb-2">Select Allowed Statuses:</h2>
@@ -367,6 +413,7 @@ export default function PassportPage() {
                 variant="inverted"
                 animation={2}
                 maxCount={4}
+                disabled={anyBlockingLoad || statusMutation.isPending}
             />
           </div>
         </div>
