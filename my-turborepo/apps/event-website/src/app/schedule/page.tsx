@@ -82,7 +82,6 @@ export default function SchedulePage() {
         }
 
         try {
-            console.log('Fetching from:', API_URL);
             const res = await fetch(API_URL);
 
             if (!res.ok) {
@@ -111,10 +110,10 @@ export default function SchedulePage() {
                 setError(null);
 
                 if (checkForChanges && changed) {
-                    console.log("🔄 Schedule changed — reloading UI.");
+                    console.log("Schedule changed — reloading UI.");
                 }
             } else {
-                console.log("✅ No changes detected — skipping reload.");
+                console.log("No changes detected — skipping reload.");
             }
         } catch (err) {
             console.error("Error fetching schedule:", err);
