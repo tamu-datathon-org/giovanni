@@ -129,8 +129,8 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                     <CommandGroup>
                       {filter20Items.map((option) => (
                         <CommandItem
-                          key={(option as DropdownOption).value}
-                          value={(option as DropdownOption).value}
+                          key={(option).value}
+                          value={(option).value}
                           onSelect={(currentValue) => {
                             if (currentValue === "Other (please specify)") {
                               setOtherOption(true);
@@ -145,12 +145,12 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                           <AiOutlineCheck
                             className={cn(
                               "mr-2 h-4 w-4",
-                              field.value === (option as DropdownOption).value
+                              field.value === (option).value
                                 ? "opacity-100"
                                 : "opacity-0",
                             )}
                           />
-                          {(option as DropdownOption).label}
+                          {(option).label}
                         </CommandItem>
                       ))}
                     </CommandGroup>

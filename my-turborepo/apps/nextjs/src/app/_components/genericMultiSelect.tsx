@@ -20,7 +20,7 @@ import {
 } from "@vanni/ui/form";
 import type { ApplicationSchema } from "../apply/validation";
 
-type Option = { label: string; value: string };
+interface Option { label: string; value: string }
 
 interface ISelectProps {
   name: keyof ApplicationSchema;
@@ -169,7 +169,7 @@ const GenericMultiSelect = ({
                 onChange={(e) => {
                   const val = e.target.value;
                   // Remove any Other or Other(...) before adding new
-                  let updated = field.value
+                  const updated = field.value
                     ? String(field.value).split(",").filter(
                       (item) => item !== OTHER_VALUE && !item.startsWith("Other(")
                     )

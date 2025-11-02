@@ -45,14 +45,14 @@ const IconList: React.FC<IconListProps> = ({
   socialsFunc,
   sponFunc,
   prizeFunc,
-  scheduleFunc,
-  challengesFunc,
-  helpQueueFunc,
+  scheduleFunc: _scheduleFunc,
+  challengesFunc: _challengesFunc,
+  helpQueueFunc: _helpQueueFunc,
   setFocus,
 }) => {
   const router = useRouter();
 
-  setFocus = setFocus ?? (() => {});
+  setFocus = setFocus ?? undefined;
   return (
     // className='absolute top-0 grid grid-cols-2 pt-4 gap-1'
     <div className={className}>

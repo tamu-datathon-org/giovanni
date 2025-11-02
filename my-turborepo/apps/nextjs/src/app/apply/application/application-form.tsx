@@ -72,7 +72,7 @@ import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
     Liability Waiver (checkbox)
 */
 
-export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME as string;
+export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME;
 const RESUME_OPTIONAL = true;
 
 const Loading = () => {

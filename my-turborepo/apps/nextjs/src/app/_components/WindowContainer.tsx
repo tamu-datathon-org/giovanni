@@ -2,13 +2,8 @@
 
 // Ensure the component is treated as a client component
 import React from "react";
-import Image from "next/image";
-import { isMobile } from "react-device-detect";
 
-import { Button } from "@vanni/ui/button";
-
-import { toast } from "~/hooks/use-toast";
-import { ExitButton, Lines, TAMUy2k, TitleText } from "./preregistration-form"; // Ensure these imports are correct
+import { ExitButton, Lines } from "./preregistration-form"; // Ensure these imports are correct
 
 interface WindowContainerProps {
   children: React.ReactNode;
@@ -31,12 +26,12 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
     backgroundImage: `linear-gradient(to bottom, ${borderGradientStart}, ${borderGradientMiddle}, ${borderGradientEnd})`,
   };
 
-  openFunc = openFunc ?? (() => {});
+  openFunc = openFunc ?? undefined;
 
   return (
     isOpen && (
       <div
-        className={`font-XPfont w-fit scale-75 font-bold sm:scale-100 ${isOpen ? "unhidden" : "hidden"} `}
+        className={`font-XPfont w-fit scale-75 font-bold sm:scale-100 ${isOpen ? "unhidden" : "hidden"}`}
         // style={{ transform: "scale(0.5) sm:scale(1)" }}
       >
         <div className="flex flex-col items-center justify-center">

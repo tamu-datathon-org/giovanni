@@ -1,5 +1,6 @@
 import { cn } from '~/lib/utils';
-import { Button, type ButtonProps } from '~/components/ui/button';
+import { Button } from '~/components/ui/button';
+import type { ButtonProps } from '~/components/ui/button';
 
 //======================================Animated Gradient border
 export const GradientButton = ({ ...props }: ButtonProps) => {
