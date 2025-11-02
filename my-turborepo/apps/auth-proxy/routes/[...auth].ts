@@ -1,6 +1,5 @@
 import { Auth } from "@auth/core";
 import Auth0 from "@auth/core/providers/auth0";
-import Discord from "@auth/core/providers/discord";
 import { eventHandler, toWebRequest } from "h3";
 
 export default eventHandler(async (event) =>
