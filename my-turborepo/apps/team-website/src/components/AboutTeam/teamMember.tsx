@@ -1,9 +1,9 @@
 import type React from "react";
 import Image from "next/image";
-import { Github, Globe, Linkedin, Mail } from "lucide-react";
+import { Github, Globe, Instagram, Linkedin, Mail } from "lucide-react";
 
 export interface SocialLink {
-  type: "linkedin" | "github" | "twitter" | "email" | "website";
+  type: "linkedin" | "github" | "twitter" | "email" | "website" | "instagram";
   url: string;
 }
 
@@ -24,6 +24,8 @@ const getSocialIcon = (type: string) => {
       return <Mail className="h-5 w-5" />;
     case "website":
       return <Globe className="h-5 w-5" />;
+    case "instagram":
+      return <Instagram className="h-5 w-5" />;
     default:
       return null;
   }
