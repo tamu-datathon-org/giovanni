@@ -1,6 +1,9 @@
 {
   "extends": "@vanni/tsconfig/base.json",
   "compilerOptions": {
+    "types": [],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
   },
   "include": ["src", "*.ts"],

@@ -77,10 +77,12 @@ const Carousel = React.forwardRef<
     }, [])
 
     const scrollPrev = React.useCallback(() => {
+      if (!api) return
       api.scrollPrev()
     }, [api])
 
     const scrollNext = React.useCallback(() => {
+      if (!api) return
       api.scrollNext()
     }, [api])
 
@@ -126,7 +128,7 @@ const Carousel = React.forwardRef<
           api: api,
           opts,
           orientation:
-            orientation || (opts.axis === "y" ? "vertical" : "horizontal"),
+            orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
           scrollPrev,
           scrollNext,
           canScrollPrev,

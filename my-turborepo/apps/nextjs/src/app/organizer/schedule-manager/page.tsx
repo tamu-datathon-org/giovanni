@@ -32,7 +32,7 @@ export default function CMSPage() {
         setLoading(true);
         try {
             const res = await fetch(API_URL);
-            const data: Event[] = await res.json();
+            const data = await res.json() as Event[];
             setEvents(data);
         } finally {
             setLoading(false);
