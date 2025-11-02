@@ -1,6 +1,6 @@
 import React from "react";
 
-export default async function ScheduleLayout({
+export default function ScheduleLayout({
     children,
 }: {
     children: React.ReactNode;

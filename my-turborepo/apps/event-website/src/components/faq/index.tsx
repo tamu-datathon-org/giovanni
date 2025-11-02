@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-type FaqItem = { question: string; answer: string };
+interface FaqItem { question: string; answer: string }
 
 const ITEMS: FaqItem[] = [
   { question: "What is the Datathon?", answer: "A weekend-long event where students build data-driven projects and compete for prizes." },
@@ -42,7 +42,7 @@ export default function FAQ() {
   );
 }
 
-type CardProps = {
+interface CardProps {
   widthClass?: string;
   title?: string;
   subtitle1?: string;

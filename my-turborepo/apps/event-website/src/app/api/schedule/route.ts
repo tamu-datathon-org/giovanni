@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-properties */
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -23,7 +24,7 @@ export async function GET() {
 
     try {
       // Try to parse the text as JSON
-      const data = JSON.parse(responseText);
+      const data = JSON.parse(responseText) as unknown[];
 
       // Validate the data structure
       if (!Array.isArray(data)) {
