@@ -47,7 +47,7 @@ export default function NewspaperSection() {
             fill="black"
             transform="rotate(0.38)"
           >
-            APPLICATIONS CLOSE OCT. 24
+            APPLICATIONS CLOSE NOV. 4
           </text>
 
           {/* Button */}
