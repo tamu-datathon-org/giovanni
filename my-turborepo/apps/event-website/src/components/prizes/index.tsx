@@ -7,7 +7,7 @@ export default function Prizes() {
       <h2 className="text-white py-4 text-5xl">
         Prizes
       </h2>
-      <div className="relative w-[90vw] sm:w-[70vw] aspect-[10/13] mx-auto">
+      <div className="relative w-[90vw] sm:w-[70vw] aspect-[4/5] mx-auto">
         {/* Background layer */}
         <Image
           src="/images/prizes/bg.svg"

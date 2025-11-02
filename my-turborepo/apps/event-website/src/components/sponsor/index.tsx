@@ -28,7 +28,7 @@ function Sponsors() {
 
                 <div className='relative z-10 col-start-1 row-start-7 col-span-10 row-span-1 transform scale-[0.7] translate-y-[-10vw] md:translate-y-[-10vw]'>
                     <Image
-                        src="/images/sponsor-logo/textured/hitachi_textured.png"
+                        src="/images/sponsor-logo/textured/hitachi_textured.svg"
                         alt="hitachi"
                         fill
                         quality={100}
@@ -37,7 +37,7 @@ function Sponsors() {
 
                 <div className='relative z-10 col-start-2 row-start-7 col-span-2 row-span-1 transform scale-[1.2] translate-y-4 md:translate-y-10'>
                     <Image
-                        src="/images/sponsor-logo/textured/sec_textured.png"
+                        src="/images/sponsor-logo/textured/sec_textured.svg"
                         alt="hitachi"
                         fill
                         quality={100}
@@ -46,7 +46,7 @@ function Sponsors() {
 
                 <div className='relative z-10 col-start-2 row-start-9 col-span-4 row-span-1 transform scale-[0.8] translate-y-4 md:translate-y-10'>
                     <Image
-                        src="/images/sponsor-logo/textured/msy_textured.png"
+                        src="/images/sponsor-logo/textured/msy_textured.svg"
                         alt="msy"
                         fill
                         quality={100}
@@ -55,7 +55,7 @@ function Sponsors() {
 
                 <div className='relative z-10 col-start-2 row-start-10 col-span-5 row-span-2 transform scale-y-[0.8]'>
                     <Image
-                        src="/images/sponsor-logo/textured/databricks_textured.png"
+                        src="/images/sponsor-logo/textured/databricks_textured.svg"
                         alt="databricks"
                         fill
                         quality={100}
@@ -65,7 +65,7 @@ function Sponsors() {
 
                 <div className='relative z-10 col-start-6 row-start-5 col-span-4 row-span-1'>
                     <Image
-                        src="/images/sponsor-logo/textured/heb_textured.png"
+                        src="/images/sponsor-logo/textured/heb_textured.svg"
                         alt="hitachi"
                         fill
                         quality={100}
@@ -74,7 +74,7 @@ function Sponsors() {
 
                 <div className='relative z-10 col-start-7 row-start-7 col-span-6 row-span-1 transform scale-[0.8] translate-x-4'>
                     <Image
-                        src="/images/sponsor-logo/textured/qualcomm_textured.png"
+                        src="/images/sponsor-logo/textured/qualcomm_textured.svg"
                         alt="hitachi"
                         fill
                         quality={100}
@@ -83,7 +83,7 @@ function Sponsors() {
 
                 <div className='relative z-10 col-start-5 row-start-8 col-span-3 row-span-2 transform scale-[0.8] translate-x-4'>
                     <Image
-                        src="/images/sponsor-logo/textured/p66_textured.png"
+                        src="/images/sponsor-logo/textured/p66_textured.svg"
                         alt="p66"
                         fill
                         quality={100}
@@ -92,7 +92,7 @@ function Sponsors() {
 
                 <div className='relative z-10 col-start-7 row-start-10 col-span-3 row-span-1 transform scale-[0.5]'>
                     <Image
-                        src="/images/sponsor-logo/textured/tamid_textured.png"
+                        src="/images/sponsor-logo/textured/tamid_textured.svg"
                         alt="tamu"
                         fill
                         quality={100}
@@ -102,7 +102,7 @@ function Sponsors() {
                 <div className='relative z-10 col-start-8 row-start-9 col-span-4 row-span-1 transform scale-[0.4] hover:scale-[0.5] transition-transform'>
                     <a href="http://mlh.link/MLH-PureButtons-hackathons">
                         <Image
-                            src="/images/sponsor-logo/textured/pure_textured.png"
+                            src="/images/sponsor-logo/textured/pure_textured.svg"
                             alt="pure buttons"
                             fill
                             quality={100}
