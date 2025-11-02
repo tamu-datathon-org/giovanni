@@ -4,7 +4,7 @@ import { z } from "zod";
 import { count, sql } from "@vanni/db";
 import { Application } from "@vanni/db/schema";
 
-import { adminProcedure } from "../trpc";
+import { adminProcedure, protectedProcedure } from "../trpc";
 import { getBatchStatus, updateBatchStatus } from "./application";
 import { getEmailsByLabelList } from "./email";
 import sendConfirmationEmails, {
@@ -50,7 +50,7 @@ async function checkStatusEmails(
 }
 
 export const emailSendingRouter = {
-  sendConfirmationEmail: adminProcedure
+  sendConfirmationEmail: protectedProcedure
     .input(z.object({ emails: z.array(z.string()) }))
     .mutation(async ({ ctx, input }) => {
       sendConfirmationEmails(input.emails);
