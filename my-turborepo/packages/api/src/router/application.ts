@@ -307,7 +307,7 @@ export const applicationRouter = {
       ).parse(application);
       return { app: validatedApplication, resume: resume };
     }),
-  getAllApplicationsByEventName: protectedProcedure
+  getAllApplicationsByEventName: organizerProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
       const sq = ctx.db.$with("sq").as(
@@ -478,7 +478,7 @@ export const applicationRouter = {
         .set({ acceptedEmail: finalSql })
         .where(inArray(Application.id, ids));
     }),
-  getApplicationStatus: organizerProcedure
+  getApplicationStatus: protectedProcedure
     .input(z.object({ eventName: z.string() }))
     .query(async ({ ctx, input }) => {
       const { eventName } = input;
