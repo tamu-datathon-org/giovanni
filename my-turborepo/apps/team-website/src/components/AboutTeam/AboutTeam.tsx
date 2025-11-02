@@ -5,7 +5,7 @@ import React from "react";
 import Teams from "./teams";
 
 const AboutTeam = () => {
-  const teamList = [
+  const _teamList = [
     {
       teamMembers: [
         {

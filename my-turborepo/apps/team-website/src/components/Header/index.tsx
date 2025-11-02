@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
@@ -28,15 +27,13 @@ const Header = () => {
 
   // submenu handler
   const [openIndex, setOpenIndex] = useState(-1);
-  const handleSubmenu = (index) => {
+  const handleSubmenu = (index: number) => {
     if (openIndex === index) {
       setOpenIndex(-1);
     } else {
       setOpenIndex(index);
     }
   };
-
-  const usePathName = usePathname();
 
   return (
     <>
@@ -135,7 +132,7 @@ const Header = () => {
                               >
                                 {menuItem.submenu.map((submenuItem, index) => (
                                   <Link
-                                    href={submenuItem.path || "#"}
+                                    href={submenuItem.path ?? "#"}
                                     key={index}
                                     className="block rounded py-2.5 text-sm text-dark hover:text-primary dark:text-white/70 dark:hover:text-white lg:px-3"
                                   >

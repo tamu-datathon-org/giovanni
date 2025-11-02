@@ -1,4 +1,3 @@
-import Image from "next/image";
 import FloatingStats from "./FloatingStats";
 
 const AboutSectionTwo = () => {
