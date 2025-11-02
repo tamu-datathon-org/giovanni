@@ -71,7 +71,7 @@ const IconList: React.FC<IconListProps> = ({
                     key={`${icon.name}-${outerIndex}-${index}`}
                     className="flex h-full w-full p-0 shadow-none"
                     onClick={() => {
-                      setFocus(icon.name);
+                      setFocus?.(icon.name);
                       if (welcFunc && icon.name === "Welcome") {
                         welcFunc(true);
                       } else if (icon.name === "Schedule") {

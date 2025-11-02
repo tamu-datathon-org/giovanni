@@ -44,8 +44,8 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
             <div className="flex w-full flex-row items-center justify-between">
               <Lines />
               <ExitButton
-                onClick={() => openFunc(false)}
-                onTouchEnd={() => openFunc(false)}
+                onClick={() => openFunc?.(false)}
+                onTouchEnd={() => openFunc?.(false)}
               />
             </div>
             <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] p-4 lg:border-[1px]">
