@@ -1,6 +1,7 @@
 {
   "extends": "@vanni/tsconfig/base.json",
   "compilerOptions": {
+    "types": ["node"],
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
   },
   "include": ["."],
