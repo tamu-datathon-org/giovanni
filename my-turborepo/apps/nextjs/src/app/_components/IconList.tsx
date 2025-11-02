@@ -45,14 +45,14 @@ const IconList: React.FC<IconListProps> = ({
   socialsFunc,
   sponFunc,
   prizeFunc,
-  scheduleFunc,
-  challengesFunc,
-  helpQueueFunc,
+  scheduleFunc: _scheduleFunc,
+  challengesFunc: _challengesFunc,
+  helpQueueFunc: _helpQueueFunc,
   setFocus,
 }) => {
   const router = useRouter();
 
-  setFocus = setFocus ?? (() => {});
+  setFocus = setFocus ?? undefined;
   return (
     // className='absolute top-0 grid grid-cols-2 pt-4 gap-1'
     <div className={className}>
@@ -71,7 +71,7 @@ const IconList: React.FC<IconListProps> = ({
                     key={`${icon.name}-${outerIndex}-${index}`}
                     className="flex h-full w-full p-0 shadow-none"
                     onClick={() => {
-                      setFocus(icon.name);
+                      setFocus?.(icon.name);
                       if (welcFunc && icon.name === "Welcome") {
                         welcFunc(true);
                       } else if (icon.name === "Schedule") {

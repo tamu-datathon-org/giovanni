@@ -2,13 +2,8 @@
 
 // Ensure the component is treated as a client component
 import React from "react";
-import Image from "next/image";
-import { isMobile } from "react-device-detect";
 
-import { Button } from "@vanni/ui/button";
-
-import { toast } from "~/hooks/use-toast";
-import { ExitButton, Lines, TAMUy2k, TitleText } from "./preregistration-form"; // Ensure these imports are correct
+import { ExitButton, Lines } from "./preregistration-form"; // Ensure these imports are correct
 
 interface WindowContainerProps {
   children: React.ReactNode;
@@ -31,12 +26,12 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
     backgroundImage: `linear-gradient(to bottom, ${borderGradientStart}, ${borderGradientMiddle}, ${borderGradientEnd})`,
   };
 
-  openFunc = openFunc ?? (() => {});
+  openFunc = openFunc ?? undefined;
 
   return (
     isOpen && (
       <div
-        className={`font-XPfont w-fit scale-75 font-bold sm:scale-100 ${isOpen ? "unhidden" : "hidden"} `}
+        className={`font-XPfont w-fit scale-75 font-bold sm:scale-100 ${isOpen ? "unhidden" : "hidden"}`}
         // style={{ transform: "scale(0.5) sm:scale(1)" }}
       >
         <div className="flex flex-col items-center justify-center">
@@ -49,8 +44,8 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
             <div className="flex w-full flex-row items-center justify-between">
               <Lines />
               <ExitButton
-                onClick={() => openFunc(false)}
-                onTouchEnd={() => openFunc(false)}
+                onClick={() => openFunc?.(false)}
+                onTouchEnd={() => openFunc?.(false)}
               />
             </div>
             <div className="relative mt-3 flex w-full flex-col items-center overflow-hidden border-0 border-[#585958] bg-[#e4e3e4] p-4 lg:border-[1px]">

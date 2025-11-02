@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { Button } from "@vanni/ui/button";
 
-import { ExitButton, Lines } from "~/app/_components/preregistration-form";
+import { Lines } from "~/app/_components/preregistration-form";
 
 interface FormContainerProps {
   onSubmit?: React.FormEventHandler<HTMLFormElement>;

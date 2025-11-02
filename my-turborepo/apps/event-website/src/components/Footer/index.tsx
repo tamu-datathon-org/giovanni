@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../ui/button";
 import { LuClipboard } from "react-icons/lu";
 import { useToast } from "@/hooks/use-toast";
 /*
@@ -52,7 +51,7 @@ const Footer = () => {
                 <button
                   className="w-full md:w-auto hover:opacity-50"
                   onClick={() => {
-                    navigator.clipboard.writeText('sponsor@tamudatathon.com')
+                    void navigator.clipboard.writeText('sponsor@tamudatathon.com')
                     toast({
                       title: "Copied to clipboard",
                       variant: "default",
@@ -76,7 +75,7 @@ const Footer = () => {
                 <button
                   className="w-full md:w-auto hover:opacity-50"
                   onClick={() => {
-                    navigator.clipboard.writeText('connect@tamudatathon.com')
+                    void navigator.clipboard.writeText('connect@tamudatathon.com')
                     toast({
                       title: "Copied to clipboard",
                       variant: "default",

@@ -22,7 +22,7 @@ function formatTime(dateString: string) {
 }
 
 export default function TimelineDay({
-    dayNumber,
+    dayNumber: _dayNumber,
     dayName,
     events,
     selectedCategory = "all"
@@ -45,9 +45,9 @@ export default function TimelineDay({
     // Find the current/active event
     const highlightIndex = events.findIndex((event, index) => {
         const startTime = new Date(event.startTime).getTime();
-        const nextEvent = events[index + 1];
-        const endTime = nextEvent
-            ? new Date(nextEvent.startTime).getTime()
+        const hasNextEvent = index + 1 < events.length;
+        const endTime = hasNextEvent
+            ? new Date(events[index + 1].startTime).getTime()
             : new Date(event.endTime).getTime();
 
         const now = currentTime.getTime();

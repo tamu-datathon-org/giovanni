@@ -1,7 +1,6 @@
 "use client"
-import React, { useState } from "react";
 //import { TypingAnimation } from "../ui/typing-animation";
-import SequentialTyping from "./typing";
+//import SequentialTyping from "./typing";
 
 
 export default function Card() {

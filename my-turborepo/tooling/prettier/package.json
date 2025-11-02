@@ -18,6 +18,7 @@
     "prettier-plugin-tailwindcss": "^0.5.14"
   },
   "devDependencies": {
+    "@types/node": "^20.17.27",
     "@vanni/tsconfig": "workspace:*",
     "typescript": "^5.8.2"
   }

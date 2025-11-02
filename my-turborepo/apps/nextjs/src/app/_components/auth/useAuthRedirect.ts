@@ -30,7 +30,7 @@ export function useAuthRedirect() {
       }
       setSession(data);
     }
-    fetchSession();
+    void fetchSession();
   }, [router, pathname]);
 
   return { session, setSession };

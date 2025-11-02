@@ -44,14 +44,12 @@ const resumeHandler = async (
       resumeName: input.resumeName,
     };
 
-    if (resume) {
-      if (resume && resume.resumeUrl && resume.resumeUrl !== input.resumeUrl) {
+    if (resume?.resumeUrl && resume.resumeUrl !== input.resumeUrl) {
         await ctx.db.update(UserResume)
           .set(resumeData)
           .where(eq(UserResume.userId, ctx.session.user.id));
         await del(resume.resumeUrl);
-      }
-    } else {
+    } else if (!resume) {
       await db.insert(UserResume).values(resumeData);
     }
   }
@@ -151,7 +149,7 @@ export async function updateBatchStatus(
       status: 200,
       message: "Finished updating applications " + ids.length,
     };
-  } catch (e) {
+  } catch (_e) {
     return {
       status: 500,
       message: "Failed to update applications " + ids.length,

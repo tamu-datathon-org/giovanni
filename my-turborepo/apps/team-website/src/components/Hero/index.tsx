@@ -7,7 +7,8 @@ const Hero = () => {
     position: "Position",
   }));
   const chunkSize = 8;
-  const teamChunks = [];
+  type TeamMember = (typeof teamMembers)[number];
+  const teamChunks: TeamMember[][] = [];
   for (let i = 0; i < teamMembers.length; i += chunkSize) {
     teamChunks.push(teamMembers.slice(i, i + chunkSize));
   }

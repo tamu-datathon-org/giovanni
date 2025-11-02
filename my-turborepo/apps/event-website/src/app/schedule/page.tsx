@@ -75,12 +75,6 @@ export default function SchedulePage() {
     };
 
     const loadEvents = async (checkForChanges = false) => {
-        if (!API_URL) {
-            setError('API URL not configured');
-            setLoading(false);
-            return;
-        }
-
         try {
             const res = await fetch(API_URL);
 
@@ -88,7 +82,7 @@ export default function SchedulePage() {
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
 
-            const data: Event[] = await res.json();
+            const data = await res.json() as Event[];
             console.log('Received data:', data);
 
             if (!Array.isArray(data)) {
@@ -98,7 +92,7 @@ export default function SchedulePage() {
             const sorted = sortEvents(data);
 
             const cachedString = getFromStorage(CACHE_KEY);
-            const cached = cachedString ? JSON.parse(cachedString) : [];
+            const cached = cachedString ? (JSON.parse(cachedString) as Event[]) : [];
 
             const changed = hasChanged(cached, sorted);
 
@@ -129,7 +123,7 @@ export default function SchedulePage() {
         const cachedString = getFromStorage(CACHE_KEY);
         if (cachedString) {
             try {
-                const cachedData: Event[] = JSON.parse(cachedString);
+                const cachedData = JSON.parse(cachedString) as Event[];
                 const sorted = sortEvents(cachedData);
                 setEvents(sorted);
                 setLoading(false);
@@ -138,8 +132,10 @@ export default function SchedulePage() {
             }
         }
 
-        loadEvents();
-        const interval = setInterval(() => loadEvents(true), CACHE_TIME);
+        void loadEvents();
+        const interval = setInterval(() => {
+            void loadEvents(true);
+        }, CACHE_TIME);
         return () => clearInterval(interval);
     }, []);
 
