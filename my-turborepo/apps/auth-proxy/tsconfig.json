@@ -1,4 +1,8 @@
 {
   "extends": "@vanni/tsconfig/base.json",
-  "include": ["routes"]
+  "include": ["routes"],
+  "compilerOptions": {
+    "types": ["node"],
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
+  }
 }
