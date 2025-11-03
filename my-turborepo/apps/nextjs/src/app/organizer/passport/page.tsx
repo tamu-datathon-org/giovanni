@@ -75,7 +75,7 @@ export default function PassportPage() {
   /** ---------------- State ---------------- */
   const [participant, setParticipant] = useState<ParticipantData>(DEFAULT_PARTICIPANT);
   const [selectedPhase, setSelectedPhase] = useState<PhaseName>(""); // dynamic
-  const [allowedStatuses, setAllowedStatuses] = useState<string[]>(["accepted", "waitlisted"]);
+  // const [allowedStatuses, setAllowedStatuses] = useState<string[]>(["accepted", "waitlisted"]);
 
   // Manual & Scanner email handling
   const [manualEmail, setManualEmail] = useState<string>("");
@@ -197,7 +197,6 @@ export default function PassportPage() {
             email: effectiveEmail,
             phase: selectedPhase, // send the NAME; server resolves to event_phase_id
             newStatus,
-            allowedStatuses,
           } as any
       );
 
@@ -423,10 +422,10 @@ export default function PassportPage() {
         </div>
 
         {/* Divider */}
-        <div className="my-2 w-1/2 border-2 border-black" />
+        {/* <div className="my-2 w-1/2 border-2 border-black" /> */}
 
         {/* Allowed statuses */}
-        <div className="mx-4 w-full text-center sm:w-1/2 flex flex-col items-center gap-3">
+        {/* <div className="mx-4 w-full text-center sm:w-1/2 flex flex-col items-center gap-3">
           <div className="w-full">
             <h2 className="mb-2">Select Allowed Statuses:</h2>
             <MultiSelect
@@ -440,7 +439,7 @@ export default function PassportPage() {
                 disabled={anyBlockingLoad || statusMutation.isPending}
             />
           </div>
-        </div>
+        </div> */}
       </div>
   );
 }
