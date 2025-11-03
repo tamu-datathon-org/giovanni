@@ -14,6 +14,7 @@ import {
   UserResume,
   UserRole,
     Attendance,
+    EventPhase,
 } from "@vanni/db/schema";
 
 import { User } from "@vanni/db/auth-schema";
@@ -22,10 +23,17 @@ import { organizerProcedure, protectedProcedure } from "../trpc";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 import { getEventData } from "./event";
 
+const PhaseSchema = z.string().min(1);
+
+async function getEventPhase(ctx: any, eventId: string, phaseName: string) {
+    const ep = await ctx.db.query.EventPhase.findFirst({
+        where: and(eq(EventPhase.eventId, eventId), eq(EventPhase.name, phaseName)),
+    });
+    if (!ep) throw new TRPCError({ code: "NOT_FOUND", message: `Phase "${phaseName}" not found for this event` });
+    return ep;
+}
 
 const RESUME_OPTIONAL = true;
-
-const PhaseSchema = z.enum(["main", "meal1", "meal2", "meal3", "meal4"]);
 
 const resumeHandler = async (
   input: { resumeUrl: string; resumeName: string },
@@ -220,7 +228,28 @@ export const applicationRouter = {
 
       return response;
     }),
-  update: protectedProcedure
+
+    listPhases: protectedProcedure
+        .input(z.object({ eventName: z.string() }))
+        .query(async ({ ctx, input }) => {
+            // find event id
+            const event = await ctx.db.query.Event.findFirst({
+                where: eq(Event.name, input.eventName),
+                columns: { id: true },
+            });
+            if (!event) throw new Error(`Event "${input.eventName}" not found`);
+
+            // fetch its phases
+            const phases = await ctx.db.query.EventPhase.findMany({
+                where: eq(EventPhase.eventId, event.id),
+                orderBy: (t, { asc }) => [asc(t.sortOrder), asc(t.name)],
+                columns: { id: true, name: true, sortOrder: true },
+            });
+
+            return phases;
+        }),
+
+    update: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -503,66 +532,46 @@ export const applicationRouter = {
     }),
 
     getCheckInStatus: protectedProcedure
-        .input(z.object({
-            eventName: z.string(),
-            email: z.string(),
-            phase: PhaseSchema,   // NEW
-        }))
-        .query(async ({ ctx, input }) => {
-            const { eventName, email, phase } = input;
+    .input(z.object({
+        eventName: z.string(),
+        email: z.string(),
+        phase: z.string(),
+    }))
+    .query(async ({ ctx, input }) => {
+        const event = await ctx.db.query.Event.findFirst({
+            where: eq(Event.name, input.eventName),
+            columns: { id: true, name: true },
+        });
+        if (!event) throw new TRPCError({ code: "NOT_FOUND", message: "Event not found" });
 
-            const event = await getEventData({ ctx, eventName });
+        const application = await ctx.db.query.Application.findFirst({
+            where: eq(Application.email, input.email),
+        });
+        if (!application)
+            throw new TRPCError({ code: "NOT_FOUND", message: "Applicant not found" });
 
-            // Find the application by event + email
-            const application = await ctx.db.query.Application.findFirst({
-                where: and(
-                    eq(Application.eventId, event.id),
-                    eq(Application.email, email),
-                ),
-                columns: {
-                    id: true,
-                    userId: true,
-                    status: true,
-                    email: true,
-                    dietaryRestriction: true,
-                    extraInfo: true,
-                    firstName: true,
-                    lastName: true,
-                },
-            });
+        const phase = await ctx.db.query.EventPhase.findFirst({
+            where: and(eq(EventPhase.eventId, event.id), eq(EventPhase.name, input.phase)),
+        });
+        if (!phase)
+            throw new TRPCError({ code: "NOT_FOUND", message: "Phase not found" });
 
-            if (!application) {
-                throw new TRPCError({
-                    code: "NOT_FOUND",
-                    message: "Application not found",
-                });
-            }
+        const attendance = await ctx.db.query.Attendance.findFirst({
+            where: and(eq(Attendance.applicationId, application.id), eq(Attendance.eventPhaseId, phase.id)),
+        });
 
-            // Phase-specific attendance (LEFT JOIN style lookup)
-            const attendance = await ctx.db.query.Attendance.findFirst({
-                where: and(
-                    eq(Attendance.applicationId, application.id),
-                    eq(Attendance.eventId, event.id),
-                    eq(Attendance.phase, phase),
-                ),
-                columns: {
-                    checkedIn: true,
-                    checkedInAt: true,
-                },
-            });
-
-            return {
-                userId: application.userId,
-                firstName: application.firstName,
-                lastName: application.lastName,
-                email: application.email,
-                dietaryRestrictions: application.dietaryRestriction ?? "",
-                status: application.status,
-                extraInfo: application.extraInfo ?? "",
-                checkedIn: attendance?.checkedIn ?? false, // phase-specific
-                checkedInAt: attendance?.checkedInAt ?? null,
-            };
-        }),
+        return {
+            userId: application.id,
+            firstName: application.firstName,
+            lastName: application.lastName,
+            email: application.email,
+            dietaryRestrictions: application.dietaryRestrictions,
+            status: application.status,
+            extraInfo: application.extraInfo,
+            checkedIn: attendance?.checkedIn ?? false,
+            checkedInAt: attendance?.checkedInAt ?? null,
+        };
+    }),
 
     updateCheckInStatus: organizerProcedure
         .input(
@@ -597,42 +606,28 @@ export const applicationRouter = {
                 throw new TRPCError({ code: "NOT_FOUND", message: "Application not found" });
             }
 
-            if (!allowedStatuses.includes(application.status)) {
-                throw new TRPCError({
-                    code: "FORBIDDEN",
-                    message: "User status is not allowed to check in for this phase",
-                });
-            }
+            const ep = await getEventPhase(ctx, event.id, input.phase);
 
-            // ⬇️ Replace your existing upsert block with this one ⬇️
-            await ctx.db
+            const updated = await ctx.db
                 .insert(Attendance)
                 .values({
                     applicationId: application.id,
                     eventId: event.id,
-                    phase,
-                    checkedIn: newStatus,
-                    checkedInAt: newStatus ? new Date() : null, // <-- JS date here
-                    updatedAt: new Date(),                      // <-- JS date here
+                    eventPhaseId: ep.id,
+                    checkedIn: input.newStatus,
+                    checkedInAt: input.newStatus ? new Date() : null,
+                    updatedAt: new Date(),
                 })
                 .onConflictDoUpdate({
-                    target: [Attendance.applicationId, Attendance.eventId, Attendance.phase],
+                    target: [Attendance.applicationId, Attendance.eventPhaseId],
                     set: {
-                        checkedIn: newStatus,
-                        checkedInAt: newStatus ? new Date() : null, // <-- and here
-                        updatedAt: sql`NOW()`,                      // you can keep NOW() if you like
+                        checkedIn: input.newStatus,
+                        checkedInAt: input.newStatus ? new Date() : null,
+                        updatedAt: sql`NOW()`,
                     },
-                });
+                })
+                .returning();
 
-            return {
-                userId: application.userId,
-                firstName: application.firstName,
-                lastName: application.lastName,
-                email: application.email,
-                dietaryRestrictions: application.dietaryRestriction ?? "",
-                status: application.status,
-                extraInfo: application.extraInfo ?? "",
-                checkedIn: newStatus,
-            };
+            return updated[0];
         }),
 };

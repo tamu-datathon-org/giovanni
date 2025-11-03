@@ -21,22 +21,14 @@ import {
 /** ---------------------------------------------
  * Types & constants
  * ----------------------------------------------*/
-type Phase = "main" | "meal1" | "meal2" | "meal3" | "meal4";
-
-const PHASE_OPTIONS: { label: string; value: Phase }[] = [
-  { label: "Main Check-in", value: "main" },
-  { label: "Meal 1", value: "meal1" },
-  { label: "Meal 2", value: "meal2" },
-  { label: "Meal 3", value: "meal3" },
-  { label: "Meal 4", value: "meal4" },
-];
-
 const STATUS_OPTIONS = [
   { label: "Pending", value: "pending", icon: Turtle },
   { label: "Accepted", value: "accepted", icon: Dog },
   { label: "Rejected", value: "rejected", icon: Cat },
   { label: "Waitlisted", value: "waitlisted", icon: Fish },
 ];
+
+type PhaseName = string;
 
 interface ParticipantData {
   userId: string;
@@ -83,7 +75,7 @@ export default function PassportPage() {
 
   /** ---------------- State ---------------- */
   const [participant, setParticipant] = useState<ParticipantData>(DEFAULT_PARTICIPANT);
-  const [selectedPhase, setSelectedPhase] = useState<Phase>("main");
+  const [selectedPhase, setSelectedPhase] = useState<PhaseName>(""); // dynamic
   const [allowedStatuses, setAllowedStatuses] = useState<string[]>(["accepted", "waitlisted"]);
 
   // Manual & Scanner email handling
@@ -95,6 +87,29 @@ export default function PassportPage() {
   const [pendingSource, setPendingSource] = useState<null | "scan" | "manual" | "phase">(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  /** ---------------- Phases (dynamic) ---------------- */
+  const phasesQuery = api.application.listPhases.useQuery(
+      { eventName: eventName ?? "" },
+      { enabled: Boolean(eventName), refetchOnWindowFocus: false }
+  );
+
+  const phaseOptions = useMemo(
+      () =>
+          (phasesQuery.data ?? []).map((p) => ({
+            label: p.name,
+            value: p.name as PhaseName,
+          })),
+      [phasesQuery.data]
+  );
+
+  // Default phase once loaded
+  useEffect(() => {
+    if (!selectedPhase && phaseOptions.length > 0) {
+      setSelectedPhase(phaseOptions[0]!.value);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phaseOptions.length]);
 
   /** Resolve the email the query should use (only submittedEmail). */
   const effectiveEmail = useMemo(() => submittedEmail.trim(), [submittedEmail]);
@@ -111,7 +126,7 @@ export default function PassportPage() {
         keepPreviousData: true,
         staleTime: 10_000,
         refetchOnWindowFocus: false,
-      },
+      }
   );
 
   /** Apply query outcome to UI & clear loading flag when fetch completes */
@@ -181,17 +196,16 @@ export default function PassportPage() {
           {
             eventName,
             email: effectiveEmail,
-            phase: selectedPhase,
+            phase: selectedPhase, // send the NAME; server resolves to event_phase_id
             newStatus,
             allowedStatuses,
-          } as any,
+          } as any
       );
 
-      const label = PHASE_OPTIONS.find((p) => p.value === selectedPhase)?.label ?? selectedPhase;
       toast({
         variant: "success",
         title: `${newStatus ? "ADDED" : "REMOVED"} Check-in Successful`,
-        description: `Participant ${newStatus ? "checked in" : "removed"} for ${label}.`,
+        description: `Participant ${newStatus ? "checked in" : "removed"} for ${selectedPhase}.`,
       });
 
       if (updated) {
@@ -234,8 +248,7 @@ export default function PassportPage() {
   };
 
   /** ---------------- UI ---------------- */
-  const currentPhaseLabel =
-      PHASE_OPTIONS.find((e) => e.value === selectedPhase)?.label ?? selectedPhase;
+  const currentPhaseLabel = selectedPhase || "—";
 
   if (!eventName) {
     return (
@@ -267,24 +280,35 @@ export default function PassportPage() {
 
         <h1 className="text-3xl font-bold">Check-in System</h1>
 
-        {/* Phase Selector */}
+        {/* Phase Selector (dynamic) */}
         <div className="w-full sm:w-1/2 text-center p-4">
           <label className="mr-2 font-medium">Phase</label>
           <Select
               value={selectedPhase}
-              onValueChange={(v) => setSelectedPhase(v as Phase)}
-              // disable while we are fetching to avoid rapid refetch storms
-              disabled={anyBlockingLoad || statusMutation.isPending}
+              onValueChange={(v) => setSelectedPhase(v as PhaseName)}
+              disabled={anyBlockingLoad || statusMutation.isPending || phasesQuery.isLoading || phasesQuery.isError}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select phase" />
+              <SelectValue
+                  placeholder={
+                    phasesQuery.isLoading
+                        ? "Loading phases…"
+                        : phasesQuery.isError
+                            ? "Failed to load phases"
+                            : "Select phase"
+                  }
+              />
             </SelectTrigger>
             <SelectContent>
-              {PHASE_OPTIONS.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </SelectItem>
-              ))}
+              {phaseOptions.length === 0 && !phasesQuery.isLoading ? (
+                  <div className="px-3 py-2 text-sm opacity-70">No phases found for this event.</div>
+              ) : (
+                  phaseOptions.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                  ))
+              )}
             </SelectContent>
           </Select>
         </div>
@@ -358,14 +382,14 @@ export default function PassportPage() {
             <Button
                 className="bg-cyan-700 hover:bg-opacity-50"
                 onClick={handleCheckIn}
-                disabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail}
+                disabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail || !selectedPhase}
             >
               {statusMutation.isPending ? "Loading..." : "Check-in Participant"}
             </Button>
             <Button
                 variant="secondary"
                 onClick={handleRemove}
-                disabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail}
+                disabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail || !selectedPhase}
             >
               {statusMutation.isPending ? "Loading..." : "Remove Participant"}
             </Button>
