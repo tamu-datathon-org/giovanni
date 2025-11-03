@@ -122,7 +122,7 @@ function Sponsors() {
 
                 <div className='relative z-10 col-start-10 row-start-5 col-span-3 row-span-2 transform scale-[0.5]'>
                     <Image
-                        src="/images/sponsor-logo/textured/tamu_statistics.png"
+                        src="/images/sponsor-logo/textured/tamu_statistics.svg"
                         alt="tamu statistics"
                         fill
                         quality={100}
