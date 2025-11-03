@@ -3,11 +3,11 @@ import Image from "next/image";
 export default function Prizes() {
 
   return (
-    <section aria-label="Prizes" className="font-anonymous py-20 text-gray-400 w-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#2A2523] to-[#322C29]" id="prizes">
+    <section aria-label="Prizes" className="font-anonymous py-20 text-gray-400 max-w-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#2A2523] to-[#322C29]" id="prizes">
       <h2 className="text-white py-4 text-5xl">
         Prizes
       </h2>
-      <div className="relative w-[90vw] sm:w-[70vw] aspect-[10/13] mx-auto">
+      <div className="relative w-[90vw] sm:w-[50vw] aspect-[3/5] mx-auto">
         {/* Background layer */}
         <Image
           src="/images/prizes/bg.svg"

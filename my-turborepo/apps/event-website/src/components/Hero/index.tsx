@@ -13,7 +13,7 @@ const Hero = () => {
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#1C0808]" />
 
                 {/* Newspaper section */}
-                <div className="relative z-10 col-start-1 col-span-10 row-start-1 row-span-8 flex items-top justify-center transform translate-y-4">
+                <div className="relative z-10 col-start-1 col-span-10 row-start-2 row-span-8 flex items-top justify-center transform translate-y-4">
                     <NewspaperSection />
 
                     {/* magnifying glass - top right of newspaper */}
