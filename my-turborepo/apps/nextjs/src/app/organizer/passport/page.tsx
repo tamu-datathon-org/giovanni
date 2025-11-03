@@ -209,7 +209,8 @@ export default function PassportPage() {
       });
 
       if (updated) {
-        setParticipant(updated as ParticipantData);
+        console.log(updated)
+        setParticipant({...participant, checkedIn: updated.checkedIn});
       } else {
         setParticipant(DEFAULT_PARTICIPANT);
       }
@@ -288,7 +289,7 @@ export default function PassportPage() {
               onValueChange={(v) => setSelectedPhase(v as PhaseName)}
               disabled={anyBlockingLoad || statusMutation.isPending || phasesQuery.isLoading || phasesQuery.isError}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full bg-white">
               <SelectValue
                   placeholder={
                     phasesQuery.isLoading
