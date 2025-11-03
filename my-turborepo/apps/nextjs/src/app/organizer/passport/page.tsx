@@ -123,9 +123,9 @@ export default function PassportPage() {
       } as any,
       {
         enabled: Boolean(eventName) && Boolean(effectiveEmail) && Boolean(selectedPhase),
-        keepPreviousData: true,
         staleTime: 10_000,
         refetchOnWindowFocus: false,
+        retry: 1,
       }
   );
 
