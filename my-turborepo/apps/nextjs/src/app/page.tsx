@@ -1,15 +1,15 @@
+import type { Metadata } from "next";
+import { Suspense } from "react";
+
 import AboutSectionOne from "~/components/About/AboutSectionOne";
 import AboutSectionTwo from "~/components/About/AboutSectionTwo";
+import AboutTeam from "~/components/AboutTeam/AboutTeam";
 import ApplySection from "~/components/Apply/ApplySection";
 import ScrollUp from "~/components/Common/ScrollUp";
 import Contact from "~/components/Contact";
-import Hero from "~/components/Hero";
-import type { Metadata } from "next";
-import AboutTeam from "~/components/AboutTeam/AboutTeam";
 import ContactBackground from "~/components/Contact/ContactBackground";
-import { Suspense } from "react";
+import Hero from "~/components/Hero";
 import { env } from "~/env";
-
 
 export const metadata: Metadata = {
   metadataBase: new URL(
