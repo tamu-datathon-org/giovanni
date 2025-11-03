@@ -22,7 +22,7 @@ export default function FAQ() {
   return (
     <section aria-label="Frequently Asked Questions" className="w-full bg-gradient-to-b from-[#322C29] to-[#1B0706] pb-20" id="faq">
       <div className="flex flex-col gap-y-36 max-w-6xl mx-auto px-4 py-24">
-        <h2 className="text-6xl font-bold text-center text-white">FAQ</h2>
+        <h2 className="text-6xl font-bold font-anonymous text-center text-white">FAQ</h2>
 
         {/* 1/row mobile, 2/row sm, 3/row lg (9 items total makes a 3x3 on desktop) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-36 justify-items-center">
