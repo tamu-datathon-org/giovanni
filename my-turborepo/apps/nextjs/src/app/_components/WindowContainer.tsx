@@ -31,7 +31,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
   return (
     isOpen && (
       <div
-        className={`font-XPfont w-fit scale-75 font-bold sm:scale-100 ${isOpen ? "unhidden" : "hidden"}`}
+        className={`font-XPfont w-fit scale-75 font-bold sm:scale-100`}
         // style={{ transform: "scale(0.5) sm:scale(1)" }}
       >
         <div className="flex flex-col items-center justify-center">
