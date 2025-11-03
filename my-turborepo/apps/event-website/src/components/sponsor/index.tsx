@@ -12,6 +12,7 @@ function Sponsors() {
                     height={200}
                     alt='sponsor title'
                     className='w-[80vw] max-w-[800px]'
+                    priority
                 />
             </div>
 
@@ -32,6 +33,7 @@ function Sponsors() {
                         alt="hitachi"
                         fill
                         quality={100}
+                        priority
                     />
                 </div>
 
@@ -41,6 +43,7 @@ function Sponsors() {
                         alt="hitachi"
                         fill
                         quality={100}
+                        priority
                     />
                 </div>
 
@@ -50,6 +53,7 @@ function Sponsors() {
                         alt="msy"
                         fill
                         quality={100}
+                        priority
                     />
                 </div>
 
@@ -59,6 +63,7 @@ function Sponsors() {
                         alt="databricks"
                         fill
                         quality={100}
+                        priority
                     />
                 </div>
                 {/* Right side */}
@@ -69,6 +74,7 @@ function Sponsors() {
                         alt="hitachi"
                         fill
                         quality={100}
+                        priority
                     />
                 </div>
 
@@ -78,6 +84,7 @@ function Sponsors() {
                         alt="hitachi"
                         fill
                         quality={100}
+                        priority
                     />
                 </div>
 
@@ -87,6 +94,7 @@ function Sponsors() {
                         alt="p66"
                         fill
                         quality={100}
+                        priority
                     />
                 </div>
 
@@ -96,6 +104,7 @@ function Sponsors() {
                         alt="tamu"
                         fill
                         quality={100}
+                        priority
                     />
                 </div>
 
@@ -106,6 +115,7 @@ function Sponsors() {
                             alt="pure buttons"
                             fill
                             quality={100}
+                            priority
                         />
                     </a>
                 </div>
@@ -116,6 +126,7 @@ function Sponsors() {
                         alt="tamu statistics"
                         fill
                         quality={100}
+                        priority
                     />
                 </div>
             </div>
