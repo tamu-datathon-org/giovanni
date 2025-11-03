@@ -540,15 +540,12 @@ export const applicationRouter = {
         phase: z.string(),
     }))
     .query(async ({ ctx, input }) => {
-        const event = await ctx.db.query.Event.findFirst({
-            where: eq(Event.name, input.eventName),
-            columns: { id: true, name: true },
-        });
-        if (!event) throw new TRPCError({ code: "NOT_FOUND", message: "Event not found" });
+        const event = await getEventData({ ctx, eventName: input.eventName });
 
         const application = await ctx.db.query.Application.findFirst({
-            where: eq(Application.email, input.email),
+            where: and(eq(Application.email, input.email), eq(Application.eventId, event.id)),
         });
+
         if (!application)
             throw new TRPCError({ code: "NOT_FOUND", message: "Applicant not found" });
 
@@ -567,7 +564,7 @@ export const applicationRouter = {
             firstName: application.firstName,
             lastName: application.lastName,
             email: application.email,
-            dietaryRestrictions: application.dietaryRestrictions,
+            dietaryRestrictions: application.dietaryRestriction,
             status: application.status,
             extraInfo: application.extraInfo,
             checkedIn: attendance?.checkedIn ?? false,
@@ -582,11 +579,10 @@ export const applicationRouter = {
                 email: z.string(),
                 phase: PhaseSchema,
                 newStatus: z.boolean(),
-                allowedStatuses: z.array(z.string()),
             }),
         )
         .mutation(async ({ ctx, input }) => {
-            const { eventName, email, phase, newStatus, allowedStatuses } = input;
+            const { eventName, email, phase, newStatus } = input;
 
             const event = await getEventData({ ctx, eventName });
 
@@ -608,7 +604,7 @@ export const applicationRouter = {
                 throw new TRPCError({ code: "NOT_FOUND", message: "Application not found" });
             }
 
-            const ep = await getEventPhase(ctx, event.id, input.phase);
+            const ep = await getEventPhase(ctx, event.id, phase);
 
             const updated = await ctx.db
                 .insert(Attendance)
@@ -616,15 +612,15 @@ export const applicationRouter = {
                     applicationId: application.id,
                     eventId: event.id,
                     eventPhaseId: ep.id,
-                    checkedIn: input.newStatus,
-                    checkedInAt: input.newStatus ? new Date() : null,
+                    checkedIn: newStatus,
+                    checkedInAt: newStatus ? new Date() : null,
                     updatedAt: new Date(),
                 })
                 .onConflictDoUpdate({
                     target: [Attendance.applicationId, Attendance.eventPhaseId],
                     set: {
-                        checkedIn: input.newStatus,
-                        checkedInAt: input.newStatus ? new Date() : null,
+                        checkedIn: newStatus,
+                        checkedInAt: newStatus ? new Date() : null,
                         updatedAt: sql`NOW()`,
                     },
                 })
