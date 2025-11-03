@@ -185,53 +185,53 @@ export const Application = pgTable("application", {
   checkedIn: boolean("checked_in").notNull().default(false),
 });
 
-// --- New enum for phases (matches your PHASE_OPTIONS in page.tsx) ---
-export const attendancePhaseEnum = pgEnum("attendance_phase", [
-  "main",
-  "meal1",
-  "meal2",
-  "meal3",
-  "meal4",
-]);
+// Checkin Phases Table
+export const EventPhase = pgTable(
+    "event_phase",
+    {
+      id: uuid("id").primaryKey().defaultRandom(),
+      eventId: uuid("event_id")
+          .notNull()
+          .references(() => Event.id, { onDelete: "cascade" }),
+      name: varchar("name", { length: 50 }).notNull(),
+      sortOrder: integer("sort_order").notNull().default(0),
+    },
+    (t) => ({
+      uniq: uniqueIndex("event_phase_event_name_uniq").on(t.eventId, t.name),
+      byEvent: index("event_phase_event_idx").on(t.eventId),
+    }),
+);
 
 export const Attendance = pgTable(
     "attendance",
     {
       id: uuid("id").notNull().primaryKey().defaultRandom(),
-
       applicationId: uuid("application_id")
           .notNull()
           .references(() => Application.id, { onDelete: "cascade" }),
-
       eventId: uuid("event_id")
           .notNull()
           .references(() => Event.id, { onDelete: "cascade" }),
 
-      phase: attendancePhaseEnum("phase").notNull(),
+      // NEW FK replacing the old enum column
+      eventPhaseId: uuid("event_phase_id")
+          .notNull()
+          .references(() => EventPhase.id, { onDelete: "cascade" }),
 
       checkedIn: boolean("checked_in").notNull().default(false),
-      checkedInAt: timestamp("checked_in_at", {
-        mode: "date",
-        withTimezone: true,
-      }),
-
-      updatedAt: timestamp("updated_at", {
-        mode: "date",
-        withTimezone: true,
-      })
+      checkedInAt: timestamp("checked_in_at", { mode: "date", withTimezone: true }),
+      updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
           .notNull()
           .$onUpdateFn(() => sql`now()`),
     },
     (t) => ({
-      // One record per (application, event, phase)
-      uniq: uniqueIndex("attendance_application_event_phase_uniq").on(
+      uniq: uniqueIndex("attendance_app_eventphase_uniq").on(
           t.applicationId,
-          t.eventId,
-          t.phase,
+          t.eventPhaseId,
       ),
       appIdx: index("attendance_application_idx").on(t.applicationId),
       evtIdx: index("attendance_event_idx").on(t.eventId),
-      phaseIdx: index("attendance_phase_idx").on(t.phase),
+      evtPhaseIdx: index("attendance_event_phase_idx").on(t.eventPhaseId),
     }),
 );
 
