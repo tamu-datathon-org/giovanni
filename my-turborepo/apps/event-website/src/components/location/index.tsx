@@ -16,7 +16,6 @@ const Location = () => {
                         src="/images/elements/locationcard.svg"
                         alt="location folder"
                         fill
-                        priority
                     />
                 </div>
             </div>
@@ -28,7 +27,6 @@ const Location = () => {
                         alt="location folder"
                         fill
                         className="object-contain"
-                        priority
                     />
                 </div>
             </div>
