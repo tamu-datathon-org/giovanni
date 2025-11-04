@@ -15,7 +15,8 @@ export default async function AdminLayout({
   if (session) {
     try {
       await api.auth.validateOrganizerAuth();
-    } catch (e) {
+    } catch (_e) {
+      console.error(_e);
       redirect("/login?callbackUrl=/admin&message=unauthorized");
     }
   } else {

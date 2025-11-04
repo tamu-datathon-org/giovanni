@@ -85,7 +85,7 @@ export function Asterisk() {
 
 export function ApplicationForm() {
   const [disableSubmit, setDisableSubmit] = useState(false);
-  const { session, setSession } = useAuthRedirect();
+  const { session, } = useAuthRedirect();
 
   const {
     data: importedValues,
@@ -117,10 +117,10 @@ export function ApplicationForm() {
   });
 
   useEffect(() => {
-    if (session?.user?.email) {
+    if (session?.user.email) {
       form.setValue("email", session.user.email);
     }
-  }, [session?.user?.email, form]);
+  }, [session?.user.email, form]);
 
   const createApplication = api.application.create.useMutation();
   const updateApplication = api.application.update.useMutation();
@@ -253,7 +253,7 @@ export function ApplicationForm() {
     return <Loading />;
   }
 
-  const SCHOOL_OPTIONS = schoolsJson.map((entry, index) => ({
+  const SCHOOL_OPTIONS = schoolsJson.map((entry, ) => ({
     value: entry.schoolName,
     label: entry.schoolName,
   }));
@@ -456,7 +456,7 @@ export function ApplicationForm() {
             <FormField
               control={form.control}
               name="resumeFile"
-              render={({ field: { value, onChange, ...fieldProps } }) => (
+              render={({ field: { ...fieldProps } }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
                     Resume sent to Sponsors (PDF Only) (Optional):

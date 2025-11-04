@@ -3,8 +3,6 @@ import { NextResponse } from "next/server";
 import { handleUpload } from "@vercel/blob/client";
 
 import { getSession } from "@vanni/auth";
-import { db } from "@vanni/db/client";
-import { CreateUserResumeSchema, UserResume } from "@vanni/db/schema";
 
 export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
@@ -13,10 +11,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     const jsonResponse = await handleUpload({
       body,
       request,
-      onBeforeGenerateToken: async (
-        pathname,
-        // clientPayload
-      ) => {
+      onBeforeGenerateToken: async () => {
         // Generate a client token for the browser to upload the file
         // ⚠️ Authenticate and authorize users before generating the token.
         // Otherwise, you're allowing anonymous uploads.
