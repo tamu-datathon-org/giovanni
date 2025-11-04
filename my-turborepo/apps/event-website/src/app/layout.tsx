@@ -1,9 +1,18 @@
 "use client";
 
+import { Inter } from "next/font/google";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
+
 import "../styles/index.css";
+
+// Optimize font loading with next/font/google
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -14,7 +23,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="en">
-      <body className="h-full m-0 w-full">
+      <body className={`m-0 h-full w-full ${inter.variable}`}>
         <a
           id="mlh-trust-badge"
           style={{
@@ -42,6 +51,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Footer />
         <ScrollToTop />
       </body>
-    </html >
+    </html>
   );
 }

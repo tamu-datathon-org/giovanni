@@ -19,6 +19,10 @@ export async function GET() {
       cache: "no-store",
     });
 
+    if (!response.ok) {
+      throw new Error(`Google Sheets API returned ${response.status}: ${response.statusText}`);
+    }
+
     // Get the response as text first
     const responseText = await response.text();
 

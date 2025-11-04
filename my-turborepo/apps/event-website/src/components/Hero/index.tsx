@@ -43,7 +43,8 @@ const Hero = () => {
                        alt="lamp"
                        width={1500}
                        height={1500}
-                       className="object-contain" />
+                       className="object-contain"
+                       priority />
                 </div>
 
             </div>
