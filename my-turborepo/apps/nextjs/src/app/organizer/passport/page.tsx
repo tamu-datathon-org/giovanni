@@ -7,9 +7,9 @@ import { MultiSelect } from "~/app/_components/multiselect";
 import QRScanner from "~/app/_components/organizer/qr-scanner";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { env } from "~/env";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
-import { env } from "~/env";
 
 interface participantDataSchema {
   userId: string;
@@ -69,9 +69,9 @@ export default function PassportPage() {
   ];
   React.useEffect(() => {
     if (scannerData) {
-      queryData.refetch();
+      void queryData.refetch();
     }
-  }, [scannerData]);
+  }, [queryData, scannerData]);
 
   const queryData = api.application.getCheckInStatus.useQuery(
     {
@@ -99,7 +99,7 @@ export default function PassportPage() {
   const statusMutation = api.application.updateCheckInStatus.useMutation();
   const updateCheckIn = async (newStatus: boolean) => {
     let inputEmail = "";
-    if (inputRef.current && inputRef.current.value) {
+    if (inputRef.current?.value) {
       inputEmail = inputRef.current.value;
     } else {
       inputEmail = scannerData;
@@ -151,12 +151,12 @@ export default function PassportPage() {
 
   const handleCheckIn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    updateCheckIn(true);
+    void updateCheckIn(true);
   };
 
   const handleCheckOut = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    updateCheckIn(false);
+    void updateCheckIn(false);
   };
 
   return (
@@ -165,7 +165,7 @@ export default function PassportPage() {
       <div className="flex flex-col items-center gap-2">
         Currently Scanning: {scannerData}
         <QRScanner onScan={setScannerData} />
-        <div className="w-full sm:w-1/2 text-center p-4">
+        <div className="w-full p-4 text-center sm:w-1/2">
           <label>Manual Override Input:</label>
           <Input
             className="border border-black bg-orange-100"
@@ -181,7 +181,7 @@ export default function PassportPage() {
         </Button>
       </div>
 
-      <div className="flex flex-col items-center rounded-md bg-orange-100 dark:bg-orange-400 p-4">
+      <div className="flex flex-col items-center rounded-md bg-orange-100 p-4 dark:bg-orange-400">
         <h2 className="mb-1 text-2xl font-bold">Participant's Data</h2>
         <p>
           Name: {participantData.firstName} {participantData.lastName}

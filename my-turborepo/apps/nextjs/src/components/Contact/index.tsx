@@ -34,7 +34,7 @@ const Contact = () => {
                     className="w-full md:w-auto hover:opacity-50"
                     title="Copy to clipboard"
                     onClick={() => {
-                      navigator.clipboard.writeText('sponsor@tamudatathon.com')
+                      void navigator.clipboard.writeText('sponsor@tamudatathon.com')
                       toast({
                         title: "Copied to clipboard",
                         variant: "default",
@@ -60,7 +60,7 @@ const Contact = () => {
                   <button
                     className="w-full md:w-auto hover:opacity-50"
                     onClick={() => {
-                      navigator.clipboard.writeText('connect@tamudatathon.com')
+                      void navigator.clipboard.writeText('connect@tamudatathon.com')
                       toast({
                         title: "Copied to clipboard",
                         variant: "default",

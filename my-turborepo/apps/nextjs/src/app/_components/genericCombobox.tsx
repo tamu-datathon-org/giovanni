@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BsChevronExpand } from "react-icons/bs";
@@ -75,7 +75,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
         .slice(0, 20);
     }
     return options;
-  }, [debouncedValue, options]);
+  }, [debouncedValue, filter, options]);
 
   return (
     <FormField
@@ -84,7 +84,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
       defaultValue={defaultOption?.value}
       render={({ field }) => {
         // Derive selectedOption from field.value
-        const selectedOption = options.find((option) => option.value === field.value) ||
+        const selectedOption = options.find((option) => option.value === field.value) ??
           (field.value && !options.find((option) => option.value === field.value)
             ? { value: field.value, label: "Other (please specify)" }
             : null);

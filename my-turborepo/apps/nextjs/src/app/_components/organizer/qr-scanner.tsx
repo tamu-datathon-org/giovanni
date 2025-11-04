@@ -5,7 +5,7 @@ import type {
   IScannerStyles,
 } from "@yudiel/react-qr-scanner";
 import { useState } from "react";
-import { IScannerClassNames, Scanner } from "@yudiel/react-qr-scanner";
+import { Scanner } from "@yudiel/react-qr-scanner";
 
 import { Button } from "~/components/ui/button";
 

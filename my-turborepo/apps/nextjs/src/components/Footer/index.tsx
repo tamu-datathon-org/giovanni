@@ -1,15 +1,16 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../ui/button";
 import { LuClipboard } from "react-icons/lu";
+
 import { useToast } from "~/hooks/use-toast";
 
 const Footer = () => {
   const { toast } = useToast();
 
   return (
-    <footer className="relative z-10 bg-normal pb-8 pt-12 dark:bg-gray-dark md:pt-16 lg:pt-20">
+    <footer className="bg-normal dark:bg-gray-dark relative z-10 pb-8 pt-12 md:pt-16 lg:pt-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col items-center md:items-start">
@@ -17,14 +18,14 @@ const Footer = () => {
               <Image
                 src="/images/logo/logoTD.png"
                 alt="logo"
-                className="w-[128px] mx-auto dark:hidden"
+                className="mx-auto w-[128px] dark:hidden"
                 width={100}
                 height={100}
               />
               <Image
                 src="/images/logo/logoTD.png"
                 alt="logo"
-                className="hidden w-[200px] md:w-[150px] lg:w-[128px] mx-auto dark:block"
+                className="mx-auto hidden w-[200px] dark:block md:w-[150px] lg:w-[128px]"
                 width={100}
                 height={100}
               />
@@ -43,18 +44,19 @@ const Footer = () => {
               <span className="flex items-center space-x-2">
                 <a
                   href="mailto:sponsor@tamudatathon.com"
-                  className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-900 mt-0">
+                  className="mt-0 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-900"
+                >
                   sponsor@tamudatathon.com
                 </a>
                 <button
-                  className="w-full md:w-auto hover:opacity-50"
+                  className="w-full hover:opacity-50 md:w-auto"
                   onClick={() => {
-                    navigator.clipboard.writeText('sponsor@tamudatathon.com')
+                    void navigator.clipboard.writeText("sponsor@tamudatathon.com");
                     toast({
                       title: "Copied to clipboard",
                       variant: "default",
-                      description: "sponsor@tamudatathon.com"
-                    })
+                      description: "sponsor@tamudatathon.com",
+                    });
                   }}
                 >
                   <LuClipboard className="mr-2" />
@@ -67,18 +69,19 @@ const Footer = () => {
               <span className="flex items-center space-x-2">
                 <a
                   href="mailto:connect@tamudatathon.com"
-                  className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-900 mt-0">
+                  className="mt-0 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-900"
+                >
                   connect@tamudatathon.com
                 </a>
                 <button
-                  className="w-full md:w-auto hover:opacity-50"
+                  className="w-full hover:opacity-50 md:w-auto"
                   onClick={() => {
-                    navigator.clipboard.writeText('connect@tamudatathon.com')
+                    void navigator.clipboard.writeText("connect@tamudatathon.com");
                     toast({
                       title: "Copied to clipboard",
                       variant: "default",
-                      description: "connect@tamudatathon.com"
-                    })
+                      description: "connect@tamudatathon.com",
+                    });
                   }}
                 >
                   <LuClipboard className="mr-2" />
@@ -178,8 +181,7 @@ const Footer = () => {
 
         <div className="mt-8 border-t border-gray-200 pt-8 dark:border-gray-700">
           <p className="text-center text-xs text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} TAMU Datathon. All rights
-            reserved.
+            © {new Date().getFullYear()} TAMU Datathon. All rights reserved.
           </p>
         </div>
       </div>

@@ -10,7 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@vanni/ui/form";
-import { Slider } from "@vanni/ui/slider";
 
 import { Input } from "~/components/ui/input";
 
