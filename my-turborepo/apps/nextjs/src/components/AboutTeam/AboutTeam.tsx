@@ -12,6 +12,20 @@ const AboutTeam = () => {
           image: "/images/teampics_v2025/Dayo_Headshot.jpg",
           name: "Oluwadayo Bamgbelu",
           position: "President",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/oluwadayo-bamgbelu/",
+            },
+            {
+              type: "instagram",
+              url: "https://www.instagram.com/dayo.bam/",
+            },
+            {
+              type: "github",
+              url: "https://github.com/D-BX",
+            },
+          ],
         },
         {
           image: "/images/teampics_v2025/Jonathan_Headshot.png",
@@ -110,6 +124,20 @@ const AboutTeam = () => {
           image: "/images/teampics_v2025/Abhinav_Headshot.jpg",
           name: "Abhinav Vurakaranam",
           position: "Challenges",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/abhinav-vurakaranam-03b667238/",
+            },
+            {
+              type: "instagram",
+              url: "https://www.instagram.com/abhivur/",
+            },
+            {
+              type: "github",
+              url: "https://github.com/abhivur?tab=repositories",
+            },
+          ],
         },
         {
           image: "/images/teampics_v2025/Ali_Headshot.png",
