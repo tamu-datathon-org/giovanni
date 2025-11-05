@@ -62,7 +62,7 @@ export default function NewspaperSection() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <ThemedButton className="h-24 w-[350px] px-8 text-4xl">
+                <ThemedButton className="h-24 w-[400px] px-8 text-4xl">
                   APPLY
                 </ThemedButton>
               </a>
@@ -71,7 +71,7 @@ export default function NewspaperSection() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <ThemedButton className="h-24 w-[350px] px-8 text-4xl">
+                <ThemedButton className="h-24 w-[400px] px-8 text-4xl">
                   DISCORD
                 </ThemedButton>
               </a>
@@ -146,7 +146,7 @@ export default function NewspaperSection() {
             fontWeight="400"
             fill="black"
           >
-            APPLICATIONS CLOSE OCT. 24
+            APPLICATIONS CLOSE NOV. 4
           </text>
 
           {/* Button */}
