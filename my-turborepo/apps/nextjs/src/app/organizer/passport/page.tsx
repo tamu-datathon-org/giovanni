@@ -31,6 +31,7 @@ interface ParticipantData {
   dietaryRestrictions: string;
   status: string;
   extraInfo: string;
+  eventAttendance: boolean;
   checkedIn: boolean;        // phase-specific
   checkedInAt?: string | null;
 }
@@ -43,6 +44,7 @@ const DEFAULT_PARTICIPANT: ParticipantData = {
   dietaryRestrictions: "None",
   status: "Pending",
   extraInfo: "None",
+  eventAttendance: false,
   checkedIn: false,
   checkedInAt: null,
 };
@@ -192,13 +194,7 @@ export default function PassportPage() {
             newStatus,
           } as any
       );
-
-      toast({
-        variant: "success",
-        title: `${newStatus ? "ADDED" : "REMOVED"} Check-in Successful`,
-        description: `Participant ${newStatus ? "checked in" : "removed"} for ${selectedPhase}.`,
-      });
-
+      
       if (updated) {
         console.log(updated)
         setParticipant({...participant, checkedIn: updated.checkedIn});

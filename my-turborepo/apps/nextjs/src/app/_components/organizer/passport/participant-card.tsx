@@ -17,6 +17,7 @@ interface ParticipantData {
   dietaryRestrictions: string;
   status: string;
   extraInfo: string;
+  eventAttendance: boolean;
   checkedIn: boolean;
   checkedInAt?: string | null;
 }
@@ -53,51 +54,59 @@ export function ParticipantCard({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-orange-100 dark:bg-orange-400 max-w-md">
+      <DialogContent className={"bg-orange-100 dark:bg-orange-400 max-w-md " + (participant.eventAttendance ? "border-4 border-green-700" : "border-4 border-red-700")}>
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
             Participant&apos;s Data
           </DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-sm opacity-80">Phase: {currentPhaseLabel}</p>
-          <p className="flex-row" >
-            <p>Name: {participant.firstName} {participant.lastName}</p>
-            <p>Email: {participant.email}</p>
-          </p>
-          <p className="text-cyan-600">Status: {participant.status}</p>
-          <p className="text-indigo-500">
-            Checked In:{" "}
-            <span className={participant.checkedIn ? "text-green-600" : "text-red-600"}>
-              {participant.checkedIn ? "True" : "False"}
-            </span>
-          </p>
+        <div>
+          <span className="text-sm flex flex-row gap-2 justify-center">
+            <p>Phase: {" "}
+              <span className="text-indigo-700">{currentPhaseLabel}</span>
+            </p>
+            <p>
+              Checked In:{" "}
+              <span className={participant.checkedIn ? "text-green-600" : "text-red-600"}>
+                {participant.checkedIn ? "True" : "False"}
+              </span>
+            </p>
+          </span>
           {participant.checkedInAt && (
-            <p className="text-sm opacity-80">
-              Checked In At:{" "}
+            <p className="text-sm opacity-70 text-center">
+              checked in at:{" "}
               {new Date(participant.checkedInAt).toLocaleString(undefined, { hour12: true })}
             </p>
           )}
+        </div>
+        <div className="text-center">
+          <p>Name: {participant.firstName} {participant.lastName}</p>
+          <p>Email: {participant.email}</p>
+          <p>Status: {" "}
+            <span className={participant.status === "accepted" ? "text-green-600" : "text-red-600"}>
+              {participant.status}
+            </span>
+          </p>
           <p>
             Dietary Restrictions:{" "}
             {participant.dietaryRestrictions ? participant.dietaryRestrictions : "None"}
           </p>
           <p>Extra Info: {participant.extraInfo ? participant.extraInfo : "None"}</p>
         </div>
-        <DialogFooter className="flex gap-6 justify-center mt-4">
+        <DialogFooter className="flex flex-row justify-center sm:justify-center gap-4 mt-4">
           <Button
             className="bg-red-700 hover:bg-opacity-50"
             onClick={onRemove}
             disabled={isDisabled || isLoading}
           >
-            {isLoading ? "Loading..." : "Remove Participant"}
+            {isLoading ? "Loading..." : "Remove"}
           </Button>
           <Button
             className="bg-green-700 hover:bg-opacity-50"
             onClick={onCheckIn}
             disabled={isDisabled || isLoading}
           >
-            {isLoading ? "Loading..." : "Check-in Participant"}
+            {isLoading ? "Loading..." : "Check-in"}
           </Button>
         </DialogFooter>
       </DialogContent>
