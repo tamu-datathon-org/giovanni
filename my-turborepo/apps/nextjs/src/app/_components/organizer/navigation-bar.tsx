@@ -12,7 +12,7 @@ import {
 
 const OrganizerNavBar = () => {
   return (
-    <NavigationMenu>
+    <NavigationMenu className="pt-8 sm:pt-0">
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/organizer" legacyBehavior passHref>
