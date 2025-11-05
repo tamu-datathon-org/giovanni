@@ -549,15 +549,54 @@ export const applicationRouter = {
         if (!application)
             throw new TRPCError({ code: "NOT_FOUND", message: "Applicant not found" });
 
-        const phase = await ctx.db.query.EventPhase.findFirst({
-            where: and(eq(EventPhase.eventId, event.id), eq(EventPhase.name, input.phase)),
-        });
-        if (!phase)
-            throw new TRPCError({ code: "NOT_FOUND", message: "Phase not found" });
+        // Single join for EventPhase and Attendance
+        const [phaseAttendance, checkInAttendance] = await Promise.all([
+            // Get attendance for requested phase
+            ctx.db
+                .select({
+                    checkedIn: Attendance.checkedIn,
+                    checkedInAt: Attendance.checkedInAt,
+                    phaseId: EventPhase.id,
+                })
+                .from(EventPhase)
+                .leftJoin(
+                    Attendance,
+                    and(
+                        eq(Attendance.eventPhaseId, EventPhase.id),
+                        eq(Attendance.applicationId, application.id)
+                    )
+                )
+                .where(
+                    and(
+                        eq(EventPhase.eventId, event.id),
+                        eq(EventPhase.name, input.phase)
+                    )
+                )
+                .limit(1),
+            // Get check-in phase attendance
+            ctx.db
+                .select({
+                    checkedIn: Attendance.checkedIn,
+                })
+                .from(EventPhase)
+                .leftJoin(
+                    Attendance,
+                    and(
+                        eq(Attendance.eventPhaseId, EventPhase.id),
+                        eq(Attendance.applicationId, application.id)
+                    )
+                )
+                .where(
+                    and(
+                        eq(EventPhase.eventId, event.id),
+                        eq(EventPhase.name, "check-in")
+                    )
+                )
+                .limit(1),
+        ]);
 
-        const attendance = await ctx.db.query.Attendance.findFirst({
-            where: and(eq(Attendance.applicationId, application.id), eq(Attendance.eventPhaseId, phase.id)),
-        });
+        if (!phaseAttendance?.[0]?.phaseId)
+            throw new TRPCError({ code: "NOT_FOUND", message: "Phase not found" });
 
         return {
             userId: application.id,
@@ -567,8 +606,9 @@ export const applicationRouter = {
             dietaryRestrictions: application.dietaryRestriction,
             status: application.status,
             extraInfo: application.extraInfo,
-            checkedIn: attendance?.checkedIn ?? false,
-            checkedInAt: attendance?.checkedInAt ?? null,
+            eventAttendance: checkInAttendance?.[0]?.checkedIn ?? false,
+            checkedIn: phaseAttendance?.[0]?.checkedIn ?? false,
+            checkedInAt: phaseAttendance?.[0]?.checkedInAt ?? null,
         };
     }),
 
