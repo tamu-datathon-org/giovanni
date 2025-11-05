@@ -1,17 +1,29 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { Cat, Dog, Fish, Turtle } from "lucide-react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Cat, Dog, Fish, Turtle, Loader2 } from "lucide-react";
 
+import QRScanner from "~/app/_components/organizer/passport/qr-scanner";
+import { ManualEmailInput } from "~/app/_components/organizer/passport/manual-email-input";
+import { ParticipantCard } from "~/app/_components/organizer/passport/participant-card";
+import { PhaseSelector } from "~/app/_components/organizer/passport/phase-selector";
 import { MultiSelect } from "~/app/_components/multiselect";
-import QRScanner from "~/app/_components/organizer/qr-scanner";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { env } from "~/env";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
 
-interface participantDataSchema {
+/** ---------------------------------------------
+ * Types & constants
+ * ----------------------------------------------*/
+const STATUS_OPTIONS = [
+  { label: "Pending", value: "pending", icon: Turtle },
+  { label: "Accepted", value: "accepted", icon: Dog },
+  { label: "Rejected", value: "rejected", icon: Cat },
+  { label: "Waitlisted", value: "waitlisted", icon: Fish },
+];
+
+type PhaseName = string;
+
+interface ParticipantData {
   userId: string;
   firstName: string;
   lastName: string;
@@ -19,10 +31,12 @@ interface participantDataSchema {
   dietaryRestrictions: string;
   status: string;
   extraInfo: string;
-  checkedIn: boolean;
+  eventAttendance: boolean;
+  checkedIn: boolean;        // phase-specific
+  checkedInAt?: string | null;
 }
 
-const defaultParticipantData: participantDataSchema = {
+const DEFAULT_PARTICIPANT: ParticipantData = {
   userId: "404",
   firstName: "Participant",
   lastName: "Not Found",
@@ -30,202 +44,306 @@ const defaultParticipantData: participantDataSchema = {
   dietaryRestrictions: "None",
   status: "Pending",
   extraInfo: "None",
+  eventAttendance: false,
   checkedIn: false,
+  checkedInAt: null,
 };
 
-export default function PassportPage() {
-  const [participantData, setParticipantData] = useState<participantDataSchema>(
-    defaultParticipantData,
+/** ---------------------------------------------
+ * Loading Overlay
+ * ----------------------------------------------*/
+function LoadingOverlay({ show, label }: { show: boolean; label: string }) {
+  if (!show) return null;
+  return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div className="flex items-center gap-3 rounded-xl bg-white px-5 py-4 shadow-lg dark:bg-neutral-900">
+          <Loader2 className="h-5 w-5 animate-spin" />
+          <span className="text-sm font-medium">{label}</span>
+        </div>
+      </div>
   );
-  const [scannerData, setScannerData] = useState<string>("");
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([
-    "accepted",
-    "waitlisted",
-  ]);
+}
+
+export default function PassportPage() {
+  const eventName = process.env.NEXT_PUBLIC_EVENT_NAME as string | undefined;
+
+  /** ---------------- State ---------------- */
+  const [participant, setParticipant] = useState<ParticipantData>(DEFAULT_PARTICIPANT);
+  const [selectedPhase, setSelectedPhase] = useState<PhaseName>(""); // dynamic
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // const [allowedStatuses, setAllowedStatuses] = useState<string[]>(["accepted", "waitlisted"]);
+
+  // Manual & Scanner email handling
+  const [manualEmail, setManualEmail] = useState<string>("");
+  const [scannerEmail, setScannerEmail] = useState<string>("");
+  const [submittedEmail, setSubmittedEmail] = useState<string>("");
+  const [pendingSource, setPendingSource] = useState<null | "scan" | "manual" | "phase">(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const statusList = [
-    {
-      label: "Pending",
-      value: "pending",
-      icon: Turtle,
-    },
-    {
-      label: "Accepted",
-      value: "accepted",
-      icon: Dog,
-    },
-    {
-      label: "Rejected",
-      value: "rejected",
-      icon: Cat,
-    },
-    {
-      label: "Waitlisted",
-      value: "waitlisted",
-      icon: Fish,
-    },
-  ];
-  React.useEffect(() => {
-    if (scannerData) {
-      void queryData.refetch();
-    }
-  }, [queryData, scannerData]);
-
-  const queryData = api.application.getCheckInStatus.useQuery(
-    {
-      eventName: process.env.NEXT_PUBLIC_EVENT_NAME!,
-      email: scannerData,
-    },
-    {
-      enabled: !!scannerData, // Only enable the query if scannerData exists
-    },
+  /** ---------------- Phases (dynamic) ---------------- */
+  const phasesQuery = api.application.listPhases.useQuery(
+      { eventName: eventName ?? "" },
+      { enabled: Boolean(eventName), refetchOnWindowFocus: false }
   );
 
-  React.useEffect(() => {
+  const phaseOptions = useMemo(
+      () =>
+          (phasesQuery.data ?? []).map((p) => ({
+            label: p.name,
+            value: p.name as PhaseName,
+          })),
+      [phasesQuery.data]
+  );
+
+  // Default phase once loaded
+  useEffect(() => {
+    if (!selectedPhase && phaseOptions.length > 0) {
+      setSelectedPhase(phaseOptions[0]!.value);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phaseOptions.length]);
+
+  const effectiveEmail = useMemo(() => submittedEmail.trim(), [submittedEmail]);
+
+  /** ---------------- Queries ---------------- */
+  const queryData = api.application.getCheckInStatus.useQuery(
+      {
+        eventName: eventName ?? "",
+        email: effectiveEmail,
+        phase: selectedPhase,
+      } as any,
+      {
+        enabled: Boolean(eventName) && Boolean(effectiveEmail) && Boolean(selectedPhase),
+        staleTime: 10_000,
+        refetchOnWindowFocus: false,
+        retry: 1,
+      }
+  );
+
+  /** Apply query outcome to UI & clear loading flag when fetch completes */
+  useEffect(() => {
     if (queryData.isSuccess && queryData.data) {
-      setParticipantData(queryData.data as unknown as participantDataSchema);
-    } else if (queryData.isError) {
-      setParticipantData(defaultParticipantData);
-      toast({
-        variant: "destructive",
-        title: "Check-in Failed",
-        description: "Participant not found",
-      });
+      setParticipant(queryData.data as unknown as ParticipantData);
+      setIsDialogOpen(true);
     }
-  }, [queryData.isSuccess, queryData.isError, queryData.data]);
+    if (queryData.isError) {
+      setParticipant(DEFAULT_PARTICIPANT);
+      setIsDialogOpen(false);
+      if (effectiveEmail) {
+        toast({
+          variant: "destructive",
+          title: "Lookup Failed",
+          description: "Participant not found for the selected phase.",
+        });
+      }
+    }
+  }, [queryData.isSuccess, queryData.isError, queryData.data, effectiveEmail]);
 
+  // Clear the overlay once network fetch settles
+  useEffect(() => {
+    if (!queryData.isFetching && pendingSource) {
+      setPendingSource(null);
+    }
+  }, [queryData.isFetching, pendingSource]);
+
+  /** When the phase changes and we have an email, refetch with overlay */
+  useEffect(() => {
+    if (effectiveEmail && queryData.refetch) {
+      setPendingSource("phase");
+      void queryData.refetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPhase]);
+
+  /** ---------------- Mutations ---------------- */
   const statusMutation = api.application.updateCheckInStatus.useMutation();
-  const updateCheckIn = async (newStatus: boolean) => {
-    let inputEmail = "";
-    if (inputRef.current?.value) {
-      inputEmail = inputRef.current.value;
-    } else {
-      inputEmail = scannerData;
-    }
 
-    if (inputEmail === "") {
+  const updateCheckIn = async (newStatus: boolean) => {
+    if (!eventName) {
       toast({
         variant: "destructive",
-        title: "Check-in Failed",
-        description: "Missing input data",
+        title: "Missing event",
+        description: "NEXT_PUBLIC_EVENT_NAME is not set.",
+      });
+      return;
+    }
+    if (!selectedPhase) {
+      toast({
+        variant: "destructive",
+        title: "Missing phase",
+        description: "Select a phase first.",
+      });
+      return;
+    }
+    if (!effectiveEmail) {
+      toast({
+        variant: "destructive",
+        title: "Missing email",
+        description: "Scan a QR or type an email, then click Search.",
       });
       return;
     }
 
-    const mutateData = await statusMutation.mutateAsync(
-      {
-        eventName: env.NEXT_PUBLIC_EVENT_NAME,
-        email: inputEmail,
-        newStatus: newStatus,
-        allowedStatuses: selectedStatuses,
-      },
-      {
-        onSuccess: () => {
-          toast({
-            variant: "success",
-            title: (newStatus ? "ADDED" : "REMOVED") + " Check-in Successful",
-            description:
-              "The participant has been successfully " +
-              (newStatus ? "added" : "removed") +
-              " from the check-in list",
-          });
-        },
-        onError: (e: any) => {
-          toast({
-            variant: "destructive",
-            title: "Check-in Failed",
-            description: e.message,
-          });
-        },
-      },
-    );
-
-    if (mutateData) {
-      setParticipantData(mutateData as unknown as participantDataSchema);
-    } else {
-      setParticipantData(defaultParticipantData);
+    try {
+      const updated = await statusMutation.mutateAsync(
+          {
+            eventName,
+            email: effectiveEmail,
+            phase: selectedPhase, // send the NAME; server resolves to event_phase_id
+            newStatus,
+          } as any
+      );
+      
+      if (updated) {
+        console.log(updated)
+        setParticipant({...participant, checkedIn: updated.checkedIn});
+      } else {
+        setParticipant(DEFAULT_PARTICIPANT);
+      }
+    } catch (e: any) {
+      toast({
+        variant: "destructive",
+        title: "Check-in Failed",
+        description: e?.message ?? "Unknown error",
+      });
     }
   };
 
-  const handleCheckIn = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  /** ---------------- Handlers ---------------- */
+  const handleSearch = async () => {
+    const val = manualEmail.trim();
+    if (!val) return;
+    setPendingSource("manual");
+    setSubmittedEmail(val);
+    if (queryData.refetch) {
+      const result = await queryData.refetch();
+      if (result.isSuccess && result.data) {
+        setIsDialogOpen(true);
+      }
+    }
+  };
+
+  const handleClear = () => {
+    setManualEmail("");
+    setScannerEmail("");
+    setSubmittedEmail("");
+    setParticipant(DEFAULT_PARTICIPANT);
+  };
+
+  const handleCheckIn = () => {
     void updateCheckIn(true);
   };
 
-  const handleCheckOut = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handleRemove = () => {
     void updateCheckIn(false);
   };
 
-  return (
-    <div className="relative flex flex-col items-center justify-center gap-2 p-4 text-black dark:text-white">
-      <h1 className="text-3xl font-bold">Check-in System</h1>
-      <div className="flex flex-col items-center gap-2">
-        Currently Scanning: {scannerData}
-        <QRScanner onScan={setScannerData} />
-        <div className="w-full p-4 text-center sm:w-1/2">
-          <label>Manual Override Input:</label>
-          <Input
-            className="border border-black bg-orange-100"
-            ref={inputRef}
-            placeholder="enter email here"
-          ></Input>
+  /** ---------------- UI ---------------- */
+  const currentPhaseLabel = selectedPhase || "—";
+
+  if (!eventName) {
+    return (
+        <div className="p-6 text-red-600">
+          <h1 className="text-2xl font-bold">Configuration Error</h1>
+          <p className="mt-2">
+            <code>NEXT_PUBLIC_EVENT_NAME</code> is not set. Please define it in your environment.
+          </p>
         </div>
-        <Button
-          className="bg-cyan-700 hover:bg-opacity-50"
-          onClick={handleCheckIn}
-        >
-          {statusMutation.isPending ? "Loading..." : "Check-in Participant"}
-        </Button>
-      </div>
+    );
+  }
 
-      <div className="flex flex-col items-center rounded-md bg-orange-100 p-4 dark:bg-orange-400">
-        <h2 className="mb-1 text-2xl font-bold">Participant's Data</h2>
-        <p>
-          Name: {participantData.firstName} {participantData.lastName}
-        </p>
-        <p className="text-cyan-600">Status: {participantData.status}</p>
-        <p className="text-indigo-500">
-          Checked In:{" "}
-          <span
-            className={
-              participantData.checkedIn ? "text-green-500" : "text-red-500"
-            }
-          >
-            {participantData.checkedIn ? "True" : "False"}
-          </span>
-        </p>
-        <p>
-          Dietary Restrictions:{" "}
-          {participantData.dietaryRestrictions
-            ? participantData.dietaryRestrictions
-            : "None"}
-        </p>
-        <p>Email: {participantData.email}</p>
-        <p>
-          Extra Info:{" "}
-          {participantData.extraInfo ? participantData.extraInfo : "None"}
-        </p>
-      </div>
-      {/* Divider */}
-      <div className="my-2 w-1/2 border-2 border-black"></div>
+  // Overlay label based on what triggered the fetch
+  const overlayLabel =
+      pendingSource === "scan"
+          ? "Looking up participant from QR…"
+          : pendingSource === "manual"
+              ? "Searching participant by email…"
+              : pendingSource === "phase"
+                  ? `Loading ${currentPhaseLabel}…`
+                  : "Loading…";
 
-      {/* Multiselect */}
-      <div className="mx-4 w-full text-center sm:w-1/2">
-        <h2>Select Allowed Statuses:</h2>
-        <MultiSelect
-          options={statusList}
-          onValueChange={setSelectedStatuses}
-          defaultValue={selectedStatuses}
-          placeholder="Select Allowed Statuses"
-          variant="inverted"
-          animation={2}
-          maxCount={4}
+  const anyBlockingLoad = Boolean(pendingSource) && queryData.isFetching;
+
+  return (
+      <div className="relative flex flex-col items-center justify-center gap-2 p-4 text-black dark:text-white">
+        {/* Loading Overlay */}
+        <LoadingOverlay show={anyBlockingLoad} label={overlayLabel} />
+
+        <h1 className="text-3xl font-bold">Check-in System</h1>
+
+        {/* Phase Selector (dynamic) */}
+        <PhaseSelector
+          selectedPhase={selectedPhase}
+          setSelectedPhase={(v) => setSelectedPhase(v as PhaseName)}
+          phaseOptions={phaseOptions}
+          isLoading={phasesQuery.isLoading}
+          isError={phasesQuery.isError}
+          isDisabled={anyBlockingLoad || statusMutation.isPending || phasesQuery.isLoading || phasesQuery.isError}
         />
-        <Button onClick={handleCheckOut}>Remove Participant</Button>
+
+        {/* Scanner & manual override */}
+        <div className="flex flex-col items-center gap-3">
+          <div className="text-sm opacity-80">
+            Currently Scanning: {scannerEmail || "—"}
+          </div>
+
+          <QRScanner
+              onScan={(val) => {
+                const v = String(val || "").trim();
+                setScannerEmail(v);
+                if (v) {
+                  setPendingSource("scan");
+                  setSubmittedEmail(v); // auto-submit scanned email
+                }
+              }}
+          />
+
+          <ManualEmailInput
+            manualEmail={manualEmail}
+            setManualEmail={setManualEmail}
+            handleSearch={handleSearch}
+            handleClear={handleClear}
+            inputRef={inputRef}
+            anyBlockingLoad={anyBlockingLoad}
+            isPendingMutation={statusMutation.isPending}
+            scannerEmail={scannerEmail}
+            submittedEmail={submittedEmail}
+            effectiveEmail={effectiveEmail}
+          />
+        </div>
+
+        {/* Participant card */}
+        <ParticipantCard
+          participant={participant}
+          currentPhaseLabel={currentPhaseLabel}
+          isOpen={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          onCheckIn={handleCheckIn}
+          onRemove={handleRemove}
+          isLoading={statusMutation.isPending}
+          isDisabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail || !selectedPhase}
+        />
+
+        {/* Divider */}
+        {/* <div className="my-2 w-1/2 border-2 border-black" /> */}
+
+        {/* Allowed statuses */}
+        {/* <div className="mx-4 w-full text-center sm:w-1/2 flex flex-col items-center gap-3">
+          <div className="w-full">
+            <h2 className="mb-2">Select Allowed Statuses:</h2>
+            <MultiSelect
+                options={STATUS_OPTIONS}
+                onValueChange={setAllowedStatuses}
+                defaultValue={allowedStatuses}
+                placeholder="Select Allowed Statuses"
+                variant="inverted"
+                animation={2}
+                maxCount={4}
+                disabled={anyBlockingLoad || statusMutation.isPending}
+            />
+          </div>
+        </div> */}
       </div>
-    </div>
   );
 }

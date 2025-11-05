@@ -10,6 +10,9 @@ import {
   primaryKey,
   integer,
   pgTable,
+    pgEnum,
+    uniqueIndex,
+    index,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -181,6 +184,74 @@ export const Application = pgTable("application", {
 
   checkedIn: boolean("checked_in").notNull().default(false),
 });
+
+// Checkin Phases Table
+export const EventPhase = pgTable(
+    "event_phase",
+    {
+      id: uuid("id").primaryKey().defaultRandom(),
+      eventId: uuid("event_id")
+          .notNull()
+          .references(() => Event.id, { onDelete: "cascade" }),
+      name: varchar("name", { length: 50 }).notNull(),
+      sortOrder: integer("sort_order").notNull().default(0),
+    },
+    (t) => ({
+      uniq: uniqueIndex("event_phase_event_name_uniq").on(t.eventId, t.name),
+      byEvent: index("event_phase_event_idx").on(t.eventId),
+    }),
+);
+
+export const Attendance = pgTable(
+    "attendance",
+    {
+      id: uuid("id").notNull().primaryKey().defaultRandom(),
+      applicationId: uuid("application_id")
+          .notNull()
+          .references(() => Application.id, { onDelete: "cascade" }),
+      eventId: uuid("event_id")
+          .notNull()
+          .references(() => Event.id, { onDelete: "cascade" }),
+
+      // NEW FK replacing the old enum column
+      eventPhaseId: uuid("event_phase_id")
+          .notNull()
+          .references(() => EventPhase.id, { onDelete: "cascade" }),
+
+      checkedIn: boolean("checked_in").notNull().default(false),
+      checkedInAt: timestamp("checked_in_at", { mode: "date", withTimezone: true }),
+      updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+          .notNull()
+          .$onUpdateFn(() => sql`now()`),
+    },
+    (t) => ({
+      uniq: uniqueIndex("attendance_app_eventphase_uniq").on(
+          t.applicationId,
+          t.eventPhaseId,
+      ),
+      appIdx: index("attendance_application_idx").on(t.applicationId),
+      evtIdx: index("attendance_event_idx").on(t.eventId),
+      evtPhaseIdx: index("attendance_event_phase_idx").on(t.eventPhaseId),
+    }),
+);
+
+// --- Relations (optional but nice for typed joins) ---
+export const AttendanceRelations = relations(Attendance, ({ one }) => ({
+  application: one(Application, {
+    fields: [Attendance.applicationId],
+    references: [Application.id],
+  }),
+  event: one(Event, {
+    fields: [Attendance.eventId],
+    references: [Event.id],
+  }),
+}));
+
+// (Optional) In Application relations if you keep them:
+export const ApplicationRelations = relations(Application, ({ many }) => ({
+  // ...your existing relations
+  attendance: many(Attendance),
+}));
 
 export const UserResume = pgTable("user_resume", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
