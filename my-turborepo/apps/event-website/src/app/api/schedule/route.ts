@@ -1,5 +1,7 @@
-/* eslint-disable no-restricted-properties */
 import { NextResponse } from "next/server";
+
+// Mark this route as dynamic to allow no-store fetches
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {

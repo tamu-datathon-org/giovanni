@@ -16,6 +16,9 @@ const Location = () => {
                         src="/images/elements/locationcard.svg"
                         alt="location folder"
                         fill
+                        sizes="100vw"
+                        loading="lazy"
+                        unoptimized
                     />
                 </div>
             </div>
@@ -26,7 +29,10 @@ const Location = () => {
                         src="/images/elements/pen.svg"
                         alt="location folder"
                         fill
+                        sizes="100vw"
                         className="object-contain"
+                        loading="lazy"
+                        unoptimized
                     />
                 </div>
             </div>

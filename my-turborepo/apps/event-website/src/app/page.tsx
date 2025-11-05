@@ -1,9 +1,9 @@
 //import { ThemedButton } from "@/components/ui/themed-button";
 //import Image from "next/image";
-import Hero from "@/components/Hero";
-import ScrollUp from "@/components/Common/ScrollUp";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import ScrollUp from "@/components/Common/ScrollUp";
+import Hero from "@/components/Hero";
 
 // Lazy load below-the-fold components to reduce initial bundle size
 const Location = dynamic(() => import("@/components/location"), {
@@ -11,7 +11,7 @@ const Location = dynamic(() => import("@/components/location"), {
 });
 
 const Prizes = dynamic(() => import("@/components/prizes"), {
-  loading: () => <div className="py-20 min-h-[400px]" />,
+  loading: () => <div className="min-h-[400px] py-20" />,
 });
 
 const Sponsors = dynamic(() => import("@/components/sponsor"), {
@@ -19,26 +19,26 @@ const Sponsors = dynamic(() => import("@/components/sponsor"), {
 });
 
 const FAQ = dynamic(() => import("@/components/faq"), {
-  loading: () => <div className="min-h-[800px] bg-gradient-to-b from-[#322C29] to-[#1B0706]" />,
+  loading: () => (
+    <div className="min-h-[800px] bg-gradient-to-b from-[#322C29] to-[#1B0706]" />
+  ),
 });
 
 export const metadata: Metadata = {
   title: "TAMU Datathon",
-  description: "TAMU Datathon is a 24-hour hackathon hosted by Texas A&M University.",
+  description:
+    "TAMU Datathon is a 24-hour hackathon hosted by Texas A&M University.",
 };
-
 
 export default function Home() {
-
   return (
     <>
-        <ScrollUp />
-        <Hero />
-        <Location />
-        <Prizes/>
-        <Sponsors/>
-        <FAQ/>
+      <ScrollUp />
+      <Hero />
+      <Location />
+      <Prizes />
+      <Sponsors />
+      <FAQ />
     </>
-
   );
-};
+}
