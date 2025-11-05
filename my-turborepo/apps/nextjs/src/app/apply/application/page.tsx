@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { ApplicationForm } from "~/app/apply/application/application-form";
 import { appsOpen } from "../page";
 
-export default async function Page() {
+export default function Page() {
   if (!appsOpen) {
     redirect("/apply");
   }

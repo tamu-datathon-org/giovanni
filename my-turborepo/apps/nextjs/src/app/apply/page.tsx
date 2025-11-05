@@ -3,17 +3,18 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { toDataURL } from "qrcode";
 
+import { authClient } from "@vanni/auth/client";
 import { Button } from "@vanni/ui/button";
-import { api } from "~/trpc/react";
-import { EVENT_NAME } from "./application/application-form";
+
 import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
-import { authClient } from '@vanni/auth/client';
-import { useRouter } from "next/navigation";
 import { toast } from "~/hooks/use-toast";
+import { api } from "~/trpc/react";
 import BackgroundContainer from "../_components/BackgroundContainer";
 import { GradientButton } from "../_components/GradientButton";
+import { EVENT_NAME } from "./application/application-form";
 
 export const appsOpen = true;
 
@@ -27,11 +28,12 @@ export default function Page() {
         fetchOptions: {
           onSuccess: () => {
             setSession(null);
-            router.push('/login?callbackUrl=/apply');
-          }
-        }
+            router.push("/login?callbackUrl=/apply");
+          },
+        },
       });
-    } catch (error) {
+    } catch (_error) {
+      console.error(_error);
       toast({
         title: "Sign-Out Error",
         description: "There was an error signing out. Please try again.",
@@ -63,7 +65,11 @@ export default function Page() {
 
   useEffect(() => {
     const fetchQRCode = async () => {
-      if (data?.status === "accepted" || data?.status === "checkedin" || data?.status === "waitlisted") {
+      if (
+        data?.status === "accepted" ||
+        data?.status === "checkedin" ||
+        data?.status === "waitlisted"
+      ) {
         const qr = await generateQR(data?.email ?? "");
         setQrCode(qr);
       }
@@ -94,14 +100,14 @@ export default function Page() {
   return (
     <>
       {/* <IconList /> */}
-      <div className="flex w-screen items-center justify-center my-24">
+      <div className="my-24 flex w-screen items-center justify-center">
         <BackgroundContainer className="">
-          <div className="text-center items-center flex w-[75vw] flex-col justify-center gap-4 text-white">
+          <div className="flex w-[75vw] flex-col items-center justify-center gap-4 text-center text-white">
             <div className="mb-4">
-              <h1 className="text-2xl md:text-3xl font-medium">Applicant Dashboard</h1>
-              <div className="mb-2">
-                Logged in as: {session?.user.email}
-              </div>
+              <h1 className="text-2xl font-medium md:text-3xl">
+                Applicant Dashboard
+              </h1>
+              <div className="mb-2">Logged in as: {session?.user.email}</div>
               <div className="text-xl font-medium">
                 YOUR APPLICATION STATUS:
               </div>
@@ -117,13 +123,13 @@ export default function Page() {
                     : "No Application Found"}
               </div>
               {qrCode && (
-                <div className="border-4 border-gray-400 rounded-lg p-2 my-2 mx-auto w-fit">
+                <div className="mx-auto my-2 w-fit rounded-lg border-4 border-gray-400 p-2">
                   <div>
                     <div className="text-xl">
                       Scan this QR Code for Check-in:
                     </div>
                   </div>
-                  <div className="mx-auto relative w-40 h-40 md:h-52 md:w-52">
+                  <div className="relative mx-auto h-40 w-40 md:h-52 md:w-52">
                     <Image
                       src={qrCode}
                       alt="example.com"
@@ -133,12 +139,25 @@ export default function Page() {
                   </div>
                 </div>
               )}
-              {appsOpen ? <AppsOpenMessage status={data?.status}/> : <AppsClosedMessage />}
+              {appsOpen ? (
+                <AppsOpenMessage status={data?.status} />
+              ) : (
+                <AppsClosedMessage />
+              )}
             </div>
-            <Button onClick={signOutHandler} className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
+            <Button
+              onClick={signOutHandler}
+              className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit"
+              size="lg"
+              type="button"
+            >
               Change Accounts
             </Button>
-            <Button className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
+            <Button
+              className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit"
+              size="lg"
+              type="button"
+            >
               <Link href="https://tamudatathon.com/" target="_blank">
                 Visit Event Website
               </Link>
@@ -170,10 +189,12 @@ function AppsClosedMessage() {
 
 function AppsOpenMessage({ status }: { status?: string }) {
   return (
-    <GradientButton className="text-white bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
-      <Link
-        href="/apply/application"
-      >
+    <GradientButton
+      className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit text-white"
+      size="lg"
+      type="button"
+    >
+      <Link href="/apply/application">
         {status ? "View/Edit Application" : "Start Application"}
       </Link>
     </GradientButton>

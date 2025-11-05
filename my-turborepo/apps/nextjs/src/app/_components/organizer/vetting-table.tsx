@@ -35,6 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { env } from "~/env";
 import { api } from "~/trpc/react";
 import {
   PersonalInformation,
@@ -47,7 +48,6 @@ import {
   Pagination,
   SelectStatusCell,
 } from "./table-interactives";
-import { env } from "~/env";
 
 export const columns: ColumnDef<TableData>[] = [
   {
@@ -143,7 +143,7 @@ export function VettingTable() {
 
   const { data, isLoading } =
     api.application.getAllApplicationsByEventName.useQuery(
-        env.NEXT_PUBLIC_EVENT_NAME,
+      env.NEXT_PUBLIC_EVENT_NAME,
       {
         retry: false,
         refetchOnWindowFocus: false,
@@ -268,9 +268,9 @@ export function VettingTable() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
                   );
                 })}

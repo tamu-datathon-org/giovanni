@@ -38,7 +38,7 @@ export default function EmailLists() {
       render={() => (
         <FormItem>
           <FormLabel className="text-white text-md">Mailing List</FormLabel>
-          {mergedLists?.map((listName) => (
+          {mergedLists.map((listName) => (
             <FormField
               key={listName}
               control={form.control}

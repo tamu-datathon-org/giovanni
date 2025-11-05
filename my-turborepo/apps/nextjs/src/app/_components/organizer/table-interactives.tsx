@@ -14,12 +14,46 @@ import {
 import { env } from "~/env";
 import { toast } from "~/hooks/use-toast";
 
+// Flexible mutation interface that matches what the components need
+interface StatusUpdateMutation {
+  mutateAsync: (
+    input: { eventName: string; id: string; newStatus: string },
+    options?: {
+      onSuccess?: () => void;
+      onError?: (error: { message: string }) => void;
+    },
+  ) => Promise<unknown>;
+  isLoading?: boolean; // Make optional
+  isPending?: boolean; // Add isPending as alternative
+}
+
+interface BatchStatusUpdateMutation {
+  mutateAsync: (
+    input: { ids: string[]; newStatus: string },
+    options?: {
+      onSuccess?: () => void;
+      onError?: () => void;
+    },
+  ) => Promise<unknown>;
+  isLoading?: boolean; // Make optional
+  isPending?: boolean; // Add isPending as alternative
+}
+
+// Generic table data type
+interface TableDataItem {
+  id: string;
+  status: string;
+  firstName: string;
+  lastName: string;
+  [key: string]: unknown;
+}
+
 interface SelectStatusProps {
   name: string;
   id: string;
   currStatus: string;
-  mutation: any;
-  setData: React.Dispatch<React.SetStateAction<any>>;
+  mutation: StatusUpdateMutation;
+  setData: React.Dispatch<React.SetStateAction<TableDataItem[]>>;
   setPendingCount: React.Dispatch<React.SetStateAction<number>>;
   setAcceptedCount: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -33,7 +67,7 @@ const SelectStatus: React.FC<SelectStatusProps> = ({
   setPendingCount,
   setAcceptedCount,
 }) => {
-  if (mutation.isLoading) {
+  if (mutation.isLoading || mutation.isPending) {
     return <div>Loading...</div>;
   }
 
@@ -41,7 +75,7 @@ const SelectStatus: React.FC<SelectStatusProps> = ({
     <Select
       defaultValue={currStatus}
       onValueChange={(value) => {
-        mutation.mutateAsync(
+        void mutation.mutateAsync(
           {
             eventName: env.NEXT_PUBLIC_EVENT_NAME,
             id: id,
@@ -50,8 +84,8 @@ const SelectStatus: React.FC<SelectStatusProps> = ({
           {
             onSuccess: () => {
               // Update the table
-              setData((prevData: any) => {
-                return prevData.map((item: any) => {
+              setData((prevData: TableDataItem[]) => {
+                return prevData.map((item: TableDataItem) => {
                   if (item.id === id) {
                     return { ...item, status: value };
                   }
@@ -78,7 +112,7 @@ const SelectStatus: React.FC<SelectStatusProps> = ({
                 description: `The status has been successfully updated to ${value}.`,
               });
             },
-            onError: (error: any) => {
+            onError: (error: { message: string }) => {
               toast({
                 variant: "destructive",
                 title: "Error updating status",
@@ -108,8 +142,8 @@ const SelectStatus: React.FC<SelectStatusProps> = ({
 
 export const SelectStatusCell: React.FC<{
   row: any;
-  mutation: any;
-  setData: React.Dispatch<React.SetStateAction<any>>;
+  mutation: StatusUpdateMutation;
+  setData: React.Dispatch<React.SetStateAction<TableDataItem[]>>;
   setPendingCount: React.Dispatch<React.SetStateAction<number>>;
   setAcceptedCount: React.Dispatch<React.SetStateAction<number>>;
 }> = ({ row, mutation, setData, setPendingCount, setAcceptedCount }) => {
@@ -184,22 +218,22 @@ export const Pagination: React.FC<{ table: any }> = ({ table }) => {
 
 export const BatchAcceptPage: React.FC<{
   table: any;
-  mutation: any;
+  mutation: BatchStatusUpdateMutation;
   setPendingCount: React.Dispatch<React.SetStateAction<number>>;
-  setData: React.Dispatch<React.SetStateAction<any>>;
+  setData: React.Dispatch<React.SetStateAction<TableDataItem[]>>;
   setAcceptedCount: React.Dispatch<React.SetStateAction<number>>;
 }> = ({ table, mutation, setData, setPendingCount, setAcceptedCount }) => {
   const updateBatchStatus = () => {
     const ids = table.getRowModel().rows.map((row: any) => row.original.id);
-    mutation.mutateAsync(
+    void mutation.mutateAsync(
       {
         ids: ids,
         newStatus: "accepted",
       },
       {
         onSuccess: () => {
-          setData((prevData: any) => {
-            return prevData.map((item: any) => {
+          setData((prevData: TableDataItem[]) => {
+            return prevData.map((item: TableDataItem) => {
               if (
                 table
                   .getRowModel()
@@ -246,7 +280,7 @@ export const BatchAcceptPage: React.FC<{
     );
   };
 
-  if (mutation.isLoading) {
+  if (mutation.isLoading || mutation.isPending) {
     return <div>Loading...</div>;
   }
 

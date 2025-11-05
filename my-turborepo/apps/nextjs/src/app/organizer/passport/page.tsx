@@ -67,21 +67,22 @@ export default function PassportPage() {
       icon: Fish,
     },
   ];
-  React.useEffect(() => {
-    if (scannerData) {
-      void queryData.refetch();
-    }
-  }, [queryData, scannerData]);
 
   const queryData = api.application.getCheckInStatus.useQuery(
     {
-      eventName: process.env.NEXT_PUBLIC_EVENT_NAME!,
+      eventName: env.NEXT_PUBLIC_EVENT_NAME,
       email: scannerData,
     },
     {
       enabled: !!scannerData, // Only enable the query if scannerData exists
     },
   );
+
+  React.useEffect(() => {
+    if (scannerData) {
+      void queryData.refetch();
+    }
+  }, [queryData, scannerData]);
 
   React.useEffect(() => {
     if (queryData.isSuccess && queryData.data) {

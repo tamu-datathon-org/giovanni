@@ -1,8 +1,9 @@
-import { redirect } from "next/navigation";
-import { api } from "~/trpc/server";
-import { auth } from "@vanni/auth";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
+import { auth } from "@vanni/auth";
+
+import { api } from "~/trpc/server";
 import OrganizerNavBar from "../_components/organizer/navigation-bar";
 
 export default async function OrganizerLayout({
@@ -17,7 +18,8 @@ export default async function OrganizerLayout({
   if (session) {
     try {
       await api.auth.validateOrganizerAuth();
-    } catch (e) {
+    } catch (_e) {
+      console.error(_e);
       redirect("/login?callbackUrl=/organizer&message=unauthorized");
     }
   } else {
@@ -26,7 +28,7 @@ export default async function OrganizerLayout({
 
   return (
     <>
-      <div className="min-h-screen bg-slate-400 font-mono pt-24 pb-24">
+      <div className="min-h-screen bg-slate-400 pb-24 pt-24 font-mono">
         <OrganizerNavBar></OrganizerNavBar>
         {children}
       </div>

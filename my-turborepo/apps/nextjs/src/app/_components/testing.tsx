@@ -12,7 +12,7 @@ export const Testing = () => {
 
   // const emailList = api.email.getAllEmails.useQuery();
 
-  const queryEmails = api.email.getEmailByLabel.useQuery(userInput || "", {
+  const queryEmails = api.email.getEmailByLabel.useQuery(userInput ?? "", {
     enabled: !!userInput,
     retry: false,
   });

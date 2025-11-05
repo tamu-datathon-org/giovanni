@@ -23,12 +23,12 @@ import {
   CommandList,
 } from "~/components/ui/command";
 import useDebounce from "~/components/ui/debounce";
+import { Input } from "~/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import { Input } from "~/components/ui/input";
 import { Asterisk } from "../apply/application/application-form";
 
 interface DropdownOption {
@@ -75,7 +75,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
         .slice(0, 20);
     }
     return options;
-  }, [debouncedValue, filter, options]);
+  }, [isDebouncing, debouncedValue, filter, options]);
 
   return (
     <FormField
@@ -84,12 +84,17 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
       defaultValue={defaultOption?.value}
       render={({ field }) => {
         // Derive selectedOption from field.value
-        const selectedOption = options.find((option) => option.value === field.value) ??
-          (field.value && !options.find((option) => option.value === field.value)
+        const selectedOption =
+          options.find((option) => option.value === field.value) ??
+          (field.value &&
+          !options.find((option) => option.value === field.value)
             ? { value: field.value, label: "Other (please specify)" }
             : null);
 
-        if (field.value && !options.find((option) => option.value === field.value)) {
+        if (
+          field.value &&
+          !options.find((option) => option.value === field.value)
+        ) {
           setOtherOption(true);
         }
 
@@ -110,8 +115,8 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                     {otherOption
                       ? "Other (please specify)"
                       : selectedOption
-                      ? selectedOption.label
-                      : "Select ..."}
+                        ? selectedOption.label
+                        : "Select ..."}
                     <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </FormControl>
@@ -129,8 +134,8 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                     <CommandGroup>
                       {filter20Items.map((option) => (
                         <CommandItem
-                          key={(option).value}
-                          value={(option).value}
+                          key={option.value}
+                          value={option.value}
                           onSelect={(currentValue) => {
                             if (currentValue === "Other (please specify)") {
                               setOtherOption(true);
@@ -145,12 +150,12 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                           <AiOutlineCheck
                             className={cn(
                               "mr-2 h-4 w-4",
-                              field.value === (option).value
+                              field.value === option.value
                                 ? "opacity-100"
                                 : "opacity-0",
                             )}
                           />
-                          {(option).label}
+                          {option.label}
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -166,7 +171,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                     onChange={(e) => {
                       form.setValue(name, e.target.value);
                     }}
-                    className="border p-2 bg-white text-black"
+                    className="border bg-white p-2 text-black"
                     placeholder="Please specify..."
                   />
                 </FormControl>

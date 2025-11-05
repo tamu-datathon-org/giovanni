@@ -1,5 +1,3 @@
-import { useAuthRedirect } from "../_components/auth/useAuthRedirect";
-
 export default function OrganizerPage() {
 
   return (

@@ -1,9 +1,13 @@
 import React from "react";
 
-export default async function ScheduleManagerLayout({
-                                                        children,
-                                             }: {
-    children: React.ReactNode;
+export default function ScheduleManagerLayout({
+  children,
+}: {
+  children: React.ReactNode;
 }) {
-    return <div>{children}</div>;
+  return (
+    <>
+      <div className="max-h-screen-sm overflow-hidden">{children}</div>
+    </>
+  );
 }

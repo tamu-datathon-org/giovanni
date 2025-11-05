@@ -1,6 +1,6 @@
 import React from "react";
 
-export default async function PassportLayout({
+export default function PassportLayout({
   children,
 }: {
   children: React.ReactNode;
