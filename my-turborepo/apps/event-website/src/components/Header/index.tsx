@@ -29,6 +29,7 @@ const Header = () => {
                         height={100}
                         className="h-6 w-auto shrink-0 drop-shadow"
                         priority
+                        unoptimized
                     />
                 </Link>
             </div>

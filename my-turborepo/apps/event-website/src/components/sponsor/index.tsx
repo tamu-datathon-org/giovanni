@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 
@@ -15,6 +17,7 @@ function Sponsors() {
           alt="sponsor title"
           className="h-auto w-[80vw] max-w-[800px]"
           priority
+          unoptimized
         />
       </div>
 
@@ -24,8 +27,9 @@ function Sponsors() {
           alt="Background"
           width={1920}
           height={800}
-          quality={100}
           className="col-span-12 col-start-1 row-span-12 row-start-1 h-auto w-auto" // Ensures it covers the container
+          priority
+          unoptimized
         />
 
         <div className="relative z-10 col-span-10 col-start-1 row-span-1 row-start-7 translate-y-[-10vw] scale-[0.7] transform md:translate-y-[-10vw]">
@@ -33,7 +37,9 @@ function Sponsors() {
             src="/images/sponsor-logo/textured/hitachi_textured.svg"
             alt="hitachi"
             fill
-            quality={75}
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
           />
         </div>
 
@@ -42,7 +48,9 @@ function Sponsors() {
             src="/images/sponsor-logo/textured/sec_textured.svg"
             alt="hitachi"
             fill
-            quality={75}
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
           />
         </div>
 
@@ -51,7 +59,9 @@ function Sponsors() {
             src="/images/sponsor-logo/textured/msy_textured.svg"
             alt="msy"
             fill
-            quality={75}
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
           />
         </div>
 
@@ -60,7 +70,9 @@ function Sponsors() {
             src="/images/sponsor-logo/textured/databricks_textured.svg"
             alt="databricks"
             fill
-            quality={75}
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
           />
         </div>
         {/* Right side */}
@@ -70,7 +82,9 @@ function Sponsors() {
             src="/images/sponsor-logo/textured/heb_textured.svg"
             alt="hitachi"
             fill
-            quality={75}
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
           />
         </div>
 
@@ -79,7 +93,9 @@ function Sponsors() {
             src="/images/sponsor-logo/textured/qualcomm_textured.svg"
             alt="hitachi"
             fill
-            quality={75}
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
           />
         </div>
 
@@ -88,7 +104,9 @@ function Sponsors() {
             src="/images/sponsor-logo/textured/p66_textured.svg"
             alt="p66"
             fill
-            quality={75}
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
           />
         </div>
 
@@ -97,7 +115,9 @@ function Sponsors() {
             src="/images/sponsor-logo/textured/tamid_textured.svg"
             alt="tamu"
             fill
-            quality={75}
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
           />
         </div>
 
@@ -107,7 +127,9 @@ function Sponsors() {
               src="/images/sponsor-logo/textured/pure_textured.svg"
               alt="pure buttons"
               fill
-              quality={75}
+              sizes="(max-width: 768px) 33vw, 25vw"
+              loading="lazy"
+              unoptimized
             />
           </a>
         </div>
@@ -117,7 +139,9 @@ function Sponsors() {
             src="/images/sponsor-logo/textured/tamu_statistics.svg"
             alt="tamu statistics"
             fill
-            quality={75}
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
           />
         </div>
       </div>

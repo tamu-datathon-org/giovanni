@@ -194,11 +194,11 @@ export default function SchedulePage() {
           </p>
         )}
 
-        {error && (
+        {/* {error && (
           <div className="mb-6 rounded border border-red-400 bg-red-100 px-4 py-3 font-serif text-red-700">
             <strong>Error:</strong> {error}
           </div>
-        )}
+        )} */}
 
         {loading ? (
           <div className="flex h-40 items-center justify-center">
