@@ -11,7 +11,7 @@ function Sponsors() {
           Thanks To Our
         </span>
         <Image
-          src="/images/sponsor-logo/sponsor_title.svg"
+          src="/images/sponsor-logo/sponsor_title.png"
           width={800}
           height={200}
           alt="sponsor title"
@@ -34,7 +34,7 @@ function Sponsors() {
 
         <div className="relative z-10 col-span-10 col-start-1 row-span-1 row-start-7 translate-y-[-10vw] scale-[0.7] transform md:translate-y-[-10vw]">
           <Image
-            src="/images/sponsor-logo/textured/hitachi_textured.svg"
+            src="/images/sponsor-logo/textured/hitachi_textured.png"
             alt="hitachi"
             fill
             sizes="(max-width: 768px) 33vw, 25vw"
@@ -45,7 +45,7 @@ function Sponsors() {
 
         <div className="relative z-10 col-span-2 col-start-2 row-span-1 row-start-7 translate-y-4 scale-[1.2] transform md:translate-y-10">
           <Image
-            src="/images/sponsor-logo/textured/sec_textured.svg"
+            src="/images/sponsor-logo/textured/sec_textured.png"
             alt="hitachi"
             fill
             sizes="(max-width: 768px) 33vw, 25vw"
@@ -56,7 +56,7 @@ function Sponsors() {
 
         <div className="relative z-10 col-span-4 col-start-2 row-span-1 row-start-9 translate-y-4 scale-[0.8] transform md:translate-y-10">
           <Image
-            src="/images/sponsor-logo/textured/msy_textured.svg"
+            src="/images/sponsor-logo/textured/msy_textured.png"
             alt="msy"
             fill
             sizes="(max-width: 768px) 33vw, 25vw"
@@ -67,7 +67,7 @@ function Sponsors() {
 
         <div className="relative z-10 col-span-5 col-start-2 row-span-2 row-start-10 scale-y-[0.8] transform">
           <Image
-            src="/images/sponsor-logo/textured/databricks_textured.svg"
+            src="/images/sponsor-logo/textured/databricks_textured.png"
             alt="databricks"
             fill
             sizes="(max-width: 768px) 33vw, 25vw"
@@ -79,7 +79,7 @@ function Sponsors() {
 
         <div className="relative z-10 col-span-4 col-start-6 row-span-1 row-start-5">
           <Image
-            src="/images/sponsor-logo/textured/heb_textured.svg"
+            src="/images/sponsor-logo/textured/heb_textured.png"
             alt="hitachi"
             fill
             sizes="(max-width: 768px) 33vw, 25vw"
@@ -90,7 +90,7 @@ function Sponsors() {
 
         <div className="relative z-10 col-span-6 col-start-7 row-span-1 row-start-7 translate-x-4 scale-[0.8] transform">
           <Image
-            src="/images/sponsor-logo/textured/qualcomm_textured.svg"
+            src="/images/sponsor-logo/textured/qualcomm_textured.png"
             alt="hitachi"
             fill
             sizes="(max-width: 768px) 33vw, 25vw"
@@ -101,7 +101,7 @@ function Sponsors() {
 
         <div className="relative z-10 col-span-3 col-start-5 row-span-2 row-start-8 translate-x-4 scale-[0.8] transform">
           <Image
-            src="/images/sponsor-logo/textured/p66_textured.svg"
+            src="/images/sponsor-logo/textured/p66_textured.png"
             alt="p66"
             fill
             sizes="(max-width: 768px) 33vw, 25vw"
@@ -112,10 +112,11 @@ function Sponsors() {
 
         <div className="relative z-10 col-span-3 col-start-7 row-span-1 row-start-10 scale-[0.5] transform">
           <Image
-            src="/images/sponsor-logo/textured/tamid_textured.svg"
+            src="/images/sponsor-logo/textured/tamid_textured.png"
             alt="tamu"
             fill
             sizes="(max-width: 768px) 33vw, 25vw"
+            className="object-contain"
             loading="lazy"
             unoptimized
           />
@@ -124,7 +125,7 @@ function Sponsors() {
         <div className="relative z-10 col-span-4 col-start-8 row-span-1 row-start-9 scale-[0.4] transform transition-transform hover:scale-[0.5]">
           <a href="http://mlh.link/MLH-PureButtons-hackathons">
             <Image
-              src="/images/sponsor-logo/textured/pure_textured.svg"
+              src="/images/sponsor-logo/textured/pure_textured.png"
               alt="pure buttons"
               fill
               sizes="(max-width: 768px) 33vw, 25vw"
