@@ -3,20 +3,13 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Cat, Dog, Fish, Turtle, Loader2 } from "lucide-react";
 
-import QRScanner from "~/app/_components/organizer/qr-scanner";
+import QRScanner from "~/app/_components/organizer/passport/qr-scanner";
+import { ManualEmailInput } from "~/app/_components/organizer/passport/manual-email-input";
+import { ParticipantCard } from "~/app/_components/organizer/passport/participant-card";
+import { PhaseSelector } from "~/app/_components/organizer/passport/phase-selector";
 import { MultiSelect } from "~/app/_components/multiselect";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { env } from "~/env";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-} from "~/components/ui/select";
 
 /** ---------------------------------------------
  * Types & constants
@@ -70,20 +63,18 @@ function LoadingOverlay({ show, label }: { show: boolean; label: string }) {
 }
 
 export default function PassportPage() {
-  /** ---------------- Env ---------------- */
   const eventName = process.env.NEXT_PUBLIC_EVENT_NAME as string | undefined;
 
   /** ---------------- State ---------------- */
   const [participant, setParticipant] = useState<ParticipantData>(DEFAULT_PARTICIPANT);
   const [selectedPhase, setSelectedPhase] = useState<PhaseName>(""); // dynamic
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   // const [allowedStatuses, setAllowedStatuses] = useState<string[]>(["accepted", "waitlisted"]);
 
   // Manual & Scanner email handling
   const [manualEmail, setManualEmail] = useState<string>("");
   const [scannerEmail, setScannerEmail] = useState<string>("");
   const [submittedEmail, setSubmittedEmail] = useState<string>("");
-
-  // Tracks why we're loading (null | "scan" | "manual" | "phase")
   const [pendingSource, setPendingSource] = useState<null | "scan" | "manual" | "phase">(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -111,7 +102,6 @@ export default function PassportPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phaseOptions.length]);
 
-  /** Resolve the email the query should use (only submittedEmail). */
   const effectiveEmail = useMemo(() => submittedEmail.trim(), [submittedEmail]);
 
   /** ---------------- Queries ---------------- */
@@ -133,9 +123,11 @@ export default function PassportPage() {
   useEffect(() => {
     if (queryData.isSuccess && queryData.data) {
       setParticipant(queryData.data as unknown as ParticipantData);
+      setIsDialogOpen(true);
     }
     if (queryData.isError) {
       setParticipant(DEFAULT_PARTICIPANT);
+      setIsDialogOpen(false);
       if (effectiveEmail) {
         toast({
           variant: "destructive",
@@ -223,11 +215,17 @@ export default function PassportPage() {
   };
 
   /** ---------------- Handlers ---------------- */
-  const handleSearch = () => {
+  const handleSearch = async () => {
     const val = manualEmail.trim();
     if (!val) return;
     setPendingSource("manual");
     setSubmittedEmail(val);
+    if (queryData.refetch) {
+      const result = await queryData.refetch();
+      if (result.isSuccess && result.data) {
+        setIsDialogOpen(true);
+      }
+    }
   };
 
   const handleClear = () => {
@@ -237,13 +235,11 @@ export default function PassportPage() {
     setParticipant(DEFAULT_PARTICIPANT);
   };
 
-  const handleCheckIn = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleCheckIn = () => {
     void updateCheckIn(true);
   };
 
-  const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleRemove = () => {
     void updateCheckIn(false);
   };
 
@@ -274,44 +270,21 @@ export default function PassportPage() {
   const anyBlockingLoad = Boolean(pendingSource) && queryData.isFetching;
 
   return (
-      <div className="relative flex flex-col items-center justify-center gap-4 p-4 text-black dark:text-white">
+      <div className="relative flex flex-col items-center justify-center gap-2 p-4 text-black dark:text-white">
         {/* Loading Overlay */}
         <LoadingOverlay show={anyBlockingLoad} label={overlayLabel} />
 
         <h1 className="text-3xl font-bold">Check-in System</h1>
 
         {/* Phase Selector (dynamic) */}
-        <div className="w-full sm:w-1/2 text-center p-4">
-          <label className="mr-2 font-medium">Phase</label>
-          <Select
-              value={selectedPhase}
-              onValueChange={(v) => setSelectedPhase(v as PhaseName)}
-              disabled={anyBlockingLoad || statusMutation.isPending || phasesQuery.isLoading || phasesQuery.isError}
-          >
-            <SelectTrigger className="w-full bg-white">
-              <SelectValue
-                  placeholder={
-                    phasesQuery.isLoading
-                        ? "Loading phases…"
-                        : phasesQuery.isError
-                            ? "Failed to load phases"
-                            : "Select phase"
-                  }
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {phaseOptions.length === 0 && !phasesQuery.isLoading ? (
-                  <div className="px-3 py-2 text-sm opacity-70">No phases found for this event.</div>
-              ) : (
-                  phaseOptions.map((opt) => (
-                      <SelectItem key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </SelectItem>
-                  ))
-              )}
-            </SelectContent>
-          </Select>
-        </div>
+        <PhaseSelector
+          selectedPhase={selectedPhase}
+          setSelectedPhase={(v) => setSelectedPhase(v as PhaseName)}
+          phaseOptions={phaseOptions}
+          isLoading={phasesQuery.isLoading}
+          isError={phasesQuery.isError}
+          isDisabled={anyBlockingLoad || statusMutation.isPending || phasesQuery.isLoading || phasesQuery.isError}
+        />
 
         {/* Scanner & manual override */}
         <div className="flex flex-col items-center gap-3">
@@ -330,97 +303,31 @@ export default function PassportPage() {
               }}
           />
 
-          <div className="w-full sm:w-1/2 text-center p-4">
-            <label className="block mb-1">Manual Override Input:</label>
-            <div className="flex flex-col gap-2">
-              <Input
-                  className="border border-black bg-orange-100 dark:bg-orange-200 text-black"
-                  ref={inputRef}
-                  placeholder="enter email here"
-                  inputMode="email"
-                  autoCapitalize="none"
-                  autoCorrect="off"
-                  spellCheck={false}
-                  value={manualEmail}
-                  onChange={(e) => setManualEmail(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleSearch();
-                  }}
-                  disabled={anyBlockingLoad || statusMutation.isPending}
-              />
-              <div className="flex gap-2">
-                <Button
-                    type="button"
-                    variant="default"
-                    onClick={handleSearch}
-                    disabled={!manualEmail.trim() || anyBlockingLoad || statusMutation.isPending}
-                >
-                  Search
-                </Button>
-                <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={handleClear}
-                    disabled={
-                        anyBlockingLoad ||
-                        statusMutation.isPending ||
-                        (!manualEmail && !scannerEmail && !submittedEmail)
-                    }
-                >
-                  Clear
-                </Button>
-              </div>
-            </div>
-
-            {/* Currently selected/queried email */}
-            <div className="mt-2 text-xs opacity-70">
-              Active Email: {effectiveEmail || "—"}
-            </div>
-          </div>
-
-          <div className="flex gap-2">
-            <Button
-                className="bg-cyan-700 hover:bg-opacity-50"
-                onClick={handleCheckIn}
-                disabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail || !selectedPhase}
-            >
-              {statusMutation.isPending ? "Loading..." : "Check-in Participant"}
-            </Button>
-            <Button
-                variant="secondary"
-                onClick={handleRemove}
-                disabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail || !selectedPhase}
-            >
-              {statusMutation.isPending ? "Loading..." : "Remove Participant"}
-            </Button>
-          </div>
+          <ManualEmailInput
+            manualEmail={manualEmail}
+            setManualEmail={setManualEmail}
+            handleSearch={handleSearch}
+            handleClear={handleClear}
+            inputRef={inputRef}
+            anyBlockingLoad={anyBlockingLoad}
+            isPendingMutation={statusMutation.isPending}
+            scannerEmail={scannerEmail}
+            submittedEmail={submittedEmail}
+            effectiveEmail={effectiveEmail}
+          />
         </div>
 
         {/* Participant card */}
-        <div className="flex flex-col items-center rounded-md bg-orange-100 dark:bg-orange-400 p-4 w-full sm:w-2/3">
-          <h2 className="mb-1 text-2xl font-bold">Participant&apos;s Data</h2>
-          <p className="text-sm opacity-80 mb-2">Phase: {currentPhaseLabel}</p>
-          <p>Name: {participant.firstName} {participant.lastName}</p>
-          <p className="text-cyan-600">Status: {participant.status}</p>
-          <p className="text-indigo-500">
-            Checked In:{" "}
-            <span className={participant.checkedIn ? "text-green-600" : "text-red-600"}>
-            {participant.checkedIn ? "True" : "False"}
-          </span>
-          </p>
-          {participant.checkedInAt && (
-              <p className="text-sm opacity-80">
-                Checked In At:{" "}
-                {new Date(participant.checkedInAt).toLocaleString(undefined, { hour12: true })}
-              </p>
-          )}
-          <p>
-            Dietary Restrictions:{" "}
-            {participant.dietaryRestrictions ? participant.dietaryRestrictions : "None"}
-          </p>
-          <p>Email: {participant.email}</p>
-          <p>Extra Info: {participant.extraInfo ? participant.extraInfo : "None"}</p>
-        </div>
+        <ParticipantCard
+          participant={participant}
+          currentPhaseLabel={currentPhaseLabel}
+          isOpen={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          onCheckIn={handleCheckIn}
+          onRemove={handleRemove}
+          isLoading={statusMutation.isPending}
+          isDisabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail || !selectedPhase}
+        />
 
         {/* Divider */}
         {/* <div className="my-2 w-1/2 border-2 border-black" /> */}
