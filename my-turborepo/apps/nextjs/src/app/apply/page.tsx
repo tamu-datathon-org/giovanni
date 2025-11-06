@@ -15,7 +15,7 @@ import { toast } from "~/hooks/use-toast";
 import BackgroundContainer from "../_components/BackgroundContainer";
 import { GradientButton } from "../_components/GradientButton";
 
-export const appsOpen = true;
+export const appsOpen = false;
 
 export default function Page() {
   const { session, setSession } = useAuthRedirect();
