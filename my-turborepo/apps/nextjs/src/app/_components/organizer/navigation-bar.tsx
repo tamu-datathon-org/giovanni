@@ -13,7 +13,7 @@ import {
 const OrganizerNavBar = () => {
   return (
     <NavigationMenu className="pt-8 sm:pt-0">
-      <NavigationMenuList>
+      <NavigationMenuList className="flex-row flex-wrap gap-2">
         <NavigationMenuItem>
           <Link href="/organizer" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
