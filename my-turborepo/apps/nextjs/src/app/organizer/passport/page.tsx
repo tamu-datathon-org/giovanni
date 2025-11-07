@@ -289,12 +289,18 @@ export default function PassportPage() {
           </div>
 
           <QRScanner
-              onScan={(val) => {
+              onScan={async (val) => {
                 const v = String(val || "").trim();
                 setScannerEmail(v);
                 if (v) {
                   setPendingSource("scan");
                   setSubmittedEmail(v); // auto-submit scanned email
+                  if (queryData.refetch) {
+                    const result = await queryData.refetch();
+                    if (result.isSuccess && result.data) {
+                      setIsDialogOpen(true);
+                    }
+                  }
                 }
               }}
           />
