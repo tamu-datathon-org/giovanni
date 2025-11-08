@@ -57,16 +57,15 @@ export default function NewspaperSection() {
           {/* Button */}
           <foreignObject x="18%" y="44%" width="70%" height="8%" rotate={0.38}>
             <div className="flex h-full w-full items-center justify-center gap-6">
-              {/* <a
+              <a
                 href="https://tamudatathon.org/apply"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-disabled
-              > */}
-                <ThemedButton className="h-24 w-[400px] px-8 text-4xl" disabled>
+              >
+                <ThemedButton className="h-24 w-[400px] px-8 text-4xl">
                   APPLY
                 </ThemedButton>
-              {/* </a> */}
+              </a>
               <a
                 href="https://discord.com/invite/pHsNmjuWSc"
                 target="_blank"
@@ -153,15 +152,15 @@ export default function NewspaperSection() {
           {/* Button */}
           <foreignObject x="26%" y="44%" width="50%" height="10%" rotate={0.38}>
             <div className="flex h-full w-full items-center justify-center gap-4">
-              {/* <a
+              <a
                 href="https://tamudatathon.org/apply"
                 target="_blank"
                 rel="noopener noreferrer"
-              > */}
-                <ThemedButton className="h-20 w-[300px] px-8 text-4xl" disabled>
+              >
+                <ThemedButton className="h-20 w-[300px] px-8 text-4xl">
                   APPLY
                 </ThemedButton>
-              {/* </a> */}
+              </a>
               <a
                 href="https://discord.com/invite/pHsNmjuWSc"
                 target="_blank"

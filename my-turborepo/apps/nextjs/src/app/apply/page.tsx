@@ -15,7 +15,7 @@ import { toast } from "~/hooks/use-toast";
 import BackgroundContainer from "../_components/BackgroundContainer";
 import { GradientButton } from "../_components/GradientButton";
 
-export const appsOpen = false;
+export const appsOpen = true;
 
 export default function Page() {
   const { session, setSession } = useAuthRedirect();
@@ -170,12 +170,25 @@ function AppsClosedMessage() {
 
 function AppsOpenMessage({ status }: { status?: string }) {
   return (
-    <GradientButton className="text-white bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
-      <Link
-        href="/apply/application"
-      >
-        {status ? "View/Edit Application" : "Start Application"}
-      </Link>
-    </GradientButton>
+    <div>
+      {status === "accepted" ? (
+        <AppsClosedMessage />
+      ) : (
+        <div>
+          Applications are OPEN FOR WALK-INS
+          <br />
+          After applying, the Applicant Dashboard will display a qrcode to scan
+          <br />
+          Feel free to contact an organizer for any issues.
+          <br />
+          <br />
+          <GradientButton className="text-white bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
+            <Link href="/apply/application">
+              {status ? "View/Edit Application" : "Start Application"}
+            </Link>
+          </GradientButton>
+        </div>
+      )}
+    </div>
   );
 }
