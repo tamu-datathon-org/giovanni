@@ -59,7 +59,7 @@ export default function ChallengePage() {
     {
       id: 6,
       name: "Detective Databricks Mini Challenge",
-      prize: "-",
+      prize: "Top 3 Teams: $100 Gift Card to your favorite restaurant per person",
       description:
         "Showcase your data detective skills by demonstrating how you used Databricks to solve data mysteries in other challenges.",
       mdPath: "/challenges/databricks.md",
