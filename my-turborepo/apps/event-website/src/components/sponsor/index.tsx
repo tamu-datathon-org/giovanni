@@ -88,7 +88,7 @@ function Sponsors() {
                     />
                 </div>
 
-                <div className='relative z-10 col-start-5 row-start-8 col-span-3 row-span-2 transform scale-[0.8] translate-x-4'>
+                <div className='relative z-10 col-start-5 row-start-8 col-span-3 row-span-2 transform scale-[0.7] translate-x-4'>
                     <Image
                         src="/images/sponsor-logo/textured/p66_textured.svg"
                         alt="p66"
@@ -98,7 +98,7 @@ function Sponsors() {
                     />
                 </div>
 
-                <div className='relative z-10 col-start-7 row-start-10 col-span-3 row-span-1 transform scale-[0.5]'>
+                <div className='relative z-10 col-start-7 row-start-10 col-span-3 row-span-1 transform scale-[1]'>
                     <Image
                         src="/images/sponsor-logo/textured/tamid_textured.svg"
                         alt="tamu"
@@ -108,7 +108,7 @@ function Sponsors() {
                     />
                 </div>
 
-                <div className='relative z-10 col-start-8 row-start-9 col-span-4 row-span-1 transform scale-[0.4] hover:scale-[0.5] transition-transform'>
+                <div className='relative z-10 col-start-8 row-start-9 col-span-4 row-span-1 transform scale-[0.5] hover:scale-[0.5] transition-transform'>
                     <a href="http://mlh.link/MLH-PureButtons-hackathons">
                         <Image
                             src="/images/sponsor-logo/textured/pure_textured.svg"
@@ -120,7 +120,7 @@ function Sponsors() {
                     </a>
                 </div>
 
-                <div className='relative z-10 col-start-10 row-start-5 col-span-3 row-span-2 transform scale-[0.5]'>
+                <div className='relative z-10 col-start-10 row-start-5 col-span-3 row-span-2 transform scale-[0.8]'>
                     <Image
                         src="/images/sponsor-logo/textured/tamu_statistics.svg"
                         alt="tamu statistics"
