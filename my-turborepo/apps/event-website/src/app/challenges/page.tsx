@@ -66,7 +66,7 @@ export default function ChallengePage() {
     },
     {
       id: 7,
-      name: "HEB Challenge",
+      name: "HEB Challenge (Application Closed)",
       prize: "First: Airpods Pro, Second: Keyboard, Third: Gift Cards",
       description:
         "Visit the HEB table to sign an NDA and receive detailed challenge instructions.",

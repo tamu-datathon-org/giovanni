@@ -1,4 +1,4 @@
-# 🛒 HEB Challenge
+# 🛒 HEB Challenge (Application Closed)
 
 > **Important:** To participate in this challenge, you must visit the HEB table to sign an NDA and receive detailed instructions.
 
