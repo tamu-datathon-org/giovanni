@@ -1,5 +1,7 @@
-/* eslint-disable no-restricted-properties */
 import { NextResponse } from "next/server";
+
+// Mark this route as dynamic to allow no-store fetches
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
@@ -18,6 +20,10 @@ export async function GET() {
       // ensure we do not cache this request on the server
       cache: "no-store",
     });
+
+    if (!response.ok) {
+      throw new Error(`Google Sheets API returned ${response.status}: ${response.statusText}`);
+    }
 
     // Get the response as text first
     const responseText = await response.text();

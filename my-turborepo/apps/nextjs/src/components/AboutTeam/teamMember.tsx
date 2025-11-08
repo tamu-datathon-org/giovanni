@@ -38,24 +38,24 @@ const TeamMember: React.FC<TeamMemberProps> = ({
   socialLinks = [],
 }) => {
   return (
-    <div className="py-2">
-      <div className="w-40 text-center">
+    <div className="pb-2">
+      <div className="w-40 text-center space-y-0.5">
         <Image
           src={image || "/placeholder.svg"}
           alt={name}
           width={100}
           height={100}
-          className="h-30 w-30 mx-auto mb-4 rounded-full object-cover"
+          className="h-30 w-30 mx-auto my-2 rounded-full object-cover"
         />
         <h3 className="text-base font-semibold text-black dark:text-white">
           {name}
         </h3>
-        <p className="text-body-color dark:text-body-color-dark text-base">
+        <p className="text-body-color dark:text-body-color-dark text-sm">
           {position}
         </p>
 
         {socialLinks.length > 0 && (
-          <div className="mt-4 flex justify-center gap-3">
+          <div className="mt-1 flex justify-center gap-3">
             {socialLinks.map((link, index) => (
               <a
                 key={index}

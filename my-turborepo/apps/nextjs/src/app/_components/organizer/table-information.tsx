@@ -1,10 +1,8 @@
-import { Application } from "@vanni/db/schema";
+import { ClipboardIcon } from "lucide-react";
 
 import type { TableData } from "./schema";
 import { Card, CardContent } from "~/components/ui/card";
 import PDFReader from "./pdf-reader";
-import { Button } from "@vanni/ui/button";
-import { ClipboardIcon } from "lucide-react";
 
 interface CardInformationProps {
   children: React.ReactNode;
@@ -99,7 +97,7 @@ export const PersonalInformation: React.FC<InformationProps> = ({
         title="Copy full name"
         className="absolute right-0 top-2"
       >
-        <ClipboardIcon className="h-6 w-6 mr-2" />
+        <ClipboardIcon className="mr-2 h-6 w-6" />
       </button>
     </div>
   );

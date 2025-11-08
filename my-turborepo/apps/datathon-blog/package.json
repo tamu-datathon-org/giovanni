@@ -16,28 +16,28 @@
   "dependencies": {
     "date-fns": "^3.6.0",
     "gray-matter": "^4.0.3",
-    "next": "^14.2.25",
+    "next": "^14.2.33",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.4.2",
-    "@types/node": "^20.17.27",
-    "@types/nodemailer": "^6.4.17",
+    "@types/node": "^20.19.24",
+    "@types/nodemailer": "^6.4.21",
     "@types/nodemailer-ses-transport": "^1.5.5",
-    "@types/react": "^18.3.20",
-    "@types/react-dom": "^18.3.5",
-    "@typescript-eslint/parser": "^8.28.0",
+    "@types/react": "^18.3.26",
+    "@types/react-dom": "^18.3.7",
+    "@typescript-eslint/parser": "^8.46.3",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tailwind-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
     "dotenv-cli": "^7.4.4",
-    "eslint": "^9.23.0",
+    "eslint": "^9.39.1",
     "jiti": "^1.21.7",
-    "prettier": "^3.5.3",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.8.2"
+    "prettier": "^3.6.2",
+    "tailwindcss": "^3.4.18",
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">=18"

@@ -1,17 +1,11 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@vanni/ui/form";
+import { FormField, FormItem, FormLabel, FormMessage } from "@vanni/ui/form";
 
 import type { ApplicationSchema } from "~/app/apply/validation";
-import { Asterisk } from "../apply/application/application-form";
 import { Input } from "~/components/ui/input";
+import { Asterisk } from "../apply/application/application-form";
 
 interface GenericInputProps {
   name: keyof ApplicationSchema;
@@ -43,9 +37,13 @@ const GenericInputField: React.FC<GenericInputProps> = ({
             {required ? <Asterisk /> : ""}
           </FormLabel>
           <Input
-            className="bg-white placeholder-gray-500 text-black"
+            className="bg-white text-black placeholder-gray-500"
             placeholder={placeholder}
-            value={typeof field.value === "string" || typeof field.value === "number" ? field.value : ""}
+            value={
+              typeof field.value === "string" || typeof field.value === "number"
+                ? field.value
+                : ""
+            }
             onChange={field.onChange}
             onBlur={field.onBlur}
             name={field.name}

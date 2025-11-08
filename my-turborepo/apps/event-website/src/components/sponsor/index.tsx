@@ -1,137 +1,153 @@
-import React from 'react'
-import Image from 'next/image'
+"use client";
+
+import React from "react";
+import Image from "next/image";
 
 function Sponsors() {
-    return (
-        <div className='w-full bg-[#322C29] pt-12 md:pt-20' id='sponsors'>
-            <div className='w-full flex flex-col justify-center items-center gap-y-4 md:gap-y-8'>
-                <span className='font-kopub bold text-white text-3xl md:text-[80px]'>Thanks To Our</span>
-                <Image
-                    src="/images/sponsor-logo/sponsor_title.svg"
-                    width={800}
-                    height={200}
-                    alt='sponsor title'
-                    className='w-[80vw] max-w-[800px]'
-                    priority
-                />
-            </div>
+  return (
+    <div className="w-full bg-[#322C29] pt-12 md:pt-20" id="sponsors">
+      <div className="flex w-full flex-col items-center justify-center gap-y-4 md:gap-y-8">
+        <span className="font-kopub bold text-3xl text-white md:text-[80px]">
+          Thanks To Our
+        </span>
+        <Image
+          src="/images/sponsor-logo/sponsor_title.png"
+          width={800}
+          height={200}
+          alt="sponsor title"
+          className="h-auto w-[80vw] max-w-[800px]"
+          priority
+          unoptimized
+        />
+      </div>
 
-            <div className='relative w-full relative grid grid-cols-12 grid-rows-12'>
-                <Image
-                    src="/images/sponsor_bg.svg"
-                    alt="Background"
-                    width={1920}
-                    height={800}
-                    quality={100}
-                    className="col-start-1 row-start-1 col-span-12 row-span-12 h-auto" // Ensures it covers the container
-                    priority
-                />
+      <div className="relative grid w-full grid-cols-12 grid-rows-12">
+        <Image
+          src="/images/sponsor_bg.svg"
+          alt="Background"
+          width={1920}
+          height={800}
+          className="col-span-12 col-start-1 row-span-12 row-start-1 h-auto w-auto" // Ensures it covers the container
+          priority
+          unoptimized
+        />
 
-                <div className='relative z-10 col-start-1 row-start-7 col-span-10 row-span-1 transform scale-[0.7] translate-y-[-10vw] md:translate-y-[-10vw]'>
-                    <Image
-                        src="/images/sponsor-logo/textured/hitachi_textured.svg"
-                        alt="hitachi"
-                        fill
-                        quality={100}
-                        priority
-                    />
-                </div>
-
-                <div className='relative z-10 col-start-2 row-start-7 col-span-2 row-span-1 transform scale-[1.2] translate-y-4 md:translate-y-10'>
-                    <Image
-                        src="/images/sponsor-logo/textured/sec_textured.svg"
-                        alt="hitachi"
-                        fill
-                        quality={100}
-                        priority
-                    />
-                </div>
-
-                <div className='relative z-10 col-start-2 row-start-9 col-span-4 row-span-1 transform scale-[0.8] translate-y-4 md:translate-y-10'>
-                    <Image
-                        src="/images/sponsor-logo/textured/msy_textured.svg"
-                        alt="msy"
-                        fill
-                        quality={100}
-                        priority
-                    />
-                </div>
-
-                <div className='relative z-10 col-start-2 row-start-10 col-span-5 row-span-2 transform scale-y-[0.8]'>
-                    <Image
-                        src="/images/sponsor-logo/textured/databricks_textured.svg"
-                        alt="databricks"
-                        fill
-                        quality={100}
-                        priority
-                    />
-                </div>
-                {/* Right side */}
-
-                <div className='relative z-10 col-start-6 row-start-5 col-span-4 row-span-1'>
-                    <Image
-                        src="/images/sponsor-logo/textured/heb_textured.svg"
-                        alt="hitachi"
-                        fill
-                        quality={100}
-                        priority
-                    />
-                </div>
-
-                <div className='relative z-10 col-start-7 row-start-7 col-span-6 row-span-1 transform scale-[0.8] translate-x-4'>
-                    <Image
-                        src="/images/sponsor-logo/textured/qualcomm_textured.svg"
-                        alt="hitachi"
-                        fill
-                        quality={100}
-                        priority
-                    />
-                </div>
-
-                <div className='relative z-10 col-start-5 row-start-8 col-span-3 row-span-2 transform scale-[0.7] translate-x-4'>
-                    <Image
-                        src="/images/sponsor-logo/textured/p66_textured.svg"
-                        alt="p66"
-                        fill
-                        quality={100}
-                        priority
-                    />
-                </div>
-
-                <div className='relative z-10 col-start-7 row-start-10 col-span-3 row-span-1 transform scale-[1]'>
-                    <Image
-                        src="/images/sponsor-logo/textured/tamid_textured.svg"
-                        alt="tamu"
-                        fill
-                        quality={100}
-                        priority
-                    />
-                </div>
-
-                <div className='relative z-10 col-start-8 row-start-9 col-span-4 row-span-1 transform scale-[0.5] hover:scale-[0.5] transition-transform'>
-                    <a href="http://mlh.link/MLH-PureButtons-hackathons">
-                        <Image
-                            src="/images/sponsor-logo/textured/pure_textured.svg"
-                            alt="pure buttons"
-                            fill
-                            quality={100}
-                            priority
-                        />
-                    </a>
-                </div>
-
-                <div className='relative z-10 col-start-10 row-start-5 col-span-3 row-span-2 transform scale-[0.8]'>
-                    <Image
-                        src="/images/sponsor-logo/textured/tamu_statistics.svg"
-                        alt="tamu statistics"
-                        fill
-                        quality={100}
-                        priority
-                    />
-                </div>
-            </div>
+        <div className="relative z-10 col-span-10 col-start-1 row-span-1 row-start-7 translate-y-[-10vw] scale-[0.7] transform md:translate-y-[-10vw]">
+          <Image
+            src="/images/sponsor-logo/textured/hitachi_textured.png"
+            alt="hitachi"
+            fill
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
+          />
         </div>
-    )
+
+        <div className="relative z-10 col-span-2 col-start-2 row-span-1 row-start-7 translate-y-4 scale-[1.2] transform md:translate-y-10">
+          <Image
+            src="/images/sponsor-logo/textured/sec_textured.png"
+            alt="hitachi"
+            fill
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
+          />
+        </div>
+
+        <div className="relative z-10 col-span-4 col-start-2 row-span-1 row-start-9 translate-y-4 scale-[0.8] transform md:translate-y-10">
+          <Image
+            src="/images/sponsor-logo/textured/msy_textured.png"
+            alt="msy"
+            fill
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
+          />
+        </div>
+
+        <div className="relative z-10 col-span-5 col-start-2 row-span-2 row-start-10 scale-y-[0.8] transform">
+          <Image
+            src="/images/sponsor-logo/textured/databricks_textured.png"
+            alt="databricks"
+            fill
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
+          />
+        </div>
+        {/* Right side */}
+
+        <div className="relative z-10 col-span-4 col-start-6 row-span-1 row-start-5">
+          <Image
+            src="/images/sponsor-logo/textured/heb_textured.png"
+            alt="hitachi"
+            fill
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
+          />
+        </div>
+
+        <div className="relative z-10 col-span-6 col-start-7 row-span-1 row-start-7 translate-x-4 scale-[0.8] transform">
+          <Image
+            src="/images/sponsor-logo/textured/qualcomm_textured.png"
+            alt="hitachi"
+            fill
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
+          />
+        </div>
+
+        <div className="relative z-10 col-span-3 col-start-5 row-span-2 row-start-8 translate-x-4 scale-[0.8] transform">
+          <Image
+            src="/images/sponsor-logo/textured/p66_textured.png"
+            alt="p66"
+            fill
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
+          />
+        </div>
+
+        <div className="relative z-10 col-span-3 col-start-7 row-span-1 row-start-10 scale-[0.5] transform">
+          <Image
+            src="/images/sponsor-logo/textured/tamid_textured.png"
+            alt="tamu"
+            fill
+            sizes="(max-width: 768px) 33vw, 25vw"
+            className="object-contain"
+            loading="lazy"
+            unoptimized
+          />
+        </div>
+
+        <div className="relative z-10 col-span-4 col-start-8 row-span-1 row-start-9 scale-[0.4] transform transition-transform hover:scale-[0.5]">
+          <a href="http://mlh.link/MLH-PureButtons-hackathons">
+            <Image
+              src="/images/sponsor-logo/textured/pure_textured.png"
+              alt="pure buttons"
+              fill
+              sizes="(max-width: 768px) 33vw, 25vw"
+              loading="lazy"
+              unoptimized
+            />
+          </a>
+        </div>
+
+        <div className="relative z-10 col-span-3 col-start-10 row-span-2 row-start-5 scale-[0.5] transform">
+          <Image
+            src="/images/sponsor-logo/textured/tamu_statistics.png"
+            alt="tamu statistics"
+            fill
+            sizes="(max-width: 768px) 33vw, 25vw"
+            loading="lazy"
+            unoptimized
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default Sponsors
+export default Sponsors;

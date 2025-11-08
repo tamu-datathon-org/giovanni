@@ -1,5 +1,3 @@
-import z from "zod";
-
 import type { Application } from "@vanni/db/schema";
 
 export type TableData = typeof Application.$inferSelect & {

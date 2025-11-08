@@ -63,7 +63,7 @@ export default function Page() {
 
   useEffect(() => {
     const fetchQRCode = async () => {
-      if (data?.status === "accepted" || data?.status === "checkedin" || data?.status === "waitlisted") {
+      if (data?.status !== "rejected") {
         const qr = await generateQR(data?.email ?? "");
         setQrCode(qr);
       }
@@ -123,7 +123,7 @@ export default function Page() {
                       Scan this QR Code for Check-in:
                     </div>
                   </div>
-                  <div className="mx-auto relative w-40 h-40 md:h-52 md:w-52">
+                  <div className="mx-auto relative w-[80vw] aspect-[1/1] md:h-52 md:w-52">
                     <Image
                       src={qrCode}
                       alt="example.com"
@@ -133,7 +133,7 @@ export default function Page() {
                   </div>
                 </div>
               )}
-              {appsOpen ? <AppsOpenMessage status={data?.status}/> : <AppsClosedMessage />}
+              {appsOpen ? <AppsOpenMessage status={data?.status} /> : <AppsClosedMessage />}
             </div>
             <Button onClick={signOutHandler} className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
               Change Accounts
@@ -170,12 +170,25 @@ function AppsClosedMessage() {
 
 function AppsOpenMessage({ status }: { status?: string }) {
   return (
-    <GradientButton className="text-white bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
-      <Link
-        href="/apply/application"
-      >
-        {status ? "View/Edit Application" : "Start Application"}
-      </Link>
-    </GradientButton>
+    <div>
+      {status === "accepted" ? (
+        <AppsClosedMessage />
+      ) : (
+        <div>
+          Applications are OPEN FOR WALK-INS
+          <br />
+          After applying, the Applicant Dashboard will display a qrcode to scan
+          <br />
+          Feel free to contact an organizer for any issues.
+          <br />
+          <br />
+          <GradientButton className="text-white bg-datadarkblue hover:bg-datadarkblue/70 w-fit" size="lg" type="button">
+            <Link href="/apply/application">
+              {status ? "View/Edit Application" : "Start Application"}
+            </Link>
+          </GradientButton>
+        </div>
+      )}
+    </div>
   );
 }

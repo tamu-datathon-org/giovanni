@@ -13,6 +13,8 @@ import {
   Role,
   UserResume,
   UserRole,
+    Attendance,
+    EventPhase,
 } from "@vanni/db/schema";
 
 import { User } from "@vanni/db/auth-schema";
@@ -20,6 +22,16 @@ import { User } from "@vanni/db/auth-schema";
 import { organizerProcedure, protectedProcedure } from "../trpc";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 import { getEventData } from "./event";
+
+const PhaseSchema = z.string().min(1);
+
+async function getEventPhase(ctx: any, eventId: string, phaseName: string) {
+    const ep = await ctx.db.query.EventPhase.findFirst({
+        where: and(eq(EventPhase.eventId, eventId), eq(EventPhase.name, phaseName)),
+    });
+    if (!ep) throw new TRPCError({ code: "NOT_FOUND", message: `Phase "${phaseName}" not found for this event` });
+    return ep;
+}
 
 const RESUME_OPTIONAL = true;
 
@@ -216,7 +228,28 @@ export const applicationRouter = {
 
       return response;
     }),
-  update: protectedProcedure
+
+    listPhases: protectedProcedure
+        .input(z.object({ eventName: z.string() }))
+        .query(async ({ ctx, input }) => {
+            // find event id
+            const event = await ctx.db.query.Event.findFirst({
+                where: eq(Event.name, input.eventName),
+                columns: { id: true },
+            });
+            if (!event) throw new Error(`Event "${input.eventName}" not found`);
+
+            // fetch its phases
+            const phases = await ctx.db.query.EventPhase.findMany({
+                where: eq(EventPhase.eventId, event.id),
+                orderBy: (t, { asc }) => [asc(t.sortOrder), asc(t.name)],
+                columns: { id: true, name: true, sortOrder: true },
+            });
+
+            return phases;
+        }),
+
+    update: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -497,104 +530,140 @@ export const applicationRouter = {
 
       return application;
     }),
-  getCheckInStatus: protectedProcedure
-    .input(z.object({ eventName: z.string(), email: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const { eventName, email } = input;
 
-      const event = await getEventData({ ctx, eventName });
-
-      // const emailUser = await ctx.db.query.User.findFirst({
-      //   where: eq(User.email, email),
-      // });
-
-      // if (!emailUser) {
-      //   throw new TRPCError({
-      //     code: "NOT_FOUND",
-      //     message: "Email not found",
-      //   });
-      // }
-
-      const application = await ctx.db.query.Application.findFirst({
-        columns: {
-          id: true,
-          status: true,
-          email: true,
-          checkedIn: true,
-          dietaryRestriction: true,
-          extraInfo: true,
-          firstName: true,
-          lastName: true,
-        },
-        where: and(
-          eq(Application.eventId, event.id),
-          eq(Application.email, email),
-        ),
-      });
-
-      return application;
-    }),
-  updateCheckInStatus: organizerProcedure
-    .input(
-      z.object({
+    getCheckInStatus: protectedProcedure
+    .input(z.object({
         eventName: z.string(),
         email: z.string(),
-        newStatus: z.boolean(),
-        allowedStatuses: z.array(z.string()),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { newStatus, email } = input;
+        phase: z.string(),
+    }))
+    .query(async ({ ctx, input }) => {
+        const event = await getEventData({ ctx, eventName: input.eventName });
 
-      const event = await getEventData({ ctx, eventName: input.eventName });
-
-      // Query based on email or id
-      if (email !== undefined && email !== "") {
         const application = await ctx.db.query.Application.findFirst({
-          where: and(
-            eq(Application.email, email),
-            eq(Application.eventId, event.id),
-          ),
+            where: and(eq(Application.email, input.email), eq(Application.eventId, event.id)),
         });
 
-        if (!application) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Application not found",
-          });
-        }
+        if (!application)
+            throw new TRPCError({ code: "NOT_FOUND", message: "Applicant not found" });
 
-        // Verifying their status
-        if (!input.allowedStatuses.includes(application.status)) {
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "User status is not allowed",
-          });
-        }
+        // Single join for EventPhase and Attendance
+        const [phaseAttendance, checkInAttendance] = await Promise.all([
+            // Get attendance for requested phase
+            ctx.db
+                .select({
+                    checkedIn: Attendance.checkedIn,
+                    checkedInAt: Attendance.checkedInAt,
+                    phaseId: EventPhase.id,
+                })
+                .from(EventPhase)
+                .leftJoin(
+                    Attendance,
+                    and(
+                        eq(Attendance.eventPhaseId, EventPhase.id),
+                        eq(Attendance.applicationId, application.id)
+                    )
+                )
+                .where(
+                    and(
+                        eq(EventPhase.eventId, event.id),
+                        eq(EventPhase.name, input.phase)
+                    )
+                )
+                .limit(1),
+            // Get check-in phase attendance
+            ctx.db
+                .select({
+                    checkedIn: Attendance.checkedIn,
+                })
+                .from(EventPhase)
+                .leftJoin(
+                    Attendance,
+                    and(
+                        eq(Attendance.eventPhaseId, EventPhase.id),
+                        eq(Attendance.applicationId, application.id)
+                    )
+                )
+                .where(
+                    and(
+                        eq(EventPhase.eventId, event.id),
+                        eq(EventPhase.name, "check-in")
+                    )
+                )
+                .limit(1),
+        ]);
 
-        const results = await ctx.db
-          .update(Application)
-          .set({ checkedIn: newStatus })
-          .where(
-            and(
-              eq(Application.email, email),
-              eq(Application.eventId, event.id),
-            ),
-          );
+        if (!phaseAttendance?.[0]?.phaseId)
+            throw new TRPCError({ code: "NOT_FOUND", message: "Phase not found" });
 
-        if (results.rowCount === 0) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Application Email not updated",
-          });
-        }
-
-        return { ...application, checkedIn: newStatus };
-      }
-
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Invalid input data",
-      });
+        return {
+            userId: application.id,
+            firstName: application.firstName,
+            lastName: application.lastName,
+            email: application.email,
+            dietaryRestrictions: application.dietaryRestriction,
+            status: application.status,
+            extraInfo: application.extraInfo,
+            eventAttendance: checkInAttendance?.[0]?.checkedIn ?? false,
+            checkedIn: phaseAttendance?.[0]?.checkedIn ?? false,
+            checkedInAt: phaseAttendance?.[0]?.checkedInAt ?? null,
+        };
     }),
+
+    updateCheckInStatus: organizerProcedure
+        .input(
+            z.object({
+                eventName: z.string(),
+                email: z.string(),
+                phase: PhaseSchema,
+                newStatus: z.boolean(),
+            }),
+        )
+        .mutation(async ({ ctx, input }) => {
+            const { eventName, email, phase, newStatus } = input;
+
+            const event = await getEventData({ ctx, eventName });
+
+            const application = await ctx.db.query.Application.findFirst({
+                where: and(eq(Application.email, email), eq(Application.eventId, event.id)),
+                columns: {
+                    id: true,
+                    status: true,
+                    userId: true,
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                    dietaryRestriction: true,
+                    extraInfo: true,
+                },
+            });
+
+            if (!application) {
+                throw new TRPCError({ code: "NOT_FOUND", message: "Application not found" });
+            }
+
+            const ep = await getEventPhase(ctx, event.id, phase);
+
+            const updated = await ctx.db
+                .insert(Attendance)
+                .values({
+                    applicationId: application.id,
+                    eventId: event.id,
+                    eventPhaseId: ep.id,
+                    checkedIn: newStatus,
+                    checkedInAt: newStatus ? new Date() : null,
+                    updatedAt: new Date(),
+                })
+                .onConflictDoUpdate({
+                    target: [Attendance.applicationId, Attendance.eventPhaseId],
+                    set: {
+                        checkedIn: newStatus,
+                        checkedInAt: newStatus ? new Date() : null,
+                        updatedAt: sql`NOW()`,
+                    },
+                })
+                .returning();
+
+            return updated[0];
+        }),
 };

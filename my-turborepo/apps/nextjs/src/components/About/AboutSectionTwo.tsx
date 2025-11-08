@@ -1,4 +1,3 @@
-import Image from "next/image";
 import FloatingStats from "./FloatingStats";
 
 const AboutSectionTwo = () => {
@@ -13,12 +12,17 @@ const AboutSectionTwo = () => {
                 <h3 className="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
                   Innovate Through Challenge
                 </h3>
-                <p className="text-base font-medium leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg sm:leading-relaxed">
-                  We believe in challenge-based problem solving instead of traditional themes. Participants gain industry-relevant skills by working on real-world challenges. Designed for both beginners and experienced individuals.
+                <p className="text-body-color dark:text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+                  We believe in challenge-based problem solving instead of
+                  traditional themes. Participants gain industry-relevant skills
+                  by working on real-world challenges. Designed for both
+                  beginners and experienced individuals.
                 </p>
 
-                <p className="pt-6 text-base font-medium leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg sm:leading-relaxed">
-                  TAMU Datathon offers workshops, mentorship, and resources to help participants enhance their data science and machine learning skills.
+                <p className="text-body-color dark:text-body-color-dark pt-6 text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+                  TAMU Datathon offers workshops, mentorship, and resources to
+                  help participants enhance their data science and machine
+                  learning skills.
                 </p>
               </div>
             </div>

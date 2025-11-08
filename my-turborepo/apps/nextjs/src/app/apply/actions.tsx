@@ -1,7 +1,6 @@
-import { revalidatePath } from "next/cache";
 import { put } from "@vercel/blob";
 
-export async function ResumeForm() {
+export function ResumeForm() {
   async function uploadResume(formData: FormData) {
     "use server";
     const resumeFile = formData.get("resume") as File;
@@ -12,8 +11,8 @@ export async function ResumeForm() {
   }
   return (
     <form
-      action={(formData: FormData) => {
-        uploadResume(formData);
+      action={async (formData: FormData) => {
+        await uploadResume(formData);
       }}
     >
       <label>Upload Resume</label>

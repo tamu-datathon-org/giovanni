@@ -47,6 +47,7 @@ import GenericMultiSelect from "../../_components/genericMultiSelect";
 import { LucideArrowBigLeft } from "lucide-react";
 import { env } from "~/env";
 import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
+import { useRouter } from "next/navigation";
 
 /*
     First Name
@@ -85,7 +86,8 @@ export function Asterisk() {
 
 export function ApplicationForm() {
   const [disableSubmit, setDisableSubmit] = useState(false);
-  const { session, setSession } = useAuthRedirect();
+  const { session, } = useAuthRedirect();
+  const router = useRouter();
 
   const {
     data: importedValues,
@@ -117,10 +119,10 @@ export function ApplicationForm() {
   });
 
   useEffect(() => {
-    if (session?.user?.email) {
+    if (session?.user.email) {
       form.setValue("email", session.user.email);
     }
-  }, [session?.user?.email, form]);
+  }, [session?.user.email, form]);
 
   const createApplication = api.application.create.useMutation();
   const updateApplication = api.application.update.useMutation();
@@ -201,9 +203,12 @@ export function ApplicationForm() {
 
           localStorage.removeItem("applicationData"); //deletes the data in local storage once they submitted
 
-          setDisableSubmit(true);
-          await refetchApplication(); // Refetch to update importedValues?.app
-          setDisableSubmit(false); // Re-enable submit for updates
+          // setDisableSubmit(true);
+          // await refetchApplication(); // Refetch to update importedValues?.app
+          // setDisableSubmit(false); // Re-enable submit for updates
+          setTimeout(() => {
+            router.replace('/apply');
+          }, 5000);
         },
         onError: (error: { message: any }) => {
           if (error instanceof TRPCClientError) {
@@ -253,7 +258,7 @@ export function ApplicationForm() {
     return <Loading />;
   }
 
-  const SCHOOL_OPTIONS = schoolsJson.map((entry, index) => ({
+  const SCHOOL_OPTIONS = schoolsJson.map((entry,) => ({
     value: entry.schoolName,
     label: entry.schoolName,
   }));
@@ -456,7 +461,7 @@ export function ApplicationForm() {
             <FormField
               control={form.control}
               name="resumeFile"
-              render={({ field: { value, onChange, ...fieldProps } }) => (
+              render={({ field: { ...fieldProps } }) => (
                 <FormItem>
                   <FormLabel className="text-xl">
                     Resume sent to Sponsors (PDF Only) (Optional):
