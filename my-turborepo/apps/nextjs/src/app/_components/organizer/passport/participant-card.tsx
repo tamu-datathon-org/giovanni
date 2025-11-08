@@ -54,14 +54,16 @@ export function ParticipantCard({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className={"bg-orange-100 max-w-md " + (participant.eventAttendance ? "border-4 border-green-700" : "border-4 border-red-700")}>
+      <DialogContent className={"bg-orange-100 dark:bg-orange-100 max-w-md " +
+        (participant.eventAttendance ? "border-4 border-green-700 dark:border-4 dark:border-green-700" :
+          "border-4 border-red-700 dark:border-4 dark:border-red-700")}>
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center">
+          <DialogTitle className="text-2xl font-bold text-center text-gray-900">
             Participant&apos;s Data
           </DialogTitle>
         </DialogHeader>
         <div>
-          <span className="text-sm flex flex-row gap-2 justify-center">
+          <span className="text-sm flex flex-row gap-2 justify-center text-gray-900">
             <p>Phase: {" "}
               <span className="text-indigo-700">{currentPhaseLabel}</span>
             </p>
@@ -73,13 +75,13 @@ export function ParticipantCard({
             </p>
           </span>
           {participant.checkedInAt && (
-            <p className="text-sm opacity-70 text-center">
+            <p className="text-sm opacity-70 text-center text-gray-900">
               checked in at:{" "}
               {new Date(participant.checkedInAt).toLocaleString(undefined, { hour12: true })}
             </p>
           )}
         </div>
-        <div className="text-center">
+        <div className="text-center text-gray-900">
           <p>Name: {participant.firstName} {participant.lastName}</p>
           <p>Email: {participant.email}</p>
           <p>Status: {" "}
