@@ -65,17 +65,23 @@ We highly recommend you try to Dockerize your agent using the provided Dockerfil
 - **Cache repeated evaluations** — if using ML or search algorithms, save computation time by caching
 - **List every dependency in `requirements.txt`** — missing one will break your submission
 - **Always test your container before submitting**
+
 ---
 
-## Submission Guidelines
+## 📤 Submission Guidelines
 
 Your submission should include the following files:
-
 
 - `agent.py` | Your agent's main file. This is where your logic lives. **Do not rename or move this file.** |
 - `requirements.txt` | A list of every Python dependency your agent uses. The judge system installs these automatically. |
 - `Dockerfile` | _(Optional)_ Only required if you modify dependencies beyond what's supported or if you need a custom setup. |
 - Helper modules | _(Optional)_ Any helper modules you wrote that are imported by `agent.py`. Keep them in the same folder. |
+
+---
+
+## 🔗 Resources
+
+- **Full Challenge Documentation:** [Google Docs](https://docs.google.com/document/d/1260rs81Bt5h4HLp9PFognM-kmfR-JDoRLNRF_fABEVE/edit?tab=t.0#heading=h.4biijivtxg95)
 
 ---
 
