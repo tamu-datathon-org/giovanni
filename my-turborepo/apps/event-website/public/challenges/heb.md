@@ -4,9 +4,11 @@
 
 ---
 
-## 🎯 Challenge Overview
+## 🎯 Problem Statement
+Design a system that ranks H-E-B products for curated search queries representing diverse shopper intents.
 
-HEB is excited to present a challenge that combines innovation, technology, and real-world impact. This challenge offers participants the opportunity to work on meaningful solutions while competing for exciting prizes.
+## Background
+Grocery shopping queries vary significantly in complexity, requiring a system that can understand intent across multiple modalities like product descriptions, attributes (e.g., organic, vegan), nutrition facts, and category hierarchies. Traditional keyword-based search systems struggle to capture semantic relationships and shopper intent, especially for nuanced or diverse queries (e.g., "low-carb snacks" vs. "gluten-free penne pasta 16 oz"). A semantic, multimodal search system is essential to accurately rank products by leveraging embeddings across text, attributes, and structured data, ensuring relevance and precision in search results for complex catalogs like H-E-B.
 
 ---
 
