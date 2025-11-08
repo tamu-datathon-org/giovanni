@@ -98,6 +98,13 @@ const Header = () => {
           >
             Schedule
           </Link>
+          <Link
+            href="/challenges"
+            onClick={() => setNavbarOpen(false)}
+            className="py-2 hover:text-gray-300 md:py-0"
+          >
+            Challenge
+          </Link>
         </div>
       </div>
     </header>
