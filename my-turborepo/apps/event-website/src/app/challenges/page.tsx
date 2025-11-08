@@ -50,7 +50,7 @@ export default function ChallengePage() {
     },
     {
       id: 5,
-      name: "AI-Powered Regulatory Document Classifier - Hitachi",
+      name: "Hitachi AI-Powered Regulatory Document Classifier",
       prize: "First: JBL Speaker, Second: Amazon Echo Dot, Third: Echo Dot",
       description:
         "Build an AI that analyzes multi-page, multi-modal documents and classifies them by sensitivity level.",
@@ -59,10 +59,18 @@ export default function ChallengePage() {
     {
       id: 6,
       name: "Detective Databricks Mini Challenge",
-      prize: "Top 3 Teams: $100 Gift Card to your favorite restaurant per person",
+      prize: "Top 3 Teams: $100 Gift Card to your favorite restaurant per team",
       description:
         "Showcase your data detective skills by demonstrating how you used Databricks to solve data mysteries in other challenges.",
       mdPath: "/challenges/databricks.md",
+    },
+    {
+      id: 7,
+      name: "HEB Challenge",
+      prize: "First: Airpods Pro, Second: Keyboard, Third: Gift Cards",
+      description:
+        "Visit the HEB table to sign an NDA and receive detailed challenge instructions.",
+      mdPath: "/challenges/heb.md",
     },
   ];
 
