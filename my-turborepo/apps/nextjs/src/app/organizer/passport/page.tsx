@@ -55,12 +55,12 @@ const DEFAULT_PARTICIPANT: ParticipantData = {
 function LoadingOverlay({ show, label }: { show: boolean; label: string }) {
   if (!show) return null;
   return (
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
-        <div className="flex items-center gap-3 rounded-xl bg-white px-5 py-4 shadow-lg dark:bg-neutral-900">
-          <Loader2 className="h-5 w-5 animate-spin" />
-          <span className="text-sm font-medium">{label}</span>
-        </div>
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center backdrop-blur-sm">
+      <div className="flex items-center gap-3 rounded-xl bg-white px-5 py-4 shadow-lg">
+        <Loader2 className="h-5 w-5 animate-spin" />
+        <span className="text-sm font-medium">{label}</span>
       </div>
+    </div>
   );
 }
 
@@ -83,17 +83,17 @@ export default function PassportPage() {
 
   /** ---------------- Phases (dynamic) ---------------- */
   const phasesQuery = api.application.listPhases.useQuery(
-      { eventName: eventName ?? "" },
-      { enabled: Boolean(eventName), refetchOnWindowFocus: false }
+    { eventName: eventName ?? "" },
+    { enabled: Boolean(eventName), refetchOnWindowFocus: false }
   );
 
   const phaseOptions = useMemo(
-      () =>
-          (phasesQuery.data ?? []).map((p) => ({
-            label: p.name,
-            value: p.name as PhaseName,
-          })),
-      [phasesQuery.data]
+    () =>
+      (phasesQuery.data ?? []).map((p) => ({
+        label: p.name,
+        value: p.name as PhaseName,
+      })),
+    [phasesQuery.data]
   );
 
   // Default phase once loaded
@@ -108,17 +108,17 @@ export default function PassportPage() {
 
   /** ---------------- Queries ---------------- */
   const queryData = api.application.getCheckInStatus.useQuery(
-      {
-        eventName: eventName ?? "",
-        email: effectiveEmail,
-        phase: selectedPhase,
-      } as any,
-      {
-        enabled: Boolean(eventName) && Boolean(effectiveEmail) && Boolean(selectedPhase),
-        staleTime: 10_000,
-        refetchOnWindowFocus: false,
-        retry: 1,
-      }
+    {
+      eventName: eventName ?? "",
+      email: effectiveEmail,
+      phase: selectedPhase,
+    } as any,
+    {
+      enabled: Boolean(eventName) && Boolean(effectiveEmail) && Boolean(selectedPhase),
+      staleTime: 10_000,
+      refetchOnWindowFocus: false,
+      retry: 1,
+    }
   );
 
   /** Apply query outcome to UI & clear loading flag when fetch completes */
@@ -187,17 +187,17 @@ export default function PassportPage() {
 
     try {
       const updated = await statusMutation.mutateAsync(
-          {
-            eventName,
-            email: effectiveEmail,
-            phase: selectedPhase, // send the NAME; server resolves to event_phase_id
-            newStatus,
-          } as any
+        {
+          eventName,
+          email: effectiveEmail,
+          phase: selectedPhase, // send the NAME; server resolves to event_phase_id
+          newStatus,
+        } as any
       );
-      
+
       if (updated) {
         console.log(updated)
-        setParticipant({...participant, checkedIn: updated.checkedIn});
+        setParticipant({ ...participant, checkedIn: updated.checkedIn });
       } else {
         setParticipant(DEFAULT_PARTICIPANT);
       }
@@ -244,98 +244,98 @@ export default function PassportPage() {
 
   if (!eventName) {
     return (
-        <div className="p-6 text-red-600">
-          <h1 className="text-2xl font-bold">Configuration Error</h1>
-          <p className="mt-2">
-            <code>NEXT_PUBLIC_EVENT_NAME</code> is not set. Please define it in your environment.
-          </p>
-        </div>
+      <div className="p-6 text-red-600">
+        <h1 className="text-2xl font-bold">Configuration Error</h1>
+        <p className="mt-2">
+          <code>NEXT_PUBLIC_EVENT_NAME</code> is not set. Please define it in your environment.
+        </p>
+      </div>
     );
   }
 
   // Overlay label based on what triggered the fetch
   const overlayLabel =
-      pendingSource === "scan"
-          ? "Looking up participant from QR…"
-          : pendingSource === "manual"
-              ? "Searching participant by email…"
-              : pendingSource === "phase"
-                  ? `Loading ${currentPhaseLabel}…`
-                  : "Loading…";
+    pendingSource === "scan"
+      ? "Looking up participant from QR…"
+      : pendingSource === "manual"
+        ? "Searching participant by email…"
+        : pendingSource === "phase"
+          ? `Loading ${currentPhaseLabel}…`
+          : "Loading…";
 
   const anyBlockingLoad = Boolean(pendingSource) && queryData.isFetching;
 
   return (
-      <div className="relative flex flex-col items-center justify-center gap-2 p-4 text-black dark:text-white">
-        {/* Loading Overlay */}
-        <LoadingOverlay show={anyBlockingLoad} label={overlayLabel} />
+    <div className="relative flex flex-col items-center justify-center gap-2 p-4 text-black">
+      {/* Loading Overlay */}
+      <LoadingOverlay show={anyBlockingLoad} label={overlayLabel} />
 
-        <h1 className="text-3xl font-bold">Check-in System</h1>
+      <h1 className="text-3xl font-bold">Check-in System</h1>
 
-        {/* Phase Selector (dynamic) */}
-        <PhaseSelector
-          selectedPhase={selectedPhase}
-          setSelectedPhase={(v) => setSelectedPhase(v as PhaseName)}
-          phaseOptions={phaseOptions}
-          isLoading={phasesQuery.isLoading}
-          isError={phasesQuery.isError}
-          isDisabled={anyBlockingLoad || statusMutation.isPending || phasesQuery.isLoading || phasesQuery.isError}
-        />
+      {/* Phase Selector (dynamic) */}
+      <PhaseSelector
+        selectedPhase={selectedPhase}
+        setSelectedPhase={(v) => setSelectedPhase(v as PhaseName)}
+        phaseOptions={phaseOptions}
+        isLoading={phasesQuery.isLoading}
+        isError={phasesQuery.isError}
+        isDisabled={anyBlockingLoad || statusMutation.isPending || phasesQuery.isLoading || phasesQuery.isError}
+      />
 
-        {/* Scanner & manual override */}
-        <div className="flex flex-col items-center gap-3">
-          <div className="text-sm opacity-80">
-            Currently Scanning: {scannerEmail || "—"}
-          </div>
-
-          <QRScanner
-              onScan={async (val) => {
-                const v = String(val || "").trim();
-                setScannerEmail(v);
-                if (v) {
-                  setPendingSource("scan");
-                  setSubmittedEmail(v); // auto-submit scanned email
-                  if (queryData.refetch) {
-                    const result = await queryData.refetch();
-                    if (result.isSuccess && result.data) {
-                      setIsDialogOpen(true);
-                    }
-                  }
-                }
-              }}
-          />
-
-          <ManualEmailInput
-            manualEmail={manualEmail}
-            setManualEmail={setManualEmail}
-            handleSearch={handleSearch}
-            handleClear={handleClear}
-            inputRef={inputRef}
-            anyBlockingLoad={anyBlockingLoad}
-            isPendingMutation={statusMutation.isPending}
-            scannerEmail={scannerEmail}
-            submittedEmail={submittedEmail}
-            effectiveEmail={effectiveEmail}
-          />
+      {/* Scanner & manual override */}
+      <div className="flex flex-col items-center gap-3">
+        <div className="text-sm opacity-80">
+          Currently Scanning: {scannerEmail || "—"}
         </div>
 
-        {/* Participant card */}
-        <ParticipantCard
-          participant={participant}
-          currentPhaseLabel={currentPhaseLabel}
-          isOpen={isDialogOpen}
-          onOpenChange={setIsDialogOpen}
-          onCheckIn={handleCheckIn}
-          onRemove={handleRemove}
-          isLoading={statusMutation.isPending}
-          isDisabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail || !selectedPhase}
+        <QRScanner
+          onScan={async (val) => {
+            const v = String(val || "").trim();
+            setScannerEmail(v);
+            if (v) {
+              setPendingSource("scan");
+              setSubmittedEmail(v); // auto-submit scanned email
+              if (queryData.refetch) {
+                const result = await queryData.refetch();
+                if (result.isSuccess && result.data) {
+                  setIsDialogOpen(true);
+                }
+              }
+            }
+          }}
         />
 
-        {/* Divider */}
-        {/* <div className="my-2 w-1/2 border-2 border-black" /> */}
+        <ManualEmailInput
+          manualEmail={manualEmail}
+          setManualEmail={setManualEmail}
+          handleSearch={handleSearch}
+          handleClear={handleClear}
+          inputRef={inputRef}
+          anyBlockingLoad={anyBlockingLoad}
+          isPendingMutation={statusMutation.isPending}
+          scannerEmail={scannerEmail}
+          submittedEmail={submittedEmail}
+          effectiveEmail={effectiveEmail}
+        />
+      </div>
 
-        {/* Allowed statuses */}
-        {/* <div className="mx-4 w-full text-center sm:w-1/2 flex flex-col items-center gap-3">
+      {/* Participant card */}
+      <ParticipantCard
+        participant={participant}
+        currentPhaseLabel={currentPhaseLabel}
+        isOpen={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        onCheckIn={handleCheckIn}
+        onRemove={handleRemove}
+        isLoading={statusMutation.isPending}
+        isDisabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail || !selectedPhase}
+      />
+
+      {/* Divider */}
+      {/* <div className="my-2 w-1/2 border-2 border-black" /> */}
+
+      {/* Allowed statuses */}
+      {/* <div className="mx-4 w-full text-center sm:w-1/2 flex flex-col items-center gap-3">
           <div className="w-full">
             <h2 className="mb-2">Select Allowed Statuses:</h2>
             <MultiSelect
@@ -350,6 +350,6 @@ export default function PassportPage() {
             />
           </div>
         </div> */}
-      </div>
+    </div>
   );
 }

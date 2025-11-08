@@ -54,7 +54,7 @@ export function ParticipantCard({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className={"bg-orange-100 dark:bg-orange-400 max-w-md " + (participant.eventAttendance ? "border-4 border-green-700" : "border-4 border-red-700")}>
+      <DialogContent className={"bg-orange-100 max-w-md " + (participant.eventAttendance ? "border-4 border-green-700" : "border-4 border-red-700")}>
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
             Participant&apos;s Data
