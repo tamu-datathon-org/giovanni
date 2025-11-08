@@ -25,7 +25,7 @@ export default function ChallengePage() {
     },
     {
       id: 2,
-      name: "MCP Challenge",
+      name: "Build MCP Challenge",
       prize: "First: Scooter, Second: Monitor, Third: Echo Dot",
       description: "Build your own Model Context Protocol (MCP) server",
       mdPath: "/challenges/mcp.md",
@@ -50,11 +50,19 @@ export default function ChallengePage() {
     },
     {
       id: 5,
-      name: "AI-Powered Regulatory Document Classifier",
-      prize: "-",
+      name: "AI-Powered Regulatory Document Classifier - Hitachi",
+      prize: "First: JBL Speaker, Second: Amazon Echo Dot, Third: Echo Dot",
       description:
         "Build an AI that analyzes multi-page, multi-modal documents and classifies them by sensitivity level.",
       mdPath: "/challenges/hitachi.md",
+    },
+    {
+      id: 6,
+      name: "Detective Databricks Mini Challenge",
+      prize: "-",
+      description:
+        "Showcase your data detective skills by demonstrating how you used Databricks to solve data mysteries in other challenges.",
+      mdPath: "/challenges/databricks.md",
     },
   ];
 
