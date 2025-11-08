@@ -1,4 +1,4 @@
-# **Challenge Overview**
+# 🔍 **Challenge Overview**
 
 The **Mai Shan Yun Inventory Intelligence Challenge** invites you to design and build an interactive dashboard that transforms raw restaurant data into actionable intelligence.
 
@@ -10,7 +10,7 @@ The best submissions will blend **data analytics**, **visual storytelling**, and
 
 ---
 
-## **What You’ll Be Building**
+## 🎯**What You’ll Be Building**
 
 A **data-powered inventory management dashboard** that provides restaurant managers with insights into their operations.
 
@@ -23,7 +23,7 @@ Your dashboard should help answer key questions like:
 
 ---
 
-## **Suggested Features**
+## 🏆**Suggested Features**
 
 Your dashboard might include:
 
@@ -35,7 +35,7 @@ Your dashboard might include:
 
 ---
 
-## **Judging Criteria**
+## ✅**Judging Criteria**
 
 Your submission will be evaluated on both **analytical creativity** and **practical utility**.
 
@@ -54,7 +54,7 @@ Your submission will be evaluated on both **analytical creativity** and **practi
 
 ---
 
-## **Technical Requirements**
+## 🤖**Technical Requirements**
 
 Your submission must include:
 

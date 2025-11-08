@@ -6,6 +6,7 @@ import ChallengeCard from "@/components/challenge-card";
 interface Challenge {
   id: number;
   name: string;
+  prize: string;
   description: string;
   mdPath: string;
 }
@@ -15,30 +16,35 @@ export default function ChallengePage() {
     {
       id: 1,
       name: "Case Closed",
+      prize: "First: Meta Quest, Second: Ninja Creamy, Third: Vizo Soundbar",
       description: "The grid is your crime scene. Every move leaves evidence. Every turn could be your last.",
       mdPath: "/challenges/case-closed.md",
     },
     {
       id: 2,
-      name: "MCP",
+      name: "MCP Challenge",
+      prize: "First: Scooter, Second: Monitor, Third: Echo Dot",
       description: "Build your own Model Context Protocol (MCP) server",
       mdPath: "/challenges/mcp.md",
     },
     {
       id: 3,
       name: "Detective Rev",
+      prize: "First: Power Bank + $25 @ Amazon, Second: Fire Stick + $10 @ Amazon, Third: Apple Air tag",
       description: "Interrogate simulated suspects, find clues, solve the mystery",
       mdPath: "/challenges/revs.md",
     },
     {
       id: 4,
       name: "Mai Shan Yun Inventory Intelligence",
+      prize: "First: $75 @ MSY + $25 @ Amazon, Second: $25 @ MSY + $25 @ Amazon, Third: $10 @ MSY + $25 @ Amazon",
       description: "Design and build an interactive dashboard using raw restaurant data",
       mdPath: "/challenges/msy.md",
     },
     {
       id: 5,
-      name: "Hitachi Challenge",
+      name: "AI-Powered Regulatory Document Classifier",
+      prize: "-",
       description: "Build an AI that analyzes multi-page, multi-modal documents and classifies them by sensitivity level.",
       mdPath: "/challenges/hitachi.md",
     }
@@ -66,8 +72,8 @@ export default function ChallengePage() {
   }, []);
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-6">Challenges</h2>
+    <div className="p-4 bg-[#322C29]">
+      <h2 className="text-2xl font-semibold mb-6 font-serif text-center text-white">Challenges</h2>
 
       {/* Grid Layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -76,6 +82,7 @@ export default function ChallengePage() {
             key={challenge.id}
             name={challenge.name}
             description={challenge.description}
+            prize={challenge.prize}
             onClick={() => setSelectedChallenge(challenge)}
           />
         ))}
@@ -92,8 +99,8 @@ export default function ChallengePage() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h3 className="text-2xl font-bold text-gray-900">{selectedChallenge.name}</h3>
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-[#FEF7EE]">
+              <h3 className="text-2xl font-bold text-gray-900 ">{selectedChallenge.name}</h3>
               <button
                 className="text-gray-400 hover:text-gray-600 transition-colors"
                 onClick={() => setSelectedChallenge(null)}
@@ -105,7 +112,7 @@ export default function ChallengePage() {
             </div>
 
             {/* Markdown Content */}
-            <div className="overflow-y-auto p-6">
+            <div className="overflow-y-auto p-6 bg-[#FEF7EE]">
               <ReactMarkdown
                 className="prose prose-slate max-w-none
                   prose-headings:font-bold prose-headings:text-gray-900

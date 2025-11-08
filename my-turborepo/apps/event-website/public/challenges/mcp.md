@@ -1,4 +1,4 @@
-# Challenge Overview
+# 🚀 Challenge Overview
 
 In the age of AI, the quality of a model's response is only as good as the context it's given. The **Build-Your-Own-MCP Challenge** invites you to design and build your own **Model Context Protocol (MCP)** server — a specialized service that acts as a "smart context engine" for AI models.
 
@@ -8,7 +8,7 @@ The best submissions will be judged not just on technical implementation but on 
 
 ---
 
-## What You'll Be Building
+## 🛠 What You'll Be Building
 
 A server that acts as a **context-aware middleware**. When a user query comes in, your server's job is to:
 
@@ -20,10 +20,9 @@ A server that acts as a **context-aware middleware**. When a user query comes in
 
 ---
 
-## Examples to Inspire You
+## 💡 Examples to Inspire You
 
-###  The "Personal Assistant" Server
-
+### 🤖 The "Personal Assistant" Server
 **Query:** "Am I free for a meeting tomorrow at 10 AM?"
 **MCP Server:** Connects to the user's Google Calendar API, fetches their schedule, and injects:
 > CONTEXT: User's calendar for tomorrow shows a 'Project Sync' from 10:00 to 11:00 AM.
@@ -32,8 +31,7 @@ A server that acts as a **context-aware middleware**. When a user query comes in
 
 ---
 
-###  The "DevOps" Server
-
+### 🛠 The "DevOps" Server
 **Query:** "What's the status of the production web fleet?"
 **MCP Server:** Connects to the AWS API, gets the health of EC2 instances tagged "prod-web," and injects:
 > CONTEXT: AWS production fleet status — 3 instances running. 'web-01' CPU at 85%. 'web-02' and 'web-03' are at 30%.
@@ -42,8 +40,7 @@ A server that acts as a **context-aware middleware**. When a user query comes in
 
 ---
 
-###  The "Knowledge Manager" Server
-
+### 📚 The "Knowledge Manager" Server
 **Query:** "What were the key decisions from the 'Project Phoenix' launch meeting?"
 **MCP Server:** Connects to Notion, searches for the "Project Phoenix" meeting notes page, summarizes the "Decisions" block, and injects the summary.
 
@@ -51,23 +48,23 @@ A server that acts as a **context-aware middleware**. When a user query comes in
 
 ---
 
-##  Judging Criteria
+## 🏅 Judging Criteria
 
 Your submission will be evaluated on its innovative approach and practical value.
 
-###  Creativity & Originality (50%)
+### 🎨 Creativity & Originality (50%)
 - **Unique Data Source:** Did you connect to a novel or interesting data source (e.g., fitness tracker, CI/CD pipeline, personal finance tool)?
 - **Clever Integration:** How creative is the way you use the data? Does it unlock new capabilities for the AI?
 - **Contextual Intelligence:** How well does your server infer what context is needed? Does it combine multiple sources?
 
-###  Utility & Technical Merit (50%)
+### ⚙️ Utility & Technical Merit (50%)
 - **Practical Value:** How useful is this? Does it solve a real problem or make a common task easier?
 - **Robustness:** Is the server well-built? Does it handle data fetching, API errors, and context formatting reliably?
 - **Efficiency:** How well is the context summarized? Does it provide useful information without excessive noise?
 
 ---
 
-##  Technical Requirements
+## 🧑‍💻 Technical Requirements
 
 - Your submission must be a **functional server** that can receive a query and demonstrate its ability to fetch external data.
 - You must clearly identify the **external data source(s)** or **API(s)** being used.
@@ -79,5 +76,5 @@ Your submission will be evaluated on its innovative approach and practical value
 
 ---
 
-### Ready to build the tools that make AI truly personal?
+### 🚀 Ready to build the tools that make AI truly personal?
 We can't wait to see what you create!
