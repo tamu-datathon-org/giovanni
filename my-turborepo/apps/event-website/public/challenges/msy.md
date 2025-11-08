@@ -2,7 +2,7 @@
 
 The **Mai Shan Yun Inventory Intelligence Challenge** invites you to design and build an interactive dashboard that transforms raw restaurant data into actionable intelligence.
 
-You’ll be working with a real dataset from **Mai Shan Yun**, including monthly purchase logs, ingredient usage, shipment details, and menu item sales trends.
+You'll be working with a real dataset from **Mai Shan Yun**, including monthly purchase logs, ingredient usage, shipment details, and menu item sales trends.
 
 **Your mission:** Help the restaurant optimize its inventory — minimizing waste, avoiding shortages, and predicting what to restock and when.
 
@@ -10,7 +10,7 @@ The best submissions will blend **data analytics**, **visual storytelling**, and
 
 ---
 
-## 🎯**What You’ll Be Building**
+## 🎯**What You'll Be Building**
 
 A **data-powered inventory management dashboard** that provides restaurant managers with insights into their operations.
 
@@ -21,8 +21,6 @@ Your dashboard should help answer key questions like:
 - Are there seasonal or monthly trends in purchases or usage?
 - Can we predict when to reorder specific ingredients based on historical patterns?
 
----
-
 ## 🏆**Suggested Features**
 
 Your dashboard might include:
@@ -32,8 +30,6 @@ Your dashboard might include:
 - **Predictive analytics:** Forecast future ingredient needs based on menu item demand.
 - **Shipment tracking:** Visualize shipment delays or frequency patterns.
 - **Cost optimization:** Identify which items or ingredients drive the most spending.
-
----
 
 ## ✅**Judging Criteria**
 
@@ -51,8 +47,6 @@ Your submission will be evaluated on both **analytical creativity** and **practi
 - **Data Handling:** How well do you clean, merge, and analyze the multiple datasets?
 - **Usability:** Is your interface intuitive and well-organized?
 - **Performance:** Does it efficiently handle data without lag?
-
----
 
 ## 🤖**Technical Requirements**
 
@@ -73,6 +67,13 @@ You must also provide:
 
 ---
 
+## 🔗 Resources
+
+- **Full Challenge Documentation:** [Google Docs](https://docs.google.com/document/d/1e3cpIAUdDlyjpa4xTVBQvDY1QOm9NyqPp_Bs13WDth4/edit?usp=sharing)
+- **GitHub Repository:** [mai-shen-yun](https://github.com/tamu-datathon-org/mai-shen-yun)
+
+---
+
 ### **Ready to turn raw data into restaurant intelligence?**
 
-We can’t wait to see what you cook up!
+We can't wait to see what you cook up!

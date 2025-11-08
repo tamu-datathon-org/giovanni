@@ -1,3 +1,9 @@
 # 🔍 Challenge Overview
 
 Detective Revs is an AI-powered investigation challenge where participants interrogate simulated suspects, uncover key clues, and extract a confession using strategic questioning. Success depends on effective prompt engineering, logical reasoning, and efficient token usage. The game progressively increases in difficulty, requiring players to think like detectives while managing limited AI resources.
+
+---
+
+## 🔗 Resources
+
+- **Play Detective Rev:** [detectiverev.vercel.app](https://detectiverev.vercel.app/)
