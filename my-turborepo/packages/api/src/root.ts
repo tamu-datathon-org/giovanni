@@ -6,6 +6,7 @@ import { emailSendingRouter } from "./router/emailSendingRouter";
 import { eventRouter } from "./router/event";
 import { postRouter } from "./router/post";
 import { preregistrationRouter } from "./router/preregistration";
+import { organizerRouter } from "./router/organizer";
 import { testRouter } from "./router/test";
 import { createTRPCRouter } from "./trpc";
 
@@ -19,6 +20,7 @@ export const appRouter = createTRPCRouter({
   email: emailRouter,
   emailSending: emailSendingRouter,
   test: testRouter,
+  organizer: organizerRouter,
 });
 
 // export type definition of API
