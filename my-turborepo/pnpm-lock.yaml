@@ -219,6 +219,9 @@ importers:
       react-icons:
         specifier: ^5.5.0
         version: 5.5.0(react@18.3.1)
+      react-markdown:
+        specifier: ^9.1.0
+        version: 9.1.0(@types/react@18.3.26)(react@18.3.1)
       react-masonry-css:
         specifier: ^1.0.16
         version: 1.0.16(react@18.3.1)
@@ -13082,6 +13085,15 @@ snapshots:
 
   eslint-visitor-keys@4.2.1: {}
 
+  /eslint@9.37.0(jiti@1.21.7):
+    resolution: {integrity: sha512-XyLmROnACWqSxiGYArdef1fItQd47weqB7iwtfr9JHwRrqIXZdcFMvvEcL9xHCmL0SNsOvF0c42lWyM1U5dgig==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    hasBin: true
+    peerDependencies:
+      jiti: '*'
+    peerDependenciesMeta:
+      jiti:
+        optional: true
   eslint@9.39.1(jiti@1.21.7):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.1(jiti@1.21.7))
