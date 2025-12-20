@@ -2,8 +2,9 @@
 //import Image from "next/image";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import ScrollUp from "@/components/Common/ScrollUp";
 import Hero from "@/components/Hero";
+
+import { ScrollUp } from "@vanni/ui/scroll-up";
 
 // Lazy load below-the-fold components to reduce initial bundle size
 const Location = dynamic(() => import("@/components/location"), {

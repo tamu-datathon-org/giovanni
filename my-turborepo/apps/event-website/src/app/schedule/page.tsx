@@ -29,7 +29,7 @@ const CATEGORIES = [
 export default function SchedulePage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 

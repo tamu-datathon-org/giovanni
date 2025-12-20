@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
+import Image from "next/image";
 
 import "../styles/index.css";
 
@@ -39,10 +40,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
           href="https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2026-season&utm_content=black"
           target="_blank"
         >
-          <img
+          <Image
             src="https://s3.amazonaws.com/logged-assets/trust-badge/2026/mlh-trust-badge-2026-black.svg"
             alt="Major League Hacking 2026 Hackathon Season"
             style={{ width: "100%" }}
+            width={100}
+            height={100}
           />
         </a>
 

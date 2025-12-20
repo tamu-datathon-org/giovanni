@@ -3,8 +3,10 @@ import { NextResponse } from "next/server";
 // Mark this route as dynamic to allow no-store fetches
 export const dynamic = 'force-dynamic';
 
+
 export async function GET() {
   try {
+    // eslint-disable-next-line no-restricted-properties
     const googleSheetUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_URL;
     if (!googleSheetUrl) {
       throw new Error("Google Sheet API URL is not configured");
