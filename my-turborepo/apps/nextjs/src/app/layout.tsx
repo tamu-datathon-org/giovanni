@@ -1,14 +1,18 @@
 "use client";
+
 import "~/app/globals.css";
 
+import { Inter } from "next/font/google";
+
+import ScrollToTop from "@vanni/ui/scroll-to-top";
+
+import { w95fa } from "~/app/_components/fonts";
 import Footer from "~/components/Footer";
 import Header from "~/components/Header";
-import ScrollToTop from "~/components/ScrollToTop";
-import { Providers } from "./providers";
-import { w95fa } from "~/app/_components/fonts";
 import { Toaster } from "~/components/ui/toaster";
 import { TRPCReactProvider } from "~/trpc/react";
-import { Inter } from "next/font/google";
+import { Providers } from "./providers";
+
 import "../styles/index.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,9 +25,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           src="//unpkg.com/react-scan/dist/auto.global.js" /> */}
       </head>
 
-      <body
-        className={`bg-black ${inter.className}`}
-      >
+      <body className={`bg-black ${inter.className}`}>
         <TRPCReactProvider>
           <Providers>
             <main className="min-h-screen">

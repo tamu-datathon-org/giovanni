@@ -1,10 +1,11 @@
 "use client";
 
 import { Inter } from "next/font/google";
+import Image from "next/image";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import ScrollToTop from "@/components/ScrollToTop";
-import Image from "next/image";
+
+import ScrollToTop from "@vanni/ui/scroll-to-top";
 
 import "../styles/index.css";
 

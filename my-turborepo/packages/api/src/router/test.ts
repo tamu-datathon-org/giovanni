@@ -33,5 +33,5 @@ export const testRouter = {
         message: `SUCCESS: Admin procedure works!`,
       };
     }
-  ),
+    ),
 };

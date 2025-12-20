@@ -841,4 +841,232 @@ This repository has a solid foundation with a well-structured monorepo, but ther
 
 ---
 
+## Step 2: Current State Assessment & Next Steps
+
+**Last Updated:** January 2025  
+**Purpose:** Track progress on cleanup efforts and identify remaining work based on current repository state.
+
+---
+
+### Completed Cleanup Items ✅
+
+The following cleanup tasks have been successfully completed:
+
+-   [x] **Deleted `apps/docs-nextra/`** - Empty package successfully removed
+
+    -   Directory `my-turborepo/apps/docs-nextra/` has been deleted
+    -   No longer cluttering the repository
+
+-   [x] **Migrated `ScrollUp` component** - Component successfully moved to shared package
+
+    -   Component now in `@vanni/ui/src/scroll-up.tsx`
+    -   Both `nextjs` and `event-website` apps updated to import from `@vanni/ui/scroll-up`
+    -   Old `components/Common/ScrollUp.tsx` files removed from both apps
+
+-   [x] **Migrated `SectionTitle` component** - Component successfully moved to shared package
+
+    -   Component now in `@vanni/ui/src/section-title.tsx`
+    -   `nextjs` app updated to import from `@vanni/ui/section-title`
+    -   Old `components/Common/SectionTitle.tsx` files removed from both apps
+
+-   [x] **Removed `Common/` component directories** - Old duplicate component directories cleaned up
+
+    -   `components/Common/` directories removed from both `nextjs` and `event-website` apps
+    -   Cleaned up duplicate component infrastructure
+
+-   [x] **Created `Breadcrumb` in `@vanni/ui`** - Component available in shared package
+    -   Component exists in `@vanni/ui/src/breadcrumb.tsx`
+    -   ⚠️ **Needs Verification:** Confirm all imports updated to use `@vanni/ui/breadcrumb`
+
+---
+
+### Remaining Critical Tasks
+
+The following items from Phase 1 still require attention:
+
+#### 1. Remove `testRouter` from Production API
+
+**Status:** ⚠️ **STILL PENDING**
+
+**Current State:**
+
+-   `testRouter` is still included in `packages/api/src/root.ts`
+-   Test endpoints are exposed in production API
+
+**Action Required:**
+
+-   Option A: Remove `testRouter` import and usage from `packages/api/src/root.ts`
+-   Option B: Gate `testRouter` behind environment check (development only)
+
+**Files to Modify:**
+
+-   `packages/api/src/root.ts` (lines 10, 22)
+
+---
+
+#### 2. Clean Up `port_later/` Directory
+
+**Status:** ⚠️ **STILL PENDING**
+
+**Current State:**
+
+-   `port_later/SQL_Game/` still exists with hardcoded paths to `apps/nextjs`
+-   `port_later/docs-nextra/` still exists (unused documentation template)
+
+**Action Required:**
+
+-   Review `port_later/SQL_Game/` - determine if code is needed elsewhere or delete
+-   Delete `port_later/docs-nextra/` if not being used
+-   Fix or remove hardcoded paths in `SQL_Game/page.tsx`
+
+**Files/Directories to Review:**
+
+-   `my-turborepo/port_later/SQL_Game/page.tsx`
+-   `my-turborepo/port_later/docs-nextra/` (entire directory)
+
+---
+
+#### 3. Remove Commented Code Blocks
+
+**Status:** ⚠️ **STILL PENDING**
+
+**Current State:**
+
+-   Large commented code blocks still exist in `nextjs/src/app/page.tsx`
+-   Lines 59-80: Entire alternative return statement commented out
+-   Lines 42-44, 51-52: Commented component imports
+
+**Action Required:**
+
+-   Remove commented code blocks (version control has history)
+-   Search codebase for other large commented blocks
+
+**Files to Clean:**
+
+-   `my-turborepo/apps/nextjs/src/app/page.tsx`
+
+---
+
+### Component Migration Status
+
+#### Completed Component Migrations ✅
+
+-   ✅ `ScrollUp` - Fully migrated and in use
+-   ✅ `SectionTitle` - Fully migrated and in use
+-   ⚠️ `Breadcrumb` - Created in `@vanni/ui` but usage needs verification
+
+#### Remaining Component Migrations
+
+The following components still need to be migrated or consolidated:
+
+**High Priority:**
+
+-   [x] **Verify `Breadcrumb` usage** - Ensure all imports updated to `@vanni/ui/breadcrumb`
+-   [ ] **Migrate `ScrollToTop`** - Exists in both apps, should be in `@vanni/ui`
+-   [ ] **Migrate `error/page.tsx`** - Exists in both apps, should be in `@vanni/ui`
+
+**Medium Priority:**
+
+-   [ ] **Contact Components** - Review and potentially migrate:
+    -   `ContactBackground.tsx`
+    -   `NewsLatterBox.tsx`
+    -   Review `index.tsx` for differences
+
+**Lower Priority (App-Specific Consideration):**
+
+-   [ ] **UI Component Consolidation** - Consider migrating duplicate UI components:
+    -   `button.tsx`, `card.tsx`, `carousel.tsx`
+    -   `toast.tsx`, `toaster.tsx`
+    -   Note: These may have app-specific customizations to review
+
+**Keep Separate (App-Specific):**
+
+-   ✅ `Footer/index.tsx` - Different implementations, keep separate
+-   ✅ `Header/index.tsx` - Different implementations, keep separate
+-   ✅ App-specific components (Hero, AboutTeam, etc.) - Correctly kept separate
+
+---
+
+### Next Immediate Steps (Prioritized)
+
+Based on the current state assessment, the following actions should be taken in order:
+
+1.  **Verify Breadcrumb Migration** ⏱️ ~15 minutes
+
+    -   Search codebase for any remaining `Breadcrumb` imports from old locations
+    -   Confirm all imports use `@vanni/ui/breadcrumb`
+    -   Update any remaining old imports
+
+2.  **Remove Commented Code** ⏱️ ~10 minutes
+
+    -   Clean up commented blocks in `nextjs/src/app/page.tsx`
+    -   Search for other large commented code blocks
+    -   Remove TODO comments that are no longer relevant
+
+3.  **Address Test Router Security** ⏱️ ~30 minutes
+
+    -   Decide on approach: remove entirely or gate behind environment
+    -   Implement chosen solution
+    -   Test that API still works correctly
+
+4.  **Complete port_later Cleanup** ⏱️ ~1 hour
+
+    -   Review `SQL_Game/` code to determine if it's needed
+    -   Move useful code to appropriate location or delete
+    -   Delete `port_later/docs-nextra/` if unused
+    -   Remove entire `port_later/` directory if empty
+
+5.  **Continue Component Migration** ⏱️ ~2-3 hours
+
+    -   Migrate `ScrollToTop` to `@vanni/ui`
+    -   Migrate `error/page.tsx` to `@vanni/ui`
+    -   Update imports in both apps
+    -   Remove old component files
+
+6.  **Version Alignment** ⏱️ ~1-2 hours
+    -   Run `pnpm depcheck` and `pnpm lint:ws` to identify version inconsistencies
+    -   Fix any remaining version mismatches
+    -   Update template files with correct versions
+
+---
+
+### Updated Phase Status Summary
+
+**Phase 1: Critical Cleanup** - 25% Complete
+
+-   ✅ Deleted empty `apps/docs-nextra/`
+-   ❌ Remove `testRouter` from production
+-   ❌ Clean up `port_later/` directory
+-   ❌ Remove commented code blocks
+
+**Phase 2: Structural Improvements** - 40% Complete
+
+-   ✅ Component migration started (ScrollUp, SectionTitle completed)
+-   ⚠️ Component migration in progress (Breadcrumb needs verification)
+-   ❌ Complete remaining component migrations
+-   ❌ Document app purposes
+-   ❌ Verify `google-map-react` usage
+
+**Phase 3: Future Optimizations** - 0% Complete
+
+-   ❌ Review database migrations
+-   ❌ Consolidate configuration files
+-   ❌ Address TODO comments
+-   ❌ Consider leaderboard migration
+
+---
+
+### Recommendations for Continued Progress
+
+1.  **Focus on Security First** - Address `testRouter` exposure before other tasks
+2.  **Complete Component Migration** - Finish the migration pattern you've started
+3.  **Clean Up Deprecated Code** - Remove `port_later/` to reduce confusion
+4.  **Maintain Momentum** - The component migration pattern is working well, continue it
+
+---
+
+_This section will be updated as cleanup progress continues. Last assessment: January 2025._
+
+---
+
 _For questions or clarifications, refer to this document or contact the development team._
