@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SectionTitle from "../Common/SectionTitle";
+import { SectionTitle } from "@vanni/ui/section-title";
 import Link from "next/link";
 
 const ApplySection = () => {

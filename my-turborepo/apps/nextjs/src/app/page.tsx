@@ -5,7 +5,7 @@ import AboutSectionOne from "~/components/About/AboutSectionOne";
 import AboutSectionTwo from "~/components/About/AboutSectionTwo";
 import AboutTeam from "~/components/AboutTeam/AboutTeam";
 import ApplySection from "~/components/Apply/ApplySection";
-import ScrollUp from "~/components/Common/ScrollUp";
+import { ScrollUp } from "@vanni/ui/scroll-up";
 import Contact from "~/components/Contact";
 import ContactBackground from "~/components/Contact/ContactBackground";
 import Hero from "~/components/Hero";
