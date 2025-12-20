@@ -1,5 +1,3 @@
-//import { ThemedButton } from "@/components/ui/themed-button";
-//import Image from "next/image";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";

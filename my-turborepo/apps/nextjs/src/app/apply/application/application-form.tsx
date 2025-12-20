@@ -1,11 +1,13 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { TRPCClientError } from "@trpc/client";
 import { upload } from "@vercel/blob/client";
+import { LucideArrowBigLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -18,10 +20,14 @@ import {
 } from "@vanni/ui/form";
 
 import type { ApplicationSchema } from "../validation";
+import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
+import GenericInputField from "~/app/_components/genericInputField";
+import GenericTextArea from "~/app/_components/genericTextArea";
 import schoolsJson from "~/app/apply/application/application-data/schools.json";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
+import { env } from "~/env";
 import { toast } from "~/hooks/use-toast";
 import {
   AGE,
@@ -37,17 +43,11 @@ import {
   SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
 import { api } from "~/trpc/react";
-import { applicationSchema } from "../validation";
 import GenericCombobox from "../../_components/genericCombobox";
+import GenericMultiSelect from "../../_components/genericMultiSelect";
 import LoadingAnimation from "../../_components/loadingAnimation";
 import Title from "../../_components/title";
-import GenericInputField from "~/app/_components/genericInputField";
-import GenericTextArea from "~/app/_components/genericTextArea";
-import GenericMultiSelect from "../../_components/genericMultiSelect";
-import { LucideArrowBigLeft } from "lucide-react";
-import { env } from "~/env";
-import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
-import { useRouter } from "next/navigation";
+import { applicationSchema } from "../validation";
 
 /*
     First Name
@@ -86,13 +86,13 @@ export function Asterisk() {
 
 export function ApplicationForm() {
   const [disableSubmit, setDisableSubmit] = useState(false);
-  const { session, } = useAuthRedirect();
+  const { session } = useAuthRedirect();
   const router = useRouter();
 
   const {
     data: importedValues,
     isLoading,
-    refetch: refetchApplication
+    refetch: refetchApplication,
   } = api.application.getApplicationByEventName.useQuery(
     { eventName: EVENT_NAME },
     {
@@ -173,7 +173,10 @@ export function ApplicationForm() {
       blob_url = importedValues?.resume?.resumeUrl ?? undefined;
     }
 
-    if (!RESUME_OPTIONAL && (blob_name === undefined || blob_url === undefined)) {
+    if (
+      !RESUME_OPTIONAL &&
+      (blob_name === undefined || blob_url === undefined)
+    ) {
       toast({
         variant: "destructive",
         title: "Resume Missing",
@@ -198,7 +201,8 @@ export function ApplicationForm() {
           toast({
             variant: "success",
             title: "Application submitted successfully!",
-            description: "Your application has been received. You can now update and resubmit.",
+            description:
+              "Your application has been received. You can now update and resubmit.",
           });
 
           localStorage.removeItem("applicationData"); //deletes the data in local storage once they submitted
@@ -207,7 +211,7 @@ export function ApplicationForm() {
           // await refetchApplication(); // Refetch to update importedValues?.app
           // setDisableSubmit(false); // Re-enable submit for updates
           setTimeout(() => {
-            router.replace('/apply');
+            router.replace("/apply");
           }, 5000);
         },
         onError: (error: { message: any }) => {
@@ -258,14 +262,14 @@ export function ApplicationForm() {
     return <Loading />;
   }
 
-  const SCHOOL_OPTIONS = schoolsJson.map((entry,) => ({
+  const SCHOOL_OPTIONS = schoolsJson.map((entry) => ({
     value: entry.schoolName,
     label: entry.schoolName,
   }));
   return (
-    <div className="flex w-full justify-center lg:w-3/5 relative">
+    <div className="relative flex w-full justify-center lg:w-3/5">
       <a href="/apply">
-        <button className="absolute top-10 left-10 flex flex-row">
+        <button className="absolute left-10 top-10 flex flex-row">
           <LucideArrowBigLeft />
           Back
         </button>
@@ -273,7 +277,7 @@ export function ApplicationForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="overflow-x-hidden rounded-lg bg-slate-400 dark:bg-slate-400 p-5 lg:px-16"
+          className="overflow-x-hidden rounded-lg bg-slate-400 p-5 dark:bg-slate-400 lg:px-16"
         >
           <h1 className="p-10 pb-3 text-center text-4xl font-bold lg:text-6xl">
             <span className="odd:text-teal-400">H</span>
@@ -283,7 +287,7 @@ export function ApplicationForm() {
             <span className="odd:text-teal-400 ">E</span>
             <span className="even:text-cyan-700">R</span> APPLICATION
           </h1>
-          <div className="pb-4 text-center text-md">
+          <div className="text-md pb-4 text-center">
             Please complete the following sections. Filling out this form should
             take about 5-8 minutes.
           </div>
@@ -367,12 +371,15 @@ export function ApplicationForm() {
               name={"gender"}
               label={"Gender?"}
               options={GENDER_OPTIONS}
-              defaultOption={importedValues?.app?.gender ? (
-                GENDER_OPTIONS.find((option) => option.value === importedValues?.app?.gender) ||
-                {
-                  label: "Other (please specify)",
-                  value: importedValues?.app?.gender || ""
-                }) : undefined
+              defaultOption={
+                importedValues?.app?.gender
+                  ? GENDER_OPTIONS.find(
+                      (option) => option.value === importedValues?.app?.gender,
+                    ) || {
+                      label: "Other (please specify)",
+                      value: importedValues?.app?.gender || "",
+                    }
+                  : undefined
               }
               required={true}
             />
@@ -384,12 +391,15 @@ export function ApplicationForm() {
               name={"race"}
               label={"What ethnicity do you identify with?"}
               options={RACE_OPTIONS}
-              defaultOption={importedValues?.app?.race ? (
-                RACE_OPTIONS.find((option) => option.value === importedValues?.app?.race) ||
-                {
-                  label: "Other (please specify)",
-                  value: importedValues?.app?.race || ""
-                }) : undefined
+              defaultOption={
+                importedValues?.app?.race
+                  ? RACE_OPTIONS.find(
+                      (option) => option.value === importedValues?.app?.race,
+                    ) || {
+                      label: "Other (please specify)",
+                      value: importedValues?.app?.race || "",
+                    }
+                  : undefined
               }
               required={true}
             />
@@ -416,12 +426,14 @@ export function ApplicationForm() {
               label={"What's your major?"}
               options={MAJOR}
               defaultOption={
-                importedValues?.app?.major ? (
-                  MAJOR.find((option) => option.value === importedValues?.app?.major) ||
-                  {
-                    label: "Other (please specify)",
-                    value: importedValues?.app?.major || ""
-                  }) : undefined
+                importedValues?.app?.major
+                  ? MAJOR.find(
+                      (option) => option.value === importedValues?.app?.major,
+                    ) || {
+                      label: "Other (please specify)",
+                      value: importedValues?.app?.major || "",
+                    }
+                  : undefined
               }
               required={true}
             />
@@ -473,7 +485,6 @@ export function ApplicationForm() {
                         {importedValues?.resume?.resumeName || "None"}
                       </span>
                     </span>
-
                   </FormLabel>
                   <FormControl className="hover:cursor-pointer">
                     <Input
@@ -536,9 +547,9 @@ export function ApplicationForm() {
               defaultOption={
                 importedValues?.app?.hasTeam
                   ? {
-                    value: importedValues.app.hasTeam,
-                    label: importedValues.app.hasTeam,
-                  }
+                      value: importedValues.app.hasTeam,
+                      label: importedValues.app.hasTeam,
+                    }
                   : undefined
               }
               required={true}
@@ -652,7 +663,7 @@ export function ApplicationForm() {
                 { value: "Nut-Free", label: "Nut-Free" },
                 { value: "Halal", label: "Halal" },
                 { value: "Kosher", label: "Kosher" },
-                { value: "Pescatarian", label: "Pescatarian" }
+                { value: "Pescatarian", label: "Pescatarian" },
               ]}
               defaultOption={importedValues?.app?.dietaryRestriction ?? ""}
             />

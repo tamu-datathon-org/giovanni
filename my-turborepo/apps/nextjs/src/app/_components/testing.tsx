@@ -6,11 +6,6 @@ import { api } from "~/trpc/react";
 
 export const Testing = () => {
   const [userInput, setUserInput] = React.useState<string | null>(null);
-  // const queryProvider = api.account.getProviderByEmail.useQuery(userInput || "", {
-  //     enabled: !!userInput,
-  // });
-
-  // const emailList = api.email.getAllEmails.useQuery();
 
   const queryEmails = api.email.getEmailByLabel.useQuery(userInput || "", {
     enabled: !!userInput,

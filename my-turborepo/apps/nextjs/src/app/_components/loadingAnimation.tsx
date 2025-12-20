@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-// const color1 = "teal-400"
-// const color2 = "cyan-700"
 export default function LoadingAnimation() {
   const [progress, setProgress] = useState(0);
   const [text, setText] = useState("");

@@ -962,8 +962,8 @@ The following components still need to be migrated or consolidated:
 **High Priority:**
 
 -   [x] **Verify `Breadcrumb` usage** - Ensure all imports updated to `@vanni/ui/breadcrumb`
--   [ ] **Migrate `ScrollToTop`** - Exists in both apps, should be in `@vanni/ui`
--   [ ] **Migrate `error/page.tsx`** - Exists in both apps, should be in `@vanni/ui`
+-   [x] **Migrate `ScrollToTop`** - Exists in both apps, should be in `@vanni/ui`
+-   [x] **Migrate `error/page.tsx`** - Exists in both apps, should be in `@vanni/ui`
 
 **Medium Priority:**
 

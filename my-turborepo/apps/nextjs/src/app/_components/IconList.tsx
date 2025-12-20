@@ -54,7 +54,6 @@ const IconList: React.FC<IconListProps> = ({
 
   setFocus = setFocus ?? undefined;
   return (
-    // className='absolute top-0 grid grid-cols-2 pt-4 gap-1'
     <div className={className}>
       <div className="flex max-w-full flex-col items-center lg:flex lg:flex-row lg:pb-3">
         {new Array(Math.ceil(routes.length / numPerRow))

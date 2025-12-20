@@ -26,16 +26,9 @@ export const metadata: Metadata = {
     url: "https://tamudatathon.com",
     siteName: "TAMU Datathon",
   },
-  // TODO: Find out if this is important
-  // twitter: {
-  //   card: "summary_large_image",
-  //   site: "@jullerino",
-  //   creator: "@jullerino",
-  // },
 };
 
 export default function HomePage() {
-  // You can await this here if you don't want to show Suspense fallback below
   return (
     <>
       <ScrollUp />

@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Cat, Dog, Fish, Turtle, Loader2 } from "lucide-react";
+import { Cat, Dog, Fish, Loader2, Turtle } from "lucide-react";
 
-import QRScanner from "~/app/_components/organizer/passport/qr-scanner";
+import { MultiSelect } from "~/app/_components/multiselect";
 import { ManualEmailInput } from "~/app/_components/organizer/passport/manual-email-input";
 import { ParticipantCard } from "~/app/_components/organizer/passport/participant-card";
 import { PhaseSelector } from "~/app/_components/organizer/passport/phase-selector";
-import { MultiSelect } from "~/app/_components/multiselect";
+import QRScanner from "~/app/_components/organizer/passport/qr-scanner";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
 
@@ -32,7 +32,7 @@ interface ParticipantData {
   status: string;
   extraInfo: string;
   eventAttendance: boolean;
-  checkedIn: boolean;        // phase-specific
+  checkedIn: boolean; // phase-specific
   checkedInAt?: string | null;
 }
 
@@ -68,23 +68,25 @@ export default function PassportPage() {
   const eventName = process.env.NEXT_PUBLIC_EVENT_NAME as string | undefined;
 
   /** ---------------- State ---------------- */
-  const [participant, setParticipant] = useState<ParticipantData>(DEFAULT_PARTICIPANT);
+  const [participant, setParticipant] =
+    useState<ParticipantData>(DEFAULT_PARTICIPANT);
   const [selectedPhase, setSelectedPhase] = useState<PhaseName>(""); // dynamic
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  // const [allowedStatuses, setAllowedStatuses] = useState<string[]>(["accepted", "waitlisted"]);
 
   // Manual & Scanner email handling
   const [manualEmail, setManualEmail] = useState<string>("");
   const [scannerEmail, setScannerEmail] = useState<string>("");
   const [submittedEmail, setSubmittedEmail] = useState<string>("");
-  const [pendingSource, setPendingSource] = useState<null | "scan" | "manual" | "phase">(null);
+  const [pendingSource, setPendingSource] = useState<
+    null | "scan" | "manual" | "phase"
+  >(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   /** ---------------- Phases (dynamic) ---------------- */
   const phasesQuery = api.application.listPhases.useQuery(
     { eventName: eventName ?? "" },
-    { enabled: Boolean(eventName), refetchOnWindowFocus: false }
+    { enabled: Boolean(eventName), refetchOnWindowFocus: false },
   );
 
   const phaseOptions = useMemo(
@@ -93,7 +95,7 @@ export default function PassportPage() {
         label: p.name,
         value: p.name as PhaseName,
       })),
-    [phasesQuery.data]
+    [phasesQuery.data],
   );
 
   // Default phase once loaded
@@ -114,11 +116,12 @@ export default function PassportPage() {
       phase: selectedPhase,
     } as any,
     {
-      enabled: Boolean(eventName) && Boolean(effectiveEmail) && Boolean(selectedPhase),
+      enabled:
+        Boolean(eventName) && Boolean(effectiveEmail) && Boolean(selectedPhase),
       staleTime: 10_000,
       refetchOnWindowFocus: false,
       retry: 1,
-    }
+    },
   );
 
   /** Apply query outcome to UI & clear loading flag when fetch completes */
@@ -186,17 +189,15 @@ export default function PassportPage() {
     }
 
     try {
-      const updated = await statusMutation.mutateAsync(
-        {
-          eventName,
-          email: effectiveEmail,
-          phase: selectedPhase, // send the NAME; server resolves to event_phase_id
-          newStatus,
-        } as any
-      );
+      const updated = await statusMutation.mutateAsync({
+        eventName,
+        email: effectiveEmail,
+        phase: selectedPhase, // send the NAME; server resolves to event_phase_id
+        newStatus,
+      } as any);
 
       if (updated) {
-        console.log(updated)
+        console.log(updated);
         setParticipant({ ...participant, checkedIn: updated.checkedIn });
       } else {
         setParticipant(DEFAULT_PARTICIPANT);
@@ -247,7 +248,8 @@ export default function PassportPage() {
       <div className="p-6 text-red-600">
         <h1 className="text-2xl font-bold">Configuration Error</h1>
         <p className="mt-2">
-          <code>NEXT_PUBLIC_EVENT_NAME</code> is not set. Please define it in your environment.
+          <code>NEXT_PUBLIC_EVENT_NAME</code> is not set. Please define it in
+          your environment.
         </p>
       </div>
     );
@@ -279,7 +281,12 @@ export default function PassportPage() {
         phaseOptions={phaseOptions}
         isLoading={phasesQuery.isLoading}
         isError={phasesQuery.isError}
-        isDisabled={anyBlockingLoad || statusMutation.isPending || phasesQuery.isLoading || phasesQuery.isError}
+        isDisabled={
+          anyBlockingLoad ||
+          statusMutation.isPending ||
+          phasesQuery.isLoading ||
+          phasesQuery.isError
+        }
       />
 
       {/* Scanner & manual override */}
@@ -328,7 +335,12 @@ export default function PassportPage() {
         onCheckIn={handleCheckIn}
         onRemove={handleRemove}
         isLoading={statusMutation.isPending}
-        isDisabled={statusMutation.isPending || anyBlockingLoad || !effectiveEmail || !selectedPhase}
+        isDisabled={
+          statusMutation.isPending ||
+          anyBlockingLoad ||
+          !effectiveEmail ||
+          !selectedPhase
+        }
       />
 
       {/* Divider */}
