@@ -1,6 +1,9 @@
 {
   "extends": "@vanni/tsconfig/internal-package.json",
   "compilerOptions": {
+    "types": [
+      "node"
+    ],
     "outDir": "dist",
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
   },

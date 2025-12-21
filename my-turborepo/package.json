@@ -22,6 +22,7 @@
   "prettier": "@vanni/prettier-config",
   "devDependencies": {
     "@turbo/gen": "^2.3.3",
+    "@types/minimatch": "^6.0.0",
     "@vanni/prettier-config": "workspace:*",
     "check-dependency-version-consistency": "^4.1.1",
     "prettier": "^3.2.5",

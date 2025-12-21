@@ -1,18 +1,18 @@
 //TODO: This is where all information of a single challenge should be displayed
 // import Prize from "~/app/challenges/helpers/Prize";
-import Title from "apps/nextjs/src/app/challenges/helpers/Title";
+import Title from "apps/event-website/src/app/challenges/helpers/Title";
 
 import { Button } from "@vanni/ui/button";
 
-import Bold from "../../apps/nextjs/src/app/challenges/helpers/Bold";
-import Bullet from "../../apps/nextjs/src/app/challenges/helpers/Bullet";
-import Heading from "../../apps/nextjs/src/app/challenges/helpers/Heading";
-import Paragraph from "../../apps/nextjs/src/app/challenges/helpers/Paragraph";
+import Bold from "../../apps/event-website/src/app/challenges/helpers/Bold";
+import Bullet from "../../apps/event-website/src/app/challenges/helpers/Bullet";
+import Heading from "../../apps/event-website/src/app/challenges/helpers/Heading";
+import Paragraph from "../../apps/event-website/src/app/challenges/helpers/Paragraph";
 
-import "../../apps/nextjs/src/app/_components/customCss.scss";
+import "../../apps/event-website/src/app/_components/customCss.scss";
 
 import Link from "next/link";
-import Prizes from "apps/nextjs/src/app/challenges/helpers/Prizes";
+import Prizes from "apps/event-website/src/app/challenges/helpers/Prizes";
 
 export default function Challenge() {
   return (
