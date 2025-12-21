@@ -7,6 +7,7 @@ import { Event, Role, UserRole } from "@vanni/db/schema";
 import { protectedProcedure, publicProcedure } from "../trpc";
 
 export async function validateOrganizerAuth({ ctx }: { ctx: any }) {
+  console.log("Validating organizer auth");
   const eventName = process.env.NEXT_PUBLIC_EVENT_NAME;
 
   // Verify the event name and user exists

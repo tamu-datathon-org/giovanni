@@ -58,7 +58,7 @@ giovanni/
 
 ### Monorepo Applications (`my-turborepo/apps/`)
 
-#### 1. `nextjs/` - Main Application (Port 3000)
+#### 1. `team-website/` - Main Application (Port 3000)
 
 **Purpose:** Primary TAMU Datathon website with full application management system
 
@@ -123,7 +123,7 @@ giovanni/
 
 **Port:** 3004
 
-**⚠️ Overlap Concern:** Both `nextjs` and `event-website` serve similar purposes as event websites. Need clarification on their distinct roles.
+**⚠️ Overlap Concern:** Both `team-website` and `event-website` serve similar purposes as event websites. Need clarification on their distinct roles.
 
 ---
 
@@ -239,7 +239,7 @@ giovanni/
 -   Radix UI primitives
 -   Tailwind CSS styling
 
-**Note:** Both `nextjs` and `event-website` have duplicate UI components that could be moved here.
+**Note:** Both `team-website` and `event-website` have duplicate UI components that could be moved here.
 
 ---
 
@@ -283,12 +283,12 @@ giovanni/
 
 **Contents:**
 
-1. **`SQL_Game/`** - Has hardcoded paths to `apps/nextjs`:
+1. **`SQL_Game/`** - Has hardcoded paths to `apps/team-website`:
 
     ```typescript
     // Lines 3, 7-12, 15 reference:
-    import Title from "apps/nextjs/src/app/challenges/helpers/Title";
-    import Bold from "../../apps/nextjs/src/app/challenges/helpers/Bold";
+    import Title from "apps/team-website/src/app/challenges/helpers/Title";
+    import Bold from "../../apps/team-website/src/app/challenges/helpers/Bold";
     // etc.
     ```
 
@@ -302,13 +302,13 @@ giovanni/
 
 ## Component Mapping & Duplicates
 
-### Duplicate Components Between `nextjs` and `event-website`
+### Duplicate Components Between `team-website` and `event-website`
 
 Both apps contain nearly identical implementations of:
 
 #### Common Components
 
-| Component          | nextjs Location      | event-website Location | Recommendation      |
+| Component          | team-website Location      | event-website Location | Recommendation      |
 | ------------------ | -------------------- | ---------------------- | ------------------- |
 | `Breadcrumb.tsx`   | `components/Common/` | `components/Common/`   | Move to `@vanni/ui` |
 | `ScrollUp.tsx`     | `components/Common/` | `components/Common/`   | Move to `@vanni/ui` |
@@ -316,7 +316,7 @@ Both apps contain nearly identical implementations of:
 
 #### Contact Components
 
-| Component               | nextjs Location       | event-website Location | Recommendation                           |
+| Component               | team-website Location       | event-website Location | Recommendation                           |
 | ----------------------- | --------------------- | ---------------------- | ---------------------------------------- |
 | `ContactBackground.tsx` | `components/Contact/` | `components/Contact/`  | Move to `@vanni/ui` or keep app-specific |
 | `index.tsx`             | `components/Contact/` | `components/Contact/`  | Review if truly identical                |
@@ -324,7 +324,7 @@ Both apps contain nearly identical implementations of:
 
 #### Footer & Header
 
-| Component                        | nextjs Location      | event-website Location | Recommendation                            |
+| Component                        | team-website Location      | event-website Location | Recommendation                            |
 | -------------------------------- | -------------------- | ---------------------- | ----------------------------------------- |
 | `Footer/index.tsx`               | `components/Footer/` | `components/Footer/`   | Review differences, potentially merge     |
 | `Header/index.tsx`               | `components/Header/` | `components/Header/`   | Keep separate (different implementations) |
@@ -332,14 +332,14 @@ Both apps contain nearly identical implementations of:
 
 #### Utility Components
 
-| Component               | nextjs Location           | event-website Location    | Recommendation      |
+| Component               | team-website Location           | event-website Location    | Recommendation      |
 | ----------------------- | ------------------------- | ------------------------- | ------------------- |
 | `ScrollToTop/index.tsx` | `components/ScrollToTop/` | `components/ScrollToTop/` | Move to `@vanni/ui` |
 | `error/page.tsx`        | `components/error/`       | `components/error/`       | Move to `@vanni/ui` |
 
 #### UI Components (Overlap)
 
-| Component                   | nextjs Location  | event-website Location | Recommendation          |
+| Component                   | team-website Location  | event-website Location | Recommendation          |
 | --------------------------- | ---------------- | ---------------------- | ----------------------- |
 | `button.tsx`                | `components/ui/` | `components/ui/`       | Use `@vanni/ui` version |
 | `card.tsx`                  | `components/ui/` | `components/ui/`       | Use `@vanni/ui` version |
@@ -357,7 +357,7 @@ Both apps contain nearly identical implementations of:
 
 ### App-Specific Components (Keep Separate)
 
-#### `nextjs/` Unique Components
+#### `team-website/` Unique Components
 
 -   `AboutSectionOne.tsx`, `AboutSectionTwo.tsx` - App-specific content
 -   `AboutTeam/` - Team member display
@@ -394,7 +394,7 @@ All routers are defined in `packages/api/src/router/` and exported from `package
 -   `getSecretMessage` - Protected test endpoint
 -   `validateOrganizerAuth` - Validate organizer permissions (protected)
 
-**Usage:** Used in `nextjs` app for authentication checks
+**Usage:** Used in `team-website` app for authentication checks
 
 ---
 
@@ -420,7 +420,7 @@ All routers are defined in `packages/api/src/router/` and exported from `package
 -   Application status management
 -   Batch status updates
 
-**Usage:** Core to `nextjs` app's application system
+**Usage:** Core to `team-website` app's application system
 
 ---
 
@@ -460,7 +460,7 @@ All routers are defined in `packages/api/src/router/` and exported from `package
 -   Event CRUD operations
 -   Event phase management
 
-**Usage:** Used throughout `nextjs` app for event configuration
+**Usage:** Used throughout `team-website` app for event configuration
 
 ---
 
@@ -529,7 +529,7 @@ All routers are defined in `packages/api/src/router/` and exported from `package
 
 ### Router Usage in Apps
 
-**`nextjs` app uses:**
+**`team-website` app uses:**
 
 -   ✅ `authRouter` - Authentication
 -   ✅ `accountRouter` - Account management
@@ -615,14 +615,14 @@ All routers are defined in `packages/api/src/router/` and exported from `package
 
 | App             | Port | Purpose            |
 | --------------- | ---- | ------------------ |
-| `nextjs`        | 3000 | Main application   |
+| `team-website`        | 3000 | Main application   |
 | `event-website` | 3004 | Event landing page |
 | `datathon-blog` | 3001 | Blog               |
 | `leaderboard`   | ?    | Standalone app     |
 
 ### Docker Support
 
-Both `nextjs` and `event-website` have Dockerfiles for containerized deployment.
+Both `team-website` and `event-website` have Dockerfiles for containerized deployment.
 
 ---
 
@@ -663,7 +663,7 @@ Both `nextjs` and `event-website` have Dockerfiles for containerized deployment.
 
 #### 4. Commented Code Blocks
 
-**Issue:** Large commented code blocks in `nextjs/src/app/page.tsx` (lines 59-80, 42-44, 51-52)  
+**Issue:** Large commented code blocks in `team-website/src/app/page.tsx` (lines 59-80, 42-44, 51-52)  
 **Impact:** Code clutter, confusion  
 **Recommendation:** Remove commented code (version control has history)
 
@@ -673,7 +673,7 @@ Both `nextjs` and `event-website` have Dockerfiles for containerized deployment.
 
 #### 5. Duplicate Components
 
-**Issue:** Many duplicate components between `nextjs` and `event-website`  
+**Issue:** Many duplicate components between `team-website` and `event-website`  
 **Impact:** Maintenance burden, inconsistency risk  
 **Recommendation:**
 
@@ -685,12 +685,12 @@ Both `nextjs` and `event-website` have Dockerfiles for containerized deployment.
 
 #### 6. App Purpose Confusion
 
-**Issue:** Both `nextjs` and `event-website` appear to be event websites  
+**Issue:** Both `team-website` and `event-website` appear to be event websites  
 **Impact:** Unclear architecture, potential redundancy  
 **Recommendation:**
 
 -   Document clear distinction:
-    -   `nextjs`: Full application portal with admin/organizer tools
+    -   `team-website`: Full application portal with admin/organizer tools
     -   `event-website`: Public marketing/landing page
 -   Or consider merging if serving same purpose
 
@@ -730,7 +730,7 @@ Both `nextjs` and `event-website` have Dockerfiles for containerized deployment.
 
 #### 10. Configuration Duplication
 
-**Issue:** Both `nextjs` and `event-website` have `components.json` and `utils.ts`  
+**Issue:** Both `team-website` and `event-website` have `components.json` and `utils.ts`  
 **Recommendation:**
 
 -   Share `components.json` if using same shadcn setup
@@ -762,7 +762,7 @@ Both `nextjs` and `event-website` have Dockerfiles for containerized deployment.
     -   Delete `port_later/docs-nextra/` if unused
     -   Fix or remove hardcoded paths
 -   [ ] **Remove commented code blocks**
-    -   Clean up `nextjs/src/app/page.tsx` (lines 59-80, 42-44, 51-52)
+    -   Clean up `team-website/src/app/page.tsx` (lines 59-80, 42-44, 51-52)
     -   Search codebase for other large commented blocks
 
 ---
@@ -777,7 +777,7 @@ Both `nextjs` and `event-website` have Dockerfiles for containerized deployment.
     -   Update imports in both apps
 -   [ ] **Document app purposes**
     -   Create README in each app explaining purpose
-    -   Document relationship between `nextjs` and `event-website`
+    -   Document relationship between `team-website` and `event-website`
 -   [ ] **Verify `google-map-react` usage**
     -   Search codebase
     -   Remove from root or move to appropriate app
@@ -821,7 +821,7 @@ Both `nextjs` and `event-website` have Dockerfiles for containerized deployment.
 
 ## Questions for Team Discussion
 
-1. **App Purpose:** What is the definitive purpose separation between `nextjs` and `event-website`?
+1. **App Purpose:** What is the definitive purpose separation between `team-website` and `event-website`?
 2. **Leaderboard:** Should `leaderboard/` be migrated into monorepo or kept separate?
 3. **Test Router:** Should test endpoints be completely removed or gated behind environment?
 4. **Component Strategy:** Preferred approach for component sharing? `@vanni/ui` expansion or new `@vanni/shared-components`?
@@ -860,18 +860,18 @@ The following cleanup tasks have been successfully completed:
 -   [x] **Migrated `ScrollUp` component** - Component successfully moved to shared package
 
     -   Component now in `@vanni/ui/src/scroll-up.tsx`
-    -   Both `nextjs` and `event-website` apps updated to import from `@vanni/ui/scroll-up`
+    -   Both `team-website` and `event-website` apps updated to import from `@vanni/ui/scroll-up`
     -   Old `components/Common/ScrollUp.tsx` files removed from both apps
 
 -   [x] **Migrated `SectionTitle` component** - Component successfully moved to shared package
 
     -   Component now in `@vanni/ui/src/section-title.tsx`
-    -   `nextjs` app updated to import from `@vanni/ui/section-title`
+    -   `team-website` app updated to import from `@vanni/ui/section-title`
     -   Old `components/Common/SectionTitle.tsx` files removed from both apps
 
 -   [x] **Removed `Common/` component directories** - Old duplicate component directories cleaned up
 
-    -   `components/Common/` directories removed from both `nextjs` and `event-website` apps
+    -   `components/Common/` directories removed from both `team-website` and `event-website` apps
     -   Cleaned up duplicate component infrastructure
 
 -   [x] **Created `Breadcrumb` in `@vanni/ui`** - Component available in shared package
@@ -910,7 +910,7 @@ The following items from Phase 1 still require attention:
 
 **Current State:**
 
--   `port_later/SQL_Game/` still exists with hardcoded paths to `apps/nextjs`
+-   `port_later/SQL_Game/` still exists with hardcoded paths to `apps/team-website`
 -   `port_later/docs-nextra/` still exists (unused documentation template)
 
 **Action Required:**
@@ -943,7 +943,7 @@ The following items from Phase 1 still require attention:
 
 **Files to Clean:**
 
--   `my-turborepo/apps/nextjs/src/app/page.tsx`
+-   `my-turborepo/apps/team-website/src/app/page.tsx`
 
 ---
 
@@ -999,7 +999,7 @@ Based on the current state assessment, the following actions should be taken in 
 
 2.  **Remove Commented Code** ⏱️ ~10 minutes
 
-    -   Clean up commented blocks in `nextjs/src/app/page.tsx`
+    -   Clean up commented blocks in `team-website/src/app/page.tsx`
     -   Search for other large commented code blocks
     -   Remove TODO comments that are no longer relevant
 

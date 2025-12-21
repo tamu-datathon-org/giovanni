@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS "post" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
-	"sessionToken" varchar(255) PRIMARY KEY NOT NULL,
+	"token" varchar(255) PRIMARY KEY NOT NULL,
 	"userId" uuid NOT NULL,
 	"expires" timestamp with time zone NOT NULL
 );

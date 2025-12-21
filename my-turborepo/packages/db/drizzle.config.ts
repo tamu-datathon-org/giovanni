@@ -1,4 +1,12 @@
+// packages/db/drizzle.config.ts
 import type { Config } from "drizzle-kit";
+import * as path from "node:path";
+import * as dotenv from "dotenv";
+
+// Load the root .env (adjust path if needed)
+dotenv.config({
+  path: path.resolve(__dirname, "..", "..", ".env"),
+});
 
 if (!process.env.POSTGRES_URL) {
   throw new Error("Missing POSTGRES_URL");

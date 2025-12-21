@@ -475,8 +475,8 @@
       "name": "session",
       "schema": "",
       "columns": {
-        "sessionToken": {
-          "name": "sessionToken",
+        "token": {
+          "name": "token",
           "type": "varchar(255)",
           "primaryKey": true,
           "notNull": true
