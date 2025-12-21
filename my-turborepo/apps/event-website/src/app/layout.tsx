@@ -1,0 +1,53 @@
+import "~/app/globals.css";
+
+import type { Metadata, Viewport } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
+import { cn } from "@vanni/ui";
+
+import { w95fa } from "~/app/_components/fonts";
+import { Toaster } from "~/components/ui/toaster";
+import BackgroundImage from "./_components/images/background";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(
+    "https://tamudatathon.com"
+  ),
+  title: "TAMU Datathon",
+  description: "A&M's Data Science Hackathon",
+  openGraph: {
+    title: "TAMU Datathon",
+    description: "A&M's Data Science Hackathon",
+    url: "https://tamudatathon.com",
+    siteName: "TAMU Datathon",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
+
+export default function RootLayout(props: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning className={w95fa.className}>
+      <body
+        className={cn("min-h-screen bg-background text-foreground antialiased")}
+      >
+        <main>
+          <BackgroundImage
+            desktop_src={"/assets/wallpaper.png"}
+            mobile_src={"/assets/wallpaper-mobile.png"}
+            alt={"Preregistration background"}
+          />
+          {props.children}
+          <SpeedInsights />
+        </main>
+        <div className="absolute bottom-4 right-4"></div>
+        <Toaster />
+      </body>
+    </html>
+  );
+}
