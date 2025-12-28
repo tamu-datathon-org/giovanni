@@ -88,7 +88,6 @@ cp .env.example .env
 pnpm db:push
 ```
 
-
 ### 3b. When it's time to add a new package
 
 To add a new package, simply run `pnpm turbo gen init` in the monorepo root. This will prompt you for a package name as well as if you want to install any dependencies to the new package (of course you can also do this yourself later).
@@ -130,7 +129,7 @@ If you need to share runtime code between the client and server, such as input v
 
 Let's deploy the Next.js application to [Vercel](https://vercel.com). If you've never deployed a Turborepo app there, don't worry, the steps are quite straightforward. You can also read the [official Turborepo guide](https://vercel.com/docs/concepts/monorepos/turborepo) on deploying to Vercel.
 
-1. Create a new project on Vercel, select the `apps/nextjs` folder as the root directory. Vercel's zero-config system should handle all configurations for you.
+1. Create a new project on Vercel, select the `apps/team-website` folder as the root directory. Vercel's zero-config system should handle all configurations for you.
 
 2. Add your `DATABASE_URL` environment variable.
 

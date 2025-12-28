@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 
 import WindowContainer from "./WindowContainer";
 
-import "../_components/customCss.scss";
+import "./customCss.scss";
 
 import Link from "next/link";
 import { Separator } from "@radix-ui/react-select";
