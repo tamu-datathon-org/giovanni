@@ -8,7 +8,7 @@ import SuperJSON from "superjson";
 import type { AppRouter } from "@vanni/api";
 
 import { env } from "~/env";
-import { useState } from "~/trpc/react";
+import { useState } from "react";
 
 const createQueryClient = () =>
   new QueryClient({

@@ -1,4 +1,4 @@
-import { cache } from "~/trpc/react";
+import { cache } from "react";
 import { headers } from "next/headers";
 
 import { createCaller, createTRPCContext } from "@vanni/api";
