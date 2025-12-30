@@ -51,11 +51,12 @@ const Header = () => {
         width: "auto",
       });
 
-      // Set initial padding for inner container
+      // Set initial padding for inner container with glass effect
       gsap.set(container, {
         paddingLeft: "1rem",
         paddingRight: "1rem",
         borderRadius: "1rem",
+        backdropFilter: "blur(24px) saturate(150%)",
       });
 
       // Scroll transformation
@@ -76,7 +77,8 @@ const Header = () => {
             top: "0rem",
             borderRadius: "0rem",
             ease: "power2.out",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+            boxShadow:
+              "0 10px 30px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.05)",
           },
           0,
         )
@@ -86,6 +88,7 @@ const Header = () => {
             paddingLeft: "0rem",
             paddingRight: "0rem",
             borderRadius: "0rem",
+            backdropFilter: "blur(20px) saturate(150%)",
             ease: "power2.out",
           },
           0,
@@ -119,7 +122,7 @@ const Header = () => {
         <ScrollProgress />
         <div
           ref={containerRef}
-          className="mx-auto w-full bg-[#2f58aa]/10 backdrop-blur-[100px]"
+          className="mx-auto w-full border border-white/10 bg-[#2f58aa]/15 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] backdrop-blur-xl backdrop-saturate-150 dark:border-white/5"
         >
           <div className="flex w-full items-center py-0">
             <div ref={logoRef} className="relative left-0 flex-shrink-0 px-4">
@@ -166,7 +169,7 @@ const Header = () => {
                 </button>
                 <nav
                   id="navbarCollapse"
-                  className={`navbar border-body-color/50 dark:border-body-color/20 dark:bg-dark absolute right-0 z-30 w-[250px] rounded border-[.5px] px-6 py-4 duration-300 lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
+                  className={`navbar dark:bg-dark/80 absolute right-0 z-30 w-[250px] rounded-lg border border-white/10 bg-white/10 px-6 py-4 shadow-lg backdrop-blur-md backdrop-saturate-150 duration-300 dark:border-white/5 lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 lg:shadow-none ${
                     navbarOpen
                       ? "visibility top-full opacity-100"
                       : "invisible top-[120%] opacity-0"
@@ -176,7 +179,7 @@ const Header = () => {
                     {menuData.map((menuItem, index) => (
                       <li
                         key={index}
-                        className="w-contain group relative rounded-xl bg-gray-500/10 px-2"
+                        className="w-contain group relative rounded-xl border border-white/5 bg-gray-500/10 px-2 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-gray-500/15 dark:border-white/5"
                       >
                         {menuItem.path ? (
                           <Link
@@ -205,7 +208,7 @@ const Header = () => {
                             </p>
                             {menuItem.submenu && (
                               <div
-                                className={`submenu dark:bg-dark relative left-0 top-full rounded-sm bg-white transition-[top] duration-300 group-hover:opacity-100 lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full ${
+                                className={`submenu dark:bg-dark/90 relative left-0 top-full rounded-lg border border-white/20 bg-white/90 shadow-lg backdrop-blur-md backdrop-saturate-150 transition-[top] duration-300 group-hover:opacity-100 dark:border-white/10 lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-xl lg:group-hover:visible lg:group-hover:top-full ${
                                   openIndex === index ? "block" : "hidden"
                                 }`}
                               >
