@@ -1,30 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import menuData from "./menuData";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Header = () => {
+  const navRef = useRef<HTMLElement>(null);
+
   // Navbar toggle
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen);
   };
-
-  // Sticky Navbar
-  const [sticky, setSticky] = useState(false);
-  const handleStickyNavbar = () => {
-    if (window.scrollY >= 80) {
-      setSticky(true);
-    } else {
-      setSticky(false);
-    }
-  };
-  useEffect(() => {
-    window.addEventListener("scroll", handleStickyNavbar);
-  });
 
   // submenu handler
   const [openIndex, setOpenIndex] = useState(-1);
@@ -36,25 +30,53 @@ const Header = () => {
     }
   };
 
+  // GSAP ScrollTrigger animation
+  // useGSAP(
+  //   () => {
+  //     const nav = navRef.current;
+  //     if (!nav) return;
+
+  //     gsap.set(nav, {
+  //       backgroundColor: "rgba(15, 23, 42, 0.4)",
+  //       backdropFilter: "blur(12px)",
+  //     });
+
+  //     // Scroll animation - becomes more opaque on scroll
+  //     ScrollTrigger.create({
+  //       start: "top top",
+  //       end: "+=100",
+  //       onUpdate: (self) => {
+  //         const progress = self.progress;
+  //         const opacity = 0.2 + progress * 0.5; // From 0.2 to 0.7
+  //         const blur = 12 + progress * 8; // From 12px to 20px
+
+  //         gsap.to(nav, {
+  //           backgroundColor: `rgba(15, 23, 42, ${opacity})`,
+  //           backdropFilter: `blur(${blur}px)`,
+  //           duration: 0.3,
+  //         });
+  //       },
+  //     });
+  //   },
+  //   { scope: navRef },
+  // );
+
   return (
     <>
       <header
-        className={`header left-0 top-0 z-40 flex w-full flex-col items-center ${
-          sticky
-            ? "shadow-sticky dark:bg-gray-dark dark:shadow-sticky-dark fixed z-[9999] bg-white !bg-opacity-80 backdrop-blur-sm transition"
-            : "bg-datadarkblue/70 absolute"
-        }`}
+        ref={navRef}
+        className="header fixed top-0 z-40 flex w-[80%] flex-col items-center  pt-2 transition"
       >
-        <Link
-          className="w-full bg-[#2D69DF] py-1 text-center text-lg"
+        {/* <Link
+          className="w-full rounded-t-full bg-[#2D69DF] py-2 text-center text-lg"
           href="https://tamudatathon.com"
         >
           Visit our Fall 2025 TAMU Datathon Event Website
-        </Link>
+        </Link> */}
         <div className="container">
-          <div className="relative -mx-4 flex items-center justify-between">
-            <div className="w-[8rem] max-w-full px-4 xl:mr-12">
-              <Link href="/" className={`header-logo block w-full`}>
+          <div className="flex items-center w-full rounded-3xl py-2 backdrop-blur-[100px]">
+            <div className="relative left-0 px-4 flex-shrink-0">
+              <Link href="/" className={`header-logo block w-full pl-1`}>
                 <Image
                   src="/images/logo/logoTD.png"
                   alt="logo"
@@ -71,7 +93,7 @@ const Header = () => {
                 />
               </Link>
             </div>
-            <div className="flex w-full items-center justify-between px-4">
+            <div className="flex-1 flex items-center justify-center">
               <div>
                 <button
                   onClick={navbarToggleHandler}
@@ -101,17 +123,18 @@ const Header = () => {
                     navbarOpen
                       ? "visibility top-full opacity-100"
                       : "invisible top-[120%] opacity-0"
-                  } ${sticky ? "bg-white" : "bg-datadarkblue dark:bg-datadarkblue"}`}
+                  }`}
                 >
-                  <ul className="block lg:flex lg:space-x-12">
+                  <ul className="block lg:flex lg:space-x-5">
                     {menuData.map((menuItem, index) => (
-                      <li key={index} className="group relative">
+                      <li
+                        key={index}
+                        className="w-contain group relative rounded-xl bg-gray-500/10 px-2"
+                      >
                         {menuItem.path ? (
                           <Link
                             href={menuItem.path}
-                            className={`flex py-2 text-lg lg:mr-0 lg:inline-flex
-                              ${sticky ? "text-dark hover:text-dark/70 dark:text-white/70 dark:hover:text-white" : "text-white/70 dark:hover:text-white"}
-                              `}
+                            className="flex py-1 text-lg text-white/70 transition-colors hover:text-white dark:text-white/70 dark:hover:text-white lg:mr-0 lg:inline-flex"
                           >
                             {menuItem.title}
                           </Link>
@@ -177,6 +200,7 @@ const Header = () => {
                 </Link> */}
               </div>
             </div>
+            <div className="flex-shrink-0 px-4" style={{ width: 'calc(8rem + 2rem)' }}/>
           </div>
         </div>
       </header>
