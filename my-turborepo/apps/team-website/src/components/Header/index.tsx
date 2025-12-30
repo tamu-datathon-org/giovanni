@@ -8,11 +8,15 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import menuData from "./menuData";
+import { ScrollProgress } from "./ScrollProgess";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Header = () => {
   const navRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const navItemsRef = useRef<HTMLDivElement>(null);
 
   // Navbar toggle
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -30,52 +34,95 @@ const Header = () => {
     }
   };
 
-  // GSAP ScrollTrigger animation
-  // useGSAP(
-  //   () => {
-  //     const nav = navRef.current;
-  //     if (!nav) return;
+  useGSAP(
+    () => {
+      const nav = navRef.current;
+      const container = containerRef.current;
+      const logo = logoRef.current;
+      const navItems = navItemsRef.current;
 
-  //     gsap.set(nav, {
-  //       backgroundColor: "rgba(15, 23, 42, 0.4)",
-  //       backdropFilter: "blur(12px)",
-  //     });
+      if (!nav || !container || !logo || !navItems) return;
 
-  //     // Scroll animation - becomes more opaque on scroll
-  //     ScrollTrigger.create({
-  //       start: "top top",
-  //       end: "+=100",
-  //       onUpdate: (self) => {
-  //         const progress = self.progress;
-  //         const opacity = 0.2 + progress * 0.5; // From 0.2 to 0.7
-  //         const blur = 12 + progress * 8; // From 12px to 20px
+      // Floating state - use left/right instead of width for centering
+      gsap.set(nav, {
+        left: "10%",
+        right: "10%",
+        top: "1rem",
+        width: "auto",
+      });
 
-  //         gsap.to(nav, {
-  //           backgroundColor: `rgba(15, 23, 42, ${opacity})`,
-  //           backdropFilter: `blur(${blur}px)`,
-  //           duration: 0.3,
-  //         });
-  //       },
-  //     });
-  //   },
-  //   { scope: navRef },
-  // );
+      // Set initial padding for inner container
+      gsap.set(container, {
+        paddingLeft: "1rem",
+        paddingRight: "1rem",
+        borderRadius: "1rem",
+      });
+
+      // Scroll transformation
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: document.body,
+            start: "top+=20 top",
+            end: "top+=120 top",
+            scrub: true,
+          },
+        })
+        .to(
+          nav,
+          {
+            left: "0%",
+            right: "0%",
+            top: "0rem",
+            borderRadius: "0rem",
+            ease: "power2.out",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+          },
+          0,
+        )
+        .to(
+          container,
+          {
+            paddingLeft: "0rem",
+            paddingRight: "0rem",
+            borderRadius: "0rem",
+            ease: "power2.out",
+          },
+          0,
+        )
+        .to(
+          logo,
+          {
+            paddingLeft: "1rem",
+            ease: "power2.out",
+          },
+          0,
+        )
+        .to(
+          navItems,
+          {
+            paddingRight: "1rem",
+            ease: "power2.out",
+          },
+          0,
+        );
+    },
+    { scope: navRef },
+  );
 
   return (
     <>
       <header
         ref={navRef}
-        className="header fixed top-0 z-40 flex w-[80%] flex-col items-center  pt-2 transition"
+        className="header fixed z-40 flex flex-col items-center transition"
       >
-        {/* <Link
-          className="w-full rounded-t-full bg-[#2D69DF] py-2 text-center text-lg"
-          href="https://tamudatathon.com"
+        <ScrollProgress />
+        <div
+          ref={containerRef}
+          className="mx-auto w-full bg-[#2f58aa]/10 backdrop-blur-[100px]"
         >
-          Visit our Fall 2025 TAMU Datathon Event Website
-        </Link> */}
-        <div className="container">
-          <div className="flex items-center w-full rounded-3xl py-2 backdrop-blur-[100px]">
-            <div className="relative left-0 px-4 flex-shrink-0">
+          <div className="flex w-full items-center py-0">
+            <div ref={logoRef} className="relative left-0 flex-shrink-0 px-4">
               <Link href="/" className={`header-logo block w-full pl-1`}>
                 <Image
                   src="/images/logo/logoTD.png"
@@ -93,7 +140,7 @@ const Header = () => {
                 />
               </Link>
             </div>
-            <div className="flex-1 flex items-center justify-center">
+            <div className="flex flex-1 items-center justify-center">
               <div>
                 <button
                   onClick={navbarToggleHandler}
@@ -185,22 +232,15 @@ const Header = () => {
                   </ul>
                 </nav>
               </div>
-              <div className="flex items-center justify-end pr-16 lg:pr-0">
-                {/* <Link
-                  href="/signin"
-                  className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/signup"
-                  className="ease-in-up shadow-btn hover:shadow-btn-hover hidden rounded-sm bg-primary px-8 py-3 text-base font-medium text-white transition duration-300 hover:bg-opacity-90 md:block md:px-9 lg:px-6 xl:px-9"
-                >
-                  Sign Up
-                </Link> */}
-              </div>
+              <div
+                ref={navItemsRef}
+                className="flex items-center justify-end pr-16 lg:pr-0"
+              ></div>
             </div>
-            <div className="flex-shrink-0 px-4" style={{ width: 'calc(8rem + 2rem)' }}/>
+            <div
+              className="flex-shrink-0 px-4"
+              style={{ width: "calc(8rem + 2rem)" }}
+            />
           </div>
         </div>
       </header>
