@@ -2,7 +2,7 @@ import FloatingStats from "./FloatingStats";
 
 const AboutSectionTwo = () => {
   return (
-    <section className="py-8 md:py-12 lg:py-16">
+    <section className="bg-white dark:bg-transparent py-8 md:py-12 lg:py-16">
       <div className="container">
         <div className="-mx-4 flex flex-wrap items-center">
           <FloatingStats />

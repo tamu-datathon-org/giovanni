@@ -441,7 +441,7 @@ const AboutTeam = () => {
     <>
       <div
         id="team"
-        className="container mx-auto py-16 text-center md:py-20 lg:py-24"
+        className="container mx-auto bg-white dark:bg-transparent py-16 text-center md:py-20 lg:py-24"
       >
         <h2 className="mb-8 text-5xl font-bold leading-tight text-black dark:text-white">
           Meet the Team

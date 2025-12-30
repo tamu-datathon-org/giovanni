@@ -62,7 +62,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className="text-gray-600 dark:text-gray-400 transition-colors hover:text-black dark:hover:text-white"
                 aria-label={`Visit ${link.type}`}
               >
                 {getSocialIcon(link.type)}
