@@ -86,6 +86,18 @@ export default {
           dark: "#1E232E",
           light: "#F0F2F9",
         },
+        // Logo colors - automatically switches based on dark mode via CSS variables
+        logo: {
+          primary: "var(--logo-primary)",
+          secondary: "var(--logo-secondary)",
+          tertiary: "var(--logo-tertiary)",
+        },
+        // Branch colors - automatically switches based on dark mode via CSS variables
+        branch: {
+          primary: "var(--branch-primary)",
+          secondary: "var(--branch-secondary)",
+          tertiary: "var(--branch-tertiary)",
+        },
       },
 
       boxShadow: {

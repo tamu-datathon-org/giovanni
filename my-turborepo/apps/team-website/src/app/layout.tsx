@@ -22,7 +22,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
     <html lang="en" suppressHydrationWarning className={w95fa.className}>
       <head></head>
 
-      <body className={`bg-black ${inter.className}`}>
+      <body
+        className={`bg-white text-black dark:bg-black dark:text-white ${inter.className}`}
+      >
         <TRPCReactProvider>
           <Providers>
             <main className="min-h-screen w-full">

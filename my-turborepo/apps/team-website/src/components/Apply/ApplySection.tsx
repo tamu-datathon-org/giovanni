@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const ApplySection = () => {
   return (
-    <section id="apply" className="py-16 md:py-20 lg:py-24">
+    <section id="apply" className="bg-white dark:bg-transparent py-16 md:py-20 lg:py-24">
       <SectionTitle
         title="Apply To Be An Organizer"
         // paragraph="Apply to be a part of the TAMU Datathon team now!"

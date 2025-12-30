@@ -1,6 +1,6 @@
 const FloatingStats = () => {
     return (
-        <div className="w-full flex flex-wrap gap-6 text-2xl text-datablue font-bold justify-center px-6 lg:w-1/2">
+        <div className="w-full flex flex-wrap gap-6 text-2xl text-datablue dark:text-datablue font-bold justify-center px-6 lg:w-1/2">
             <div className="flex circle justify-center items-center">
                 <p className="p-2 text-center">
                     $10k Prizes

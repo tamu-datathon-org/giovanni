@@ -1,43 +1,41 @@
+"use client";
+
 import Image from "next/image";
 
-const Hero = () => {
-  const teamMembers = Array.from({ length: 25 }).map((_, index) => ({
-    image: `/images/teampics/placeholder.jpg`,
-    name: `Team Member ${index + 1}`,
-    position: "Position",
-  }));
-  const chunkSize = 8;
-  const teamChunks = [];
-  for (let i = 0; i < teamMembers.length; i += chunkSize) {
-    teamChunks.push(teamMembers.slice(i, i + chunkSize));
-  }
+import Squares from "../Squares";
 
+const Hero = () => {
   return (
     <>
       <section
         id="home"
-        className="relative z-10 overflow-hidden bg-gray-dark pb-[40px] pt-16 md:pb-[40px] md:pt-[80px] xl:pb-[40px] xl:pt-[100px] 2xl:pb-[40px] 2xl:pt-[120px]"
+        className="relative h-screen overflow-hidden pb-[40px] pt-16 md:pb-[40px] md:pt-[80px] xl:pb-[40px] xl:pt-[100px] 2xl:pb-[40px] 2xl:pt-[120px]"
       >
         <div className="container">
-          <div className="absolute inset-0 bg-[url('/background2.JPG')] bg-cover bg-center bg-no-repeat aspect-w-16 aspect-h-9 opacity-50"></div>
-          <div className="absolute inset-0 bg-black opacity-60"></div>
+          <Squares
+            speed={0.5}
+            squareSize={40}
+            direction="diagonal" // up, down, left, right, diagonal
+            borderColor="#fff"
+            hoverFillColor="#222"
+          />
+          <div className="aspect-w-16 aspect-h-9 bg-logo-secondary absolute inset-0 z-0"></div>
+          <div className="absolute inset-0 bg-black/40 dark:bg-black/60"></div>
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
-              <div className="relative mx-auto max-w-[800px] text-center">
+              <div className="relative mx-auto text-center">
                 <div className="relative z-10">
-                  <h1 className="mb-5 py-8 md:py-10 font-bold leading-tight text-white text-5xl md:text-7xl sm:leading-tight md:leading-tight">
-                    <span className="text-datalightblue">tamu</span>
-                    <span className="text-datadarkblue">datathon</span>
+                  <h1 className="mb-5 w-full py-8 text-5xl font-bold leading-tight text-black dark:text-white sm:leading-tight md:py-10 md:text-9xl md:leading-tight">
+                    <span className="text-datalightblue dark:text-datalightblue">
+                      tamu
+                    </span>
+                    <span className="text-datadarkblue dark:text-datadarkblue">
+                      datathon
+                    </span>
                   </h1>
-                  {/* <p className="mb-12 text-base !leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg md:text-xl">
-          At TAMU Datathon, we're passionate about data science and
-          machine learning. We bring together students of all levels for
-          an intense 24-hour hackathon at Texas A&M University. Our
-          goal? To inspire, educate, and empower the next generation of
-          data scientists through real-world challenges and expert
-          mentorship. Join us as we push the boundaries of data-driven
-          innovation!
-        </p> */}
+                  <p className="text-body-color dark:text-body-color-dark mb-12 text-base !leading-relaxed sm:text-lg md:text-xl">
+                    Only MLH Sponsored Datathon
+                  </p>
                   <div className="flex h-fit w-full items-center justify-center">
                     <Image
                       className="animate-float duration-2000 shadow-none"
@@ -52,7 +50,7 @@ const Hero = () => {
             </div>
           </div>
         </div>
-        <div className="absolute right-0 top-0 z-[-1] opacity-30 lg:opacity-100">
+        <div className="absolute right-0 top-0 z-10 opacity-30 lg:opacity-100">
           <svg
             width="450"
             height="556"
