@@ -49,7 +49,7 @@ const menuData: Menu[] = [
   },
   {
     id: 7,
-    title: "TD Fall 2025 Applications",
+    title: "Applications",
     path: "/apply",
     newTab: false,
   },
