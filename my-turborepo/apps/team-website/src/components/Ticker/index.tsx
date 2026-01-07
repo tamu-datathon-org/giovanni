@@ -53,7 +53,7 @@ export default function SponsorTicker() {
         });
 
         gsap.to(logoElements, {
-            duration: 60, // speed of animation
+            duration: 80, // speed of animation
             ease: "none",
             x: `-=${totalWidth}`,
             repeat: -1,
