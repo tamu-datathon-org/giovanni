@@ -5,7 +5,7 @@ import React from "react";
 import Teams from "./teams";
 
 const AboutTeam = () => {
-  const teamList_v2025 = [
+  const teamList_v2026 = [
     {
       teamMembers: [
         {
@@ -406,7 +406,7 @@ const AboutTeam = () => {
           Meet the Team
         </h2>
         <div className="flex flex-col justify-center gap-4">
-          {teamList_v2025.map((team, team_index) => (
+          {teamList_v2026.map((team, team_index) => (
             <Teams
               key={team_index}
               teamMembers={team.teamMembers}
