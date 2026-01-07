@@ -11,6 +11,7 @@ import Contact from "~/components/Contact";
 import ContactBackground from "~/components/Contact/ContactBackground";
 import Hero from "~/components/Hero";
 import { env } from "~/env";
+import SponsorTicker from "~/components/Ticker";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -42,6 +43,7 @@ export default function HomePage() {
       <Suspense fallback={<p>Loading gallery...</p>}>
         <ContactBackground />
       </Suspense>
+      < SponsorTicker/>
       <Contact />
     </>
   );
