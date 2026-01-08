@@ -31,11 +31,12 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
+    
       <ScrollUp />
       <Hero />
       <AboutSectionOne />
-      <AboutSectionTwo />
-      <ApplySection />
+      {/* <AboutSectionTwo /> */}
+      {/* <ApplySection /> */}
       <Suspense fallback={<p>Loading team...</p>}>
         <AboutTeam />
       </Suspense>

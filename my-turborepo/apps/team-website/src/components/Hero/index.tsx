@@ -1,10 +1,41 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
+import type { CarouselApi } from "~/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "~/components/ui/carousel";
 import Squares from "../Squares";
 
+const mascotImages = [
+  // { src: "/mascot/floatbear.png", alt: "Floating Bear" },
+  { src: "/mascot/DETECTIVE BEARTHOLOMEW.png", alt: "Detective Beartholomew" },
+  { src: "/mascot/DrippalowmewV3_4K.png", alt: "Drippalowmew" },
+  { src: "/mascot/Pixel_PolarBear.png", alt: "Pixel Polar Bear" },
+  { src: "/mascot/td Datathon mascot chibi.svg", alt: "Datathon Mascot Chibi" },
+  { src: "/mascot/TDEMOTE_bearglasses_4K.png", alt: "Bear with Glasses" },
+  { src: "/mascot/image.png", alt: "Squid Bear" },
+];
+
 const Hero = () => {
+  const [api, setApi] = useState<CarouselApi>();
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [api]);
+
   const scrollToNextSection = () => {
     const nextSection = document.getElementById("about");
     if (nextSection) {
@@ -16,28 +47,28 @@ const Hero = () => {
     <>
       <section
         id="home"
-        className="relative h-screen overflow-hidden pb-[4] pt-16 md:pb-[40px] md:pt-[80px] xl:pb-[40px] xl:pt-[100px] 2xl:pb-[40px] 2xl:pt-[50px]"
+        className="relative h-screen overflow-hidden pb-[4] pt-16 md:pb-[40px] md:pt-[80px] xl:pb-[40px] xl:pt-[100px] 2xl:pb-[40px] 2xl:pt-[30px]"
       >
         {/* Squares Background */}
         <div className="absolute inset-0 z-[-1] h-full w-full">
           <Squares
             speed={0.6}
             squareSize={60}
-            // direction="diagonal" // up, down, left, right, diagonal
+            direction="none"
             borderColor="lightblue"
             hoverFillColor="#222"
           />
         </div>
 
-        {/* Dark Overlay - moved below canvas */}
+        {/* Dark Overlay */}
         <div className="absolute inset-0 z-[-1] bg-black/40 dark:bg-black/60"></div>
 
-        <div className="container relative z-10 flex h-full items-center">
-          <div className="-mx-4 flex w-full flex-col items-center md:flex-row md:items-center">
+        <div className="relative z-10 flex h-full items-center ">
+          <div className="flex w-full flex-col items-center pl-10 md:flex-row md:items-center">
             {/* Left Column - Title and Text */}
-            <div className="w-full px-4 md:w-1/2">
+            <div className="w-full pl-14 md:w-1/2">
               <div className="relative">
-                <h1 className="mb-5 w-full py-8 text-5xl font-bold leading-tight text-black dark:text-white sm:leading-tight md:py-5 md:text-9xl md:leading-tight">
+                <h1 className=" w-full py-2 text-5xl font-bold leading-tight text-black dark:text-white sm:leading-tight md:text-9xl md:leading-tight">
                   <span className="text-datalightblue dark:text-datalightblue">
                     tamu
                   </span>
@@ -53,16 +84,33 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Right Column - Bear Image */}
-            <div className="w-full px-4 md:w-1/2">
-              <div className="flex h-fit w-full items-center justify-center md:justify-end">
-                <Image
-                  className="animate-float duration-2000 shadow-none"
-                  src="/images/hero/floatbear.png"
-                  alt="Bear"
-                  width={600}
-                  height={600}
-                />
+            {/* Right Column - Mascot Carousel */}
+            <div className="w-full px-4 pr-16">
+              <div className="flex h-fit w-full items-center justify-center">
+                <Carousel
+                  setApi={setApi}
+                  className="w-full max-w-[400px] h-full "
+                  opts={{
+                    loop: true,
+                    align: "center",
+                  }}
+                >
+                  <CarouselContent>
+                    {mascotImages.map((mascot, index) => (
+                      <CarouselItem key={index}>
+                        <div className="flex items-center justify-center">
+                          <Image
+                            className="animate-float duration-2000 shadow-none h-full w-full"
+                            src={mascot.src || "/placeholder.svg"}
+                            alt={mascot.alt}
+                            width={600}
+                            height={600}
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
               </div>
             </div>
           </div>
