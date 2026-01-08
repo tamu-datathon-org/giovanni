@@ -122,9 +122,14 @@ export default {
           "0%, 100%": { boxShadow: "none", transform: "translateY(0)" },
           "50%": { boxShadow: "none", transform: "translateY(-20px)" },
         },
+        bob: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(10px)" },
+        },
       },
       animation: {
         float: "floatx 3s ease-in-out infinite",
+        bob: "bob 2s ease-in-out infinite",
       },
     },
   },
