@@ -1,7 +1,12 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { SectionTitle } from "@vanni/ui/section-title";
-import FloatingStats from "./FloatingStats";
+
+import ScrollStats from "./ScrollStats";
 
 const checkIcon = (
   <svg width="16" height="13" viewBox="0 0 16 13" className="fill-current">
@@ -19,66 +24,78 @@ const AboutSectionOne = () => {
     </p>
   );
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const pinContainerRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: pinContainerRef.current,
+        start: "top top",
+        end: "+=2000",
+        pin: true,
+        pinSpacing: true,
+        onUpdate: (self) => {
+          setScrollProgress(self.progress);
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <>
-      <section
-        id="about"
-        className="bg-white pt-16 dark:bg-transparent md:pt-20 lg:pt-28"
-      >
-        <div className="container">
-          <div className="border-body-color/[.5] border-b pb-8 dark:border-white/[.5] md:pb-12 lg:pb-16">
-            <div className="-mx-4 flex flex-wrap items-center justify-center">
-              <div className="flex w-full flex-col justify-center px-4 lg:w-1/2">
-                <SectionTitle
-                  title="About Us"
-                  paragraph="We are the largest data science and machine learning focused hackathon in Texas located at Texas A&M University in College Station."
-                  mb="44px"
-                />
+    <section
+      ref={sectionRef}
+      id="about"
+      className="bg-white dark:bg-transparent"
+    >
+      {/* Pinned container with stats */}
+      <div ref={pinContainerRef} className="flex min-h-screen flex-col">
+        <div className="pt-16 md:pt-20 lg:pt-28">
+          <div className="container">
+            <div className="border-body-color/[.5] border-b pb-8 dark:border-white/[.5] md:pb-12 lg:pb-16">
+              <div className="-mx-4 flex flex-wrap items-center justify-center">
+                <div className="flex w-full flex-col justify-center px-4 lg:w-1/2">
+                  <SectionTitle
+                    title="About Us"
+                    paragraph="We are the largest data science and machine learning focused hackathon in Texas located at Texas A&M University in College Station."
+                    mb="44px"
+                  />
 
-                <div
-                  className="mb-12 max-w-[570px] lg:mb-0"
-                  data-wow-delay=".15s"
-                >
-                  <div className="mx-[-12px] flex flex-wrap">
-                    <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                      <List text="Located in Texas" />
-                      <List text="Data Science Based" />
-                      <List text="Main Event in Fall" />
-                    </div>
-
-                    <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                      <List text="TD Lite in Spring" />
-                      <List text="Sponsored Challenges" />
-                      <List text="All Experiences Welcome" />
+                  <div
+                    className="mb-12 max-w-[570px] lg:mb-0"
+                    data-wow-delay=".15s"
+                  >
+                    <div className="mx-[-12px] flex flex-wrap">
+                      <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
+                        <List text="Located in Texas" />
+                        <List text="Data Science Based" />
+                        <List text="Main Event in Fall" />
+                      </div>
+                      <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
+                        <List text="TD Lite in Spring" />
+                        <List text="Sponsored Challenges" />
+                        <List text="All Experiences Welcome" />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="w-2/3 px-4 lg:w-1/2">
-                <div className="relative mx-auto flex aspect-[25/24] max-w-[400px] justify-center">
-                  <Image
-                    src="/images/about/y2k-logo.svg"
-                    alt="about-image"
-                    fill
-                    className="drop-shadow-three mx-auto max-w-full dark:hidden dark:drop-shadow-none"
-                  />
-                  <Image
-                    src="/images/about/y2k-logo.svg"
-                    alt="about-image"
-                    fill
-                    className="drop-shadow-three mx-auto hidden max-w-full dark:block dark:drop-shadow-none"
-                  />
+                <div className="w-2/3 px-4 lg:w-1/2">
+                  <div className="relative mx-auto flex aspect-[25/24] max-w-[400px] justify-center">
+                    <ScrollStats progress={scrollProgress} />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-      <section className="bg-white py-8 dark:bg-transparent md:py-12 lg:py-16">
+
+        {/* About Section Two Content */}
         <div className="container">
           <div className="-mx-4 flex flex-wrap items-center">
-            <FloatingStats />
             <div className="w-full p-4 text-center lg:w-1/2">
               <div className="max-w-[700px]">
                 <div className="mb-9">
@@ -102,8 +119,31 @@ const AboutSectionOne = () => {
             </div>
           </div>
         </div>
-      </section>
-    </>
+        {/* Scroll hint */}
+        <div
+          className={`flex flex-1 items-end justify-center pb-8 transition-opacity duration-500 ${scrollProgress > 0.9 ? "opacity-0" : "opacity-100"}`}
+        >
+          <div className="text-body-color dark:text-body-color-dark flex flex-col items-center gap-2">
+            <span className="text-sm">Keep scrolling</span>
+            <div className="animate-bounce">
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
