@@ -54,7 +54,7 @@ const Hero = () => {
           <Squares
             speed={0.6}
             squareSize={60}
-            direction="none"
+            direction="down"
             borderColor="lightblue"
             hoverFillColor="#222"
           />
