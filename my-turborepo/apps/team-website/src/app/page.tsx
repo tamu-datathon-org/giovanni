@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     siteName: "TAMU Datathon",
   },
 };
+//TODO: MAKE SURE TO MOVE SPONSOR TICKER AFTER EVERYTHING IS FINALIZED !!!!!!!!!! <-------- DON'T FORGET!!!!
 
 export default function HomePage() {
   return (
