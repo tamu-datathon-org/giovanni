@@ -15,7 +15,7 @@ export default function SponsorTicker() {
     const logos = [
         "/images/sponsor-logo/amd.png",
         "/images/sponsor-logo/amex.png",
-        "/images/sponsor-logo/bloomberg.png",
+
         "/images/sponsor-logo/bp.png",
         "/images/sponsor-logo/cbre.png",
         "/images/sponsor-logo/celonis.png",
@@ -73,7 +73,7 @@ export default function SponsorTicker() {
         </label>
 
         <div
-            className="wrapper relative w-screen h-40 bg-grey-400"
+            className="wrapper relative w-screen h-40 bg-yellow-400"
             style={{ overflow: overflow ? "visible" : "hidden" }}
             ref={wrapperRef}
         >
