@@ -1,103 +1,105 @@
 import Image from "next/image";
-import { SectionTitle } from "@vanni/ui/section-title";
 import Link from "next/link";
+
+import { SectionTitle } from "@vanni/ui/section-title";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "~/components/ui/accordion";
 
 const ApplySection = () => {
   return (
-    <section id="apply" className="py-16 md:py-20 lg:py-24">
+    <section id="apply" className="pt-14 md:pt-18 lg:pt-22">
       <SectionTitle
         title="Apply To Be An Organizer"
         // paragraph="Apply to be a part of the TAMU Datathon team now!"
-        paragraph="Thank you for applying! Decisions released on Feb 23, 2025"
+        paragraph="Application closes on Jan 30th, 2026!"
         center
       />
-      <div className="flex flex-row items-center mb-14 justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-        <Link
-          href="https://forms.gle/ngbF27FDQuKCTsKR8"
-          className="rounded-sm bg-primary px-8 py-4 text-base font-semibold text-white duration-300 ease-in-out hover:bg-primary/80 opacity-50 pointer-events-none"
+      <div className="container mb-10">
+        <div className="flex items-center justify-center sm:flex-row sm:space-x-4 sm:space-y-0 pb-6">
+          <Link
+            href="https://docs.google.com/forms/d/e/1FAIpQLScIO-brtOtLcgDnQnsqn1_wQ7j2GS81H8K3CHy254A1BzLtrQ/viewform"
+            className="rounded-sm bg-primary px-8 py-4 text-base font-semibold text-white duration-300 ease-in-out hover:bg-primary/80"
+          >
+            Apply Here
+          </Link>
+        </div>
+        <div
+          className="relative mx-auto mb-8  max-w-[900px] text-center"
+          data-wow-delay=".15s"
         >
-          Apply Here
-        </Link>
+          <Image
+            src="/OrganizerRecruiting.png"
+            alt="Organizer recruiting banner"
+            width={900}
+            height={1000}
+            className="drop-shadow-three dark:hidden dark:drop-shadow-none"
+          />
+          <Image
+            src="/OrganizerRecruiting.png"
+            alt="Organizer recruiting banner"
+            width={900}
+            height={1000}
+            className="drop-shadow-three hidden dark:block dark:drop-shadow-none"
+          />
+        </div>
       </div>
       <div className="container">
-        <div className="flex flex-wrap items-center">
-          <div className="w-full h-full px-4 lg:w-1/2">
-            <div
-              className="relative mx-auto mb-12 aspect-[25/24] max-w-[500px] text-center lg:m-0"
-              data-wow-delay=".15s"
-            >
-              <Image
-                src="/images/about/Organizer Recruitment.png"
-                alt="about image"
-                width={500}
-                height={900}
-                className="drop-shadow-three dark:hidden dark:drop-shadow-none"
-              />
-              <Image
-                src="/images/about/Organizer Recruitment.png"
-                alt="about image"
-                width={500}
-                height={900}
-                className="hidden drop-shadow-three dark:block dark:drop-shadow-none"
-              />
-            </div>
-          </div>
-          <div className="w-full px-4 lg:w-1/2">
-            <div className="w-full">
-              <div className="mb-9">
-                <h3 className="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
-                  Logistics
-                </h3>
-                <p className="text-base font-medium leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg sm:leading-relaxed">
-                  Manage finances, Order t-shirts, food,etc.
-                  Plan & schedule day-of activities.
-                  Gather judges, mentors, & more!
-                </p>
-              </div>
-              <div className="mb-9">
-                <h3 className="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
-                  Web Development
-                </h3>
-                <p className="text-base font-medium leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg sm:leading-relaxed">
-                  Create & maintain software.
-                  Support the team with technical solutions.
-                  Track & analyze statistics regarding the event.
-                  Using/building open source software!
-                </p>
-              </div>
-              <div className="mb-9">
-                <h3 className="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
-                  Design
-                </h3>
-                <p className="text-base font-medium leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg sm:leading-relaxed">
-                  Set the design direction of the organization & event.
-                  Create marketing materials, merchandise, & campaign plans.
-                  Maintain & manage social media!
-                </p>
-              </div>
-              <div className="mb-9">
-                <h3 className="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
-                  Challenges
-                </h3>
-                <p className="text-base font-medium leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg sm:leading-relaxed">
-                  Create Datathon-specific challenges.
-                  Work with sponsors to elevate sponsor-specific challenges.
-                  Serve as a main point of contact & liaison for day-of troubleshooting!
-                </p>
-              </div>
-              <div className="mb-1">
-                <h3 className="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
-                  Outreach
-                </h3>
-                <p className="text-base font-medium leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg sm:leading-relaxed">
-                  Assist current sponsers with
-                  various tasks. Day-of point of contact for
-                  company representatives.
-                  Secure sponserships!
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="mx-auto max-w-3xl">
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="logistics">
+              <AccordionTrigger className="text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
+                Logistics
+              </AccordionTrigger>
+              <AccordionContent className="text-body-color dark:text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+                Manage finances, Order t-shirts, food,etc. Plan & schedule
+                day-of activities. Gather judges, mentors, & more!
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="web-development">
+              <AccordionTrigger className="text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
+                Web Development
+              </AccordionTrigger>
+              <AccordionContent className="text-body-color dark:text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+                Create & maintain software. Support the team with technical
+                solutions. Track & analyze statistics regarding the event.
+                Using/building open source software!
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="design">
+              <AccordionTrigger className="text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
+                Design
+              </AccordionTrigger>
+              <AccordionContent className="text-body-color dark:text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+                Set the design direction of the organization & event. Create
+                marketing materials, merchandise, & campaign plans. Maintain &
+                manage social media!
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="challenges">
+              <AccordionTrigger className="text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
+                Challenges
+              </AccordionTrigger>
+              <AccordionContent className="text-body-color dark:text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+                Create Datathon-specific challenges. Work with sponsors to
+                elevate sponsor-specific challenges. Serve as a main point of
+                contact & liaison for day-of troubleshooting!
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="outreach">
+              <AccordionTrigger className="text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
+                Outreach
+              </AccordionTrigger>
+              <AccordionContent className="text-body-color dark:text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+                Assist current sponsers with various tasks. Day-of point of
+                contact for company representatives. Secure sponserships!
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </div>
     </section>
