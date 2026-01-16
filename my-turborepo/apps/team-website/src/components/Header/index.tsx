@@ -46,7 +46,7 @@ const Header = () => {
         }`}
       >
         <Link
-          className="w-full bg-[#2D69DF] py-3 text-center text-lg font-bold text-white shadow-lg transition-all duration-5000 hover:scale-[1.02] hover:bg-[#2563eb] hover:shadow-xl"
+          className="duration-5000 w-full bg-[#2D69DF] py-3 text-center text-lg font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:bg-[#2563eb] hover:shadow-xl"
           href="https://docs.google.com/forms/d/e/1FAIpQLScIO-brtOtLcgDnQnsqn1_wQ7j2GS81H8K3CHy254A1BzLtrQ/viewform"
         >
           <span className="relative z-10">
@@ -155,6 +155,7 @@ const Header = () => {
                                     </Link>
                                   ),
                                 )}
+                                
                               </div>
                             )}
                           </>
