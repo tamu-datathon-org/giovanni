@@ -46,10 +46,12 @@ const Header = () => {
         }`}
       >
         <Link
-          className="w-full bg-[#2D69DF] py-1 text-center text-lg"
-          href="https://tamudatathon.com"
+          className="w-full bg-[#2D69DF] py-3 text-center text-lg font-bold text-white shadow-lg transition-all duration-5000 hover:scale-[1.02] hover:bg-[#2563eb] hover:shadow-xl"
+          href="https://docs.google.com/forms/d/e/1FAIpQLScIO-brtOtLcgDnQnsqn1_wQ7j2GS81H8K3CHy254A1BzLtrQ/viewform"
         >
-          Visit our Fall 2025 TAMU Datathon Event Website
+          <span className="relative z-10">
+            Organizer Application Now Open!!!
+          </span>
         </Link>
         <div className="container">
           <div className="relative -mx-4 flex items-center justify-between">

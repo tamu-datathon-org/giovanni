@@ -47,11 +47,17 @@ const menuData: Menu[] = [
     path: "/#contact",
     newTab: false,
   },
+  // {
+  //   id: 7,
+  //   title: "TD Fall 2025 Applications",
+  //   path: "/apply",
+  //   newTab: false,
+  // },
   {
     id: 7,
-    title: "TD Fall 2025 Applications",
-    path: "/apply",
-    newTab: false,
+    title: "Organizer Application",
+    path: "https://docs.google.com/forms/d/e/1FAIpQLScIO-brtOtLcgDnQnsqn1_wQ7j2GS81H8K3CHy254A1BzLtrQ/viewform",
+    newTab: true,
   },
 ];
 export default menuData;
