@@ -50,7 +50,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({
         <h3 className="text-base font-semibold text-black text-white">
           {name}
         </h3>
-        <p className="text-body-color text-white text-sm">
+        <p className="text-body-color-dark text-sm">
           {position}
         </p>
 
