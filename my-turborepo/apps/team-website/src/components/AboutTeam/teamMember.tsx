@@ -47,10 +47,10 @@ const TeamMember: React.FC<TeamMemberProps> = ({
           height={100}
           className="h-30 w-30 mx-auto my-2 rounded-full object-cover"
         />
-        <h3 className="text-base font-semibold text-black dark:text-white">
+        <h3 className="text-base font-semibold text-black text-white">
           {name}
         </h3>
-        <p className="text-body-color dark:text-body-color-dark text-sm">
+        <p className="text-body-color text-white text-sm">
           {position}
         </p>
 
