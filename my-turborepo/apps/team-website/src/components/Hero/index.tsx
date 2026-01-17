@@ -1,58 +1,146 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
+import type { CarouselApi } from "~/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "~/components/ui/carousel";
+import Squares from "../Squares";
+
+const mascotImages = [
+  // { src: "/mascot/floatbear.png", alt: "Floating Bear" },
+  { src: "/mascot/DETECTIVE BEARTHOLOMEW.png", alt: "Detective Beartholomew" },
+  { src: "/mascot/DrippalowmewV3_4K.png", alt: "Drippalowmew" },
+  { src: "/mascot/Pixel_PolarBear.png", alt: "Pixel Polar Bear" },
+  { src: "/mascot/td Datathon mascot chibi.svg", alt: "Datathon Mascot Chibi" },
+  { src: "/mascot/TDEMOTE_bearglasses_4K.png", alt: "Bear with Glasses" },
+  { src: "/mascot/image.png", alt: "Squid Bear" },
+];
+
 const Hero = () => {
-  const teamMembers = Array.from({ length: 25 }).map((_, index) => ({
-    image: `/images/teampics/placeholder.jpg`,
-    name: `Team Member ${index + 1}`,
-    position: "Position",
-  }));
-  const chunkSize = 8;
-  const teamChunks = [];
-  for (let i = 0; i < teamMembers.length; i += chunkSize) {
-    teamChunks.push(teamMembers.slice(i, i + chunkSize));
-  }
+  const [api, setApi] = useState<CarouselApi>();
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [api]);
+
+  const scrollToNextSection = () => {
+    const nextSection = document.getElementById("about");
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <>
       <section
         id="home"
-        className="relative z-10 overflow-hidden bg-gray-dark pb-[40px] pt-16 md:pb-[40px] md:pt-[80px] xl:pb-[40px] xl:pt-[100px] 2xl:pb-[40px] 2xl:pt-[120px]"
+        className="relative h-screen overflow-hidden pb-[4] pt-16 md:pb-[40px] md:pt-[80px] xl:pb-[40px] xl:pt-[100px] 2xl:pb-[40px] 2xl:pt-[30px]"
       >
-        <div className="container">
-          <div className="absolute inset-0 bg-[url('/background2.JPG')] bg-cover bg-center bg-no-repeat aspect-w-16 aspect-h-9 opacity-50"></div>
-          <div className="absolute inset-0 bg-black opacity-60"></div>
-          <div className="-mx-4 flex flex-wrap">
-            <div className="w-full px-4">
-              <div className="relative mx-auto max-w-[800px] text-center">
-                <div className="relative z-10">
-                  <h1 className="mb-5 py-8 md:py-10 font-bold leading-tight text-white text-5xl md:text-7xl sm:leading-tight md:leading-tight">
-                    <span className="text-datalightblue">tamu</span>
-                    <span className="text-datadarkblue">datathon</span>
-                  </h1>
-                  {/* <p className="mb-12 text-base !leading-relaxed text-body-color dark:text-body-color-dark sm:text-lg md:text-xl">
-          At TAMU Datathon, we're passionate about data science and
-          machine learning. We bring together students of all levels for
-          an intense 24-hour hackathon at Texas A&M University. Our
-          goal? To inspire, educate, and empower the next generation of
-          data scientists through real-world challenges and expert
-          mentorship. Join us as we push the boundaries of data-driven
-          innovation!
-        </p> */}
-                  <div className="flex h-fit w-full items-center justify-center">
-                    <Image
-                      className="animate-float duration-2000 shadow-none"
-                      src="/images/hero/floatbear.png"
-                      alt="Bear"
-                      width={600}
-                      height={600}
-                    />
-                  </div>
-                </div>
+        {/* Squares Background */}
+        <div className="absolute inset-0 z-[-1] h-full w-full">
+          <Squares
+            speed={0.6}
+            squareSize={60}
+            direction="down"
+            borderColor="lightblue"
+            hoverFillColor="#222"
+          />
+        </div>
+
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 z-[-1] bg-black/40 dark:bg-black/60"></div>
+
+        <div className="relative z-10 flex h-full items-center ">
+          <div className="flex w-full flex-col items-center pl-10 md:flex-row md:items-center">
+            {/* Left Column - Title and Text */}
+            <div className="w-full pl-14 md:w-1/2">
+              <div className="relative">
+                <h1 className=" w-full py-2 text-5xl font-bold leading-tight text-black dark:text-white sm:leading-tight md:text-9xl md:leading-tight">
+                  <span className="text-datalightblue dark:text-datalightblue">
+                    tamu
+                  </span>
+                  <span className="text-datadarkblue dark:text-datadarkblue">
+                    datathon
+                  </span>
+                </h1>
+                <p className="text-body-color dark:text-body-color-dark mb-12 text-left text-base !leading-relaxed sm:text-lg md:text-xl">
+                  We are the largest data science and machine learning focused
+                  hackathon in Texas located at Texas A&M University in College
+                  Station.
+                </p>
+              </div>
+            </div>
+
+            {/* Right Column - Mascot Carousel */}
+            <div className="w-full px-4 pr-16">
+              <div className="flex h-fit w-full items-center justify-center">
+                <Carousel
+                  setApi={setApi}
+                  className="w-full max-w-[400px] h-full "
+                  opts={{
+                    loop: true,
+                    align: "center",
+                  }}
+                >
+                  <CarouselContent>
+                    {mascotImages.map((mascot, index) => (
+                      <CarouselItem key={index}>
+                        <div className="flex items-center justify-center">
+                          <Image
+                            className="animate-float duration-2000 shadow-none h-full w-full"
+                            src={mascot.src || "/placeholder.svg"}
+                            alt={mascot.alt}
+                            width={600}
+                            height={600}
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
               </div>
             </div>
           </div>
         </div>
-        <div className="absolute right-0 top-0 z-[-1] opacity-30 lg:opacity-100">
+
+        {/* Scroll Arrow */}
+        <button
+          onClick={scrollToNextSection}
+          aria-label="Scroll to next section"
+          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 cursor-pointer text-white transition-opacity hover:opacity-80 dark:text-white"
+        >
+          <div className="animate-bob">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7 10L12 15L17 10"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </button>
+        {/* <div className="absolute right-0 top-0 z-[2] opacity-30 lg:opacity-100">
           <svg
             width="450"
             height="556"
@@ -190,7 +278,7 @@ const Hero = () => {
             </defs>
           </svg>
         </div>
-        <div className="absolute bottom-0 left-0 z-[-1] opacity-30 lg:opacity-100">
+        <div className="absolute bottom-0 left-0 z-[2] opacity-30 lg:opacity-100">
           <svg
             width="364"
             height="201"
@@ -292,7 +380,7 @@ const Hero = () => {
               </radialGradient>
             </defs>
           </svg>
-        </div>
+        </div> */}
       </section>
     </>
   );

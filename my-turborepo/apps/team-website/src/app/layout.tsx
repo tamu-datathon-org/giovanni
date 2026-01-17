@@ -8,7 +8,7 @@ import ScrollToTop from "@vanni/ui/scroll-to-top";
 
 import { w95fa } from "~/app/_components/fonts";
 import Footer from "~/components/Footer";
-import Header from "~/components/Header";
+import Header from "~/components/Header/index";
 import { Toaster } from "~/components/ui/toaster";
 import { TRPCReactProvider } from "~/trpc/react";
 import { Providers } from "./providers";
@@ -22,11 +22,15 @@ export default function RootLayout(props: { children: React.ReactNode }) {
     <html lang="en" suppressHydrationWarning className={w95fa.className}>
       <head></head>
 
-      <body className={`bg-black ${inter.className}`}>
+      <body
+        className={`bg-white text-black dark:bg-black dark:text-white ${inter.className}`}
+      >
         <TRPCReactProvider>
           <Providers>
-            <main className="min-h-screen">
-              <Header />
+            <main className="min-h-screen w-full">
+              <div className="flex w-full items-center justify-center">
+                <Header />
+              </div>
               {props.children}
               <ScrollToTop />
               <Footer />
