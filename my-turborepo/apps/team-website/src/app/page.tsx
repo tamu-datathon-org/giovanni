@@ -11,6 +11,8 @@ import Contact from "~/components/Contact";
 import ContactBackground from "~/components/Contact/ContactBackground";
 import Hero from "~/components/Hero";
 import { env } from "~/env";
+import SponsorTicker from "~/components/Ticker";
+
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -27,6 +29,7 @@ export const metadata: Metadata = {
     siteName: "TAMU Datathon",
   },
 };
+//TODO: MAKE SURE TO MOVE SPONSOR TICKER AFTER EVERYTHING IS FINALIZED !!!!!!!!!! <-------- DON'T FORGET!!!!
 
 export default function HomePage() {
   return (
@@ -40,10 +43,12 @@ export default function HomePage() {
       <Suspense fallback={<p>Loading team...</p>}>
         <AboutTeam />
       </Suspense>
-      <Suspense fallback={<p>Loading gallery...</p>}>
+      {/* <Suspense fallback={<p>Loading gallery...</p>}>
         <ContactBackground />
-      </Suspense>
+      </Suspense> */}
+
       <Contact />
+      {/* < SponsorTicker/> */}
     </>
   );
 }

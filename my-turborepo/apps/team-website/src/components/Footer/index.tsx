@@ -39,7 +39,7 @@ const Footer = () => {
           <div className="flex flex-col items-center space-y-4 md:items-start">
             <h3 className="text-lg font-semibold">Contacts</h3>
             {/* Contact for sponsors */}
-            <div>
+            {/* <div>
               Looking to sponsor? <br />
               <span className="flex items-center space-x-2">
                 <a
@@ -62,7 +62,7 @@ const Footer = () => {
                   <LuClipboard className="mr-2" />
                 </button>
               </span>
-            </div>
+            </div> */}
             {/* Contact for questions */}
             <div>
               Any questions? <br />
