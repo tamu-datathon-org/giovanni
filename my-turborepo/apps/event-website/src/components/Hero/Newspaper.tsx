@@ -94,7 +94,7 @@ export default function NewspaperSection() {
 
           {/* Description */}
           <foreignObject x="15%" y="71%" width="70%" height="25%" rotate={0.38}>
-            <p className="font-kopub text-center text-4xl leading-relaxed text-black">
+            <p className="font-kopub text-center text-4xl leading-relaxed text-white">
               We are the largest data science and machine learning focused
               hackathon in Texas located at Texas A&M University in College
               Station.

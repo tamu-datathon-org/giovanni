@@ -37,64 +37,64 @@ const ApplySection = () => {
             alt="Organizer recruiting banner"
             width={900}
             height={1000}
-            className="drop-shadow-three dark:hidden dark:drop-shadow-none"
+            className="drop-shadow-three"
           />
-          <Image
+          {/* <Image
             src="/OrganizerRecruiting.png"
             alt="Organizer recruiting banner"
             width={900}
             height={1000}
             className="drop-shadow-three hidden dark:block dark:drop-shadow-none"
-          />
+          /> */}
         </div>
       </div>
       <div className="container">
         <div className="mx-auto max-w-3xl">
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="logistics">
-              <AccordionTrigger className="text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
+              <AccordionTrigger className="text-xl font-bold text-white sm:text-2xl lg:text-xl xl:text-2xl">
                 Logistics
               </AccordionTrigger>
-              <AccordionContent className="text-body-color dark:text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+              <AccordionContent className="text-body-color text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
                 Manage finances, Order t-shirts, food,etc. Plan & schedule
                 day-of activities. Gather judges, mentors, & more!
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="web-development">
-              <AccordionTrigger className="text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
+              <AccordionTrigger className="text-xl font-bold text-white sm:text-2xl lg:text-xl xl:text-2xl">
                 Web Development
               </AccordionTrigger>
-              <AccordionContent className="text-body-color dark:text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+              <AccordionContent className="text-body-color text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
                 Create & maintain software. Support the team with technical
                 solutions. Track & analyze statistics regarding the event.
                 Using/building open source software!
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="design">
-              <AccordionTrigger className="text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
+              <AccordionTrigger className="text-xl font-bold text-white sm:text-2xl lg:text-xl xl:text-2xl">
                 Design
               </AccordionTrigger>
-              <AccordionContent className="text-body-color dark:text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+              <AccordionContent className="text-body-color text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
                 Set the design direction of the organization & event. Create
                 marketing materials, merchandise, & campaign plans. Maintain &
                 manage social media!
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="challenges">
-              <AccordionTrigger className="text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
+              <AccordionTrigger className="text-xl font-bold text-white sm:text-2xl lg:text-xl xl:text-2xl">
                 Challenges
               </AccordionTrigger>
-              <AccordionContent className="text-body-color dark:text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+              <AccordionContent className="text-body-color text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
                 Create Datathon-specific challenges. Work with sponsors to
                 elevate sponsor-specific challenges. Serve as a main point of
                 contact & liaison for day-of troubleshooting!
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="outreach">
-              <AccordionTrigger className="text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
+              <AccordionTrigger className="text-xl font-bold text-white sm:text-2xl lg:text-xl xl:text-2xl">
                 Outreach
               </AccordionTrigger>
-              <AccordionContent className="text-body-color dark:text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
+              <AccordionContent className="text-body-color text-body-color-dark text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed">
                 Assist current sponsers with various tasks. Day-of point of
                 contact for company representatives. Secure sponserships!
               </AccordionContent>

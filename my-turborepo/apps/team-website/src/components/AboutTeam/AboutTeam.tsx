@@ -443,10 +443,10 @@ const AboutTeam = () => {
         id="team"
         className="container mx-auto py-16 text-center md:py-20 lg:py-24"
       >
-        <h2 className="mb-8 text-5xl font-bold leading-tight text-black dark:text-white">
+        <h2 className="mb-8 text-5xl font-bold leading-tight text-white">
           Meet the Team
         </h2>
-        <div className="flex flex-col justify-center gap-4">
+        <div className="flex flex-col justify-center gap-4 text-white">
           {teamList_v2025.map((team, team_index) => (
             <Teams
               key={team_index}

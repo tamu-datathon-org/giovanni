@@ -18,21 +18,14 @@ const Footer = () => {
               <Image
                 src="/images/logo/logoTD.png"
                 alt="logo"
-                className="mx-auto w-[128px] dark:hidden"
-                width={100}
-                height={100}
-              />
-              <Image
-                src="/images/logo/logoTD.png"
-                alt="logo"
-                className="mx-auto hidden w-[200px] dark:block md:w-[150px] lg:w-[128px]"
+                className="mx-auto w-[128px]"
                 width={100}
                 height={100}
               />
             </Link>
             <h3>TAMU Datathon</h3>
             <p className="mb-6 text-center text-sm text-gray-600 dark:text-gray-400 md:text-left">
-              change learning with data
+              Change learning with data
             </p>
           </div>
 
