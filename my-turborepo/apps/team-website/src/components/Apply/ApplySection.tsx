@@ -39,15 +39,19 @@ const ApplySection = () => {
             height={1000}
             className="drop-shadow-three"
           />
-          {/* <Image
-            src="/OrganizerRecruiting.png"
-            alt="Organizer recruiting banner"
-            width={900}
-            height={1000}
-            className="drop-shadow-three hidden dark:block dark:drop-shadow-none"
-          /> */}
         </div>
       </div>
+      
+      {/* logistic info */}
+      <div className="text-center">
+        <h2 className="mb-4 text-white text-3xl font-bold sm:text-4xl lg:text-5xl">
+          Recruitment Informational
+        </h2>
+        <p className="mx-auto mb-12 text-body-color-dark max-w-2xl text-lg font-medium leading-relaxed sm:text-xl sm:leading-relaxed">
+          To learn more about each role and its responsibilities, come to the informational on Jan. 27th, Tuesday 6-7PM at PETR120!
+        </p>
+      </div>
+
       <div className="container">
         <div className="mx-auto max-w-3xl">
           <Accordion type="single" collapsible className="w-full">
