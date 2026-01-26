@@ -10,9 +10,9 @@ import ApplySection from "~/components/Apply/ApplySection";
 import Contact from "~/components/Contact";
 import ContactBackground from "~/components/Contact/ContactBackground";
 import Hero from "~/components/Hero";
-import { env } from "~/env";
 import SponsorTicker from "~/components/Ticker";
-
+import { env } from "~/env";
+import { PastIterationsSection } from "~/components/pastEvents";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -34,10 +34,9 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-    
       <ScrollUp />
       <Hero />
-      <AboutSectionOne />
+      {/* <AboutSectionOne /> */}
       {/* <AboutSectionTwo /> */}
       {/* <ApplySection /> */}
       <Suspense fallback={<p>Loading team...</p>}>
@@ -46,9 +45,10 @@ export default function HomePage() {
       {/* <Suspense fallback={<p>Loading gallery...</p>}>
         <ContactBackground />
       </Suspense> */}
+      <PastIterationsSection />
 
+      <SponsorTicker/>
       <Contact />
-      {/* < SponsorTicker/> */}
     </>
   );
 }

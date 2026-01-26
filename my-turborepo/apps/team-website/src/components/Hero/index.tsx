@@ -1,18 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import type { CarouselApi } from "~/components/ui/carousel";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "~/components/ui/carousel";
+// import type { CarouselApi } from "~/components/ui/carousel";
+// import {
+//   Carousel,
+//   CarouselContent,
+//   CarouselItem,
+// } from "~/components/ui/carousel";
 import Squares from "../Squares";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const mascotImages = [
-  // { src: "/mascot/floatbear.png", alt: "Floating Bear" },
+  { src: "/mascot/floatbear.png", alt: "Floating Bear" },
   { src: "/mascot/DETECTIVE BEARTHOLOMEW.png", alt: "Detective Beartholomew" },
   { src: "/mascot/DrippalowmewV3_4K.png", alt: "Drippalowmew" },
   { src: "/mascot/Pixel_PolarBear.png", alt: "Pixel Polar Bear" },
@@ -22,19 +27,246 @@ const mascotImages = [
 ];
 
 const Hero = () => {
-  const [api, setApi] = useState<CarouselApi>();
+  // const [api, setApi] = useState<CarouselApi>();
 
-  useEffect(() => {
-    if (!api) {
-      return;
+  // useEffect(() => {
+  //   if (!api) {
+  //     return;
+  //   }
+
+  //   const interval = setInterval(() => {
+  //     api.scrollNext();
+  //   }, 4000);
+
+  //   return () => clearInterval(interval);
+  // }, [api]);
+
+  const mascotContainerRef = useRef<HTMLDivElement>(null);
+  const animationTweensRef = useRef<gsap.core.Tween[]>([]);
+  const angleMapRef = useRef<Map<Element, number>>(new Map());
+
+  const getOvalParams = () => {
+    if (!mascotContainerRef.current || typeof window === "undefined") {
+      return null;
     }
 
-    const interval = setInterval(() => {
-      api.scrollNext();
-    }, 4000);
+    // Get container dimensions for accurate centering
+    const container = mascotContainerRef.current;
+    const containerRect = container.getBoundingClientRect();
+    const containerWidth = containerRect.width;
+    const containerHeight = containerRect.height;
 
-    return () => clearInterval(interval);
-  }, [api]);
+    // Responsive center position - true center of the viewport
+    const centerX = containerWidth / 2;
+    const centerY = containerHeight / 2;
+
+    // Image dimensions (200px base, but will be scaled)
+    const baseImageSize = 200;
+
+    // Responsive scaling based on screen size
+    let initialScale: number;
+    if (window.innerWidth < 640) {
+      initialScale = 0.4;
+    } else if (window.innerWidth < 768) {
+      initialScale = 0.5;
+    } else if (window.innerWidth < 1024) {
+      initialScale = 0.65;
+    } else {
+      initialScale = 0.8;
+    }
+
+    const scaledImageSize = baseImageSize * initialScale;
+
+    // Horizontal radius
+    const radiusX =
+      window.innerWidth < 640
+        ? window.innerWidth * 0.32
+        : window.innerWidth < 768
+          ? window.innerWidth * 0.36
+          : window.innerWidth < 1024
+            ? window.innerWidth * 0.38
+            : window.innerWidth * 0.4;
+
+    // Vertical radius
+    const radiusY =
+      window.innerHeight < 640
+        ? window.innerHeight * 0.22
+        : window.innerHeight < 768
+          ? window.innerHeight * 0.24
+          : window.innerHeight < 1024
+            ? window.innerHeight * 0.27
+            : window.innerHeight * 0.3;
+
+    return {
+      centerX,
+      centerY,
+      radiusX,
+      radiusY,
+      scaledImageSize,
+      initialScale,
+    };
+  };
+
+  useGSAP(() => {
+    if (!mascotContainerRef.current || typeof window === "undefined") return;
+
+    const mascotElements =
+      mascotContainerRef.current.querySelectorAll(".mascot-image");
+    const totalMascots = mascotElements.length;
+
+    // Kill any existing animations
+    animationTweensRef.current.forEach((tween) => tween.kill());
+    animationTweensRef.current = [];
+    angleMapRef.current.clear();
+
+    const ovalParams = getOvalParams();
+    if (!ovalParams) return;
+
+    const {
+      centerX,
+      centerY,
+      radiusX,
+      radiusY,
+      scaledImageSize,
+      initialScale,
+    } = ovalParams;
+
+    mascotElements.forEach((mascot, index) => {
+      // Initial angle offset - evenly distribute mascots around the oval
+      const initialAngle = (index / totalMascots) * Math.PI * 2;
+
+      // Store initial angle in map
+      angleMapRef.current.set(mascot, initialAngle);
+
+      // Set initial position
+      const initialX =
+        centerX + Math.cos(initialAngle) * radiusX - scaledImageSize / 2;
+      const initialY =
+        centerY + Math.sin(initialAngle) * radiusY - scaledImageSize / 2;
+
+      gsap.set(mascot, {
+        x: initialX,
+        y: initialY,
+        scale: initialScale,
+        opacity: 0.75,
+        transformOrigin: "center center",
+      });
+
+      // Create continuous rotation animation around the oval
+      // Each mascot rotates at a slightly different speed for visual interest
+      const rotationSpeed = 100; // 20-40 seconds per full rotation
+
+      // Animate the rotation angle using a proxy object
+      const angleProxy = { value: initialAngle };
+      const targetAngle = initialAngle + Math.PI * 2;
+
+      // Animate the angle value
+      const tween = gsap.to(angleProxy, {
+        value: targetAngle,
+        duration: rotationSpeed,
+        ease: "none",
+        repeat: -1,
+        onUpdate: () => {
+          const currentAngle = angleProxy.value;
+          angleMapRef.current.set(mascot, currentAngle);
+          const x =
+            centerX + Math.cos(currentAngle) * radiusX - scaledImageSize / 2;
+          const y =
+            centerY + Math.sin(currentAngle) * radiusY - scaledImageSize / 2;
+
+          gsap.set(mascot, {
+            x: x,
+            y: y,
+          });
+        },
+      });
+
+      animationTweensRef.current.push(tween);
+    });
+  }, []);
+
+  // Handle window resize - restart animations with new parameters
+  useEffect(() => {
+    const handleResize = () => {
+      // Small delay to ensure resize is complete
+      setTimeout(() => {
+        if (!mascotContainerRef.current || typeof window === "undefined")
+          return;
+
+        const mascotElements =
+          mascotContainerRef.current.querySelectorAll(".mascot-image");
+        const totalMascots = mascotElements.length;
+
+        // Kill existing animations
+        animationTweensRef.current.forEach((tween) => tween.kill());
+        animationTweensRef.current = [];
+
+        const ovalParams = getOvalParams();
+        if (!ovalParams) return;
+
+        const {
+          centerX,
+          centerY,
+          radiusX,
+          radiusY,
+          scaledImageSize,
+          initialScale,
+        } = ovalParams;
+
+        mascotElements.forEach((mascot, index) => {
+          // Get current angle from map or calculate initial
+          const savedAngle = angleMapRef.current.get(mascot);
+          const currentAngle =
+            savedAngle ?? (index / totalMascots) * Math.PI * 2;
+          const initialAngle = currentAngle % (Math.PI * 2);
+
+          // Update scale immediately
+          gsap.set(mascot, {
+            scale: initialScale,
+            transformOrigin: "center center",
+          });
+
+          // Update stored angle
+          angleMapRef.current.set(mascot, initialAngle);
+
+          const rotationSpeed = 20 + (index % 3) * 10;
+
+          // Use proxy object for angle animation
+          const angleProxy = { value: initialAngle };
+          const targetAngle = initialAngle + Math.PI * 2;
+
+          const tween = gsap.to(angleProxy, {
+            value: targetAngle,
+            duration: rotationSpeed,
+            ease: "none",
+            repeat: -1,
+            onUpdate: () => {
+              const currentAngleValue = angleProxy.value;
+              angleMapRef.current.set(mascot, currentAngleValue);
+              const x =
+                centerX +
+                Math.cos(currentAngleValue) * radiusX -
+                scaledImageSize / 2;
+              const y =
+                centerY +
+                Math.sin(currentAngleValue) * radiusY -
+                scaledImageSize / 2;
+
+              gsap.set(mascot, {
+                x: x,
+                y: y,
+              });
+            },
+          });
+
+          animationTweensRef.current.push(tween);
+        });
+      }, 100);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const scrollToNextSection = () => {
     const nextSection = document.getElementById("about");
@@ -53,7 +285,7 @@ const Hero = () => {
         <div className="absolute inset-0 z-[-1] h-full w-full">
           <Squares
             speed={0.6}
-            squareSize={60}
+            squareSize={50}
             direction="down"
             borderColor="lightblue"
             hoverFillColor="#222"
@@ -63,12 +295,37 @@ const Hero = () => {
         {/* Dark Overlay */}
         <div className="absolute inset-0 z-[-1] bg-black/40 dark:bg-black/60"></div>
 
-        <div className="relative z-10 flex h-full items-center ">
-          <div className="flex w-full flex-col items-center pl-10 md:flex-row md:items-center">
-            {/* Left Column - Title and Text */}
-            <div className="w-full pl-14 md:w-1/2">
+        {/* Mascot Images Container - Parallax Bounce Animation */}
+        <div
+          ref={mascotContainerRef}
+          className="pointer-events-none absolute inset-0 z-[1] h-full w-full"
+        >
+          {mascotImages.map((mascot, index) => (
+            <div
+              key={index}
+              className="mascot-image absolute"
+              style={{
+                width: "200px",
+                height: "200px",
+              }}
+            >
+              <Image
+                className="h-full w-full object-contain shadow-none"
+                src={mascot.src || "/placeholder.svg"}
+                alt={mascot.alt}
+                width={200}
+                height={200}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="relative z-10 flex h-full items-center justify-center">
+          <div className="flex w-full flex-col items-center justify-center px-4">
+            {/* Centered Title and Text */}
+            <div className="w-full max-w-4xl text-center">
               <div className="relative">
-                <h1 className=" w-full py-2 text-5xl font-bold leading-tight text-black dark:text-white sm:leading-tight md:text-9xl md:leading-tight">
+                <h1 className="w-full py-2 text-5xl font-bold leading-tight text-black dark:text-white sm:leading-tight md:text-9xl md:leading-tight">
                   <span className="text-datalightblue dark:text-datalightblue">
                     tamu
                   </span>
@@ -76,7 +333,7 @@ const Hero = () => {
                     datathon
                   </span>
                 </h1>
-                <p className="text-body-color dark:text-body-color-dark mb-12 text-left text-base !leading-relaxed sm:text-lg md:text-xl">
+                <p className="text-body-color dark:text-body-color-dark mb-12 text-center text-base !leading-relaxed sm:text-lg md:text-xl">
                   We are the largest data science and machine learning focused
                   hackathon in Texas located at Texas A&M University in College
                   Station.
@@ -85,11 +342,11 @@ const Hero = () => {
             </div>
 
             {/* Right Column - Mascot Carousel */}
-            <div className="w-full px-4 pr-16">
+            {/* <div className="w-full px-4 pr-16">
               <div className="flex h-fit w-full items-center justify-center">
                 <Carousel
                   setApi={setApi}
-                  className="w-full max-w-[400px] h-full "
+                  className="h-full w-full max-w-[400px] "
                   opts={{
                     loop: true,
                     align: "center",
@@ -100,7 +357,7 @@ const Hero = () => {
                       <CarouselItem key={index}>
                         <div className="flex items-center justify-center">
                           <Image
-                            className="animate-float duration-2000 shadow-none h-full w-full"
+                            className="animate-float duration-2000 h-full w-full shadow-none"
                             src={mascot.src || "/placeholder.svg"}
                             alt={mascot.alt}
                             width={600}
@@ -112,7 +369,7 @@ const Hero = () => {
                   </CarouselContent>
                 </Carousel>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

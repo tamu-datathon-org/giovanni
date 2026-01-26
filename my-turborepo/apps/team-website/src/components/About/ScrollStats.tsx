@@ -170,30 +170,6 @@ export default function ScrollStats({ progress }: { progress: number }) {
             />
           ))}
         </div>
-
-        {/* Mini stat cards - shown after revealing */}
-        <div className="mt-2 grid w-fit max-w-4xl grid-cols-5 gap-1">
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className={`relative flex h-full w-fit items-center justify-center overflow-hidden rounded-xl border bg-card/50 p-2 backdrop-blur-sm transition-all duration-500 ${
-                index < visibleCount
-                  ? "translate-y-0 border-primary/30 opacity-100"
-                  : "translate-y-4 border-border opacity-30"
-              }`}
-            >
-              {/* <div className="flex flex-col items-center gap-2 text-center"> */}
-              <div className="text-primary opacity-80 scale-150">{stat.icon}</div>
-              {/* <div className="font-mono text-lg font-bold text-foreground">
-                  {stat.value}
-                </div>
-                <div className="text-xs uppercase tracking-wider text-muted-foreground">
-                  {stat.label}
-                </div>
-              </div> */}
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

@@ -107,7 +107,6 @@ const Contact = () => {
           {/* </div> */}
         </div>
       </div>
-      <SponsorTicker/>
     </section>
   );
 };

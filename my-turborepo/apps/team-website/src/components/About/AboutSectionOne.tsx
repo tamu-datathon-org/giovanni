@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { SectionTitle } from "@vanni/ui/section-title";
+
 //TODO:change it
 
 import ScrollStats from "./ScrollStats";
