@@ -38,7 +38,6 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/mallikaparajuli",
             },
-
           ],
         },
 
@@ -72,8 +71,7 @@ const AboutTeam = () => {
             {
               type: "github",
               url: "https://github.com/hetk987",
-            }
-
+            },
           ],
         },
 
@@ -110,8 +108,6 @@ const AboutTeam = () => {
           name: "Kendall Nguyen",
           position: "Design Lead",
         },
-
-
       ],
       description: "Executive",
     },
@@ -191,7 +187,6 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/ali-abouelazm",
             },
-
           ],
         },
 
@@ -200,8 +195,6 @@ const AboutTeam = () => {
           name: "Susan Hamilton",
           position: "Challenges",
         },
-
-
 
         {
           image: "/images/teampics_v2025/Layla_Headshot.jpg",
@@ -344,7 +337,6 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/jessica-tran28",
             },
-
           ],
         },
         {
@@ -358,7 +350,6 @@ const AboutTeam = () => {
             },
           ],
         },
-
       ],
       description: "Organizers",
     },
@@ -396,7 +387,6 @@ const AboutTeam = () => {
             },
           ],
         },
-
       ],
       description: "Alumni",
     },

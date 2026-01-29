@@ -10,9 +10,9 @@ import ApplySection from "~/components/Apply/ApplySection";
 import Contact from "~/components/Contact";
 import ContactBackground from "~/components/Contact/ContactBackground";
 import Hero from "~/components/Hero";
+import { PastIterationsSection } from "~/components/pastEvents";
 import SponsorTicker from "~/components/Ticker";
 import { env } from "~/env";
-import { PastIterationsSection } from "~/components/pastEvents";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -47,7 +47,7 @@ export default function HomePage() {
       </Suspense> */}
       <PastIterationsSection />
 
-      <SponsorTicker/>
+      <SponsorTicker />
       <Contact />
     </>
   );

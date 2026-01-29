@@ -12,7 +12,6 @@ const Hero = () => {
   const tamuSpanRef = useRef<SVGSVGElement | null>(null);
   const datathonSpanRef = useRef<SVGSVGElement | null>(null);
 
-  
   useEffect(() => {
     if (
       !sectionRef.current ||
