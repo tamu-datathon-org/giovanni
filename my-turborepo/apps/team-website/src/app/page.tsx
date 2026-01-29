@@ -11,6 +11,7 @@ import Contact from "~/components/Contact";
 import ContactBackground from "~/components/Contact/ContactBackground";
 import Hero from "~/components/Hero";
 import { PastEventsSection } from "~/components/PastEvents";
+import { SectionDivider } from "~/components/SectionDivider";
 import SponsorTicker from "~/components/Ticker";
 import { env } from "~/env";
 
@@ -36,17 +37,12 @@ export default function HomePage() {
     <>
       <ScrollUp />
       <Hero />
-      {/* <AboutSectionOne /> */}
-      {/* <AboutSectionTwo /> */}
-      {/* <ApplySection /> */}
       <PastEventsSection />
+      <SectionDivider variant="jagged" />
       <Suspense fallback={<p>Loading team...</p>}>
         <AboutTeam />
       </Suspense>
-      {/* <Suspense fallback={<p>Loading gallery...</p>}>
-        <ContactBackground />
-      </Suspense> */}
-
+      <SectionDivider variant="curvy" />
       <SponsorTicker />
       {/* <Contact /> */}
     </>

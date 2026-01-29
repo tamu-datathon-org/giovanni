@@ -39,7 +39,7 @@ export const PastEventsSection: React.FC = () => {
   const rightColumn = eventsOrdered.filter((_, index) => index >= 4);
 
   return (
-    <section className="bg-[#1a2332] px-4 py-16">
+    <section className="bg-[#121723] px-4 py-16">
       <div className="mx-auto max-w-5xl">
         <SectionTitle title="Past Events" paragraph={""} center mb="40px" />
 

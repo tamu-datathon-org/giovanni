@@ -4,6 +4,7 @@ import type { TeamMemberProps } from "./teamMember";
 import TeamMember from "./teamMember";
 
 interface TeamsProps {
+  key: number;
   teamMembers: TeamMemberProps[];
   description: string;
 }

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import Teams from "./teams";
+import { SectionTitle } from "@vanni/ui/section-title";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -420,17 +421,16 @@ const AboutTeam = () => {
       <div
         ref={teamSectionRef}
         id="team"
-        className="container mx-auto bg-white py-16 text-center opacity-0 dark:bg-transparent md:py-20 lg:py-24"
+        className="container mx-auto py-16 text-center opacity-0 dark:bg-transparent md:py-16 lg:py-20"
       >
-        <h2 className="mb-8 text-5xl font-bold leading-tight text-black dark:text-white">
-          Meet the Team
-        </h2>
+        <SectionTitle title="Meet the Teams" paragraph={""} center mb="40px" />
         <div className="flex flex-col justify-center gap-4">
           {teamList_v2026.map((team, team_index) => (
             <Teams
               key={team_index}
               teamMembers={team.teamMembers}
               description={team.description}
+
             />
           ))}
         </div>
