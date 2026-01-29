@@ -18,7 +18,7 @@ export const EventButton: React.FC<EventProp> = ({ url, label, season, year }) =
       rel="noopener noreferrer"
       className="block w-full"
     >
-      <div className="bg-[#4A90E2] hover:bg-[#5BA0F2] transition-colors rounded-full py-3 px-8 text-center cursor-pointer">
+      <div className="bg-[#4A90E2] hover:bg-[#5BA0F2] rounded-full py-3 px-8 text-center cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out">
         <span className="text-white font-semibold text-lg">
           {season} {year}
         </span>
@@ -27,7 +27,7 @@ export const EventButton: React.FC<EventProp> = ({ url, label, season, year }) =
   );
 };
 
-export const PastIterationsSection: React.FC = () => {
+export const PastEventsSection: React.FC = () => {
   const leftColumn = eventsOrdered.filter((_, index) => index < 4);
   const rightColumn = eventsOrdered.filter((_, index) => index >= 4);
 
@@ -35,7 +35,7 @@ export const PastIterationsSection: React.FC = () => {
     <section className="bg-[#1a2332] py-16 px-4">
       <div className="max-w-5xl mx-auto">
         <h2 className="text-white text-3xl font-bold text-center mb-12">
-          Past Iterations
+          Past Events
         </h2>
 
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">

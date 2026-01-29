@@ -1,10 +1,6 @@
 "use client";
 
 import type React from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface Stat {
   value: string;
@@ -18,7 +14,7 @@ const stats: Stat[] = [
     label: "In Prizes",
     icon: (
       <svg
-        className="h-6 w-6"
+        className="h-5 w-5 sm:h-6 sm:w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -37,7 +33,7 @@ const stats: Stat[] = [
     label: "Hackers",
     icon: (
       <svg
-        className="h-6 w-6"
+        className="h-5 w-5 sm:h-6 sm:w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -56,7 +52,7 @@ const stats: Stat[] = [
     label: "Schools",
     icon: (
       <svg
-        className="h-6 w-6"
+        className="h-5 w-5 sm:h-6 sm:w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -81,7 +77,7 @@ const stats: Stat[] = [
     label: "Hours",
     icon: (
       <svg
-        className="h-6 w-6"
+        className="h-5 w-5 sm:h-6 sm:w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -100,7 +96,7 @@ const stats: Stat[] = [
     label: "Projects",
     icon: (
       <svg
-        className="h-6 w-6"
+        className="h-5 w-5 sm:h-6 sm:w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -116,61 +112,43 @@ const stats: Stat[] = [
   },
 ];
 
-export default function ScrollStats({ progress }: { progress: number }) {
-  // Calculate how many stats should be visible based on progress
+interface ScrollStatsProps {
+  progress: number;
+}
+
+export default function ScrollStats({ progress }: ScrollStatsProps) {
   const visibleCount = Math.min(
-    Math.ceil(progress * (stats.length + 1)),
     stats.length,
+    Math.max(0, Math.floor(progress * (stats.length + 1))),
   );
 
   return (
-    <div className="h-full w-full pt-16">
-      <div className="flex flex-col items-center gap-8">
-        {/* Current stat display - large centered */}
-        <div className="relative flex h-48 w-full items-center justify-center">
-          {stats.map((stat, index) => {
-            const isVisible = index < visibleCount;
-            const isCurrent = index === visibleCount - 1;
-
-            return (
-              <div
-                key={index}
-                className={`absolute transition-all duration-700 ease-out ${
-                  isVisible
-                    ? isCurrent
-                      ? "translate-y-0 scale-100 opacity-100"
-                      : "-translate-y-20 scale-75 opacity-0"
-                    : "translate-y-20 scale-50 opacity-0"
-                }`}
-              >
-                <div className="flex flex-col items-center gap-4 text-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
-                    <div className="scale-150">{stat.icon}</div>
-                  </div>
-                  <div className="font-mono text-6xl font-bold tracking-tight text-foreground md:text-8xl">
-                    {stat.value}
-                  </div>
-                  <div className="text-lg uppercase tracking-widest text-muted-foreground">
-                    {stat.label}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Progress indicators */}
-        <div className="mt-8 flex items-center gap-3">
-          {stats.map((_, index) => (
-            <div
-              key={index}
-              className={`h-2 rounded-full transition-all duration-500 ${
-                index < visibleCount ? "w-8 bg-primary" : "w-2 bg-gray-50"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
+    <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
+      {stats.map((stat, index) => {
+        const isVisible = index < visibleCount;
+        return (
+          <div
+            key={index}
+            className={`flex items-center gap-3 rounded-xl border border-neutral-200 bg-white/90 px-5 py-4 shadow-md ring-1 ring-neutral-200/80 transition-all duration-500 sm:gap-4 sm:px-6 sm:py-4 ${
+              isVisible
+                ? "translate-y-0 scale-[1.02] opacity-100"
+                : "translate-y-4 scale-95 opacity-0"
+            }`}
+          >
+            <span className="flex shrink-0 items-center justify-center rounded-lg bg-datalightblue/20 p-1.5 text-datadarkblue">
+              {stat.icon}
+            </span>
+            <div className="flex flex-col items-start">
+              <span className="font-mono text-xl font-extrabold tracking-tight text-neutral-900 sm:text-2xl">
+                {stat.value}
+              </span>
+              <span className="text-xs font-medium uppercase tracking-wider text-neutral-500 sm:text-sm">
+                {stat.label}
+              </span>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

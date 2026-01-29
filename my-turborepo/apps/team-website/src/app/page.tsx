@@ -10,7 +10,7 @@ import ApplySection from "~/components/Apply/ApplySection";
 import Contact from "~/components/Contact";
 import ContactBackground from "~/components/Contact/ContactBackground";
 import Hero from "~/components/Hero";
-import { PastIterationsSection } from "~/components/pastEvents";
+import { PastEventsSection } from "~/components/pastEvents";
 import SponsorTicker from "~/components/Ticker";
 import { env } from "~/env";
 
@@ -39,16 +39,16 @@ export default function HomePage() {
       {/* <AboutSectionOne /> */}
       {/* <AboutSectionTwo /> */}
       {/* <ApplySection /> */}
+      <PastEventsSection />
       <Suspense fallback={<p>Loading team...</p>}>
         <AboutTeam />
       </Suspense>
       {/* <Suspense fallback={<p>Loading gallery...</p>}>
         <ContactBackground />
       </Suspense> */}
-      <PastIterationsSection />
 
       <SponsorTicker />
-      <Contact />
+      {/* <Contact /> */}
     </>
   );
 }

@@ -161,7 +161,7 @@ const Header = () => {
           </div>
 
           {/* NAV */}
-          <nav className="flex flex-1 justify-center">
+          <nav className="flex flex-1 justify-center" ref={navItemsRef}>
             <ul className="hidden gap-2 lg:flex">
               {menuData.map((item, index) => (
                 <li
@@ -224,9 +224,9 @@ const Header = () => {
           </button>
 
           {/* RIGHT */}
-          <div ref={navItemsRef} className="px-4">
+          {/* <div ref={navItemsRef} className="px-4">
             <ThemeToggler />
-          </div>
+          </div> */}
         </div>
 
         {/* MOBILE MENU */}

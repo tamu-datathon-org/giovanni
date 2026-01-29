@@ -78,8 +78,8 @@ export default function SponsorTicker() {
   }, []);
 
   return (
-    <div className="flex w-full flex-col items-center justify-center pt-6">
-      <SectionTitle title="Past Sponsors" paragraph={""} center mb="0px"/>
+    <div className="flex w-full flex-col items-center justify-center bg-[#171c28] pt-6">
+      <SectionTitle title="Past Sponsors" paragraph={""} center mb="-40px" />
 
       <div className="relative h-40 w-full overflow-hidden">
         <div
