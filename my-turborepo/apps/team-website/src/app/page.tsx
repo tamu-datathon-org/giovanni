@@ -10,7 +10,7 @@ import ApplySection from "~/components/Apply/ApplySection";
 import Contact from "~/components/Contact";
 import ContactBackground from "~/components/Contact/ContactBackground";
 import Hero from "~/components/Hero";
-import { PastEventsSection } from "~/components/pastEvents";
+import { PastEventsSection } from "~/components/PastEvents";
 import SponsorTicker from "~/components/Ticker";
 import { env } from "~/env";
 

@@ -45,7 +45,7 @@ const Hero = () => {
     })
       .to(
         sectionRef.current,
-        { backgroundColor: "#ffffff", duration: 0.5 },
+        { backgroundColor: "#f1f5f9", duration: 0.5 },
         ">",
       )
       .to(oldTextRef.current, { opacity: 0, duration: 0.5 }, "=0")
@@ -69,8 +69,7 @@ const Hero = () => {
     };
   }, []);
 
-  const statsProgress =
-    scrollProgress < 0.5 ? 0 : (scrollProgress - 0.5) / 0.5;
+  const statsProgress = scrollProgress < 0.5 ? 0 : (scrollProgress - 0.5) / 0.5;
 
   const scrollToNextSection = () => {
     const nextSection = document.getElementById("team");
@@ -84,7 +83,7 @@ const Hero = () => {
       <section
         ref={sectionRef}
         id="home"
-        className="relative h-screen w-full overflow-hidden bg-neutral-900 "
+        className="bg-neutral-90 relative h-screen w-full overflow-hidden"
       >
         <div className="relative flex h-full w-full items-center justify-center px-4">
           {/* Old text — tamudatathon */}

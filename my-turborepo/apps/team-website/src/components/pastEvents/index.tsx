@@ -1,6 +1,8 @@
 import type React from "react";
 import Image from "next/image";
 
+import { SectionTitle } from "@vanni/ui/section-title";
+
 export interface EventProp {
   url: string;
   logo: string;
@@ -10,7 +12,12 @@ export interface EventProp {
   season?: string;
 }
 
-export const EventButton: React.FC<EventProp> = ({ url, label, season, year }) => {
+export const EventButton: React.FC<EventProp> = ({
+  url,
+  label,
+  season,
+  year,
+}) => {
   return (
     <a
       href={url}
@@ -18,8 +25,8 @@ export const EventButton: React.FC<EventProp> = ({ url, label, season, year }) =
       rel="noopener noreferrer"
       className="block w-full"
     >
-      <div className="bg-[#4A90E2] hover:bg-[#5BA0F2] rounded-full py-3 px-8 text-center cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out">
-        <span className="text-white font-semibold text-lg">
+      <div className="cursor-pointer rounded-full bg-[#4A90E2] px-8 py-3 text-center transition-all duration-300 ease-in-out hover:scale-105 hover:bg-[#5BA0F2]">
+        <span className="text-lg font-semibold text-white">
           {season} {year}
         </span>
       </div>
@@ -32,26 +39,24 @@ export const PastEventsSection: React.FC = () => {
   const rightColumn = eventsOrdered.filter((_, index) => index >= 4);
 
   return (
-    <section className="bg-[#1a2332] py-16 px-4">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-white text-3xl font-bold text-center mb-12">
-          Past Events
-        </h2>
+    <section className="bg-[#1a2332] px-4 py-16">
+      <div className="mx-auto max-w-5xl">
+        <SectionTitle title="Past Events" paragraph={""} center mb="40px" />
 
-        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+        <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
           {/* Mascot Image */}
-          <div className="flex-shrink-0 w-48 md:w-64">
+          <div className="w-48 flex-shrink-0 md:w-64">
             <Image
               src="/mascot/td Datathon mascot chibi.svg"
               alt="Datathon Mascot"
               width={256}
               height={256}
-              className="w-full h-auto"
+              className="h-auto w-full"
             />
           </div>
 
           {/* Event Buttons Grid */}
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
+          <div className="grid w-full max-w-2xl flex-1 grid-cols-1 gap-4 md:grid-cols-2">
             {/* Left Column */}
             <div className="flex flex-col gap-4">
               {leftColumn.map((event) => (
@@ -87,10 +92,6 @@ export const PastEventsSection: React.FC = () => {
     </section>
   );
 };
-
-
-
-
 
 export const eventsOrdered = [
   {
