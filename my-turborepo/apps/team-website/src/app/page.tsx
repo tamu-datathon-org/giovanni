@@ -10,7 +10,7 @@ import ApplySection from "~/components/Apply/ApplySection";
 import Contact from "~/components/Contact";
 import ContactBackground from "~/components/Contact/ContactBackground";
 import Hero from "~/components/Hero";
-import { PastEventsSection } from "~/components/PastEvents";
+import { PastEventsSection } from "../components/PastEvents";
 import { SectionDivider } from "~/components/SectionDivider";
 import SponsorTicker from "~/components/Ticker";
 import { env } from "~/env";
@@ -30,7 +30,6 @@ export const metadata: Metadata = {
     siteName: "TAMU Datathon",
   },
 };
-//TODO: MAKE SURE TO MOVE SPONSOR TICKER AFTER EVERYTHING IS FINALIZED !!!!!!!!!! <-------- DON'T FORGET!!!!
 
 export default function HomePage() {
   return (
@@ -44,7 +43,6 @@ export default function HomePage() {
       </Suspense>
       <SectionDivider variant="curvy" />
       <SponsorTicker />
-      {/* <Contact /> */}
     </>
   );
 }
