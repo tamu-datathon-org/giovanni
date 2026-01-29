@@ -1,10 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import Teams from "./teams";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const AboutTeam = () => {
+  const teamSectionRef = useRef<HTMLDivElement | null>(null);
   const teamList_v2026 = [
     {
       teamMembers: [
@@ -396,11 +401,36 @@ const AboutTeam = () => {
       description: "Alumni",
     },
   ];
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if (!teamSectionRef.current) return;
+      gsap.fromTo(
+        teamSectionRef.current,
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: teamSectionRef.current,
+            start: "top 85%",
+            end: "top 30%",
+            scrub: true,
+          },
+        },
+      );
+    }, teamSectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <>
       <div
+        ref={teamSectionRef}
         id="team"
-        className="container mx-auto bg-white dark:bg-transparent py-16 text-center md:py-20 lg:py-24"
+        className="container mx-auto bg-white py-16 text-center opacity-0 dark:bg-transparent md:py-20 lg:py-24"
       >
         <h2 className="mb-8 text-5xl font-bold leading-tight text-black dark:text-white">
           Meet the Team
