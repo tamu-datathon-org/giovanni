@@ -10,10 +10,10 @@ import ApplySection from "~/components/Apply/ApplySection";
 import Contact from "~/components/Contact";
 import ContactBackground from "~/components/Contact/ContactBackground";
 import Hero from "~/components/Hero";
-import { PastEventsSection } from "../components/PastEvents";
 import { SectionDivider } from "~/components/SectionDivider";
 import SponsorTicker from "~/components/Ticker";
 import { env } from "~/env";
+import { PastEventsSection } from "../components/PastEvents";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
