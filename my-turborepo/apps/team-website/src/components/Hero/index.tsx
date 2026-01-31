@@ -40,6 +40,7 @@ const Hero = () => {
 
     tl.to(oldTextRef.current, {
       scale: 77,
+      yPercent: -800, 
       ease: "power2.in",
       duration: 0.6,
     })
