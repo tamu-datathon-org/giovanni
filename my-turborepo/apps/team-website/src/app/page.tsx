@@ -13,7 +13,7 @@ import Hero from "~/components/Hero";
 import { SectionDivider } from "~/components/SectionDivider";
 import SponsorTicker from "~/components/Ticker";
 import { env } from "~/env";
-import { PastEventsSection } from "../components/PastEvents/comp";
+import { PastEventsSection } from "../components/PastEvents/pastEvents";
 
 export const metadata: Metadata = {
   metadataBase: new URL(

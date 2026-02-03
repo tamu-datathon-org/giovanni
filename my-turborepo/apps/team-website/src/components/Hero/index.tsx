@@ -40,16 +40,17 @@ const Hero = () => {
 
     tl.to(oldTextRef.current, {
       scale: 77,
-      yPercent: -800, 
+      yPercent: -800,
       ease: "power2.in",
       duration: 0.6,
+      snap: { scale: 70 },
     })
       .to(
         sectionRef.current,
-        { backgroundColor: "#f1f5f9", duration: 0.5 },
-        ">",
+        { backgroundColor: "#2d69df", duration: 0.0 },
+        "=0",
       )
-      .to(oldTextRef.current, { opacity: 0, duration: 0.5 }, "=0")
+      // .to(oldTextRef.current, { opacity: 0, duration: 0.5 }, "=0")
       .to(
         newTextRef.current,
         { opacity: 1, scale: 1, ease: "power2.out", duration: 0.5 },
@@ -127,6 +128,7 @@ const Hero = () => {
           {/* New text — appears after old text fades */}
           <h1
             ref={newTextRef}
+            id="about"
             className="absolute mx-16 max-w-3xl origin-center scale-90 text-center text-[2vw] font-extrabold tracking-tight text-black opacity-0 will-change-transform sm:mx-24"
           >
             We are the largest data science and machine learning focused

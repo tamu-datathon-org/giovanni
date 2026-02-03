@@ -3,6 +3,8 @@ import Image from "next/image";
 
 import { SectionTitle } from "@vanni/ui/section-title";
 
+import { eventsOrdered } from "./logos";
+
 export interface EventProp {
   url: string;
   logo: string;
@@ -17,16 +19,26 @@ export const EventButton: React.FC<EventProp> = ({
   label,
   season,
   year,
+  logo,
 }) => {
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="block w-full"
+      className="group block w-full overflow-visible"
     >
-      <div className="cursor-pointer rounded-full bg-[#4A90E2] px-8 py-3 text-center transition-all duration-300 ease-in-out hover:scale-105 hover:bg-[#5BA0F2]">
-        <span className="text-lg font-semibold text-white">
+      <div className="relative flex cursor-pointer flex-row items-center justify-start gap-5 overflow-visible rounded-2xl border border-white/10 bg-[#4A90E2]/95 px-4 py-3.5 shadow-lg shadow-black/25 ring-1 ring-inset ring-white/20 transition-all duration-300 ease-out hover:scale-[1.02] hover:border-white/20 hover:bg-[#5BA0F2] hover:shadow-xl hover:shadow-[#4A90E2]/30 hover:ring-white/30">
+        <div className="-my-3 flex shrink-0 drop-shadow-lg">
+          <Image
+            src={logo}
+            alt={label}
+            width={100}
+            height={100}
+            className="h-14 w-14 min-w-14 object-contain"
+          />
+        </div>
+        <span className="text-lg font-semibold tracking-tight text-white drop-shadow-sm">
           {season} {year}
         </span>
       </div>
@@ -40,7 +52,7 @@ export const PastEventsSection: React.FC = () => {
 
   return (
     <section className="bg-[#121723] px-4 py-16">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-4xl">
         <SectionTitle title="Past Events" paragraph={""} center mb="40px" />
 
         <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
@@ -58,7 +70,7 @@ export const PastEventsSection: React.FC = () => {
           {/* Event Buttons Grid */}
           <div className="grid w-full max-w-2xl flex-1 grid-cols-1 gap-4 md:grid-cols-2">
             {/* Left Column */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-8">
               {leftColumn.map((event) => (
                 <EventButton
                   key={event.label}
@@ -73,7 +85,7 @@ export const PastEventsSection: React.FC = () => {
             </div>
 
             {/* Right Column */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-8">
               {rightColumn.map((event) => (
                 <EventButton
                   key={event.label}
@@ -92,62 +104,3 @@ export const PastEventsSection: React.FC = () => {
     </section>
   );
 };
-
-export const eventsOrdered = [
-  {
-    url: "https://2019.tamudatathon.com/",
-    year: 2019,
-    logo: "/images/past-logo/TD2019",
-    lite: false,
-    label: "2019 Datathon",
-    season: "Fall",
-  },
-  {
-    url: "https://2020.tamudatathon.com/",
-    year: 2020,
-    logo: "/images/past-logo/TD2020",
-    lite: false,
-    label: "2020 Datathon",
-    season: "Fall",
-  },
-  {
-    url: "https://2021.tamudatathon.com/",
-    year: 2021,
-    logo: "/images/past-logo/TD2021",
-    lite: false,
-    label: "2021 Datathon",
-    season: "Fall",
-  },
-  {
-    url: "https://2022.tamudatathon.com/",
-    year: 2022,
-    logo: "/images/past-logo/TD2022",
-    lite: false,
-    label: "2022 Datathon",
-    season: "Fall",
-  },
-  {
-    url: "https://2024.tamudatathon.com/",
-    year: 2024,
-    logo: "/images/past-logo/TD2024",
-    lite: false,
-    label: "2024 Datathon",
-    season: "Fall",
-  },
-  {
-    url: "https://2025-lite.tamudatathon.com/",
-    year: 2025,
-    logo: "/images/past-logo/TDL2025",
-    lite: true,
-    label: "2025 Lite Datathon",
-    season: "Spring",
-  },
-  {
-    url: "https://2025.tamudatathon.com/",
-    year: 2025,
-    logo: "/images/past-logo/TD2025",
-    lite: false,
-    label: "2025 Datathon",
-    season: "Fall",
-  },
-];
