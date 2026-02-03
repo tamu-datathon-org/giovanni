@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import ScrollStats from "~/components/About/ScrollStats";
+import StatSectionImages from "./StatSectionImages";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +14,9 @@ const Hero = () => {
   const newTextRef = useRef<HTMLHeadingElement | null>(null);
   const tamuSpanRef = useRef<SVGSVGElement | null>(null);
   const datathonSpanRef = useRef<SVGSVGElement | null>(null);
+  const imageWrapperRef1 = useRef<HTMLDivElement | null>(null);
+  const imageWrapperRef2 = useRef<HTMLDivElement | null>(null);
+  const imageWrapperRef3 = useRef<HTMLDivElement | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
@@ -22,10 +25,19 @@ const Hero = () => {
       !oldTextRef.current ||
       !newTextRef.current ||
       !tamuSpanRef.current ||
-      !datathonSpanRef.current
+      !datathonSpanRef.current ||
+      !imageWrapperRef1.current ||
+      !imageWrapperRef2.current ||
+      !imageWrapperRef3.current
     ) {
       return;
     }
+
+    const imageRefs = [
+      imageWrapperRef1.current,
+      imageWrapperRef2.current,
+      imageWrapperRef3.current,
+    ];
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -56,12 +68,11 @@ const Hero = () => {
         { opacity: 1, scale: 1, ease: "power2.out", duration: 0.5 },
         ">",
       )
-      .to(
-        newTextRef.current,
-        { y: -32, ease: "power2.out", duration: 0.4 },
-        ">",
-      )
-      .to({}, { duration: 2 });
+      .to({}, { duration: 0.2 })
+      .set(imageRefs, { x: "100vw" }, ">")
+      .to(imageRefs[0], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
+      .to(imageRefs[1], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
+      .to(imageRefs[2], { x: 0, duration: 0.5, ease: "power2.out" }, ">");
 
     const scrollTrigger = tl.scrollTrigger as ScrollTrigger | undefined;
 
@@ -70,8 +81,6 @@ const Hero = () => {
       scrollTrigger?.kill();
     };
   }, []);
-
-  const statsProgress = scrollProgress < 0.5 ? 0 : (scrollProgress - 0.5) / 0.5;
 
   const scrollToNextSection = () => {
     const nextSection = document.getElementById("team");
@@ -87,7 +96,7 @@ const Hero = () => {
         id="home"
         className="bg-neutral-90 relative h-screen w-full overflow-hidden"
       >
-        <div className="relative flex h-full w-full items-center justify-center px-4">
+        <div className="relative z-0 flex h-full w-full items-center justify-center px-4">
           {/* Old text — tamudatathon */}
           <div
             ref={oldTextRef}
@@ -137,12 +146,14 @@ const Hero = () => {
           </h1>
         </div>
 
-        {/* Stats — appear one by one after text, below center */}
-        <div className="absolute bottom-24 left-0 right-0 flex justify-center px-4 sm:bottom-28">
-          <div className="w-full max-w-4xl">
-            <ScrollStats progress={statsProgress} />
-          </div>
-        </div>
+        {/* StatSection images — start off-screen right, slide in only after text has shown; z-index above text so they cover it */}
+        <StatSectionImages
+          refs={{
+            imageWrapperRef1,
+            imageWrapperRef2,
+            imageWrapperRef3,
+          }}
+        />
 
         <button
           onClick={scrollToNextSection}
