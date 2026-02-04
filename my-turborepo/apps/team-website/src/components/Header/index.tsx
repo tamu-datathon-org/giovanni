@@ -171,13 +171,12 @@ const Header = () => {
             <Link href="/">
               <Image
                 src="/images/past-logos/TD2024.png"
-                alt="logo"
+                alt="TAMU Datathon logo"
                 width={100}
                 height={100}
-                objectFit="contain"
-                className="h-12 w-auto shrink-0 drop-shadow"
+                sizes="100px"
+                className="h-12 w-auto shrink-0 drop-shadow object-contain"
                 priority
-                unoptimized
               />
             </Link>
           </div>
