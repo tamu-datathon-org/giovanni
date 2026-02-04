@@ -422,7 +422,7 @@ const AboutTeam = () => {
       <div
         ref={teamSectionRef}
         id="team"
-        className="w-full py-16 text-center opacity-0 dark:bg-transparent md:py-20 lg:py-24"
+        className="w-full py-2 text-center opacity-0 dark:bg-transparent md:py-20 lg:py-24"
       >
         <SectionTitle title="Meet the Teams" paragraph={""} center mb="40px" />
         <div className="flex flex-col justify-center gap-4">
