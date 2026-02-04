@@ -138,7 +138,7 @@ const Hero = () => {
           <h1
             ref={newTextRef}
             id="about"
-            className="absolute mx-16 max-w-3xl origin-center scale-90 text-center text-[2vw] font-extrabold tracking-tight text-black opacity-0 will-change-transform sm:mx-24"
+            className="absolute mx-16 max-w-3xl origin-center scale-90 text-center text-base font-extrabold tracking-tight text-black opacity-0 will-change-transform sm:mx-24 sm:text-lg md:text-xl lg:text-4xl"
           >
             We are the largest data science and machine learning focused
             hackathon in Texas located at Texas A&M University in College

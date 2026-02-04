@@ -10,7 +10,7 @@ const Footer = () => {
   const { toast } = useToast();
 
   return (
-    <footer className="bg-[#1e232e] dark:bg-gray-dark relative z-10 pb-8 pt-12 md:pt-16 lg:pt-20">
+    <footer id="contact" className="bg-[#1e232e] dark:bg-gray-dark relative z-10 pb-8 pt-12 md:pt-16 lg:pt-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col items-center md:items-start">

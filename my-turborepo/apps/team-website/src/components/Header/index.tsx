@@ -152,10 +152,14 @@ const Header = () => {
           <div ref={logoRef} className="px-4">
             <Link href="/">
               <Image
-                src="/images/logo/logoTD.png"
+                src="/images/past-logos/TD2024.png"
                 alt="logo"
-                width={60}
-                height={30}
+                width={100}
+                height={100}
+                objectFit="contain"
+                className="h-12 w-auto shrink-0 drop-shadow"
+                priority
+                unoptimized
               />
             </Link>
           </div>

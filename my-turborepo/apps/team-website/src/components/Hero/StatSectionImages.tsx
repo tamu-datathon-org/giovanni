@@ -25,7 +25,7 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
 
   return (
     <div
-      className="absolute inset-0 m-20 overflow-hidden"
+      className="absolute inset-0 m-4 overflow-hidden sm:m-12 lg:m-20"
       style={{ zIndex: 20 }}
       aria-hidden
     >
@@ -57,7 +57,7 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
                 className="absolute inset-0 bg-black/50"
                 aria-hidden
               />
-              <span className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-center text-7xl font-bold text-[#f2f1ef]">
+              <span className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-center text-4xl font-bold text-[#f2f1ef] sm:text-5xl lg:text-7xl">
                 {text}
               </span>
             </div>
