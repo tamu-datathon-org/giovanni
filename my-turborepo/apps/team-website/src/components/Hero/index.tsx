@@ -1,12 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import StatSectionImages from "./StatSectionImages";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
@@ -33,52 +29,68 @@ const Hero = () => {
       return;
     }
 
-    const imageRefs = [
-      imageWrapperRef1.current,
-      imageWrapperRef2.current,
-      imageWrapperRef3.current,
-    ];
+    let killed = false;
+    let killTimeline: (() => void) | null = null;
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "+=400%",
-        scrub: true,
-        pin: true,
-        onUpdate: (self) => setScrollProgress(self.progress ?? 0),
-      },
+    void Promise.all([
+      import("gsap"),
+      import("gsap/ScrollTrigger"),
+    ]).then(([gsapModule, scrollTriggerModule]) => {
+      if (killed) return;
+      const gsap = gsapModule.default;
+      const ScrollTrigger = scrollTriggerModule.default;
+      gsap.registerPlugin(ScrollTrigger);
+
+      const imageRefs = [
+        imageWrapperRef1.current,
+        imageWrapperRef2.current,
+        imageWrapperRef3.current,
+      ];
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=400%",
+          scrub: true,
+          pin: true,
+          onUpdate: (self) => setScrollProgress(self.progress ?? 0),
+        },
+      });
+
+      tl.to(oldTextRef.current, {
+        scale: 77,
+        yPercent: -800,
+        ease: "power2.in",
+        duration: 0.6,
+        snap: { scale: 70 },
+      })
+        .to(
+          sectionRef.current,
+          { backgroundColor: "#2d69df", duration: 0.0 },
+          "=0",
+        )
+        .to(
+          newTextRef.current,
+          { opacity: 1, scale: 1, ease: "power2.out", duration: 0.5 },
+          ">",
+        )
+        .to({}, { duration: 0.2 })
+        .set([imageRefs[1], imageRefs[2]], { x: "100vw" }, ">")
+        .to(imageRefs[0], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
+        .to(imageRefs[1], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
+        .to(imageRefs[2], { x: 0, duration: 0.5, ease: "power2.out" }, ">");
+
+      const scrollTrigger = tl.scrollTrigger;
+      killTimeline = () => {
+        tl.kill();
+        scrollTrigger?.kill();
+      };
     });
 
-    tl.to(oldTextRef.current, {
-      scale: 77,
-      yPercent: -800,
-      ease: "power2.in",
-      duration: 0.6,
-      snap: { scale: 70 },
-    })
-      .to(
-        sectionRef.current,
-        { backgroundColor: "#2d69df", duration: 0.0 },
-        "=0",
-      )
-      // .to(oldTextRef.current, { opacity: 0, duration: 0.5 }, "=0")
-      .to(
-        newTextRef.current,
-        { opacity: 1, scale: 1, ease: "power2.out", duration: 0.5 },
-        ">",
-      )
-      .to({}, { duration: 0.2 })
-      .set(imageRefs, { x: "100vw" }, ">")
-      .to(imageRefs[0], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
-      .to(imageRefs[1], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
-      .to(imageRefs[2], { x: 0, duration: 0.5, ease: "power2.out" }, ">");
-
-    const scrollTrigger = tl.scrollTrigger as ScrollTrigger | undefined;
-
     return () => {
-      tl.kill();
-      scrollTrigger?.kill();
+      killed = true;
+      killTimeline?.();
     };
   }, []);
 

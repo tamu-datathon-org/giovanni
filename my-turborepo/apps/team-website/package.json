@@ -6,6 +6,7 @@
   "scripts": {
     "build": "pnpm with-env next build",
     "clean": "git clean -xdf .next .turbo node_modules",
+    "optimize:hero-images": "node scripts/optimize-hero-images.mjs",
     "dev": "pnpm with-env next dev --port 3000 --turbo",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",

@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
+
 export const STAT_SECTION_IMAGES = [
-  { src: "/images/StatSection/collage.webp", text: "15k in Prizes" },
-  { src: "/images/StatSection/DSC01559.JPG", text: "600+ Hackers" },
-  { src: "/images/StatSection/DSC02664.JPG", text: "20+ Schools" },
+  { src: "/images/StatSection/collage.webp", text: "15k in Prizes", alt: "15k in Prizes" },
+  { src: "/images/StatSection/DSC01559.webp", text: "600+ Hackers", alt: "600+ Hackers" },
+  { src: "/images/StatSection/DSC02664.webp", text: "20+ Schools", alt: "20+ Schools" },
 ] as const;
 
 export interface StatSectionImagesRefs {
@@ -16,9 +18,13 @@ interface StatSectionImagesProps {
   refs: StatSectionImagesRefs;
 }
 
+/** Responsive sizes: full viewport width for hero images */
+const HERO_IMAGE_SIZES =
+  "(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px";
+
 /**
  * Full-screen images that slide in from the right of the viewport one by one.
- * Initial position is off-screen right (100vw) so they only appear when GSAP animates them in.
+ * First image uses priority for LCP; all use next/image for optimization.
  */
 export default function StatSectionImages({ refs }: StatSectionImagesProps) {
   const { imageWrapperRef1, imageWrapperRef2, imageWrapperRef3 } = refs;
@@ -29,7 +35,7 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
       style={{ zIndex: 20 }}
       aria-hidden
     >
-      {STAT_SECTION_IMAGES.map(({ src, text }, i) => {
+      {STAT_SECTION_IMAGES.map(({ src, text, alt }, i) => {
         const ref =
           i === 0
             ? imageWrapperRef1
@@ -39,18 +45,22 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
         return (
           <div
             key={src}
-            ref={ref}
+            ref={ref as React.RefObject<HTMLDivElement>}
             className="absolute left-0 top-0 flex h-full w-full items-center justify-center"
             style={{
               zIndex: i + 1,
-              // Start off-screen to the right; GSAP will animate to x: 0 only after text has shown
+              // First image visible on load for LCP; others start off-screen and slide in via GSAP
               transform: "translateX(100vw)",
             }}
           >
             <div className="relative inline-block max-h-full max-w-full">
-              <img
+              <Image
                 src={src}
-                alt=""
+                alt={alt}
+                width={1920}
+                height={1080}
+                sizes={HERO_IMAGE_SIZES}
+                priority
                 className="block max-h-full max-w-full object-contain"
               />
               <div

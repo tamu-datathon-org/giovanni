@@ -1,17 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import menuData from "./menuData";
 import { ScrollProgress } from "./ScrollProgess";
 import ThemeToggler from "./ThemeToggler";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Header = () => {
   const navRef = useRef<HTMLElement>(null);
@@ -19,10 +14,13 @@ const Header = () => {
   const logoRef = useRef<HTMLDivElement>(null);
   const navItemsRef = useRef<HTMLDivElement>(null);
 
-  // pill animation refs
-  const pillRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const circleRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const pillTimelines = useRef<(gsap.core.Timeline | null)[]>([]);
+  // pill animation refs (GSAP timelines with tweenTo, set after dynamic import)
+  type PillTimeline = {
+    tweenTo: (label: string, opts: { duration: number }) => void;
+  };
+  const pillRefs = useRef<Array<HTMLLIElement | null>>([]);
+  const circleRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const pillTimelines = useRef<Array<PillTimeline | null>>([]);
 
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navbarToggleHandler = () => setNavbarOpen(!navbarOpen);
@@ -31,9 +29,20 @@ const Header = () => {
   const handleSubmenu = (index: number) =>
     setOpenIndex(openIndex === index ? -1 : index);
 
-  useGSAP(
-    () => {
-      const nav = navRef.current;
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+
+    let killScrollTrigger: (() => void) | null = null;
+
+    void Promise.all([
+      import("gsap"),
+      import("gsap/ScrollTrigger"),
+    ]).then(([gsapModule, scrollTriggerModule]) => {
+      const gsap = gsapModule.default;
+      const ScrollTrigger = scrollTriggerModule.default;
+      gsap.registerPlugin(ScrollTrigger);
+
       const container = containerRef.current;
       const logo = logoRef.current;
       const navItems = navItemsRef.current;
@@ -57,7 +66,7 @@ const Header = () => {
         backdropFilter: "blur(24px) saturate(150%)",
       });
 
-      gsap
+      const scrollTl = gsap
         .timeline({
           scrollTrigger: {
             trigger: document.body,
@@ -88,6 +97,12 @@ const Header = () => {
         )
         .to(logo, { paddingLeft: "1rem" }, 0)
         .to(navItems, { paddingRight: "1rem" }, 0);
+
+      const st = scrollTl.scrollTrigger;
+      killScrollTrigger = () => {
+        scrollTl.kill();
+        st?.kill();
+      };
 
       // ======================
       // PILL HOVER ANIMATION
@@ -135,9 +150,12 @@ const Header = () => {
 
         pillTimelines.current[i] = tl;
       });
-    },
-    { scope: navRef },
-  );
+    });
+
+    return () => {
+      killScrollTrigger?.();
+    };
+  }, []);
 
   return (
     <header ref={navRef} className="fixed z-40 flex w-full justify-center">
