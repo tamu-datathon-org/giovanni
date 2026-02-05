@@ -38,39 +38,37 @@ const TeamMember: React.FC<TeamMemberProps> = ({
   socialLinks = [],
 }) => {
   return (
-    <div className="pb-2">
-      <div className="w-40 text-center space-y-0.5">
-        <Image
-          src={image || "/placeholder.svg"}
-          alt={name}
-          width={100}
-          height={100}
-          className="h-30 w-30 mx-auto my-2 rounded-full object-cover"
-        />
-        <h3 className="text-base font-semibold text-black dark:text-white">
-          {name}
-        </h3>
-        <p className="text-body-color dark:text-body-color-dark text-sm">
-          {position}
-        </p>
+    <div className="w-32 lg:w-40 px-2 pb-2 text-center">
+      <Image
+        src={image || "/placeholder.svg"}
+        alt={name}
+        width={100}
+        height={100}
+        className="mx-auto my-2 h-22 w-22 rounded-full object-cover lg:h-28 lg:w-28"
+      />
+      <h3 className="h-auto w-full text-wrap text-sm font-semibold text-black dark:text-white lg:text-xl">
+        {name}
+      </h3>
+      <p className="text-body-color dark:text-body-color-dark text-xs lg:text-sm">
+        {position}
+      </p>
 
-        {socialLinks.length > 0 && (
-          <div className="mt-1 flex justify-center gap-3">
-            {socialLinks.map((link, index) => (
-              <a
-                key={index}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 dark:text-gray-400 transition-colors hover:text-black dark:hover:text-white"
-                aria-label={`Visit ${link.type}`}
-              >
-                {getSocialIcon(link.type)}
-              </a>
-            ))}
-          </div>
-        )}
-      </div>
+      {socialLinks.length > 0 && (
+        <div className="lg:gap- mt-1 flex justify-center gap-3 ">
+          {socialLinks.map((link, index) => (
+            <a
+              key={index}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 transition-colors hover:text-black dark:text-gray-400 dark:hover:text-white"
+              aria-label={`Visit ${link.type}`}
+            >
+              {getSocialIcon(link.type)}
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

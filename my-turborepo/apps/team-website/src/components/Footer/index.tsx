@@ -10,20 +10,23 @@ const Footer = () => {
   const { toast } = useToast();
 
   return (
-    <footer className="bg-normal dark:bg-gray-dark relative z-10 pb-8 pt-12 md:pt-16 lg:pt-20">
+    <footer
+      id="contact"
+      className="dark:bg-gray-dark relative z-10 bg-[#1e232e] pb-8 pt-12 md:pt-16 lg:pt-20"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col items-center md:items-start">
             <Link href="/" className="mb-6 inline-block">
               <Image
-                src="/images/logo/logoTD.png"
+                src="/images/past-logos/TD2024.png"
                 alt="logo"
                 className="mx-auto w-[128px] dark:hidden"
                 width={100}
                 height={100}
               />
               <Image
-                src="/images/logo/logoTD.png"
+                src="/images/past-logos/TD2024.png"
                 alt="logo"
                 className="mx-auto hidden w-[200px] dark:block md:w-[150px] lg:w-[128px]"
                 width={100}
@@ -39,7 +42,7 @@ const Footer = () => {
           <div className="flex flex-col items-center space-y-4 md:items-start">
             <h3 className="text-lg font-semibold">Contacts</h3>
             {/* Contact for sponsors */}
-            {/* <div>
+            <div>
               Looking to sponsor? <br />
               <span className="flex items-center space-x-2">
                 <a
@@ -51,7 +54,9 @@ const Footer = () => {
                 <button
                   className="w-full hover:opacity-50 md:w-auto"
                   onClick={() => {
-                    void navigator.clipboard.writeText("sponsor@tamudatathon.com");
+                    void navigator.clipboard.writeText(
+                      "sponsor@tamudatathon.com",
+                    );
                     toast({
                       title: "Copied to clipboard",
                       variant: "default",
@@ -62,7 +67,7 @@ const Footer = () => {
                   <LuClipboard className="mr-2" />
                 </button>
               </span>
-            </div> */}
+            </div>
             {/* Contact for questions */}
             <div>
               Any questions? <br />
@@ -76,7 +81,9 @@ const Footer = () => {
                 <button
                   className="w-full hover:opacity-50 md:w-auto"
                   onClick={() => {
-                    void navigator.clipboard.writeText("connect@tamudatathon.com");
+                    void navigator.clipboard.writeText(
+                      "connect@tamudatathon.com",
+                    );
                     toast({
                       title: "Copied to clipboard",
                       variant: "default",

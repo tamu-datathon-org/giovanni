@@ -1,54 +1,56 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import dynamic from "next/dynamic";
 
 import { ScrollUp } from "@vanni/ui/scroll-up";
 
-import AboutSectionOne from "~/components/About/AboutSectionOne";
-import AboutSectionTwo from "~/components/About/AboutSectionTwo";
-import AboutTeam from "~/components/AboutTeam/AboutTeam";
-import ApplySection from "~/components/Apply/ApplySection";
-import Contact from "~/components/Contact";
-import ContactBackground from "~/components/Contact/ContactBackground";
 import Hero from "~/components/Hero";
+import { SectionDivider } from "~/components/SectionDivider";
 import { env } from "~/env";
-import SponsorTicker from "~/components/Ticker";
 
+const PastEventsSection = dynamic(
+  () =>
+    import("~/components/PastEvents/pastEvents").then((m) => ({
+      default: m.PastEventsSection,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <section className="bg-[#121723] px-4 py-16">
+        <div className="mx-auto max-w-4xl animate-pulse rounded-2xl bg-white/10 py-24" />
+      </section>
+    ),
+  }
+);
 
-export const metadata: Metadata = {
-  metadataBase: new URL(
-    env.VERCEL_ENV === "production"
-      ? "https://turbo.t3.gg"
-      : "http://localhost:3000",
+const AboutTeam = dynamic(() => import("~/components/AboutTeam/AboutTeam"), {
+  ssr: true,
+  loading: () => (
+    <section className="bg-[#121723] px-4 py-16">
+      <div className="mx-auto max-w-4xl animate-pulse rounded-2xl bg-white/10 py-24" />
+    </section>
   ),
-  title: "TAMU Datathon",
-  description: "A&M's Data Science Hackathon",
-  openGraph: {
-    title: "TAMU Datathon",
-    description: "A&M's Data Science Hackathon",
-    url: "https://tamudatathon.com",
-    siteName: "TAMU Datathon",
-  },
-};
-//TODO: MAKE SURE TO MOVE SPONSOR TICKER AFTER EVERYTHING IS FINALIZED !!!!!!!!!! <-------- DON'T FORGET!!!!
+});
+
+const SponsorTicker = dynamic(() => import("~/components/Ticker"), {
+  ssr: true,
+  loading: () => (
+    <div className="flex w-full flex-col items-center justify-center bg-[#121723] py-16">
+      <div className="h-40 w-full animate-pulse rounded bg-white/10" />
+    </div>
+  ),
+});
+
 
 export default function HomePage() {
   return (
     <>
-    
       <ScrollUp />
       <Hero />
-      <AboutSectionOne />
-      {/* <AboutSectionTwo /> */}
-      {/* <ApplySection /> */}
-      <Suspense fallback={<p>Loading team...</p>}>
-        <AboutTeam />
-      </Suspense>
-      {/* <Suspense fallback={<p>Loading gallery...</p>}>
-        <ContactBackground />
-      </Suspense> */}
-
-      <Contact />
-      {/* < SponsorTicker/> */}
+      <PastEventsSection />
+      <SectionDivider variant="curvy" />
+      <SponsorTicker />
+      <SectionDivider variant="curvy" />
+      <AboutTeam />
     </>
   );
 }
