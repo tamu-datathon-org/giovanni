@@ -8,19 +8,20 @@ const Hero = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const oldTextRef = useRef<HTMLDivElement | null>(null);
   const newTextRef = useRef<HTMLHeadingElement | null>(null);
-  const tamuSpanRef = useRef<SVGSVGElement | null>(null);
-  const datathonSpanRef = useRef<SVGSVGElement | null>(null);
   const imageWrapperRef1 = useRef<HTMLDivElement | null>(null);
   const imageWrapperRef2 = useRef<HTMLDivElement | null>(null);
   const imageWrapperRef3 = useRef<HTMLDivElement | null>(null);
+
+  const [isNarrow, setNarrowState] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < 768,
+  );
+  const isNarrowRef = useRef(isNarrow);
 
   useEffect(() => {
     if (
       !sectionRef.current ||
       !oldTextRef.current ||
       !newTextRef.current ||
-      !tamuSpanRef.current ||
-      !datathonSpanRef.current ||
       !imageWrapperRef1.current ||
       !imageWrapperRef2.current ||
       !imageWrapperRef3.current
@@ -37,54 +38,66 @@ const Hero = () => {
         const gsap = gsapModule.default;
         const ScrollTrigger = scrollTriggerModule.default;
         gsap.registerPlugin(ScrollTrigger);
-        const isNarrow =
-          typeof window !== "undefined" && window.innerWidth < 768;
 
-        const imageRefs = [
-          imageWrapperRef1.current,
-          imageWrapperRef2.current,
-          imageWrapperRef3.current,
-        ];
+        requestAnimationFrame(() => {
+          if (killed) return;
+          isNarrowRef.current = isNarrow;
+          const imageRefs = [
+            imageWrapperRef1.current,
+            imageWrapperRef2.current,
+            imageWrapperRef3.current,
+          ];
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "+=200%",
-            scrub: 1,
-            pin: true,
-          },
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top top",
+              end: "+=200%",
+              scrub: 1,
+              pin: true,
+            },
+          });
+
+          tl.to(oldTextRef.current, {
+            scale: isNarrow ? 100 : 77,
+            yPercent: isNarrow ? -1400 : -800,
+            xPercent: isNarrow ? -355 : 0,
+            ease: "power2.in",
+            duration: 0.6,
+            snap: { scale: 70 },
+          })
+            .to(
+              sectionRef.current,
+              { backgroundColor: "#2d69df", duration: 0.0 },
+              "=0",
+            )
+            .to(
+              newTextRef.current,
+              { opacity: 1, scale: 1, ease: "power2.out", duration: 0.5 },
+              ">",
+            )
+            .to({}, { duration: 0.2 })
+            .set([imageRefs[1], imageRefs[2]], { y: "100vh" }, ">")
+            .to(imageRefs[0], { y: 0, duration: 0.5, ease: "power2.out" }, ">")
+            .to(imageRefs[1], { y: 0, duration: 0.5, ease: "power2.out" }, ">")
+            .to(imageRefs[2], { y: 0, duration: 0.5, ease: "power2.out" }, ">");
+
+          const scrollTrigger = tl.scrollTrigger;
+          const onResize = () => {
+            ScrollTrigger.refresh();
+            const narrow = window.innerWidth < 768;
+            if (narrow !== isNarrowRef.current) {
+              isNarrowRef.current = narrow;
+              setNarrowState(narrow);
+            }
+          };
+          window.addEventListener("resize", onResize);
+          killTimeline = () => {
+            tl.kill();
+            scrollTrigger?.kill();
+            window.removeEventListener("resize", onResize);
+          };
         });
-
-        tl.to(oldTextRef.current, {
-          scale: isNarrow ? 100 : 77,
-          yPercent: isNarrow ? -1400 : -800,
-          xPercent: isNarrow ? -355 : 0,
-          ease: "power2.in",
-          duration: 0.6,
-          snap: { scale: 70 },
-        })
-          .to(
-            sectionRef.current,
-            { backgroundColor: "#2d69df", duration: 0.0 },
-            "=0",
-          )
-          .to(
-            newTextRef.current,
-            { opacity: 1, scale: 1, ease: "power2.out", duration: 0.5 },
-            ">",
-          )
-          .to({}, { duration: 0.2 })
-          .set([imageRefs[1], imageRefs[2]], { y: "100vh" }, ">")
-          .to(imageRefs[0], { y: 0, duration: 0.5, ease: "power2.out" }, ">")
-          .to(imageRefs[1], { y: 0, duration: 0.5, ease: "power2.out" }, ">")
-          .to(imageRefs[2], { y: 0, duration: 0.5, ease: "power2.out" }, ">");
-
-        const scrollTrigger = tl.scrollTrigger;
-        killTimeline = () => {
-          tl.kill();
-          scrollTrigger?.kill();
-        };
       },
     );
 
@@ -92,7 +105,7 @@ const Hero = () => {
       killed = true;
       killTimeline?.();
     };
-  }, []);
+  }, [isNarrow]);
 
   const scrollToNextSection = () => {
     const nextSection = document.getElementById("team");
@@ -117,7 +130,6 @@ const Hero = () => {
           >
             {/* TAMU SVG — viewBox matches path bounds so path fills allocated space */}
             <svg
-              ref={tamuSpanRef}
               viewBox="0 10.28 106.69 35.57"
               preserveAspectRatio="xMidYMid meet"
               className="text-datalightblue dark:text-datalightblue m-2 h-[18vw] w-auto shrink-0 [paint-order:stroke_fill] lg:h-[9vw]"
@@ -132,7 +144,6 @@ const Hero = () => {
 
             {/* DATATHON SVG — viewBox matches path bounds so path fills allocated space */}
             <svg
-              ref={datathonSpanRef}
               viewBox="0 9.47 189.48 36.38"
               preserveAspectRatio="xMidYMid meet"
               className="text-datadarkblue dark:text-datadarkblue h-[18vw] w-auto shrink-0 overflow-visible [paint-order:stroke_fill] lg:ml-4 lg:h-[9vw] "
@@ -171,7 +182,7 @@ const Hero = () => {
           aria-label="Scroll to next section"
           className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 cursor-pointer text-white transition-opacity hover:opacity-80 dark:text-white"
         >
-          <div className="animate-bob">
+          <div className="animate-bob motion-reduce:animate-none max-md:animate-none">
             <svg
               width="24"
               height="24"
