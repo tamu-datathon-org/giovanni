@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 export const STAT_SECTION_IMAGES = [
-  { src: "/images/StatSection/collage.webp", text: "15k in Prizes", alt: "15k in Prizes" },
+  { src: "/images/StatSection/collage.webp", text: "15k+ in Prizes", alt: "15k in Prizes" },
   { src: "/images/StatSection/DSC01559.webp", text: "600+ Hackers", alt: "600+ Hackers" },
   { src: "/images/StatSection/DSC02664.webp", text: "20+ Schools", alt: "20+ Schools" },
 ] as const;
@@ -53,7 +53,7 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
               transform: "translateX(100vw)",
             }}
           >
-            <div className="relative inline-block max-h-full max-w-full">
+            <div className="relative inline-block aspect-[9/16] max-h-[90dvh] w-auto max-w-full sm:aspect-auto sm:max-h-full">
               <Image
                 src={src}
                 alt={alt}
@@ -61,7 +61,7 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
                 height={1080}
                 sizes={HERO_IMAGE_SIZES}
                 priority
-                className="block max-h-full max-w-full object-contain"
+                className="block h-full w-full max-h-full max-w-full object-cover sm:object-contain"
               />
               <div
                 className="absolute inset-0 bg-black/50"

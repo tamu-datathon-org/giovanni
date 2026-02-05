@@ -32,61 +32,63 @@ const Hero = () => {
     let killed = false;
     let killTimeline: (() => void) | null = null;
 
-    void Promise.all([
-      import("gsap"),
-      import("gsap/ScrollTrigger"),
-    ]).then(([gsapModule, scrollTriggerModule]) => {
-      if (killed) return;
-      const gsap = gsapModule.default;
-      const ScrollTrigger = scrollTriggerModule.default;
-      gsap.registerPlugin(ScrollTrigger);
+    void Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
+      ([gsapModule, scrollTriggerModule]) => {
+        if (killed) return;
+        const gsap = gsapModule.default;
+        const ScrollTrigger = scrollTriggerModule.default;
+        gsap.registerPlugin(ScrollTrigger);
+        const isNarrow = typeof window !== "undefined" && window.innerWidth < 768;
 
-      const imageRefs = [
-        imageWrapperRef1.current,
-        imageWrapperRef2.current,
-        imageWrapperRef3.current,
-      ];
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=400%",
-          scrub: true,
-          pin: true,
-          onUpdate: (self) => setScrollProgress(self.progress ?? 0),
-        },
-      });
+        const imageRefs = [
+          imageWrapperRef1.current,
+          imageWrapperRef2.current,
+          imageWrapperRef3.current,
+        ];
 
-      tl.to(oldTextRef.current, {
-        scale: 77,
-        yPercent: -800,
-        ease: "power2.in",
-        duration: 0.6,
-        snap: { scale: 70 },
-      })
-        .to(
-          sectionRef.current,
-          { backgroundColor: "#2d69df", duration: 0.0 },
-          "=0",
-        )
-        .to(
-          newTextRef.current,
-          { opacity: 1, scale: 1, ease: "power2.out", duration: 0.5 },
-          ">",
-        )
-        .to({}, { duration: 0.2 })
-        .set([imageRefs[1], imageRefs[2]], { x: "100vw" }, ">")
-        .to(imageRefs[0], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
-        .to(imageRefs[1], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
-        .to(imageRefs[2], { x: 0, duration: 0.5, ease: "power2.out" }, ">");
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "+=400%",
+            scrub: true,
+            pin: true,
+            onUpdate: (self) => setScrollProgress(self.progress ?? 0),
+          },
+        });
 
-      const scrollTrigger = tl.scrollTrigger;
-      killTimeline = () => {
-        tl.kill();
-        scrollTrigger?.kill();
-      };
-    });
+        tl.to(oldTextRef.current, {
+          scale: isNarrow ? 100 : 77,
+          yPercent: isNarrow ? -1400 : -800,
+          xPercent: isNarrow ? -355 : 0,
+          ease: "power2.in",
+          duration: 0.6,
+          snap: { scale: 70 },
+        })
+          .to(
+            sectionRef.current,
+            { backgroundColor: "#2d69df", duration: 0.0 },
+            "=0",
+          )
+          .to(
+            newTextRef.current,
+            { opacity: 1, scale: 1, ease: "power2.out", duration: 0.5 },
+            ">",
+          )
+          .to({}, { duration: 0.2 })
+          .set([imageRefs[1], imageRefs[2]], { x: "100vw" }, ">")
+          .to(imageRefs[0], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
+          .to(imageRefs[1], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
+          .to(imageRefs[2], { x: 0, duration: 0.5, ease: "power2.out" }, ">");
+
+        const scrollTrigger = tl.scrollTrigger;
+        killTimeline = () => {
+          tl.kill();
+          scrollTrigger?.kill();
+        };
+      },
+    );
 
     return () => {
       killed = true;
@@ -112,7 +114,7 @@ const Hero = () => {
           {/* Old text — tamudatathon */}
           <div
             ref={oldTextRef}
-            className="absolute flex items-center will-change-transform"
+            className="absolute flex items-center will-change-transform flex-col lg:flex-row"
             style={{ transformOrigin: "center center" }}
           >
             {/* TAMU SVG — viewBox matches path bounds so path fills allocated space */}
@@ -120,7 +122,7 @@ const Hero = () => {
               ref={tamuSpanRef}
               viewBox="0 10.28 106.69 35.57"
               preserveAspectRatio="xMidYMid meet"
-              className="text-datalightblue dark:text-datalightblue h-[9vw] w-auto shrink-0 [paint-order:stroke_fill]"
+              className="text-datalightblue dark:text-datalightblue m-2 h-[18vw] lg:h-[9vw] w-auto shrink-0 [paint-order:stroke_fill]"
               fill="currentColor"
               stroke="currentColor"
               strokeWidth={1.5}
@@ -135,7 +137,7 @@ const Hero = () => {
               ref={datathonSpanRef}
               viewBox="0 9.47 189.48 36.38"
               preserveAspectRatio="xMidYMid meet"
-              className="text-datadarkblue dark:text-datadarkblue ml-4 h-[9vw] w-auto shrink-0 overflow-visible [paint-order:stroke_fill] "
+              className="text-datadarkblue dark:text-datadarkblue lg:ml-4 h-[18vw] lg:h-[9vw] w-auto shrink-0 overflow-visible [paint-order:stroke_fill] "
               fill="currentColor"
               stroke="currentColor"
               strokeWidth={1.5}
@@ -150,11 +152,10 @@ const Hero = () => {
           <h1
             ref={newTextRef}
             id="about"
-            className="absolute mx-16 max-w-3xl origin-center scale-90 text-center text-base font-extrabold tracking-tight text-black opacity-0 will-change-transform sm:mx-24 sm:text-lg md:text-xl lg:text-4xl"
+            className="absolute mx-16 max-w-5xl h-auto origin-center scale-90 text-center text-3xl font-extrabold tracking-tight text-black opacity-0 will-change-transform sm:mx-24 sm:text-3xl md:text-6xl lg:text-6xl"
           >
             We are the largest data science and machine learning focused
-            hackathon in Texas located at Texas A&M University in College
-            Station.
+            hackathon in Texas!
           </h1>
         </div>
 
