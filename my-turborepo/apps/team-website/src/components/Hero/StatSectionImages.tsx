@@ -3,9 +3,21 @@
 import Image from "next/image";
 
 export const STAT_SECTION_IMAGES = [
-  { src: "/images/StatSection/collage.webp", text: "15k+ in Prizes", alt: "15k in Prizes" },
-  { src: "/images/StatSection/DSC01559.webp", text: "600+ Hackers", alt: "600+ Hackers" },
-  { src: "/images/StatSection/DSC02664.webp", text: "20+ Schools", alt: "20+ Schools" },
+  {
+    src: "/images/StatSection/collage.webp",
+    text: "15k+ in Prizes",
+    alt: "15k in Prizes",
+  },
+  {
+    src: "/images/StatSection/DSC01559.webp",
+    text: "600+ Hackers",
+    alt: "600+ Hackers",
+  },
+  {
+    src: "/images/StatSection/DSC02664.webp",
+    text: "20+ Schools",
+    alt: "20+ Schools",
+  },
 ] as const;
 
 export interface StatSectionImagesRefs {
@@ -60,13 +72,10 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
                 width={1920}
                 height={1080}
                 sizes={HERO_IMAGE_SIZES}
-                priority
-                className="block h-full w-full max-h-full max-w-full object-cover sm:object-contain"
+                priority={i === 0}
+                className="block h-full max-h-full w-full max-w-full object-cover sm:object-contain"
               />
-              <div
-                className="absolute inset-0 bg-black/50"
-                aria-hidden
-              />
+              <div className="absolute inset-0 bg-black/50" aria-hidden />
               <span className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-center text-4xl font-bold text-[#f2f1ef] sm:text-5xl lg:text-7xl">
                 {text}
               </span>

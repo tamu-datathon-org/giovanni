@@ -13,7 +13,6 @@ const Hero = () => {
   const imageWrapperRef1 = useRef<HTMLDivElement | null>(null);
   const imageWrapperRef2 = useRef<HTMLDivElement | null>(null);
   const imageWrapperRef3 = useRef<HTMLDivElement | null>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     if (
@@ -38,8 +37,8 @@ const Hero = () => {
         const gsap = gsapModule.default;
         const ScrollTrigger = scrollTriggerModule.default;
         gsap.registerPlugin(ScrollTrigger);
-        const isNarrow = typeof window !== "undefined" && window.innerWidth < 768;
-
+        const isNarrow =
+          typeof window !== "undefined" && window.innerWidth < 768;
 
         const imageRefs = [
           imageWrapperRef1.current,
@@ -51,10 +50,9 @@ const Hero = () => {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: "+=400%",
-            scrub: true,
+            end: "+=200%",
+            scrub: 1,
             pin: true,
-            onUpdate: (self) => setScrollProgress(self.progress ?? 0),
           },
         });
 
@@ -114,7 +112,7 @@ const Hero = () => {
           {/* Old text — tamudatathon */}
           <div
             ref={oldTextRef}
-            className="absolute flex items-center will-change-transform flex-col lg:flex-row"
+            className="absolute flex flex-col items-center lg:flex-row"
             style={{ transformOrigin: "center center" }}
           >
             {/* TAMU SVG — viewBox matches path bounds so path fills allocated space */}
@@ -122,7 +120,7 @@ const Hero = () => {
               ref={tamuSpanRef}
               viewBox="0 10.28 106.69 35.57"
               preserveAspectRatio="xMidYMid meet"
-              className="text-datalightblue dark:text-datalightblue m-2 h-[18vw] lg:h-[9vw] w-auto shrink-0 [paint-order:stroke_fill]"
+              className="text-datalightblue dark:text-datalightblue m-2 h-[18vw] w-auto shrink-0 [paint-order:stroke_fill] lg:h-[9vw]"
               fill="currentColor"
               stroke="currentColor"
               strokeWidth={1.5}
@@ -137,7 +135,7 @@ const Hero = () => {
               ref={datathonSpanRef}
               viewBox="0 9.47 189.48 36.38"
               preserveAspectRatio="xMidYMid meet"
-              className="text-datadarkblue dark:text-datadarkblue lg:ml-4 h-[18vw] lg:h-[9vw] w-auto shrink-0 overflow-visible [paint-order:stroke_fill] "
+              className="text-datadarkblue dark:text-datadarkblue h-[18vw] w-auto shrink-0 overflow-visible [paint-order:stroke_fill] lg:ml-4 lg:h-[9vw] "
               fill="currentColor"
               stroke="currentColor"
               strokeWidth={1.5}
@@ -152,7 +150,7 @@ const Hero = () => {
           <h1
             ref={newTextRef}
             id="about"
-            className="absolute mx-16 max-w-5xl h-auto origin-center scale-90 text-center text-3xl font-extrabold tracking-tight text-black opacity-0 will-change-transform sm:mx-24 sm:text-3xl md:text-6xl lg:text-6xl"
+            className="absolute mx-16 h-auto max-w-5xl origin-center scale-90 text-center text-3xl font-extrabold tracking-tight text-black opacity-0 will-change-transform sm:mx-24 sm:text-3xl md:text-6xl lg:text-6xl"
           >
             We are the largest data science and machine learning focused
             hackathon in Texas!
