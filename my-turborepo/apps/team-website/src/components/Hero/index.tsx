@@ -64,7 +64,6 @@ const Hero = () => {
             xPercent: isNarrow ? -355 : 0,
             ease: "power2.in",
             duration: 0.6,
-            snap: { scale: 70 },
           })
             .to(
               sectionRef.current,
