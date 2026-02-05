@@ -40,21 +40,6 @@ const SponsorTicker = dynamic(() => import("~/components/Ticker"), {
   ),
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(
-    env.VERCEL_ENV === "production"
-      ? "https://turbo.t3.gg"
-      : "http://localhost:3000",
-  ),
-  title: "TAMU Datathon",
-  description: "A&M's Data Science Hackathon",
-  openGraph: {
-    title: "TAMU Datathon",
-    description: "A&M's Data Science Hackathon",
-    url: "https://tamudatathon.com",
-    siteName: "TAMU Datathon",
-  },
-};
 
 export default function HomePage() {
   return (
@@ -62,10 +47,10 @@ export default function HomePage() {
       <ScrollUp />
       <Hero />
       <PastEventsSection />
-      <SectionDivider variant="jagged" />
-      <AboutTeam />
       <SectionDivider variant="curvy" />
       <SponsorTicker />
+      <SectionDivider variant="curvy" />
+      <AboutTeam />
     </>
   );
 }

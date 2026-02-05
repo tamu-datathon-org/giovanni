@@ -297,7 +297,7 @@ const Header = () => {
 
         {/* MOBILE MENU */}
         <nav
-          className={`bg-gray-dark/50 absolute right-0 top-full z-50 mt-2 w-[250px] rounded-lg border border-white/10 px-6 py-4 shadow-lg backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 lg:hidden ${
+          className={`bg-gray-dark/95 absolute right-0 top-full z-50 mt-2 w-fit rounded-lg border border-white/10 px-6 py-4 shadow-lg backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 lg:hidden ${
             navbarOpen ? "visible opacity-100" : "invisible opacity-0"
           }`}
         >

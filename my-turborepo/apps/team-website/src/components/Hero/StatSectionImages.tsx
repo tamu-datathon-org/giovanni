@@ -5,7 +5,7 @@ import Image from "next/image";
 export const STAT_SECTION_IMAGES = [
   {
     src: "/images/StatSection/collage.webp",
-    text: "15k+ in Prizes",
+    text: "$15k+ in Prizes",
     alt: "15k in Prizes",
   },
   {
@@ -65,7 +65,7 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
               transform: "translateY(100vh)",
             }}
           >
-            <div className="relative inline-block aspect-[9/16] h-full w-auto max-w-full sm:aspect-auto sm:max-h-full">
+            <div className="relative inline-block aspect-[9/16] h-full w-auto max-w-full sm:aspect-auto sm:max-h-full sm:w-full">
               <Image
                 src={src}
                 alt={alt}
@@ -73,7 +73,7 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
                 height={1080}
                 sizes={HERO_IMAGE_SIZES}
                 priority={i === 0}
-                className="block h-full max-h-full w-full max-w-full object-cover sm:object-contain"
+                className="block h-full max-h-full w-full max-w-full object-cover "
               />
               <div className="absolute inset-0 bg-black/50" aria-hidden />
               <span className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-center text-4xl font-bold text-[#f2f1ef] sm:text-5xl lg:text-7xl">

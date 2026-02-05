@@ -28,14 +28,14 @@ export const EventButton: React.FC<EventProp> = ({
       rel="noopener noreferrer"
       className="group block w-full overflow-visible"
     >
-      <div className="relative flex cursor-pointer flex-row items-center justify-start gap-5 overflow-visible rounded-2xl border border-white/10 bg-[#2c68dc]/95 px-4 py-3.5 shadow-lg shadow-black/25 ring-1 ring-inset ring-white/20 transition-all duration-300 ease-out hover:scale-[1.02] hover:border-white/20 hover:bg-[#5BA0F2] hover:shadow-xl hover:shadow-[#4A90E2]/30 hover:ring-white/30">
+      <div className="relative flex cursor-pointer flex-row items-center justify-start gap-5 overflow-visible rounded-sm bg-[#2c68dc]/95 px-4 py-3.5 shadow-lg shadow-black/25 ring-1 ring-inset ring-white/20 transition-all duration-300 ease-out hover:scale-[1.02] hover:border-white/20 hover:bg-[#5BA0F2] hover:shadow-xl hover:shadow-[#4A90E2]/30 hover:ring-white/30">
         <div className="-my-3 flex shrink-0 drop-shadow-lg">
           <Image
             src={logo}
             alt={label}
             width={100}
             height={100}
-            className="h-14 w-14 min-w-14 object-contain"
+            className="h-12 w-12 min-w-12 object-contain"
           />
         </div>
         <span className="text-lg font-semibold tracking-tight text-white drop-shadow-sm">
