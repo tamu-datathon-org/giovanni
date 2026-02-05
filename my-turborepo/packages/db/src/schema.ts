@@ -10,7 +10,6 @@ import {
   primaryKey,
   integer,
   pgTable,
-  pgEnum,
   uniqueIndex,
   index,
 } from "drizzle-orm/pg-core";

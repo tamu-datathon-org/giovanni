@@ -6,7 +6,6 @@ import {
 	timestamp,
 	boolean,
 	text,
-	primaryKey
 } from "drizzle-orm/pg-core";
 
 // User Table
