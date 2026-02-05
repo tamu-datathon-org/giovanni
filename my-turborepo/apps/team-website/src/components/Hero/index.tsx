@@ -77,10 +77,10 @@ const Hero = () => {
             ">",
           )
           .to({}, { duration: 0.2 })
-          .set([imageRefs[1], imageRefs[2]], { x: "100vw" }, ">")
-          .to(imageRefs[0], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
-          .to(imageRefs[1], { x: 0, duration: 0.5, ease: "power2.out" }, ">")
-          .to(imageRefs[2], { x: 0, duration: 0.5, ease: "power2.out" }, ">");
+          .set([imageRefs[1], imageRefs[2]], { y: "100vh" }, ">")
+          .to(imageRefs[0], { y: 0, duration: 0.5, ease: "power2.out" }, ">")
+          .to(imageRefs[1], { y: 0, duration: 0.5, ease: "power2.out" }, ">")
+          .to(imageRefs[2], { y: 0, duration: 0.5, ease: "power2.out" }, ">");
 
         const scrollTrigger = tl.scrollTrigger;
         killTimeline = () => {

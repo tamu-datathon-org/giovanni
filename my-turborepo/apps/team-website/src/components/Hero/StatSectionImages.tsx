@@ -31,7 +31,7 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
 
   return (
     <div
-      className="absolute inset-0 m-4 overflow-hidden sm:m-12 lg:m-20"
+      className="absolute inset-0 m-8 overflow-hidden sm:m-12 lg:m-20"
       style={{ zIndex: 20 }}
       aria-hidden
     >
@@ -50,10 +50,10 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
             style={{
               zIndex: i + 1,
               // First image visible on load for LCP; others start off-screen and slide in via GSAP
-              transform: "translateX(100vw)",
+              transform: "translateY(100vh)",
             }}
           >
-            <div className="relative inline-block aspect-[9/16] max-h-[90dvh] w-auto max-w-full sm:aspect-auto sm:max-h-full">
+            <div className="relative inline-block aspect-[9/16] h-full w-auto max-w-full sm:aspect-auto sm:max-h-full">
               <Image
                 src={src}
                 alt={alt}

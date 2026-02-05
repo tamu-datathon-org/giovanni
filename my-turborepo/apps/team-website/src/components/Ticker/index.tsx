@@ -16,8 +16,8 @@ export default function SponsorTicker() {
     "/images/sponsor-logo/amd.png",
     "/images/sponsor-logo/amex.png",
     "/images/sponsor-logo/bp.png",
-    "/images/sponsor-logo/cbre.png",
-    "/images/sponsor-logo/celonis.png",
+    // "/images/sponsor-logo/cbre.png",
+    // "/images/sponsor-logo/celonis.png",
     "/images/sponsor-logo/dell.png",
     "/images/sponsor-logo/facebook.png",
     "/images/sponsor-logo/gm.png",
@@ -25,13 +25,13 @@ export default function SponsorTicker() {
     "/images/sponsor-logo/heb.png",
     "/images/sponsor-logo/hewlett.png",
     "/images/sponsor-logo/johnson.png",
-    "/images/sponsor-logo/mathworks.png",
-    "/images/sponsor-logo/msy.png",
+    // "/images/sponsor-logo/mathworks.png",
+    // "/images/sponsor-logo/msy.png",
     "/images/sponsor-logo/p66.png",
-    "/images/sponsor-logo/pure.png",
+    // "/images/sponsor-logo/pure.png",
     "/images/sponsor-logo/qualcomm.png",
     "/images/sponsor-logo/shell.png",
-    "/images/sponsor-logo/sparx.png",
+    // "/images/sponsor-logo/sparx.png",
     "/images/sponsor-logo/splunk.png",
     "/images/sponsor-logo/tableau.png",
     "/images/sponsor-logo/walmart.png",
@@ -43,51 +43,69 @@ export default function SponsorTicker() {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    const logoWidth = 200;
-    const gap = 80; // Space between logos
-    const logoSpacing = logoWidth + gap;
-    const singleSetWidth = logos.length * logoSpacing;
+    let killAnimation: (() => void) | null = null;
 
-    // Position logos horizontally
-    const logoElements = containerRef.current.querySelectorAll(".ticker-logo");
-    gsap.set(logoElements, {
-      x: (i) => i * logoSpacing,
-      top: "50%",
-      yPercent: -50,
-    });
+    const runAnimation = () => {
+      if (!containerRef.current) return;
+      // Read actual logo width from DOM after layout (matches responsive w-24 sm:w-32)
+      const firstLogo = containerRef.current.querySelector(".ticker-logo");
+      const logoWidth =
+        firstLogo instanceof HTMLElement ? firstLogo.offsetWidth : 128;
+      const gap = logoWidth < 100 ? 24 : 32; // Tighter: 24px on mobile, 32px on desktop
+      const logoSpacing = logoWidth + gap;
+      const singleSetWidth = logos.length * logoSpacing;
 
-    // Create seamless infinite animation
-    // When first set moves off screen, reset to 0 (invisible to user)
-    const animation = gsap.to(containerRef.current, {
-      x: -singleSetWidth,
-      duration: 40,
-      ease: "none",
-      repeat: -1,
-      modifiers: {
-        x: (x: string) => {
-          const num = parseFloat(x);
-          // Reset position when first set has moved completely off screen
-          return num <= -singleSetWidth ? "0px" : x;
+      const logoElements = containerRef.current.querySelectorAll(".ticker-logo");
+      gsap.set(logoElements, {
+        x: (i) => i * logoSpacing,
+        top: "50%",
+        yPercent: -50,
+      });
+
+      // Infinite carousel: animate left, wrap position when first set scrolls off
+      // so the duplicate set is in view and the loop is seamless
+      const animation = gsap.to(containerRef.current, {
+        x: -singleSetWidth,
+        duration: 40,
+        ease: "none",
+        repeat: -1,
+        modifiers: {
+          x: (x: string) => {
+            const num = parseFloat(x);
+            // Wrap back so icons "come back around" seamlessly (2 identical sets)
+            if (num <= -singleSetWidth) {
+              return `${num + singleSetWidth}px`;
+            }
+            return x;
+          },
         },
-      },
-    });
+      });
 
+      killAnimation = () => {
+        animation.kill();
+      };
+    };
+
+    const rafId = requestAnimationFrame(() => {
+      runAnimation();
+    });
     return () => {
-      animation.kill();
+      cancelAnimationFrame(rafId);
+      if (killAnimation) killAnimation();
     };
   }, []);
 
   return (
-    <div className="flex w-full flex-col items-center justify-center bg-[#121723] pt-6">
+    <div className="flex w-full flex-col items-center justify-center bg-[#121723]">
       <SectionTitle title="Past Sponsors" paragraph={""} center mb="-40px" />
 
-      <div className="relative h-40 w-full overflow-hidden">
+      <div className="relative h-28 w-full overflow-hidden sm:h-40">
         <div
           ref={containerRef}
           className="absolute left-0 top-0 h-full whitespace-nowrap"
         >
           {duplicatedLogos.map((logo, i) => (
-            <div key={i} className="ticker-logo absolute h-16 w-32">
+            <div key={i} className="ticker-logo absolute h-10 w-24 sm:h-16 sm:w-32">
               <Image
                 src={logo}
                 alt={`Sponsor logo ${(i % logos.length) + 1}`}
