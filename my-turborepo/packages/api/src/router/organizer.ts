@@ -39,7 +39,7 @@ export const organizerRouter = {
         .from(Role)
         .where(and(eq(Role.name, "Organizer"), eq(Role.eventId, event.id)));
 
-      if (!roles?.[0]) {
+      if (!roles[0]) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Organizer role not found",
@@ -65,7 +65,7 @@ export const organizerRouter = {
           ),
         );
 
-      if (!organizers?.length) {
+      if (!organizers.length) {
         console.log("No organizers found for event:", eventName);
       }
 
@@ -114,7 +114,7 @@ export const organizerRouter = {
         .leftJoin(Event, eq(Role.eventId, Event.id))
         .where(and(eq(Role.name, "Organizer"), eq(Event.name, eventName)));
 
-      const role = roles?.[0];
+      const role = roles[0];
       if (!role) {
         throw new TRPCError({
           code: "NOT_FOUND",
@@ -161,14 +161,14 @@ export const organizerRouter = {
         .leftJoin(Event, eq(Role.eventId, Event.id))
         .where(and(eq(Role.name, "Organizer"), eq(Event.name, eventName)));
 
-      const role = roles?.[0];
+      const role = roles[0];
       if (!role) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Organizer role not found for event",
         });
       }
-      const roleId = (role as any).id;
+      const roleId = role.id;
 
       await ctx.db
         .delete(UserRole)

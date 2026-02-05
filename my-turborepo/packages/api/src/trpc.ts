@@ -39,13 +39,28 @@ export const createTRPCContext = async (opts: {
   };
 };
 
+export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
+export type VerifiedContext = Context & {
+  session: {
+    user: {
+      id: string;
+      name: string;
+      email: string;
+      emailVerified: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+      image?: string | null | undefined;
+    };
+  };
+};
+
 /**
  * 2. INITIALIZATION
  *
  * This is where the trpc api is initialized, connecting the context and
  * transformer
  */
-const t = initTRPC.context<typeof createTRPCContext>().create({
+const t = initTRPC.context<Context>().create({
   transformer: superjson,
   errorFormatter: ({ shape, error }) => ({
     ...shape,
@@ -55,6 +70,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
     },
   }),
 });
+
 
 /**
  * Create a server-side caller
@@ -153,7 +169,7 @@ export const organizerProcedure = t.procedure.use(async ({ ctx, next }) => {
       and(eq(Event.name, eventName), eq(UserRole.userId, ctx.session.user.id)),
     );
 
-  if (!user_role || user_role.length === 0) {
+  if (user_role.length === 0) {
     throw new TRPCError({
       code: "NOT_FOUND",
       message: "User_role was not found",

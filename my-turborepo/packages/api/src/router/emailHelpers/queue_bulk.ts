@@ -30,9 +30,7 @@ export async function queueBulkEmail(
   const client = new SQSClient(config);
 
   // SQS limits batch sizes to 10 emails
-  if (!maxBatchSize) {
-    maxBatchSize = 10;
-  }
+  maxBatchSize ??= 10;
 
   const senderEmail = process.env.AWS_EMAIL_USER;
   const failed = [];

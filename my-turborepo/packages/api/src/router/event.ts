@@ -4,13 +4,14 @@ import { z } from "zod";
 import { eq } from "@vanni/db";
 import { Event } from "@vanni/db/schema";
 
+import type { VerifiedContext } from "../trpc";
 import { protectedProcedure } from "../trpc";
 
 export const getEventData = async ({
   ctx,
   eventName,
 }: {
-  ctx: any;
+  ctx: VerifiedContext;
   eventName: string;
 }) => {
   const event = await ctx.db.query.Event.findFirst({
