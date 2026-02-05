@@ -4,9 +4,10 @@ import { TRPCError } from "@trpc/server";
 import { and, eq } from "@vanni/db";
 import { Event, Role, UserRole } from "@vanni/db/schema";
 
+import type { Context } from "../trpc";
 import { protectedProcedure, publicProcedure } from "../trpc";
 
-export async function validateOrganizerAuth({ ctx }: { ctx: any }) {
+export async function validateOrganizerAuth({ ctx }: { ctx: Context }) {
   const eventName = process.env.NEXT_PUBLIC_EVENT_NAME;
 
   // Verify the event name and user exists
@@ -31,7 +32,7 @@ export async function validateOrganizerAuth({ ctx }: { ctx: any }) {
       and(eq(Event.name, eventName), eq(UserRole.userId, ctx.session.user.id)),
     );
 
-  if (!user_role || user_role.length === 0) {
+  if (user_role.length === 0) {
     throw new TRPCError({
       code: "NOT_FOUND",
       message: "User_role was not found",

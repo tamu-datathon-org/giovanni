@@ -4,7 +4,7 @@ import { z } from "zod";
 import { count, sql } from "@vanni/db";
 import { Application } from "@vanni/db/schema";
 
-import { adminProcedure, protectedProcedure } from "../trpc";
+import { adminProcedure, protectedProcedure, VerifiedContext } from "../trpc";
 import { getBatchStatus, updateBatchStatus } from "./application";
 import { getEmailsByLabelList } from "./email";
 import sendConfirmationEmails, {
@@ -19,7 +19,7 @@ async function checkStatusEmails(
   emailList: string[],
   failedList: (string | undefined)[],
   statusMap: Map<string, string>,
-  ctx: any,
+  ctx: VerifiedContext,
   statusField: string,
   newStatus: boolean,
 ) {
@@ -52,7 +52,7 @@ async function checkStatusEmails(
 export const emailSendingRouter = {
   sendConfirmationEmail: protectedProcedure
     .input(z.object({ emails: z.array(z.string()) }))
-    .mutation(async ({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       sendConfirmationEmails(input.emails);
     }),
 
@@ -138,15 +138,15 @@ export const emailSendingRouter = {
 
           if (application.status === "waitlisted") {
             waitlistEmails.push(application.email);
-            if (application.userEmail !== application.email)
+            if (application.userEmail !== application.email && application.userEmail != null)
               waitlistEmails.push(application.userEmail);
           } else if (application.status === "accepted") {
             acceptedEmails.push(application.email);
-            if (application.userEmail !== application.email)
+            if (application.userEmail !== application.email && application.userEmail != null)
               acceptedEmails.push(application.userEmail);
           } else if (application.status === "rejected") {
             rejectedEmails.push(application.email);
-            if (application.userEmail !== application.email)
+            if (application.userEmail !== application.email && application.userEmail != null)
               rejectedEmails.push(application.userEmail);
           }
         }
@@ -160,7 +160,7 @@ export const emailSendingRouter = {
             emailBatchSize,
           );
 
-          checkStatusEmails(
+          await checkStatusEmails(
             rejectedEmails,
             failedRejected,
             emailMap,
@@ -180,7 +180,7 @@ export const emailSendingRouter = {
             emailBatchSize,
           );
 
-          checkStatusEmails(
+          await checkStatusEmails(
             waitlistEmails,
             failedWaitlist,
             emailMap,
@@ -201,7 +201,7 @@ export const emailSendingRouter = {
             emailBatchSize,
           );
 
-          checkStatusEmails(
+          await checkStatusEmails(
             acceptedEmails,
             failedAccepted,
             emailMap,

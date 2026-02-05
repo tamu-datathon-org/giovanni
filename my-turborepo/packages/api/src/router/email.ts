@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { asc, eq } from "@vanni/db";
+import { and, asc, eq } from "@vanni/db";
 import { db } from "@vanni/db/client";
 import {
   Application,
@@ -10,9 +10,9 @@ import {
   Event
 } from "@vanni/db/schema";
 
-import { adminProcedure } from "../trpc";
+import { adminProcedure, VerifiedContext } from "../trpc";
 
-export async function getEmailsByLabelList(ctx: any, input: string[]) {
+export async function getEmailsByLabelList(ctx: VerifiedContext, input: string[]) {
   console.log(input);
 
   const emails = new Set<string>();
@@ -48,7 +48,7 @@ export async function getEmailsByLabelList(ctx: any, input: string[]) {
 }
 
 export async function getApplicationEmailsByEvent(
-  ctx: any,
+  ctx: VerifiedContext,
   eventName: string,
   status?: string,
 ) {
@@ -57,15 +57,18 @@ export async function getApplicationEmailsByEvent(
     throw new Error(`Invalid status: ${status}. Must be one of ${validStatuses.join(', ')} or 'all'`);
   }
 
-  let q = ctx.db
+  const q = ctx.db
     .selectDistinct({ email: Application.email })
     .from(Application)
     .innerJoin(Event, eq(Application.eventId, Event.id))
-    .where(eq(Event.name, eventName));
-
-  if (status !== "all") {
-    q = q.where(eq(Application.status, status as typeof validStatuses[number]));
-  }
+    .where(
+      status && status !== "all"
+        ? and(
+          eq(Event.name, eventName),
+          eq(Application.status, status as typeof validStatuses[number]),
+        )
+        : eq(Event.name, eventName),
+    );
 
   const rows = await q.orderBy(asc(Application.email));
   return rows.map((r: { email: string }) => r.email);
@@ -125,13 +128,15 @@ export const emailRouter = {
             .from(Application)
             .orderBy(asc(Application.email));
         default:
-          const emailLabel = await ctx.db.query.EmailLabel.findFirst({
-            where: eq(EmailLabel.name, input),
-            with: {
-              emails: true,
-            },
-          });
-          return emailLabel?.emails ?? [];
+          {
+            const emailLabel = await ctx.db.query.EmailLabel.findFirst({
+              where: eq(EmailLabel.name, input),
+              with: {
+                emails: true,
+              },
+            });
+            return emailLabel?.emails ?? []
+          };
       }
     }),
   getAllEmailList: adminProcedure.query(async ({ ctx }) => {

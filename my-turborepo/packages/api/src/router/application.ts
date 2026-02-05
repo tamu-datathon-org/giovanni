@@ -13,34 +13,36 @@ import {
   Role,
   UserResume,
   UserRole,
-    Attendance,
-    EventPhase,
+  Attendance,
+  EventPhase,
 } from "@vanni/db/schema";
 
 import { User } from "@vanni/db/auth-schema";
 
+import type { Context, VerifiedContext } from "../trpc";
 import { organizerProcedure, protectedProcedure } from "../trpc";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 import { getEventData } from "./event";
 
 const PhaseSchema = z.string().min(1);
 
-async function getEventPhase(ctx: any, eventId: string, phaseName: string) {
-    const ep = await ctx.db.query.EventPhase.findFirst({
-        where: and(eq(EventPhase.eventId, eventId), eq(EventPhase.name, phaseName)),
-    });
-    if (!ep) throw new TRPCError({ code: "NOT_FOUND", message: `Phase "${phaseName}" not found for this event` });
-    return ep;
+async function getEventPhase(ctx: VerifiedContext, eventId: string, phaseName: string) {
+  const ep = await ctx.db.query.EventPhase.findFirst({
+    where: and(eq(EventPhase.eventId, eventId), eq(EventPhase.name, phaseName)),
+  });
+  if (!ep) throw new TRPCError({ code: "NOT_FOUND", message: `Phase "${phaseName}" not found for this event` });
+  return ep;
 }
 
-const RESUME_OPTIONAL = true;
+const RESUME_OPTIONAL = false;
 
 const resumeHandler = async (
   input: { resumeUrl: string; resumeName: string },
-  ctx: any,
+  ctx: VerifiedContext,
   resume: typeof UserResume.$inferSelect | undefined,
 ) => {
   // Check if resume is required
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!RESUME_OPTIONAL && !input.resumeUrl && !resume) {
     throw new TRPCError({
       code: "BAD_REQUEST",
@@ -57,10 +59,10 @@ const resumeHandler = async (
     };
 
     if (resume?.resumeUrl && resume.resumeUrl !== input.resumeUrl) {
-        await ctx.db.update(UserResume)
-          .set(resumeData)
-          .where(eq(UserResume.userId, ctx.session.user.id));
-        await del(resume.resumeUrl);
+      await ctx.db.update(UserResume)
+        .set(resumeData)
+        .where(eq(UserResume.userId, ctx.session.user.id));
+      await del(resume.resumeUrl);
     } else if (!resume) {
       await db.insert(UserResume).values(resumeData);
     }
@@ -70,7 +72,7 @@ const resumeHandler = async (
 export async function getBatchStatus(
   page: number,
   limit: number,
-  ctx: any,
+  ctx: Context,
   eventName: string,
   filter?: boolean,
 ): Promise<
@@ -83,9 +85,14 @@ export async function getBatchStatus(
     acceptedEmail: boolean;
     waitlistEmail: boolean;
     rejectedEmail: boolean;
-    userEmail: string;
+    userEmail: string | null;
   }[]
 > {
+
+
+
+  const eventMatch = eq(Event.name, eventName);
+
   const baseQuery = ctx.db
     .select({
       id: Application.id,
@@ -99,30 +106,22 @@ export async function getBatchStatus(
       userEmail: User.email,
     })
     .from(Application)
-    .offset((page - 1) * limit)
-    .limit(limit)
     .leftJoin(Event, eq(Event.id, Application.eventId))
     .leftJoin(User, eq(User.id, Application.userId))
-    .where(eq(Event.name, eventName));
-
-  if (filter) {
-    baseQuery.where(
-      or(
-        and(
-          eq(Application.status, "accepted"),
-          eq(Application.acceptedEmail, false),
-        ),
-        and(
-          eq(Application.status, "rejected"),
-          eq(Application.rejectedEmail, false),
-        ),
-        and(
-          eq(Application.status, "waitlisted"),
-          eq(Application.waitlistEmail, false),
-        ),
-      ),
-    );
-  }
+    .where(
+      filter
+        ? and(
+          eventMatch,
+          or(
+            and(eq(Application.status, "accepted"), eq(Application.acceptedEmail, false)),
+            and(eq(Application.status, "rejected"), eq(Application.rejectedEmail, false)),
+            and(eq(Application.status, "waitlisted"), eq(Application.waitlistEmail, false)),
+          )
+        )
+        : eventMatch
+    )
+    .offset((page - 1) * limit)
+    .limit(limit);
 
   return await baseQuery;
 }
@@ -130,7 +129,7 @@ export async function getBatchStatus(
 export async function updateBatchStatus(
   ids: string[],
   newStatus: boolean,
-  ctx: any,
+  ctx: VerifiedContext,
   sqlField: string,
 ) {
   if (ids.length == 0) {
@@ -229,27 +228,27 @@ export const applicationRouter = {
       return response;
     }),
 
-    listPhases: protectedProcedure
-        .input(z.object({ eventName: z.string() }))
-        .query(async ({ ctx, input }) => {
-            // find event id
-            const event = await ctx.db.query.Event.findFirst({
-                where: eq(Event.name, input.eventName),
-                columns: { id: true },
-            });
-            if (!event) throw new Error(`Event "${input.eventName}" not found`);
+  listPhases: protectedProcedure
+    .input(z.object({ eventName: z.string() }))
+    .query(async ({ ctx, input }) => {
+      // find event id
+      const event = await ctx.db.query.Event.findFirst({
+        where: eq(Event.name, input.eventName),
+        columns: { id: true },
+      });
+      if (!event) throw new Error(`Event "${input.eventName}" not found`);
 
-            // fetch its phases
-            const phases = await ctx.db.query.EventPhase.findMany({
-                where: eq(EventPhase.eventId, event.id),
-                orderBy: (t, { asc }) => [asc(t.sortOrder), asc(t.name)],
-                columns: { id: true, name: true, sortOrder: true },
-            });
+      // fetch its phases
+      const phases = await ctx.db.query.EventPhase.findMany({
+        where: eq(EventPhase.eventId, event.id),
+        orderBy: (t, { asc }) => [asc(t.sortOrder), asc(t.name)],
+        columns: { id: true, name: true, sortOrder: true },
+      });
 
-            return phases;
-        }),
+      return phases;
+    }),
 
-    update: protectedProcedure
+  update: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -531,139 +530,139 @@ export const applicationRouter = {
       return application;
     }),
 
-    getCheckInStatus: protectedProcedure
+  getCheckInStatus: protectedProcedure
     .input(z.object({
-        eventName: z.string(),
-        email: z.string(),
-        phase: z.string(),
+      eventName: z.string(),
+      email: z.string(),
+      phase: z.string(),
     }))
     .query(async ({ ctx, input }) => {
-        const event = await getEventData({ ctx, eventName: input.eventName });
+      const event = await getEventData({ ctx, eventName: input.eventName });
 
-        const application = await ctx.db.query.Application.findFirst({
-            where: and(eq(Application.email, input.email), eq(Application.eventId, event.id)),
-        });
+      const application = await ctx.db.query.Application.findFirst({
+        where: and(eq(Application.email, input.email), eq(Application.eventId, event.id)),
+      });
 
-        if (!application)
-            throw new TRPCError({ code: "NOT_FOUND", message: "Applicant not found" });
+      if (!application)
+        throw new TRPCError({ code: "NOT_FOUND", message: "Applicant not found" });
 
-        // Single join for EventPhase and Attendance
-        const [phaseAttendance, checkInAttendance] = await Promise.all([
-            // Get attendance for requested phase
-            ctx.db
-                .select({
-                    checkedIn: Attendance.checkedIn,
-                    checkedInAt: Attendance.checkedInAt,
-                    phaseId: EventPhase.id,
-                })
-                .from(EventPhase)
-                .leftJoin(
-                    Attendance,
-                    and(
-                        eq(Attendance.eventPhaseId, EventPhase.id),
-                        eq(Attendance.applicationId, application.id)
-                    )
-                )
-                .where(
-                    and(
-                        eq(EventPhase.eventId, event.id),
-                        eq(EventPhase.name, input.phase)
-                    )
-                )
-                .limit(1),
-            // Get check-in phase attendance
-            ctx.db
-                .select({
-                    checkedIn: Attendance.checkedIn,
-                })
-                .from(EventPhase)
-                .leftJoin(
-                    Attendance,
-                    and(
-                        eq(Attendance.eventPhaseId, EventPhase.id),
-                        eq(Attendance.applicationId, application.id)
-                    )
-                )
-                .where(
-                    and(
-                        eq(EventPhase.eventId, event.id),
-                        eq(EventPhase.name, "check-in")
-                    )
-                )
-                .limit(1),
-        ]);
+      // Single join for EventPhase and Attendance
+      const [phaseAttendance, checkInAttendance] = await Promise.all([
+        // Get attendance for requested phase
+        ctx.db
+          .select({
+            checkedIn: Attendance.checkedIn,
+            checkedInAt: Attendance.checkedInAt,
+            phaseId: EventPhase.id,
+          })
+          .from(EventPhase)
+          .leftJoin(
+            Attendance,
+            and(
+              eq(Attendance.eventPhaseId, EventPhase.id),
+              eq(Attendance.applicationId, application.id)
+            )
+          )
+          .where(
+            and(
+              eq(EventPhase.eventId, event.id),
+              eq(EventPhase.name, input.phase)
+            )
+          )
+          .limit(1),
+        // Get check-in phase attendance
+        ctx.db
+          .select({
+            checkedIn: Attendance.checkedIn,
+          })
+          .from(EventPhase)
+          .leftJoin(
+            Attendance,
+            and(
+              eq(Attendance.eventPhaseId, EventPhase.id),
+              eq(Attendance.applicationId, application.id)
+            )
+          )
+          .where(
+            and(
+              eq(EventPhase.eventId, event.id),
+              eq(EventPhase.name, "check-in")
+            )
+          )
+          .limit(1),
+      ]);
 
-        if (!phaseAttendance?.[0]?.phaseId)
-            throw new TRPCError({ code: "NOT_FOUND", message: "Phase not found" });
+      if (!phaseAttendance[0]?.phaseId)
+        throw new TRPCError({ code: "NOT_FOUND", message: "Phase not found" });
 
-        return {
-            userId: application.id,
-            firstName: application.firstName,
-            lastName: application.lastName,
-            email: application.email,
-            dietaryRestrictions: application.dietaryRestriction,
-            status: application.status,
-            extraInfo: application.extraInfo,
-            eventAttendance: checkInAttendance?.[0]?.checkedIn ?? false,
-            checkedIn: phaseAttendance?.[0]?.checkedIn ?? false,
-            checkedInAt: phaseAttendance?.[0]?.checkedInAt ?? null,
-        };
+      return {
+        userId: application.id,
+        firstName: application.firstName,
+        lastName: application.lastName,
+        email: application.email,
+        dietaryRestrictions: application.dietaryRestriction,
+        status: application.status,
+        extraInfo: application.extraInfo,
+        eventAttendance: checkInAttendance[0]?.checkedIn ?? false,
+        checkedIn: phaseAttendance[0].checkedIn ?? false,
+        checkedInAt: phaseAttendance[0].checkedInAt ?? null,
+      };
     }),
 
-    updateCheckInStatus: organizerProcedure
-        .input(
-            z.object({
-                eventName: z.string(),
-                email: z.string(),
-                phase: PhaseSchema,
-                newStatus: z.boolean(),
-            }),
-        )
-        .mutation(async ({ ctx, input }) => {
-            const { eventName, email, phase, newStatus } = input;
+  updateCheckInStatus: organizerProcedure
+    .input(
+      z.object({
+        eventName: z.string(),
+        email: z.string(),
+        phase: PhaseSchema,
+        newStatus: z.boolean(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { eventName, email, phase, newStatus } = input;
 
-            const event = await getEventData({ ctx, eventName });
+      const event = await getEventData({ ctx, eventName });
 
-            const application = await ctx.db.query.Application.findFirst({
-                where: and(eq(Application.email, email), eq(Application.eventId, event.id)),
-                columns: {
-                    id: true,
-                    status: true,
-                    userId: true,
-                    firstName: true,
-                    lastName: true,
-                    email: true,
-                    dietaryRestriction: true,
-                    extraInfo: true,
-                },
-            });
+      const application = await ctx.db.query.Application.findFirst({
+        where: and(eq(Application.email, email), eq(Application.eventId, event.id)),
+        columns: {
+          id: true,
+          status: true,
+          userId: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          dietaryRestriction: true,
+          extraInfo: true,
+        },
+      });
 
-            if (!application) {
-                throw new TRPCError({ code: "NOT_FOUND", message: "Application not found" });
-            }
+      if (!application) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Application not found" });
+      }
 
-            const ep = await getEventPhase(ctx, event.id, phase);
+      const ep = await getEventPhase(ctx, event.id, phase);
 
-            const updated = await ctx.db
-                .insert(Attendance)
-                .values({
-                    applicationId: application.id,
-                    eventId: event.id,
-                    eventPhaseId: ep.id,
-                    checkedIn: newStatus,
-                    checkedInAt: newStatus ? new Date() : null,
-                    updatedAt: new Date(),
-                })
-                .onConflictDoUpdate({
-                    target: [Attendance.applicationId, Attendance.eventPhaseId],
-                    set: {
-                        checkedIn: newStatus,
-                        checkedInAt: newStatus ? new Date() : null,
-                        updatedAt: sql`NOW()`,
-                    },
-                })
-                .returning();
+      const updated = await ctx.db
+        .insert(Attendance)
+        .values({
+          applicationId: application.id,
+          eventId: event.id,
+          eventPhaseId: ep.id,
+          checkedIn: newStatus,
+          checkedInAt: newStatus ? new Date() : null,
+          updatedAt: new Date(),
+        })
+        .onConflictDoUpdate({
+          target: [Attendance.applicationId, Attendance.eventPhaseId],
+          set: {
+            checkedIn: newStatus,
+            checkedInAt: newStatus ? new Date() : null,
+            updatedAt: sql`NOW()`,
+          },
+        })
+        .returning();
 
-            return updated[0];
-        }),
+      return updated[0];
+    }),
 };
