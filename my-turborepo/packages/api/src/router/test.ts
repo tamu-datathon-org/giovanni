@@ -13,7 +13,7 @@ export const testRouter = {
     .input(z.object({
       name: z.string(),
     }))
-    .mutation(({ ctx, input }) => {
+    .mutation(({ input }) => {
       console.log('testMutation', input);
       return {
         message: `Hello, ${input.name}!`,

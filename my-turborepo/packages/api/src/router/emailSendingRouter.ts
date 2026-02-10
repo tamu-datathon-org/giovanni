@@ -1,10 +1,11 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { count, sql } from "@vanni/db";
+import { count } from "@vanni/db";
 import { Application } from "@vanni/db/schema";
 
-import { adminProcedure, protectedProcedure, VerifiedContext } from "../trpc";
+import type { VerifiedContext } from "../trpc";
+import { adminProcedure, protectedProcedure } from "../trpc";
 import { getBatchStatus, updateBatchStatus } from "./application";
 import { getEmailsByLabelList } from "./email";
 import sendConfirmationEmails, {
@@ -52,7 +53,7 @@ async function checkStatusEmails(
 export const emailSendingRouter = {
   sendConfirmationEmail: protectedProcedure
     .input(z.object({ emails: z.array(z.string()) }))
-    .mutation(({ ctx, input }) => {
+    .mutation(({ input }) => {
       sendConfirmationEmails(input.emails);
     }),
 
