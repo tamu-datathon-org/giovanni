@@ -10,7 +10,8 @@ import {
   Event
 } from "@vanni/db/schema";
 
-import { adminProcedure, VerifiedContext } from "../trpc";
+import type { VerifiedContext } from "../trpc";
+import { adminProcedure } from "../trpc";
 
 export async function getEmailsByLabelList(ctx: VerifiedContext, input: string[]) {
   console.log(input);

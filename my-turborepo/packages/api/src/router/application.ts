@@ -161,6 +161,7 @@ export async function updateBatchStatus(
       message: "Finished updating applications " + ids.length,
     };
   } catch (_e) {
+
     return {
       status: 500,
       message: "Failed to update applications " + ids.length,
