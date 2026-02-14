@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+
+
 export default function Prizes() {
   return (
     <section
@@ -44,10 +46,7 @@ export default function Prizes() {
           unoptimized
         />
 
-        {/* Optional content overlay */}
-        {/* <div className="absolute inset-0 flex items-center justify-center z-30">
-          <h1 className="text-4xl font-bold text-white drop-shadow-lg">Prizes</h1>
-        </div> */}
+
       </div>
     </section>
   );
