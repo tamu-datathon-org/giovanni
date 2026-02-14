@@ -1,7 +1,5 @@
-"use client";
-
+"use client"
 import Image from "next/image";
-
 // Darumadrop One (larger and button), Chilanka (date)
 
 // export default function Hero(){
