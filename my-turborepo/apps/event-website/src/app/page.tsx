@@ -13,10 +13,6 @@ const Prizes = dynamic(() => import("@/components/prizes"), {
   loading: () => <div className="min-h-[400px] py-20" />,
 });
 
-const Sponsors = dynamic(() => import("@/components/sponsor"), {
-  loading: () => <div className="min-h-[600px] bg-[#322C29]" />,
-});
-
 const FAQ = dynamic(() => import("@/components/faq"), {
   loading: () => (
     <div className="min-h-[800px] bg-gradient-to-b from-[#322C29] to-[#1B0706]" />
@@ -36,7 +32,6 @@ export default function Home() {
       <Hero />
       <Location />
       <Prizes />
-      <Sponsors />
       <FAQ />
     </>
   );
