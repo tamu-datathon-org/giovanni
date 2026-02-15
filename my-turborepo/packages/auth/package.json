@@ -23,7 +23,7 @@
   "prettier": "@vanni/prettier-config",
   "dependencies": {
     "@auth/drizzle-adapter": "1.4.1",
-    "@better-auth/expo": "1.2.8",
+    "@better-auth/expo": "1.4.18",
     "@t3-oss/env-nextjs": "^0.9.2",
     "@vanni/db": "workspace:*",
     "better-auth": "1.4.18",
