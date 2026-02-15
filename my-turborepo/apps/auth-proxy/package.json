@@ -11,7 +11,8 @@
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
-    "@auth/core": "0.31.0"
+    "@auth/core": "0.31.0",
+    "nodemailer": "^8.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.19.24",
