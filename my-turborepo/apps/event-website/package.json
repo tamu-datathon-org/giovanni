@@ -18,7 +18,7 @@
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.2",
     "@mdx-js/loader": "^3.1.0",
-    "@next/mdx": "^14.2.33",
+    "@next/mdx": "^16.1.6",
     "@radix-ui/react-dialog": "^1.1.15",
     "@t3-oss/env-nextjs": "^0.9.2",
     "@tailwindcss/postcss": "^4.0.15",
@@ -34,7 +34,7 @@
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.439.0",
     "motion": "^12.23.22",
-    "next": "^14.2.33",
+    "next": "^16.1.6",
     "next-mdx-remote": "^5.0.0",
     "node-gyp": "10.0.0",
     "postcss": "^8.5.3",
