@@ -56,7 +56,7 @@ importers:
         version: 1.15.4
       nitropack:
         specifier: ^2.11.7
-        version: 2.12.9(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1))(encoding@0.1.13)(xml2js@0.6.2)
+        version: 2.12.9(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1))(encoding@0.1.13)(xml2js@0.6.2)
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
@@ -448,7 +448,7 @@ importers:
         version: 11.18.2(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       geist:
         specifier: ^1.5.1
-        version: 1.5.1(next@14.2.33(@babel/core@7.28.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.93.3))
+        version: 1.5.1(next@14.2.33(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.93.3))
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
@@ -659,8 +659,8 @@ importers:
         specifier: workspace:*
         version: link:../db
       better-auth:
-        specifier: 1.2.8
-        version: 1.2.8
+        specifier: 1.4.18
+        version: 1.4.18(next@14.2.33(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.93.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next:
         specifier: ^14.2.33
         version: 14.2.33(@babel/core@7.28.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.93.3)
@@ -703,10 +703,10 @@ importers:
         version: 0.8.0
       drizzle-orm:
         specifier: ^0.30.10
-        version: 0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1)
+        version: 0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1)
       drizzle-zod:
         specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1))(zod@3.25.76)
+        version: 0.5.1(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1))(zod@3.25.76)
       minimatch:
         specifier: ^10.0.3
         version: 10.1.1
@@ -9274,8 +9274,9 @@ snapshots:
 
   '@better-auth/utils@0.2.5':
     dependencies:
-      typescript: 5.9.3
-      uncrypto: 0.1.3
+      '@better-auth/core': 1.4.18(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.1.3)(kysely@0.28.11)(nanostores@1.1.0)
+      '@better-auth/utils': 0.3.0
+      '@better-fetch/fetch': 1.1.21
 
   '@better-auth/utils@0.3.0': {}
 
@@ -12093,12 +12094,6 @@ snapshots:
       get-intrinsic: 1.3.0
       is-array-buffer: 3.0.5
 
-  asn1js@3.0.6:
-    dependencies:
-      pvtsutils: 1.3.6
-      pvutils: 1.1.5
-      tslib: 2.8.1
-
   ast-types-flow@0.0.8: {}
 
   ast-types@0.13.4:
@@ -12170,7 +12165,7 @@ snapshots:
 
   basic-ftp@5.0.5: {}
 
-  better-auth@1.2.8:
+  better-auth@1.4.18(next@14.2.33(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.93.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@better-auth/utils': 0.2.5
       '@better-fetch/fetch': 1.1.18
@@ -12180,10 +12175,14 @@ snapshots:
       '@simplewebauthn/server': 13.2.2
       better-call: 1.0.24
       defu: 6.1.4
-      jose: 5.10.0
-      kysely: 0.28.8
-      nanostores: 0.11.4
-      zod: 3.25.76
+      jose: 6.1.3
+      kysely: 0.28.11
+      nanostores: 1.1.0
+      zod: 4.3.6
+    optionalDependencies:
+      next: 14.2.33(@babel/core@7.28.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.93.3)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   better-call@1.0.24:
     dependencies:
@@ -12192,6 +12191,15 @@ snapshots:
       rou3: 0.5.1
       set-cookie-parser: 2.7.2
       uncrypto: 0.1.3
+
+  better-call@1.1.8(zod@3.25.76):
+    dependencies:
+      '@better-auth/utils': 0.3.0
+      '@better-fetch/fetch': 1.1.21
+      rou3: 0.7.12
+      set-cookie-parser: 2.7.2
+    optionalDependencies:
+      zod: 3.25.76
 
   binary-extensions@2.3.0: {}
 
@@ -12660,9 +12668,9 @@ snapshots:
 
   date-fns@3.6.0: {}
 
-  db0@0.3.4(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1)):
+  db0@0.3.4(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1)):
     optionalDependencies:
-      drizzle-orm: 0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1)
+      drizzle-orm: 0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1)
 
   debug@3.2.7:
     dependencies:
@@ -12818,7 +12826,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1):
+  drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1):
     optionalDependencies:
       '@neondatabase/serverless': 0.7.2
       '@types/pg': 8.6.6
@@ -12827,9 +12835,9 @@ snapshots:
       kysely: 0.28.8
       react: 18.3.1
 
-  drizzle-zod@0.5.1(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1))(zod@3.25.76):
+  drizzle-zod@0.5.1(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1))(zod@3.25.76):
     dependencies:
-      drizzle-orm: 0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1)
+      drizzle-orm: 0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1)
       zod: 3.25.76
 
   dunder-proto@1.0.1:
@@ -13618,7 +13626,7 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
-  geist@1.5.1(next@14.2.33(@babel/core@7.28.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.93.3)):
+  geist@1.5.1(next@14.2.33(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.93.3)):
     dependencies:
       next: 14.2.33(@babel/core@7.28.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.93.3)
 
@@ -14284,6 +14292,8 @@ snapshots:
 
   jose@5.10.0: {}
 
+  jose@6.1.3: {}
+
   js-tokens@4.0.0: {}
 
   js-tokens@9.0.1: {}
@@ -14368,7 +14378,7 @@ snapshots:
 
   knitwork@1.2.0: {}
 
-  kysely@0.28.8: {}
+  kysely@0.28.11: {}
 
   language-subtag-registry@0.3.23: {}
 
@@ -15145,7 +15155,7 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  nanostores@0.11.4: {}
+  nanostores@1.1.0: {}
 
   natural-compare@1.4.0: {}
 
@@ -15201,7 +15211,7 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  nitropack@2.12.9(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1))(encoding@0.1.13)(xml2js@0.6.2):
+  nitropack@2.12.9(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1))(encoding@0.1.13)(xml2js@0.6.2):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@rollup/plugin-alias': 5.1.1(rollup@4.52.5)
@@ -15222,7 +15232,7 @@ snapshots:
       cookie-es: 2.0.0
       croner: 9.1.0
       crossws: 0.3.5
-      db0: 0.3.4(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1))
+      db0: 0.3.4(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1))
       defu: 6.1.4
       destr: 2.0.5
       dot-prop: 10.1.0
@@ -15268,7 +15278,7 @@ snapshots:
       unenv: 2.0.0-rc.24
       unimport: 5.5.0
       unplugin-utils: 0.3.1
-      unstorage: 1.17.2(db0@0.3.4(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1)))(ioredis@5.8.2)
+      unstorage: 1.17.2(db0@0.3.4(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1)))(ioredis@5.8.2)
       untyped: 2.0.0
       unwasm: 0.3.11
       youch: 4.1.0-beta.12
@@ -16001,12 +16011,6 @@ snapshots:
 
   punycode@2.3.1: {}
 
-  pvtsutils@1.3.6:
-    dependencies:
-      tslib: 2.8.1
-
-  pvutils@1.1.5: {}
-
   qrcode@1.5.4:
     dependencies:
       dijkstrajs: 1.0.3
@@ -16257,8 +16261,6 @@ snapshots:
     dependencies:
       redis-errors: 1.2.0
 
-  reflect-metadata@0.2.2: {}
-
   reflect.getprototypeof@1.0.10:
     dependencies:
       call-bind: 1.0.8
@@ -16431,6 +16433,8 @@ snapshots:
       fsevents: 2.3.3
 
   rou3@0.5.1: {}
+
+  rou3@0.7.12: {}
 
   run-async@2.4.1: {}
 
@@ -17086,10 +17090,6 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  tsyringe@4.10.0:
-    dependencies:
-      tslib: 1.14.1
-
   turbo-darwin-64@2.7.0:
     optional: true
 
@@ -17311,7 +17311,7 @@ snapshots:
       picomatch: 4.0.3
       webpack-virtual-modules: 0.6.2
 
-  unstorage@1.17.2(db0@0.3.4(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1)))(ioredis@5.8.2):
+  unstorage@1.17.2(db0@0.3.4(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1)))(ioredis@5.8.2):
     dependencies:
       anymatch: 3.1.3
       chokidar: 4.0.3
@@ -17322,7 +17322,7 @@ snapshots:
       ofetch: 1.5.1
       ufo: 1.6.1
     optionalDependencies:
-      db0: 0.3.4(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.8)(react@18.3.1))
+      db0: 0.3.4(drizzle-orm@0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.26)(@vercel/postgres@0.8.0)(kysely@0.28.11)(react@18.3.1))
       ioredis: 5.8.2
 
   untun@0.1.3:
@@ -17608,6 +17608,8 @@ snapshots:
       zod: 3.25.76
 
   zod@3.25.76: {}
+
+  zod@4.3.6: {}
 
   zwitch@2.0.4: {}
 
