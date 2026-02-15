@@ -15,7 +15,7 @@
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
-    "@aws-sdk/client-ses": "^3.922.0",
+    "@aws-sdk/client-ses": "^3.990.0",
     "@aws-sdk/client-sqs": "^3.922.0",
     "@aws-sdk/credential-provider-node": "^3.922.0",
     "@hookform/resolvers": "^3.10.0",
