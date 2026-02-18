@@ -12,6 +12,7 @@ import { ZodError } from "zod";
 
 import { auth } from "@vanni/auth";
 import { and, eq } from "@vanni/db";
+import { User } from "@vanni/db/auth-schema";
 import { db } from "@vanni/db/client";
 import { Event, Role, UserRole } from "@vanni/db/schema";
 
@@ -108,11 +109,38 @@ export const publicProcedure = t.procedure;
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
+  // TEMP: Dev mode bypass - remove this before production!
+  const DEV_MODE_SKIP_AUTH = "true" === "true";
+  const DEV_USER_EMAIL = "michael_rao@tamu.edu"; // Change this to your test email
+  
+  if (DEV_MODE_SKIP_AUTH && !ctx.session?.user) {
+    // Look up real user from database by email
+    const devUser = await ctx.db.query.User.findFirst({
+      where: eq(User.email, DEV_USER_EMAIL),
+    });
+    
+    if (!devUser) {
+      throw new TRPCError({ 
+        code: "INTERNAL_SERVER_ERROR",
+        message: `Dev user not found in database with email: ${DEV_USER_EMAIL}. Please create an account first or update DEV_USER_EMAIL in trpc.ts`
+      });
+    }
+    
+    // Use real user from database
+    return await next({
+      ctx: {
+        session: {
+          user: devUser,
+        },
+      },
+    });
+  }
+  
   if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  return next({
+  return await next({
     ctx: {
       // infers the `session` as non-nullable
       session: { ...ctx.session, user: ctx.session.user },

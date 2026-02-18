@@ -489,3 +489,16 @@ export const SHIRT_SIZES = [
   { value: "XL", label: "Unisex XL" },
   { value: "XXL", label: "Unisex XXL" },
 ];
+
+export const DIETARY_RESTRICTIONS = [
+  { value: "None", label: "No restrictions" },
+  { value: "Vegetarian", label: "Vegetarian" },
+  { value: "Vegan", label: "Vegan" },
+  { value: "Halal", label: "Halal" },
+  { value: "Kosher", label: "Kosher" },
+  { value: "Gluten-Free", label: "Gluten-Free" },
+  { value: "Lactose Intolerant", label: "Lactose Intolerant" },
+  { value: "Nut Allergy", label: "Nut Allergy" },
+  { value: "Shellfish Allergy", label: "Shellfish Allergy" },
+  { value: "Other", label: "Other (please specify)" },
+];

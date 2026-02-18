@@ -9,6 +9,7 @@ import { TRPCClientError } from "@trpc/client";
 import { upload } from "@vercel/blob/client";
 import { LucideArrowBigLeft, CheckCircle2, Circle } from "lucide-react";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
 
 import {
   Form,
@@ -32,6 +33,7 @@ import { toast } from "~/hooks/use-toast";
 import {
   AGE,
   COUNTRIES,
+  DIETARY_RESTRICTIONS,
   EDUCATION_LEVELS,
   GENDER_OPTIONS,
   GRADUATION_YEARS,
@@ -96,9 +98,9 @@ function SectionProgress({ currentSection, totalSections }: { currentSection: nu
             <div className="flex flex-col items-center">
               <div className={`flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all duration-300 ${
                 index < currentSection 
-                  ? 'border-cyan-500 bg-gradient-to-br from-cyan-500 to-blue-600 text-white' 
+                  ? 'border-[#01c0cc] bg-[#01c0cc] text-white' 
                   : index === currentSection
-                  ? 'border-cyan-500 bg-cyan-500 text-white animate-pulse [animation-duration:2s]'
+                  ? 'border-[#01c0cc] bg-[#01c0cc] text-white'
                   : 'border-gray-400 bg-gray-200 text-gray-500'
               }`}>
                 {index < currentSection ? (
@@ -108,14 +110,14 @@ function SectionProgress({ currentSection, totalSections }: { currentSection: nu
                 )}
               </div>
               <span className={`mt-2 text-xs font-medium ${
-                index <= currentSection ? 'text-cyan-600' : 'text-gray-500'
+                index <= currentSection ? 'text-[#01c0cc]' : 'text-gray-500'
               }`}>
                 {section}
               </span>
             </div>
             {index < sections.length - 1 && (
               <div className={`mx-2 h-0.5 flex-1 transition-all duration-300 ${
-                index < currentSection ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : 'bg-gray-300'
+                index < currentSection ? 'bg-[#01c0cc]' : 'bg-gray-300'
               }`} />
             )}
           </div>
@@ -126,15 +128,14 @@ function SectionProgress({ currentSection, totalSections }: { currentSection: nu
 }
 
 // Section Card Component
-function SectionCard({ title, children, gradient = "from-cyan-50 to-blue-50" }: { 
+function SectionCard({ title, children }: { 
   title: string, 
-  children: React.ReactNode,
-  gradient?: string 
+  children: React.ReactNode
 }) {
   return (
-    <div className="group mb-6 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800/50">
-      <div className={`bg-gradient-to-r ${gradient} px-6 py-4`}>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-500">{title}</h2>
+    <div className="group mb-6 overflow-hidden rounded-xl border border-gray-300 bg-white shadow-md transition-all duration-300 hover:shadow-xl dark:border-gray-600 dark:bg-gray-800">
+      <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-900">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">{title}</h2>
       </div>
       <div className="p-6">
         {children}
@@ -361,15 +362,44 @@ export function ApplicationForm() {
   }));
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-br from-gray-50 via-cyan-50 to-blue-50 py-12 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="relative min-h-screen w-full bg-gray-100 py-12 dark:bg-gray-900">
       <div className="container mx-auto max-w-4xl px-4">
         {/* Back Button */}
         <a href="/apply">
-          <button className="mb-6 flex items-center gap-2 rounded-full bg-white px-6 py-3 font-medium text-gray-700 shadow-md transition-all hover:scale-105 hover:shadow-lg dark:bg-gray-800 dark:text-gray-200">
+          <button className="mb-6 flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-medium text-gray-700 shadow-md transition-all hover:shadow-lg dark:bg-gray-800 dark:text-gray-200">
             <LucideArrowBigLeft className="h-5 w-5" />
             Back to Dashboard
           </button>
         </a>
+
+        {/* Decorative mascot stickers */}
+        <div className="pointer-events-none fixed left-4 top-20 z-10 opacity-20 dark:opacity-10">
+          <Image 
+            src="/mascot/Pixel_PolarBear.png" 
+            alt="" 
+            width={80} 
+            height={80}
+            className="rotate-12"
+          />
+        </div>
+        <div className="pointer-events-none fixed right-8 top-32 z-10 opacity-20 dark:opacity-10">
+          <Image 
+            src="/mascot/DETECTIVE BEARTHOLOMEW.png" 
+            alt="" 
+            width={100} 
+            height={100}
+            className="-rotate-12"
+          />
+        </div>
+        <div className="pointer-events-none fixed bottom-24 left-12 z-10 opacity-20 dark:opacity-10">
+          <Image 
+            src="/mascot/floatbear.png" 
+            alt="" 
+            width={90} 
+            height={90}
+            className="rotate-6"
+          />
+        </div>
 
         <Form {...form}>
           <form
@@ -377,14 +407,11 @@ export function ApplicationForm() {
             className="space-y-8"
           >
             {/* Header */}
-            <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 p-8 text-center text-white shadow-2xl">
+            <div className="overflow-hidden rounded-xl bg-[#01c0cc] p-8 text-center text-white shadow-lg">
               <h1 className="mb-4 text-5xl font-extrabold tracking-tight md:text-6xl">
-                <span className="bg-gradient-to-r from-cyan-200 to-white bg-clip-text text-transparent">
-                  HACKER
-                </span>{" "}
-                <span className="text-white">APPLICATION</span>
+                HACKER APPLICATION
               </h1>
-              <p className="text-lg text-cyan-100">
+              <p className="text-lg">
                 Please complete the following sections. This should take about 5-8 minutes.
               </p>
             </div>
@@ -393,7 +420,7 @@ export function ApplicationForm() {
             <SectionProgress currentSection={currentSection} totalSections={5} />
 
             {/* Personal Information Section */}
-            <SectionCard title="Personal Information" gradient="from-cyan-50 to-blue-50">
+            <SectionCard title="Personal Information">
               <div className="grid gap-6 md:grid-cols-2">
                 <GenericInputField
                   name="firstName"
@@ -490,7 +517,7 @@ export function ApplicationForm() {
             </SectionCard>
 
             {/* Education Section */}
-            <SectionCard title="Education" gradient="from-blue-50 to-indigo-50">
+            <SectionCard title="Education">
               <div className="mb-6">
                 <GenericCombobox
                   name={"school"}
@@ -546,7 +573,7 @@ export function ApplicationForm() {
             </SectionCard>
 
             {/* Experience Section */}
-            <SectionCard title="Experience" gradient="from-indigo-50 to-purple-50">
+            <SectionCard title="Experience">
               <div className="grid gap-6 md:grid-cols-2">
                 <GenericCombobox
                   name={"hackathonsAttended"}
@@ -618,7 +645,7 @@ export function ApplicationForm() {
             </SectionCard>
 
             {/* Additional Details Section */}
-            <SectionCard title="Additional Details" gradient="from-purple-50 to-pink-50">
+            <SectionCard title="Additional Details">
               <div className="mb-6">
                 <GenericCombobox
                   name={"shirtSize"}
@@ -666,12 +693,13 @@ export function ApplicationForm() {
               </div>
 
               <div className="mt-6">
-                <GenericTextArea
-                  name="foodRestrictions"
-                  label="Dietary Restrictions"
+                <GenericMultiSelect
+                  name={"foodRestrictions"}
+                  label={"Dietary Restrictions"}
+                  placeholder="Select dietary restrictions"
+                  options={DIETARY_RESTRICTIONS}
+                  defaultOption={importedValues?.app?.foodRestrictions ?? ""}
                   required={false}
-                  defaultValue={importedValues?.app?.foodRestrictions ?? ""}
-                  placeholder="Any allergies or dietary preferences..."
                 />
               </div>
 
@@ -707,25 +735,25 @@ export function ApplicationForm() {
             </SectionCard>
 
             {/* Legal Section */}
-            <SectionCard title="Legal & Consent" gradient="from-pink-50 to-red-50">
+            <SectionCard title="Legal & Consent">
               <div className="space-y-6">
                 <FormField
                   control={form.control}
                   name="liabilityWaiver"
                   render={({ field }) => (
-                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-all hover:border-cyan-500 dark:border-gray-700">
+                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-all hover:border-[#01c0cc] dark:border-gray-700">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="mt-1 border-2 border-white dark:border-white"
+                          className="mt-1 border-2"
                         />
                       </FormControl>
                       <div className="space-y-1">
                         <FormLabel className="text-base font-medium leading-relaxed text-gray-700 dark:text-gray-200">
                           I have read and agree to the{" "}
                           <a
-                            className="text-cyan-600 underline hover:text-cyan-700"
+                            className="text-[#01c0cc] underline hover:text-[#28979b]"
                             href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf"
                             target="_blank"
                           >
@@ -743,12 +771,12 @@ export function ApplicationForm() {
                   control={form.control}
                   name="mlhPrivacyPolicy"
                   render={({ field }) => (
-                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-all hover:border-cyan-500 dark:border-gray-700">
+                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-all hover:border-[#01c0cc] dark:border-gray-700">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="mt-1 border-2 border-white dark:border-white"
+                          className="mt-1 border-2"
                         />
                       </FormControl>
                       <div className="space-y-1">
@@ -757,7 +785,7 @@ export function ApplicationForm() {
                           information with Major League Hacking for event administration,
                           ranking, and MLH administration in-line with the{" "}
                           <a
-                            className="text-cyan-600 underline hover:text-cyan-700"
+                            className="text-[#01c0cc] underline hover:text-[#28979b]"
                             href="https://mlh.io/privacy"
                             target="_blank"
                           >
@@ -765,7 +793,7 @@ export function ApplicationForm() {
                           </a>
                           . I further agree to the terms of both the{" "}
                           <a
-                            className="text-cyan-600 underline hover:text-cyan-700"
+                            className="text-[#01c0cc] underline hover:text-[#28979b]"
                             href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
                             target="_blank"
                           >
@@ -773,7 +801,7 @@ export function ApplicationForm() {
                           </a>{" "}
                           and the{" "}
                           <a
-                            className="text-cyan-600 underline hover:text-cyan-700"
+                            className="text-[#01c0cc] underline hover:text-[#28979b]"
                             href="https://mlh.io/privacy"
                             target="_blank"
                           >
@@ -791,12 +819,12 @@ export function ApplicationForm() {
                   control={form.control}
                   name="mlhEmailConsent"
                   render={({ field }) => (
-                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-all hover:border-cyan-500 dark:border-gray-700">
+                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-all hover:border-[#01c0cc] dark:border-gray-700">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="mt-1 border-2 border-white dark:border-white"
+                          className="mt-1 border-2"
                         />
                       </FormControl>
                       <div className="space-y-1">
@@ -819,7 +847,7 @@ export function ApplicationForm() {
                 <Button
                   type="submit"
                   disabled={disableSubmit}
-                  className="h-14 w-full max-w-md transform rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-12 text-lg font-bold text-white shadow-xl transition-all hover:scale-105 hover:shadow-2xl disabled:opacity-50 md:w-auto"
+                  className="h-14 w-full max-w-md transform rounded-xl bg-[#01c0cc] px-12 text-lg font-bold text-white shadow-lg transition-all hover:bg-[#28979b] hover:shadow-xl disabled:opacity-50 md:w-auto"
                 >
                   Submit Application
                 </Button>
@@ -828,7 +856,7 @@ export function ApplicationForm() {
                 <Button
                   type="submit"
                   disabled
-                  className="h-14 w-full max-w-md rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-12 text-lg font-bold text-white shadow-xl md:w-auto"
+                  className="h-14 w-full max-w-md rounded-xl bg-[#01c0cc] px-12 text-lg font-bold text-white shadow-lg md:w-auto"
                 >
                   <ReloadIcon className="mr-2 h-5 w-5 animate-spin" />
                   Submitting...
