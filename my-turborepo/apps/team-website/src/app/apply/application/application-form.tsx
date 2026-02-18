@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { TRPCClientError } from "@trpc/client";
 import { upload } from "@vercel/blob/client";
-import { LucideArrowBigLeft, CheckCircle2, Circle } from "lucide-react";
+import { LucideArrowBigLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 
@@ -47,7 +47,6 @@ import {
 import { api } from "~/trpc/react";
 import GenericCombobox from "../../_components/genericCombobox";
 import GenericMultiSelect from "../../_components/genericMultiSelect";
-import LoadingAnimation from "../../_components/loadingAnimation";
 import Title from "../../_components/title";
 import { applicationSchema } from "../validation";
 
@@ -78,53 +77,8 @@ import { applicationSchema } from "../validation";
 export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME;
 const RESUME_OPTIONAL = true;
 
-const Loading = () => {
-  return <LoadingAnimation />;
-};
-
 export function Asterisk() {
   return <span className="text-red-500">*</span>;
-}
-
-// Section Progress Component
-function SectionProgress({ currentSection, totalSections }: { currentSection: number, totalSections: number }) {
-  const sections = ["Personal", "Education", "Experience", "Details", "Legal"];
-  
-  return (
-    <div className="mb-8 flex w-full justify-center">
-      <div className="flex w-full items-center justify-between">
-        {sections.map((section, index) => (
-          <div key={section} className="flex flex-1 items-center">
-            <div className="flex flex-col items-center">
-              <div className={`flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all duration-300 ${
-                index < currentSection 
-                  ? 'border-[#01c0cc] bg-[#01c0cc] text-white' 
-                  : index === currentSection
-                  ? 'border-[#01c0cc] bg-[#01c0cc] text-white'
-                  : 'border-gray-400 bg-gray-200 text-gray-500'
-              }`}>
-                {index < currentSection ? (
-                  <CheckCircle2 className="h-6 w-6" />
-                ) : (
-                  <Circle className="h-6 w-6" />
-                )}
-              </div>
-              <span className={`mt-2 text-xs font-medium ${
-                index <= currentSection ? 'text-[#01c0cc]' : 'text-gray-500'
-              }`}>
-                {section}
-              </span>
-            </div>
-            {index < sections.length - 1 && (
-              <div className={`mx-2 h-0.5 flex-1 transition-all duration-300 ${
-                index < currentSection ? 'bg-[#01c0cc]' : 'bg-gray-300'
-              }`} />
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
 }
 
 // Section Card Component
@@ -146,7 +100,6 @@ function SectionCard({ title, children }: {
 
 export function ApplicationForm() {
   const [disableSubmit, setDisableSubmit] = useState(false);
-  const [currentSection, setCurrentSection] = useState(0);
   const { session } = useAuthRedirect();
   const router = useRouter();
 
@@ -336,30 +289,18 @@ export function ApplicationForm() {
     }
   };
 
-  // Track scroll position to update section progress
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      
-      const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
-      const newSection = Math.min(Math.floor(scrollPercentage * 5), 4);
-      setCurrentSection(newSection);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
   const SCHOOL_OPTIONS = schoolsJson.map((entry) => ({
     value: entry.schoolName,
     label: entry.schoolName,
   }));
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-lg text-gray-600">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen w-full bg-gray-100 py-12 dark:bg-gray-900">
@@ -407,17 +348,14 @@ export function ApplicationForm() {
             className="space-y-8"
           >
             {/* Header */}
-            <div className="overflow-hidden rounded-xl bg-[#01c0cc] p-8 text-center text-white shadow-lg">
-              <h1 className="mb-4 text-5xl font-extrabold tracking-tight md:text-6xl">
-                HACKER APPLICATION
+            <div className="mb-8 text-center">
+              <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 md:text-5xl">
+                Hacker Application
               </h1>
-              <p className="text-lg">
+              <p className="mt-3 text-base text-gray-600 dark:text-gray-400">
                 Please complete the following sections. This should take about 5-8 minutes.
               </p>
             </div>
-
-            {/* Progress Indicator */}
-            <SectionProgress currentSection={currentSection} totalSections={5} />
 
             {/* Personal Information Section */}
             <SectionCard title="Personal Information">
