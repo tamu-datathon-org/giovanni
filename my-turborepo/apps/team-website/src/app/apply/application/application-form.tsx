@@ -1,7 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -77,6 +77,10 @@ import { applicationSchema } from "../validation";
 export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME;
 
 const ADDRESS_DELIMITER = "|";
+
+const DRAFT_STORAGE_KEY = "applicationData";
+
+const RESUME_OPTIONAL = true;
 
 export function Asterisk() {
   return <span className="text-red-500">*</span>;
@@ -155,7 +159,6 @@ export function ApplicationForm() {
   });
 
   useEffect(() => {
-    console.log("importedValues", importedValues);
     if (importedValues?.app) {
       const addressParts = importedValues.app.address.split(ADDRESS_DELIMITER);
       form.reset({
@@ -187,10 +190,45 @@ export function ApplicationForm() {
       });
 
       form.setValue("email", importedValues.app.email);
-    } else if (session) {
+      return;
+    }
+
+    if (!isLoading && session?.user?.email) {
+      const draft = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (draft) {
+        try {
+          const parsed = JSON.parse(draft) as Record<string, unknown>;
+          if (parsed && typeof parsed === "object") {
+            form.reset(parsed);
+          }
+        } catch {
+          // ignore invalid draft
+        }
+      }
       form.setValue("email", session.user.email);
     }
-  }, [importedValues, session]);
+  }, [importedValues, session, isLoading, form]);
+
+  const saveDraft = useCallback(() => {
+    if (importedValues?.app) return;
+    const values = form.getValues();
+    const toSave = { ...values };
+    delete (toSave as Record<string, unknown>).resume;
+    delete (toSave as Record<string, unknown>).resumeFile;
+    try {
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(toSave));
+    } catch {
+      // ignore quota / private mode
+    }
+  }, [form, importedValues?.app]);
+
+  const watchedValues = form.watch();
+
+  useEffect(() => {
+    if (importedValues?.app) return;
+    const timeout = setTimeout(saveDraft, 600);
+    return () => clearTimeout(timeout);
+  }, [watchedValues, importedValues?.app, saveDraft]);
 
   const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
     const files = form.getValues("resume");
@@ -216,7 +254,7 @@ export function ApplicationForm() {
 
       blob_url = newBlob.url;
       blob_name = file.name;
-    } else if (!importedValues?.resume?.resumeUrl) {
+    } else if (!RESUME_OPTIONAL && !importedValues?.resume?.url) {
       toast({
         variant: "destructive",
         title: "Resume Required",
@@ -246,7 +284,7 @@ export function ApplicationForm() {
               "Your application has been received. You can now update and resubmit.",
           });
 
-          localStorage.removeItem("applicationData");
+          localStorage.removeItem(DRAFT_STORAGE_KEY);
 
           setTimeout(() => {
             router.replace("/apply");
