@@ -397,7 +397,19 @@ export function ApplicationForm() {
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form
+              onSubmit={form.handleSubmit(onSubmit, (errors) => {
+                const firstError = Object.values(errors)[0];
+                const message =
+                  firstError?.message ?? "Please fill in all required fields.";
+                toast({
+                  variant: "destructive",
+                  title: "Missing required information",
+                  description: message,
+                });
+              })}
+              className="space-y-8"
+            >
             {/* Header */}
             <div className="mb-8 text-center">
               <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 md:text-5xl">
@@ -476,10 +488,10 @@ export function ApplicationForm() {
                     importedValues?.app?.gender
                       ? (GENDER_OPTIONS.find(
                           (option) =>
-                            option.value === importedValues.app.gender,
+                            option.value === importedValues?.app?.gender,
                         ) ?? {
                           label: "Other (please specify)",
-                          value: importedValues.app.gender || "",
+                          value: importedValues?.app?.gender || "",
                         })
                       : undefined
                   }
@@ -495,10 +507,10 @@ export function ApplicationForm() {
                   defaultOption={
                     importedValues?.app?.race
                       ? (RACE_OPTIONS.find(
-                          (option) => option.value === importedValues.app.race,
+                          (option) => option.value === importedValues?.app?.race,
                         ) ?? {
                           label: "Other (please specify)",
-                          value: importedValues.app.race || "",
+                          value: importedValues?.app?.race || "",
                         })
                       : undefined
                   }
@@ -529,10 +541,10 @@ export function ApplicationForm() {
                   defaultOption={
                     importedValues?.app?.major
                       ? (MAJOR.find(
-                          (option) => option.value === importedValues.app.major,
+                          (option) => option.value === importedValues?.app?.major,
                         ) ?? {
                           label: "Other (please specify)",
-                          value: importedValues.app.major || "",
+                          value: importedValues?.app?.major || "",
                         })
                       : undefined
                   }
@@ -585,7 +597,7 @@ export function ApplicationForm() {
                     importedValues?.app?.experience
                       ? PROGRAMMING_SKILL_LEVELS.find(
                           (option) =>
-                            option.value === importedValues.app.experience,
+                            option.value === importedValues?.app?.experience,
                         )
                       : undefined
                   }
