@@ -41,15 +41,15 @@ export const createTRPCContext = async (opts: {
 };
 
 export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
-export type VerifiedContext = Context & {
+export type VerifiedContext = Omit<Context, "session"> & {
   session: {
     user: {
       id: string;
-      name: string;
+      name: string | null;
       email: string;
       emailVerified: boolean;
-      createdAt: Date;
-      updatedAt: Date;
+      createdAt: Date | null;
+      updatedAt: Date | null;
       image?: string | null | undefined;
     };
   };

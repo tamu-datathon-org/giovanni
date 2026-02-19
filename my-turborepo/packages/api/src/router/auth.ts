@@ -4,10 +4,10 @@ import { TRPCError } from "@trpc/server";
 import { and, eq } from "@vanni/db";
 import { Event, Role, UserRole } from "@vanni/db/schema";
 
-import type { Context } from "../trpc";
+import type { VerifiedContext } from "../trpc";
 import { protectedProcedure, publicProcedure } from "../trpc";
 
-export async function validateOrganizerAuth({ ctx }: { ctx: Context }) {
+export async function validateOrganizerAuth({ ctx }: { ctx: VerifiedContext }) {
   const eventName = process.env.NEXT_PUBLIC_EVENT_NAME;
 
   // Verify the event name and user exists
