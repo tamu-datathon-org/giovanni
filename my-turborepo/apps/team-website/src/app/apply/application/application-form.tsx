@@ -75,7 +75,8 @@ import { applicationSchema } from "../validation";
 */
 
 export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME;
-const RESUME_OPTIONAL = true;
+
+const ADDRESS_DELIMITER = "|";
 
 export function Asterisk() {
   return <span className="text-red-500">*</span>;
@@ -156,6 +157,7 @@ export function ApplicationForm() {
   useEffect(() => {
     console.log("importedValues", importedValues);
     if (importedValues?.app) {
+      const addressParts = importedValues.app.address.split(ADDRESS_DELIMITER);
       form.reset({
         ...importedValues.app,
         age: importedValues.app.age || "",
@@ -171,10 +173,10 @@ export function ApplicationForm() {
         experience: importedValues.app.experience || "",
         eventSource: importedValues.app.eventSource || "",
         shirtSize: importedValues.app.shirtSize || "",
-        address: importedValues.app.address || "",
-        city: importedValues.app.city || "",
-        region: importedValues.app.region || "",
-        zipCode: importedValues.app.zipCode || "",
+        address: addressParts[0] ?? "",
+        city: addressParts[1] ?? "",
+        region: addressParts[2] ?? "",
+        zipCode: addressParts[3] ?? "",
         dietaryRestriction: importedValues.app.dietaryRestriction || "",
         references: importedValues.app.references || "",
         questions: importedValues.app.questions || "",
@@ -230,6 +232,7 @@ export function ApplicationForm() {
         eventName: EVENT_NAME,
         applicationData: {
           ...data,
+          address: `${data.address}|${data.city}|${data.region}|${data.zipCode}`,
           gradYear: Number(data.gradYear),
         },
       };
@@ -260,6 +263,14 @@ export function ApplicationForm() {
         },
       });
     } else {
+      const combinedAddress = [
+        data.address,
+        data.city,
+        data.region,
+        data.zipCode,
+      ]
+        .filter(Boolean)
+        .join(ADDRESS_DELIMITER);
       const updateApplicationData = {
         id: importedValues.app.id,
         userId: importedValues.app.userId,
@@ -268,6 +279,7 @@ export function ApplicationForm() {
         eventName: EVENT_NAME,
         application: {
           ...data,
+          address: combinedAddress,
           gradYear: Number(data.gradYear),
         },
       };
@@ -444,13 +456,12 @@ export function ApplicationForm() {
                   options={RACE_OPTIONS}
                   defaultOption={
                     importedValues?.app?.race
-                      ? RACE_OPTIONS.find(
-                          (option) =>
-                            option.value === importedValues.app.race,
+                      ? (RACE_OPTIONS.find(
+                          (option) => option.value === importedValues.app.race,
                         ) ?? {
                           label: "Other (please specify)",
                           value: importedValues.app.race || "",
-                        }
+                        })
                       : undefined
                   }
                   required={true}
@@ -479,13 +490,12 @@ export function ApplicationForm() {
                   options={MAJOR}
                   defaultOption={
                     importedValues?.app?.major
-                      ? MAJOR.find(
-                          (option) =>
-                            option.value === importedValues.app.major,
+                      ? (MAJOR.find(
+                          (option) => option.value === importedValues.app.major,
                         ) ?? {
                           label: "Other (please specify)",
                           value: importedValues.app.major || "",
-                        }
+                        })
                       : undefined
                   }
                   required={true}
