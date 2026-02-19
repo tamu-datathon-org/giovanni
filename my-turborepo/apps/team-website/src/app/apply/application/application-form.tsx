@@ -276,7 +276,7 @@ export function ApplicationForm() {
       };
 
       await createApplication.mutateAsync(createApplicationData, {
-        onSuccess: async () => {
+        onSuccess: () => {
           toast({
             variant: "success",
             title: "Application submitted successfully!",
