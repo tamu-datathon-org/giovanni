@@ -4,7 +4,8 @@ import { redirect } from "next/navigation";
 import { ApplicationForm } from "~/app/apply/application/application-form";
 import { appsOpen } from "../page";
 
-export default async function Page() {
+export default function Page() {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!appsOpen) {
     redirect("/apply");
   }

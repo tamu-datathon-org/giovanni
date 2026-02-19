@@ -16,7 +16,7 @@ import BackgroundContainer from "../_components/BackgroundContainer";
 import { GradientButton } from "../_components/GradientButton";
 import { EVENT_NAME } from "./application/application-form";
 
-export const appsOpen = false;
+export const appsOpen = true;
 
 export default function Page() {
   const { session, setSession } = useAuthRedirect();
