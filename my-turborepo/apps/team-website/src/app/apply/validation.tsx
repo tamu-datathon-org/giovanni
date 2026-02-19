@@ -6,8 +6,9 @@ import { CreateApplicationSchema } from "@vanni/db/schema";
 
 export const applicationSchema = CreateApplicationSchema.merge(
   z.object({
+    resume: z.any().optional(),
     resumeFile: z.instanceof(File).nullish().optional(),
-    mlhCodeConduct: z
+    liabilityWaiver: z
       .boolean()
       .refine((value) => value, "Please accept the code of conduct"),
     mlhPrivacyPolicy: z
