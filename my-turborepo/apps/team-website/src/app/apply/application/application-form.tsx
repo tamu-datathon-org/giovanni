@@ -409,7 +409,6 @@ export function ApplicationForm() {
               const firstError = Object.values(errors)[0];
               const message =
                 typeof firstError === "object" &&
-                &&
                 "message" in firstError &&
                 typeof (firstError as { message?: unknown }).message ===
                   "string"
