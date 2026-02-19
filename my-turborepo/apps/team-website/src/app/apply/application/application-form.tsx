@@ -2,6 +2,7 @@
 
 import type { SubmitHandler } from "react-hook-form";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -9,7 +10,6 @@ import { TRPCClientError } from "@trpc/client";
 import { upload } from "@vercel/blob/client";
 import { LucideArrowBigLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
-import Image from "next/image";
 
 import {
   Form,
@@ -82,18 +82,21 @@ export function Asterisk() {
 }
 
 // Section Card Component
-function SectionCard({ title, children }: { 
-  title: string, 
-  children: React.ReactNode
+function SectionCard({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
 }) {
   return (
     <div className="group mb-6 overflow-hidden rounded-xl border border-gray-300 bg-white shadow-md transition-all duration-300 hover:shadow-xl dark:border-gray-600 dark:bg-gray-800">
       <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-900">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">{title}</h2>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+          {title}
+        </h2>
       </div>
-      <div className="p-6">
-        {children}
-      </div>
+      <div className="p-6">{children}</div>
     </div>
   );
 }
@@ -133,15 +136,15 @@ export function ApplicationForm() {
       gender: "",
       race: "",
       hackathonsAttended: "",
-      softwareExperience: "",
-      heardFrom: [],
+      experience: "",
+      eventSource: "",
       shirtSize: "",
       address: "",
       city: "",
       region: "",
       zipCode: "",
-      foodRestrictions: "",
-      referral: "",
+      dietaryRestriction: "",
+      references: "",
       questions: "",
       extraInfo: "",
       liabilityWaiver: false,
@@ -151,6 +154,7 @@ export function ApplicationForm() {
   });
 
   useEffect(() => {
+    console.log("importedValues", importedValues);
     if (importedValues?.app) {
       form.reset({
         ...importedValues.app,
@@ -164,15 +168,15 @@ export function ApplicationForm() {
         gender: importedValues.app.gender || "",
         race: importedValues.app.race || "",
         hackathonsAttended: importedValues.app.hackathonsAttended || "",
-        softwareExperience: importedValues.app.softwareExperience || "",
-        heardFrom: importedValues.app.heardFrom || [],
+        experience: importedValues.app.experience || "",
+        eventSource: importedValues.app.eventSource || "",
         shirtSize: importedValues.app.shirtSize || "",
         address: importedValues.app.address || "",
         city: importedValues.app.city || "",
         region: importedValues.app.region || "",
         zipCode: importedValues.app.zipCode || "",
-        foodRestrictions: importedValues.app.foodRestrictions || "",
-        referral: importedValues.app.referral || "",
+        dietaryRestriction: importedValues.app.dietaryRestriction || "",
+        references: importedValues.app.references || "",
         questions: importedValues.app.questions || "",
         extraInfo: importedValues.app.extraInfo || "",
         liabilityWaiver: importedValues.app.liabilityWaiver,
@@ -210,7 +214,7 @@ export function ApplicationForm() {
 
       blob_url = newBlob.url;
       blob_name = file.name;
-    } else if (!RESUME_OPTIONAL && !importedValues?.resume?.url) {
+    } else if (!importedValues?.resume?.resumeUrl) {
       toast({
         variant: "destructive",
         title: "Resume Required",
@@ -315,45 +319,43 @@ export function ApplicationForm() {
 
         {/* Decorative mascot stickers */}
         <div className="pointer-events-none fixed left-4 top-20 z-10 opacity-20 dark:opacity-10">
-          <Image 
-            src="/mascot/Pixel_PolarBear.png" 
-            alt="" 
-            width={80} 
+          <Image
+            src="/mascot/Pixel_PolarBear.png"
+            alt=""
+            width={80}
             height={80}
             className="rotate-12"
           />
         </div>
         <div className="pointer-events-none fixed right-8 top-32 z-10 opacity-20 dark:opacity-10">
-          <Image 
-            src="/mascot/DETECTIVE BEARTHOLOMEW.png" 
-            alt="" 
-            width={100} 
+          <Image
+            src="/mascot/DETECTIVE BEARTHOLOMEW.png"
+            alt=""
+            width={100}
             height={100}
             className="-rotate-12"
           />
         </div>
         <div className="pointer-events-none fixed bottom-24 left-12 z-10 opacity-20 dark:opacity-10">
-          <Image 
-            src="/mascot/floatbear.png" 
-            alt="" 
-            width={90} 
+          <Image
+            src="/mascot/floatbear.png"
+            alt=""
+            width={90}
             height={90}
             className="rotate-6"
           />
         </div>
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             {/* Header */}
             <div className="mb-8 text-center">
               <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 md:text-5xl">
                 Hacker Application
               </h1>
               <p className="mt-3 text-base text-gray-600 dark:text-gray-400">
-                Please complete the following sections. This should take about 5-8 minutes.
+                Please complete the following sections. This should take about
+                5-8 minutes.
               </p>
             </div>
 
@@ -422,12 +424,13 @@ export function ApplicationForm() {
                   options={GENDER_OPTIONS}
                   defaultOption={
                     importedValues?.app?.gender
-                      ? GENDER_OPTIONS.find(
-                          (option) => option.value === importedValues?.app?.gender,
-                        ) || {
+                      ? (GENDER_OPTIONS.find(
+                          (option) =>
+                            option.value === importedValues.app.gender,
+                        ) ?? {
                           label: "Other (please specify)",
-                          value: importedValues?.app?.gender || "",
-                        }
+                          value: importedValues.app.gender || "",
+                        })
                       : undefined
                   }
                   required={true}
@@ -442,10 +445,11 @@ export function ApplicationForm() {
                   defaultOption={
                     importedValues?.app?.race
                       ? RACE_OPTIONS.find(
-                          (option) => option.value === importedValues?.app?.race,
-                        ) || {
+                          (option) =>
+                            option.value === importedValues.app.race,
+                        ) ?? {
                           label: "Other (please specify)",
-                          value: importedValues?.app?.race || "",
+                          value: importedValues.app.race || "",
                         }
                       : undefined
                   }
@@ -476,10 +480,11 @@ export function ApplicationForm() {
                   defaultOption={
                     importedValues?.app?.major
                       ? MAJOR.find(
-                          (option) => option.value === importedValues?.app?.major,
-                        ) || {
+                          (option) =>
+                            option.value === importedValues.app.major,
+                        ) ?? {
                           label: "Other (please specify)",
-                          value: importedValues?.app?.major || "",
+                          value: importedValues.app.major || "",
                         }
                       : undefined
                   }
@@ -490,7 +495,8 @@ export function ApplicationForm() {
                   label={"Level of Study"}
                   options={EDUCATION_LEVELS}
                   defaultOption={EDUCATION_LEVELS.find(
-                    (option) => option.value === importedValues?.app?.classification,
+                    (option) =>
+                      option.value === importedValues?.app?.classification,
                   )}
                   required={true}
                 />
@@ -503,7 +509,7 @@ export function ApplicationForm() {
                   options={GRADUATION_YEARS}
                   defaultOption={GRADUATION_YEARS.find(
                     (option) =>
-                      option.value === importedValues?.app?.gradYear?.toString(),
+                      option.value === importedValues?.app?.gradYear.toString(),
                   )}
                   required={true}
                 />
@@ -524,30 +530,29 @@ export function ApplicationForm() {
                   required={true}
                 />
                 <GenericCombobox
-                  name={"softwareExperience"}
+                  name={"experience"}
                   label={"Programming Experience Level"}
                   options={PROGRAMMING_SKILL_LEVELS}
-                  defaultOption={PROGRAMMING_SKILL_LEVELS.find(
-                    (option) =>
-                      option.value === importedValues?.app?.softwareExperience,
-                  )}
+                  defaultOption={
+                    importedValues?.app?.experience
+                      ? PROGRAMMING_SKILL_LEVELS.find(
+                          (option) =>
+                            option.value === importedValues.app.experience,
+                        )
+                      : undefined
+                  }
                   required={true}
                 />
               </div>
 
               <div className="mt-6">
                 <GenericMultiSelect
-                  name={"heardFrom"}
+                  name={"eventSource"}
                   label={"How did you hear about us?"}
                   options={HEARD_ABOUT_OPTIONS}
-                  defaultOptions={
-                    importedValues?.app?.heardFrom
-                      ? HEARD_ABOUT_OPTIONS.filter((option) =>
-                          importedValues.app.heardFrom.includes(option.value),
-                        )
-                      : []
-                  }
+                  defaultOption={importedValues?.app?.eventSource ?? undefined}
                   required={true}
+                  placeholder={""}
                 />
               </div>
 
@@ -558,7 +563,7 @@ export function ApplicationForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                        Resume/CV {!RESUME_OPTIONAL && <Asterisk />}
+                        Resume/CV <Asterisk />
                       </FormLabel>
                       {importedValues?.resume && (
                         <div className="my-2 rounded-lg bg-green-50 p-3 dark:bg-green-900/20">
@@ -632,21 +637,21 @@ export function ApplicationForm() {
 
               <div className="mt-6">
                 <GenericMultiSelect
-                  name={"foodRestrictions"}
+                  name={"dietaryRestriction"}
                   label={"Dietary Restrictions"}
                   placeholder="Select dietary restrictions"
                   options={DIETARY_RESTRICTIONS}
-                  defaultOption={importedValues?.app?.foodRestrictions ?? ""}
+                  defaultOption={importedValues?.app?.dietaryRestriction ?? ""}
                   required={false}
                 />
               </div>
 
               <div className="mt-6">
                 <GenericTextArea
-                  name="referral"
+                  name={"references"}
                   label="Tell us about your interest in this event"
                   required={false}
-                  defaultValue={importedValues?.app?.referral ?? ""}
+                  defaultValue={importedValues?.app?.references ?? ""}
                   placeholder="What excites you about this datathon?"
                 />
               </div>
@@ -720,8 +725,9 @@ export function ApplicationForm() {
                       <div className="space-y-1">
                         <FormLabel className="text-base font-medium leading-relaxed text-gray-700 dark:text-gray-200">
                           I authorize you to share my application/registration
-                          information with Major League Hacking for event administration,
-                          ranking, and MLH administration in-line with the{" "}
+                          information with Major League Hacking for event
+                          administration, ranking, and MLH administration
+                          in-line with the{" "}
                           <a
                             className="text-[#01c0cc] underline hover:text-[#28979b]"
                             href="https://mlh.io/privacy"
@@ -768,8 +774,9 @@ export function ApplicationForm() {
                       <div className="space-y-1">
                         <FormLabel className="text-base font-medium leading-relaxed text-gray-700 dark:text-gray-200">
                           <span className="text-gray-500">(Optional) </span>I
-                          authorize MLH to send me occasional emails about relevant
-                          events, career opportunities, and community announcements
+                          authorize MLH to send me occasional emails about
+                          relevant events, career opportunities, and community
+                          announcements
                         </FormLabel>
                         <FormMessage />
                       </div>

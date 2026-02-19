@@ -5,7 +5,7 @@ import { eq } from "@vanni/db";
 import { Event } from "@vanni/db/schema";
 
 import type { VerifiedContext } from "../trpc";
-import { protectedProcedure } from "../trpc";
+import { protectedProcedure, publicProcedure } from "../trpc";
 
 export const getEventData = async ({
   ctx,
@@ -29,6 +29,16 @@ export const getEventData = async ({
 };
 
 export const eventRouter = {
+  getEndDate: publicProcedure
+    .input(z.object({ eventName: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const event = await ctx.db.query.Event.findFirst({
+        where: eq(Event.name, input.eventName),
+        columns: { endDate: true },
+      });
+      return event ? { endDate: event.endDate } : null;
+    }),
+
   findByName: protectedProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
