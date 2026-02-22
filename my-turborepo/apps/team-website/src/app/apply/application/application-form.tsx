@@ -166,7 +166,31 @@ export function ApplicationForm() {
 
   useEffect(() => {
     if (importedValues?.app) {
-      const addressParts = importedValues.app.address.split(ADDRESS_DELIMITER);
+      // Parse address to extract city, region, zipCode
+      // Format is: "street, city, region zipcode"
+      const addressParts = importedValues.app.address.split(',').map(s => s.trim());
+      let street = "";
+      let city = "";
+      let region = "";
+      let zipCode = "";
+
+      if (addressParts.length >= 3) {
+        street = addressParts[0];
+        city = addressParts[1];
+        const lastPart = addressParts[2].split(' ');
+        if (lastPart.length >= 2) {
+          region = lastPart[0];
+          zipCode = lastPart.slice(1).join(' ');
+        } else {
+          region = lastPart[0] || "";
+        }
+      } else if (addressParts.length === 2) {
+        street = addressParts[0];
+        city = addressParts[1];
+      } else {
+        street = importedValues.app.address;
+      }
+
       form.reset({
         ...importedValues.app,
         age: importedValues.app.age || "",
@@ -182,10 +206,10 @@ export function ApplicationForm() {
         experience: importedValues.app.experience || "",
         eventSource: importedValues.app.eventSource || "",
         shirtSize: importedValues.app.shirtSize || "",
-        address: addressParts[0] ?? "",
-        city: addressParts[1] ?? "",
-        region: addressParts[2] ?? "",
-        zipCode: addressParts[3] ?? "",
+        address: street,
+        city: city,
+        region: region,
+        zipCode: zipCode,
         dietaryRestriction: importedValues.app.dietaryRestriction || "",
         references: importedValues.app.references || "",
         questions: importedValues.app.questions || "",
@@ -214,6 +238,24 @@ export function ApplicationForm() {
       form.setValue("email", session.user.email);
     }
   }, [importedValues, session, isLoading, form]);
+
+  // Scroll to first error on validation failure
+  useEffect(() => {
+    if (form.formState.submitCount > 0 && Object.keys(form.formState.errors).length > 0) {
+      setTimeout(() => {
+        // Find the first visible error message, excluding asterisks
+        const errorMessages = Array.from(document.querySelectorAll('.text-red-500, [class*="destructive"]'));
+        const firstRealError = errorMessages.find(el => {
+          const text = el.textContent?.trim() || '';
+          return text !== '*' && text.length > 1;
+        });
+
+        if (firstRealError) {
+          firstRealError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 150);
+    }
+  }, [form.formState.submitCount, form.formState.errors]);
 
   const saveDraft = useCallback(() => {
     if (importedValues?.app) return;
@@ -295,7 +337,7 @@ export function ApplicationForm() {
 
           setTimeout(() => {
             router.replace("/apply");
-          }, 5000);
+          }, 1500);
         },
         onError: (error: { message: any }) => {
           if (error instanceof TRPCClientError) {
@@ -336,6 +378,10 @@ export function ApplicationForm() {
             title: "Application updated successfully!",
             description: "Your application has been received.",
           });
+
+          setTimeout(() => {
+            router.replace("/apply");
+          }, 1500);
         },
         onError: (error: any) => {
           if (error instanceof TRPCClientError) {
@@ -375,7 +421,7 @@ export function ApplicationForm() {
         </a>
 
         {/* Decorative mascot stickers */}
-        <div className="pointer-events-none fixed left-4 top-20 z-10 opacity-20 dark:opacity-10">
+        <div className="pointer-events-none fixed left-4 top-20 z-10 opacity-20 dark:opacity-40">
           <Image
             src="/mascot/Pixel_PolarBear.png"
             alt=""
@@ -384,7 +430,7 @@ export function ApplicationForm() {
             className="rotate-12"
           />
         </div>
-        <div className="pointer-events-none fixed right-8 top-32 z-10 opacity-20 dark:opacity-10">
+        <div className="pointer-events-none fixed right-8 top-32 z-10 opacity-20 dark:opacity-40">
           <Image
             src="/mascot/DETECTIVE BEARTHOLOMEW.png"
             alt=""
@@ -393,7 +439,7 @@ export function ApplicationForm() {
             className="-rotate-12"
           />
         </div>
-        <div className="pointer-events-none fixed bottom-24 left-12 z-10 opacity-20 dark:opacity-10">
+        <div className="pointer-events-none fixed bottom-24 left-12 z-10 opacity-20 dark:opacity-40">
           <Image
             src="/mascot/floatbear.png"
             alt=""
@@ -428,8 +474,7 @@ export function ApplicationForm() {
                 Hacker Application
               </h1>
               <p className="mt-3 text-base text-gray-600 dark:text-gray-400">
-                Please complete the following sections. This should take about
-                5-8 minutes.
+                Please complete the following sections. This should take about 5 minutes.
               </p>
             </div>
 
@@ -630,13 +675,14 @@ export function ApplicationForm() {
               </div>
 
               <div className="mt-6">
-                <GenericMultiSelect
+                <GenericCombobox
                   name={"eventSource"}
                   label={"How did you hear about us?"}
                   options={HEARD_ABOUT_OPTIONS}
-                  defaultOption={importedValues?.app?.eventSource ?? undefined}
+                  defaultOption={HEARD_ABOUT_OPTIONS.find(
+                    (option) => option.value === importedValues?.app?.eventSource,
+                  )}
                   required={true}
-                  placeholder={""}
                 />
               </div>
 
@@ -661,7 +707,7 @@ export function ApplicationForm() {
                           type="file"
                           accept=".pdf,.doc,.docx"
                           onChange={(e) => field.onChange(e.target.files)}
-                          className="cursor-pointer transition-all hover:border-cyan-500"
+                          className="cursor-pointer transition-all !border-gray-700"
                         />
                       </FormControl>
                       <FormMessage />
@@ -720,12 +766,13 @@ export function ApplicationForm() {
               </div>
 
               <div className="mt-6">
-                <GenericMultiSelect
+                <GenericCombobox
                   name={"dietaryRestriction"}
                   label={"Dietary Restrictions"}
-                  placeholder="Select dietary restrictions"
                   options={DIETARY_RESTRICTIONS}
-                  defaultOption={importedValues?.app?.dietaryRestriction ?? ""}
+                  defaultOption={DIETARY_RESTRICTIONS.find(
+                    (option) => option.value === importedValues?.app?.dietaryRestriction,
+                  )}
                   required={false}
                 />
               </div>
@@ -773,7 +820,7 @@ export function ApplicationForm() {
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="mt-1 border-2"
+                          className="mt-3 !border-2 !border-white dark:!border-white"
                         />
                       </FormControl>
                       <div className="space-y-1">
@@ -803,7 +850,7 @@ export function ApplicationForm() {
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="mt-1 border-2"
+                          className="mt-3 !border-2 !border-white dark:!border-white"
                         />
                       </FormControl>
                       <div className="space-y-1">
@@ -852,7 +899,7 @@ export function ApplicationForm() {
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="mt-1 border-2"
+                          className="mt-3 !border-2 !border-white dark:!border-white"
                         />
                       </FormControl>
                       <div className="space-y-1">

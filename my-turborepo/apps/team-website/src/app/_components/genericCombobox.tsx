@@ -105,13 +105,15 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                   <Button
                     variant="application"
                     role="combobox"
-                    className="justify-between"
+                    className="w-full justify-between overflow-hidden"
                   >
-                    {otherOption
-                      ? "Other (please specify)"
-                      : selectedOption
-                      ? selectedOption.label
-                      : "Select ..."}
+                    <span className="truncate">
+                      {otherOption
+                        ? "Other (please specify)"
+                        : selectedOption
+                        ? selectedOption.label
+                        : "Select ..."}
+                    </span>
                     <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </FormControl>
@@ -134,10 +136,10 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                           onSelect={(currentValue) => {
                             if (currentValue === "Other (please specify)") {
                               setOtherOption(true);
-                              form.setValue(name, "");
+                              form.setValue(name, "", { shouldValidate: true });
                             } else {
                               setOtherOption(false);
-                              form.setValue(name, currentValue);
+                              form.setValue(name, currentValue, { shouldValidate: true });
                             }
                             setOpen(false);
                           }}

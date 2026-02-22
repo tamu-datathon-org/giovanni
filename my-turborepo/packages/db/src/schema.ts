@@ -332,8 +332,8 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .default(""),
   linkedinUrl: z
     .string()
-    .min(1, "Linkedin URL is missing")
     .max(255, "Linkedin URL is too long")
+    .optional()
     .default(""),
   interestOne: z
     .string()
