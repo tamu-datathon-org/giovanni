@@ -32,7 +32,8 @@ export default function Page() {
           },
         },
       });
-    } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_error) {
       toast({
         title: "Sign-Out Error",
         description: "There was an error signing out. Please try again.",
@@ -52,22 +53,32 @@ export default function Page() {
   };
   const [qrCode, setQrCode] = useState<string>("");
 
-  const { data, isLoading } = api.application.getApplicationStatus.useQuery(
-    {
-      eventName: EVENT_NAME,
-    },
-    {
-      enabled: !!EVENT_NAME,
-      retry: 2,
-    },
-  );
+  const hasSession = !!session;
+
+  const { data, isLoading, error } =
+    api.application.getApplicationStatus.useQuery(
+      {
+        eventName: EVENT_NAME,
+      },
+      {
+        enabled: !!EVENT_NAME && hasSession,
+        retry: 2,
+      },
+    );
+
+  useEffect(() => {
+    if (error) {
+      console.error("Application status query error", error);
+    }
+  }, [error]);
 
   useEffect(() => {
     const fetchQRCode = async () => {
-      if (data?.status !== "rejected") {
-        const qr = await generateQR(data?.email ?? "");
-        setQrCode(qr);
+      if (data?.status === "rejected") {
+        return;
       }
+      const qr = await generateQR(data?.email ?? "");
+      setQrCode(qr);
     };
     void fetchQRCode();
   }, [data]);
@@ -133,11 +144,7 @@ export default function Page() {
                   </div>
                 </div>
               )}
-              {appsOpen ? (
-                <AppsOpenMessage status={data?.status} />
-              ) : (
-                <AppsClosedMessage />
-              )}
+              <AppsOpenMessage status={data?.status} />
             </div>
             <Button
               onClick={signOutHandler}

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import menuData from "./menuData";
 import { ScrollProgress } from "./ScrollProgess";
@@ -16,12 +16,12 @@ const Header = () => {
   const navItemsRef = useRef<HTMLDivElement>(null);
 
   // pill animation refs (GSAP timelines with tweenTo, set after dynamic import)
-  type PillTimeline = {
+  interface PillTimeline {
     tweenTo: (label: string, opts: { duration: number }) => void;
-  };
-  const pillRefs = useRef<Array<HTMLLIElement | null>>([]);
-  const circleRefs = useRef<Array<HTMLSpanElement | null>>([]);
-  const pillTimelines = useRef<Array<PillTimeline | null>>([]);
+  }
+  const pillRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const circleRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const pillTimelines = useRef<(PillTimeline | null)[]>([]);
 
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navbarToggleHandler = () => setNavbarOpen(!navbarOpen);
@@ -31,12 +31,23 @@ const Header = () => {
     setOpenIndex(openIndex === index ? -1 : index);
 
   const pathname = usePathname();
+  const router = useRouter();
 
   // Handle navigation clicks for smooth scrolling to sections
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     item: (typeof menuData)[number],
   ) => {
+    // Navigate to /apply only after killing ScrollTriggers (avoids Node.removeChild error)
+    if (pathname === "/" && item.path === "/apply") {
+      e.preventDefault();
+      setNavbarOpen(false);
+      void import("gsap/ScrollTrigger").then(({ default: ScrollTrigger }) => {
+        ScrollTrigger.getAll().forEach((s) => s.kill());
+        router.push("/apply");
+      });
+      return;
+    }
     // Only handle hash links on the home page
     if (pathname === "/" && item.path?.startsWith("/#")) {
       const sectionId = item.path.replace("/#", "");
@@ -73,8 +84,6 @@ const Header = () => {
         const container = containerRef.current;
         const logo = logoRef.current;
         const navItems = navItemsRef.current;
-
-        if (!nav || !container || !logo || !navItems) return;
 
         // ======================
         // NAVBAR SCROLL ANIMATION
@@ -199,7 +208,7 @@ const Header = () => {
       killScrollTrigger?.();
       killPillResize?.();
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <header ref={navRef} className="fixed z-40 flex w-full justify-center">
