@@ -71,6 +71,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({
           </div>
         )}
       </div>
+      
     </div>
   );
 };
