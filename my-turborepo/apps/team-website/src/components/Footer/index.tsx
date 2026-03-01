@@ -35,7 +35,7 @@ const Footer = () => {
             </Link>
             <h3>TAMU Datathon</h3>
             <p className="mb-6 text-center text-sm text-gray-600 dark:text-gray-400 md:text-left">
-              change learning with data
+              Change Learning with Data
             </p>
           </div>
 
