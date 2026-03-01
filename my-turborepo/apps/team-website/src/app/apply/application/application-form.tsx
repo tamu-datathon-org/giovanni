@@ -403,25 +403,25 @@ export function ApplicationForm() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-lg text-gray-600">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#121723]">
+        <p className="text-lg text-neutral-300">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen w-full bg-gray-100 py-12 dark:bg-gray-900">
+    <div className="relative min-h-screen w-full bg-[#121723] py-12 text-neutral-50">
       <div className="container mx-auto max-w-4xl px-4">
         {/* Back Button */}
         <a href="/apply">
-          <button className="mb-6 flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-medium text-gray-700 shadow-md transition-all hover:shadow-lg dark:bg-gray-800 dark:text-gray-200">
+          <button className="mb-6 flex items-center gap-2 rounded-lg bg-[#1f2937] px-6 py-3 font-medium text-white shadow-md transition-all hover:bg-[#374151] hover:shadow-lg">
             <LucideArrowBigLeft className="h-5 w-5" />
             Back to Dashboard
           </button>
         </a>
 
         {/* Decorative mascot stickers */}
-        <div className="pointer-events-none fixed left-4 top-20 z-10 opacity-20 dark:opacity-40">
+        <div className="pointer-events-none fixed left-4 top-20 z-10 opacity-40">
           <Image
             src="/mascot/Pixel_PolarBear.png"
             alt=""
@@ -430,7 +430,7 @@ export function ApplicationForm() {
             className="rotate-12"
           />
         </div>
-        <div className="pointer-events-none fixed right-8 top-32 z-10 opacity-20 dark:opacity-40">
+        <div className="pointer-events-none fixed right-8 top-32 z-10 opacity-40">
           <Image
             src="/mascot/DETECTIVE BEARTHOLOMEW.png"
             alt=""
@@ -439,13 +439,49 @@ export function ApplicationForm() {
             className="-rotate-12"
           />
         </div>
-        <div className="pointer-events-none fixed bottom-24 left-12 z-10 opacity-20 dark:opacity-40">
+        <div className="pointer-events-none fixed bottom-24 left-12 z-10 opacity-40">
           <Image
             src="/mascot/floatbear.png"
             alt=""
             width={90}
             height={90}
             className="rotate-6"
+          />
+        </div>
+        <div className="pointer-events-none fixed bottom-24 right-8 z-10 opacity-40">
+          <Image
+            src="/mascot/drip_bear.png"
+            alt=""
+            width={100}
+            height={100}
+            className="rotate-12"
+          />
+        </div>
+        <div className="pointer-events-none fixed left-24 top-1/2 z-10 opacity-40">
+          <Image
+            src="/mascot/TDEMOTE_bearglasses_4K.png"
+            alt=""
+            width={90}
+            height={90}
+            className="-rotate-6"
+          />
+        </div>
+        <div className="pointer-events-none fixed right-24 top-1/2 z-10 opacity-40">
+          <Image
+            src="/mascot/image.png"
+            alt=""
+            width={90}
+            height={90}
+            className="rotate-3"
+          />
+        </div>
+        <div className="pointer-events-none fixed bottom-10 left-1/2 z-10 opacity-40">
+          <Image
+            src="/mascot/td Datathon mascot chibi.svg"
+            alt=""
+            width={80}
+            height={80}
+            className="-rotate-3"
           />
         </div>
 
@@ -466,15 +502,15 @@ export function ApplicationForm() {
                 description: message,
               });
             })}
-            className="space-y-8"
+            className="relative z-40 space-y-8"
           >
             {/* Header */}
             <div className="mb-8 text-center">
-              <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 md:text-5xl">
-                Hacker Application
+              <h1 className="text-4xl font-bold text-white md:text-5xl">
+                {eventName} Hacker Application
               </h1>
-              <p className="mt-3 text-base text-gray-600 dark:text-gray-400">
-                Please complete the following sections. This should take about 5 minutes.
+              <p className="mt-3 text-base text-neutral-300">
+                {eventDescription}
               </p>
             </div>
 
