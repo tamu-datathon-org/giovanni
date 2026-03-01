@@ -83,6 +83,11 @@ const DRAFT_STORAGE_KEY = "applicationData";
 
 const RESUME_OPTIONAL = true;
 
+const eventName = EVENT_NAME.endsWith("Spring") ? "TD-Lite" : "TD";
+const eventDescription = EVENT_NAME.endsWith("Spring")
+  ? "TD-Lite is a smaller version of the TD aimed for beginners!"
+  : "TD is a 24-hour hackathon that is held in the fall for all skill levels!";
+
 export function Asterisk() {
   return <span className="text-red-500">*</span>;
 }
@@ -164,28 +169,29 @@ export function ApplicationForm() {
   useEffect(() => {
     if (importedValues?.app) {
       // Parse address to extract city, region, zipCode
-      // Format is: "street, city, region zipcode"
-      const addressParts = importedValues.app.address.split(',').map(s => s.trim());
+      // Format is: "street|city|region|zipCode"
+      const addressParts = importedValues.app.address
+        .split("|")
+        .map((s) => s.trim());
       let street = "";
       let city = "";
       let region = "";
       let zipCode = "";
 
-      if (addressParts.length >= 3) {
+      if (addressParts.length >= 4) {
         street = addressParts[0];
         city = addressParts[1];
-        const lastPart = addressParts[2].split(' ');
-        if (lastPart.length >= 2) {
-          region = lastPart[0];
-          zipCode = lastPart.slice(1).join(' ');
-        } else {
-          region = lastPart[0] || "";
-        }
+        region = addressParts[2];
+        zipCode = addressParts[3];
+      } else if (addressParts.length === 3) {
+        street = addressParts[0];
+        city = addressParts[1];
+        region = addressParts[2];
       } else if (addressParts.length === 2) {
         street = addressParts[0];
         city = addressParts[1];
-      } else {
-        street = importedValues.app.address;
+      } else if (addressParts.length === 1) {
+        street = addressParts[0];
       }
 
       form.reset({
@@ -207,20 +213,17 @@ export function ApplicationForm() {
         city: city,
         region: region,
         zipCode: zipCode,
-        dietaryRestriction: importedValues.app.dietaryRestriction || "",
+        dietaryRestriction: importedValues.app.dietaryRestriction ?? "",
         references: importedValues.app.references || "",
-        questions: importedValues.app.questions || "",
-        extraInfo: importedValues.app.extraInfo || "",
-        liabilityWaiver: importedValues.app.liabilityWaiver,
-        mlhPrivacyPolicy: importedValues.app.mlhPrivacyPolicy,
-        mlhEmailConsent: importedValues.app.mlhEmailConsent || false,
+        extraInfo: importedValues.app.extraInfo ?? "",
+        mlhEmailConsent: importedValues.app.mlhEmailConsent ?? false,
       });
 
       form.setValue("email", importedValues.app.email);
       return;
     }
 
-    if (!isLoading && session?.user?.email) {
+    if (!isLoading && session?.user.email) {
       const draft = localStorage.getItem(DRAFT_STORAGE_KEY);
       if (draft) {
         try {
@@ -238,17 +241,25 @@ export function ApplicationForm() {
 
   // Scroll to first error on validation failure
   useEffect(() => {
-    if (form.formState.submitCount > 0 && Object.keys(form.formState.errors).length > 0) {
+    if (
+      form.formState.submitCount > 0 &&
+      Object.keys(form.formState.errors).length > 0
+    ) {
       setTimeout(() => {
         // Find the first visible error message, excluding asterisks
-        const errorMessages = Array.from(document.querySelectorAll('.text-red-500, [class*="destructive"]'));
-        const firstRealError = errorMessages.find(el => {
-          const text = el.textContent?.trim() || '';
-          return text !== '*' && text.length > 1;
+        const errorMessages = Array.from(
+          document.querySelectorAll('.text-red-500, [class*="destructive"]'),
+        );
+        const firstRealError = errorMessages.find((el) => {
+          const text = el.textContent.trim();
+          return text !== "*" && text.length > 1;
         });
 
         if (firstRealError) {
-          firstRealError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstRealError.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
         }
       }, 150);
     }
@@ -299,7 +310,7 @@ export function ApplicationForm() {
 
       blob_url = newBlob.url;
       blob_name = file.name;
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (!RESUME_OPTIONAL && !importedValues?.resume?.resumeUrl) {
       toast({
         variant: "destructive",
@@ -588,10 +599,10 @@ export function ApplicationForm() {
                     importedValues?.app?.gender
                       ? (GENDER_OPTIONS.find(
                           (option) =>
-                            option.value === importedValues?.app?.gender,
+                            option.value === importedValues.app.gender,
                         ) ?? {
                           label: "Other (please specify)",
-                          value: importedValues?.app?.gender || "",
+                          value: importedValues.app.gender || "",
                         })
                       : undefined
                   }
@@ -607,11 +618,10 @@ export function ApplicationForm() {
                   defaultOption={
                     importedValues?.app?.race
                       ? (RACE_OPTIONS.find(
-                          (option) =>
-                            option.value === importedValues?.app?.race,
+                          (option) => option.value === importedValues.app.race,
                         ) ?? {
                           label: "Other (please specify)",
-                          value: importedValues?.app?.race || "",
+                          value: importedValues.app.race || "",
                         })
                       : undefined
                   }
@@ -642,11 +652,10 @@ export function ApplicationForm() {
                   defaultOption={
                     importedValues?.app?.major
                       ? (MAJOR.find(
-                          (option) =>
-                            option.value === importedValues?.app?.major,
+                          (option) => option.value === importedValues.app.major,
                         ) ?? {
                           label: "Other (please specify)",
-                          value: importedValues?.app?.major || "",
+                          value: importedValues.app.major || "",
                         })
                       : undefined
                   }
@@ -699,7 +708,7 @@ export function ApplicationForm() {
                     importedValues?.app?.experience
                       ? PROGRAMMING_SKILL_LEVELS.find(
                           (option) =>
-                            option.value === importedValues?.app?.experience,
+                            option.value === importedValues.app.experience,
                         )
                       : undefined
                   }
@@ -713,7 +722,8 @@ export function ApplicationForm() {
                   label={"How did you hear about us?"}
                   options={HEARD_ABOUT_OPTIONS}
                   defaultOption={HEARD_ABOUT_OPTIONS.find(
-                    (option) => option.value === importedValues?.app?.eventSource,
+                    (option) =>
+                      option.value === importedValues?.app?.eventSource,
                   )}
                   required={true}
                 />
@@ -779,21 +789,18 @@ export function ApplicationForm() {
                   name="city"
                   label="City"
                   required={true}
-                  defaultValue={importedValues?.app?.city ?? ""}
                   placeholder="College Station"
                 />
                 <GenericInputField
                   name="region"
                   label="State/Region"
                   required={true}
-                  defaultValue={importedValues?.app?.region ?? ""}
                   placeholder="TX"
                 />
                 <GenericInputField
                   name="zipCode"
                   label="Zip Code"
                   required={true}
-                  defaultValue={importedValues?.app?.zipCode ?? ""}
                   placeholder="77840"
                 />
               </div>
@@ -833,7 +840,7 @@ export function ApplicationForm() {
               <div className="mt-6">
                 <GenericTextArea
                   name="extraInfo"
-                  label="Anything else you'd like us to know?"
+                  label="Anything else you'd like us to know any questions for us?"
                   required={false}
                   defaultValue={importedValues?.app?.extraInfo ?? ""}
                   placeholder="Share anything else that might be relevant..."
