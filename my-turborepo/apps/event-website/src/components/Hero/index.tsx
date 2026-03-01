@@ -1,64 +1,91 @@
-"use client";
+'use client'
 
 import Image from "next/image";
+// Darumadrop One (larger and button), Chilanka (date)
 
-import NewspaperSection from "./Newspaper";
 
-const Hero = () => {
-  return (
-    <div className="h-full w-full">
-      <div className="relative grid min-h-screen w-full grid-cols-10 overflow-hidden pb-8 [grid-template-rows:repeat(10,1fr)] sm:min-h-fit md:[grid-template-rows:repeat(14,80px)]">
-        {/* Desk background */}
-        <div className="absolute inset-0 bg-[#2A2523] bg-cover bg-center bg-no-repeat" />
+export default function Hero(){
+    return(
+        <>
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
+            <link href="https://fonts.googleapis.com/css2?family=Chilanka&family=Darumadrop+One&display=swap" rel="stylesheet"></link>
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#1C0808]" />
+            <section id="hero" className="min-h-screen flex items-center justify-center bg-[url(/images/background.svg)]">
+                <div className="w-2/5 h-screen bg-[#966952] ml-auto mr-[90px]">
+                    <p className="font-['Darumadrop_one']  text-5xl lg:text-9xl md:text-6xl text-center text-[#B4D8EE]">TAMU <br /> Datathon Lite </p>
+                    <p className="font-['Chilanka'] text-3xl md:text-5xl lg:text-6xl text-center text-[#B4D8EE] mt-8">April 11, 2026 <br/> ----------------</p>
+                    <a href="https://tamudatathon.org/apply"
+                        className="mt-8 px-12 py-6 md:px-16 md:py-8 lg:px-20 lg:py-10 rounded-xl font-['Darumadrop_one'] text-3xl md:text-4xl lg:text-5xl bg-[#B4D8EE] text-[#8D6E5E] hover:bg-[#ECCC91] transition-colors block mx-auto w-fit"
+                                >
+                        APPLY
+                    </a>
 
-        {/* Newspaper section */}
-        <div className="items-top relative z-10 col-span-10 col-start-1 row-span-8 row-start-2 flex translate-y-4 transform justify-center">
-          <NewspaperSection />
+                </div>
 
-          {/* magnifying glass - top right of newspaper */}
-          <div className="pointer-events-none absolute right-20 top-0 hidden h-[450px] w-[450px] -translate-y-8 md:block">
-            <Image
-              src="/images/elements/mag.svg"
-              alt="mag"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-contain"
-              priority
-              unoptimized
-            />
-          </div>
-        </div>
+            </section>
+        </>
+    )
+}
 
-        {/* cup - bottom left */}
-        <div className="relative z-20 col-span-3 col-start-1 row-span-3 row-start-7 aspect-square w-full max-w-[325px] md:col-start-2 md:row-start-9">
-          <Image
-            src="/images/elements/cup.svg"
-            alt="cup"
-            width={600}
-            height={600}
-            className="object-contain"
-            priority
-            unoptimized
-          />
-        </div>
-        {/* lamp - top area */}
-        <div className="pointer-events-none absolute left--10 top-0 z-10 hidden h-[1200px] w-[1200px] md:block">
-          <Image
-            src="/images/elements/Lamp.svg"
-            alt="lamp"
-            width={1500}
-            height={1500}
-            className="object-contain"
-            priority
-            unoptimized
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
+// export default function Hero() {
+//   return (
+//     <>
+//         <link rel="preconnect" href="https://fonts.googleapis.com" />
+//         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+//         <link
+//             href="https://fonts.googleapis.com/css2?family=Bonheur+Royale&family=Economica:wght@400;700&display=swap"
+//             rel="stylesheet"
+//         />
 
-export default Hero;
+//         <style jsx>{`
+//             @keyframes swing {
+//             0%, 100% { transform: rotate(-3deg); }
+//             50% { transform: rotate(3deg); }
+//             }
+//             .swing {
+//             transform-origin: top center;
+//             animation: swing 4s ease-in-out infinite;
+//             }
+//         `}</style>
+
+//         <section id="hero" className="min-h-screen flex items-center justify-center bg-[#A1CDFF] px-4">
+//             <div className="flex flex-col items-center swing w-[min(700px,90vw)] -mt-20">
+
+//                 {/* Nail + Strings — uses 100% width so it scales with container */}
+//                 <svg
+//                     viewBox="0 0 700 180"
+//                     className="w-full shrink-0"
+//                     preserveAspectRatio="xMidYMid meet"
+//                 >
+//                     <line x1="350" y1="12" x2="45" y2="168" stroke="#9CA3AF" strokeWidth="2.5" />
+//                     <line x1="350" y1="12" x2="655" y2="168" stroke="#9CA3AF" strokeWidth="2.5" />
+//                     <circle cx="350" cy="12" r="10" fill="#6B7280" />
+//                 </svg>
+
+//                 {/* Sign board */}
+//                 <div className="relative -mt-4 w-full">
+//                     <div className="w-full bg-[#FBE29E] rounded-2xl shadow-[0_0_0_8px_white,0_0_0_14px_#9CA3AF] sm:shadow-[0_0_0_12px_white,0_0_0_20px_#9CA3AF]">
+//                         <div className="flex flex-col items-center justify-center h-full p-6 sm:p-8 py-10 sm:py-14">
+//                             <p className="self-start ml-2 sm:ml-4 font-['Bonheur_Royale'] text-[clamp(2rem,8vw,4.5rem)] text-[#1a1a1a] leading-none">Sorry...</p>
+
+//                             <p className="text-center mt-4 font-['Economica'] font-bold text-[clamp(2.5rem,10vw,5.5rem)] text-[#1a1a1a] leading-tight">
+//                                 More coming
+//                                 <br />
+//                                 soon !
+//                             </p>
+
+//                             <a
+//                                 href="https://tamudatathon.org/apply"
+//                                 className="mt-6 px-10 sm:px-12 py-2 rounded font-sans text-base sm:text-lg font-medium bg-[#C4A94D] text-[#1a1a1a] hover:bg-[#b39a42] transition-colors inline-block"
+//                                 >
+//                                 Apply
+//                             </a>
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+//         </section>
+//     </>
+//   )
+// }
