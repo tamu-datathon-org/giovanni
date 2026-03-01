@@ -193,7 +193,7 @@ export function VettingTable() {
           onChange={(event) =>
             table.getColumn("firstName")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm bg-white"
+          className="max-w-sm"
         />
         <Button
           variant="outline"

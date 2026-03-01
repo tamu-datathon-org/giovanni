@@ -6,7 +6,6 @@ import Footer from "~/components/Footer";
 import Header from "~/components/Header/index";
 import { Toaster } from "~/components/ui/toaster";
 import { TRPCReactProvider } from "~/trpc/react";
-import { Providers } from "./providers";
 
 export default function ClientLayout({
   children,
@@ -15,16 +14,14 @@ export default function ClientLayout({
 }) {
   return (
     <TRPCReactProvider>
-      <Providers>
-        <main className="min-h-screen w-full">
-          <div className="flex w-full items-center justify-center">
-            <Header />
-          </div>
-          {children}
-          <ScrollToTop />
-          <Footer />
-        </main>
-      </Providers>
+      <main className="min-h-screen w-full">
+        <div className="flex w-full items-center justify-center">
+          <Header />
+        </div>
+        {children}
+        <ScrollToTop />
+        <Footer />
+      </main>
       <div className="absolute bottom-4 right-4" />
       <Toaster />
     </TRPCReactProvider>

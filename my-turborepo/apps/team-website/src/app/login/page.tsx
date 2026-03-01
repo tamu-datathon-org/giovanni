@@ -2,7 +2,6 @@
 import LoginButton from "../_components/auth/login_button";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub, FaWindows } from "react-icons/fa";
-import BackgroundContainer from "../_components/BackgroundContainer";
 import { toast } from "~/hooks/use-toast";
 
 export default function LoginPage({
@@ -27,18 +26,17 @@ export default function LoginPage({
   }
 
   return (
-    <div className="flex md:items-center justify-center pb-8 h-screen">
-      <BackgroundContainer>
+    <div className="flex flex-col items-center justify-center pb-8 h-screen">
         <div>
           <h1 className="text-5xl font-bold tracking-tight text-datalightblue">
             tamu
             <span className="text-datadarkblue">datathon</span>
           </h1>
-          <p className="text-sm mb-20 text-white text-center">
+          <p className="text-sm mb-10 text-white text-center">
             Sign in with a provider below
           </p>
         </div>
-        <div className="md:w-1/2 flex flex-col gap-4 mx-auto">
+        <div className="w-full max-w-sm flex flex-col gap-4 mx-auto px-4">
           <LoginButton
             title="Google"
             connectionId="google-oauth2"
@@ -61,7 +59,6 @@ export default function LoginPage({
             logo={<FaGithub />}
           />
         </div>
-      </BackgroundContainer>
     </div>
   );
 }

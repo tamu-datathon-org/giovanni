@@ -7,7 +7,6 @@ import { usePathname, useRouter } from "next/navigation";
 
 import menuData from "./menuData";
 import { ScrollProgress } from "./ScrollProgess";
-import ThemeToggler from "./ThemeToggler";
 
 const Header = () => {
   const navRef = useRef<HTMLElement>(null);
@@ -211,7 +210,7 @@ const Header = () => {
   }, [pathname]);
 
   return (
-    <header ref={navRef} className="fixed z-40 flex w-full justify-center">
+    <header ref={navRef} className="fixed z-50 flex w-full justify-center">
       <ScrollProgress />
 
       <div

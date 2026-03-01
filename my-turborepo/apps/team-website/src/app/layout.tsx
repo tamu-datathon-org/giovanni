@@ -36,9 +36,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={w95fa.className}>
       <head />
-      <body
-        className={`bg-white text-black dark:bg-black dark:text-white ${inter.className}`}
-      >
+      <body className={`bg-[#121723] text-white ${inter.className}`}>
         <ClientLayout>{props.children}</ClientLayout>
       </body>
     </html>

@@ -96,11 +96,9 @@ function SectionCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="group mb-6 overflow-hidden rounded-xl border border-gray-300 bg-white shadow-md transition-all duration-300 hover:shadow-xl dark:border-gray-600 dark:bg-gray-800">
-      <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-900">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-          {title}
-        </h2>
+    <div className="group mb-6 overflow-hidden rounded-xl border-2 border-[#4b5563] bg-[#1f2937] shadow-md transition-all duration-300 hover:shadow-xl">
+      <div className="border-b border-[#374151] bg-[#111827] px-6 py-4">
+        <h2 className="text-2xl font-bold text-white">{title}</h2>
       </div>
       <div className="p-6">{children}</div>
     </div>
@@ -152,7 +150,6 @@ export function ApplicationForm() {
       zipCode: "",
       dietaryRestriction: "",
       references: "",
-      questions: "",
       extraInfo: "",
       linkedinUrl: "",
       interestOne: "",
@@ -728,12 +725,12 @@ export function ApplicationForm() {
                   name="resume"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                      <FormLabel className="text-lg font-semibold text-gray-200">
                         Resume/CV <Asterisk />
                       </FormLabel>
                       {importedValues?.resume && (
-                        <div className="my-2 rounded-lg bg-green-50 p-3 dark:bg-green-900/20">
-                          <p className="text-sm text-green-700 dark:text-green-400">
+                        <div className="my-2 rounded-lg bg-green-900/30 p-3">
+                          <p className="text-sm text-green-200">
                             ✓ Current resume: {importedValues.resume.resumeName}
                           </p>
                         </div>
@@ -743,7 +740,7 @@ export function ApplicationForm() {
                           type="file"
                           accept=".pdf,.doc,.docx"
                           onChange={(e) => field.onChange(e.target.files)}
-                          className="cursor-pointer transition-all !border-gray-700"
+                          className="cursor-pointer !border-gray-700 transition-all"
                         />
                       </FormControl>
                       <FormMessage />
@@ -851,7 +848,7 @@ export function ApplicationForm() {
                   control={form.control}
                   name="liabilityWaiver"
                   render={({ field }) => (
-                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-all hover:border-[#01c0cc] dark:border-gray-700">
+                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-neutral-700 p-4 transition-all hover:border-[#01c0cc]">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
@@ -860,7 +857,7 @@ export function ApplicationForm() {
                         />
                       </FormControl>
                       <div className="space-y-1">
-                        <FormLabel className="text-base font-medium leading-relaxed text-gray-700 dark:text-gray-200">
+                        <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
                           I have read and agree to the{" "}
                           <a
                             className="text-[#01c0cc] underline hover:text-[#28979b]"
@@ -881,7 +878,7 @@ export function ApplicationForm() {
                   control={form.control}
                   name="mlhPrivacyPolicy"
                   render={({ field }) => (
-                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-all hover:border-[#01c0cc] dark:border-gray-700">
+                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-neutral-700 p-4 transition-all hover:border-[#01c0cc]">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
@@ -890,7 +887,7 @@ export function ApplicationForm() {
                         />
                       </FormControl>
                       <div className="space-y-1">
-                        <FormLabel className="text-base font-medium leading-relaxed text-gray-700 dark:text-gray-200">
+                        <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
                           I authorize you to share my application/registration
                           information with Major League Hacking for event
                           administration, ranking, and MLH administration
@@ -930,7 +927,7 @@ export function ApplicationForm() {
                   control={form.control}
                   name="mlhEmailConsent"
                   render={({ field }) => (
-                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-all hover:border-[#01c0cc] dark:border-gray-700">
+                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-neutral-700 p-4 transition-all hover:border-[#01c0cc]">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
@@ -939,8 +936,8 @@ export function ApplicationForm() {
                         />
                       </FormControl>
                       <div className="space-y-1">
-                        <FormLabel className="text-base font-medium leading-relaxed text-gray-700 dark:text-gray-200">
-                          <span className="text-gray-500">(Optional) </span>I
+                        <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
+                          <span className="text-neutral-400">(Optional) </span>I
                           authorize MLH to send me occasional emails about
                           relevant events, career opportunities, and community
                           announcements

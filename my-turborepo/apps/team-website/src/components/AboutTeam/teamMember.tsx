@@ -46,10 +46,10 @@ const TeamMember: React.FC<TeamMemberProps> = ({
         height={100}
         className="mx-auto my-2 h-22 w-22 rounded-full object-cover lg:h-28 lg:w-28"
       />
-      <h3 className="h-auto w-full text-wrap text-sm font-semibold text-black dark:text-white lg:text-xl">
+      <h3 className="h-auto w-full text-wrap text-sm font-semibold text-white lg:text-xl">
         {name}
       </h3>
-      <p className="text-body-color dark:text-body-color-dark text-xs lg:text-sm">
+      <p className="text-xs text-neutral-300 lg:text-sm">
         {position}
       </p>
 
@@ -61,7 +61,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 transition-colors hover:text-black dark:text-gray-400 dark:hover:text-white"
+              className="text-gray-300 transition-colors hover:text-white"
               aria-label={`Visit ${link.type}`}
             >
               {getSocialIcon(link.type)}
