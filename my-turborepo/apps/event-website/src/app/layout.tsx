@@ -28,10 +28,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className={`m-0 h-full w-full ${inter.variable}`}>
 
 
-        <Header />
+        {/* <Header /> */}
         {children}
         {/* <Footer /> */}
-        <ScrollToTop />
+        {/* <ScrollToTop /> */}
       </body>
     </html>
   );
