@@ -760,6 +760,52 @@ export function ApplicationForm() {
               </div>
             </SectionCard>
 
+            {/* Application Questions Section */}
+            <SectionCard title="Application Questions">
+              {/* References */}
+              <div className="pt-4">
+                <GenericTextArea
+                  name="references"
+                  defaultValue={importedValues?.app?.references ?? ""}
+                  label="Point us to anything you'd like us to look at while considering your application."
+                  placeholder="Provide other links or references here."
+                  required={true}
+                />
+              </div>
+              {/* What drives your interest in being a part of TAMU Datathon? */}
+              <div className="pt-4">
+                <GenericTextArea
+                  name="interestOne"
+                  defaultValue={importedValues?.app?.interestOne ?? ""}
+                  label="Why do you want to participate in TAMU Datathon?"
+                  placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
+                  required={false}
+                />
+              </div>
+              {/* What is the one thing you'd build if you had unlimited resources? */}
+              <div className="pt-4">
+                <GenericTextArea
+                  name="interestTwo"
+                  defaultValue={importedValues?.app?.interestTwo ?? ""}
+                  label="What is the one thing you'd build if you had unlimited resources?"
+                  placeholder="More resources."
+                  required={false}
+                />
+              </div>
+              {/* Tell us your best programming joke. */}
+              <div className="pt-4">
+                <GenericTextArea
+                  name="interestThree"
+                  defaultValue={importedValues?.app?.interestThree ?? ""}
+                  label="Tell us your best programming joke."
+                  placeholder="Is your code running? Well, you better go catch it."
+                  required={false}
+                />
+              </div>
+
+
+            </SectionCard>
+
             {/* Additional Details Section */}
             <SectionCard title="Additional Details">
               <div className="mb-6">
@@ -806,34 +852,15 @@ export function ApplicationForm() {
               </div>
 
               <div className="mt-6">
-                <GenericCombobox
+                <GenericMultiSelect
                   name={"dietaryRestriction"}
                   label={"Dietary Restrictions"}
+                  placeholder="Select dietary restrictions (if any)"
                   options={DIETARY_RESTRICTIONS}
-                  defaultOption={DIETARY_RESTRICTIONS.find(
-                    (option) => option.value === importedValues?.app?.dietaryRestriction,
-                  )}
+                  defaultOption={
+                    importedValues?.app?.dietaryRestriction ?? undefined
+                  }
                   required={false}
-                />
-              </div>
-
-              <div className="mt-6">
-                <GenericTextArea
-                  name={"references"}
-                  label="Tell us about your interest in this event"
-                  required={false}
-                  defaultValue={importedValues?.app?.references ?? ""}
-                  placeholder="What excites you about this datathon?"
-                />
-              </div>
-
-              <div className="mt-6">
-                <GenericTextArea
-                  name="questions"
-                  label="Any questions for us?"
-                  required={false}
-                  defaultValue={importedValues?.app?.questions ?? ""}
-                  placeholder="Let us know if you have any questions..."
                 />
               </div>
 
