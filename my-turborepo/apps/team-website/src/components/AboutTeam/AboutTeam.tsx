@@ -169,16 +169,7 @@ const AboutTeam = () => {
         },
 
         // dev
-        /*
-            Zayd Nadir -> https://linkedin.com/in/zaydn
-                          https://github.com/zaydn4321
 
-            Angela Yue -> https://www.linkedin.com/in/angela-yue-a48962247
-                          https://github.com/AngelaYue2006
-
-            Aarav Pulsani -> https://www.linkedin.com/in/aarav-pulsani-7874b3271
-                             https://github.com/s155003
-        */
         {
             teamMembers: [
                 {   image: "/images/teampics_v2025/Het_Headshot.jpg",
@@ -279,7 +270,7 @@ const AboutTeam = () => {
 
         // design
 
-        //design- Avery Shih -> https://www.linkedin.com/in/averyshih/
+
 
         {
             teamMembers: [
@@ -361,13 +352,7 @@ const AboutTeam = () => {
             ], description: "Design",
         },
         // logistics
-        /*
-            Ryan Dobbelaere -> https://www.linkedin.com/in/ryan-dobbelaere/
 
-            Ram Pillai -> https://www.linkedin.com/in/ram-pillai-933507249/
-
-            Pragya Vetri -> https://www.linkedin.com/in/pragya-vetri-b46b36382/
-         */
         {
             teamMembers:[
                 {   image: "/images/teampics_v2026/Harshini_Headshot.jpg",
@@ -419,7 +404,7 @@ const AboutTeam = () => {
                 },
 
                 {
-                    image: "/images/teampics_v2026/Ragd_Headshot.jpg",
+                    image: "/images/teampics_v2026/ragd.jpg",
                     name: "Ragd Elsaigh",
                     position: "Logistics",
                     socialLinks: [
@@ -431,7 +416,7 @@ const AboutTeam = () => {
                 },
 
                 {
-                    image: "/images/teampics_v2026/Trey_Headshot.jpg",
+                    image: "/images/teampics_v2026/trey.jpg",
                     name: "Trey Schaider",
                     position: "",
                     socialLinks: [
@@ -482,19 +467,14 @@ const AboutTeam = () => {
         },
 
         // outreach
-        /*
-            Jonathan Jackson -> https://www.linkedin.com/in/jonathan-jackson-20a29b28b/
-            Sharon Alex -> https://www.linkedin.com/in/sharon-alex/
 
-
-         */
         {
             teamMembers:[
                 {   image: "/images/teampics_v2026/Shreyas_Headshot.jpg", name: "Shreyas Kumar", position: "Outreach Lead",
                     socialLinks: [{ type: "linkedin", url: "https://www.linkedin.com/in/shreyas-kumar-20",},{type: "github", url: "https://github.com/ShreyasK2005",},],},
 
                 {
-                    image: "/images/teampics_v2026/Anderson_Headshot.jpg",
+                    image: "/images/teampics_v2025/Anderson_Headshot.jpg",
                     name: "Anderson Loan",
                     position: "Outreach",
                     socialLinks: [
@@ -506,7 +486,7 @@ const AboutTeam = () => {
                 },
 
                 {
-                    image: "/images/teampics_v2026/Roa_Headshot.jpg",
+                    image: "/images/teampics_v2026/roa.jpg",
                     name: "Roa Elsaigh",
                     position: "Outreach",
                     socialLinks: [
