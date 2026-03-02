@@ -67,7 +67,7 @@ export default function Hero() {
                 <div className="relative -mt-4 w-full">
                     <div className="w-full bg-[#FBE29E] rounded-2xl shadow-[0_0_0_8px_white,0_0_0_14px_#9CA3AF] sm:shadow-[0_0_0_12px_white,0_0_0_20px_#9CA3AF]">
                         <div className="flex flex-col items-center justify-center h-full p-6 sm:p-8 py-10 sm:py-14">
-                            <p className="self-start ml-2 sm:ml-4 font-['Bonheur_Royale'] text-[clamp(2rem,8vw,4.5rem)] text-[#1a1a1a] leading-none">Sorry...</p>
+                            <p className="self-start ml-2 sm:ml-4 font-['Bonheur_Royale'] text-[clamp(2rem,8vw,4.5rem)] text-[#1a1a1a] leading-none">TD-Lite Aprill 11th 2026</p>
 
                             <p className="text-center mt-4 font-['Economica'] font-bold text-[clamp(2.5rem,10vw,5.5rem)] text-[#1a1a1a] leading-tight">
                                 More coming
