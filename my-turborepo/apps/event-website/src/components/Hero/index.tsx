@@ -107,7 +107,7 @@ export default function Hero() {
                 <div className="mb-4 h-[2px] w-24 rounded-full bg-[#FDF5E6]/70 sm:w-32" />
 
                 <p className="text-center font-['Fredericka_the_Great'] text-[clamp(2.1rem,6vw,3.4rem)] leading-tight text-[#FDF5E6]">
-                  TD‑Lite Café
+                  TD-Lite
                   <br />
                   <span className="mt-1 inline-block">
                     {(() => {
