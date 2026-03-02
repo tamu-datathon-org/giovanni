@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
 import Image from "next/image";
-// Darumadrop One (larger and button), Chilanka (date)
 
+// Darumadrop One (larger and button), Chilanka (date)
 
 // export default function Hero(){
 //     return(
@@ -31,61 +31,131 @@ import Image from "next/image";
 export default function Hero() {
   return (
     <>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Bonheur+Royale&family=Economica:wght@400;700&display=swap"
-            rel="stylesheet"
-        />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="anonymous"
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap"
+        rel="stylesheet"
+      />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="anonymous"
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Bonheur+Royale&family=Economica:wght@400;700&display=swap"
+        rel="stylesheet"
+      />
 
-        <style jsx>{`
-            @keyframes swing {
-            0%, 100% { transform: rotate(-3deg); }
-            50% { transform: rotate(3deg); }
-            }
-            .swing {
-            transform-origin: top center;
-            animation: swing 4s ease-in-out infinite;
-            }
-        `}</style>
+      <style jsx>{`
+        @keyframes swing {
+          0%,
+          100% {
+            transform: rotate(-3deg);
+          }
+          50% {
+            transform: rotate(3deg);
+          }
+        }
+        .swing {
+          transform-origin: top center;
+          animation: swing 4s ease-in-out infinite;
+        }
+      `}</style>
 
-        <section id="hero" className="min-h-screen flex items-center justify-center bg-[#A1CDFF] px-4">
-            <div className="flex flex-col items-center swing w-[min(700px,90vw)] -mt-20">
+      <section
+        id="hero"
+        className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#d7eaff]  to-[#A1CDFF] px-4"
+      >
+        <div className="swing -mt-20 flex w-[min(700px,90vw)] flex-col items-center">
+          {/* Nail + Strings — uses 100% width so it scales with container */}
+          <svg
+            viewBox="0 0 700 180"
+            className="w-full shrink-0"
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <line
+              x1="350"
+              y1="12"
+              x2="45"
+              y2="168"
+              stroke="#9CA3AF"
+              strokeWidth="2.5"
+            />
+            <line
+              x1="350"
+              y1="12"
+              x2="655"
+              y2="168"
+              stroke="#9CA3AF"
+              strokeWidth="2.5"
+            />
+            <circle cx="350" cy="12" r="10" fill="#6B7280" />
+          </svg>
 
-                {/* Nail + Strings — uses 100% width so it scales with container */}
-                <svg
-                    viewBox="0 0 700 180"
-                    className="w-full shrink-0"
-                    preserveAspectRatio="xMidYMid meet"
+          {/* Sign board */}
+          <div className="relative -mt-4 w-full">
+            {/* Wooden frame */}
+            <div className="w-full rounded-[26px] bg-[#4B2E20] p-2 shadow-[0_18px_0_0_rgba(75,46,32,1)]">
+              {/* Chalkboard */}
+              <div className="flex h-full flex-col items-center justify-center rounded-[20px] border-[3px] border-[#FDF5E6]/60 bg-[#141921] p-6 py-8 sm:p-8 sm:py-10">
+                {/* Top chalk accent line */}
+                <div className="mb-4 h-[2px] w-24 rounded-full bg-[#FDF5E6]/70 sm:w-32" />
+
+                <p className="text-center font-['Fredericka_the_Great'] text-[clamp(2.1rem,6vw,3.4rem)] leading-tight text-[#FDF5E6]">
+                  TD‑Lite Café
+                  <br />
+                  <span className="mt-1 inline-block">
+                    {(() => {
+                      const text = "April 11th 2026";
+                      const colors = [
+                        "#F97373",
+                        "#FBBF24",
+                        "#34D399",
+                        "#60A5FA",
+                        "#F472B6",
+                        "#A855F7",
+                        "#FDBA74",
+                      ];
+                      return text.split("").map((ch, i) => (
+                        <span
+                          key={i}
+                          style={{
+                            color:
+                              ch === " " ? undefined : colors[i % colors.length],
+                          }}
+                        >
+                          {ch === " " ? "\u00A0" : ch}
+                        </span>
+                      ));
+                    })()}
+                  </span>
+                </p>
+
+                <p className="mt-5 text-center font-['Fredericka_the_Great'] text-[clamp(2.4rem,7vw,3.8rem)] leading-tight text-[#FDF5E6]">
+                  More brewing
+                  <br />
+                  soon!
+                </p>
+
+                <a
+                  href="https://tamudatathon.org/apply"
+                  className="mt-7 inline-flex items-center gap-2 rounded-full border-[2.5px] border-[#FDF5E6] bg-[#4b2e20] px-8 py-2 font-['Fredericka_the_Great'] text-sm uppercase tracking-[0.22em] text-[#FDF5E6] shadow-[0_0_0_1px_rgba(0,0,0,0.15)] transition-transform duration-100 hover:-translate-y-[1px] hover:scale-[1.05] hover:shadow-[0_4px_0_rgba(8,8,8,0.9)] active:translate-y-[1px] active:scale-[0.97] active:shadow-[0_0_0_rgba(0,0,0,0.9)] sm:px-10 sm:text-base hover:bg-white hover:text-[#4b2e20] hover:border-[#4b2e20] "
                 >
-                    <line x1="350" y1="12" x2="45" y2="168" stroke="#9CA3AF" strokeWidth="2.5" />
-                    <line x1="350" y1="12" x2="655" y2="168" stroke="#9CA3AF" strokeWidth="2.5" />
-                    <circle cx="350" cy="12" r="10" fill="#6B7280" />
-                </svg>
+                  <span>Apply</span>
+                </a>
 
-                {/* Sign board */}
-                <div className="relative -mt-4 w-full">
-                    <div className="w-full bg-[#FBE29E] rounded-2xl shadow-[0_0_0_8px_white,0_0_0_14px_#9CA3AF] sm:shadow-[0_0_0_12px_white,0_0_0_20px_#9CA3AF]">
-                        <div className="flex flex-col items-center justify-center h-full p-6 sm:p-8 py-10 sm:py-14">
-                            <p className="self-start ml-2 sm:ml-4 font-['Bonheur_Royale'] text-[clamp(2rem,8vw,4.5rem)] text-[#1a1a1a] leading-none">TD-Lite April 11th 2026</p>
-
-                            <p className="text-center mt-4 font-['Economica'] font-bold text-[clamp(2.5rem,10vw,5.5rem)] text-[#1a1a1a] leading-tight">
-                                More coming
-                                <br />
-                                soon !
-                            </p>
-
-                            <a
-                                href="https://tamudatathon.org/apply"
-                                className="mt-6 px-10 sm:px-12 py-2 rounded font-sans text-base sm:text-lg font-medium bg-[#C4A94D] text-[#1a1a1a] hover:bg-[#b39a42] transition-colors inline-block"
-                                >
-                                Apply
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                {/* Bottom chalk accent line */}
+                <div className="mt-6 h-[2px] w-16 rounded-full bg-[#FDF5E6]/60 sm:w-20" />
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
     </>
-  )
+  );
 }
