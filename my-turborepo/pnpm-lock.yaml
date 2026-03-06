@@ -7379,6 +7379,11 @@ packages:
     peerDependencies:
       react: ^19.2.4
 
+  react-dom@19.2.4:
+    resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
+    peerDependencies:
+      react: ^19.2.4
+
   react-draggable@4.5.0:
     resolution: {integrity: sha512-VC+HBLEZ0XJxnOxVAZsdRi8rD04Iz3SiiKOoYzamjylUcju/hP9np/aZdLHf/7WOD268WMoNJMvYfB5yAK45cw==}
     peerDependencies:
@@ -15995,6 +16000,8 @@ snapshots:
       '@parcel/watcher': 2.5.6
 
   sax@1.5.0: {}
+
+  scheduler@0.27.0: {}
 
   scheduler@0.27.0: {}
 
