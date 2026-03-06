@@ -117,20 +117,19 @@ export default function Page() {
             </p>
           </section>
 
-
-            {/* Status card */}
-            <section className="w-full rounded-lg border border-white/20 bg-white/5 px-6 py-4">
-              <p className="mb-1 text-sm font-medium uppercase tracking-wide text-white/80">
-                Application status
-              </p>
-              <p className={`bg-clip-text text-xl font-medium ${color}`}>
-                {isLoading
-                  ? "Loading...".toUpperCase()
-                  : data?.status
-                    ? data.status.toUpperCase()
-                    : "No Application Found"}
-              </p>
-            </section>
+          {/* Status card */}
+          <section className="w-full rounded-lg border border-white/20 bg-white/5 px-6 py-4">
+            <p className="mb-1 text-sm font-medium uppercase tracking-wide text-white/80">
+              Application status
+            </p>
+            <p className={`bg-clip-text text-xl font-medium ${color}`}>
+              {isLoading
+                ? "Loading...".toUpperCase()
+                : data?.status
+                  ? data.status.toUpperCase()
+                  : "No Application Found"}
+            </p>
+          </section>
 
           {/* QR code (when available) */}
           {qrCode && (
