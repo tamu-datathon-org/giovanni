@@ -38,23 +38,23 @@
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
-    "@t3-oss/env-core": "^0.10.1",
-    "@vercel/postgres": "^0.8.0",
-    "drizzle-orm": "^0.30.10",
-    "drizzle-zod": "^0.5.1",
-    "minimatch": "^10.2.3",
-    "tsx": "^4.19.3",
-    "zod": "^3.25.76"
+    "@t3-oss/env-core": "^0.13.10",
+    "@vercel/postgres": "^0.10.0",
+    "drizzle-orm": "^0.45.1",
+    "drizzle-zod": "^0.8.3",
+    "minimatch": "^10.2.4",
+    "tsx": "^4.21.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@types/node": "^20.19.24",
+    "@types/node": "^25.3.5",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "dotenv-cli": "^7.4.4",
-    "drizzle-kit": "^0.21.4",
-    "eslint": "^9.39.1",
-    "prettier": "^3.6.2",
+    "dotenv-cli": "^11.0.0",
+    "drizzle-kit": "^0.31.9",
+    "eslint": "^10.0.2",
+    "prettier": "^3.8.1",
     "typescript": "^5.9.3"
   }
 }
