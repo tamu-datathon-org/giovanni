@@ -1,0 +1,124 @@
+/**
+ * Tailwind v4 theme - migrated from tailwind.config.ts
+ * All custom design tokens for team-website
+ */
+@theme {
+  /* Custom colors from team-website config */
+  --color-current: currentColor;
+  --color-transparent: transparent;
+  --color-white: #ffffff;
+  --color-black: #121723;
+  --color-dark: #1d2430;
+  --color-primary: #4a6cf7;
+  --color-yellow: #fbb040;
+  --color-datablue: #2c41db;
+  --color-datalightblue: #6efeeb;
+  --color-datadarkblue: #2d69df;
+  --color-normal: #f9feff;
+  --color-bg-color-dark: #171c28;
+  --color-body-color: #212327;
+  --color-body-color-dark: #9da7b9;
+  --color-stroke-stroke: #e3e8ef;
+  --color-stroke-dark: #353943;
+
+  /* Gray extensions (gray.dark, gray.light) */
+  --color-gray-dark: #1e232e;
+  --color-gray-light: #f0f2f9;
+
+  /* Logo colors - use CSS vars (defined in globals.css :root/.dark) */
+  --color-logo-primary: var(--logo-primary);
+  --color-logo-secondary: var(--logo-secondary);
+  --color-logo-tertiary: var(--logo-tertiary);
+
+  /* Branch colors */
+  --color-branch-primary: var(--branch-primary);
+  --color-branch-secondary: var(--branch-secondary);
+  --color-branch-tertiary: var(--branch-tertiary);
+
+  /* neutral-90 - custom (Hero bg, matches body #121723) */
+  --color-neutral-90: #121723;
+
+  /* Border radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* Breakpoints - override defaults with team-website custom screens */
+  --breakpoint-xs: 450px;
+  --breakpoint-sm: 575px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1400px;
+
+  /* Custom breakpoints as container queries or use @custom-media - v4 uses --breakpoint-* */
+  /* tabletRange, ipadRange, etc. need @custom-media or we use the raw values in components */
+
+  /* Font family */
+  --font-xpfont: var(--font-w95fa);
+
+  /* Box shadows */
+  --shadow-sign-up: 0px 5px 10px rgba(4, 10, 34, 0.2);
+  --shadow-one: 0px 2px 3px rgba(7, 7, 77, 0.05);
+  --shadow-two: 0px 5px 10px rgba(6, 8, 15, 0.1);
+  --shadow-three: 0px 5px 15px rgba(6, 8, 15, 0.05);
+  --shadow-sticky: inset 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  --shadow-sticky-dark: inset 0 -1px 0 0 rgba(255, 255, 255, 0.1);
+  --shadow-feature-2: 0px 10px 40px rgba(48, 86, 211, 0.12);
+  --shadow-submit: 0px 5px 20px rgba(4, 10, 34, 0.1);
+  --shadow-submit-dark: 0px 5px 20px rgba(4, 10, 34, 0.1);
+  --shadow-btn: 0px 1px 2px rgba(4, 10, 34, 0.15);
+  --shadow-btn-hover: 0px 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-btn-light: 0px 1px 2px rgba(0, 0, 0, 0.1);
+
+  /* Drop shadow */
+  --drop-shadow-three: 0px 5px 15px rgba(6, 8, 15, 0.05);
+
+  /* Animations - float and bob */
+  --animate-float: floatx 3s ease-in-out infinite;
+  --animate-bob: bob 2s ease-in-out infinite;
+
+  /* Accordion animations (from tailwindcss-animate) */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes floatx {
+    0%,
+    100% {
+      box-shadow: none;
+      transform: translateY(0);
+    }
+    50% {
+      box-shadow: none;
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(10px);
+    }
+  }
+}

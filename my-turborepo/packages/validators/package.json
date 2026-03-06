@@ -20,15 +20,15 @@
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
-    "minimatch": "^10.2.3",
-    "zod": "^3.25.76"
+    "minimatch": "^10.2.4",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "eslint": "^9.39.1",
-    "prettier": "^3.6.2",
+    "eslint": "^10.0.2",
+    "prettier": "^3.8.1",
     "typescript": "^5.9.3"
   }
 }

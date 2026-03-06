@@ -48,6 +48,9 @@ yarn-error.log*
 *.tsbuildinfo
 dist/
 
+# tailwind config artifacts (use .ts sources)
+tooling/tailwind/base.js
+
 # turbo
 .turbo
 *Zone.Identifier

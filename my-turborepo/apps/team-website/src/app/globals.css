@@ -1,6 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "./theme.css";
+@plugin "tailwindcss-animate";
+
+/* Scan UI package for Tailwind classes */
+@source "../../../../packages/ui/src/**/*.{ts,tsx}";
 
 @layer base {
   @font-face {

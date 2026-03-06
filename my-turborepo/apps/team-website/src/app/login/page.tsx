@@ -1,22 +1,32 @@
 "use client";
-import LoginButton from "../_components/auth/login_button";
-import { FcGoogle } from "react-icons/fc";
+
+import { use } from "react";
+
 import { FaGithub, FaWindows } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+
 import { toast } from "~/hooks/use-toast";
 
+import LoginButton from "../_components/auth/login_button";
+
 export default function LoginPage({
-  searchParams
+  searchParams,
 }: {
-  searchParams: { callbackUrl: string | undefined, message: string | undefined };
+  searchParams: Promise<{
+    callbackUrl?: string;
+    message?: string;
+  }>;
 }) {
-  if (searchParams.message === "unauthorized") {
+  const params = use(searchParams);
+
+  if (params.message === "unauthorized") {
     toast({
       title: "Unauthorized",
       description: "You do not have access to that page. Try signing in with a different account.",
       variant: "destructive",
       duration: 3000,
     });
-  } else if (searchParams.message === "signedout") {
+  } else if (params.message === "signedout") {
     toast({
       title: "Signed out",
       description: "You have been signed out.",
@@ -40,21 +50,21 @@ export default function LoginPage({
           <LoginButton
             title="Google"
             connectionId="google-oauth2"
-            callbackUrl={searchParams.callbackUrl}
+            callbackUrl={params.callbackUrl}
             className="bg-datadarkblue hover:bg-datadarkblue/70"
             logo={<FcGoogle />}
           />
           <LoginButton
             title="Windows"
             connectionId="windowslive"
-            callbackUrl={searchParams.callbackUrl}
+            callbackUrl={params.callbackUrl}
             className="bg-datadarkblue hover:bg-datadarkblue/70"
             logo={<FaWindows />}
           />
           <LoginButton
             title="GitHub"
             connectionId="github"
-            callbackUrl={searchParams.callbackUrl}
+            callbackUrl={params.callbackUrl}
             className="bg-datadarkblue hover:bg-datadarkblue/70"
             logo={<FaGithub />}
           />
