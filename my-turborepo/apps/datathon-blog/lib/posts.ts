@@ -60,10 +60,12 @@ export async function getPostData(id: string) {
     .process(matterResult.content);
   const contentHtml = processedContent.toString();
 
-  // Combine the data with the id and contentHtml
+  const data = matterResult.data as { date?: string; title?: string };
+  // Ensure required fields have fallbacks so prerender never sees undefined
   return {
     id,
     contentHtml,
-    ...(matterResult.data as { date: string; title: string }),
+    title: data.title ?? "Untitled",
+    date: data.date ?? new Date().toISOString().slice(0, 10),
   };
 }

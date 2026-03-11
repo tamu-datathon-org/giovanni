@@ -22,7 +22,7 @@ export async function getEmailsByLabelList(input: string[]) {
         emails: true,
       },
     });
-    emailLabel?.emails.forEach((email) => emails.add(email.email));
+    emailLabel?.emails.forEach((email : { email: string }) => emails.add(email.email));
   }
 
   return Array.from(emails);
