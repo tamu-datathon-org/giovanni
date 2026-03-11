@@ -24,6 +24,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@types/minimatch": "^5.1.2",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
