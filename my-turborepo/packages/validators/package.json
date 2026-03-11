@@ -20,7 +20,7 @@
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
-    "zod": "^3.23.8"
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@vanni/eslint-config": "workspace:*",

@@ -65,7 +65,9 @@ export async function queueBulkEmail(
     // If there are any failed messages, add them to the failed list
     if (response?.Failed && response.Failed.length > 0) {
       console.log("Failed to send messages: ", response.Failed);
-      failed.push(...response.Failed.map((f) => f.Message));
+      failed.push(
+        ...response.Failed.map((f: { Message?: string }) => f.Message),
+      );
       successCount += batch.length - response.Failed.length;
     } else {
       successCount += batch.length;
