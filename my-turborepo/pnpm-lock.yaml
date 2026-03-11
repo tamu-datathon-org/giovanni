@@ -684,7 +684,7 @@ importers:
       '@better-auth/utils':
         specifier: 0.3.1
         version: 0.3.1
-      '@t3-oss/env-nextjs':
+      '@t3-oss/env-core':
         specifier: ^0.9.2
         version: 0.9.2(typescript@5.9.3)(zod@3.25.76)
       '@vanni/db':
@@ -862,6 +862,9 @@ importers:
         specifier: ^3.23.8
         version: 3.25.76
     devDependencies:
+      '@types/minimatch':
+        specifier: ^5.1.2
+        version: 5.1.2
       '@vanni/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint
@@ -3669,6 +3672,9 @@ packages:
 
   '@types/mdx@2.0.13':
     resolution: {integrity: sha512-+OWZQfAYyio6YkJb3HLxDrvnx6SWWDbC0zVPfBRzUk0/nqoDyf6dNxQi3eArPe8rJ473nobTMQ/8Zk+LxJ+Yuw==}
+
+  '@types/minimatch@5.1.2':
+    resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
 
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
@@ -10999,6 +11005,8 @@ snapshots:
       '@types/unist': 3.0.3
 
   '@types/mdx@2.0.13': {}
+
+  '@types/minimatch@5.1.2': {}
 
   '@types/ms@2.1.0': {}
 

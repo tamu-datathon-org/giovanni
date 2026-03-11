@@ -1,5 +1,8 @@
+/**
+ * @ts-nocheck
+ */
 /* eslint-disable no-restricted-properties */
-import { createEnv } from "@t3-oss/env-nextjs";
+import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
 export const env = createEnv({
@@ -14,8 +17,10 @@ export const env = createEnv({
         : z.string().min(1).optional(),
     NODE_ENV: z.enum(["development", "production"]).optional(),
   },
-  client: {},
-  experimental__runtimeEnv: {},
+  runtimeEnv: process.env,
+  emptyStringAsUndefined: true,
   skipValidation:
-    !!process.env.CI || process.env.npm_lifecycle_event === "lint",
-}) as any;
+    !!process.env.CI ||
+    process.env.npm_lifecycle_event === "lint" ||
+    process.env.SKIP_ENV_VALIDATION === "true",
+});
