@@ -75,7 +75,7 @@ import { applicationSchema } from "../validation";
     Liability Waiver (checkbox)
 */
 
-export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME;
+export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME ?? "Datathon";
 
 const ADDRESS_DELIMITER = "|";
 
@@ -83,8 +83,8 @@ const DRAFT_STORAGE_KEY = "applicationData";
 
 const RESUME_OPTIONAL = true;
 
-const eventName = EVENT_NAME.endsWith("Spring") ? "TD-Lite" : "TD";
-const eventDescription = EVENT_NAME.endsWith("Spring")
+const eventName = EVENT_NAME?.endsWith("Spring") ? "TD-Lite" : "TD";
+const eventDescription = EVENT_NAME?.endsWith("Spring")
   ? "TD-Lite is a smaller version of the TD aimed for beginners!"
   : "TD is a 24-hour hackathon that is held in the fall for all skill levels!";
 
