@@ -20,10 +20,12 @@ export function getSortedPostsData() {
     // Use gray-matter to parse the post metadata section
     const matterResult = matter(fileContents);
 
-    // Combine the data with the id
+    // Combine the data with the id (coerce date/title to string for date-fns v3)
+    const data = matterResult.data as { date?: string; title?: string };
     return {
       id,
-      ...(matterResult.data as { date: string; title: string }),
+      date: data?.date != null ? String(data.date) : "",
+      title: data?.title != null ? String(data.title) : "",
     };
   });
   // Sort posts by date
@@ -60,10 +62,12 @@ export async function getPostData(id: string) {
     .process(matterResult.content);
   const contentHtml = processedContent.toString();
 
-  // Combine the data with the id and contentHtml
+  // Combine the data with the id and contentHtml (coerce date/title to string for date-fns v3)
+  const data = matterResult.data as { date?: string; title?: string };
   return {
     id,
     contentHtml,
-    ...(matterResult.data as { date: string; title: string }),
+    date: data?.date != null ? String(data.date) : "",
+    title: data?.title != null ? String(data.title) : "",
   };
 }

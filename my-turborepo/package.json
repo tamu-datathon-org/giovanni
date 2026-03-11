@@ -57,6 +57,7 @@
       "undici": "6.23.0",
       "ajv": "8.18.0",
       "js-yaml": "4.1.1",
+      "gray-matter>js-yaml": "3.14.1",
       "esbuild": "0.25.0",
       "diff": "4.0.4",
       "tmp": "0.2.4",
