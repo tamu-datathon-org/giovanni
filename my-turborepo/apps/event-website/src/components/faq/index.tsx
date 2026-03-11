@@ -5,15 +5,14 @@ import React, { useState } from "react";
 interface FaqItem { question: string; answer: string }
 
 const ITEMS: FaqItem[] = [
-  { question: "What is the Datathon?", answer: "A weekend-long event where students build data-driven projects and compete for prizes." },
-  { question: "How much should I know?", answer: "We have challenges for beginners to advanced. TAMU Datathon is the perfect time and place to learn." },
-  { question: "Who can attend?", answer: "We welcome students from all across the world and from all majors! Undergraduate or graduate student at least 18 years of age and anyone who has graduated within one year of the event." },
-  { question: "How do teams work?", answer: "Teams up to 4. We encourage working with a team, it's more fun! Form ahead of time or join one during the event." },
-  { question: "What should I bring?", answer: "Please remember to bring your laptop and charger. Since the event lasts overnight, it is a good idea to bring a pillow and sleeping bag." },
-  { question: "Are there workshops?", answer: "Yes. We host beginner-friendly workshops on data tools and ML all weekend." },
-  { question: "Is it free to attend?", answer: "Yes attendance is free. Meals, snacks, and swag are provided." },
-  { question: "What’s the schedule?", answer: "Opening Saturday morning hacking through the weekend with judging Sunday." },
-  { question: "Have another question?", answer: "Send us an email at connect@tamudatathon.com." },
+  { question: "What is TAMU Datathon Lite?", answer: "TD Lite is a smaller, more beginner friendly version of our main event. It's a one-day event, but it will have everything Datathon normally has including free food, swag, workshops, and prizes!" },
+  { question: "Where is the event?", answer: "The event takes place at the ILCB. Once you enter the building, organizers will be there to guide you to the main room! If you have any questions regarding transportation or parking, please reach out to us on Discord." },
+  { question: "Why should I come?", answer: "It is completely free! Learn Data Science with interactive challenges and prizes. If you struggle to start to learn, TDLite offers a beginner-focused space to compete in. We have mentors to help and free swag/food." },
+  { question: "How do I sign up?", answer: "Head over to https://tamudatathon.org/apply to get started! Admission decisions will be released shortly after registration closes." },
+  { question: "How much do I need to know?", answer: "If you are new to data science, TD Lite is the perfect time and place to learn. We will provide introductory workshops and mentors to guide you throughout the competition. We are committed to helping you build something you can be proud of!" },
+  { question: "Who can attend?", answer: "TD Lite is open to beginner students currently enrolled at Texas A&M who are at least 18 years old. We welcome students from all majors!" },
+  { question: "What should I bring?", answer: "All you need is a laptop and a charger to get started at TD Lite! You may bring other items such as a pillow or a debugging duck if you wish to. Also make sure to check the weather in case you might need an umbrella :D." },
+  { question: "Have another question?", answer: "Send us an email at connect@tamudatathon.com or reach out to us on Discord!" },
 ];
 
 export default function FAQ() {
