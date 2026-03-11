@@ -1225,7 +1225,7 @@ importers:
         version: link:../typescript
       eslint:
         specifier: ^9.39.1
-        version: 9.39.1(jiti@1.21.7)
+        version: 9.39.1(jiti@2.6.1)
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
