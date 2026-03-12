@@ -98,8 +98,49 @@ interface LatteFaqItemProps {
   panelId: string;
   onToggle: () => void;
 }
+
+
+
+
+//clickable links in answer text
+const renderAnswerWithLinks = (text: string): React.ReactNode => {
+  const linkPattern = /(https:\/\/tamudatathon\.org\/apply|connect@tamudatathon\.com)/g;
+
+  return text.split(linkPattern).map((part, index) => {
+    if (part === "https://tamudatathon.org/apply") {
+      return (
+        <a
+          key={index}
+          href={part}
+          target="_blank"
+          rel="noreferrer"
+          className="underline decoration-[#F6E7D8] underline-offset-2"
+        >
+          {part}
+        </a>
+      );
+    }
+
+    if (part === "connect@tamudatathon.com") {
+      return (
+        <a
+          key={index}
+          href="mailto:connect@tamudatathon.com"
+          className="underline decoration-[#F6E7D8] underline-offset-2"
+        >
+          {part}
+        </a>
+      );
+    }
+
+    return <React.Fragment key={index}>{part}</React.Fragment>;
+  });
+};
  
-//react component, one latte, question, answer, ontoggle
+
+
+
+//react component, one latte
 const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
   question, //faq question
   answer, //answer behind the latte
@@ -108,7 +149,7 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
   onToggle, //on click
 }) => {
   
-  //Functionality for highlighting the text under the latte, tracks if mouse is dragging (highlighting) ///////////////////////
+  ///////////////////Functionality for highlighting the text under the latte, tracks if mouse is dragging (highlighting)
   //or clicking. if clicking, then just close the latte. if dragging, then allow user to select text without closing latte
   
   const [mouseDownPos, setMouseDownPos] = React.useState<{ x: number; y: number } | null>(null);
@@ -167,15 +208,16 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
             isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
           ].join(" ")}
         >
-          <p
-            className="whitespace-normal select-text cursor-text"
+          {/* answer text customization, wraps the text */}
+          <p 
+            className="whitespace-normal break-words [overflow-wrap:anywhere] select-text cursor-text"
             onMouseDown={(e) => {
               e.stopPropagation();
-              setMouseDownPos(null); // clear so button click never fires onToggle
+              setMouseDownPos(null); //prevents click event(closing latte) when trying to highlight text
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {answer}
+            {renderAnswerWithLinks(answer)}
           </p>
         </div>
 
