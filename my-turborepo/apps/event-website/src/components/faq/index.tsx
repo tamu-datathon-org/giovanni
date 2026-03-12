@@ -66,7 +66,7 @@ export default function FAQ() {
             </div>
 
             {/* 3x3 grid lattes */}
-            {/* to change space btwn subtitle and grid, edit mt-[152px] */}
+            {/* to change space btwn subtitle and grid, change mt-[152px] */}
             {/* to change padding for grid, change gap-y-16, sm:gap-y-20 */}
             <div className="mt-[152px] grid grid-cols-1 justify-items-center gap-x-6 gap-y-28 sm:mt-[156px] sm:grid-cols-2 sm:gap-x-8 sm:gap-y-32 lg:grid-cols-3">
               {ITEMS.slice(0, 9).map((it, i) => {
@@ -106,16 +106,41 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
   panelId, //id for accessibility
   onToggle, //on click
 }) => {
+  
+  //Functionality for highlighting the text under the latte, tracks if mouse is dragging (highlighting) ///////////////////////
+  //or clicking. if clicking, then just close the latte. if dragging, then allow user to select text without closing latte
+  
+  const [mouseDownPos, setMouseDownPos] = React.useState<{ x: number; y: number } | null>(null);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setMouseDownPos({ x: e.clientX, y: e.clientY });
+  };
+
+  //for highlighting text and clicking button without triggering onToggle when highlighting
+  const handleClick = (e: React.MouseEvent) => {
+    if (!mouseDownPos) return; //allows user to highlight text without the latte closing again
+
+    //prevents latte from toggling if user clicks and drags on the button itself
+    // Calculate distance between mouse down and click
+    const distance = Math.sqrt(
+      Math.pow(e.clientX - mouseDownPos.x, 2) + Math.pow(e.clientY - mouseDownPos.y, 2)
+    );
+
+    // Only toggle if mouse moved less than 5 pixels (click, not a drag)
+    if (distance < 5) {
+      onToggle();
+    }
+
+    setMouseDownPos(null);
+  };
+
+  ///////////////////////////////////////////////////////////////////////
+
   return (
 
-    //clickable latte button
-    <button
-      type="button"
-      onClick={onToggle}
-      aria-expanded={isOpen}
-      aria-controls={panelId}
-      //styling for the button, might need to fix this (includes tab styles)
-      className="group relative h-[340px] w-[250px] select-none rounded-2xl pt-12 font-chilanka focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6E7D8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#4C321B] sm:h-[340px] sm:w-[250px] sm:pt-14"
+    //wrapper container, both question and latte
+    <div
+      className="group relative h-[340px] w-[250px] rounded-2xl pt-12 font-chilanka sm:h-[340px] sm:w-[250px] sm:pt-14"
     >
       <div
         id={panelId}
@@ -132,28 +157,35 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
           </div>
         </div>
 
-        {/* latte container */}
+        {/* latte container and images */}
         <div className="relative w-[400px] aspect-[5/4] sm:w-[440px]">
-          <div
-            className={[
-              //answer text inside cup
-              //to change text width, change w-[36%], sm:w-[36%]
-              "pointer-events-none absolute left-1/2 top-[48%] z-20 w-[36%] -translate-x-1/2 -translate-y-1/2 text-center text-sm leading-snug text-[#F6E7D8] sm:w-[36%] sm:text-base",
-              "transition-opacity duration-300 ease-out",
-              isOpen ? "opacity-100" : "opacity-0",
-            ].join(" ")}
+        <div
+          className={[
+            "absolute left-1/2 top-[48%] z-20 w-[36%] -translate-x-1/2 -translate-y-1/2 text-center text-sm leading-snug text-[#F6E7D8] sm:w-[36%] sm:text-base",
+            "transition-opacity duration-300 ease-out",
+            isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
+          ].join(" ")}
+        >
+          <p
+            className="whitespace-normal select-text cursor-text"
+            onMouseDown={(e) => {
+              e.stopPropagation();
+              setMouseDownPos(null); // clear so button click never fires onToggle
+            }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <p className="whitespace-normal">{answer}</p>
-          </div>
+            {answer}
+          </p>
+        </div>
 
-          {/* images before and after clicking on latte, latte -> latteoutline, animation */}
+          {/* images before and after clicking on latte, latte -> latteoutline, and fade animation */}
           <Image
             src="/images/faq/latte.png"
             alt="Latte cup"
             fill
             sizes="(max-width: 640px) 400px, 440px"
             className={[
-              "absolute inset-0 h-full w-full object-contain",
+              "pointer-events-none absolute inset-0 h-full w-full object-contain",
               "transition-opacity duration-300 ease-out",
               isOpen ? "opacity-0" : "opacity-100",
             ].join(" ")}
@@ -164,13 +196,25 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
             fill
             sizes="(max-width: 640px) 400px, 440px"
             className={[
-              "absolute inset-0 h-full w-full object-contain",
+              "pointer-events-none absolute inset-0 h-full w-full object-contain",
               "transition-opacity duration-300 ease-out",
               isOpen ? "opacity-100" : "opacity-0",
             ].join(" ")}
           />
+
+          {/* clickable button (overlay for interaction) */}
+          <button
+            type="button"
+            onMouseDown={handleMouseDown}
+            onClick={handleClick}
+            aria-expanded={isOpen}
+            aria-controls={panelId}
+            //adds red border for debugging button
+            //className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-full border-2 border-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6E7D8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#4C321B] rounded"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6E7D8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#4C321B] rounded"
+          />
         </div>
       </div>
-    </button>
+    </div>
   );
 };
