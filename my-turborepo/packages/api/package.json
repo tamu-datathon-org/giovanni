@@ -26,7 +26,7 @@
     "@vanni/validators": "workspace:*",
     "minimatch": "^10.2.3",
     "superjson": "2.2.1",
-    "zod": "^3.23.8"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.4.2",

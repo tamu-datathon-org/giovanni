@@ -12,11 +12,7 @@ import type { Metadata } from "next";
 import { env } from "~/env";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    env.VERCEL_ENV === "production"
-      ? "https://turbo.t3.gg"
-      : "http://localhost:3000",
-  ),
+  metadataBase: new URL("https://tamudatathon.org"),
   title: "TAMU Datathon",
   description: "A&M's Data Science Hackathon",
   openGraph: {
