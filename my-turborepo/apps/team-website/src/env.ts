@@ -24,7 +24,10 @@ export const env = createEnv({
    * For them to be exposed to the client, prefix them with `NEXT_PUBLIC_`.
    */
   client: {
-    NEXT_PUBLIC_EVENT_NAME: z.string().min(1),
+    NEXT_PUBLIC_EVENT_NAME: z.preprocess(
+      (v) => (v === "" || v == null ? undefined : v),
+      z.string().min(1).default("Datathon"),
+    ),
   },
   /**
    * Destructure all variables from `process.env` to make sure they aren't tree-shaken away.
