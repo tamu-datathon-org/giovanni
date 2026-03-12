@@ -7,13 +7,13 @@ import React, { useId, useState } from "react";
 interface FaqItem { question: string; answer: string }
 
 const ITEMS: FaqItem[] = [
-  { question: "What is TAMU Datathon Lite?", answer: "TD Lite is a smaller, more beginner friendly version of our main event. It's a one-day event, but it will have everything Datathon normally has including free food, swag, workshops, and prizes!" },
-  { question: "Where is the event?", answer: "The event takes place at the ILCB. Once you enter the building, organizers will be there to guide you to the main room! If you have any questions regarding transportation or parking, please reach out to us on Discord." },
-  { question: "Why should I come?", answer: "It is completely free! Learn Data Science with interactive challenges and prizes. If you struggle to start to learn, TDLite offers a beginner-focused space to compete in. We have mentors to help and free swag/food." },
+  { question: "What is TAMU Datathon Lite?", answer: "TD Lite is a smaller, more **beginner** friendly version of our main event. It's a **one-day event**, but it will have everything Datathon normally has including free food, swag, workshops, and prizes!" },
+  { question: "Where is the event?", answer: "The event takes place at the **ILCB**. Once you enter the building, organizers will be there to guide you to the main room! If you have any questions regarding transportation or parking, please **reach out to us on Discord.**" },
+  { question: "Why should I come?", answer: "**It is completely free!** Learn Data Science with interactive challenges and prizes. If you struggle to start to learn, TDLite offers a **beginner-focused** space to compete in. We have mentors to help and **free swag/food.**" },
   { question: "How do I sign up?", answer: "Head over to https://tamudatathon.org/apply to get started! Admission decisions will be released shortly after registration closes." },
-  { question: "How much do I need to know?", answer: "If you are new to data science, TD Lite is the perfect time and place to learn. We will provide introductory workshops and mentors to guide you throughout the competition. We are committed to helping you build something you can be proud of!" },
-  { question: "Who can attend?", answer: "TD Lite is open to beginner students currently enrolled at Texas A&M who are at least 18 years old. We welcome students from all majors!" },
-  { question: "What should I bring?", answer: "All you need is a laptop and a charger to get started at TD Lite! You may bring other items such as a pillow or a debugging duck if you wish to. Also make sure to check the weather in case you might need an umbrella :D." },
+  { question: "How much do I need to know?", answer: "If you are **new to data science**, TD Lite is the perfect time and place to learn. We will provide **introductory workshops and mentors** to guide you throughout the competition. We are committed to helping you build something you can be proud of!" },
+  { question: "Who can attend?", answer: "TD Lite is open to **beginner students** currently enrolled at **Texas A&M** who are at least **18 years old**. We welcome students from all majors!" },
+  { question: "What should I bring?", answer: "All you need is a **laptop and a charger** to get started at TD Lite! You may bring other items such as a pillow or a debugging duck if you wish to. Also make sure to **check the weather** in case you might need an umbrella :D." },
   { question: "Have another question?", answer: "Send us an email at connect@tamudatathon.com or reach out to us on Discord!" },
   { question: "Placeholder question", answer: "Placeholder answer" },
 ];
@@ -102,38 +102,59 @@ interface LatteFaqItemProps {
 
 
 
-//clickable links in answer text
-const renderAnswerWithLinks = (text: string): React.ReactNode => {
+//clickable links and **bold** text inside answer strings
+const renderAnswerContent = (text: string): React.ReactNode => {
   const linkPattern = /(https:\/\/tamudatathon\.org\/apply|connect@tamudatathon\.com)/g;
+  const boldPattern = /(\*\*[^*]+\*\*)/g;
 
-  return text.split(linkPattern).map((part, index) => {
-    if (part === "https://tamudatathon.org/apply") {
+  const renderLinks = (content: string, keyPrefix: string) => {
+    return content.split(linkPattern).map((part, index) => {
+      if (part === "https://tamudatathon.org/apply") {
+        return (
+          <a
+            key={`${keyPrefix}-link-${index}`}
+            href={part}
+            target="_blank"
+            rel="noreferrer"
+            className="text-[#FAE19D] underline decoration-[#FAE19D] underline-offset-2"
+          >
+            {part}
+          </a>
+        );
+      }
+
+      if (part === "connect@tamudatathon.com") {
+        return (
+          <a
+            key={`${keyPrefix}-link-${index}`}
+            href="mailto:connect@tamudatathon.com"
+            className="text-[#FAE19D] underline decoration-[#FAE19D] underline-offset-2"
+          >
+            {part}
+          </a>
+        );
+      }
+
+      return <React.Fragment key={`${keyPrefix}-text-${index}`}>{part}</React.Fragment>;
+    });
+  };
+
+  //allows for bolding in the answer text, wrap with **hi**
+  return text.split(boldPattern).map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      const boldText = part.slice(2, -2);
+
       return (
-        <a
+        <strong
           key={index}
-          href={part}
-          target="_blank"
-          rel="noreferrer"
-          className="underline decoration-[#F6E7D8] underline-offset-2"
+          className="font-bold text-[#FAE19D]"
         >
-          {part}
-        </a>
+          {renderLinks(boldText, `bold-${index}`)}
+        </strong>
       );
     }
 
-    if (part === "connect@tamudatathon.com") {
-      return (
-        <a
-          key={index}
-          href="mailto:connect@tamudatathon.com"
-          className="underline decoration-[#F6E7D8] underline-offset-2"
-        >
-          {part}
-        </a>
-      );
-    }
-
-    return <React.Fragment key={index}>{part}</React.Fragment>;
+    return <React.Fragment key={index}>{renderLinks(part, `plain-${index}`)}</React.Fragment>;
   });
 };
  
@@ -217,7 +238,7 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {renderAnswerWithLinks(answer)}
+            {renderAnswerContent(answer)}
           </p>
         </div>
 
