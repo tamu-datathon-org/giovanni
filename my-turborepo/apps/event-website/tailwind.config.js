@@ -32,6 +32,10 @@ export const theme = {
       "darumadrop-one": ["var(--font-darumadrop-one)", "sans-serif"],
       chilanka: ["var(--font-chilanka)", "sans-serif"],
       serif: ['"PT Serif"', "Times New Roman", "serif"],
+      chilanka: ["chilanka", "sans-serif"],
+      pixelify: ["pixelify", "sans-serif"],
+      shadowsintolight: ["shadowsintolight", "sans-serif"],
+      darumadropone: ["darumadropone", "sans-serif"],
     },
     colors: {
       current: "currentColor",
