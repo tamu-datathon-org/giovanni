@@ -19,7 +19,7 @@ const Sponsors = dynamic(() => import("@/components/sponsor"), {
 
 const FAQ = dynamic(() => import("@/components/faq"), {
   loading: () => (
-    <div className="min-h-[800px] bg-gradient-to-b from-[#322C29] to-[#1B0706]" />
+    <div className="min-h-[800px] bg-[#1B0706]" />
   ),
 });
 

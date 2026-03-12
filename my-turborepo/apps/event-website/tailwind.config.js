@@ -30,6 +30,10 @@ export const theme = {
       kopub: ["var(--font-kopub-batang)", "serif"],
       anonymous: ['"anonymous"'],
       serif: ['"PT Serif"', "Times New Roman", "serif"],
+      chilanka: ["chilanka", "sans-serif"],
+      pixelify: ["pixelify", "sans-serif"],
+      shadowsintolight: ["shadowsintolight", "sans-serif"],
+      darumadropone: ["darumadropone", "sans-serif"],
     },
     colors: {
       current: "currentColor",
