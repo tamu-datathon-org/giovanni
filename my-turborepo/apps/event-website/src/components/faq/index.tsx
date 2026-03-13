@@ -29,7 +29,8 @@ export default function FAQ() {
       className="relative z-30 w-full overflow-y-visible [overflow-x:clip] bg-[#FAE19D] py-16 sm:py-24" //yellow background/outer faq container
       id="faq"
     >
-      <div className="mx-auto max-w-[1080px] px-4"> {/* outer brown rec section size*/}
+      {/* outer brown rec section size*/}
+      <div className="mx-auto max-w-[1080px] px-4">
         <div className="relative overflow-visible rounded-3xl bg-[#966952] p-6 sm:p-10">
           {/* vine decorations*/}
           <Image
@@ -38,7 +39,6 @@ export default function FAQ() {
             width={320}
             height={220}
             //top left vine styling
-            // className="pointer-events-none absolute -left-10 -top-[242px] z-20 h-auto w-[270px] sm:w-[330px] lg:w-[370px] -rotate-3"
             className="pointer-events-none absolute -left-[20px] -top-[100px] z-20 h-auto w-[160px] sm:w-[330px] sm:-left-10 sm:-top-[242px] lg:w-[370px] -rotate-3"
             priority
           />
@@ -53,7 +53,7 @@ export default function FAQ() {
             priority
           />
 
-          {/* Inner dark-brown rectangle (adjust px/py or rounded to change its size/look) */}
+          {/* inner dark-brown rectangle */}
           <div className="relative rounded-2xl bg-[#4C321B] px-5 pb-10 pt-4 sm:px-10 sm:pb-12 sm:pt-6">
             {/* Transparent strip to allow vines to visually overlap into the inner rectangle */}
             <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 sm:h-16" />
@@ -70,7 +70,7 @@ export default function FAQ() {
 
             {/* 3x3 grid lattes */}
             {/* to change space btwn subtitle and grid, change mt-[152px] */}
-            {/* to change padding for grid, change gap-y-16, sm:gap-y-20 */}
+            {/* to change padding for grid, change gap-y-20 */}
             <div className="mt-[60px] grid grid-cols-2 justify-items-center gap-x-8 gap-y-12 sm:mt-[156px] sm:grid-cols-2 sm:gap-x-8 sm:gap-y-32 lg:grid-cols-3">
                 {ITEMS.slice(0, 9).map((it, i) => {
                 const panelId = `${idBase}-faq-${i}`;
@@ -109,7 +109,7 @@ interface LatteFaqItemProps {
 
 
 
-//clickable links and **bold** text inside answer strings
+//clickable links and **bold**/colored text inside answer strings
 const renderAnswerContent = (text: string): React.ReactNode => {
   const linkPattern = /(https:\/\/tamudatathon\.org\/apply|connect@tamudatathon\.com)/g;
   const boldPattern = /(\*\*[^*]+\*\*)/g;
@@ -177,26 +177,29 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
   onToggle, //on click
 }) => {
   
-  ///////////////////Functionality for highlighting the text under the latte, tracks if mouse is dragging (highlighting)
-  //or clicking. if clicking, then just close the latte. if dragging, then allow user to select text without closing latte
-  
+
+  /*
+  Highlight text under latte functionality:
+  tracks if mouse is dragging (highlighting) or clicking. 
+  if clicking, then just close the latte. 
+  if dragging, then allow user to select text without closing latte
+  */
+
   const [mouseDownPos, setMouseDownPos] = React.useState<{ x: number; y: number } | null>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setMouseDownPos({ x: e.clientX, y: e.clientY });
   };
 
-  //for highlighting text and clicking button without triggering onToggle when highlighting
   const handleClick = (e: React.MouseEvent) => {
     if (!mouseDownPos) return; //allows user to highlight text without the latte closing again
 
-    //prevents latte from toggling if user clicks and drags on the button itself
-    // Calculate distance between mouse down and click
+    //calc dist btwn mouse down and click, used to tell diff btwn click and drag (highlight)
     const distance = Math.sqrt(
       Math.pow(e.clientX - mouseDownPos.x, 2) + Math.pow(e.clientY - mouseDownPos.y, 2)
     );
 
-    // Only toggle if mouse moved less than 5 pixels (click, not a drag)
+    //latte opens only if click (small distance)
     if (distance < 5) {
       onToggle();
     }
@@ -204,10 +207,8 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
     setMouseDownPos(null);
   };
 
-  ///////////////////////////////////////////////////////////////////////
 
   return (
-
     //wrapper container, both question and latte
     <div
       className="group relative h-[220px] w-[160px] rounded-2xl pt-12 font-chilanka sm:h-[340px] sm:w-[250px] sm:pt-14"
