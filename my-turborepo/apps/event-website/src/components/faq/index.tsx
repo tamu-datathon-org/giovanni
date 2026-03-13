@@ -38,7 +38,8 @@ export default function FAQ() {
             width={320}
             height={220}
             //top left vine styling
-            className="pointer-events-none absolute -left-10 -top-[242px] z-20 h-auto w-[270px] sm:w-[330px] lg:w-[370px] -rotate-3"
+            // className="pointer-events-none absolute -left-10 -top-[242px] z-20 h-auto w-[270px] sm:w-[330px] lg:w-[370px] -rotate-3"
+            className="pointer-events-none absolute -left-[20px] -top-[100px] z-20 h-auto w-[160px] sm:w-[330px] sm:-left-10 sm:-top-[242px] lg:w-[370px] -rotate-3"
             priority
           />
           <Image
@@ -47,7 +48,8 @@ export default function FAQ() {
             width={320}
             height={220}
             //top right vine styling
-            className="pointer-events-none absolute -right-[220px] -top-[124px] z-20 h-auto w-[400px] sm:w-[460px] lg:w-[540px] -rotate-[14deg]"
+            //className="pointer-events-none absolute -right-[220px] -top-[124px] z-20 h-auto w-[400px] sm:w-[460px] lg:w-[540px] -rotate-[14deg]"
+            className="pointer-events-none absolute -right-[92px] -top-[50px] z-20 h-auto w-[250px] sm:w-[460px] sm:-right-[220px] sm:-top-[124px] lg:w-[540px] -rotate-[14deg]"
             priority
           />
 
@@ -58,7 +60,7 @@ export default function FAQ() {
 
             {/* title and subtitle */}
             <div className="text-center">
-              <h2 className="text-7xl font-darumadropone tracking-wide text-[#FFFFFF] sm:text-8xl">
+              <h2 className="text-5xl sm:text-7xl lg:text-8xl font-darumadropone tracking-wide text-[#FFFFFF]">
                 FAQ
               </h2>
               <p className="mt-3 text-lg font-chilanka tracking-wide text-[#FFFFFF]/90 sm:text-4xl">
@@ -69,18 +71,23 @@ export default function FAQ() {
             {/* 3x3 grid lattes */}
             {/* to change space btwn subtitle and grid, change mt-[152px] */}
             {/* to change padding for grid, change gap-y-16, sm:gap-y-20 */}
-            <div className="mt-[152px] grid grid-cols-1 justify-items-center gap-x-6 gap-y-28 sm:mt-[156px] sm:grid-cols-2 sm:gap-x-8 sm:gap-y-32 lg:grid-cols-3">
-              {ITEMS.slice(0, 9).map((it, i) => {
+            <div className="mt-[60px] grid grid-cols-2 justify-items-center gap-x-8 gap-y-12 sm:mt-[156px] sm:grid-cols-2 sm:gap-x-8 sm:gap-y-32 lg:grid-cols-3">
+                {ITEMS.slice(0, 9).map((it, i) => {
                 const panelId = `${idBase}-faq-${i}`;
+                const isLast = i === ITEMS.slice(0, 9).length - 1;
                 return (
-                  <LatteFaqItem
+                  <div
                     key={i}
-                    question={it.question}
-                    answer={it.answer}
-                    isOpen={openIndex === i}
-                    panelId={panelId}
-                    onToggle={() => setOpenIndex(openIndex === i ? null : i)}
-                  />
+                    className={isLast ? "col-span-2 flex justify-center sm:col-span-1" : ""} //puts last row single latte in center
+                  >
+                    <LatteFaqItem
+                      question={it.question}
+                      answer={it.answer}
+                      isOpen={openIndex === i}
+                      panelId={panelId}
+                      onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+                    />
+                  </div>
                 );
               })}
             </div>
@@ -203,7 +210,7 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
 
     //wrapper container, both question and latte
     <div
-      className="group relative h-[340px] w-[250px] rounded-2xl pt-12 font-chilanka sm:h-[340px] sm:w-[250px] sm:pt-14"
+      className="group relative h-[220px] w-[160px] rounded-2xl pt-12 font-chilanka sm:h-[340px] sm:w-[250px] sm:pt-14"
     >
       <div
         id={panelId}
@@ -215,16 +222,16 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
       >
         {/* question text above the latte wrapper */}
         <div className="pointer-events-none relative z-20 mb-4 w-full px-2 sm:mb-5">
-          <div className="mx-auto max-w-[240px] text-center text-xl font-darumadropone leading-snug text-white sm:max-w-[270px] sm:text-3xl">
+          <div className="mx-auto max-w-[240px] text-center text-sm font-darumadropone leading-snug text-white sm:max-w-[270px] sm:text-3xl">
             {question}
           </div>
         </div>
 
         {/* latte container and images */}
-        <div className="relative w-[400px] aspect-[5/4] sm:w-[440px]">
+        <div className="relative w-[260px] aspect-[5/4] sm:w-[440px]">
         <div
           className={[
-            "absolute left-1/2 top-[48%] z-20 w-[36%] -translate-x-1/2 -translate-y-1/2 text-center text-sm leading-snug text-[#F6E7D8] sm:w-[36%] sm:text-base",
+            "absolute left-1/2 top-[48%] z-20 w-[40%] -translate-x-1/2 -translate-y-1/2 text-center text-[10px] leading-snug text-[#F6E7D8] sm:w-[36%] sm:text-base",
             "transition-opacity duration-300 ease-out",
             isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
           ].join(" ")}
@@ -275,7 +282,7 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
             aria-controls={panelId}
             //adds red border for debugging button
             //className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-full border-2 border-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6E7D8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#4C321B] rounded"
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6E7D8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#4C321B] rounded"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] sm:w-[260px] h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6E7D8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#4C321B] rounded"
           />
         </div>
       </div>
