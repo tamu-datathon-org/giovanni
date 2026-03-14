@@ -2,7 +2,7 @@
 
 import { Inter } from "next/font/google";
 import Image from "next/image";
-// import Footer from "@/components/Footer";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
 import ScrollToTop from "@vanni/ui/scroll-to-top";
@@ -30,7 +30,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
         {/* <Header /> */}
         {children}
-        {/* <Footer /> */}
+        <Footer />
         {/* <ScrollToTop /> */}
       </body>
     </html>
