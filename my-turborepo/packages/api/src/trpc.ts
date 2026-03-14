@@ -12,6 +12,7 @@ import { ZodError } from "zod";
 
 import { auth } from "@vanni/auth";
 import { and, eq } from "@vanni/db";
+import { User } from "@vanni/db/auth-schema";
 import { db } from "@vanni/db/client";
 import { Event, Role, UserRole } from "@vanni/db/schema";
 
@@ -39,13 +40,28 @@ export const createTRPCContext = async (opts: {
   };
 };
 
+export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
+export type VerifiedContext = Omit<Context, "session"> & {
+  session: {
+    user: {
+      id: string;
+      name: string | null;
+      email: string;
+      emailVerified: boolean;
+      createdAt: Date | null;
+      updatedAt: Date | null;
+      image?: string | null | undefined;
+    };
+  };
+};
+
 /**
  * 2. INITIALIZATION
  *
  * This is where the trpc api is initialized, connecting the context and
  * transformer
  */
-const t = initTRPC.context<typeof createTRPCContext>().create({
+const t = initTRPC.context<Context>().create({
   transformer: superjson,
   errorFormatter: ({ shape, error }) => ({
     ...shape,
@@ -55,6 +71,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
     },
   }),
 });
+
 
 /**
  * Create a server-side caller
@@ -92,11 +109,38 @@ export const publicProcedure = t.procedure;
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
+  // TEMP: Dev mode bypass - remove this before production!
+  const DEV_MODE_SKIP_AUTH = "true" === "true";
+  const DEV_USER_EMAIL = "michael_rao@tamu.edu"; // Change this to your test email
+  
+  if (DEV_MODE_SKIP_AUTH && !ctx.session?.user) {
+    // Look up real user from database by email
+    const devUser = await ctx.db.query.User.findFirst({
+      where: eq(User.email, DEV_USER_EMAIL),
+    });
+    
+    if (!devUser) {
+      throw new TRPCError({ 
+        code: "INTERNAL_SERVER_ERROR",
+        message: `Dev user not found in database with email: ${DEV_USER_EMAIL}. Please create an account first or update DEV_USER_EMAIL in trpc.ts`
+      });
+    }
+    
+    // Use real user from database
+    return await next({
+      ctx: {
+        session: {
+          user: devUser,
+        },
+      },
+    });
+  }
+  
   if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  return next({
+  return await next({
     ctx: {
       // infers the `session` as non-nullable
       session: { ...ctx.session, user: ctx.session.user },
@@ -153,7 +197,7 @@ export const organizerProcedure = t.procedure.use(async ({ ctx, next }) => {
       and(eq(Event.name, eventName), eq(UserRole.userId, ctx.session.user.id)),
     );
 
-  if (!user_role || user_role.length === 0) {
+  if (user_role.length === 0) {
     throw new TRPCError({
       code: "NOT_FOUND",
       message: "User_role was not found",

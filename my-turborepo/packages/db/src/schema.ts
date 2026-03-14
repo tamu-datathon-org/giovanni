@@ -10,7 +10,6 @@ import {
   primaryKey,
   integer,
   pgTable,
-  pgEnum,
   uniqueIndex,
   index,
 } from "drizzle-orm/pg-core";
@@ -161,7 +160,7 @@ export const Application = pgTable("application", {
   shirtSize: varchar("shirt_size", { length: 25 })
     // .$type<"S" | "M" | "L" | "XL" | "XXL">()
     .notNull(),
-  address: varchar("address", { length: 100 }).notNull(),
+  address: varchar("address", { length: 500 }).notNull(),
   references: varchar("references", { length: 255 }).notNull(),
   linkedinUrl: varchar("linkedin_url", { length: 255 }).default(""),
   interestOne: varchar("interest_one", { length: 500 }).notNull(),
@@ -325,16 +324,16 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
   address: z
     .string()
     .min(1, "Address is missing")
-    .max(100, "Address is too long"),
+    .max(500, "Address is too long"),
   references: z
     .string()
+    .min(1, "References is missing")
     .max(255)
-    .optional()
     .default(""),
   linkedinUrl: z
     .string()
-    .min(1, "Linkedin URL is missing")
     .max(255, "Linkedin URL is too long")
+    .optional()
     .default(""),
   interestOne: z
     .string()

@@ -1,0 +1,67 @@
+version: 2
+updates:
+  ########################################
+  # GitHub Actions
+  ########################################
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "main"
+    
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "main-v2"
+    
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "main-fall-2024"
+    
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "main-fall-2025"
+    
+  - package-ecosystem: "github-actions"    
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "main-spring-2025"
+
+  ########################################
+  # pnpm (NodeJS) – use ecosystem "npm"
+  ########################################
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "main"
+    
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "main-v2"
+    
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "main-fall-2024"
+    
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "main-fall-2025"
+    
+  - package-ecosystem: "npm"              
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "main-spring-2025"

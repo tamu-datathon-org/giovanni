@@ -1,8 +1,8 @@
-import FloatingStats from "./FloatingStats";
+import FloatingStats from "./ScrollStats";
 
 const AboutSectionTwo = () => {
   return (
-    <section className="py-8 md:py-12 lg:py-16">
+    <section className="bg-white py-8 dark:bg-transparent md:py-12 lg:py-16">
       <div className="container">
         <div className="-mx-4 flex flex-wrap items-center">
           <FloatingStats />

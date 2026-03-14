@@ -88,6 +88,9 @@ export const PersonalInformation: React.FC<InformationProps> = ({
           <span className="font-bold">Dietary Restrictions:</span>{" "}
           {application.dietaryRestriction}
         </p>
+        <p>
+          <span className="font-bold">Address:</span> {application.address}
+        </p>
       </CardInformation>
       <button
         onClick={() => {

@@ -2,7 +2,7 @@
 
 import { LuClipboard } from "react-icons/lu";
 import { useToast } from "~/hooks/use-toast";
-
+import SponsorTicker from "../Ticker";
 const Contact = () => {
   const { toast } = useToast();
 

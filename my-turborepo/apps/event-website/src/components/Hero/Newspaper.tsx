@@ -96,8 +96,7 @@ export default function NewspaperSection() {
           <foreignObject x="15%" y="71%" width="70%" height="25%" rotate={0.38}>
             <p className="font-kopub text-center text-4xl leading-relaxed text-black">
               We are the largest data science and machine learning focused
-              hackathon in Texas located at Texas A&M University in College
-              Station.
+              hackathon in Texas!
             </p>
           </foreignObject>
         </svg>
@@ -189,9 +188,8 @@ export default function NewspaperSection() {
           {/* Description */}
           <foreignObject x="25%" y="71%" width="50%" height="20%">
             <p className="font-kopub text-center text-center text-3xl leading-relaxed text-black">
-              We are the largest data science and machine learning focused
-              hackathon in Texas located at Texas A&M University in College
-              Station.
+            We are the largest data science and machine learning focused
+            hackathon in Texas!
             </p>
           </foreignObject>
         </svg>
