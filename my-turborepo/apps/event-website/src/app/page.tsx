@@ -30,6 +30,7 @@ export default function Home() {
     <>
       <ScrollUp />
       <Hero />
+      <Prizes />
       {/* <Location />
       <Prizes />
       <FAQ /> */}

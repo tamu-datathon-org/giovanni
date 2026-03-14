@@ -29,6 +29,8 @@ export const theme = {
       inter: ["var(--font-inter)", "sans-serif"],
       kopub: ["var(--font-kopub-batang)", "serif"],
       anonymous: ['"anonymous"'],
+      "darumadrop-one": ["var(--font-darumadrop-one)", "sans-serif"],
+      chilanka: ["var(--font-chilanka)", "sans-serif"],
       serif: ['"PT Serif"', "Times New Roman", "serif"],
     },
     colors: {
