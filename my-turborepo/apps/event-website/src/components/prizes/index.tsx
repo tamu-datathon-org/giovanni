@@ -5,8 +5,7 @@ import "./prizes.css";
 const PRIZE_FRAME_SVG = "/images/prizes/frame.svg";
 const RIBBON_SVG = "/images/prizes/ribbon.svg";
 const RIBBON_SVG_ALT = "/images/prizes/ribbon-alt.svg";
-const PLANT_LEFT = "/images/prizes/plant-left.png";
-const PLANT_RIGHT = "/images/prizes/plant-right.png";
+const PLANT_SIDE = "/images/prizes/plant-side.png";
 
 const prizes = [
   {
@@ -39,27 +38,25 @@ export default function Prizes() {
   return (
     <section
       aria-label="Prizes"
-      className="prizes-section relative flex flex-col items-center overflow-x-clip bg-[#f0cf91] px-4 py-8 sm:py-10 md:px-5 md:py-16 lg:px-6 xl:px-4"
+      className="prizes-section relative flex flex-col items-center overflow-x-clip bg-[#f0cf91] px-1 py-8 sm:py-10 md:px-2 md:py-16 lg:px-2 xl:px-2"
       id="prizes"
     >
-      <div className="prizes-section__vine-left" aria-hidden>
-        <Image
-          src={PLANT_LEFT}
-          alt=""
-          fill
-          className="object-left object-contain"
-          sizes="(max-width: 768px) 200px, 40vw"
-        />
-      </div>
-      <div className="prizes-section__vine-right" aria-hidden>
-        <Image
-          src={PLANT_RIGHT}
-          alt=""
-          fill
-          className="object-right object-contain"
-          sizes="(max-width: 768px) 200px, 40vw"
-        />
-      </div>
+      {/* Right plant: hangs from above section, right side */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={PLANT_SIDE}
+        alt=""
+        className="prizes-section__plant-right"
+        aria-hidden
+      />
+      {/* Left plant: lower in section, left side, mirrored */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={PLANT_SIDE}
+        alt=""
+        className="prizes-section__plant-left"
+        aria-hidden
+      />
 
       <h2 className="prizes-section__title relative z-10 font-darumadrop-one text-center text-[#4c321b] font-normal leading-none tracking-wide">
         PRIZES

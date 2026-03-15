@@ -1,7 +1,6 @@
 /*
  * Prizes section: one base scale so all sizes stay in correct proportion.
- * Base = plate size. Scales with viewport; larger cap so big screens get bigger content.
- * Side margin kept small via content width and section padding.
+ * Base = plate size (491 px in the 1440 px Figma frame).
  */
 .prizes-section {
   --prize-base: clamp(140px, 34.1vw, 580px);
@@ -14,14 +13,10 @@
   --prize-title-size: calc(var(--prize-base) * 0.1955);
   --prize-name-size: calc(var(--prize-base) * 0.1303 * var(--prize-copy-scale));
   --prize-title-to-content: calc(var(--prize-base) * 0.12);
-  --prize-circle-text-gap: calc(var(--prize-base) * 0.18);
-  --prize-row-gap-ratio: 0.48;
+  --prize-circle-text-gap: calc(var(--prize-base) * 0.2);
+  --prize-row-gap-ratio: 0.1;
   --prize-row-gap: calc(var(--prize-base) * var(--prize-row-gap-ratio));
-  --prize-row-gap-ratio-alt: 0.52;
-  --prize-row-gap-3: calc(var(--prize-base) * var(--prize-row-gap-ratio-alt));
-  --prize-plant-w: calc(var(--prize-base) * 1.1756);
-  --prize-plant-h: min(calc(var(--prize-base) * 1.15), 42vh);
-  --prize-plant-offset: calc(var(--prize-base) * 0.1405);
+  --prize-row-gap-ratio-alt: 0.32;
 }
 
 .prizes-section [data-row="1"] { --prize-row-gap: 0; }
@@ -34,14 +29,14 @@
   font-size: var(--prize-title-size);
 }
 
-/* Main content area: list of prize rows */
+/* Main content area */
 .prizes-section__content {
   width: 100%;
-  max-width: min(1400px, 94vw);
+  max-width: min(1164px, 100vw);
   margin-top: var(--prize-title-to-content);
 }
 
-/* Single prize row: circle + ribbon + prize name (zigzag: odd rows left, even rows right) */
+/* Prize row (zigzag left / right) */
 .prizes-section__row {
   display: flex;
   flex-direction: row;
@@ -55,10 +50,10 @@
 @media (min-width: 768px) {
   .prizes-section__row { overflow-x: visible; }
 }
-.prizes-section__row--image-left { justify-content: flex-start; }
-.prizes-section__row--image-right { flex-direction: row-reverse; justify-content: flex-start; }
+.prizes-section__row--image-left  { justify-content: center; }
+.prizes-section__row--image-right { flex-direction: row-reverse; justify-content: center; }
 
-/* Circular plate / frame around prize image */
+/* Plate / frame */
 .prizes-section__plate {
   position: relative;
   flex-shrink: 0;
@@ -66,27 +61,26 @@
   height: var(--prize-plate);
 }
 
-/* Text block beside plate: ribbon + prize name */
+/* Copy block (ribbon + name) */
 .prizes-section__copy {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.25rem;
+  gap: calc(var(--prize-base) * 0.05);
   min-width: 0;
   flex-shrink: 0;
 }
 @media (min-width: 640px) {
-  .prizes-section__copy { gap: 0.5rem; }
+  .prizes-section__copy { gap: calc(var(--prize-base) * 0.1); }
 }
 
-/* Ribbon graphic + label ("Best Challenge") */
+/* Ribbon */
 .prizes-section__ribbon {
   position: relative;
   flex-shrink: 0;
   width: var(--prize-ribbon-w);
   height: var(--prize-ribbon-h);
 }
-
 .prizes-section__ribbon-label {
   position: absolute;
   inset: 0;
@@ -96,29 +90,54 @@
   overflow: hidden;
   white-space: nowrap;
   font-size: var(--prize-ribbon-label-size);
-  padding: 2px var(--prize-ribbon-px);
+  padding: calc(var(--prize-base) * 2 / 491) var(--prize-ribbon-px);
   line-height: 1;
 }
 
-/* Prize name text ("PRIZE NAME HERE") */
+/* Prize name */
 .prizes-section__prize-name {
   font-size: var(--prize-name-size);
 }
 
-/* Decorative vines (hidden on small screens) */
-.prizes-section__vine-left,
-.prizes-section__vine-right {
-  pointer-events: none;
+/*
+ * Hanging basket plants – positioned to hang off the section edges.
+ *   Right: hangs from above, right side, partially clipped by overflow-x
+ *   Left:  lower in section, left side, ~half visible (other half clipped)
+ */
+.prizes-section__plant-right,
+.prizes-section__plant-left {
   position: absolute;
-  top: 0;
-  z-index: 0;
-  width: var(--prize-plant-w);
-  height: var(--prize-plant-h);
-  min-height: 0;
+  pointer-events: none;
+  width: calc(var(--prize-base) * 698 / 491 * 0.7);
+  height: calc(var(--prize-base) * 1004 / 491 * 0.7);
+  z-index: 1;
+  object-fit: contain;
+  
 }
-.prizes-section__vine-left { left: calc(-1 * var(--prize-plant-offset)); }
-.prizes-section__vine-right { right: calc(-1 * var(--prize-plant-offset)); }
+
+.prizes-section__plant-right {
+  top: calc(var(--prize-base) * -375 / 491);
+  left: calc(var(--prize-base) * 900 / 491);
+}
+
+.prizes-section__plant-left {
+  top: calc(var(--prize-base) * 700 / 491);
+  left: calc(var(--prize-base) * -280 / 491);
+  transform: scaleX(-1);
+}
+
 @media (max-width: 767px) {
-  .prizes-section__vine-left,
-  .prizes-section__vine-right { display: none; }
+  .prizes-section__plant-right,
+  .prizes-section__plant-left {
+    width: calc(var(--prize-base) * 698 / 491 * 0.55);
+    height: calc(var(--prize-base) * 1004 / 491 * 0.55);
+  }
+  .prizes-section__plant-right {
+    top: calc(var(--prize-base) * -375 / 491 * 0.55);
+    left: calc(var(--prize-base) * 900 / 491);
+  }
+  .prizes-section__plant-left {
+    top: calc(var(--prize-base) * 700 / 491);
+    left: calc(var(--prize-base) * -280 / 491);
+  }
 }
