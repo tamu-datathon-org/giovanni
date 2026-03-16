@@ -18,19 +18,32 @@ export const config = {
         }
     }),
     secret: env.AUTH_SECRET,
-    plugins: [oAuthProxy(), expo(), genericOAuth({
-        config: [
-            genericAuth0Config("google-oauth2"),
-            genericAuth0Config("windowslive"),
-            genericAuth0Config("github")
-        ]
-    })],
+    plugins: [
+        oAuthProxy({
+            // Use the production URL for the OAuth provider callback,
+            // even when running locally. This should match the callback
+            // URL registered in Auth0.
+            productionURL: env.BETTER_AUTH_URL,
+        }),
+        expo(),
+        genericOAuth({
+            config: [
+                genericAuth0Config("google-oauth2"),
+                genericAuth0Config("windowslive"),
+                genericAuth0Config("github")
+            ]
+        })
+    ],
     advanced: {
         database: {
             generateId: false,
         }
     },
-    trustedOrigins: ["exp://"]
+    trustedOrigins: [
+        "exp://",
+        "http://localhost:3000",
+        "https://tamudatathon.org",
+    ]
 } satisfies BetterAuthOptions
 
 export const auth = betterAuth(config);
