@@ -166,7 +166,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                   <Input
                     value={typeof field.value === "string" ? field.value : ""}
                     onChange={(e) => {
-                      form.setValue(name, e.target.value);
+                      form.setValue(name, e.target.value, { shouldValidate: true });
                     }}
                     className="border p-2 bg-white text-black"
                     placeholder="Please specify..."
