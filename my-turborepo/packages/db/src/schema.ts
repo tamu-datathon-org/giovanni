@@ -143,7 +143,7 @@ export const Application = pgTable("application", {
     .notNull(),
   country: varchar("country", { length: 100 }).notNull(),
   phoneNumber: varchar("phone_number", { length: 25 }).notNull(),
-  school: varchar("school", { length: 100 }).notNull(),
+  school: varchar("school", { length: 200 }).notNull(),
   major: varchar("major", { length: 100 }).notNull(),
   classification: varchar("classification", { length: 100 }).notNull(),
   gradYear: integer("grad_year").notNull(),
@@ -292,7 +292,7 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .min(10, "Phone number is too short")
     .regex(phoneRegex, "Invalid phone number format")
     .max(25, "Phone number is too long"),
-  school: z.string().min(1, "School is missing").max(100, "School is too long"),
+  school: z.string().min(1, "School is missing").max(200, "School is too long"),
   major: z.string().min(1, "Major is missing").max(100, "Major is too long"),
   classification: z
     .string()
