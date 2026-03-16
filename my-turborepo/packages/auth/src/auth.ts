@@ -24,6 +24,8 @@ export const config = {
             // even when running locally. This should match the callback
             // URL registered in Auth0.
             productionURL: env.BETTER_AUTH_URL,
+            currentURL: "http://localhost:3000",
+
         }),
         expo(),
         genericOAuth({
