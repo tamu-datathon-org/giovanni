@@ -46,6 +46,8 @@ interface GenericDropdownProps {
 }
 
 const OTHER_VALUE = "__other__";
+const OTHER_PREFIX = "Other (";
+const OTHER_LABEL = "Other (please specify)";
 
 const GenericCombobox: React.FC<GenericDropdownProps> = ({
   name,
@@ -85,11 +87,14 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
       render={({ field }) => {
         const fieldValue = typeof field.value === "string" ? field.value : "";
         const isOther =
-          fieldValue === OTHER_VALUE ||
-          (fieldValue.length > 0 && !options.some((option) => option.value === fieldValue));
+          fieldValue === OTHER_VALUE || fieldValue.startsWith(OTHER_PREFIX);
+
+        const otherRaw = fieldValue.startsWith(OTHER_PREFIX)
+          ? fieldValue.slice(OTHER_PREFIX.length, -1)
+          : "";
 
         const selectedOption = isOther
-          ? { value: OTHER_VALUE, label: "Other (please specify)" }
+          ? { value: OTHER_VALUE, label: OTHER_LABEL }
           : options.find((option) => option.value === fieldValue) ?? null;
 
         return (
@@ -108,9 +113,9 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                   >
                     <span className="truncate">
                       {isOther
-                        ? fieldValue && fieldValue !== OTHER_VALUE
-                          ? `Other(${fieldValue})`
-                          : "Other (please specify)"
+                        ? otherRaw
+                          ? `Other(${otherRaw})`
+                          : OTHER_LABEL
                         : selectedOption
                         ? selectedOption.label
                         : "Select ..."}
@@ -135,17 +140,10 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                           key={(option).value}
                           value={(option).value}
                           onSelect={(currentValue) => {
-                            if (currentValue === "Other (please specify)") {
-                              form.setValue(name, OTHER_VALUE, {
-                                shouldDirty: true,
-                                shouldTouch: true,
-                              });
-                            } else {
-                              form.setValue(name, currentValue, {
-                                shouldDirty: true,
-                                shouldTouch: true,
-                              });
-                            }
+                            form.setValue(name, currentValue, {
+                              shouldDirty: true,
+                              shouldTouch: true,
+                            });
                             setOpen(false);
                           }}
                         >
@@ -160,6 +158,25 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                           {(option).label}
                         </CommandItem>
                       ))}
+                      <CommandItem
+                        key={OTHER_VALUE}
+                        value={OTHER_LABEL}
+                        onSelect={() => {
+                          form.setValue(name, OTHER_VALUE, {
+                            shouldDirty: true,
+                            shouldTouch: true,
+                          });
+                          setOpen(false);
+                        }}
+                      >
+                        <AiOutlineCheck
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            isOther ? "opacity-100" : "opacity-0",
+                          )}
+                        />
+                        {OTHER_LABEL}
+                      </CommandItem>
                     </CommandGroup>
                   </CommandList>
                 </Command>
@@ -169,11 +186,15 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
               <div className="mt-2 flex flex-col">
                 <FormControl>
                   <Input
-                    value={fieldValue === OTHER_VALUE ? "" : fieldValue}
+                    autoFocus
+                    value={otherRaw}
                     onChange={(e) => {
-                      form.setValue(name, e.target.value, {
-                        shouldDirty: true,
-                      });
+                      const val = e.target.value;
+                      form.setValue(
+                        name,
+                        val ? `${OTHER_PREFIX}${val})` : OTHER_VALUE,
+                        { shouldDirty: true },
+                      );
                     }}
                     className="border p-2 bg-white text-black"
                     placeholder="Please specify..."

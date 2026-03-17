@@ -333,9 +333,15 @@ export const applicationRouter = {
         return { app: undefined, resume: resume };
       }
 
-      const validatedApplication = CreateApplicationSchema.merge(
+      const schema = CreateApplicationSchema.merge(
         z.object({ id: z.string(), userId: z.string(), eventId: z.string() }),
-      ).parse(application);
+      );
+      const parsed = schema.safeParse(application);
+
+      const validatedApplication = parsed.success
+        ? parsed.data
+        : application;
+
       return { app: validatedApplication, resume: resume };
     }),
   getAllApplicationsByEventName: organizerProcedure

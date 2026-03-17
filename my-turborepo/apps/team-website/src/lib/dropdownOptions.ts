@@ -401,22 +401,22 @@ export const EDUCATION_LEVELS = [
     label: "Other Vocational / Trade Program or Apprenticeship",
   },
   { value: "PostDoc", label: "Post Doctorate" },
-  { value: "Other", label: "Other" },
+  // { value: "Other", label: "Other" },
   { value: "NotStudent", label: "I'm not currently a student" },
   { value: "PreferNotToAnswer", label: "Prefer not to answer" },
 ];
 
 export const GRADUATION_YEARS = [
-  { value: "2022", label: "2022" },
-  { value: "2023", label: "2023" },
-  { value: "2024", label: "2024" },
-  { value: "2025", label: "2025" },
   { value: "2026", label: "2026" },
   { value: "2027", label: "2027" },
   { value: "2028", label: "2028" },
   { value: "2029", label: "2029" },
   { value: "2030", label: "2030" },
-  { value: "9999", label: "Other" },
+  { value: "2031", label: "2031" },
+  { value: "2032", label: "2032" },
+  { value: "2033", label: "2033" },
+  { value: "2034", label: "2034" },
+  // { value: "9999", label: "Other" },
 ];
 
 export const GENDER_OPTIONS = [
@@ -424,7 +424,7 @@ export const GENDER_OPTIONS = [
   { value: "M", label: "Male" },
   { value: "F", label: "Female" },
   { value: "NB", label: "Non-binary" },
-  { value: "Other (please specify)", label: "Other (please specify)" },
+  // { value: "Other (please specify)", label: "Other (please specify)" },
 ];
 
 export const RACE_OPTIONS = [
@@ -453,7 +453,7 @@ export const RACE_OPTIONS = [
     label: "Other Asian (Thai, Cambodian, etc)",
   },
   { value: "Other Pacific Islander", label: "Other Pacific Islander" },
-  { value: "Other (please specify)", label: "Other (please specify)" },
+  // { value: "Other (please specify)", label: "Other (please specify)" },
   { value: "Prefer Not to Answer", label: "Prefer Not to Answer" },
 ];
 
