@@ -771,7 +771,7 @@ export function ApplicationForm() {
                   defaultValue={importedValues?.app?.references ?? ""}
                   label="Point us to anything you'd like us to look at while considering your application."
                   placeholder="Provide other links or references here."
-                  required={true}
+                  required={false}
                 />
               </div>
               {/* What drives your interest in being a part of TAMU Datathon? */}

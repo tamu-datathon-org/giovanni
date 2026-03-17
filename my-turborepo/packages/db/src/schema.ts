@@ -329,6 +329,7 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .string()
     .min(1, "References is missing")
     .max(150)
+    .optional()
     .default(""),
   linkedinUrl: z
     .string()
