@@ -1,43 +1,95 @@
 "use client";
-import Image from "next/image";
+import "./location.css";
 
-const Location = () => {
-    return (
-        <div className="relative grid grid-cols-12 grid-rows-12 min-h-[50vh] sm:min-h-screen w-full overflow-hidden py-12 md:py-20" id="location">
-            <div className="absolute inset-0 bg-[#1C0808] bg-cover bg-center bg-no-repeat" />
-            {/* <div className="absolute inset-0 bg-[#2A2523] bg-cover bg-center bg-no-repeat" /> */}
+const PLANT_LEFT = "/images/location/plant-left.png";
+const PLANT_RIGHT = "/images/location/plant-right.png";
 
-            {/* Brown gradient from dark to lighter brown at bottom */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#2A2523]" />
+/* Two location panel designs (blue, green) repeated for alternating scalloped row of location panels */
+const LOCATION_PANEL_BLUE = "/images/location/location-panel-blue.svg";
+const LOCATION_PANEL_GREEN = "/images/location/location-panel-green.svg";
+const locationPanels = [LOCATION_PANEL_BLUE, LOCATION_PANEL_GREEN, LOCATION_PANEL_BLUE, LOCATION_PANEL_GREEN, LOCATION_PANEL_BLUE, LOCATION_PANEL_GREEN, LOCATION_PANEL_BLUE, LOCATION_PANEL_GREEN];
 
-            <div className="relative z-10 col-start-1 col-span-12 row-start-1 row-span-12 flex items-center justify-center">
-                <div className="relative w-full h-full">
-                    <Image
-                        src="/images/elements/locationcard.svg"
-                        alt="location folder"
-                        fill
-                        sizes="100vw"
-                        loading="lazy"
-                        unoptimized
-                    />
+export default function Location() {
+  return (
+    <section
+      id="location"
+      aria-label="Event Info"
+      className="location-section"
+    >
+      <div className="location-panel-wrapper">
+        {/* Left side plant – hangs from above-left of panel */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={PLANT_LEFT}
+          alt=""
+          className="location-plant-left"
+          aria-hidden
+        />
+
+        {/* Right side plant – hangs from above-right of panel */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={PLANT_RIGHT}
+          alt=""
+          className="location-plant-right"
+          aria-hidden
+        />
+
+        {/* Brown rounded panel */}
+        <div className="location-panel">
+          {/* Location panels row: 8 location panel SVGs draping from panel top */}
+          <div className="location-panels-row" aria-hidden>
+            {locationPanels.map((src, i) => (
+              <div key={i} className="location-panels-item">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt="" />
+              </div>
+            ))}
+          </div>
+
+          {/* All panel text/UI content sits above the location panels row */}
+          <div className="location-content">
+            {/* EVENT INFO pill header */}
+            <div className="location-header">
+              <div className="location-header__outer">
+                <div className="location-header__inner">
+                  <span className="location-header__label font-darumadrop-one">
+                    EVENT INFO
+                  </span>
                 </div>
+              </div>
             </div>
 
-            <div className="relative z-10 col-start-7 col-span-8 row-start-9 row-span-4 flex items-center justify-center">
-                <div className="relative w-full h-full">
-                    <Image
-                        src="/images/elements/pen.svg"
-                        alt="location folder"
-                        fill
-                        sizes="100vw"
-                        className="object-contain"
-                        loading="lazy"
-                        unoptimized
-                    />
-                </div>
+            {/* First text block – right-side of zigzag */}
+            <div className="location-text--right">
+              <p className="font-chilanka whitespace-pre-line">
+                {"datathon is a\nlorem ipsum blah lah blah"}
+              </p>
             </div>
+
+            {/* Dashed divider – center of zigzag */}
+            <div className="location-divider">
+              <span className="font-chilanka">
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+              </span>
+            </div>
+
+            {/* Second text block – left side of zigzag */}
+            <div className="location-text--left">
+              <p className="font-chilanka">lorem ipsum blah lah blah</p>
+            </div>
+          </div>
         </div>
-   );
-};
 
-export default Location;
+        {/* Bear mascot – overhangs panel bottom-left */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/location/bear.png"
+          alt=""
+          className="location-bear"
+          aria-hidden
+        />
+      </div>
+    </section>
+  );
+}

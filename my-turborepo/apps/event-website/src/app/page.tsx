@@ -6,7 +6,7 @@ import { ScrollUp } from "@vanni/ui/scroll-up";
 
 // Lazy load below-the-fold components to reduce initial bundle size
 const Location = dynamic(() => import("@/components/location"), {
-  loading: () => <div className="min-h-[50vh] sm:min-h-screen" />,
+  loading: () => <div className="min-h-[50vh] bg-[#f0cf91]" />,
 });
 
 const Prizes = dynamic(() => import("@/components/prizes"), {
@@ -30,9 +30,9 @@ export default function Home() {
     <>
       <ScrollUp />
       <Hero />
-      {/* <Location />
+      <Location />
       <Prizes />
-      <FAQ /> */}
+      {/* <FAQ /> */}
     </>
   );
 }

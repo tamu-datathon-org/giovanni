@@ -1,0 +1,247 @@
+/*
+ * Location / Event Info section – all sizes proportional to panel width.
+ *
+ * Figma measurements (1440px design):
+ *   Panel:  left=131, top=956, width=1180, height=1057
+ *   82vw at 1440px = 1181.4px ≈ 1180px ✓
+ *
+ *   Location panels row: x=114.67, width=1207.905, height=151.015 (8 × ~151×151 ≈ square)
+ *             starts 16.33px left of panel, extends 11.58px right of panel
+ *
+ *   Bear:   x=0, y=1712, w=663, h=463
+ *             → left=-131, top=756, relative to panel top-left
+ *
+ *   Left plant (image 50):  x=-69, y=845, w=577, h=829
+ *             → left=-200, top=-111, relative to panel top-left
+ *   Right plant (image 52): x=922, y=841, w=585.9, h=841.9
+ *             → right=-197, top=-115, relative to panel top-left
+ */
+.location-section {
+  --loc-base: clamp(280px, 82vw, 1180px);  /* = panel width */
+
+  /* Location panels row: 8 location panels, row 1207.9×151 px; each location panel viewBox 152.39×161.02 */
+  --loc-panels-w: calc(var(--loc-base) * 150.988 / 1180);  /* 1207.9/8 per location panel */
+  --loc-panels-h: calc(var(--loc-base) * 151.015 / 1180);  /* row height */
+  --loc-panels-row-left: calc(var(--loc-base) * -16.33 / 1180);
+
+  /* EVENT INFO pill button */
+  --loc-btn-w: calc(var(--loc-base) * 561 / 1180);
+  --loc-btn-h: calc(var(--loc-btn-w) * 169 / 561);
+  --loc-btn-label-size: calc(var(--loc-btn-w) * 64 / 561);
+  --loc-btn-radius-outer: calc(var(--loc-btn-h) * 45 / 169);
+  --loc-btn-radius-inner: calc(var(--loc-btn-h) * 40 / 169);
+
+  /* Text */
+  --loc-text-body-size: calc(var(--loc-base) * 48 / 1180);
+  --loc-text-dash-size: calc(var(--loc-base) * 64 / 1180);
+  --loc-text-block-w: calc(var(--loc-base) * 71 / 100);
+
+  /* Vertical gaps (relative to panel width) */
+  --loc-gap-top-to-btn: calc(var(--loc-base) * 45 / 1180);
+  --loc-gap-btn-to-text1: calc(var(--loc-base) * 74 / 1180);
+  --loc-gap-text1-to-dashes: calc(var(--loc-base) * 69 / 1180);
+  --loc-gap-dashes-to-text2: calc(var(--loc-base) * 23 / 1180);
+  --loc-panel-bottom-pad: calc(var(--loc-base) * 395 / 1180);
+
+  /* Zigzag horizontal offsets */
+  --loc-text1-ml: calc(var(--loc-base) * 29 / 100);
+  --loc-dashes-ml: calc(var(--loc-base) * 16 / 100);
+
+  /* Bear (x=0, y=1712; panel left=131, panel top=956) */
+  --loc-bear-w: calc(var(--loc-base) * 663 / 1180);
+  --loc-bear-h: calc(var(--loc-bear-w) * 463 / 663);
+  --loc-bear-left: calc(var(--loc-base) * -131 / 1180);
+  --loc-bear-top: calc(var(--loc-base) * 756 / 1180);
+
+  /* Side plants (positioned relative to panel-wrapper top-left = panel top-left) */
+  /* Left plant: 577 × 829 px; left=-69, top=845 → offset -200, -111 from panel */
+  --loc-plant-left-w: calc(var(--loc-base) * 577 / 1180);
+  --loc-plant-left-h: calc(var(--loc-base) * 829 / 1180);
+  --loc-plant-left-x: calc(var(--loc-base) * -200 / 1180);
+  --loc-plant-left-top: calc(var(--loc-base) * -111 / 1180);
+
+  /* Right plant: 585.9 × 841.9 px; extends 197px beyond panel right, top=-115 */
+  --loc-plant-right-w: calc(var(--loc-base) * 586 / 1180);
+  --loc-plant-right-h: calc(var(--loc-base) * 842 / 1180);
+  --loc-plant-right-x: calc(var(--loc-base) * -197 / 1180);
+  --loc-plant-right-top: calc(var(--loc-base) * -115 / 1180);
+}
+
+/* ─── Section shell ───────────────────────────────────────────── */
+.location-section {
+  display: flex;
+  justify-content: center;
+  background-color: #f0cf91;
+  overflow-x: clip;
+  overflow-y: visible;
+  padding-top: calc(var(--loc-base) * 24 / 1180);
+  padding-bottom: calc(var(--loc-base) * 162 / 1180 + var(--loc-base) * 32 / 1180);
+}
+
+/* Wrapper: holds panel + bear + side plants */
+.location-panel-wrapper {
+  position: relative;
+  width: var(--loc-base);
+  flex-shrink: 0;
+}
+
+/* ─── Brown panel ─────────────────────────────────────────────── */
+.location-panel {
+  position: relative;
+  width: 100%;
+  background-color: #966952;
+  border: calc(var(--loc-base) * 10 / 1180) solid #8d6e5e;
+  border-radius: calc(var(--loc-base) * 20 / 1180);
+  overflow: visible;
+  padding-top: var(--loc-gap-top-to-btn);
+  padding-bottom: var(--loc-panel-bottom-pad);
+  padding-left: calc(var(--loc-base) * 15 / 1180);
+  padding-right: calc(var(--loc-base) * 15 / 1180);
+}
+
+/* ─── Location panels row ────────────────────────────────────────────────── */
+.location-panels-row {
+  position: absolute;
+  top: 0;
+  left: var(--loc-panels-row-left);
+  display: flex;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.location-panels-item {
+  width: var(--loc-panels-w);
+  height: var(--loc-panels-h);
+  flex-shrink: 0;
+}
+
+.location-panels-item img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+/* ─── Content (banner and text below location panels) ─── */
+.location-content {
+  z-index: 1;
+  margin-top: var(--loc-panels-h);
+}
+
+/* ─── EVENT INFO pill button ──────────────────────────────────── */
+.location-header {
+  display: flex;
+  justify-content: center;
+}
+
+.location-header__outer {
+  width: var(--loc-btn-w);
+  height: var(--loc-btn-h);
+  background: #663c26;
+  border: calc(var(--loc-base) * 10 / 1180) solid #401c0f;
+  border-radius: var(--loc-btn-radius-outer);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--loc-base) * 5 / 1180);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.location-header__inner {
+  width: 100%;
+  height: 100%;
+  background: #663c26;
+  border: calc(var(--loc-base) * 5 / 1180) solid #966952;
+  border-radius: var(--loc-btn-radius-inner);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-header__label {
+  font-size: var(--loc-btn-label-size);
+  color: #fae19d;
+  line-height: 1;
+  text-align: center;
+}
+
+/* ─── Zigzag text blocks ──────────────────────────────────────── */
+.location-text--right {
+  margin-top: var(--loc-gap-btn-to-text1);
+  margin-left: var(--loc-text1-ml);
+  max-width: var(--loc-text-block-w);
+}
+
+.location-text--right p,
+.location-text--left p {
+  font-size: var(--loc-text-body-size);
+  color: #fae19d;
+  line-height: 1.25;
+}
+
+.location-divider {
+  margin-top: var(--loc-gap-text1-to-dashes);
+  margin-left: var(--loc-dashes-ml);
+}
+
+.location-divider span {
+  font-size: var(--loc-text-dash-size);
+  color: #fae19d;
+  line-height: 1;
+}
+
+.location-text--left {
+  margin-top: var(--loc-gap-dashes-to-text2);
+  max-width: var(--loc-text-block-w);
+}
+
+/* ─── Bear mascot ─────────────────────────────────────────────── */
+.location-bear {
+  position: absolute;
+  top: var(--loc-bear-top);
+  left: var(--loc-bear-left);
+  width: var(--loc-bear-w);
+  height: var(--loc-bear-h);
+  pointer-events: none;
+  object-fit: contain;
+  z-index: 5;
+}
+
+/* ─── Side plants ─────────────────────────────────────────────── */
+.location-plant-left,
+.location-plant-right {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;  /* above scalloped location panels row so green plants show on top */
+}
+
+.location-plant-left {
+  left: var(--loc-plant-left-x);
+  top: var(--loc-plant-left-top);
+  width: var(--loc-plant-left-w);
+  height: var(--loc-plant-left-h);
+  object-fit: contain;
+}
+.location-plant-right {
+  right: var(--loc-plant-right-x);
+  top: var(--loc-plant-right-top);
+  width: var(--loc-plant-right-w);
+  height: var(--loc-plant-right-h);
+  object-fit: contain;
+}
+
+
+/* Small screens: reduce bottom pad (plants and bear stay visible, scale with --loc-base) */
+@media (max-width: 480px) {
+  .location-panel {
+    --loc-panel-bottom-pad: calc(var(--loc-base) * 80 / 1180);
+  }
+}
+
+/* Mobile: use more viewport so panel/bear/plants feel same proportion as desktop */
+@media (max-width: 768px) {
+  .location-section {
+    --loc-base: max(280px, min(94vw, 500px));
+  }
+}
