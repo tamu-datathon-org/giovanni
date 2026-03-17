@@ -32,7 +32,7 @@ export default function Home() {
       <Hero />
       <Location />
       <Prizes />
-      {/* <FAQ /> */}
+      <FAQ />
     </>
   );
 }
