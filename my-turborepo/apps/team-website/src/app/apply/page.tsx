@@ -12,15 +12,15 @@ import { Button } from "@vanni/ui/button";
 import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
-import BackgroundContainer from "../_components/BackgroundContainer";
 import { GradientButton } from "../_components/GradientButton";
 import { EVENT_NAME } from "./application/application-form";
 
-export const appsOpen = false;
+export const appsOpen = true;
 
 export default function Page() {
   const { session, setSession } = useAuthRedirect();
   const router = useRouter();
+
 
   async function signOutHandler() {
     try {
@@ -32,7 +32,8 @@ export default function Page() {
           },
         },
       });
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_error) {
       toast({
         title: "Sign-Out Error",
         description: "There was an error signing out. Please try again.",
@@ -52,118 +53,136 @@ export default function Page() {
   };
   const [qrCode, setQrCode] = useState<string>("");
 
-  const { data, isLoading } = api.application.getApplicationStatus.useQuery(
-    {
-      eventName: EVENT_NAME,
-    },
-    {
-      enabled: !!EVENT_NAME,
-      retry: 2,
-    },
-  );
+  const hasSession = !!session;
+
+  const { data, isLoading, error } =
+    api.application.getApplicationStatus.useQuery(
+      {
+        eventName: EVENT_NAME,
+      },
+      {
+        enabled: !!EVENT_NAME && hasSession,
+        retry: 2,
+      },
+    );
+
+  useEffect(() => {
+    if (error) {
+      console.error("Application status query error", error);
+    }
+  }, [error]);
 
   useEffect(() => {
     const fetchQRCode = async () => {
-      if (data?.status !== "rejected") {
-        const qr = await generateQR(data?.email ?? "");
-        setQrCode(qr);
+      if (data?.status === "rejected") {
+        return;
       }
+      const qr = await generateQR(data?.email ?? "");
+      setQrCode(qr);
     };
     void fetchQRCode();
   }, [data]);
 
-  let gradient = "from-blue-400 to-cyan-700";
+  let color = "text-[#2d69df]";
   if (!isLoading) {
     switch (data?.status) {
       case "pending":
-        gradient = "from-gray-400 to-cyan-700";
+        color = "text-[#2d69df]";
         break;
       case "accepted":
-        gradient = "from-pink-500 to-cyan-700";
+        color = "text-[#007c00]";
         break;
       case "rejected":
-        gradient = "from-red-500 to-cyan-700";
+        color = "text-[#b80000]";
         break;
       case "checkedin":
-        gradient = "from-green-500 to-cyan-700";
+        color = "text-[#2d69df]";
         break;
       case "waitlisted":
-        gradient = "from-yellow-500 to-cyan-700";
+        color = "text-[#f7d71f]";
         break;
     }
   }
   return (
     <>
-      <div className="my-24 flex w-screen items-center justify-center">
-        <BackgroundContainer className="">
-          <div className="flex w-[75vw] flex-col items-center justify-center gap-4 text-center text-white">
-            <div className="mb-4">
-              <h1 className="text-2xl font-medium md:text-3xl">
-                Applicant Dashboard
-              </h1>
-              <div className="mb-2">Logged in as: {session?.user.email}</div>
-              <div className="text-xl font-medium">
-                YOUR APPLICATION STATUS:
-              </div>
-              <div
-                className={`dashStatus bg-gradient-to-b bg-clip-text text-transparent 
-                    ${gradient} text-xl
-                    `}
-              >
-                {isLoading
-                  ? "Loading...".toUpperCase()
-                  : data?.status
-                    ? data.status.toUpperCase()
-                    : "No Application Found"}
-              </div>
-              {qrCode && (
-                <div className="mx-auto my-2 w-fit rounded-lg border-4 border-gray-400 p-2">
-                  <div>
-                    <div className="text-xl">
-                      Scan this QR Code for Check-in:
-                    </div>
-                  </div>
-                  <div className="relative mx-auto aspect-[1/1] w-[80vw] md:h-52 md:w-52">
-                    <Image
-                      src={qrCode}
-                      alt="example.com"
-                      layout="fill"
-                      className="object-cover"
-                    />
-                  </div>
+      <div className="my-20 flex w-screen items-center justify-center px-4 py-8">
+        <div className="flex w-full max-w-sm flex-col items-center gap-8 text-center text-white">
+          {/* Header */}
+          <section className="flex w-full flex-col items-center justify-center text-center">
+            <h1 className="py-2 text-2xl font-medium md:text-3xl">
+              Applicant Dashboard
+            </h1>
+            <p className="mt-1 w-fit rounded-md bg-[#2d69df] px-4 py-2 text-sm text-white/80">
+              Logged in as {session?.user.email}
+            </p>
+          </section>
+
+          {/* Status card */}
+          <section className="w-full rounded-lg border border-white/20 bg-white/5 px-6 py-4">
+            <p className="mb-1 text-sm font-medium uppercase tracking-wide text-white/80">
+              Application status
+            </p>
+            <p className={`bg-clip-text text-xl font-medium ${color}`}>
+              {isLoading
+                ? "Loading...".toUpperCase()
+                : data?.status
+                  ? data.status.toUpperCase()
+                  : "No Application Found"}
+            </p>
+          </section>
+
+          {/* QR code (when available) */}
+          {qrCode && (
+            <section className="w-full rounded-lg border border-white/20 bg-white/5 px-6 py-4">
+              <p className="mb-3 text-sm font-medium">
+                Scan this QR code for check-in
+              </p>
+              <div className="mx-auto w-fit rounded-lg border-2 border-white/30 bg-white/10 p-3">
+                <div className="relative aspect-square w-40 md:w-52">
+                  <Image
+                    src={qrCode}
+                    alt="Check-in QR code"
+                    layout="fill"
+                    className="object-cover"
+                  />
                 </div>
-              )}
-              {appsOpen ? (
-                <AppsOpenMessage status={data?.status} />
-              ) : (
-                <AppsClosedMessage />
-              )}
-            </div>
+              </div>
+            </section>
+          )}
+
+          {/* Primary action */}
+          <section>
+            <AppsOpenMessage status={data?.status} />
+          </section>
+
+          {/* Secondary actions */}
+          <section className="flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Button
               onClick={signOutHandler}
-              className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit"
+              className="bg-datadarkblue hover:bg-datadarkblue/70 w-full sm:w-fit"
               size="lg"
               type="button"
             >
               Change Accounts
             </Button>
             <Button
-              className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit"
+              className="bg-datadarkblue hover:bg-datadarkblue/70 w-full sm:w-fit"
               size="lg"
               type="button"
+              asChild
             >
               <Link href="https://tamudatathon.com/" target="_blank">
                 Visit Event Website
               </Link>
             </Button>
-          </div>
-        </BackgroundContainer>
+          </section>
+        </div>
       </div>
     </>
   );
 }
 
-function AppsClosedMessage() {
+function _AppsClosedMessage() {
   return (
     <div className="text-md">
       <br />
@@ -184,7 +203,7 @@ function AppsClosedMessage() {
 function AppsOpenMessage({ status }: { status?: string }) {
   return (
     <GradientButton
-      className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit text-white"
+      className="hover:bg-datadarkblue/70 w-fit bg-black text-white"
       size="lg"
       type="button"
     >

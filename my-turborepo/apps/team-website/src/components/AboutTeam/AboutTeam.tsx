@@ -1,11 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { SectionTitle } from "@vanni/ui/section-title";
+
+import type { TeamMemberProps } from "./teamMember";
 import Teams from "./teams";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const AboutTeam = () => {
-  const teamList_v2025 = [
+  const teamSectionRef = useRef<HTMLDivElement | null>(null);
+  const teamList_v2026 = [
     {
       teamMembers: [
         {
@@ -18,36 +26,25 @@ const AboutTeam = () => {
               url: "https://www.linkedin.com/in/oluwadayo-bamgbelu/",
             },
             {
-              type: "instagram",
-              url: "https://www.instagram.com/dayo.bam/",
-            },
-            {
               type: "github",
               url: "https://github.com/D-BX",
             },
           ],
         },
+
         {
-          image: "/images/teampics_v2025/Jonathan_Headshot.png",
-          name: "Jonathan Herrera",
+          image: "/images/teampics_v2025/Mallika_Headshot.jpg",
+          name: "Mallika Parajuli",
           position: "Vice-President",
           socialLinks: [
             {
               type: "linkedin",
-              url: "https://www.linkedin.com/in/jonathanaherrera/",
-            },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/dumbowumbo101/",
-            },
-            {
-              type: "github",
-              url: "https://github.com/JonathanAHerrera",
+              url: "https://www.linkedin.com/in/mallikaparajuli",
             },
           ],
         },
       ],
-      description: "Presidents",
+      description: "Executive",
     },
     {
       teamMembers: [
@@ -55,21 +52,6 @@ const AboutTeam = () => {
           image: "/images/teampics_v2025/Rishab_Headshot.jpg",
           name: "Rishab Jadhav",
           position: "Challenges Lead",
-        },
-        {
-          image: "/images/teampics_v2025/Vikram_Headshot.jpg",
-          name: "Sreevikram Rajaraman",
-          position: "Challenges",
-          socialLinks: [
-            {
-              type: "linkedin",
-              url: "https://www.linkedin.com/in/sreevikramr/",
-            },
-            {
-              type: "github",
-              url: "https://github.com/SreevikramR",
-            },
-          ],
         },
         {
           image: "/images/teampics_v2025/Pranav_Headshot.jpg",
@@ -80,14 +62,7 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/pranavharwadekar",
             },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/pranav.harwadekar",
-            },
-            {
-              type: "github",
-              url: "https://github.com/pharwadekar",
-            },
+            { type: "github", url: "https://github.com/pharwadekar" },
           ],
         },
         {
@@ -99,25 +74,7 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/nishit-aggarwal-7b62352a6/",
             },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/nishit_agg/",
-            },
-            {
-              type: "github",
-              url: "https://github.com/contact2nishit",
-            },
-          ],
-        },
-        {
-          image: "/images/teampics_v2025/Harshini_Headshot.jpg",
-          name: "Harshini Srinivasan",
-          position: "Challenges",
-          socialLinks: [
-            {
-              type: "linkedin",
-              url: "https://www.linkedin.com/in/harshinisriniv",
-            },
+            { type: "github", url: "https://github.com/contact2nishit" },
           ],
         },
         {
@@ -128,10 +85,6 @@ const AboutTeam = () => {
             {
               type: "linkedin",
               url: "https://www.linkedin.com/in/abhinav-vurakaranam-03b667238/",
-            },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/abhivur/",
             },
             {
               type: "github",
@@ -148,10 +101,6 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/ali-abouelazm",
             },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/ali.abouelazm/",
-            },
           ],
         },
         {
@@ -165,37 +114,25 @@ const AboutTeam = () => {
     {
       teamMembers: [
         {
-          image: "/images/teampics_v2025/Cameron_Headshot.jpg",
-          name: "Cameron Le",
-          position: "Dev Lead",
-        },
-        {
-          image: "/images/teampics_v2025/Bethany_Headshot.jpg",
-          name: "Bethany Tran",
-          position: "Dev",
-          socialLinks: [
-            {
-              type: "linkedin",
-              url: "https://www.linkedin.com/in/bethany-tran-69671a247?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
-            },
-          ],
-        },
-        {
           image: "/images/teampics_v2025/Het_Headshot.jpg",
           name: "Het Koradia",
-          position: "Dev",
+          position: "Dev Co-Lead",
           socialLinks: [
             {
               type: "linkedin",
               url: "https://www.linkedin.com/in/het-koradia/",
             },
+            { type: "github", url: "https://github.com/hetk987" },
+          ],
+        },
+        {
+          image: "/images/teampics_v2025/Bethany_Headshot.jpg",
+          name: "Bethany Tran",
+          position: "Dev Co-Lead",
+          socialLinks: [
             {
-              type: "github",
-              url: "https://github.com/hetk987",
-            },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/het_koradia/",
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/bethany-tran-69671a247?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
             },
           ],
         },
@@ -208,14 +145,7 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/layla-s-4055141b0/",
             },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/layla_serrano/",
-            },
-            {
-              type: "github",
-              url: "https://github.com/LaylaASerrano",
-            },
+            { type: "github", url: "https://github.com/LaylaASerrano" },
           ],
         },
         {
@@ -227,30 +157,23 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/michael-rao-p/",
             },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/michael.rao_",
-            },
           ],
         },
       ],
-      description: "Developers",
+      description: "Dev",
     },
     {
       teamMembers: [
         {
-          image: "/images/teampics_v2025/Timothy_Headshot.jpg",
-          name: "Timothy Tsai",
+          image: "/images/teampics_v2025/Shreyas_Headshot.jpg",
+          name: "Shreyas Kumar",
           position: "Outreach Lead",
           socialLinks: [
             {
               type: "linkedin",
-              url: "https://www.linkedin.com/in/tim0thytsai/",
+              url: "https://www.linkedin.com/in/shreyas-kumar-20",
             },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/timothy.tsai_/",
-            },
+            { type: "github", url: "https://github.com/ShreyasK2005" },
           ],
         },
         {
@@ -265,21 +188,6 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: "/images/teampics_v2025/Shreyas_Headshot.jpg",
-          name: "Shreyas Kumar",
-          position: "Outreach",
-          socialLinks: [
-            {
-              type: "linkedin",
-              url: "https://www.linkedin.com/in/shreyas-kumar-20",
-            },
-            {
-              type: "github",
-              url: "https://github.com/ShreyasK2005",
-            },
-          ],
-        },
-        {
           image: "/images/teampics_v2025/Roa_Headshot.jpg",
           name: "Roa Elsaigh",
           position: "Outreach",
@@ -290,17 +198,13 @@ const AboutTeam = () => {
     {
       teamMembers: [
         {
-          image: "/images/teampics_v2025/Mallika_Headshot.jpg",
-          name: "Mallika Parajuli",
+          image: "/images/teampics_v2025/Harshini_Headshot.jpg",
+          name: "Harshini Srinivasan",
           position: "Logistics Lead",
           socialLinks: [
             {
               type: "linkedin",
-              url: "https://www.linkedin.com/in/mallikaparajuli",
-            },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/mallika_parajuli",
+              url: "https://www.linkedin.com/in/harshinisriniv",
             },
           ],
         },
@@ -313,10 +217,7 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/summerrwong/",
             },
-            {
-              type: "github",
-              url: "https://github.com/sumshiu",
-            },
+            { type: "github", url: "https://github.com/sumshiu" },
           ],
         },
         {
@@ -328,14 +229,7 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/dakota-pound",
             },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/lpdakota",
-            },
-            {
-              type: "github",
-              url: "https://github.com/dakotaPPP",
-            },
+            { type: "github", url: "https://github.com/dakotaPPP" },
           ],
         },
         {
@@ -373,14 +267,7 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/antony-quach-51b7a0260/",
             },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/ant.nyq",
-            },
-            {
-              type: "github",
-              url: "https://github.com/aRandomAsianAnt",
-            },
+            { type: "github", url: "https://github.com/aRandomAsianAnt" },
           ],
         },
         {
@@ -397,14 +284,7 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/ericatongtong?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
             },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/atyourfridge?igsh=ZXZtaDNrNmFzMGd0&utm_source=qr",
-            },
-            {
-              type: "github",
-              url: "https://github.com/lichtrune",
-            },
+            { type: "github", url: "https://github.com/lichtrune" },
           ],
         },
         {
@@ -416,10 +296,6 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/jessica-tran28",
             },
-            {
-              type: "instagram",
-              url: "https://www.instagram.com/jessicatr0n/",
-            },
           ],
         },
         {
@@ -427,27 +303,24 @@ const AboutTeam = () => {
           name: "Naomi Dao",
           position: "Design",
           socialLinks: [
-            {
-              type: "linkedin",
-              url: "https://www.linkedin.com/in/naomidao",
-            },
+            { type: "linkedin", url: "https://www.linkedin.com/in/naomidao" },
           ],
         },
       ],
-      description: "Designers",
+      description: "Design",
     },
-  ];
+  ] as { teamMembers: TeamMemberProps[]; description: string }[];
+
   return (
     <>
       <div
+        ref={teamSectionRef}
         id="team"
-        className="container mx-auto py-16 text-center md:py-20 lg:py-24"
+        className="w-full py-2 text-center dark:bg-transparent"
       >
-        <h2 className="mb-8 text-5xl font-bold leading-tight text-black dark:text-white">
-          Meet the Team
-        </h2>
+        <SectionTitle title="Meet the Teams" paragraph={""} center mb="20px" />
         <div className="flex flex-col justify-center gap-4">
-          {teamList_v2025.map((team, team_index) => (
+          {teamList_v2026.map((team, team_index) => (
             <Teams
               key={team_index}
               teamMembers={team.teamMembers}

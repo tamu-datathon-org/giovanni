@@ -21,7 +21,7 @@ export default function PDFReader(props: PDFReaderProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="bg-white text-black">
+        <Button variant="secondary">
           Resume: {props.pdfButtonTitle}
         </Button>
       </DialogTrigger>

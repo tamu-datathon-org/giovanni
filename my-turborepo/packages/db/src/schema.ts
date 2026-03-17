@@ -10,7 +10,6 @@ import {
   primaryKey,
   integer,
   pgTable,
-  pgEnum,
   uniqueIndex,
   index,
 } from "drizzle-orm/pg-core";
@@ -144,7 +143,7 @@ export const Application = pgTable("application", {
     .notNull(),
   country: varchar("country", { length: 100 }).notNull(),
   phoneNumber: varchar("phone_number", { length: 25 }).notNull(),
-  school: varchar("school", { length: 100 }).notNull(),
+  school: varchar("school", { length: 200 }).notNull(),
   major: varchar("major", { length: 100 }).notNull(),
   classification: varchar("classification", { length: 100 }).notNull(),
   gradYear: integer("grad_year").notNull(),
@@ -161,7 +160,7 @@ export const Application = pgTable("application", {
   shirtSize: varchar("shirt_size", { length: 25 })
     // .$type<"S" | "M" | "L" | "XL" | "XXL">()
     .notNull(),
-  address: varchar("address", { length: 100 }).notNull(),
+  address: varchar("address", { length: 500 }).notNull(),
   references: varchar("references", { length: 255 }).notNull(),
   linkedinUrl: varchar("linkedin_url", { length: 255 }).default(""),
   interestOne: varchar("interest_one", { length: 500 }).notNull(),
@@ -293,7 +292,7 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .min(10, "Phone number is too short")
     .regex(phoneRegex, "Invalid phone number format")
     .max(25, "Phone number is too long"),
-  school: z.string().min(1, "School is missing").max(100, "School is too long"),
+  school: z.string().min(1, "School is missing").max(200, "School is too long"),
   major: z.string().min(1, "Major is missing").max(100, "Major is too long"),
   classification: z
     .string()
@@ -325,16 +324,16 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
   address: z
     .string()
     .min(1, "Address is missing")
-    .max(100, "Address is too long"),
+    .max(500, "Address is too long"),
   references: z
     .string()
+    .min(1, "References is missing")
     .max(255)
-    .optional()
     .default(""),
   linkedinUrl: z
     .string()
-    .min(1, "Linkedin URL is missing")
     .max(255, "Linkedin URL is too long")
+    .optional()
     .default(""),
   interestOne: z
     .string()

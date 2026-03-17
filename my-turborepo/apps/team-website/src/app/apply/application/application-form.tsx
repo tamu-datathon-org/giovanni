@@ -1,7 +1,9 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import React, { useEffect, useState } from "react";
+import type { z } from "zod";
+import React, { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -10,6 +12,7 @@ import { upload } from "@vercel/blob/client";
 import { LucideArrowBigLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 
+import type { CreateApplicationSchema } from "@vanni/db/schema";
 import {
   Form,
   FormControl,
@@ -32,6 +35,7 @@ import { toast } from "~/hooks/use-toast";
 import {
   AGE,
   COUNTRIES,
+  DIETARY_RESTRICTIONS,
   EDUCATION_LEVELS,
   GENDER_OPTIONS,
   GRADUATION_YEARS,
@@ -45,8 +49,6 @@ import {
 import { api } from "~/trpc/react";
 import GenericCombobox from "../../_components/genericCombobox";
 import GenericMultiSelect from "../../_components/genericMultiSelect";
-import LoadingAnimation from "../../_components/loadingAnimation";
-import Title from "../../_components/title";
 import { applicationSchema } from "../validation";
 
 /*
@@ -73,15 +75,39 @@ import { applicationSchema } from "../validation";
     Liability Waiver (checkbox)
 */
 
-export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME;
+export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME ?? "Datathon";
+
+const ADDRESS_DELIMITER = "|";
+
+const DRAFT_STORAGE_KEY = "applicationData";
+
 const RESUME_OPTIONAL = true;
 
-const Loading = () => {
-  return <LoadingAnimation />;
-};
+const eventName = EVENT_NAME?.endsWith("Spring") ? "TD-Lite" : "TD";
+const eventDescription = EVENT_NAME?.endsWith("Spring")
+  ? "TD-Lite is a smaller version of the TD aimed for beginners!"
+  : "TD is a 24-hour hackathon that is held in the fall for all skill levels!";
 
 export function Asterisk() {
   return <span className="text-red-500">*</span>;
+}
+
+// Section Card Component
+function SectionCard({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="group mb-6 overflow-hidden rounded-xl border-2 border-[#4b5563] bg-[#1f2937] shadow-md transition-all duration-300 hover:shadow-xl">
+      <div className="border-b border-[#374151] bg-[#111827] px-6 py-4">
+        <h2 className="text-2xl font-bold text-white">{title}</h2>
+      </div>
+      <div className="p-6">{children}</div>
+    </div>
+  );
 }
 
 export function ApplicationForm() {
@@ -98,88 +124,197 @@ export function ApplicationForm() {
     {
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
-      retry: 1, // Retry failed requests once
     },
   );
-
-  const form = useForm<ApplicationSchema>({
-    mode: "onSubmit",
-    defaultValues: {
-      resumeFile: null,
-      mlhCodeConduct: false,
-      mlhPrivacyPolicy: false,
-      mlhEmailConsent: false,
-    },
-    ...importedValues?.app,
-    resetOptions: {
-      keepDirtyValues: true, // user-interacted input will not be retained
-      keepErrors: true,
-    },
-    resolver: zodResolver(applicationSchema), // match it to an endpoint because it allows async or use values
-  });
-
-  useEffect(() => {
-    if (session?.user.email) {
-      form.setValue("email", session.user.email);
-    }
-  }, [session?.user.email, form]);
 
   const createApplication = api.application.create.useMutation();
   const updateApplication = api.application.update.useMutation();
 
-  useEffect(() => {
-    // Restore from localStorage only if there are no imported values
-    if (importedValues?.app) return;
+  const form = useForm<ApplicationSchema>({
+    resolver: zodResolver(applicationSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      age: "",
+      country: "",
+      phoneNumber: "",
+      school: "",
+      major: "",
+      classification: "",
+      gradYear: "",
+      gender: "",
+      hasTeam: "No",
+      race: "",
+      hackathonsAttended: "",
+      experience: "",
+      eventSource: "",
+      shirtSize: "",
+      address: "",
+      city: "",
+      region: "",
+      zipCode: "",
+      dietaryRestriction: "",
+      references: "",
+      extraInfo: "",
+      linkedinUrl: "",
+      interestOne: "",
+      interestTwo: "",
+      interestThree: "",
+      liabilityWaiver: false,
+      mlhPrivacyPolicy: false,
+      mlhEmailConsent: false,
+    },
+  });
 
-    const savedData = localStorage.getItem("applicationData");
-    if (savedData) {
-      form.reset(JSON.parse(savedData) as ApplicationSchema);
+  useEffect(() => {
+    if (importedValues?.app) {
+      // Parse address to extract city, region, zipCode
+      // Format is: "street|city|region|zipCode"
+      const addressParts = importedValues.app.address
+        .split("|")
+        .map((s) => s.trim());
+      let street = "";
+      let city = "";
+      let region = "";
+      let zipCode = "";
+
+      if (addressParts.length >= 4) {
+        street = addressParts[0];
+        city = addressParts[1];
+        region = addressParts[2];
+        zipCode = addressParts[3];
+      } else if (addressParts.length === 3) {
+        street = addressParts[0];
+        city = addressParts[1];
+        region = addressParts[2];
+      } else if (addressParts.length === 2) {
+        street = addressParts[0];
+        city = addressParts[1];
+      } else if (addressParts.length === 1) {
+        street = addressParts[0];
+      }
+
+      form.reset({
+        ...importedValues.app,
+        age: importedValues.app.age || "",
+        country: importedValues.app.country || "",
+        phoneNumber: importedValues.app.phoneNumber || "",
+        school: importedValues.app.school || "",
+        major: importedValues.app.major || "",
+        classification: importedValues.app.classification || "",
+        gradYear: importedValues.app.gradYear.toString() || "",
+        gender: importedValues.app.gender || "",
+        race: importedValues.app.race || "",
+        hackathonsAttended: importedValues.app.hackathonsAttended || "",
+        experience: importedValues.app.experience || "",
+        eventSource: importedValues.app.eventSource || "",
+        shirtSize: importedValues.app.shirtSize || "",
+        address: street,
+        city: city,
+        region: region,
+        zipCode: zipCode,
+        dietaryRestriction: importedValues.app.dietaryRestriction ?? "",
+        references: importedValues.app.references || "",
+        extraInfo: importedValues.app.extraInfo ?? "",
+        mlhEmailConsent: importedValues.app.mlhEmailConsent ?? false,
+      });
+
+      form.setValue("email", importedValues.app.email);
+      return;
     }
 
-    // Set up autosave interval
-    const interval = setInterval(() => {
-      const data = form.getValues();
-      localStorage.setItem("applicationData", JSON.stringify(data));
-    }, 5000);
+    if (!isLoading && session?.user.email) {
+      const draft = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (draft) {
+        try {
+          const parsed = JSON.parse(draft) as Record<string, unknown>;
+          if (parsed && typeof parsed === "object") {
+            form.reset(parsed);
+          }
+        } catch {
+          // ignore invalid draft
+        }
+      }
+      form.setValue("email", session.user.email);
+    }
+  }, [importedValues, session, isLoading, form]);
 
-    // Cleanup interval on unmount
-    return () => clearInterval(interval);
+  // Scroll to first error on validation failure
+  useEffect(() => {
+    if (
+      form.formState.submitCount > 0 &&
+      Object.keys(form.formState.errors).length > 0
+    ) {
+      setTimeout(() => {
+        // Find the first visible error message, excluding asterisks
+        const errorMessages = Array.from(
+          document.querySelectorAll('.text-red-500, [class*="destructive"]'),
+        );
+        const firstRealError = errorMessages.find((el) => {
+          const text = el.textContent.trim();
+          return text !== "*" && text.length > 1;
+        });
+
+        if (firstRealError) {
+          firstRealError.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      }, 150);
+    }
+  }, [form.formState.submitCount, form.formState.errors]);
+
+  const saveDraft = useCallback(() => {
+    if (importedValues?.app) return;
+    const values = form.getValues();
+    const toSave = { ...values };
+    delete (toSave as Record<string, unknown>).resume;
+    delete (toSave as Record<string, unknown>).resumeFile;
+    try {
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(toSave));
+    } catch {
+      // ignore quota / private mode
+    }
   }, [form, importedValues?.app]);
 
+  const watchedValues = form.watch();
+
+  useEffect(() => {
+    if (importedValues?.app) return;
+    const timeout = setTimeout(saveDraft, 600);
+    return () => clearTimeout(timeout);
+  }, [watchedValues, importedValues?.app, saveDraft]);
+
   const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
-    let blob_name = undefined;
-    let blob_url = undefined;
+    const files = form.getValues("resume");
+    let blob_url = importedValues?.resume?.resumeUrl;
+    let blob_name = importedValues?.resume?.resumeName;
 
-    if (data.resumeFile) {
-      await upload(data.resumeFile.name, data.resumeFile, {
-        access: "public",
-        contentType: "application/pdf",
-        handleUploadUrl: "/api/resume",
-      })
-        .then((blob) => {
-          blob_name = data.resumeFile?.name;
-          blob_url = blob.url;
-          return blob;
-        })
-        .catch((error) => {
-          toast({
-            variant: "destructive",
-            title: "Resume Failed to Upload",
-            description: error.message,
-          });
+    if (files && files?.length > 0) {
+      const file = files[0];
+
+      if (!file) {
+        toast({
+          variant: "destructive",
+          title: "File Upload Error",
+          description: "Please select a valid file.",
         });
-    } else {
-      blob_name = importedValues?.resume?.resumeName ?? undefined;
-      blob_url = importedValues?.resume?.resumeUrl ?? undefined;
-    }
+        return;
+      }
 
-    if (
-      !RESUME_OPTIONAL &&
-      (blob_name === undefined || blob_url === undefined)
-    ) {
+      const newBlob = await upload(file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/resume",
+      });
+
+      blob_url = newBlob.url;
+      blob_name = file.name;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    } else if (!RESUME_OPTIONAL && !importedValues?.resume?.resumeUrl) {
       toast({
         variant: "destructive",
-        title: "Resume Missing",
+        title: "Resume Required",
         description: "Please upload your resume.",
       });
       return;
@@ -187,17 +322,18 @@ export function ApplicationForm() {
 
     if (!importedValues?.app) {
       const createApplicationData = {
-        eventName: EVENT_NAME,
         resumeUrl: blob_url ?? "",
         resumeName: blob_name ?? "",
+        eventName: EVENT_NAME,
         applicationData: {
           ...data,
+          address: `${data.address}|${data.city}|${data.region}|${data.zipCode}`,
           gradYear: Number(data.gradYear),
         },
       };
 
       await createApplication.mutateAsync(createApplicationData, {
-        onSuccess: async () => {
+        onSuccess: () => {
           toast({
             variant: "success",
             title: "Application submitted successfully!",
@@ -205,14 +341,11 @@ export function ApplicationForm() {
               "Your application has been received. You can now update and resubmit.",
           });
 
-          localStorage.removeItem("applicationData"); //deletes the data in local storage once they submitted
+          localStorage.removeItem(DRAFT_STORAGE_KEY);
 
-          // setDisableSubmit(true);
-          // await refetchApplication(); // Refetch to update importedValues?.app
-          // setDisableSubmit(false); // Re-enable submit for updates
           setTimeout(() => {
             router.replace("/apply");
-          }, 5000);
+          }, 1500);
         },
         onError: (error: { message: any }) => {
           if (error instanceof TRPCClientError) {
@@ -225,6 +358,14 @@ export function ApplicationForm() {
         },
       });
     } else {
+      const combinedAddress = [
+        data.address,
+        data.city,
+        data.region,
+        data.zipCode,
+      ]
+        .filter(Boolean)
+        .join(ADDRESS_DELIMITER);
       const updateApplicationData = {
         id: importedValues.app.id,
         userId: importedValues.app.userId,
@@ -233,6 +374,7 @@ export function ApplicationForm() {
         eventName: EVENT_NAME,
         application: {
           ...data,
+          address: combinedAddress,
           gradYear: Number(data.gradYear),
         },
       };
@@ -244,6 +386,10 @@ export function ApplicationForm() {
             title: "Application updated successfully!",
             description: "Your application has been received.",
           });
+
+          setTimeout(() => {
+            router.replace("/apply");
+          }, 1500);
         },
         onError: (error: any) => {
           if (error instanceof TRPCClientError) {
@@ -258,548 +404,611 @@ export function ApplicationForm() {
     }
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   const SCHOOL_OPTIONS = schoolsJson.map((entry) => ({
     value: entry.schoolName,
     label: entry.schoolName,
   }));
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#121723]">
+        <p className="text-lg text-neutral-300">Loading...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative flex w-full justify-center lg:w-3/5">
-      <a href="/apply">
-        <button className="absolute left-10 top-10 flex flex-row">
-          <LucideArrowBigLeft />
-          Back
-        </button>
-      </a>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="overflow-x-hidden rounded-lg bg-slate-400 p-5 dark:bg-slate-400 lg:px-16"
-        >
-          <h1 className="p-10 pb-3 text-center text-4xl font-bold lg:text-6xl">
-            <span className="odd:text-teal-400">H</span>
-            <span className="even:text-cyan-700">A</span>
-            <span className="odd:text-teal-400 ">C</span>
-            <span className="even:text-cyan-700">K</span>
-            <span className="odd:text-teal-400 ">E</span>
-            <span className="even:text-cyan-700">R</span> APPLICATION
-          </h1>
-          <div className="text-md pb-4 text-center">
-            Please complete the following sections. Filling out this form should
-            take about 5-8 minutes.
-          </div>
+    <div className="relative min-h-screen w-full bg-[#121723] py-12 text-neutral-50">
+      <div className="container mx-auto max-w-4xl px-4">
+        {/* Back Button */}
+        <a href="/apply">
+          <button className="mb-6 flex items-center gap-2 rounded-lg bg-[#1f2937] px-6 py-3 font-medium text-white shadow-md transition-all hover:bg-[#374151] hover:shadow-lg">
+            <LucideArrowBigLeft className="h-5 w-5" />
+            Back to Dashboard
+          </button>
+        </a>
 
-          <div className="flex w-full flex-row">
-            {/* First Name */}
-            <div className="flex w-1/2 flex-col pr-2">
-              <GenericInputField
-                name="firstName"
-                label="First Name"
-                required={true}
-                defaultValue={importedValues?.app?.firstName ?? ""}
-                placeholder="John"
-              />
+        {/* Decorative mascot stickers */}
+        <div className="pointer-events-none fixed left-4 top-20 z-10 opacity-40">
+          <Image
+            src="/mascot/Pixel_PolarBear.png"
+            alt=""
+            width={80}
+            height={80}
+            className="rotate-12"
+          />
+        </div>
+        <div className="pointer-events-none fixed right-8 top-32 z-10 opacity-40">
+          <Image
+            src="/mascot/DETECTIVE BEARTHOLOMEW.png"
+            alt=""
+            width={100}
+            height={100}
+            className="-rotate-12"
+          />
+        </div>
+        <div className="pointer-events-none fixed bottom-24 left-12 z-10 opacity-40">
+          <Image
+            src="/mascot/floatbear.png"
+            alt=""
+            width={90}
+            height={90}
+            className="rotate-6"
+          />
+        </div>
+        <div className="pointer-events-none fixed bottom-24 right-8 z-10 opacity-40">
+          <Image
+            src="/mascot/drip_bear.png"
+            alt=""
+            width={100}
+            height={100}
+            className="rotate-12"
+          />
+        </div>
+        <div className="pointer-events-none fixed left-24 top-1/2 z-10 opacity-40">
+          <Image
+            src="/mascot/TDEMOTE_bearglasses_4K.png"
+            alt=""
+            width={90}
+            height={90}
+            className="-rotate-6"
+          />
+        </div>
+        <div className="pointer-events-none fixed right-24 top-1/2 z-10 opacity-40">
+          <Image
+            src="/mascot/image.png"
+            alt=""
+            width={90}
+            height={90}
+            className="rotate-3"
+          />
+        </div>
+        <div className="pointer-events-none fixed bottom-10 left-1/2 z-10 opacity-40">
+          <Image
+            src="/mascot/td Datathon mascot chibi.svg"
+            alt=""
+            width={80}
+            height={80}
+            className="-rotate-3"
+          />
+        </div>
+
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit, (errors) => {
+              const firstError = Object.values(errors)[0];
+              const message =
+                typeof firstError === "object" &&
+                "message" in firstError &&
+                typeof (firstError as { message?: unknown }).message ===
+                  "string"
+                  ? (firstError as { message: string }).message
+                  : "Please fill in all required fields.";
+              toast({
+                variant: "destructive",
+                title: "Missing required information",
+                description: message,
+              });
+            })}
+            className="relative z-40 space-y-8"
+          >
+            {/* Header */}
+            <div className="mb-8 text-center">
+              <h1 className="text-4xl font-bold text-white md:text-5xl">
+                {eventName} Hacker Application
+              </h1>
+              <p className="mt-3 text-base text-neutral-300">
+                {eventDescription}
+              </p>
             </div>
 
-            {/* Last Name */}
-            <div className="flex w-1/2 flex-col pr-2">
-              <GenericInputField
-                name="lastName"
-                label="Last Name"
-                required={true}
-                defaultValue={importedValues?.app?.lastName ?? ""}
-                placeholder="Doe"
-              />
+            {/* Personal Information Section */}
+            <SectionCard title="Personal Information">
+              <div className="grid gap-6 md:grid-cols-2">
+                <GenericInputField
+                  name="firstName"
+                  label="First Name"
+                  required={true}
+                  defaultValue={importedValues?.app?.firstName ?? ""}
+                  placeholder="John"
+                />
+                <GenericInputField
+                  name="lastName"
+                  label="Last Name"
+                  required={true}
+                  defaultValue={importedValues?.app?.lastName ?? ""}
+                  placeholder="Doe"
+                />
+              </div>
+
+              <div className="mt-6">
+                <GenericInputField
+                  name="email"
+                  label="Primary Email"
+                  required={true}
+                  disabled={true}
+                  defaultValue={importedValues?.app?.email ?? ""}
+                  placeholder="abc123@gmail.com"
+                />
+              </div>
+
+              <div className="mt-6">
+                <GenericInputField
+                  name="linkedinUrl"
+                  label="LinkedIn Profile URL"
+                  required={false}
+                  defaultValue={importedValues?.app?.linkedinUrl ?? ""}
+                  placeholder="https://linkedin.com/in/yourprofile"
+                />
+              </div>
+
+              <div className="mt-6 grid gap-6 md:grid-cols-2">
+                <GenericInputField
+                  name="phoneNumber"
+                  label="Phone Number"
+                  required={true}
+                  defaultValue={importedValues?.app?.phoneNumber ?? ""}
+                  placeholder="1234567890"
+                />
+                <GenericCombobox
+                  name={"age"}
+                  label={"Age"}
+                  options={AGE}
+                  defaultOption={AGE.find(
+                    (option) => option.value === importedValues?.app?.age,
+                  )}
+                  required={true}
+                />
+              </div>
+
+              <div className="mt-6 grid gap-6 md:grid-cols-2">
+                <GenericCombobox
+                  name={"country"}
+                  label={"Country of Residence"}
+                  options={COUNTRIES}
+                  defaultOption={COUNTRIES.find(
+                    (option) => option.value === importedValues?.app?.country,
+                  )}
+                  required={true}
+                />
+                <GenericCombobox
+                  name={"gender"}
+                  label={"Gender"}
+                  options={GENDER_OPTIONS}
+                  defaultOption={
+                    importedValues?.app?.gender
+                      ? (GENDER_OPTIONS.find(
+                          (option) =>
+                            option.value === importedValues.app.gender,
+                        ) ?? {
+                          label: "Other (please specify)",
+                          value: importedValues.app.gender || "",
+                        })
+                      : undefined
+                  }
+                  required={true}
+                />
+              </div>
+
+              <div className="mt-6">
+                <GenericCombobox
+                  name={"race"}
+                  label={"What ethnicity do you identify with?"}
+                  options={RACE_OPTIONS}
+                  defaultOption={
+                    importedValues?.app?.race
+                      ? (RACE_OPTIONS.find(
+                          (option) => option.value === importedValues.app.race,
+                        ) ?? {
+                          label: "Other (please specify)",
+                          value: importedValues.app.race || "",
+                        })
+                      : undefined
+                  }
+                  required={true}
+                />
+              </div>
+            </SectionCard>
+
+            {/* Education Section */}
+            <SectionCard title="Education">
+              <div className="mb-6">
+                <GenericCombobox
+                  name={"school"}
+                  label={"School"}
+                  options={SCHOOL_OPTIONS}
+                  defaultOption={SCHOOL_OPTIONS.find(
+                    (option) => option.value === importedValues?.app?.school,
+                  )}
+                  required={true}
+                />
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-2">
+                <GenericCombobox
+                  name={"major"}
+                  label={"Major"}
+                  options={MAJOR}
+                  defaultOption={
+                    importedValues?.app?.major
+                      ? (MAJOR.find(
+                          (option) => option.value === importedValues.app.major,
+                        ) ?? {
+                          label: "Other (please specify)",
+                          value: importedValues.app.major || "",
+                        })
+                      : undefined
+                  }
+                  required={true}
+                />
+                <GenericCombobox
+                  name={"classification"}
+                  label={"Level of Study"}
+                  options={EDUCATION_LEVELS}
+                  defaultOption={EDUCATION_LEVELS.find(
+                    (option) =>
+                      option.value === importedValues?.app?.classification,
+                  )}
+                  required={true}
+                />
+              </div>
+
+              <div className="mt-6">
+                <GenericCombobox
+                  name={"gradYear"}
+                  label={"Anticipated Graduation Year"}
+                  options={GRADUATION_YEARS}
+                  defaultOption={GRADUATION_YEARS.find(
+                    (option) =>
+                      option.value === importedValues?.app?.gradYear.toString(),
+                  )}
+                  required={true}
+                />
+              </div>
+            </SectionCard>
+
+            {/* Experience Section */}
+            <SectionCard title="Experience">
+              <div className="grid gap-6 md:grid-cols-2">
+                <GenericCombobox
+                  name={"hackathonsAttended"}
+                  label={"Hackathons Attended"}
+                  options={HACKATHON_EXPERIENCE}
+                  defaultOption={HACKATHON_EXPERIENCE.find(
+                    (option) =>
+                      option.value === importedValues?.app?.hackathonsAttended,
+                  )}
+                  required={true}
+                />
+                <GenericCombobox
+                  name={"experience"}
+                  label={"Programming Experience Level"}
+                  options={PROGRAMMING_SKILL_LEVELS}
+                  defaultOption={
+                    importedValues?.app?.experience
+                      ? PROGRAMMING_SKILL_LEVELS.find(
+                          (option) =>
+                            option.value === importedValues.app.experience,
+                        )
+                      : undefined
+                  }
+                  required={true}
+                />
+              </div>
+
+              <div className="mt-6">
+                <GenericCombobox
+                  name={"eventSource"}
+                  label={"How did you hear about us?"}
+                  options={HEARD_ABOUT_OPTIONS}
+                  defaultOption={HEARD_ABOUT_OPTIONS.find(
+                    (option) =>
+                      option.value === importedValues?.app?.eventSource,
+                  )}
+                  required={true}
+                />
+              </div>
+
+              <div className="mt-6">
+                <FormField
+                  control={form.control}
+                  name="resume"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-lg font-semibold text-gray-200">
+                        Resume/CV <Asterisk />
+                      </FormLabel>
+                      {importedValues?.resume && (
+                        <div className="my-2 rounded-lg bg-green-900/30 p-3">
+                          <p className="text-sm text-green-200">
+                            ✓ Current resume: {importedValues.resume.resumeName}
+                          </p>
+                        </div>
+                      )}
+                      <FormControl>
+                        <Input
+                          type="file"
+                          accept=".pdf,.doc,.docx"
+                          onChange={(e) => field.onChange(e.target.files)}
+                          className="cursor-pointer !border-gray-700 transition-all"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </SectionCard>
+
+            {/* Application Questions Section */}
+            <SectionCard title="Application Questions">
+              {/* References */}
+              <div className="pt-4">
+                <GenericTextArea
+                  name="references"
+                  defaultValue={importedValues?.app?.references ?? ""}
+                  label="Point us to anything you'd like us to look at while considering your application."
+                  placeholder="Provide other links or references here."
+                  required={true}
+                />
+              </div>
+              {/* What drives your interest in being a part of TAMU Datathon? */}
+              <div className="pt-4">
+                <GenericTextArea
+                  name="interestOne"
+                  defaultValue={importedValues?.app?.interestOne ?? ""}
+                  label="Why do you want to participate in TAMU Datathon?"
+                  placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
+                  required={false}
+                />
+              </div>
+              {/* What is the one thing you'd build if you had unlimited resources? */}
+              <div className="pt-4">
+                <GenericTextArea
+                  name="interestTwo"
+                  defaultValue={importedValues?.app?.interestTwo ?? ""}
+                  label="What is the one thing you'd build if you had unlimited resources?"
+                  placeholder="More resources."
+                  required={false}
+                />
+              </div>
+              {/* Tell us your best programming joke. */}
+              <div className="pt-4">
+                <GenericTextArea
+                  name="interestThree"
+                  defaultValue={importedValues?.app?.interestThree ?? ""}
+                  label="Tell us your best programming joke."
+                  placeholder="Is your code running? Well, you better go catch it."
+                  required={false}
+                />
+              </div>
+
+
+            </SectionCard>
+
+            {/* Additional Details Section */}
+            <SectionCard title="Additional Details">
+              <div className="mb-6">
+                <GenericCombobox
+                  name={"shirtSize"}
+                  label={"T-Shirt Size"}
+                  options={SHIRT_SIZES}
+                  defaultOption={SHIRT_SIZES.find(
+                    (option) => option.value === importedValues?.app?.shirtSize,
+                  )}
+                  required={true}
+                />
+              </div>
+
+              <div className="mb-6">
+                <GenericInputField
+                  name="address"
+                  label="Street Address"
+                  required={true}
+                  defaultValue={importedValues?.app?.address ?? ""}
+                  placeholder="123 Main St"
+                />
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-3">
+                <GenericInputField
+                  name="city"
+                  label="City"
+                  required={true}
+                  placeholder="College Station"
+                />
+                <GenericInputField
+                  name="region"
+                  label="State/Region"
+                  required={true}
+                  placeholder="TX"
+                />
+                <GenericInputField
+                  name="zipCode"
+                  label="Zip Code"
+                  required={true}
+                  placeholder="77840"
+                />
+              </div>
+
+              <div className="mt-6">
+                <GenericMultiSelect
+                  name={"dietaryRestriction"}
+                  label={"Dietary Restrictions"}
+                  placeholder="Select dietary restrictions (if any)"
+                  options={DIETARY_RESTRICTIONS}
+                  defaultOption={
+                    importedValues?.app?.dietaryRestriction ?? undefined
+                  }
+                  required={false}
+                />
+              </div>
+
+              <div className="mt-6">
+                <GenericTextArea
+                  name="extraInfo"
+                  label="Anything else you'd like us to know any questions for us?"
+                  required={false}
+                  defaultValue={importedValues?.app?.extraInfo ?? ""}
+                  placeholder="Share anything else that might be relevant..."
+                />
+              </div>
+            </SectionCard>
+
+            {/* Legal Section */}
+            <SectionCard title="Legal & Consent">
+              <div className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="liabilityWaiver"
+                  render={({ field }) => (
+                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-neutral-700 p-4 transition-all hover:border-[#01c0cc]">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className="mt-3 !border-2 !border-white dark:!border-white"
+                        />
+                      </FormControl>
+                      <div className="space-y-1">
+                        <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
+                          I have read and agree to the{" "}
+                          <a
+                            className="text-[#01c0cc] underline hover:text-[#28979b]"
+                            href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf"
+                            target="_blank"
+                          >
+                            MLH Code of Conduct
+                          </a>
+                          <Asterisk />
+                        </FormLabel>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="mlhPrivacyPolicy"
+                  render={({ field }) => (
+                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-neutral-700 p-4 transition-all hover:border-[#01c0cc]">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className="mt-3 !border-2 !border-white dark:!border-white"
+                        />
+                      </FormControl>
+                      <div className="space-y-1">
+                        <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
+                          I authorize you to share my application/registration
+                          information with Major League Hacking for event
+                          administration, ranking, and MLH administration
+                          in-line with the{" "}
+                          <a
+                            className="text-[#01c0cc] underline hover:text-[#28979b]"
+                            href="https://mlh.io/privacy"
+                            target="_blank"
+                          >
+                            MLH Privacy Policy
+                          </a>
+                          . I further agree to the terms of both the{" "}
+                          <a
+                            className="text-[#01c0cc] underline hover:text-[#28979b]"
+                            href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
+                            target="_blank"
+                          >
+                            MLH Contest Terms and Conditions
+                          </a>{" "}
+                          and the{" "}
+                          <a
+                            className="text-[#01c0cc] underline hover:text-[#28979b]"
+                            href="https://mlh.io/privacy"
+                            target="_blank"
+                          >
+                            MLH Privacy Policy
+                          </a>
+                          <Asterisk />
+                        </FormLabel>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="mlhEmailConsent"
+                  render={({ field }) => (
+                    <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-neutral-700 p-4 transition-all hover:border-[#01c0cc]">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className="mt-3 !border-2 !border-white dark:!border-white"
+                        />
+                      </FormControl>
+                      <div className="space-y-1">
+                        <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
+                          <span className="text-neutral-400">(Optional) </span>I
+                          authorize MLH to send me occasional emails about
+                          relevant events, career opportunities, and community
+                          announcements
+                        </FormLabel>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </SectionCard>
+
+            {/* Submit Button */}
+            <div className="flex justify-center pb-12">
+              {!form.formState.isSubmitting && (
+                <Button
+                  type="submit"
+                  disabled={disableSubmit}
+                  className="h-14 w-full max-w-md transform rounded-xl bg-[#01c0cc] px-12 text-lg font-bold text-white shadow-lg transition-all hover:bg-[#28979b] hover:shadow-xl disabled:opacity-50 md:w-auto"
+                >
+                  Submit Application
+                </Button>
+              )}
+              {form.formState.isSubmitting && (
+                <Button
+                  type="submit"
+                  disabled
+                  className="h-14 w-full max-w-md rounded-xl bg-[#01c0cc] px-12 text-lg font-bold text-white shadow-lg md:w-auto"
+                >
+                  <ReloadIcon className="mr-2 h-5 w-5 animate-spin" />
+                  Submitting...
+                </Button>
+              )}
             </div>
-          </div>
-
-          {/* Email */}
-          <div className="pt-4">
-            <GenericInputField
-              name="email"
-              label="Primary Email"
-              required={true}
-              disabled={true}
-              defaultValue={importedValues?.app?.email ?? ""}
-              placeholder="abc123@gmail.com"
-            />
-          </div>
-
-          {/* Phone Number */}
-          <div className="pt-4">
-            <GenericInputField
-              name="phoneNumber"
-              label="Phone Number"
-              required={true}
-              defaultValue={importedValues?.app?.phoneNumber ?? ""}
-              placeholder="1234567890"
-            />
-          </div>
-
-          {/* Age */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"age"}
-              label={"Age"}
-              options={AGE}
-              defaultOption={AGE.find(
-                (option) => option.value === importedValues?.app?.age,
-              )}
-              required={true}
-            />
-          </div>
-
-          {/* Country */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"country"}
-              label={"Country of Residence?"}
-              options={COUNTRIES}
-              defaultOption={COUNTRIES.find(
-                (option) => option.value === importedValues?.app?.country,
-              )}
-              required={true}
-            />
-          </div>
-
-          {/* Gender */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"gender"}
-              label={"Gender?"}
-              options={GENDER_OPTIONS}
-              defaultOption={
-                importedValues?.app?.gender
-                  ? GENDER_OPTIONS.find(
-                      (option) => option.value === importedValues?.app?.gender,
-                    ) || {
-                      label: "Other (please specify)",
-                      value: importedValues?.app?.gender || "",
-                    }
-                  : undefined
-              }
-              required={true}
-            />
-          </div>
-
-          {/* Race */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"race"}
-              label={"What ethnicity do you identify with?"}
-              options={RACE_OPTIONS}
-              defaultOption={
-                importedValues?.app?.race
-                  ? RACE_OPTIONS.find(
-                      (option) => option.value === importedValues?.app?.race,
-                    ) || {
-                      label: "Other (please specify)",
-                      value: importedValues?.app?.race || "",
-                    }
-                  : undefined
-              }
-              required={true}
-            />
-          </div>
-
-          {/* School */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"school"}
-              label={"What school do you go to?"}
-              options={SCHOOL_OPTIONS}
-              defaultOption={SCHOOL_OPTIONS.find(
-                (option) => option.value === importedValues?.app?.school,
-              )}
-              filter
-              required={true}
-            />
-          </div>
-
-          {/* Major */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"major"}
-              label={"What's your major?"}
-              options={MAJOR}
-              defaultOption={
-                importedValues?.app?.major
-                  ? MAJOR.find(
-                      (option) => option.value === importedValues?.app?.major,
-                    ) || {
-                      label: "Other (please specify)",
-                      value: importedValues?.app?.major || "",
-                    }
-                  : undefined
-              }
-              required={true}
-            />
-          </div>
-
-          {/* Classification */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"classification"}
-              label={"What classification are you?"}
-              options={EDUCATION_LEVELS}
-              defaultOption={EDUCATION_LEVELS.find(
-                (option) =>
-                  option.value === importedValues?.app?.classification,
-              )}
-              required={true}
-            />
-          </div>
-
-          {/* Graduation Year */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"gradYear"}
-              label={"What is your anticipated graduation year?"}
-              options={GRADUATION_YEARS}
-              defaultOption={GRADUATION_YEARS.find(
-                (option) =>
-                  Number(option.value) === importedValues?.app?.gradYear,
-              )}
-              required={true}
-            />
-          </div>
-
-          {/* Resume */}
-          <div className="pt-4">
-            <Title text="Experience" className="m-1" />
-            <FormField
-              control={form.control}
-              name="resumeFile"
-              render={({ field: { ...fieldProps } }) => (
-                <FormItem>
-                  <FormLabel className="text-xl">
-                    Resume sent to Sponsors (PDF Only) (Optional):
-                    {RESUME_OPTIONAL ? null : <Asterisk />}
-                    <br />
-                    <span className="text-sm">
-                      Current Resume:{" "}
-                      <span className="text-cyan-700">
-                        {importedValues?.resume?.resumeName || "None"}
-                      </span>
-                    </span>
-                  </FormLabel>
-                  <FormControl className="hover:cursor-pointer">
-                    <Input
-                      {...fieldProps}
-                      type="file"
-                      accept="application/pdf"
-                      className="border bg-gray-500"
-                      onChange={(event) => {
-                        form.setValue(
-                          "resumeFile",
-                          event.target.files ? event.target.files[0]! : null,
-                        );
-                      }}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Hackathons Attended */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"hackathonsAttended"}
-              label={"How many hackathons have you attended?"}
-              options={HACKATHON_EXPERIENCE}
-              defaultOption={HACKATHON_EXPERIENCE.find(
-                (option) =>
-                  option.value === importedValues?.app?.hackathonsAttended,
-              )}
-              required={true}
-            />
-          </div>
-
-          {/* Experience Level */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"experience"}
-              label={"What is your experience level in Data Science?"}
-              options={PROGRAMMING_SKILL_LEVELS}
-              defaultOption={PROGRAMMING_SKILL_LEVELS.find(
-                (option) => option.value === importedValues?.app?.experience,
-              )}
-              required={true}
-            />
-          </div>
-
-          {/* Team */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"hasTeam"}
-              label={"Do you have a team?"}
-              options={[
-                { value: "No", label: "I do have a team" },
-                {
-                  value: "Yes",
-                  label: "I do not have a team",
-                },
-              ]}
-              defaultOption={
-                importedValues?.app?.hasTeam
-                  ? {
-                      value: importedValues.app.hasTeam,
-                      label: importedValues.app.hasTeam,
-                    }
-                  : undefined
-              }
-              required={true}
-            />
-          </div>
-
-          {/* How'd you hear */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"eventSource"}
-              label={"How did you hear about TAMU Datathon?"}
-              options={HEARD_ABOUT_OPTIONS}
-              defaultOption={HEARD_ABOUT_OPTIONS.find(
-                (option) => option.value === importedValues?.app?.eventSource,
-              )}
-              required={true}
-            />
-          </div>
-
-          {/* Shirt Size */}
-          <div className="pt-4">
-            <GenericCombobox
-              name={"shirtSize"}
-              label={"What's your shirt size?"}
-              options={SHIRT_SIZES}
-              defaultOption={SHIRT_SIZES.find(
-                (option) => option.value === importedValues?.app?.shirtSize,
-              )}
-              required={true}
-            />
-          </div>
-
-          {/* Address */}
-          <div className="pt-4">
-            <GenericInputField
-              name="address"
-              label="Address"
-              required={true}
-              defaultValue={importedValues?.app?.address ?? ""}
-              placeholder="308 Negra Arroyo Lane, Albuquerque, New Mexico 87104"
-            />
-          </div>
-
-          <Title text="General Info" className="m-1" />
-          {/* Linkedin Profile */}
-          <div className="pt-4">
-            <GenericInputField
-              name="linkedinUrl"
-              defaultValue={importedValues?.app?.linkedinUrl ?? ""}
-              label="LinkedIn Profile"
-              placeholder="www.linkedin.com/in/john-doe"
-              required={true}
-            />
-          </div>
-
-          {/* Tell us your best programming joke. */}
-          <div className="pt-4">
-            <GenericTextArea
-              name="interestOne"
-              defaultValue={importedValues?.app?.interestOne ?? ""}
-              label="Tell us your best programming joke."
-              placeholder="Is your code running? Well, you better go catch it."
-              required={true}
-            />
-          </div>
-
-          {/* What is the one thing you'd build if you had unlimited resources? */}
-          <div className="pt-4">
-            <GenericTextArea
-              name="interestTwo"
-              defaultValue={importedValues?.app?.interestTwo ?? ""}
-              label="What is the one thing you'd build if you had unlimited resources?"
-              placeholder="More resources."
-              required={true}
-            />
-          </div>
-
-          {/* What drives your interest in being a part of TAMU Datathon? */}
-          <div className="pt-4">
-            <GenericTextArea
-              name="interestThree"
-              defaultValue={importedValues?.app?.interestThree ?? ""}
-              label="Why do you want to participate in TAMU Datathon?"
-              placeholder="Big Data. Machine Learning. Blockchain. Artificial Intelligence."
-              required={true}
-            />
-          </div>
-
-          {/* References */}
-          <div className="pt-4">
-            <GenericTextArea
-              name="references"
-              defaultValue={importedValues?.app?.references ?? ""}
-              label="Point us to anything you'd like us to look at while considering your application."
-              placeholder="Provide other links or references here."
-              required={false}
-            />
-          </div>
-
-          {/* Dietry Restrictions */}
-          <div className="pt-4">
-            <GenericMultiSelect
-              name="dietaryRestriction"
-              placeholder="Select all that apply"
-              label="Do you have any dietary restrictions? (Select all that apply)"
-              options={[
-                { value: "Vegetarian", label: "Vegetarian" },
-                { value: "Vegan", label: "Vegan" },
-                { value: "Gluten-Free", label: "Gluten-Free" },
-                { value: "Dairy-Free", label: "Dairy-Free" },
-                { value: "Nut-Free", label: "Nut-Free" },
-                { value: "Halal", label: "Halal" },
-                { value: "Kosher", label: "Kosher" },
-                { value: "Pescatarian", label: "Pescatarian" },
-              ]}
-              defaultOption={importedValues?.app?.dietaryRestriction ?? ""}
-            />
-          </div>
-
-          {/* Extra Info */}
-          <div className="pt-4">
-            <GenericTextArea
-              name="extraInfo"
-              defaultValue={importedValues?.app?.extraInfo ?? ""}
-              label="Anything else you would like us to know?"
-              placeholder="I love drywall!"
-            />
-          </div>
-
-          {/* MLH REQUIRED */}
-          {/* Liability Waiver */}
-          <div className="flex items-center space-x-2 pt-4">
-            <FormField
-              control={form.control}
-              name="mlhCodeConduct"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="pr-2 text-xl">
-                    I have read and agree to the{" "}
-                    <a
-                      className="text-blue-500 underline"
-                      href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf"
-                      target="_blank"
-                    >
-                      MLH Code of Conduct
-                    </a>
-                    :
-                    <Asterisk />
-                  </FormLabel>
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="flex items-center space-x-2 pt-4">
-            <FormField
-              control={form.control}
-              name="mlhPrivacyPolicy"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="pr-2 text-xl">
-                    I authorize you to share my application/registration
-                    information with Major League Hacking for event
-                    administration, ranking, and MLH administration in-line with
-                    the{" "}
-                    <a
-                      className="text-blue-500 underline"
-                      href="https://mlh.io/privacy"
-                      target="_blank"
-                    >
-                      MLH Privacy Policy
-                    </a>
-                    . I further agree to the terms of both the{" "}
-                    <a
-                      className="text-blue-500 underline"
-                      href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
-                      target="_blank"
-                    >
-                      MLH Contest Terms and Conditions
-                    </a>{" "}
-                    and the{" "}
-                    <a
-                      className="text-blue-500 underline"
-                      href="https://mlh.io/privacy"
-                      target="_blank"
-                    >
-                      MLH Privacy Policy
-                    </a>
-                    :
-                    <Asterisk />
-                  </FormLabel>
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="flex items-center space-x-2 pt-4">
-            <FormField
-              control={form.control}
-              name="mlhEmailConsent"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="pr-2 text-xl">
-                    <span className="text-gray-500">(Optional) </span>I
-                    authorize MLH to send me occasional emails about relevant
-                    events, career opportunities, and community announcements:
-                  </FormLabel>
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Submit */}
-          <div className="pt-4 text-4xl">
-            {!form.formState.isSubmitting && (
-              <Button type="submit" disabled={disableSubmit}>
-                Submit
-              </Button>
-            )}
-            {form.formState.isSubmitting && (
-              <Button type="submit" disabled>
-                {" "}
-                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                Please wait ...
-              </Button>
-            )}
-          </div>
-        </form>
-      </Form>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 }

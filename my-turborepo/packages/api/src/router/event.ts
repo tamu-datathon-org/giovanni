@@ -4,13 +4,14 @@ import { z } from "zod";
 import { eq } from "@vanni/db";
 import { Event } from "@vanni/db/schema";
 
-import { protectedProcedure } from "../trpc";
+import type { VerifiedContext } from "../trpc";
+import { protectedProcedure, publicProcedure } from "../trpc";
 
 export const getEventData = async ({
   ctx,
   eventName,
 }: {
-  ctx: any;
+  ctx: VerifiedContext;
   eventName: string;
 }) => {
   const event = await ctx.db.query.Event.findFirst({
@@ -28,6 +29,16 @@ export const getEventData = async ({
 };
 
 export const eventRouter = {
+  getEndDate: publicProcedure
+    .input(z.object({ eventName: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const event = await ctx.db.query.Event.findFirst({
+        where: eq(Event.name, input.eventName),
+        columns: { endDate: true },
+      });
+      return event ? { endDate: event.endDate } : null;
+    }),
+
   findByName: protectedProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {

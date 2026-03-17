@@ -6,8 +6,9 @@ import { CreateApplicationSchema } from "@vanni/db/schema";
 
 export const applicationSchema = CreateApplicationSchema.merge(
   z.object({
+    resume: z.any().optional(),
     resumeFile: z.instanceof(File).nullish().optional(),
-    mlhCodeConduct: z
+    liabilityWaiver: z
       .boolean()
       .refine((value) => value, "Please accept the code of conduct"),
     mlhPrivacyPolicy: z
@@ -15,6 +16,9 @@ export const applicationSchema = CreateApplicationSchema.merge(
       .refine((value) => value, "Please accept the privacy policy"),
     mlhEmailConsent: z.boolean(),
     gradYear: z.string().min(1, "Please select a graduation year"),
+    city: z.string().min(1, "City is required").max(100),
+    region: z.string().min(1, "State/Region is required").max(100),
+    zipCode: z.string().min(1, "Zip code is required").max(20),
   }),
 );
 

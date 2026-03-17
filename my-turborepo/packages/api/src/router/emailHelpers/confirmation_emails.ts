@@ -3,7 +3,7 @@ import { queueBulkEmail } from "./queue_bulk";
 export default function sendConfirmationEmail(
   addresses: (string | undefined | null)[],
 ) {
-  queueBulkEmail(addresses, subject, content).then();
+  void queueBulkEmail(addresses, subject, content).then();
 }
 
 // TODO: Find a way to store these without hard coding
