@@ -2335,7 +2335,7 @@ neue,helvetica,arial,sans-serif">TAMU DATATHON</span></span></strong></span>
                                           style="font-family:lato,helvetica neue,helvetica,arial,sans-serif"><span
                                             style="color:#555555"><b>Congratulations!</b><br> We’re excited to inform you that
                                             you’ve been accepted to the TAMU Datathon ${eventSeason} ${eventYear}! Your
-                                            application truly impressed us, and we can’t wait to see you at the <b>MSC 2300</b> on
+                                            application truly impressed us, and we can’t wait to see you at the <b>Peterson Building</b> on
                                             <b>April 11th ${eventYear}</b>.
                                             <br>
                                             <br>
