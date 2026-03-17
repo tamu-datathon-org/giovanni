@@ -1,16 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { Button } from "@vanni/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@vanni/ui/dropdown-menu";
-import { Input } from "@vanni/ui/input";
-import { ChevronDown } from "lucide-react";
+import { AiOutlineCheck } from "react-icons/ai";
+import { BsChevronExpand } from "react-icons/bs";
+
+import { cn } from "@vanni/ui";
 import {
   FormControl,
   FormField,
@@ -18,7 +13,24 @@ import {
   FormLabel,
   FormMessage,
 } from "@vanni/ui/form";
-import type { ApplicationSchema } from "../apply/validation";
+
+import type { ApplicationSchema } from "~/app/apply/validation";
+import { Button } from "~/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "~/components/ui/command";
+import { Input } from "~/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
+import { Asterisk } from "../apply/application/application-form";
 
 interface Option { label: string; value: string }
 
@@ -41,6 +53,9 @@ const GenericMultiSelect = ({
 }: ISelectProps) => {
   const form = useFormContext<ApplicationSchema>();
   const OTHER_VALUE = "Other";
+  const OTHER_LABEL = "Other (please specify)";
+  const [open, setOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     if (defaultOption && (!form.getValues(name))) {
@@ -48,140 +63,164 @@ const GenericMultiSelect = ({
     }
   }, [form, defaultOption, name]);
 
+  const filteredOptions = useMemo(() => {
+    const q = searchValue.trim().toLowerCase();
+    if (!q) return values;
+    return values.filter(
+      (o) =>
+        o.label.toLowerCase().includes(q) || o.value.toLowerCase().includes(q),
+    );
+  }, [searchValue, values]);
+
   return (
     <FormField
       control={form.control}
       name={name}
       render={({ field }) => {
-        let selectedItems = field.value
-          ? String(field.value)
-            .split(",")
-            .filter(
-              (item, idx, arr) =>
-                item &&
-                (item !== OTHER_VALUE && !item.startsWith("Other(") ||
-                  arr.findIndex(
-                    (i) =>
-                      i === OTHER_VALUE ||
-                      i.startsWith("Other(")
-                  ) === idx)
-            )
+        const rawValues = field.value
+          ? String(field.value).split(",").map((s) => s.trim()).filter(Boolean)
           : [];
-        // Extract Other value if present
 
-        const otherRaw = (() => {
-          const match = selectedItems.find(item => item.startsWith("Other("));
-          return match ? match.slice(6, -1) : "";
-        })();
+        const otherMatch = rawValues.find((item) => item.startsWith("Other("));
+        const otherRaw = otherMatch ? otherMatch.slice(6, -1) : "";
+        const hasOther = rawValues.includes(OTHER_VALUE) || Boolean(otherMatch);
 
-        const hasOther =
-          selectedItems.includes(OTHER_VALUE) ||
-          selectedItems.some((item) => item.startsWith("Other("));
+        const selectedValues = rawValues.filter(
+          (item) => item !== OTHER_VALUE && !item.startsWith("Other("),
+        );
 
-        // Replace "Other" with "Other(<text>)" if text is present
-        if (hasOther) {
-          selectedItems = selectedItems.filter(
-            (item) => item !== OTHER_VALUE && !item.startsWith("Other(")
+        const selectedLabels = selectedValues
+          .map((v) => values.find((o) => o.value === v)?.label ?? v)
+          .concat(
+            hasOther ? [otherRaw ? `Other (${otherRaw})` : OTHER_LABEL] : [],
           );
-          if (otherRaw) {
-            selectedItems.push(`Other(${otherRaw})`);
-          } else {
-            selectedItems.push(OTHER_VALUE);
-          }
-        }
 
         const handleSelectChange = (value: string) => {
-          let updated = field.value
-            ? String(field.value).split(",").filter(Boolean)
-            : [];
-          if (!updated.includes(value)) {
-            updated.push(value);
-          } else {
-            updated = updated.filter((item) => item !== value);
+          const updated = new Set(
+            field.value
+              ? String(field.value).split(",").map((s) => s.trim()).filter(Boolean)
+              : [],
+          );
+
+          if (value === OTHER_VALUE) {
+            if (hasOther) {
+              // remove both Other and Other(...)
+              [...updated].forEach((v) => {
+                if (v === OTHER_VALUE || v.startsWith("Other(")) updated.delete(v);
+              });
+            } else {
+              updated.add(OTHER_VALUE);
+            }
+            field.onChange([...updated].join(","));
+            return;
           }
-          field.onChange(updated.join(","));
+
+          if (!updated.has(value)) updated.add(value);
+          else updated.delete(value);
+
+          field.onChange([...updated].join(","));
         };
 
         const isOptionSelected = (value: string): boolean => {
           if (value === OTHER_VALUE) {
             return hasOther;
           }
-          return selectedItems.includes(value);
+          return selectedValues.includes(value);
         };
 
         return (
           <FormItem className="flex flex-col">
-            {label && (
-              <FormLabel className="text-xl">
-                {label}
-                {required ? <span className="text-red-500">*</span> : ""}
-              </FormLabel>
-            )}
-            <FormControl>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild className="w-full">
+            <FormLabel className="text-xl">
+              {label}
+              {required ? <Asterisk /> : ""}
+            </FormLabel>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <FormControl>
                   <Button
-                    variant="outline"
-                    className="w-full flex items-center justify-between bg-white text-black"
+                    variant="application"
+                    role="combobox"
+                    className="w-full justify-between overflow-hidden"
                   >
-                    <div>
-                      {selectedItems.length > 0
-                        ? selectedItems.join(", ")
+                    <span className="truncate">
+                      {selectedLabels.length > 0
+                        ? selectedLabels.join(", ")
                         : placeholder}
-                    </div>
-                    <ChevronDown className="h-4 w-4 opacity-50" />
+                    </span>
+                    <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className="w-56 bg-white text-black hover:cursor-pointer"
-                  onCloseAutoFocus={(e) => e.preventDefault()}
-                >
-                  {values.map((option, index) => (
-                    <DropdownMenuCheckboxItem
-                      className="hover:cursor-pointer"
-                      onSelect={(e) => e.preventDefault()}
-                      key={index}
-                      checked={isOptionSelected(option.value)}
-                      onCheckedChange={() => handleSelectChange(option.value)}
-                    >
-                      {option.label}
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                  {/* Add Other option */}
-                  <DropdownMenuCheckboxItem
-                    className="hover:cursor-pointer"
-                    onSelect={(e) => e.preventDefault()}
-                    checked={hasOther}
-                    onCheckedChange={() => handleSelectChange(OTHER_VALUE)}
-                  >
-                    Other (please specify)
-                  </DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </FormControl>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContent className="w-fit max-w-full p-0">
+                <Command>
+                  <CommandInput
+                    placeholder={`Search ${String(name)}...`}
+                    onValueChange={(value) => setSearchValue(value)}
+                  />
+                  <CommandList>
+                    <CommandEmpty>No results.</CommandEmpty>
+                    <CommandGroup>
+                      {filteredOptions.map((option) => (
+                        <CommandItem
+                          key={option.value}
+                          value={option.value}
+                          onSelect={(currentValue) => {
+                            handleSelectChange(currentValue);
+                          }}
+                        >
+                          <AiOutlineCheck
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              isOptionSelected(option.value)
+                                ? "opacity-100"
+                                : "opacity-0",
+                            )}
+                          />
+                          {option.label}
+                        </CommandItem>
+                      ))}
+
+                      <CommandItem
+                        key={OTHER_VALUE}
+                        value={OTHER_LABEL}
+                        onSelect={() => {
+                          handleSelectChange(OTHER_VALUE);
+                        }}
+                      >
+                        <AiOutlineCheck
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            hasOther ? "opacity-100" : "opacity-0",
+                          )}
+                        />
+                        {OTHER_LABEL}
+                      </CommandItem>
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
             {/* Show textbox if Other is selected */}
             {hasOther && (
-              <Input
-                type="text"
-                className="mt-2 bg-white text-black"
-                placeholder="Please specify your restriction"
-                value={otherRaw}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  // Remove any Other or Other(...) before adding new
-                  const updated = field.value
-                    ? String(field.value).split(",").filter(
-                      (item) => item !== OTHER_VALUE && !item.startsWith("Other(")
-                    )
-                    : [];
-                  if (val) {
-                    updated.push(`Other(${val})`);
-                  } else {
-                    updated.push(OTHER_VALUE);
-                  }
-                  field.onChange(updated.join(","));
-                }}
-              />
+              <div className="mt-2 flex flex-col">
+                <FormControl>
+                  <Input
+                    type="text"
+                    className="border p-2 bg-white text-black"
+                    placeholder="Please specify..."
+                    value={otherRaw}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      const updated = rawValues.filter(
+                        (item) => item !== OTHER_VALUE && !item.startsWith("Other("),
+                      );
+                      if (val) updated.push(`Other(${val})`);
+                      else updated.push(OTHER_VALUE);
+                      field.onChange(updated.join(","));
+                    }}
+                  />
+                </FormControl>
+              </div>
             )}
             <FormMessage />
           </FormItem>

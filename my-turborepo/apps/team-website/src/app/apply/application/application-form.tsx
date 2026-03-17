@@ -216,6 +216,8 @@ export function ApplicationForm() {
         dietaryRestriction: importedValues.app.dietaryRestriction ?? "",
         references: importedValues.app.references || "",
         extraInfo: importedValues.app.extraInfo ?? "",
+        liabilityWaiver: false,
+        mlhPrivacyPolicy: false,
         mlhEmailConsent: importedValues.app.mlhEmailConsent ?? false,
       });
 
@@ -867,7 +869,7 @@ export function ApplicationForm() {
               <div className="mt-6">
                 <GenericTextArea
                   name="extraInfo"
-                  label="Anything else you'd like us to know any questions for us?"
+                  label="Any questions for us?"
                   required={false}
                   defaultValue={importedValues?.app?.extraInfo ?? ""}
                   placeholder="Share anything else that might be relevant..."

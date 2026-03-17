@@ -6,6 +6,9 @@ export default function sendConfirmationEmail(
   void queueBulkEmail(addresses, subject, content).then();
 }
 
+const eventName = process.env.NEXT_PUBLIC_EVENT_NAME;
+const eventYear = new Date().getFullYear();
+const eventSeason = eventName?.endsWith("Spring") ? "Spring" : "Fall";
 // TODO: Find a way to store these without hard coding
 const subject = "Registration Confirmation";
 
@@ -25,7 +28,7 @@ const content = `<!doctype html>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--    <title>For TAMU Datathon Fall 2025\n</title>-->
+<!--    <title>For TAMU Datathon ${eventSeason} ${eventYear}\n</title>-->
 
     <style type="text/css">
         p {
@@ -892,7 +895,7 @@ const content = `<!doctype html>
 
                             <span style="font-size:17px"><span
                                     style="font-family:lato,helvetica neue,helvetica,arial,sans-serif"><span
-                                    style="color:#555555">Thanks for applying to the TAMU Datathon Fall 2025! We'll be carefully reviewing your application and will get back to you soon.<br>
+                                    style="color:#555555">Thanks for applying to the TAMU Datathon ${eventSeason} ${eventYear}! We'll be carefully reviewing your application and will get back to you soon.<br>
 <br>
 Until then, please reach out to <a href="mailto:connect@tamudatathon.com" target="_blank">connect@tamudatathon.com</a> if you have any other questions!</span></span></span>
                                                             </td>
@@ -1688,7 +1691,7 @@ Until then, please reach out to <a href="mailto:connect@tamudatathon.com" target
 </html>
 `;
 
-export const accepted_title = `Congratulations on being accepted to TAMU Datathon Fall 2025!`;
+export const accepted_title = `Congratulations on being accepted to TAMU Datathon ${eventSeason} ${eventYear}!`;
 
 export const accepted_content = `
 <!doctype html>
@@ -2331,9 +2334,9 @@ neue,helvetica,arial,sans-serif">TAMU DATATHON</span></span></strong></span>
                                         style="font-size:17px"><span
                                           style="font-family:lato,helvetica neue,helvetica,arial,sans-serif"><span
                                             style="color:#555555"><b>Congratulations!</b><br> We’re excited to inform you that
-                                            you’ve been accepted to the TAMU Datathon Fall 2025! Your
+                                            you’ve been accepted to the TAMU Datathon ${eventSeason} ${eventYear}! Your
                                             application truly impressed us, and we can’t wait to see you at the <b>MSC 2300</b> on
-                                            <b>November 8-9, 2025</b>.
+                                            <b>April 11th ${eventYear}</b>.
                                             <br>
                                             <br>
                                             <b>What's Next?</b>
@@ -3011,7 +3014,7 @@ neue,helvetica,arial,sans-serif">TAMU DATATHON</span></span></strong></span>
 <![endif]-->
 <!--[if mso]><td valign="top" width="600" style="width:600px;">
 <![endif]-->
-<table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%;min-width:100%;" width="100%" class="mcnTextContentContainer"><tbody><tr><td valign="top" class="mcnTextContent" style="padding:0px 18px 9px;color:#FFFFFF;text-align:left;"> <span style="font-size:17px"><span style="font-family:lato,helvetica neue,helvetica,arial,sans-serif"><span style="color:#555555">Thank you for your application to the TAMU Datathon Fall 2025 and the effort you put into it. While we were
+<table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%;min-width:100%;" width="100%" class="mcnTextContentContainer"><tbody><tr><td valign="top" class="mcnTextContent" style="padding:0px 18px 9px;color:#FFFFFF;text-align:left;"> <span style="font-size:17px"><span style="font-family:lato,helvetica neue,helvetica,arial,sans-serif"><span style="color:#555555">Thank you for your application to the TAMU Datathon ${eventSeason} ${eventYear} and the effort you put into it. While we were
 impressed by your submission, we regret to inform you that we are unable to offer an acceptance for this round.</span></span></span>
 </td></tr></tbody></table>
 <!--[if mso]>

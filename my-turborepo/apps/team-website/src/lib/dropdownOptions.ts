@@ -479,7 +479,7 @@ export const HEARD_ABOUT_OPTIONS = [
   { value: "ENGR Newsletter", label: "From the TAMU Engineering Newsletter" },
   { value: "MLH", label: "Major League Hacking (MLH)" },
   { value: "Attended Before", label: "I've attended TAMU Datathon before" },
-  { value: "Other", label: "Other" },
+  // { value: "Other", label: "Other" },
 ];
 
 export const SHIRT_SIZES = [
@@ -501,5 +501,5 @@ export const DIETARY_RESTRICTIONS = [
   { value: "Lactose Intolerant", label: "Lactose Intolerant" },
   { value: "Nut Allergy", label: "Nut Allergy" },
   { value: "Shellfish Allergy", label: "Shellfish Allergy" },
-  { value: "Other", label: "Other" },
+  // { value: "Other", label: "Other" },
 ];
