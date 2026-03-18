@@ -10,7 +10,10 @@ from google.oauth2.service_account import Credentials
 
 root_dir = Path(__file__).resolve().parent.parent.parent.parent
 dotenv_path = root_dir / '.env'
-load_dotenv(dotenv_path=dotenv_path)
+if dotenv_path.exists():
+    load_dotenv(dotenv_path=dotenv_path)
+else:
+    load_dotenv()
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID"))
