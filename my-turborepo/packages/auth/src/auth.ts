@@ -7,6 +7,13 @@ import { env } from "../env";
 import { expo } from "@better-auth/expo";
 import * as authSchema from "@vanni/db/auth-schema";
 
+//Regex for @tamu.edu emails
+const TAMU_EMAIL_REGEX = /^[^\s@]+@tamu\.edu$/i;
+
+function isAllowedTamuEmail(email: unknown): boolean {
+    return typeof email === "string" && TAMU_EMAIL_REGEX.test(email);
+}
+
 export const config = {
     database: drizzleAdapter(db, {
         provider: "pg",
@@ -18,6 +25,32 @@ export const config = {
         }
     }),
     secret: env.AUTH_SECRET,
+    databaseHooks: {
+        user: {
+            create: { //Block new account creation if the email is not a @tamu.edu email
+                before: async (user) => {
+                    if (!isAllowedTamuEmail(user.email)) {
+                        return false;
+                    }
+                },
+            },
+        },
+        session: { //blocks any existing non-TAMU users
+            create: {
+                before: async (session, endpointContext) => {
+                    const authContext = endpointContext?.context;
+                    if (!authContext) {
+                        return false;
+                    }
+
+                    const user = await authContext.internalAdapter.findUserById(session.userId);
+                    if (!user || !isAllowedTamuEmail(user.email)) {
+                        return false;
+                    }
+                },
+            },
+        },
+    },
     plugins: [
         oAuthProxy({
             // Use the production URL for the OAuth provider callback,
