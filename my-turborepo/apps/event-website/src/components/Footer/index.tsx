@@ -14,7 +14,7 @@ const Footer = () => {
             src="/images/bearfooter.gif"
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute -top-20 -right-4 z-20 w-[12rem] md:-top-36 md:-right-6 md:w-[18rem] lg:-top-44 lg:-right-12 lg:w-[28rem]"
+            className="pointer-events-none absolute -top-[4.75rem] -right-4 z-20 w-[12rem] md:-top-36 md:-right-6 md:w-[18rem] lg:-top-44 lg:-right-8 lg:w-[28rem]"
             width={448}
             height={448}
             unoptimized
