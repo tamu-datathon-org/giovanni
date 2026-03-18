@@ -17,6 +17,7 @@ CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID"))
 SHEET_ID = os.getenv("GOOGLE_SHEET_ID")
 SERVICE_ACCOUNT_EMAIL = os.getenv("GOOGLE_SERVICE_ACCOUNT_EMAIL")
 PRIVATE_KEY = os.getenv("GOOGLE_PRIVATE_KEY").replace("\\n", "\n")
+PING_ROLE_ID = os.getenv("DISCORD_PING_ROLE_ID")  # set to a role ID, or leave unset to ping @everyone
 EVENT_TZ = pytz.timezone("America/Chicago")
 
 def parse_dt(val):
@@ -47,21 +48,31 @@ def get_sheet_events():
 def build_message(event):
     title = (str(event.get("title") or "Untitled")).strip()
     location = event.get("location")
+    start_time = event.get("startTime")
     end_time = event.get("endTime")
-    category = (str(event.get("category") or "")).strip()
 
-    lines = [f"{title} is starting now!"]
+    ping = f"<@&{PING_ROLE_ID}>" if PING_ROLE_ID else "@everyone"
+    lines = [f"{ping} **{title}** is starting in 10 minutes!"]
     if location:
         lines.append(f"Location: {location}")
-    if end_time:
+
+    time_str = None
+    if start_time and end_time:
         try:
-            dt = parse_dt(end_time)
-            dt = EVENT_TZ.localize(dt)
-            lines.append(f"Ends at: {dt.strftime('%I:%M %p %Z')}")
+            start_dt = EVENT_TZ.localize(parse_dt(start_time))
+            end_dt = EVENT_TZ.localize(parse_dt(end_time))
+            time_str = f"Time: {start_dt.strftime('%I:%M %p')} – {end_dt.strftime('%I:%M %p %Z')}"
         except:
             pass
-    if category:
-        lines.append(f"Category: {category.title()}")
+    elif end_time:
+        try:
+            end_dt = EVENT_TZ.localize(parse_dt(end_time))
+            time_str = f"Ends at: {end_dt.strftime('%I:%M %p %Z')}"
+        except:
+            pass
+    if time_str:
+        lines.append(time_str)
+
     return "\n".join(lines)
 
 class MyClient(discord.Client):
@@ -94,8 +105,12 @@ class MyClient(discord.Client):
                     start_dt = EVENT_TZ.localize(start_dt)
 
                     delta = (start_dt.astimezone(timezone.utc) - now).total_seconds()
-                    if -30 < delta <= 0 and event_id not in self.announced:
-                        await channel.send(build_message(event))
+                    if 570 < delta <= 600 and event_id not in self.announced:
+                        if PING_ROLE_ID:
+                            mentions = discord.AllowedMentions(roles=True)
+                        else:
+                            mentions = discord.AllowedMentions(everyone=True)
+                        await channel.send(build_message(event), allowed_mentions=mentions)
                         self.announced.add(event_id)
                         print(f"Announced: {event.get('title')}")
 
