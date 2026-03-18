@@ -10,6 +10,15 @@ const Footer = () => {
   return (
     <footer className="relative z-50 overflow-x-clip overflow-y-visible pt-12 md:pt-16 lg:pt-20 bg-[#F0CF91]">
     <div className="pointer-events-none absolute inset-x-0 -top-40 bottom-0 bg-[url(/images/footer_background.svg)] bg-no-repeat bg-top bg-[length:100%_180%]" />
+        <Image
+            src="/images/bearfooter.gif"
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-40 -right-6 z-20 w-[18rem] md:-top-44 md:-right-8 md:w-[24rem] lg:-top-48 lg:-right-12 lg:w-[32rem]"
+            width={448}
+            height={448}
+            unoptimized
+        />
     <div className="relative z-10 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
