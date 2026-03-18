@@ -8,47 +8,47 @@ const Footer = () => {
   const { toast } = useToast();
 //F0CF91
   return (
-    <footer className="relative z-50 overflow-x-clip overflow-y-visible pt-12 md:pt-16 lg:pt-20 bg-[#F0CF91]">
-    <div className="pointer-events-none absolute inset-x-0 -top-40 bottom-0 bg-[url(/images/footer_background.svg)] bg-no-repeat bg-top bg-[length:100%_180%]" />
+    <footer className="relative z-50 overflow-x-clip overflow-y-visible pt-6 md:pt-12 lg:pt-16 pb-4 md:pb-6 bg-[#F0CF91]">
+    <div className="pointer-events-none absolute inset-x-0 top-0 md:-top-40 bottom-0 bg-[#4C321B] md:bg-transparent md:bg-[url(/images/footer_background.svg)] md:bg-no-repeat md:bg-top md:bg-[length:100%_180%]" />
         <Image
             src="/images/bearfooter.gif"
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute -top-40 -right-6 z-20 w-[18rem] md:-top-44 md:-right-8 md:w-[24rem] lg:-top-48 lg:-right-12 lg:w-[32rem]"
+            className="pointer-events-none absolute -top-20 -right-4 z-20 w-[12rem] md:-top-36 md:-right-6 md:w-[18rem] lg:-top-44 lg:-right-12 lg:w-[28rem]"
             width={448}
             height={448}
             unoptimized
         />
     <div className="relative z-10 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2 md:gap-6 md:grid-cols-2 lg:gap-8 lg:grid-cols-4">
             <div className="flex flex-col items-center md:items-start">
-                <Link href="/" className="mb-6 inline-block">
+                <Link href="/" className="mb-3 md:mb-6 inline-block">
                 <Image
                     src="/images/td-logos/logo/logoTD.png"
                     alt="logo"
-                    className="w-[128px] mx-auto dark:hidden"
+                    className="w-[80px] mx-auto dark:hidden"
                     width={100}
                     height={100}
                 />
                 <Image
                     src="/images/td-logos/logo/logoTD.png"
                     alt="logo"
-                    className="hidden w-[200px] md:w-[150px] lg:w-[128px] mx-auto dark:block"
+                    className="hidden w-[120px] md:w-[100px] lg:w-[100px] mx-auto dark:block"
                     width={100}
                     height={100}
                 />
                 </Link>
-                <h3 className="text-white">TAMU Datathon</h3>
-                <p className="mb-6 text-center text-sm text-gray-400 md:text-left">
+                <h3 className="text-xs md:text-sm text-white">TAMU Datathon</h3>
+                <p className="mb-3 md:mb-6 text-center text-[10px] md:text-xs text-gray-400 md:text-left">
                 change learning with data
                 </p>
             </div>
 
-            <div className="flex flex-col items-center space-y-4 md:items-start">
-                <h3 className="text-lg font-semibold">Contacts</h3>
+            <div className="flex flex-col items-center space-y-3 md:space-y-4 md:items-start">
+                <h3 className="text-xs md:text-sm font-semibold">Contacts</h3>
                 {/* Contact for sponsors */}
-                <div>
+                <div className="text-xs md:text-sm">
                 Looking to sponsor? <br />
                 <span className="flex items-center space-x-2">
                     <a
@@ -72,7 +72,7 @@ const Footer = () => {
                 </span>
                 </div>
                 {/* Contact for questions */}
-                <div>
+                <div className="text-xs md:text-sm">
                 Any questions? <br />
                 <span className="flex items-center space-x-2">
                     <a
@@ -95,7 +95,7 @@ const Footer = () => {
                     </button>
                 </span>
                 </div>
-                <div>
+                <div className="text-xs md:text-sm">
                 Review the{" "}
                 <a
                     href="http://mlh.io/code-of-conduct"
@@ -106,24 +106,24 @@ const Footer = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col items-center space-y-4 md:items-start">
-                <h3 className="text-lg font-semibold">Quick Links</h3>
+            <div className="flex flex-col items-center space-y-3 md:space-y-4 md:items-start">
+                <h3 className="text-xs md:text-sm font-semibold">Quick Links</h3>
                 <Link
                 href="/#about"
-                className="text-gray-400 hover:text-white"
+                className="text-xs md:text-sm text-gray-400 hover:text-white"
                 >
                 About Us
                 </Link>
                 <Link
                 href="/#contact"
-                className="text-gray-400 hover:text-white"
+                className="text-xs md:text-sm text-gray-400 hover:text-white"
                 >
                 Contact
                 </Link>
             </div>
 
-            <div className="flex flex-col items-center space-y-4 md:items-start">
-                <h3 className="text-lg font-semibold">Follow Us</h3>
+            <div className="flex flex-col items-center space-y-3 md:space-y-4 md:items-start">
+                <h3 className="text-xs md:text-sm font-semibold">Follow Us</h3>
 
                 <div className="flex space-x-4">
                 <a
@@ -195,8 +195,8 @@ const Footer = () => {
             </div>
             </div>
 
-            <div className="mt-6 border-t border-white/40 pb-4 pt-6">
-            <p className="text-center text-xs text-gray-400">
+            <div className="mt-4 md:mt-6 border-t border-white/40 pb-2 md:pb-4 pt-4 md:pt-6">
+            <p className="text-center text-[10px] md:text-xs text-gray-400">
                 © {new Date().getFullYear()} TAMU Datathon. All rights
                 reserved.
             </p>
