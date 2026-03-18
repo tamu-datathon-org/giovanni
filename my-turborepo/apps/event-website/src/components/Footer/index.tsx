@@ -21,7 +21,7 @@ const Footer = () => {
         />
     <div className="relative z-10 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
-            <div className="grid grid-cols-2 gap-2 md:gap-6 md:grid-cols-2 lg:gap-8 lg:grid-cols-4">
+            <div className="font-chilanka grid grid-cols-2 gap-2 md:gap-6 md:grid-cols-2 lg:gap-8 lg:grid-cols-4">
             <div className="flex flex-col items-center md:items-start">
                 <Link href="/" className="mb-3 md:mb-6 inline-block">
                 <Image
