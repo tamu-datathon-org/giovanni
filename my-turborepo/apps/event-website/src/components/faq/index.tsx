@@ -8,7 +8,7 @@ interface FaqItem { question: string; answer: string }
 
 const ITEMS: FaqItem[] = [
   { question: "What is TAMU Datathon Lite?", answer: "TD Lite is a smaller, more **beginner** friendly version of our main event. It's a **one-day event**, but it will have everything Datathon normally has including free food, swag, workshops, and prizes!" },
-  { question: "Where is the event?", answer: "The event takes place at the **ILCB**. Once you enter the building, organizers will be there to guide you to the main room! If you have any questions regarding transportation or parking, please **reach out to us on Discord.**" },
+  { question: "Where is the event?", answer: "The event takes place at **Peterson**. Once you enter the building, organizers will be there to guide you to the main room! If you have any questions regarding transportation or parking, please **reach out to us on Discord.**" },
   { question: "Why should I come?", answer: "**It is completely free!** Learn Data Science with interactive challenges and prizes. If you struggle to start to learn, TDLite offers a **beginner-focused** space to compete in. We have mentors to help and **free swag/food.**" },
   { question: "How do I sign up?", answer: "Head over to https://tamudatathon.org/apply to get started! Admission decisions will be released shortly after registration closes." },
   { question: "How much do I need to know?", answer: "If you are **new to data science**, TD Lite is the perfect time and place to learn. We will provide **introductory workshops and mentors** to guide you throughout the competition. We are committed to helping you build something you can be proud of!" },
@@ -25,7 +25,7 @@ export default function FAQ() {
     <section
       aria-label="Frequently Asked Questions"
       //clipping/overflow happens here, might need to change in future depending on other components
-      className="relative z-30 w-full overflow-y-visible [overflow-x:clip] bg-[#FAE19D] py-16 sm:py-24" //yellow background/outer faq container
+      className="relative z-30 w-full overflow-y-visible [overflow-x:clip] bg-[#FAE19D] py-32 sm:py-24" //yellow background/outer faq container
       id="faq"
     >
       {/* outer brown rec section size*/}
