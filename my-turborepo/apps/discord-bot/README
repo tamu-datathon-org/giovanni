@@ -1,4 +1,11 @@
-This bot automatically posts announcements in Discord when events from the schedule spreadsheet are about to start. To run it, activate the virtual environment with venv\Scripts\activate (Windows) 
-or source venv/bin/activate (Mac), then run pip install -r requirements.txt, navigate into the src folder, and run python main.py. 
-Make sure your .env file has all the required credentials — ask a teammate for the values. 
-To add or edit events just update the Google Sheet directly, the bot checks it every 30 seconds. Press Ctrl+C to stop the bot.
+This bot automatically posts announcements in Discord when events from the schedule spreadsheet are about to start. To run it, activate the virtual environment with venv\Scripts\activate (Windows) or source venv/bin/activate (Mac), 
+then run pip install -r requirements.txt, navigate into the src folder, and run python main.py. Make sure your .env file has all the required credentials — ask a teammate for the values. To add or edit events just update the 
+Google Sheet directly, the bot checks it every 30 seconds. Press Ctrl+C to stop the bot.
+To run it with Docker instead, first make sure Docker is installed. Create a file called Dockerfile in the discord-bot folder with the following contents:
+FROM python:3.13-slim
+WORKDIR /app
+COPY apps/discord-bot/src/requirements.txt .
+RUN pip install -r requirements.txt
+COPY apps/discord-bot/src/main.py .
+CMD ["python", "main.py"]
+Then build the image with docker build -t datathon-bot . and run it with docker run --env-file .env datathon-bot. Make sure your .env file is in the same folder where you run the command.
