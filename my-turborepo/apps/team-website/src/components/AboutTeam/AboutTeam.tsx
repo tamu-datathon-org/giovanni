@@ -18,7 +18,7 @@ const AboutTeam = () => {
     {
       teamMembers: [
         {
-          image: `${imageBaseUrl}/dayo.jpg`,
+          image: `${imageBaseUrl}/dayo.JPG`,
           name: "Oluwadayo Bamgbelu",
           position: "President",
           socialLinks: [
@@ -34,7 +34,7 @@ const AboutTeam = () => {
         },
 
         {
-          image: `${imageBaseUrl}/mallika.jpg`,
+          image: `${imageBaseUrl}/mallika.JPG`,
           name: "Mallika Parajuli",
           position: "Vice-President",
           socialLinks: [
@@ -50,7 +50,7 @@ const AboutTeam = () => {
     {
       teamMembers: [
         {
-          image: `${imageBaseUrl}/rishab.jpg`,
+          image: `${imageBaseUrl}/rishab.JPG`,
           name: "Rishab Jadhav",
           position: "Challenges Lead",
           socialLinks: [
@@ -74,7 +74,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/nishit.jpg`,
+          image: `${imageBaseUrl}/nishit.JPG`,
           name: "Nishit Aggarwal",
           position: "Challenges",
           socialLinks: [
@@ -86,7 +86,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/abhinav.jpg`,
+          image: `${imageBaseUrl}/abhinav.JPG`,
           name: "Abhinav Vurakaranam",
           position: "Challenges",
           socialLinks: [
@@ -101,7 +101,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/ali.jpg`,
+          image: `${imageBaseUrl}/ali.JPG`,
           name: "Ali Abouelazam",
           position: "Challenges",
           socialLinks: [
@@ -112,7 +112,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/hannah.jpg`,
+          image: `${imageBaseUrl}/hannah.JPG`,
           name: "Hannah",
           position: "Challenges",
           socialLinks: [
@@ -123,7 +123,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/dylan.jpg`,
+          image: `${imageBaseUrl}/dylan.JPG`,
           name: "Dylan Bago",
           position: "Challenges",
           socialLinks: [
@@ -134,7 +134,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/pranav2.jpg`,
+          image: `${imageBaseUrl}/pranav2.JPG`,
           name: "Pranav Nair",
           position: "Challenges",
           socialLinks: [
@@ -163,7 +163,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/layla.jpg`,
+          image: `${imageBaseUrl}/layla.JPG`,
           name: "Layla Serrano",
           position: "Dev",
           socialLinks: [
@@ -175,7 +175,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/michael.jpg`,
+          image: `${imageBaseUrl}/michael.JPG`,
           name: "Michael Rao",
           position: "Dev",
           socialLinks: [
@@ -186,7 +186,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/zayd.jpg`,
+          image: `${imageBaseUrl}/zayd.JPG`,
           name: "Zayd",
           position: "Dev",
           socialLinks: [
@@ -197,7 +197,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/angela.jpg`,
+          image: `${imageBaseUrl}/angela.JPG`,
           name: "Angela Yue",
           position: "Dev",
           socialLinks: [
@@ -216,7 +216,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/aarav.jpg`,
+          image: `${imageBaseUrl}/aarav.JPG`,
           name: "Aarav ",
           position: "Dev",
           socialLinks: [
@@ -232,7 +232,7 @@ const AboutTeam = () => {
     {
       teamMembers: [
         {
-          image: `${imageBaseUrl}/shreyas.jpg`,
+          image: `${imageBaseUrl}/shreyas.JPG`,
           name: "Shreyas Kumar",
           position: "Outreach Lead",
           socialLinks: [
@@ -244,12 +244,12 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/roa.jpg`,
+          image: `${imageBaseUrl}/roa.JPG`,
           name: "Roa Elsaigh",
           position: "Outreach",
         },
         {
-          image: `${imageBaseUrl}/johnathan2.jpg`,
+          image: `${imageBaseUrl}/johnathan2.JPG`,
           name: "Johnathan",
           position: "Outreach",
           socialLinks: [
@@ -260,7 +260,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/sharon.jpg`,
+          image: `${imageBaseUrl}/sharon.JPG`,
           name: "Sharon",
           position: "Outreach",
           socialLinks: [  
@@ -287,7 +287,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/dakota.jpg`,
+          image: `${imageBaseUrl}/dakota.JPG`,
           name: "Dakota Pound",
           position: "Logistics",
           socialLinks: [
@@ -299,12 +299,12 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/ragd.jpg`,
+          image: `${imageBaseUrl}/ragd.JPG`,
           name: "Ragd Elsaigh",
           position: "Logistics",
         },
         {
-          image: `${imageBaseUrl}/trey.jpg`,
+          image: `${imageBaseUrl}/trey.JPG`,
           name: "Trey Schaider",
           position: "Logistics",
           socialLinks: [
@@ -315,7 +315,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/pragya.jpg`,
+          image: `${imageBaseUrl}/pragya.JPG`,
           name: "Pragya",
           position: "Logistics",
           socialLinks: [
@@ -326,7 +326,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/ryan.jpg`,
+          image: `${imageBaseUrl}/ryan.JPG`,
           name: "Ryan",
           position: "Logistics",
           socialLinks: [
@@ -337,7 +337,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/ram.jpg`,
+          image: `${imageBaseUrl}/ram.JPG`,
           name: "Ram Pillai",
           position: "Logistics",
           socialLinks: [
@@ -354,7 +354,7 @@ const AboutTeam = () => {
     {
       teamMembers: [
         {
-          image: `${imageBaseUrl}/kendall.jpg`,
+          image: `${imageBaseUrl}/kendall.JPG`,
           name: "Kendall Nguyen",
           position: "Design Lead",
         },
@@ -376,7 +376,7 @@ const AboutTeam = () => {
           position: "Design",
         },
         {
-          image: `${imageBaseUrl}/jessica.jpg`,
+          image: `${imageBaseUrl}/jessica.JPG`,
           name: "Jessica Tran",
           position: "Design",
           socialLinks: [
@@ -387,7 +387,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/naomi.jpg`,
+          image: `${imageBaseUrl}/naomi.JPG`,
           name: "Naomi Dao",
           position: "Design",
           socialLinks: [
