@@ -45,6 +45,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({
           alt={name}
           fill
           className="scale-125 object-cover"
+          
         />
       </div>
       <h3 className="h-auto w-full text-wrap text-sm font-semibold text-white lg:text-xl">
