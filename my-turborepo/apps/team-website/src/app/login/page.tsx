@@ -3,10 +3,10 @@ import LoginButton from "../_components/auth/login_button";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub, FaWindows } from "react-icons/fa";
 import { toast } from "~/hooks/use-toast";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginContent() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? undefined;
   const message = searchParams.get("message") ?? undefined;
@@ -89,5 +89,13 @@ export default function LoginPage() {
           />
         </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginContent />
+    </Suspense>
   );
 }
