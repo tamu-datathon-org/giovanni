@@ -1,119 +1,121 @@
 import Image from "next/image";
 
-import "./prizes.css";
-
 const PRIZE_FRAME_SVG = "/images/prizes/frame.svg";
 const RIBBON_SVG = "/images/prizes/ribbon.svg";
 const RIBBON_SVG_ALT = "/images/prizes/ribbon-alt.svg";
 const PLANT_SIDE = "/images/prizes/plant-side.png";
 
 const prizes = [
-  {
-    category: "Best Challenge",
-    name: "PRIZE NAME HERE",
-    showRibbon: true,
-    ribbonRight: true,
-  },
-  {
-    category: "Best Challenge",
-    name: "PRIZE NAME HERE",
-    showRibbon: true,
-    ribbonRight: false,
-  },
-  {
-    category: "Best Challenge",
-    name: "PRIZE NAME HERE",
-    showRibbon: true,
-    ribbonRight: true,
-  },
-  {
-    category: "Best Challenge",
-    name: "PRIZE NAME HERE",
-    showRibbon: true,
-    ribbonRight: false,
-  },
+  { category: "Best Challenge", name: "PRIZE NAME HERE", ribbonRight: true },
+  { category: "Best Challenge", name: "PRIZE NAME HERE", ribbonRight: false },
+  { category: "Best Challenge", name: "PRIZE NAME HERE", ribbonRight: true },
+  { category: "Best Challenge", name: "PRIZE NAME HERE", ribbonRight: false },
 ];
 
 export default function Prizes() {
+  const base = "clamp(105px, 26vw, 440px)";
+
   return (
     <section
-      aria-label="Prizes"
-      className="prizes-section relative flex flex-col items-center overflow-x-clip bg-[#f0cf91] px-1 py-8 sm:py-10 md:px-2 md:py-16 lg:px-2 xl:px-2"
       id="prizes"
+      aria-label="Prizes"
+      className="relative z-10 flex flex-col items-center overflow-visible bg-[#f0cf91] px-1 py-8 sm:py-10 md:px-2 md:py-14"
+      style={{
+        ["--prize-base" as string]: base,
+      }}
     >
-      {/* Right plant: hangs from above section, right side */}
+      {/* Bottom-left hanging basket (half visible) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={PLANT_SIDE}
         alt=""
-        className="prizes-section__plant-right"
         aria-hidden
-      />
-      {/* Left plant: lower in section, left side, mirrored */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={PLANT_SIDE}
-        alt=""
-        className="prizes-section__plant-left"
-        aria-hidden
+        className="pointer-events-none absolute z-0 h-auto w-[calc(var(--prize-base)*698/491*0.85)] scale-x-[-1] object-contain max-[767px]:w-[calc(var(--prize-base)*698/491*0.65)]"
+        style={{
+          top: "calc(var(--prize-base) * 700 / 491)",
+          left: "calc(var(--prize-base) * -305 / 491)",
+        }}
       />
 
-      <h2 className="prizes-section__title relative z-10 font-darumadrop-one text-center text-[#4c321b] font-normal leading-none tracking-wide">
+      <h2
+        className="font-darumadrop-one relative z-10 text-center leading-none tracking-wide text-[#4c321b]"
+        style={{ fontSize: "calc(var(--prize-base) * 0.1955)" }}
+      >
         PRIZES
       </h2>
 
-      <div className="prizes-section__content relative z-10 mx-auto w-full flex flex-col">
+      <div
+        className="relative z-10 mt-4 flex w-full max-w-[1164px] flex-col"
+        style={{ marginTop: "calc(var(--prize-base) * 0.12)" }}
+      >
         {prizes.map((prize, i) => {
           const imageLeft = i % 2 === 0;
           const ribbonSrc = prize.ribbonRight ? RIBBON_SVG : RIBBON_SVG_ALT;
+          const rowGap =
+            i === 0
+              ? "0"
+              : i === 2
+                ? "calc(var(--prize-base) * 0.44)"
+                : "calc(var(--prize-base) * 0.40)";
+
           return (
             <div
               key={i}
-              data-row={i + 1}
-              className={`prizes-section__row ${imageLeft ? "prizes-section__row--image-left" : "prizes-section__row--image-right"}`}
+              className={`flex w-full items-center gap-[calc(var(--prize-base)*0.15)] ${imageLeft ? "justify-center" : "flex-row-reverse justify-center"}`}
+              style={{ marginTop: rowGap }}
             >
-              <div className="prizes-section__plate">
+              <div
+                className="relative shrink-0"
+                style={{
+                  width: "var(--prize-base)",
+                  height: "var(--prize-base)",
+                }}
+              >
                 <Image
                   src={PRIZE_FRAME_SVG}
                   alt=""
                   fill
                   className="object-contain"
-                  sizes="(max-width: 767px) 160px, 307px"
                   unoptimized
                 />
               </div>
 
-              <div className="prizes-section__copy">
-                {prize.showRibbon && (
-                  <div className="prizes-section__ribbon">
-                    <Image
-                      src={ribbonSrc}
-                      alt=""
-                      fill
-                      className="object-contain object-left"
-                      sizes="(max-width: 767px) 160px, 254px"
-                      unoptimized
-                    />
-                    <span className="prizes-section__ribbon-label font-chilanka font-normal text-[#4c321b]">
-                      {prize.category}
-                    </span>
-                  </div>
-                )}
-                <p className="prizes-section__prize-name font-darumadrop-one text-left font-normal leading-tight text-[#4c321b]">
-                  {(() => {
-                    const lastSpace = prize.name.lastIndexOf(" ");
-                    const line1 = lastSpace >= 0 ? prize.name.slice(0, lastSpace) : prize.name;
-                    const line2 = lastSpace >= 0 ? prize.name.slice(lastSpace + 1) : "";
-                    return line2 ? (
-                      <>
-                        {line1}
-                        <br />
-                        {line2}
-                      </>
-                    ) : (
-                      line1
-                    );
-                  })()}
+              <div
+                className={`flex min-w-0 shrink-0 flex-col gap-[calc(var(--prize-base)*0.08)] ${imageLeft ? "items-start" : "items-end"}`}
+              >
+                <div
+                  className="relative shrink-0"
+                  style={{
+                    width: "calc(var(--prize-base) * 0.8289 * 1.14)",
+                    height: "calc(var(--prize-base) * 0.1365 * 1.14)",
+                  }}
+                >
+                  <Image
+                    src={ribbonSrc}
+                    alt=""
+                    fill
+                    className="object-contain"
+                    unoptimized
+                  />
+                  <span
+                    className="font-chilanka absolute inset-0 flex items-center justify-center whitespace-nowrap px-2 text-center leading-none text-[#4c321b] md:top-3 md:-left-12 top-1 -left-6"
+                    style={{
+                      fontSize: "calc(var(--prize-base) * 0.0733 * 1.14)",
+                    }}
+                  >
+                    {prize.category}
+                  </span>
+                </div>
+
+                <p
+                  className={`${imageLeft ? "text-left" : "text-right"} font-darumadrop-one leading-[0.95] text-[#4c321b]`}
+                  style={{
+                    fontSize: "calc(var(--prize-base) * 0.1303 * 1.14)",
+                  }}
+                >
+                  PRIZE NAME
+                  <br />
+                  HERE
                 </p>
               </div>
             </div>

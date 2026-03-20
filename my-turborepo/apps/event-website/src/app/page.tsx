@@ -31,7 +31,8 @@ export default function Home() {
       <ScrollUp />
       <Hero />
       <Location />
-      <Prizes />
+      {/* <Prizes /> */}
+      <div className="h-[100px] bg-[#f0cf91]" />
       <FAQ />
     </>
   );
