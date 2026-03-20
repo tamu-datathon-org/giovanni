@@ -24,8 +24,6 @@ export default function Prizes() {
         ["--prize-base" as string]: base,
       }}
     >
-
-
       {/* Bottom-left hanging basket (half visible) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -33,11 +31,14 @@ export default function Prizes() {
         alt=""
         aria-hidden
         className="pointer-events-none absolute z-0 h-auto w-[calc(var(--prize-base)*698/491*0.85)] scale-x-[-1] object-contain max-[767px]:w-[calc(var(--prize-base)*698/491*0.65)]"
-        style={{ top: "calc(var(--prize-base) * 700 / 491)", left: "calc(var(--prize-base) * -305 / 491)" }}
+        style={{
+          top: "calc(var(--prize-base) * 700 / 491)",
+          left: "calc(var(--prize-base) * -305 / 491)",
+        }}
       />
 
       <h2
-        className="relative z-10 text-center font-darumadrop-one leading-none tracking-wide text-[#4c321b]"
+        className="font-darumadrop-one relative z-10 text-center leading-none tracking-wide text-[#4c321b]"
         style={{ fontSize: "calc(var(--prize-base) * 0.1955)" }}
       >
         PRIZES
@@ -50,7 +51,12 @@ export default function Prizes() {
         {prizes.map((prize, i) => {
           const imageLeft = i % 2 === 0;
           const ribbonSrc = prize.ribbonRight ? RIBBON_SVG : RIBBON_SVG_ALT;
-          const rowGap = i === 0 ? "0" : i === 2 ? "calc(var(--prize-base) * 0.44)" : "calc(var(--prize-base) * 0.40)";
+          const rowGap =
+            i === 0
+              ? "0"
+              : i === 2
+                ? "calc(var(--prize-base) * 0.44)"
+                : "calc(var(--prize-base) * 0.40)";
 
           return (
             <div
@@ -60,12 +66,23 @@ export default function Prizes() {
             >
               <div
                 className="relative shrink-0"
-                style={{ width: "var(--prize-base)", height: "var(--prize-base)" }}
+                style={{
+                  width: "var(--prize-base)",
+                  height: "var(--prize-base)",
+                }}
               >
-                <Image src={PRIZE_FRAME_SVG} alt="" fill className="object-contain" unoptimized />
+                <Image
+                  src={PRIZE_FRAME_SVG}
+                  alt=""
+                  fill
+                  className="object-contain"
+                  unoptimized
+                />
               </div>
 
-              <div className={`flex min-w-0 shrink-0 flex-col gap-[calc(var(--prize-base)*0.08)] ${imageLeft ? "items-start" : "items-end"}`}>
+              <div
+                className={`flex min-w-0 shrink-0 flex-col gap-[calc(var(--prize-base)*0.08)] ${imageLeft ? "items-start" : "items-end"}`}
+              >
                 <div
                   className="relative shrink-0"
                   style={{
@@ -73,10 +90,18 @@ export default function Prizes() {
                     height: "calc(var(--prize-base) * 0.1365 * 1.14)",
                   }}
                 >
-                  <Image src={ribbonSrc} alt="" fill className="object-contain" unoptimized />
+                  <Image
+                    src={ribbonSrc}
+                    alt=""
+                    fill
+                    className="object-contain"
+                    unoptimized
+                  />
                   <span
-                    className="absolute inset-0 flex items-center justify-center whitespace-nowrap px-2 text-center font-chilanka leading-none text-[#4c321b]"
-                    style={{ fontSize: "calc(var(--prize-base) * 0.0733 * 1.14)" }}
+                    className="font-chilanka absolute inset-0 flex items-center justify-center whitespace-nowrap px-2 text-center leading-none text-[#4c321b] md:top-3 md:-left-12 top-1 -left-6"
+                    style={{
+                      fontSize: "calc(var(--prize-base) * 0.0733 * 1.14)",
+                    }}
                   >
                     {prize.category}
                   </span>
@@ -84,7 +109,9 @@ export default function Prizes() {
 
                 <p
                   className={`${imageLeft ? "text-left" : "text-right"} font-darumadrop-one leading-[0.95] text-[#4c321b]`}
-                  style={{ fontSize: "calc(var(--prize-base) * 0.1303 * 1.14)" }}
+                  style={{
+                    fontSize: "calc(var(--prize-base) * 0.1303 * 1.14)",
+                  }}
                 >
                   PRIZE NAME
                   <br />
