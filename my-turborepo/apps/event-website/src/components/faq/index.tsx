@@ -273,7 +273,7 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
           <button
             type="button"
             onMouseDown={handleMouseDown}
-            onClick={handleClick}
+            onMouseUp={handleClick}
             aria-expanded={isOpen}
             aria-controls={panelId}
             //adds red border for debugging button

@@ -9,7 +9,7 @@ const Footer = () => {
   const { toast } = useToast();
   //F0CF91
   return (
-    <footer className="relative z-50 overflow-x-clip overflow-y-visible bg-[#FAE19D] pb-4 pt-6 md:pb-6 md:pt-12 lg:pt-28">
+    <footer className="relative z-40 overflow-x-clip overflow-y-visible bg-[#FAE19D] pb-4 pt-6 md:pb-6 md:pt-12 lg:pt-28">
       <div className="pointer-events-none absolute inset-x-0 bottom-0 top-0 bg-[#4C321B] md:-top-40 md:bg-transparent md:bg-[url(/images/footer_background.svg)] md:bg-[length:100%_180%] md:bg-top md:bg-no-repeat" />
       <Image
         src="/images/bearfooter.gif"
@@ -26,14 +26,14 @@ const Footer = () => {
             <div className="flex flex-col items-center md:items-start border-t border-white/20 pt-4 first:border-t-0 first:pt-0 sm:border-t-0 sm:pt-0">
               <Link href="/" className="mb-3 inline-block md:mb-6">
                 <Image
-                  src="/images/td-logos/logo/logoTD.png"
+                  src="/images/tdlite2026.png"
                   alt="logo"
                   className="mx-auto w-[80px] dark:hidden"
                   width={100}
                   height={100}
                 />
                 <Image
-                  src="/images/td-logos/logo/logoTD.png"
+                  src="/images/tdlite2026.png"
                   alt="logo"
                   className="mx-auto hidden w-[120px] dark:block md:w-[100px] lg:w-[100px]"
                   width={100}

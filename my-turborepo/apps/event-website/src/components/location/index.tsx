@@ -24,7 +24,7 @@ export default function Location() {
     <section
       id="location"
       aria-label="Event Info"
-      className="relative z-50 flex justify-center overflow-visible bg-[#f0cf91] px-2 py-6 md:py-12"
+      className="relative z-40 flex justify-center overflow-visible bg-[#f0cf91] px-2 py-6 md:py-12"
     >
       <div className="relative w-[min(96vw,980px)]">
         <div className="relative z-20 overflow-visible rounded-[18px] border-[3px] border-[#8d6e5e] bg-[#966952] px-3 pb-28 pt-10 sm:px-4 sm:pb-32 md:pb-44 md:pt-12">
@@ -64,8 +64,8 @@ export default function Location() {
           </div>
 
           <div className="relative z-20 mt-[72px] px-8 sm:mt-[86px] sm:px-12 md:mt-[96px] md:px-16">
-            <div className="mx-auto flex w-[70%] max-w-[420px] items-center justify-center rounded-[30px] border-[5px] border-[#401c0f] bg-[#663c26] p-[4px]">
-              <div className="flex h-full w-full items-center justify-center rounded-[24px] border-[3px] border-[#966952] bg-[#663c26] py-2">
+            <div className="mx-auto flex min-w-fit w-[70%] max-w-[420px] items-center justify-center rounded-[30px] border-[5px] border-[#401c0f] bg-[#663c26] p-[4px]">
+              <div className="flex h-full w-full items-center justify-center rounded-[24px] border-[3px] border-[#966952] bg-[#663c26] p-2">
                 <span className="font-darumadrop-one text-[34px] leading-none text-[#fae19d] sm:text-[40px]">
                   EVENT INFO
                 </span>

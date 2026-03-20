@@ -1,72 +1,63 @@
 "use client";
+
 import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-const Header = () => {
-  const pathname = usePathname();
-  const [navbarOpen, setNavbarOpen] = useState(false);
+import CafeMenuBoardContainer from "./CafeMenuBoardContainer";
 
-  const navbarToggleHandler = () => {
-    setNavbarOpen(!navbarOpen);
-  };
+function MenuButton({
+  onClick,
+  ariaExpanded,
+}: {
+  onClick: () => void;
+  ariaExpanded: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label="Open menu"
+      aria-expanded={ariaExpanded}
+      onClick={onClick}
+      className="flex items-center gap-3 rounded-2xl border-2 border-[#b4d8ee]/40 bg-[#fdf3e3] px-4 py-3 text-[#4C321B] shadow-[0_16px_40px_rgba(0,0,0,0.12)]"
+    >
+      <span className="font-darumadrop-one text-lg tracking-[0.14em]">
+        MENU
+      </span>
+      <span
+        aria-hidden
+        className="relative block h-4 w-6"
+      >
+        <span className="absolute left-0 top-0 block h-[3px] w-6 rounded-full bg-[#4C321B]" />
+        <span className="absolute left-0 top-1.5 block h-[3px] w-6 rounded-full bg-[#4C321B]" />
+        <span className="absolute left-0 top-3 block h-[3px] w-6 rounded-full bg-[#4C321B]" />
+      </span>
+    </button>
+  );
+}
 
-  const getHref = (anchor: string) => {
-    return pathname === "/" ? anchor : `/${anchor}`;
-  };
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="absolute font-anonymous top-4 left-0 right-0 z-50 w-full bg-transparent pointer-events-none">
-      <header className="flex flex-col w-fit md:w-full md:max-w-5xl ml-8 md:mx-auto rounded-2xl bg-white border-4 border-[#B4D8EE]  shadow-lg pointer-events-auto">
-        <div className="flex h-full w-full items-center justify-start md:justify-between px-6 py-3 text-[#B4D8EE]">
-          {/* Hamburger Menu Button - Left side on mobile */}
-          <button
-            onClick={navbarToggleHandler}
-            className="text-[#B4D8EE] focus:outline-none md:hidden"
-            aria-label="Toggle Menu"
-          >
-            <div className="flex h-8 w-10 flex-col justify-between">
-              <span className={`h-0.5 w-full bg-white transition-all duration-300 ${navbarOpen ? "translate-y-[9px] rotate-45" : ""}`}></span>
-              <span className={`h-0.5 w-full bg-white transition-all duration-300 ${navbarOpen ? "opacity-0" : ""}`}></span>
-              <span className={`h-0.5 w-full bg-white transition-all duration-300 ${navbarOpen ? "-translate-y-[9px] -rotate-45" : ""}`}></span>
-            </div>
-          </button>
+    <>
+      {/* Desktop: keep the menu board fixed. */}
+      <div className="hidden fixed left-4 top-16 z-50 md:block md:left-6 md:top-auto md:bottom-28">
+        <CafeMenuBoardContainer />
+      </div>
 
-          {/* Logo - Hidden on mobile, larger size */}
-          <Link href="/" className="hidden md:inline-flex h-full items-center" aria-label="Home">
-            <Image
-              src="/images/tdlite2026.png"
-              alt="logo"
-              width={500}
-              height={500}
-              className="h-10 w-auto shrink-0 drop-shadow"
-              style={{ objectFit: "contain" }}
-              priority
-              unoptimized
-            />
-          </Link>
+      {/* Mobile: collapse into a smaller toggle button. */}
+      <div className="fixed left-4 top-4 z-50 md:hidden">
+        <MenuButton
+          onClick={() => setMenuOpen((v) => !v)}
+          ariaExpanded={menuOpen}
+        />
+      </div>
 
-          {/* Desktop Navigation Links - Left aligned */}
-          <div className="hidden items-center gap-4 text-[#B4D8EE] md:flex">
-            <Link href={getHref("#location")} className="hover:text-gray-400">Location</Link>
-            <Link href={getHref("#prizes")} className="hover:text-gray-400">Prizes</Link>
-            <Link href={getHref("#faq")} className="hover:text-gray-400">FAQ</Link>
-          </div>
+      {/* Mobile: menu overlay */}
+      {menuOpen ? (
+        <div className="fixed left-4 top-16 z-50 md:hidden">
+          <CafeMenuBoardContainer onItemSelected={() => setMenuOpen(false)} />
         </div>
-
-        {/* Mobile Dropdown - Left aligned */}
-        {navbarOpen && (
-          <div className="flex flex-col items-start gap-2 rounded-b-2xl bg-white pb-4 px-6 text-[#B4D8EE] md:hidden">
-            <Link href={getHref("#location")} onClick={() => setNavbarOpen(false)} className="py-2 hover:text-gray-300">Location</Link>
-            <Link href={getHref("#prizes")} onClick={() => setNavbarOpen(false)} className="py-2 hover:text-gray-300">Prizes</Link>
-            <Link href={getHref("#faq")} onClick={() => setNavbarOpen(false)} className="py-2 hover:text-gray-300">FAQ</Link>
-
-          </div>
-        )}
-      </header>
-    </div>
+      ) : null}
+    </>
   );
-};
-
-export default Header;
+}
