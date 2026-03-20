@@ -11,7 +11,7 @@ export default function Hero(){
             <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
             <link href="https://fonts.googleapis.com/css2?family=Chilanka&family=Darumadrop+One&display=swap" rel="stylesheet"></link>
 
-            <section id="hero" className="relative min-h-screen flex bg-[url(/images/background.svg)]">
+            <section id="hero" className="relative h-[80vh] flex bg-[url(/images/background.svg)]">
                 {/* TODO: check for redundancy for the ml shit  */}
                 <div className="absolute top-0 left-0 w-[50vw] max-w-[800px]">
                     {/* napkin */}
@@ -28,14 +28,14 @@ export default function Hero(){
                         width = {0}
                         height={0}
                         alt="steam.gif"
-                        className="absolute w-full h-auto top-[20%] left-[60%] w-[30%] -translate-x-1/2"
+                        className="absolute w-full h-auto top-[10%] left-[60%] w-[30%] -translate-x-1/2"
                     />
 
 
                 </div>
 
                 {/* brown panel */}
-                <div className="absolute right-0 w-2/5 h-screen bg-[#966952] mr-[90px]">
+                <div className="absolute right-0 top-0 h-full w-2/5 bg-[#966952] mr-[90px] flex flex-col items-center justify-start pt-20 text-center">
                     <p className="font-['Darumadrop_one']  text-5xl lg:text-7xl md:text-6xl text-center text-[#FAE19D]">TAMU <br /> Datathon Lite </p>
                     <p className="font-['Chilanka'] text-3xl md:text-5xl lg:text-6xl text-center text-[#FAE19D] mt-8">
                         April 11, 2026 <br/> ----------------</p>
@@ -52,8 +52,8 @@ export default function Hero(){
                                 bg-[#FAE19D] text-[#8D6E5E]
                                 hover:bg-[#FFF5DA]
                                 transition-colors
-                                block mx-auto w-fit
-                                flex items-center justify-center
+
+
                             "
                                 >
                         APPLY
