@@ -11,9 +11,37 @@
 }
 
 /* AnonymousPro font - typewriter font */
-@font-face {
+/* @font-face {
   font-family: "anonymous";
   src: url("/fonts/AnonymousPro-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+} */
+
+@font-face {
+  font-family: "chilanka";
+  src: url("/fonts/Chilanka-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "pixelify";
+  src: url("/fonts/PixelifySans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "shadowsintolight";
+  src: url("/fonts/ShadowsIntoLight-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "darumadropone";
+  src: url("/fonts/DarumadropOne-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
