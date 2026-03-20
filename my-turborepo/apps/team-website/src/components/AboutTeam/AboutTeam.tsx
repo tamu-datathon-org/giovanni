@@ -252,11 +252,23 @@ const AboutTeam = () => {
           image: `${imageBaseUrl}/johnathan2.JPG`,
           name: "Johnathan",
           position: "Outreach",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/jonathan-jackson-20a29b28b",
+            },
+          ],
         },
         {
           image: `${imageBaseUrl}/Sharon.JPG`,
           name: "Sharon",
           position: "Outreach",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "http://www.linkedin.com/in/sharon-alex",
+            },
+          ],
         },
       ],
       description: "Outreach",
@@ -287,7 +299,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/ragh.JPG`,
+          image: `${imageBaseUrl}/ragd.JPG`,
           name: "Ragd Elsaigh",
           position: "Logistics",
         },
@@ -306,23 +318,23 @@ const AboutTeam = () => {
           image: `${imageBaseUrl}/pragya.JPG`,
           name: "Pragya",
           position: "Logistics",
-          // socialLinks: [
-          //   {
-          //     type: "linkedin",
-          //     url: "https://www.linkedin.com/in/treyschaider",
-          //   },
-          // ],
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/pragya-vetri-b46b36382",
+            },
+          ],
         },
         {
           image: `${imageBaseUrl}/ryan.JPG`,
           name: "Ryan",
           position: "Logistics",
-          // socialLinks: [
-          //   {
-          //     type: "linkedin",
-          //     url: "https://www.linkedin.com/in/treyschaider",
-          //   },
-          // ],
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/ryan-dobbelaere/",
+            },
+          ],
         },
         {
           image: `${imageBaseUrl}/ram.JPG`,
