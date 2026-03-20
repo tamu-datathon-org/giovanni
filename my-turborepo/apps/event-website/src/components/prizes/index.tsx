@@ -15,13 +15,16 @@ const prizes = [
 export default function Prizes() {
   const base = "clamp(105px, 26vw, 440px)";
 
+  // Alternating left/right shift so each pair steps outward like Figma
+  
+
   return (
     <section
       id="prizes"
       aria-label="Prizes"
-      className="relative z-10 flex flex-col items-center overflow-visible bg-[#f0cf91] px-1 py-8 sm:py-10 md:px-2 md:py-14"
+      className="relative z-10 flex flex-col items-center overflow-visible bg-[#f0cf91] px-1 py-8 sm:py-10 md:px-2 md:py-14 [--prize-scale:1] max-[767px]:[--prize-scale:0.98] [--prize-zig-shift:0.35] max-[767px]:[--prize-zig-shift:0.28] [--basket-left-m:-0.621] max-[767px]:[--basket-left-m:-0.59]"
       style={{
-        ["--prize-base" as string]: base,
+        ["--prize-base" as string]: `calc(${base} * var(--prize-scale))`, 
       }}
     >
 
@@ -32,8 +35,8 @@ export default function Prizes() {
         src={PLANT_SIDE}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute z-0 h-auto w-[calc(var(--prize-base)*698/491*0.85)] scale-x-[-1] object-contain max-[767px]:w-[calc(var(--prize-base)*698/491*0.65)]"
-        style={{ top: "calc(var(--prize-base) * 700 / 491)", left: "calc(var(--prize-base) * -305 / 491)" }}
+        className="pointer-events-none absolute z-0 h-auto w-[calc(var(--prize-base)*698/491*0.85)] scale-x-[-1] object-contain"
+        style={{ top: "calc(var(--prize-base) * 700 / 491)", left: "calc(var(--prize-base) * var(--basket-left-m))" }}
       />
 
       <h2
@@ -50,13 +53,16 @@ export default function Prizes() {
         {prizes.map((prize, i) => {
           const imageLeft = i % 2 === 0;
           const ribbonSrc = prize.ribbonRight ? RIBBON_SVG : RIBBON_SVG_ALT;
-          const rowGap = i === 0 ? "0" : i === 2 ? "calc(var(--prize-base) * 0.44)" : "calc(var(--prize-base) * 0.40)";
+          const rowGap = i === 0 ? "0" : i === 2 ? "calc(var(--prize-base) * 0.05)" : "calc(var(--prize-base) * 0.05)";
 
           return (
             <div
               key={i}
               className={`flex w-full items-center gap-[calc(var(--prize-base)*0.15)] ${imageLeft ? "justify-center" : "flex-row-reverse justify-center"}`}
-              style={{ marginTop: rowGap }}
+              style={{
+                marginTop: rowGap,
+                transform: `translateX(calc(var(--prize-base) * ${imageLeft ? -1 : 1} * var(--prize-zig-shift)))`,
+              }}
             >
               <div
                 className="relative shrink-0"
