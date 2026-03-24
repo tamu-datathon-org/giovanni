@@ -24,9 +24,9 @@ export default function Location() {
     <section
       id="location"
       aria-label="Event Info"
-      className="relative z-40 flex justify-center overflow-visible bg-[#f0cf91] px-2 py-6 md:py-12"
+      className="relative z-40 flex justify-center overflow-x-clip overflow-y-visible bg-[#f0cf91] px-2 py-6 md:py-12"
     >
-      <div className="relative w-[min(96vw,980px)]">
+      <div className="relative w-[min(96vw,980px)] max-w-full overflow-visible">
         <div className="relative z-20 overflow-visible rounded-[18px] border-[3px] border-[#8d6e5e] bg-[#966952] px-3 pb-28 pt-10 sm:px-4 sm:pb-32 md:pb-44 md:pt-12">
           {/* Decorative plants stay behind content; anchored to the rounded card */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -46,18 +46,18 @@ export default function Location() {
 
           <div
             aria-hidden
-            className="pointer-events-none absolute left-0 right-0 top-0 z-20 grid grid-cols-10 "
+            className="pointer-events-none absolute left-[-2%] top-0 z-20 flex w-[104%] overflow-visible"
           >
             {locationPanels.map((src, i) => (
               <div
                 key={i}
-                className="flex h-[70px] items-center justify-center sm:h-[86px] md:h-[96px]"
+                className="flex min-w-0 w-1/10 h-[70px] items-center justify-center sm:h-[86px] md:h-[96px]"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={src}
                   alt=""
-                  className="block h-full w-full object-contain"
+                  className="block h-full w-full max-w-full object-contain"
                 />
               </div>
             ))}

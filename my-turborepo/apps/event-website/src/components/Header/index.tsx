@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 
-import CafeMenuBoardContainer from "./CafeMenuBoardContainer";
+const MOBILE_MENU_ITEMS = [
+  { label: "Home", targetId: "menu" },
+  { label: "Location", targetId: "find-us" },
+  { label: "FAQ", targetId: "baristas-note" },
+] as const;
 
 function MenuButton({
   onClick,
@@ -37,27 +41,47 @@ function MenuButton({
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const goToSection = (targetId: string) => {
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    window.location.href = `/#${targetId}`;
+  };
+
   return (
     <>
-      {/* Desktop: keep the menu board fixed. */}
-      <div className="hidden fixed left-4 top-16 z-50 md:block md:left-6 md:top-auto md:bottom-28">
-        <CafeMenuBoardContainer />
-      </div>
-
-      {/* Mobile: collapse into a smaller toggle button. */}
-      <div className="fixed left-4 top-4 z-50 md:hidden">
+      <div className="fixed bottom-8 left-4 z-50">
         <MenuButton
           onClick={() => setMenuOpen((v) => !v)}
           ariaExpanded={menuOpen}
         />
       </div>
 
-      {/* Mobile: menu overlay */}
-      {menuOpen ? (
-        <div className="fixed left-4 top-16 z-50 md:hidden">
-          <CafeMenuBoardContainer onItemSelected={() => setMenuOpen(false)} />
+      {/* Expand menu near the button */}
+      <div
+        className={`fixed bottom-[5.85rem] left-4 z-50 w-[min(85vw,280px)] origin-bottom-left transition-all duration-300 ${menuOpen ? "pointer-events-auto translate-y-0 scale-100 opacity-100" : "pointer-events-none translate-y-3 scale-95 opacity-0"}`}
+      >
+        <div className="rounded-2xl border-[3px] border-[#4C321B] bg-[#fdf3e3] p-3 shadow-[0_20px_50px_rgba(0,0,0,0.16)]">
+          <div className="grid gap-2">
+            {MOBILE_MENU_ITEMS.map((item) => (
+              <button
+                key={item.targetId}
+                type="button"
+                className="rounded-xl border-2 border-[#4C321B]/20 bg-white/70 px-4 py-3 text-left font-darumadrop-one text-[23px] leading-none text-[#4C321B]"
+                onClick={() => {
+                  goToSection(item.targetId);
+                  setMenuOpen(false);
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
         </div>
-      ) : null}
+      </div>
     </>
   );
 }
