@@ -23,6 +23,14 @@ export default function Page() {
   const [offerDecision, setOfferDecision] = useState<
     "accepted" | "declined" | null
   >(null);
+  const offerDecisionStorageKey = "apply-offer-decision";
+
+  useEffect(() => {
+    const savedDecision = window.localStorage.getItem(offerDecisionStorageKey);
+    if (savedDecision === "accepted" || savedDecision === "declined") {
+      setOfferDecision(savedDecision);
+    }
+  }, []);
 
   async function signOutHandler() {
     try {
@@ -123,6 +131,7 @@ export default function Page() {
       newStatus: decision === "accepted",
     });
     setOfferDecision(decision);
+    window.localStorage.setItem(offerDecisionStorageKey, decision);
     toast({
       title: "Update Successful",
       description:
@@ -187,6 +196,14 @@ export default function Page() {
               <p className="mb-4 text-sm text-white/80">
                 Let us know whether you accept or decline your offer.
               </p>
+              {offerDecision && (
+                <p className="mb-4 text-sm text-white/80">
+                  Current selection:{" "}
+                  <span className="font-semibold uppercase">
+                    {offerDecision}
+                  </span>
+                </p>
+              )}
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Button
                   className="w-full bg-[#007c00] hover:bg-[#007c00]/80"
@@ -203,14 +220,6 @@ export default function Page() {
                   Decline Offer
                 </Button>
               </div>
-              {offerDecision && (
-                <p className="mt-3 text-sm text-white/80">
-                  You selected:{" "}
-                  <span className="font-semibold uppercase">
-                    {offerDecision}
-                  </span>
-                </p>
-              )}
             </section>
           )}
 
