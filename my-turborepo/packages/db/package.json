@@ -26,7 +26,7 @@
     "build": "tsc",
     "clean": "rm -rf .turbo node_modules",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "npx tsx ./src/migrate.ts",
+    "db:migrate": "pnpm with-env npx tsx ./src/migrate.ts",
     "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",

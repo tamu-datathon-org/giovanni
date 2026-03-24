@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import ScrollToTop from "@vanni/ui/scroll-to-top";
 
 import "../styles/index.css";
+import Footer from "@/components/Footer";
 
 // Optimize font loading with next/font/google
 const inter = Inter({
@@ -42,10 +43,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className={`m-0 h-full w-full ${inter.variable} ${darumadropOne.variable} ${chilanka.variable}`}>
 
 
-        {/* <Header /> */}
+        <Header />
         {children}
-        {/* <Footer /> */}
-        {/* <ScrollToTop /> */}
+        <Footer />
+        <ScrollToTop />
       </body>
     </html>
   );

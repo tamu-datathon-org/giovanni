@@ -72,7 +72,7 @@ const resumeHandler = async (
 export async function getBatchStatus(
   page: number,
   limit: number,
-  ctx: Context,
+  ctx: VerifiedContext,
   eventName: string,
   filter?: boolean,
 ): Promise<
