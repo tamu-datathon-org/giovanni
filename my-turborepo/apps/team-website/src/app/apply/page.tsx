@@ -20,10 +20,9 @@ export const appsOpen = true;
 export default function Page() {
   const { session, setSession } = useAuthRedirect();
   const router = useRouter();
-  const [offerDecision, setOfferDecision] = useState<"accepted" | "declined" | null>(
-    null,
-  );
-
+  const [offerDecision, setOfferDecision] = useState<
+    "accepted" | "declined" | null
+  >(null);
 
   async function signOutHandler() {
     try {
@@ -106,13 +105,29 @@ export default function Page() {
         break;
     }
   }
+  const updateInvitationStatusMutation =
+    api.application.updateInvitationStatus.useMutation({
+      onError: () => {
+        toast({
+          title: "Update failed",
+          description: "Could not update invitation status.",
+          variant: "destructive",
+        });
+      },
+    });
 
-  const handleOfferDecision = (decision: "accepted" | "declined") => {
+  const handleOfferDecision = async (decision: "accepted" | "declined") => {
+    updateInvitationStatusMutation.mutateAsync({
+      eventName: EVENT_NAME ?? "",
+      email: session?.user.email ?? "",
+      newStatus: decision === "accepted",
+    });
     setOfferDecision(decision);
     toast({
-      title: decision === "accepted" ? "Offer accepted" : "Offer declined",
+      title: "Update Successful",
       description:
-        "Frontend-only selection saved in local state. Add backend mutation to persist this.",
+        decision === "accepted" ? "Offer accepted" : "Offer declined",
+      variant: "success",
     });
   };
 
@@ -166,7 +181,9 @@ export default function Page() {
           {/* Offer response for accepted applicants (frontend-only) */}
           {data?.status === "accepted" && (
             <section className="w-full rounded-lg border border-white/20 bg-white/5 px-6 py-4">
-              <p className="mb-3 text-sm font-medium">Admission offer response</p>
+              <p className="mb-3 text-sm font-medium">
+                Admission offer response
+              </p>
               <p className="mb-4 text-sm text-white/80">
                 Let us know whether you accept or decline your offer.
               </p>
@@ -189,7 +206,9 @@ export default function Page() {
               {offerDecision && (
                 <p className="mt-3 text-sm text-white/80">
                   You selected:{" "}
-                  <span className="font-semibold uppercase">{offerDecision}</span>
+                  <span className="font-semibold uppercase">
+                    {offerDecision}
+                  </span>
                 </p>
               )}
             </section>
