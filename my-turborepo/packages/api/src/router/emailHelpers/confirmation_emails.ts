@@ -1691,7 +1691,7 @@ Until then, please reach out to <a href="mailto:connect@tamudatathon.com" target
 </html>
 `;
 
-export const accepted_title = `Congratulations on being accepted to TAMU Datathon ${eventSeason} ${eventYear}!`;
+export const accepted_title = `[ACTION NEEDED] Congratulations on being accepted to TAMU Datathon ${eventSeason} ${eventYear}!`;
 
 export const accepted_content = `
 <!doctype html>
@@ -2334,16 +2334,19 @@ neue,helvetica,arial,sans-serif">TAMU DATATHON</span></span></strong></span>
                                         style="font-size:17px"><span
                                           style="font-family:lato,helvetica neue,helvetica,arial,sans-serif"><span
                                             style="color:#555555"><b>Congratulations!</b><br> We’re excited to inform you that
-                                            you’ve been accepted to the TAMU Datathon ${eventSeason} ${eventYear}! Your
+                                            you’ve been <b>ACCEPTED</b> to the TAMU Datathon-Lite ${eventSeason} ${eventYear}! Your
                                             application truly impressed us, and we can’t wait to see you at the <b>Peterson Building</b> on
                                             <b>April 11th ${eventYear}</b>.
                                             <br>
                                             <br>
+                                            <b style="font-size:22px;background-color:#fee75e ">You aren't done YET!</b>
+                                            <br>
+                                            Due to capacity contraints we need you to <b>confirm</b> your spot by accepting the invitation at <a href="https://tamudatathon.com/apply">https://tamudatathon.com/apply</a>. Spots are <b>limited!</b> If you fail to confirm your spot before the event date or before we reach capacity, you will be put on the <b>waitlist</b>.
+                                            <br>
+                                            <br>
                                             <b>What's Next?</b>
                                             <br>
-                                            We will be sending qrcodes closer to the event for check-in, but they can also be accessed through 
-                                            <a href="https://tamudatathon.com/apply">https://tamudatathon.com/apply</a>
-                                            . As well as a document to prepare for hacking!
+                                            We will provide a QR code, which will appear in your applicant dashboard and be used for check-in, as well as lunch. Be sure to keep an eye on our <a href="https://discord.gg/29wnz7gp">Discord</a> and <a href="https://www.instagram.com/tamudatathon/">Instagram</a> for updates.
                                             <br>
                                             <br>
                                             <b>Schedules</b> will be posted soon for event check-in and food.
@@ -2351,9 +2354,9 @@ neue,helvetica,arial,sans-serif">TAMU DATATHON</span></span></strong></span>
                                             <br><br>
                                             <b>As a reminder, we provide:</b>
                                             <ul style="margin: 0;">
-                                              <li>6000+ in prizes</li>
+                                              <li>$5000+ in prizes</li>
                                               <li>Free food, merch, and mini-events</li>
-                                              <li>Meet company sponsors like databricks, heb, hitachi, and more!</li>
+                                              <li>Meet company sponsors like Databricks, HEB, Hitachi, and more!</li>
                                             </ul>
                                             </span></span></span>
                                             </span>
