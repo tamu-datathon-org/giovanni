@@ -114,28 +114,28 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   const DEV_MODE_SKIP_AUTH = "true" === "true";
   const DEV_USER_EMAIL = "michael_rao@tamu.edu"; // Change this to your test email
   
-  if (DEV_MODE_SKIP_AUTH && !ctx.session?.user) {
-    // Look up real user from database by email
-    const devUser = await ctx.db.query.User.findFirst({
-      where: eq(User.email, DEV_USER_EMAIL),
-    });
+  // if (DEV_MODE_SKIP_AUTH && !ctx.session?.user) {
+  //   // Look up real user from database by email
+  //   const devUser = await ctx.db.query.User.findFirst({
+  //     where: eq(User.email, DEV_USER_EMAIL),
+  //   });
     
-    if (!devUser) {
-      throw new TRPCError({ 
-        code: "INTERNAL_SERVER_ERROR",
-        message: `Dev user not found in database with email: ${DEV_USER_EMAIL}. Please create an account first or update DEV_USER_EMAIL in trpc.ts`
-      });
-    }
+  //   if (!devUser) {
+  //     throw new TRPCError({ 
+  //       code: "INTERNAL_SERVER_ERROR",
+  //       message: `Dev user not found in database with email: ${DEV_USER_EMAIL}. Please create an account first or update DEV_USER_EMAIL in trpc.ts`
+  //     });
+  //   }
     
-    // Use real user from database
-    return await next({
-      ctx: {
-        session: {
-          user: devUser,
-        },
-      },
-    });
-  }
+  //   // Use real user from database
+  //   return await next({
+  //     ctx: {
+  //       session: {
+  //         user: devUser,
+  //       },
+  //     },
+  //   });
+  // }
   
   if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
