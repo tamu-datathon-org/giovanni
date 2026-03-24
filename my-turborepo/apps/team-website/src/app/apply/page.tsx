@@ -20,6 +20,9 @@ export const appsOpen = true;
 export default function Page() {
   const { session, setSession } = useAuthRedirect();
   const router = useRouter();
+  const [offerDecision, setOfferDecision] = useState<"accepted" | "declined" | null>(
+    null,
+  );
 
 
   async function signOutHandler() {
@@ -103,6 +106,16 @@ export default function Page() {
         break;
     }
   }
+
+  const handleOfferDecision = (decision: "accepted" | "declined") => {
+    setOfferDecision(decision);
+    toast({
+      title: decision === "accepted" ? "Offer accepted" : "Offer declined",
+      description:
+        "Frontend-only selection saved in local state. Add backend mutation to persist this.",
+    });
+  };
+
   return (
     <>
       <div className="my-20 flex w-screen items-center justify-center px-4 py-8">
@@ -147,6 +160,38 @@ export default function Page() {
                   />
                 </div>
               </div>
+            </section>
+          )}
+
+          {/* Offer response for accepted applicants (frontend-only) */}
+          {data?.status === "accepted" && (
+            <section className="w-full rounded-lg border border-white/20 bg-white/5 px-6 py-4">
+              <p className="mb-3 text-sm font-medium">Admission offer response</p>
+              <p className="mb-4 text-sm text-white/80">
+                Let us know whether you accept or decline your offer.
+              </p>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button
+                  className="w-full bg-[#007c00] hover:bg-[#007c00]/80"
+                  type="button"
+                  onClick={() => handleOfferDecision("accepted")}
+                >
+                  Accept Offer
+                </Button>
+                <Button
+                  className="w-full bg-[#b80000] hover:bg-[#b80000]/80"
+                  type="button"
+                  onClick={() => handleOfferDecision("declined")}
+                >
+                  Decline Offer
+                </Button>
+              </div>
+              {offerDecision && (
+                <p className="mt-3 text-sm text-white/80">
+                  You selected:{" "}
+                  <span className="font-semibold uppercase">{offerDecision}</span>
+                </p>
+              )}
             </section>
           )}
 
