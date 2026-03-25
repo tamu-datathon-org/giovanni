@@ -112,15 +112,19 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/hannah.JPG`,
-          name: "Hannah",
-          position: "Challenges",
-          socialLinks: [
-            // {
-            //   type: "linkedin",
-            //   url: "https://www.linkedin.com/in/ali-abouelazm",
-            // },
-          ],
+            image: `${imageBaseUrl}/haanh.JPG`,
+            name: "Vu Ha Anh Nguyen",
+            position: "Challenges",
+            socialLinks: [
+                {
+                    type: "linkedin",
+                    url: "https://linkedin.com/in/vu-ha-anh-nguyen-b9691b314",
+                },
+                {
+                    type: "github",
+                    url: "https://github.com/anh-nguyen28",
+                },
+            ],
         },
         {
           image: `${imageBaseUrl}/dylan.JPG`,
@@ -183,17 +187,25 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/michael-rao-p/",
             },
+            {
+                type: "github",
+                url: "https://github.com/mike-rao"
+            },
           ],
         },
         {
           image: `${imageBaseUrl}/zayd.JPG`,
-          name: "Zayd",
+          name: "Zayd Nadir",
           position: "Dev",
           socialLinks: [
-            // {
-            //   type: "linkedin",
-            //   url: "https://www.linkedin.com/in/michael-rao-p/",
-            // },
+            {
+                type: "linkedin",
+                url: "https://linkedin.com/in/zaydn",
+            },
+            {
+                type: "github",
+                url: "https://github.com/zaydn4321",
+            },
           ],
         },
         {
@@ -205,10 +217,6 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/angela-yue-a48962247/",
             },
-            // {
-            //   type: "instagram",
-            //   url: "https://www.instagram.com/aspirenight/",
-            // },
             {
               type: "github",
               url: "https://github.com/AngelaYue2006",
@@ -217,13 +225,17 @@ const AboutTeam = () => {
         },
         {
           image: `${imageBaseUrl}/aarav.JPG`,
-          name: "Aarav ",
+          name: "Aarav Pulsani",
           position: "Dev",
           socialLinks: [
-            // {
-            //   type: "linkedin",
-            //   url: "https://www.linkedin.com/in/michael-rao-p/",
-            // },
+            {
+                type: "linkedin",
+                url: "https://www.linkedin.com/in/aarav-pulsani-7874b3271",
+            },
+            {
+                type: "github",
+                url: "https://github.com/s155003",
+            },
           ],
         },
       ],
@@ -247,10 +259,16 @@ const AboutTeam = () => {
           image: `${imageBaseUrl}/roa.JPG`,
           name: "Roa Elsaigh",
           position: "Outreach",
+          socialLinks: [
+                {
+                    type: "linkedin",
+                    url: "https://www.linkedin.com/in/roa-e-431b29224/"
+                }
+            ],
         },
         {
           image: `${imageBaseUrl}/johnathan2.JPG`,
-          name: "Johnathan",
+          name: "Johnathan Jackson",
           position: "Outreach",
           socialLinks: [
             {
@@ -261,9 +279,9 @@ const AboutTeam = () => {
         },
         {
           image: `${imageBaseUrl}/sharon.JPG`,
-          name: "Sharon",
+          name: "Sharon Alex",
           position: "Outreach",
-          socialLinks: [  
+          socialLinks: [
             {
               type: "linkedin",
               url: "http://www.linkedin.com/in/sharon-alex",
@@ -284,6 +302,10 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/harshinisriniv",
             },
+            {
+                type: "github",
+                url: "https://github.com/harshinisriniv"
+            },
           ],
         },
         {
@@ -302,6 +324,12 @@ const AboutTeam = () => {
           image: `${imageBaseUrl}/ragd.JPG`,
           name: "Ragd Elsaigh",
           position: "Logistics",
+          socialLinks: [
+            {
+                type: "linkedin",
+                url: "https://www.linkedin.com/in/ragdelsaigh/"
+            }
+          ],
         },
         {
           image: `${imageBaseUrl}/trey.JPG`,
@@ -316,7 +344,7 @@ const AboutTeam = () => {
         },
         {
           image: `${imageBaseUrl}/pragya.JPG`,
-          name: "Pragya",
+          name: "Pragya Vetri",
           position: "Logistics",
           socialLinks: [
             {
@@ -327,7 +355,7 @@ const AboutTeam = () => {
         },
         {
           image: `${imageBaseUrl}/ryan.JPG`,
-          name: "Ryan",
+          name: "Ryan Dobbelaere",
           position: "Logistics",
           socialLinks: [
             {
@@ -345,7 +373,7 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/ram-pillai-933507249/",
             },
-            // { type: "instagram", url: "https://www.instagram.com/rhp043" },
+
           ],
         },
       ],
@@ -357,6 +385,12 @@ const AboutTeam = () => {
           image: `${imageBaseUrl}/kendall.JPG`,
           name: "Kendall Nguyen",
           position: "Design Lead",
+          socialLinks: [
+            {
+                type: "linkedin",
+                url: "https://www.linkedin.com/in/kendall-nguyen-229133332/",
+            }
+          ],
         },
         {
           image: `${imageBaseUrl}/antony.png`,
@@ -374,6 +408,17 @@ const AboutTeam = () => {
           image: `${imageBaseUrl}/bhavana.png`,
           name: "Bhavana Venkatesh",
           position: "Design",
+          socialLinks: [
+            {
+                type: "linkedin",
+                url: "https://www.linkedin.com/in/bhavana-venkatesh-aggie27/",
+            },
+            {
+                type: "github",
+                url: "https://github.com/chocta",
+            }
+          ]
+
         },
         {
           image: `${imageBaseUrl}/jessica.JPG`,
@@ -400,7 +445,7 @@ const AboutTeam = () => {
           position: "Design",
           socialLinks: [
             { type: "linkedin", url: "http://www.linkedin.com/in/averyshih" },
-            // { type: "instagram", url: "https://www.instagram.com/averyryan27" },
+
           ],
         },
       ],
