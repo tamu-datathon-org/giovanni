@@ -60,7 +60,7 @@ export function GoogleDriveProvider({ children }: GoogleDriveProviderProps) {
 
         // Set the shared drive folder ID
         googleDriveService.setSharedDriveFolder(
-          "1Rr9zqZ9UpF27egCpa8Cv_cEg5dXiNTIm"
+          process.env.NEXT_PUBLIC_DRIVE_FOLDER_ID || ""
         );
 
         // Check if user is already signed in
