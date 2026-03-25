@@ -12,7 +12,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "~/app/organizer/email-generator/_components/ui/tabs";
-import { ThemeToggle } from "~/app/organizer/email-generator/_components/ThemeToggle";
 import { ApiConfigurationModal } from "~/app/organizer/email-generator/_components/ApiConfigurationModal";
 import {
   getApiDataForTemplate,
@@ -203,7 +202,6 @@ export default function EmailGeneratorApp() {
                 </div>
               )}
               <ApiConfigurationModal />
-              <ThemeToggle />
               <Button
                 onClick={generateHtml}
                 disabled={isGenerating || isApiLoading}
