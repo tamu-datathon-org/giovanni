@@ -113,7 +113,7 @@ const AboutTeam = () => {
         },
         {
           image: `${imageBaseUrl}/hannah.JPG`,
-          name: "Hannah",
+          name: "Hannah Nguyen",
           position: "Challenges",
           socialLinks: [
             // {
@@ -187,13 +187,13 @@ const AboutTeam = () => {
         },
         {
           image: `${imageBaseUrl}/zayd.JPG`,
-          name: "Zayd",
+          name: "Zayd Nadir",
           position: "Dev",
           socialLinks: [
-            // {
-            //   type: "linkedin",
-            //   url: "https://www.linkedin.com/in/michael-rao-p/",
-            // },
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/zaydn/",
+            },  
           ],
         },
         {
@@ -217,7 +217,7 @@ const AboutTeam = () => {
         },
         {
           image: `${imageBaseUrl}/aarav.JPG`,
-          name: "Aarav ",
+          name: "Aarav Pulsani",
           position: "Dev",
           socialLinks: [
             // {
@@ -249,8 +249,8 @@ const AboutTeam = () => {
           position: "Outreach",
         },
         {
-          image: `${imageBaseUrl}/johnathan2.JPG`,
-          name: "Johnathan",
+          image: `${imageBaseUrl}/jonathan2.JPG`,
+          name: "Jonathan Jackson",
           position: "Outreach",
           socialLinks: [
             {
@@ -260,8 +260,8 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/sharon.JPG`,
-          name: "Sharon",
+          image: `${imageBaseUrl}/sharon.png`,
+          name: "Sharon Alex",
           position: "Outreach",
           socialLinks: [  
             {
@@ -316,7 +316,7 @@ const AboutTeam = () => {
         },
         {
           image: `${imageBaseUrl}/pragya.JPG`,
-          name: "Pragya",
+          name: "Pragya Vetri",
           position: "Logistics",
           socialLinks: [
             {
@@ -327,7 +327,7 @@ const AboutTeam = () => {
         },
         {
           image: `${imageBaseUrl}/ryan.JPG`,
-          name: "Ryan",
+          name: "Ryan Dobbelaere",
           position: "Logistics",
           socialLinks: [
             {
