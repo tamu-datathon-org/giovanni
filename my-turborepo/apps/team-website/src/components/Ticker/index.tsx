@@ -11,6 +11,7 @@ import { SectionTitle } from "@vanni/ui/section-title";
 
 export default function SponsorTicker() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<gsap.core.Tween | null>(null);
 
   const logos = [
     "/images/sponsor-logo/amd.png",
@@ -55,7 +56,8 @@ export default function SponsorTicker() {
       const logoSpacing = logoWidth + gap;
       const singleSetWidth = logos.length * logoSpacing;
 
-      const logoElements = containerRef.current.querySelectorAll(".ticker-logo");
+      const logoElements =
+        containerRef.current.querySelectorAll(".ticker-logo");
       gsap.set(logoElements, {
         x: (i) => i * logoSpacing,
         top: "50%",
@@ -81,7 +83,10 @@ export default function SponsorTicker() {
         },
       });
 
+      animationRef.current = animation;
+
       killAnimation = () => {
+        animationRef.current = null;
         animation.kill();
       };
     };
@@ -96,16 +101,23 @@ export default function SponsorTicker() {
   }, []);
 
   return (
-    <div className="flex w-full flex-col items-center justify-center bg-[#121723]">
+    <div className="flex w-full flex-col items-center justify-center bg-[#121723] cursor-pointer">
       <SectionTitle title="Past Sponsors" paragraph={""} center mb="-40px" />
 
-      <div className="relative h-28 w-full overflow-hidden sm:h-40">
+      <div
+        className="relative h-28 w-full overflow-hidden sm:h-40"
+        onMouseEnter={() => animationRef.current?.pause()}
+        onMouseLeave={() => animationRef.current?.resume()}
+      >
         <div
           ref={containerRef}
           className="absolute left-0 top-0 h-full whitespace-nowrap"
         >
           {duplicatedLogos.map((logo, i) => (
-            <div key={i} className="ticker-logo absolute h-10 w-24 sm:h-16 sm:w-32">
+            <div
+              key={i}
+              className="ticker-logo absolute h-10 w-24 sm:h-16 sm:w-32"
+            >
               <Image
                 src={logo}
                 alt={`Sponsor logo ${(i % logos.length) + 1}`}
