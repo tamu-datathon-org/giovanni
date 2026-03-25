@@ -26,30 +26,30 @@ export const config = {
     }),
     secret: env.AUTH_SECRET,
     databaseHooks: {
-        user: {
-            create: { //Block new account creation if the email is not a @tamu.edu email
-                before: async (user) => {
-                    if (!isAllowedTamuEmail(user.email)) {
-                        return false;
-                    }
-                },
-            },
-        },
-        session: { //blocks any existing non-TAMU users
-            create: {
-                before: async (session, endpointContext) => {
-                    const authContext = endpointContext?.context;
-                    if (!authContext) {
-                        return false;
-                    }
+        // user: {
+        //     create: { //Block new account creation if the email is not a @tamu.edu email
+        //         before: async (user) => {
+        //             if (!isAllowedTamuEmail(user.email)) {
+        //                 return false;
+        //             }
+        //         },
+        //     },
+        // },
+        // session: { //blocks any existing non-TAMU users
+        //     create: {
+        //         before: async (session, endpointContext) => {
+        //             const authContext = endpointContext?.context;
+        //             if (!authContext) {
+        //                 return false;
+        //             }
 
-                    const user = await authContext.internalAdapter.findUserById(session.userId);
-                    if (!user || !isAllowedTamuEmail(user.email)) {
-                        return false;
-                    }
-                },
-            },
-        },
+        //             const user = await authContext.internalAdapter.findUserById(session.userId);
+        //             if (!user || !isAllowedTamuEmail(user.email)) {
+        //                 return false;
+        //             }
+        //         },
+        //     },
+        // },
     },
     plugins: [
         oAuthProxy({

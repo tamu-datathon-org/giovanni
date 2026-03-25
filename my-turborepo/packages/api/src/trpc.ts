@@ -113,20 +113,20 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   // TEMP: Dev mode bypass - remove this before production!
   const DEV_MODE_SKIP_AUTH = "true" === "true";
   const DEV_USER_EMAIL = "michael_rao@tamu.edu"; // Change this to your test email
-  
+
   // if (DEV_MODE_SKIP_AUTH && !ctx.session?.user) {
   //   // Look up real user from database by email
   //   const devUser = await ctx.db.query.User.findFirst({
   //     where: eq(User.email, DEV_USER_EMAIL),
   //   });
-    
+
   //   if (!devUser) {
   //     throw new TRPCError({ 
   //       code: "INTERNAL_SERVER_ERROR",
   //       message: `Dev user not found in database with email: ${DEV_USER_EMAIL}. Please create an account first or update DEV_USER_EMAIL in trpc.ts`
   //     });
   //   }
-    
+
   //   // Use real user from database
   //   return await next({
   //     ctx: {
@@ -136,9 +136,12 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   //     },
   //   });
   // }
-  
+
   if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  if (!ctx.session.user.email.endsWith("@tamu.edu")) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Must use a TAMU email" });
   }
   return await next({
     ctx: {
