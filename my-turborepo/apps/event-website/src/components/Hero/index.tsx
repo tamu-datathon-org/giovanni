@@ -26,7 +26,7 @@ export default function Hero() {
         <div className="relative flex w-full justify-center md:absolute md:left-0 md:top-0 md:block md:w-[50vw] md:max-w-[800px]">
           {/* Mobile-only image */}
           <Image
-            src="/images/group_napcup.svg"
+            src="/images/napkin+cup_mobile.svg"
             alt="Napkin"
             width={0}
             height={0}

@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 const PLANT_LEFT = "/images/location/plant-left.png";
 const PLANT_RIGHT = "/images/location/plant-right.png";
 const LOCATION_BASKET = "/images/prizes/plant-side.png";
@@ -24,7 +24,7 @@ export default function Location() {
     <section
       id="location"
       aria-label="Event Info"
-      className="relative z-40 flex justify-center overflow-visible bg-[#f0cf91] px-2 py-6 md:py-12"
+      className="relative z-40 flex justify-center overflow-visible bg-[#FAE19D] px-2 py-6 md:py-12"
     >
       <div className="relative w-[min(96vw,980px)]">
         <div className="relative z-20 overflow-visible rounded-[18px] border-[3px] border-[#8d6e5e] bg-[#966952] px-3 pb-28 pt-10 sm:px-4 sm:pb-32 md:pb-44 md:pt-12">
@@ -75,15 +75,15 @@ export default function Location() {
             <div className="mt-6 grid gap-5 md:mt-8 md:grid-cols-2 md:gap-8">
               <div className="grid gap-4">
                 <div className="grid gap-1">
-                  <div className="font-darumadrop-one text-[28px] leading-none text-[#fae19d] sm:text-[34px]">
-                    DATE
-                  </div>
-                  <div className="font-chilanka text-[40px] leading-tight text-[#fae19d] sm:text-[46px]">
-                    April 11th 2026
-                  </div>
-                  <div className="font-chilanka text-[40px] leading-tight text-[#fae19d] sm:text-[46px]">
-                    9:00 AM - 5:00 PM
-                  </div>
+                    <div className="font-darumadrop-one text-[40px] leading-none text-[#fae19d] sm:text-[34px]">
+                        DATE
+                    </div>
+                    <div className="font-chilanka text-[28px] leading-tight text-[#fae19d] sm:text-[46px]">
+                        April 11th 2026
+                    </div>
+                    <div className="font-chilanka text-[28px] leading-tight text-[#fae19d] sm:text-[46px]">
+                        9:00 AM - 5:00 PM
+                    </div>
                 </div>
                 <div className="grid gap-1">
                   <div className="font-darumadrop-one text-[28px] leading-none text-[#fae19d] sm:text-[34px]">

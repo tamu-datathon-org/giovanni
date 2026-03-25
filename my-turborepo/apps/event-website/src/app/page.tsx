@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
-
+//import Tester from "@/components/location/test";
 import { ScrollUp } from "@vanni/ui/scroll-up";
 
-// Lazy load below-the-fold components to reduce initial bundle size
+//Lazy load below-the-fold components to reduce initial bundle size
 const Location = dynamic(() => import("@/components/location"), {
   loading: () => <div className="min-h-[50vh] bg-[#f0cf91]" />,
 });
@@ -30,16 +30,19 @@ export default function Home() {
       <div id="menu" className="scroll-mt-24">
         <Hero />
       </div>
+      <div className="h-[100px] bg-[#f0cf91]" />
       <div id="find-us" className="scroll-mt-24">
-        <Location />
+        {/* <Tester /> */}
+        < Location />
       </div>
       {/* <div id="pastries" className="scroll-mt-24">
         <Prizes />
       </div> */}
-      <div className="h-[100px] bg-[#f0cf91]" />
+      {/* <div className="h-[100px] bg-[#f0cf91]" />  */}
       <div id="baristas-note" className="scroll-mt-24">
         <FAQ />
       </div>
+
     </>
   );
 }
