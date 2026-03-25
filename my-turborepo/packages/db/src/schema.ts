@@ -83,6 +83,7 @@ export const Event = pgTable("event", {
     mode: "date",
     withTimezone: true,
   }).notNull(),
+  capacity: integer("capacity").notNull().default(0),
 });
 
 export const Role = pgTable("role", {
@@ -172,7 +173,7 @@ export const Application = pgTable("application", {
   acceptedEmail: boolean("accepted_email").notNull().default(false),
   waitlistEmail: boolean("waitlist_email").notNull().default(false),
   rejectedEmail: boolean("rejected_email").notNull().default(false),
-
+  invitationStatus: boolean("invitation_status").notNull().default(false), // true = accepted invitation, false = declined invitation
   checkedIn: boolean("checked_in").notNull().default(false),
 });
 

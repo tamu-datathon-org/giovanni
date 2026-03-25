@@ -1,6 +1,7 @@
 "use client";
 
 import ScrollToTop from "@vanni/ui/scroll-to-top";
+import { usePathname } from "next/navigation";
 
 import Footer from "~/components/Footer";
 import Header from "~/components/Header/index";
@@ -12,15 +13,20 @@ export default function ClientLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const hideMarketingChrome = pathname.startsWith("/organizer");
+
   return (
     <TRPCReactProvider>
       <main className="min-h-screen w-full">
-        <div className="flex w-full items-center justify-center">
-          <Header />
-        </div>
+        {!hideMarketingChrome && (
+          <div className="flex w-full items-center justify-center">
+            <Header />
+          </div>
+        )}
         {children}
         <ScrollToTop />
-        <Footer />
+        {!hideMarketingChrome && <Footer />}
       </main>
       <div className="absolute bottom-4 right-4" />
       <Toaster />

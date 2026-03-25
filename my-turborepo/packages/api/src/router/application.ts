@@ -672,4 +672,29 @@ export const applicationRouter = {
 
       return updated[0];
     }),
+  updateInvitationStatus: organizerProcedure
+    .input(z.object({
+      eventName: z.string(),
+      email: z.string(),
+      newStatus: z.boolean(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { eventName, email, newStatus } = input;
+
+      const event = await getEventData({ ctx, eventName });
+
+      const application = await ctx.db.query.Application.findFirst({
+        where: and(eq(Application.email, email), eq(Application.eventId, event.id)),
+        columns: {
+          id: true,
+          invitationStatus: true,
+        },
+      });
+
+      if (!application) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Application not found" });
+      }
+
+      return await ctx.db.update(Application).set({ invitationStatus: newStatus }).where(eq(Application.email, email));
+    }),
 };

@@ -20,7 +20,17 @@ export const appsOpen = true;
 export default function Page() {
   const { session, setSession } = useAuthRedirect();
   const router = useRouter();
+  const [offerDecision, setOfferDecision] = useState<
+    "accepted" | "declined" | null
+  >(null);
+  const offerDecisionStorageKey = "apply-offer-decision";
 
+  useEffect(() => {
+    const savedDecision = window.localStorage.getItem(offerDecisionStorageKey);
+    if (savedDecision === "accepted" || savedDecision === "declined") {
+      setOfferDecision(savedDecision);
+    }
+  }, []);
 
   async function signOutHandler() {
     try {
@@ -103,6 +113,33 @@ export default function Page() {
         break;
     }
   }
+  const updateInvitationStatusMutation =
+    api.application.updateInvitationStatus.useMutation({
+      onError: () => {
+        toast({
+          title: "Update failed",
+          description: "Could not update invitation status.",
+          variant: "destructive",
+        });
+      },
+    });
+
+  const handleOfferDecision = async (decision: "accepted" | "declined") => {
+    updateInvitationStatusMutation.mutateAsync({
+      eventName: EVENT_NAME ?? "",
+      email: session?.user.email ?? "",
+      newStatus: decision === "accepted",
+    });
+    setOfferDecision(decision);
+    window.localStorage.setItem(offerDecisionStorageKey, decision);
+    toast({
+      title: "Update Successful",
+      description:
+        decision === "accepted" ? "Offer accepted" : "Offer declined",
+      variant: "success",
+    });
+  };
+
   return (
     <>
       <div className="my-20 flex w-screen items-center justify-center px-4 py-8">
@@ -146,6 +183,42 @@ export default function Page() {
                     className="object-cover"
                   />
                 </div>
+              </div>
+            </section>
+          )}
+
+          {/* Offer response for accepted applicants (frontend-only) */}
+          {data?.status === "accepted" && (
+            <section className="w-full rounded-lg border border-white/20 bg-white/5 px-6 py-4">
+              <p className="mb-3 text-sm font-medium">
+                Admission offer response
+              </p>
+              <p className="mb-4 text-sm text-white/80">
+                Let us know whether you accept or decline your offer.
+              </p>
+              {offerDecision && (
+                <p className="mb-4 text-sm text-white/80">
+                  Current selection:{" "}
+                  <span className="font-semibold uppercase">
+                    {offerDecision}
+                  </span>
+                </p>
+              )}
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button
+                  className="w-full bg-[#007c00] hover:bg-[#007c00]/80"
+                  type="button"
+                  onClick={() => handleOfferDecision("accepted")}
+                >
+                  Accept Offer
+                </Button>
+                <Button
+                  className="w-full bg-[#b80000] hover:bg-[#b80000]/80"
+                  type="button"
+                  onClick={() => handleOfferDecision("declined")}
+                >
+                  Decline Offer
+                </Button>
               </div>
             </section>
           )}
