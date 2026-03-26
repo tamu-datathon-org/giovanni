@@ -4,10 +4,10 @@ import { TRPCError } from "@trpc/server";
 import { and, eq } from "@vanni/db";
 import { Event, Role, UserRole } from "@vanni/db/schema";
 
-import type { VerifiedContext } from "../trpc";
-import { protectedProcedure, publicProcedure } from "../trpc";
+import type { Context } from "../trpc";
+import { organizerProcedure, protectedProcedure, publicProcedure } from "../trpc";
 
-export async function validateOrganizerAuth({ ctx }: { ctx: VerifiedContext }) {
+export async function validateOrganizerAuth({ ctx }: { ctx: Context }) {
   const eventName = process.env.NEXT_PUBLIC_EVENT_NAME;
 
   // Verify the event name and user exists
@@ -57,5 +57,5 @@ export const authRouter = {
   getSecretMessage: protectedProcedure.query(() => {
     return "you can see this secret message!";
   }),
-  validateOrganizerAuth: protectedProcedure.query(validateOrganizerAuth),
+  validateOrganizerAuth: organizerProcedure.query(validateOrganizerAuth),
 } satisfies TRPCRouterRecord;
