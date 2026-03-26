@@ -191,28 +191,27 @@ export const organizerProcedure = t.procedure.use(async ({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  // Query for the user role based on userid and eventname
+  // Query for the user role based on email and event name.
+  // (Email-only is intentional to avoid issues when multiple auth "User" rows
+  // exist for the same email, e.g. applicant vs organizer.)
   const user_role = await ctx.db
     .select()
     .from(Role)
     .leftJoin(Event, eq(Role.eventId, Event.id))
     .leftJoin(UserRole, eq(Role.id, UserRole.roleId))
+    .leftJoin(User, eq(User.id, UserRole.userId))
     .where(
-      and(eq(Event.name, eventName), eq(UserRole.userId, ctx.session.user.id)),
+      and(
+        eq(Event.name, eventName),
+        eq(User.email, ctx.session.user.email),
+        eq(Role.name, "Organizer"),
+      ),
     );
 
   if (user_role.length === 0) {
     throw new TRPCError({
       code: "NOT_FOUND",
       message: "User_role was not found",
-    });
-  }
-
-  // Ensure that the user role matches
-  if (user_role[0]?.role.name !== "Organizer") {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "User is not an organizer",
     });
   }
 
