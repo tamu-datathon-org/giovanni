@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 
 // Darumadrop One (larger and button), Chilanka (date)
@@ -7,47 +5,30 @@ import Image from "next/image";
 export default function Hero() {
   return (
     <>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossOrigin="anonymous"
-      />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Chilanka&family=Darumadrop+One&display=swap"
-        rel="stylesheet"
-      ></link>
-
       <section
         id="hero"
         className="relative flex h-screen flex-col bg-[url(/images/background.svg)] md:flex-row"
       >
         {/* cup+napkin — full width on mobile, left half on desktop */}
         <div className="relative flex w-full justify-center md:absolute md:left-0 md:top-0 md:block md:w-[50vw] md:max-w-[800px]">
-          {/* Mobile-only image */}
           <Image
             src="/images/group_napcup.svg"
             alt="Napkin"
-            width={0}
-            height={0}
-            className="block h-auto w-full md:hidden"
-          />
-
-          {/* Desktop-only image */}
-          <Image
-            src="/images/group_napcup.svg"
-            alt="Napkin"
-            width={0}
-            height={0}
-            className="lg:w-6/7 hidden h-auto w-full md:block"
+            width={696}
+            height={711}
+            priority
+            sizes="(max-width: 768px) 100vw, (min-width: 769px) 50vw"
+            className="block h-auto w-full lg:w-6/7"
           />
 
           <Image
             src="/images/steam.gif"
-            width={0}
-            height={0}
             alt="steam.gif"
+            width={2388}
+            height={1668}
             className="absolute left-[60%] top-[10%] h-auto w-[60%] -translate-x-1/2"
+            loading="lazy"
+            sizes="60vw"
           />
         </div>
 

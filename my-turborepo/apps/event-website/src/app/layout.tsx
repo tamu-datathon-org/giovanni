@@ -1,8 +1,4 @@
-"use client";
-
 import { Inter, Darumadrop_One, Chilanka } from "next/font/google";
-import Image from "next/image";
-// import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
 import ScrollToTop from "@vanni/ui/scroll-to-top";

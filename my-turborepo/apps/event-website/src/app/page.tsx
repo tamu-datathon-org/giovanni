@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
+import Location from "@/components/location";
 
 import { ScrollUp } from "@vanni/ui/scroll-up";
-
-// Lazy load below-the-fold components to reduce initial bundle size
-const Location = dynamic(() => import("@/components/location"), {
-  loading: () => <div className="min-h-[50vh] bg-[#f0cf91]" />,
-});
 
 const Prizes = dynamic(() => import("@/components/prizes"), {
   loading: () => <div className="min-h-[400px] py-20" />,

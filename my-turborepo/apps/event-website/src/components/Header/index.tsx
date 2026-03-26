@@ -19,13 +19,10 @@ function MenuButton({
       onClick={onClick}
       className="flex items-center gap-3 rounded-2xl border-2 border-[#b4d8ee]/40 bg-[#fdf3e3] px-4 py-3 text-[#4C321B] shadow-[0_16px_40px_rgba(0,0,0,0.12)]"
     >
-      <span className="font-darumadrop-one text-lg tracking-[0.14em]">
+      {/* <span className="font-darumadrop-one text-lg tracking-[0.14em]">
         MENU
-      </span>
-      <span
-        aria-hidden
-        className="relative block h-4 w-6"
-      >
+      </span> */}
+      <span aria-hidden className="relative block h-4 w-6">
         <span className="absolute left-0 top-0 block h-[3px] w-6 rounded-full bg-[#4C321B]" />
         <span className="absolute left-0 top-1.5 block h-[3px] w-6 rounded-full bg-[#4C321B]" />
         <span className="absolute left-0 top-3 block h-[3px] w-6 rounded-full bg-[#4C321B]" />
@@ -40,7 +37,7 @@ export default function Header() {
   return (
     <>
       {/* Desktop: keep the menu board fixed. */}
-      <div className="hidden fixed left-4 top-16 z-50 md:block md:left-6 md:top-auto md:bottom-28">
+      <div className="fixed left-4 top-16 z-50 hidden md:bottom-10 md:left-6 md:top-auto md:block">
         <CafeMenuBoardContainer />
       </div>
 

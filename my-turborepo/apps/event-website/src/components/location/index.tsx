@@ -1,4 +1,4 @@
-"use client";
+import Image from "next/image";
 
 const PLANT_LEFT = "/images/location/plant-left.png";
 const PLANT_RIGHT = "/images/location/plant-right.png";
@@ -29,20 +29,27 @@ export default function Location() {
       <div className="relative w-[min(96vw,980px)]">
         <div className="relative z-20 overflow-visible rounded-[18px] border-[3px] border-[#8d6e5e] bg-[#966952] px-3 pb-28 pt-10 sm:px-4 sm:pb-32 md:pb-44 md:pt-12">
           {/* Decorative plants stay behind content; anchored to the rounded card */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={PLANT_LEFT}
-            alt=""
-            aria-hidden
-            className="pointer-events-none absolute -left-10 top-10 z-30 h-auto w-[55%] -translate-x-1/4 -translate-y-1/4 object-contain sm:left-[-16%] sm:top-[-9%] sm:w-[44%] sm:translate-x-0 sm:translate-y-0"
-          />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={PLANT_RIGHT}
-            alt=""
-            aria-hidden
-            className="pointer-events-none absolute -right-10 top-10 z-30 h-auto w-[58%] -translate-y-1/4 translate-x-1/4 object-contain sm:right-[-18%] sm:top-[-11%] sm:w-[45%] sm:translate-x-0 sm:translate-y-0"
-          />
+          <div className="pointer-events-none absolute -left-10 top-10 z-30 w-[55%] -translate-x-1/4 -translate-y-1/4 aspect-[1640/2360] sm:left-[-16%] sm:top-[-9%] sm:w-[44%] sm:translate-x-0 sm:translate-y-0">
+            <Image
+              src={PLANT_LEFT}
+              alt=""
+              aria-hidden
+              fill
+              priority
+              sizes="(max-width: 768px) 53vw, 430px"
+              className="object-contain"
+            />
+          </div>
+          <div className="pointer-events-none absolute -right-10 top-10 z-30 w-[58%] -translate-y-1/4 translate-x-1/4 aspect-[1640/2360] sm:right-[-18%] sm:top-[-11%] sm:w-[45%] sm:translate-x-0 sm:translate-y-0">
+            <Image
+              src={PLANT_RIGHT}
+              alt=""
+              aria-hidden
+              fill
+              sizes="(max-width: 768px) 56vw, 440px"
+              className="object-contain"
+            />
+          </div>
 
           <div
             aria-hidden
@@ -78,10 +85,10 @@ export default function Location() {
                   <div className="font-darumadrop-one text-[28px] leading-none text-[#fae19d] sm:text-[34px]">
                     DATE
                   </div>
-                  <div className="font-chilanka text-[40px] leading-tight text-[#fae19d] sm:text-[46px]">
+                  <div className="font-chilanka text-[40px] leading-tight text-[#fae19d] sm:text-[38px]">
                     April 11th 2026
                   </div>
-                  <div className="font-chilanka text-[40px] leading-tight text-[#fae19d] sm:text-[46px]">
+                  <div className="font-chilanka text-[40px] leading-tight text-[#fae19d] sm:text-[38px]">
                     9:00 AM - 5:00 PM
                   </div>
                 </div>
@@ -89,7 +96,7 @@ export default function Location() {
                   <div className="font-darumadrop-one text-[28px] leading-none text-[#fae19d] sm:text-[34px]">
                     LOCATION
                   </div>
-                  <div className="font-chilanka text-[40px] leading-tight text-[#fae19d] sm:text-[46px]">
+                  <div className="font-chilanka text-[40px] leading-tight text-[#fae19d] sm:text-[38px]">
                     Peterson
                   </div>
                 </div>
@@ -97,9 +104,10 @@ export default function Location() {
                   <div className="font-darumadrop-one text-[28px] leading-none text-[#fae19d] sm:text-[34px]">
                     PARKING
                   </div>
-                  <div className="font-chilanka text-[36px] leading-tight text-[#fae19d] sm:text-[42px]">
-                    Closest parking garage:{" "}
-                    <span className="italic">Central Parking Garage</span>
+                  <div className="font-chilanka text-[36px] leading-tight text-[#fae19d] sm:text-[38px]">
+                    <span className="italic">Lot 54, Lot 55 (Free)</span>
+                    <br />
+                    <span className="italic">Central Parking Garage (Paid)</span>
                   </div>
                 </div>
               </div>
@@ -123,20 +131,26 @@ export default function Location() {
         </div>
 
         {/* Under-panel decorative elements */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={LOCATION_BASKET}
-          alt=""
-          aria-hidden
-          className="pointer-events-none absolute -right-[6%] top-[86%] z-30 h-auto w-[42%] object-contain sm:-right-[11%] sm:top-[90%] sm:z-10 sm:w-[34%]"
-        />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/location/bear.png"
-          alt=""
-          aria-hidden
-          className="pointer-events-none absolute -left-[6%] top-[64%] z-30 h-auto w-[35%] object-contain sm:-left-[11%] sm:top-[69%] sm:w-[40%]"
-        />
+        <div className="pointer-events-none absolute -right-[6%] top-[86%] z-30 w-[42%] aspect-[1640/2360] sm:-right-[11%] sm:top-[90%] sm:z-10 sm:w-[34%]">
+          <Image
+            src={LOCATION_BASKET}
+            alt=""
+            aria-hidden
+            fill
+            sizes="(max-width: 768px) 40vw, 333px"
+            className="object-contain"
+          />
+        </div>
+        <div className="pointer-events-none absolute -left-[6%] top-[64%] z-30 w-[35%] aspect-[2388/1668] sm:-left-[11%] sm:top-[69%] sm:w-[40%]">
+          <Image
+            src="/images/location/bear.png"
+            alt=""
+            aria-hidden
+            fill
+            sizes="(max-width: 768px) 38vw, 392px"
+            className="object-contain"
+          />
+        </div>
       </div>
     </section>
   );
