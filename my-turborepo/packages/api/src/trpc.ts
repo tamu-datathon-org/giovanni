@@ -162,6 +162,9 @@ export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
       "ddmds66@gmail.com",
       "jonathan.a.herrera0@tamu.edu",
       "hkorad@tamu.edu",
+      "michael_rao@tamu.edu",
+      "angelayue06@tamu.edu"
+
     ].includes(ctx.session.user.email)
   ) {
     throw new TRPCError({
