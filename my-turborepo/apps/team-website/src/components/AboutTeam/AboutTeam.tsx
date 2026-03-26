@@ -267,8 +267,8 @@ const AboutTeam = () => {
             ],
         },
         {
-          image: `${imageBaseUrl}/johnathan2.JPG`,
-          name: "Johnathan Jackson",
+          image: `${imageBaseUrl}/jonathan2.JPG`,
+          name: "Jonathan Jackson",
           position: "Outreach",
           socialLinks: [
             {
@@ -278,7 +278,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/sharon.JPG`,
+          image: `${imageBaseUrl}/sharon.png`,
           name: "Sharon Alex",
           position: "Outreach",
           socialLinks: [

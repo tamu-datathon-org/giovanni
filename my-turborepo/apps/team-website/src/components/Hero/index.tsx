@@ -131,7 +131,7 @@ const Hero = () => {
             <svg
               viewBox="0 10.28 106.69 35.57"
               preserveAspectRatio="xMidYMid meet"
-              className="text-datalightblue dark:text-datalightblue m-2 h-[18vw] w-auto shrink-0 [paint-order:stroke_fill] lg:h-[9vw]"
+              className="text-datalightblue dark:text-datalightblue m-2 h-[18vw] w-auto shrink-0 overflow-visible [paint-order:stroke_fill] lg:h-[9vw]"
               fill="currentColor"
               stroke="currentColor"
               strokeWidth={1.5}
