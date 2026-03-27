@@ -16,7 +16,7 @@ overrides:
   immutable: 5.1.5
   serialize-javascript: 7.0.3
   '@remix-run/router': 1.23.2
-  nodemailer: 7.0.11
+  nodemailer: 8.0.4
   glob: 10.5.0
   jws: 3.2.3
   next: 15.5.10
@@ -60,10 +60,10 @@ importers:
     dependencies:
       '@auth/core':
         specifier: 0.31.0
-        version: 0.31.0(nodemailer@7.0.11)
+        version: 0.31.0(nodemailer@8.0.4)
       nodemailer:
-        specifier: 7.0.11
-        version: 7.0.11
+        specifier: 8.0.4
+        version: 8.0.4
     devDependencies:
       '@types/node':
         specifier: ^20.19.24
@@ -427,8 +427,8 @@ importers:
         specifier: 10.0.0
         version: 10.0.0
       nodemailer:
-        specifier: 7.0.11
-        version: 7.0.11
+        specifier: 8.0.4
+        version: 8.0.4
       qrcode:
         specifier: ^1.5.4
         version: 1.5.4
@@ -610,7 +610,7 @@ importers:
     dependencies:
       '@auth/drizzle-adapter':
         specifier: 1.4.1
-        version: 1.4.1(nodemailer@7.0.11)
+        version: 1.4.1(nodemailer@8.0.4)
       '@better-auth/expo':
         specifier: 1.4.18
         version: 1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.1)(kysely@0.28.11)(nanostores@1.1.1))(better-auth@1.4.18(next@15.5.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -925,7 +925,7 @@ packages:
     peerDependencies:
       '@simplewebauthn/browser': ^9.0.1
       '@simplewebauthn/server': ^9.0.2
-      nodemailer: 7.0.11
+      nodemailer: 8.0.4
     peerDependenciesMeta:
       '@simplewebauthn/browser':
         optional: true
@@ -939,7 +939,7 @@ packages:
     peerDependencies:
       '@simplewebauthn/browser': ^9.0.1
       '@simplewebauthn/server': ^9.0.2
-      nodemailer: 7.0.11
+      nodemailer: 8.0.4
     peerDependenciesMeta:
       '@simplewebauthn/browser':
         optional: true
@@ -6378,8 +6378,8 @@ packages:
   node-releases@2.0.36:
     resolution: {integrity: sha512-TdC8FSgHz8Mwtw9g5L4gR/Sh9XhSP/0DEkQxfEFXOpiul5IiHgHan2VhYYb6agDSfp4KuvltmGApc8HMgUrIkA==}
 
-  nodemailer@7.0.11:
-    resolution: {integrity: sha512-gnXhNRE0FNhD7wPSCGhdNh46Hs6nm+uTyg+Kq0cZukNQiYdnCsoQjodNP9BQVG9XrcK/v6/MgpAPBUFyzh9pvw==}
+  nodemailer@8.0.4:
+    resolution: {integrity: sha512-k+jf6N8PfQJ0Fe8ZhJlgqU5qJU44Lpvp2yvidH3vp1lPnVQMgi4yEEMPXg5eJS1gFIJTVq1NHBk7Ia9ARdSBdQ==}
     engines: {node: '>=6.0.0'}
 
   nopt@7.2.1:
@@ -8167,7 +8167,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@auth/core@0.31.0(nodemailer@7.0.11)':
+  '@auth/core@0.31.0(nodemailer@8.0.4)':
     dependencies:
       '@panva/hkdf': 1.2.1
       '@types/cookie': 0.6.0
@@ -8177,9 +8177,9 @@ snapshots:
       preact: 10.27.3
       preact-render-to-string: 5.2.3(preact@10.27.3)
     optionalDependencies:
-      nodemailer: 7.0.11
+      nodemailer: 8.0.4
 
-  '@auth/core@0.34.1(nodemailer@7.0.11)':
+  '@auth/core@0.34.1(nodemailer@8.0.4)':
     dependencies:
       '@panva/hkdf': 1.2.1
       '@types/cookie': 0.6.0
@@ -8189,11 +8189,11 @@ snapshots:
       preact: 10.27.3
       preact-render-to-string: 5.2.3(preact@10.27.3)
     optionalDependencies:
-      nodemailer: 7.0.11
+      nodemailer: 8.0.4
 
-  '@auth/drizzle-adapter@1.4.1(nodemailer@7.0.11)':
+  '@auth/drizzle-adapter@1.4.1(nodemailer@8.0.4)':
     dependencies:
-      '@auth/core': 0.34.1(nodemailer@7.0.11)
+      '@auth/core': 0.34.1(nodemailer@8.0.4)
     transitivePeerDependencies:
       - '@simplewebauthn/browser'
       - '@simplewebauthn/server'
@@ -14288,7 +14288,7 @@ snapshots:
 
   node-releases@2.0.36: {}
 
-  nodemailer@7.0.11: {}
+  nodemailer@8.0.4: {}
 
   nopt@7.2.1:
     dependencies:
