@@ -55,7 +55,7 @@ export default function TimelineDay({
     });
 
     return (
-        <div className="w-full bg-[#F5EDE4] shadow-lg overflow-hidden font-serif">
+        <div id="Schedule" className="w-full bg-[#F5EDE4] shadow-lg overflow-hidden font-serif">
             {/* header */}
             <div className="bg-[#F5EDE4] p-6 border-b-4 border-black">
                 <h1 className="text-3xl md:text-4xl font-bold text-black uppercase tracking-wide font-serif">
