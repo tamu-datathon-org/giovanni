@@ -163,7 +163,8 @@ export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
       "jonathan.a.herrera0@tamu.edu",
       "hkorad@tamu.edu",
       "michael_rao@tamu.edu",
-      "angelayue06@tamu.edu"
+      "angelayue06@tamu.edu",
+      "dayob@tamu.edu",
 
     ].includes(ctx.session.user.email)
   ) {
