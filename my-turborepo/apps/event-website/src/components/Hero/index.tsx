@@ -49,6 +49,9 @@ export default function Hero() {
           <p className="mt-6 text-center font-['Chilanka'] text-3xl text-[#FAE19D] sm:text-3xl md:mt-8 md:text-4xl lg:text-6xl">
             April 11, 2026 <br />
           </p>
+          <p className="mt-6 text-center font-['Chilanka'] text-3xl text-[#FAE19D] sm:text-3xl md:mt-8 md:text-4xl lg:text-6xl">
+            Applications Close <span className="font-['Darumadrop_one'] text-3xl text-[#FAE19D] sm:text-3xl md:mt-8 md:text-4xl lg:text-6xl">April 4</span>
+          </p>
 
           <a
             href="https://tamudatathon.org/apply"
