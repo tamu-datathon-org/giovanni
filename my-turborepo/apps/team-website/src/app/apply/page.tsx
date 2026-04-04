@@ -125,19 +125,23 @@ export default function Page() {
     });
 
   const handleOfferDecision = async (decision: "accepted" | "declined") => {
-    updateInvitationStatusMutation.mutateAsync({
-      eventName: EVENT_NAME ?? "",
-      email: session?.user.email ?? "",
-      newStatus: decision === "accepted",
-    });
-    setOfferDecision(decision);
-    window.localStorage.setItem(offerDecisionStorageKey, decision);
-    toast({
-      title: "Update Successful",
-      description:
-        decision === "accepted" ? "Offer accepted" : "Offer declined",
-      variant: "success",
-    });
+    try {
+      await updateInvitationStatusMutation.mutateAsync({
+        eventName: EVENT_NAME ?? "",
+        email: session?.user.email ?? "",
+        newStatus: decision === "accepted",
+      });
+      setOfferDecision(decision);
+      window.localStorage.setItem(offerDecisionStorageKey, decision);
+      toast({
+        title: "Update Successful",
+        description:
+          decision === "accepted" ? "Offer accepted" : "Offer declined",
+        variant: "success",
+      });
+    } catch {
+      // Error toast is handled by updateInvitationStatusMutation.onError
+    }
   };
 
   return (
