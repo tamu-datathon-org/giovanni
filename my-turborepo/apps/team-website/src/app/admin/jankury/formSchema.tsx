@@ -6,7 +6,11 @@ export const FormSchema = z.object({
   content: z.string(),
   maxBatchSize: z.coerce.number().int().min(1).max(10),
   additionalEmails: z.string().transform((value) => {
-    return value.split(",").map((email) => email.trim());
+    // Split the comma-separated textbox, trim each entry, and drop blanks.
+    return value
+      .split(",")
+      .map((email) => email.trim())
+      .filter(Boolean);
   }),
   confirmation: z
     .boolean()

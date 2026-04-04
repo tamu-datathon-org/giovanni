@@ -19,10 +19,10 @@ export default function Preview() {
             type="button"
             className="rounded-md border-2 border-black bg-black p-2 text-white hover:border-gray-700 hover:bg-gray-800"
           >
-            Open Email Preview
+            Preview Email
           </button>
         </DialogTrigger>
-        <DialogContent className="max-w-[90vw] overflow-hidden bg-black p-0">
+        <DialogContent className="max-w-[90vw] overflow-hidden bg-black p-0 [&>button]:z-50 [&>button]:rounded-full [&>button]:bg-black/80 [&>button]:p-1 [&>button]:text-white [&>button]:ring-1 [&>button]:ring-white/40">
           <iframe
             title="Email preview"
             className="h-[80vh] w-[90vw] bg-white"

@@ -2,7 +2,11 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 const InputEmails: React.FC = () => {
-  const { register } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+  const additionalEmailsError = errors.additionalEmails;
 
   return (
     <div className='flex flex-col py-2'>
@@ -17,6 +21,9 @@ const InputEmails: React.FC = () => {
         className='rounded-md border border-gray-400 bg-gray-100 p-2 text-black'
         {...register('additionalEmails')}
       />
+      {additionalEmailsError?.message ? (
+        <p className='mt-1 text-xs text-red-400'>*{String(additionalEmailsError.message)}</p>
+      ) : null}
     </div>
   );
 };
