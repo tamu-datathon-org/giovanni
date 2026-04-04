@@ -672,7 +672,7 @@ export const applicationRouter = {
 
       return updated[0];
     }),
-  updateInvitationStatus: organizerProcedure
+  updateInvitationStatus: protectedProcedure
     .input(z.object({
       eventName: z.string(),
       email: z.string(),
@@ -680,6 +680,13 @@ export const applicationRouter = {
     }))
     .mutation(async ({ ctx, input }) => {
       const { eventName, email, newStatus } = input;
+
+      if (email.toLowerCase() !== ctx.session.user.email.toLowerCase()) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You can only update your own invitation response",
+        });
+      }
 
       const event = await getEventData({ ctx, eventName });
 
@@ -695,6 +702,9 @@ export const applicationRouter = {
         throw new TRPCError({ code: "NOT_FOUND", message: "Application not found" });
       }
 
-      return await ctx.db.update(Application).set({ invitationStatus: newStatus }).where(eq(Application.email, email));
+      return await ctx.db
+        .update(Application)
+        .set({ invitationStatus: newStatus })
+        .where(and(eq(Application.email, email), eq(Application.eventId, event.id)));
     }),
 };
