@@ -20,6 +20,7 @@ type MenuTarget = {
 const MENU_TARGETS: MenuTarget[] = [
   { id: "menu", targetId: "menu", label: "Home", subtitle: "" },
   { id: "find-us", targetId: "find-us", label: "Location", subtitle: "" },
+  { id: "pastries", targetId: "pastries", label: "Prizes", subtitle: "" },
   { id: "baristas-note", targetId: "baristas-note", label: "FAQ", subtitle: "" },
 ];
 

@@ -6,23 +6,33 @@ const RIBBON_SVG_ALT = "/images/prizes/ribbon-alt.svg";
 const PLANT_SIDE = "/images/prizes/plant-side.png";
 
 const prizes = [
-  { category: "Best Challenge", name: "PRIZE NAME HERE", ribbonRight: true },
-  { category: "Best Challenge", name: "PRIZE NAME HERE", ribbonRight: false },
-  { category: "Best Challenge", name: "PRIZE NAME HERE", ribbonRight: true },
-  { category: "Best Challenge", name: "PRIZE NAME HERE", ribbonRight: false },
+  {
+    category: "First Place",
+    name: "Alienware Gaming Monitor",
+    ribbonRight: true,
+    imageSrc: "/images/prizes/prize1.png",
+  },
+  {
+    category: "Second Place",
+    name: "Keychron Mechanical Keyboard",
+    ribbonRight: false,
+    imageSrc: "/images/prizes/prize2.png",
+  },
+  {
+    category: "Third Place",
+    name: "JBL Bluetooth Speaker",
+    ribbonRight: true,
+    imageSrc: "/images/prizes/prize3.png",
+  },
+
 ];
 
 export default function Prizes() {
-  const base = "clamp(105px, 26vw, 440px)";
-
   return (
     <section
       id="prizes"
       aria-label="Prizes"
-      className="relative z-10 flex flex-col items-center overflow-visible bg-[#f0cf91] px-1 py-8 sm:py-10 md:px-2 md:py-14"
-      style={{
-        ["--prize-base" as string]: base,
-      }}
+      className="relative z-10 flex flex-col items-center overflow-visible bg-[#f0cf91] px-1 pt-16 pb-8 sm:pt-20 sm:pb-10 [--prize-base:clamp(135px,34vw,440px)] md:px-2 md:pt-24 md:pb-14 md:[--prize-base:clamp(105px,26vw,440px)]"
     >
       {/* Bottom-left hanging basket (half visible) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -30,10 +40,10 @@ export default function Prizes() {
         src={PLANT_SIDE}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute z-0 h-auto w-[calc(var(--prize-base)*698/491*0.85)] scale-x-[-1] object-contain max-[767px]:w-[calc(var(--prize-base)*698/491*0.65)]"
+        className="pointer-events-none absolute z-0 h-auto w-[calc(var(--prize-base)*698/491*1.22824)] scale-x-[-1] object-contain max-[767px]:w-[calc(var(--prize-base)*698/491*0.93925)]"
         style={{
-          top: "calc(var(--prize-base) * 700 / 491)",
-          left: "calc(var(--prize-base) * -305 / 491)",
+          top: "calc(var(--prize-base) * 530 / 491)",
+          left: "calc(var(--prize-base) * -440 / 491)",
         }}
       />
 
@@ -51,18 +61,19 @@ export default function Prizes() {
         {prizes.map((prize, i) => {
           const imageLeft = i % 2 === 0;
           const ribbonSrc = prize.ribbonRight ? RIBBON_SVG : RIBBON_SVG_ALT;
-          const rowGap =
+          const rowGap = //gap btwn prizes
             i === 0
               ? "0"
-              : i === 2
-                ? "calc(var(--prize-base) * 0.44)"
-                : "calc(var(--prize-base) * 0.40)";
+              : "calc(var(--prize-base) * 0.10)";
+          const rowShift = prize.ribbonRight //shifts the left prizes left, and the right ones right
+            ? "translateX(calc(var(--prize-base) * -0.28))"
+            : "translateX(calc(var(--prize-base) * 0.28))";
 
           return (
             <div
               key={i}
               className={`flex w-full items-center gap-[calc(var(--prize-base)*0.15)] ${imageLeft ? "justify-center" : "flex-row-reverse justify-center"}`}
-              style={{ marginTop: rowGap }}
+              style={{ marginTop: rowGap, transform: rowShift }}
             >
               <div
                 className="relative shrink-0"
@@ -75,9 +86,29 @@ export default function Prizes() {
                   src={PRIZE_FRAME_SVG}
                   alt=""
                   fill
-                  className="object-contain"
+                  className="relative z-0 object-contain"
                   unoptimized
                 />
+                <div
+                  className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full"
+                  style={{
+                    width: "calc(var(--prize-base) * 0.78)",
+                    height: "calc(var(--prize-base) * 0.78)",
+                  }}
+                >
+                  <div
+                    className="h-full w-full prize-sway"
+                    style={{ animationDelay: `${i * 0.2}s` }}
+                  >
+                    <Image
+                      src={prize.imageSrc}
+                      alt={prize.name}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+                </div>
               </div>
 
               <div
@@ -111,11 +142,13 @@ export default function Prizes() {
                   className={`${imageLeft ? "text-left" : "text-right"} font-darumadrop-one leading-[0.95] text-[#4c321b]`}
                   style={{
                     fontSize: "calc(var(--prize-base) * 0.1303 * 1.14)",
+                    //long prize names wrap onto several lines
+                    width: "calc(var(--prize-base) * 0.95)",
+                    whiteSpace: "normal",
+                    overflowWrap: "anywhere",
                   }}
                 >
-                  PRIZE NAME
-                  <br />
-                  HERE
+                  {prize.name}
                 </p>
               </div>
             </div>

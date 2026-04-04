@@ -10,7 +10,7 @@ const Prizes = dynamic(() => import("@/components/prizes"), {
 });
 
 const FAQ = dynamic(() => import("@/components/faq"), {
-  loading: () => <div className="min-h-[800px] bg-[#1B0706]" />,
+  loading: () => <div className="min-h-[800px] bg-[#f0cf91]" />,
 });
 
 export const metadata: Metadata = {
@@ -29,9 +29,9 @@ export default function Home() {
       <div id="find-us" className="scroll-mt-24">
         <Location />
       </div>
-      {/* <div id="pastries" className="scroll-mt-24">
+      <div id="pastries" className="scroll-mt-24">
         <Prizes />
-      </div> */}
+      </div>
       <div className="h-[100px] bg-[#f0cf91]" />
       <div id="baristas-note" className="scroll-mt-24">
         <FAQ />
