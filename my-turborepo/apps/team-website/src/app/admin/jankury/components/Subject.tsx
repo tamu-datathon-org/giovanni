@@ -20,9 +20,9 @@ export default function Subject() {
       name="subject"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Subject</FormLabel>
+          <FormLabel className="text-base font-semibold text-white">Email Subject Line</FormLabel>
           <FormControl>
-            <Input placeholder="Marriage Proposal" {...field} />
+            <Input placeholder="Enter a clear email subject" {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>

@@ -5,14 +5,16 @@ const InputEmails: React.FC = () => {
   const { register } = useFormContext();
 
   return (
-    <div className='flex flex-col py-4'>
-      <label htmlFor="additionalEmails">Additional Emails (email1@gmail.com,email2@gmail.com...):</label>
+    <div className='flex flex-col py-2'>
+      <label htmlFor="additionalEmails" className='text-base font-semibold text-white'>
+        Additional Recipient Emails
+      </label>
       <textarea
         id="additionalEmails"
         rows={5}
         cols={30}
         placeholder="Enter emails separated by commas"
-        className='p-2'
+        className='rounded-md border border-gray-400 bg-gray-100 p-2 text-black'
         {...register('additionalEmails')}
       />
     </div>

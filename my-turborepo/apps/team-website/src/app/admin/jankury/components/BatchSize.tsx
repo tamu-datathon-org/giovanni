@@ -21,14 +21,13 @@ export default function BatchSize() {
       name="maxBatchSize"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Maximum Batch Size</FormLabel>
+          <FormLabel className="text-base font-semibold text-white">Maximum Email Batch Size</FormLabel>
           <FormControl>
             <Input placeholder="10" {...field} />
           </FormControl>
           <FormMessage />
-          <FormDescription>
-            Keep this at the highest number possible (10). If the test fails,
-            lower the number and try again.
+          <FormDescription className="text-gray-200">
+            Start with 10 for faster sending. If delivery fails, lower this value and try again.
           </FormDescription>
         </FormItem>
       )}

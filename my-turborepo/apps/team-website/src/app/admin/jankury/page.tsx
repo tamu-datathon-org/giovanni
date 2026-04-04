@@ -87,24 +87,49 @@ export default function JankuryPage() {
   }
   return (
     <>
-      <div className="overflow-auto mt-40 mb-20">
-        <div className="font-XPfont flex justify-center">
-          <div className="flex h-full w-full justify-center">
-            <Button onClick={handleSendStatus}>Send Email Status</Button>
+      <div className="mt-40 mb-20 overflow-auto">
+        <div className="font-XPfont flex justify-center px-4">
+          <div className="w-full max-w-7xl">
             <Suspense fallback={<h1>Loading... please wait</h1>}>
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
-                  className="w-3/5 bg-gray-700 overflow-x-hidden rounded-lg p-5 lg:px-16"
+                  className="overflow-x-hidden rounded-lg bg-gray-700 p-3 lg:px-6"
                 >
-                  <EmailLists />
-                  <InputEmails />
-                  <BatchSize />
-                  <Subject />
-                  <Content />
-                  <Preview />
-                  <Confirmation />
-                  <Button type="submit">Submit</Button>
+                  <div className="grid gap-4 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)_minmax(0,0.45fr)]">
+                    <div className="space-y-6 rounded-md bg-gray-800/40 p-3">
+                      <h2 className="text-lg font-semibold text-blue-400">Recipient Settings</h2>
+                      <EmailLists />
+                      <InputEmails />
+                      <BatchSize />
+                    </div>
+
+                    <div className="space-y-6 rounded-md bg-gray-800/40 p-3">
+                      <h2 className="text-lg font-semibold text-blue-400">Custom Email</h2>
+                      <Subject />
+                      <Content />
+                      <Preview />
+                    </div>
+
+                    <div className="space-y-4 rounded-md bg-gray-800/40 p-3">
+                      <h2 className="text-lg font-semibold text-blue-400">Actions</h2>
+                      <Confirmation />
+                      <Button type="submit" className="w-full">
+                        Submit Custom Email
+                      </Button>
+                      <div className="my-2 border-t border-gray-500/60" />
+                      <p className="text-sm text-gray-200">
+                        Send application status emails: accepted, rejected, waitlisted
+                      </p>
+                      <Button
+                        type="button"
+                        onClick={handleSendStatus}
+                        className="w-full min-h-12 whitespace-normal px-4 py-3 text-sm leading-tight bg-purple-600 text-white hover:bg-purple-700"
+                      >
+                        Send Application Status Emails
+                      </Button>
+                    </div>
+                  </div>
                 </form>
               </Form>
             </Suspense>

@@ -13,14 +13,18 @@ export default function Confirmation() {
       control={form.control}
       name="confirmation"
       render={({ field }) => (
-        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-gray-500/60 p-4">
           <FormControl>
-            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+            <Checkbox
+              className="border-gray-200 data-[state=checked]:border-gray-100"
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
           </FormControl>
           <div className="space-y-1 leading-none">
-            <FormLabel>
-              This email was already tested using a testing mailing list, or
-              it's being tested right now.
+            <FormLabel className="font-semibold text-white">
+              I confirm this email has already been tested with a test mailing list
+              (or is currently being tested).
             </FormLabel>
           </div>
         </FormItem>

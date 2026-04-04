@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 
 import {
   FormControl,
+    FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -112,10 +113,13 @@ export default function Content() {
       name="content"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Email Content (HTML)</FormLabel>
+                    <FormLabel className="text-base font-semibold text-white">Write Custom Email (HTML Body)</FormLabel>
+                    <FormDescription className="text-gray-200">
+                       HTML email body will be sent to your selected recipients
+                    </FormDescription>
           <FormControl>
             <Textarea
-              className="resize-none"
+                            className="min-h-[240px] resize-none"
               defaultValue={example}
               {...field}
             />

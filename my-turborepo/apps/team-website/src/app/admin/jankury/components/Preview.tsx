@@ -14,17 +14,14 @@ export default function Preview() {
   const content = form.getValues("content");
   return (
     <>
-      <div className="flex flex-row items-center space-x-2 p-4">
-        <h1>Preview</h1>
-        <Dialog>
-          <DialogTrigger className="border-2 border-black p-2 rounded-md bg-black text-white">
-            Open
-          </DialogTrigger>
-          <DialogContent className="max-w-[90vw] max-h-[80vh] overflow-auto bg-black">
-            <iframe className="h-[800px] w-full" srcDoc={content}></iframe>
-          </DialogContent>
-        </Dialog>
-      </div>
+      <Dialog>
+        <DialogTrigger className="rounded-md border-2 border-black bg-black p-2 text-white hover:border-gray-700 hover:bg-gray-800">
+          Open Email Preview
+        </DialogTrigger>
+        <DialogContent className="max-h-[80vh] max-w-[90vw] overflow-auto bg-black">
+          <iframe className="h-[800px] w-full" srcDoc={content}></iframe>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
