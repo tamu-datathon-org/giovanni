@@ -163,8 +163,11 @@ export default function Content() {
     <FormField
       control={form.control}
       name="content"
-      render={({ field }) => (
-        <FormItem>
+            render={({ field }) => {
+                const { value, ...fieldProps } = field;
+
+                return (
+                    <FormItem>
                     <div className="flex items-center gap-2">
                         <FormLabel className="text-base font-semibold text-white">
                             Write Custom Email (HTML Body)
@@ -204,13 +207,14 @@ export default function Content() {
           <FormControl>
             <Textarea
                             className="min-h-[240px] resize-none"
-                            value={field.value ?? ""}
-              {...field}
+                                                        value={value ?? ""}
+                            {...fieldProps}
             />
           </FormControl>
           <FormMessage />
-        </FormItem>
-      )}
+                </FormItem>
+            );
+            }}
     />
   );
 }

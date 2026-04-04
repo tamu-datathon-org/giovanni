@@ -88,7 +88,12 @@ export default function JankuryPage() {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsConfirmOpen(false);
 
-    sendBulk.mutate(data, {
+    const payload = {
+      ...data,
+      additionalEmails: splitRecipients(data.additionalEmails),
+    };
+
+    sendBulk.mutate(payload, {
       onSuccess: () => {
         toast({
           title: "Emails queued!",
@@ -186,7 +191,7 @@ export default function JankuryPage() {
             <Suspense fallback={<h1>Loading... please wait</h1>}>
               <Form {...form}>
                 <form
-                  onSubmit={form.handleSubmit(onSubmit)}
+                  onSubmit={(event) => event.preventDefault()}
                   className="overflow-x-hidden rounded-lg bg-gray-700 p-3 lg:px-6"
                 >
                   <div className="grid gap-4 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)_minmax(0,0.45fr)]">
@@ -213,9 +218,9 @@ export default function JankuryPage() {
                       <Button
                         type="button"
                         onClick={handleOpenCustomEmailConfirm}
-                        className="w-full"
+                        className="w-full bg-blue-600 text-white hover:bg-blue-700"
                       >
-                        Submit Custom Email
+                        Confirm Custom Email
                       </Button>
                       <div className="my-2 border-t border-gray-500/60" />
                       <p className="text-sm text-gray-200">

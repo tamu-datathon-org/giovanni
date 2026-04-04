@@ -165,28 +165,5 @@ export default function EmailLists() {
         </FormItem>
       )}
     />
-
-    // <FormField
-    //   control={form.control}
-    //   name="mailing_list"
-    //   render={({ field }) => (
-    //     <FormItem>
-    //       <FormLabel>Mailing List</FormLabel>
-    //       <Select onValueChange={field.onChange} defaultValue={field.value}>
-    //         <FormControl>
-    //           <SelectTrigger>
-    //             <SelectValue placeholder="Select a mailing list" />
-    //           </SelectTrigger>
-    //         </FormControl>
-    //         <SelectContent>
-    //             {lists?.map((list) => {
-    //                 return <SelectItem value={list}>{list}</SelectItem>
-    //             })}
-    //         </SelectContent>
-    //       </Select>
-    //       <FormMessage />
-    //     </FormItem>
-    //   )}
-    // />
   );
 }

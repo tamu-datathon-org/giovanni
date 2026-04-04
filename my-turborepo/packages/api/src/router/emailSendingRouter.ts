@@ -68,8 +68,13 @@ export const emailSendingRouter = {
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const emails = await getEmailsByLabelList(ctx, input.mailing_lists);
-      const finalEmails = emails.concat(input.additionalEmails);
+      // Skip the mailing-list lookup entirely when no list is selected,
+      // so Additional Recipient Emails can be the only destination set.
+      const mailingListEmails =
+        input.mailing_lists.length > 0
+          ? await getEmailsByLabelList(ctx, input.mailing_lists)
+          : [];
+      const finalEmails = mailingListEmails.concat(input.additionalEmails);
 
       const failed = await queueBulkEmail(
         finalEmails,
