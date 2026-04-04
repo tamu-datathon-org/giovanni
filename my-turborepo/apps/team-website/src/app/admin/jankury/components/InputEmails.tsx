@@ -13,7 +13,7 @@ const InputEmails: React.FC = () => {
         id="additionalEmails"
         rows={5}
         cols={30}
-        placeholder="Enter emails separated by commas"
+        placeholder="Enter emails separated by commas: ex. email1@gmail.com, email2@gmail.com..."
         className='rounded-md border border-gray-400 bg-gray-100 p-2 text-black'
         {...register('additionalEmails')}
       />

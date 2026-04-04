@@ -27,7 +27,7 @@ export default function BatchSize() {
           </FormControl>
           <FormMessage />
           <FormDescription className="text-gray-200">
-            Start with 10 for faster sending. If delivery fails, lower this value and try again.
+           Keep this at the highest number possible (10). If the test fails, lower the number and try again.
           </FormDescription>
         </FormItem>
       )}

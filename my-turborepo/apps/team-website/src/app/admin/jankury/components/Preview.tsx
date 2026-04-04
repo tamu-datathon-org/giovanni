@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
@@ -10,16 +10,24 @@ import {
 
 export default function Preview() {
   const form = useFormContext();
-
-  const content = form.getValues("content");
+  const content = useWatch({ control: form.control, name: "content" }) ?? "";
   return (
     <>
       <Dialog>
-        <DialogTrigger className="rounded-md border-2 border-black bg-black p-2 text-white hover:border-gray-700 hover:bg-gray-800">
-          Open Email Preview
+        <DialogTrigger asChild>
+          <button
+            type="button"
+            className="rounded-md border-2 border-black bg-black p-2 text-white hover:border-gray-700 hover:bg-gray-800"
+          >
+            Open Email Preview
+          </button>
         </DialogTrigger>
-        <DialogContent className="max-h-[80vh] max-w-[90vw] overflow-auto bg-black">
-          <iframe className="h-[800px] w-full" srcDoc={content}></iframe>
+        <DialogContent className="max-w-[90vw] overflow-hidden bg-black p-0">
+          <iframe
+            title="Email preview"
+            className="h-[80vh] w-[90vw] bg-white"
+            srcDoc={content}
+          />
         </DialogContent>
       </Dialog>
     </>
