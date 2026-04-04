@@ -2,16 +2,17 @@
 
 import React, {
   createContext,
-  useContext,
-  useState,
-  useEffect,
   ReactNode,
   useCallback,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
+
 import {
+  GoogleDriveFile,
   googleDriveService,
   GoogleDriveUser,
-  GoogleDriveFile,
 } from "~/app/organizer/email-generator/_lib/googleDriveService";
 
 interface GoogleDriveContextType {
@@ -30,7 +31,7 @@ interface GoogleDriveContextType {
 }
 
 const GoogleDriveContext = createContext<GoogleDriveContextType | undefined>(
-  undefined
+  undefined,
 );
 
 interface GoogleDriveProviderProps {
@@ -60,7 +61,7 @@ export function GoogleDriveProvider({ children }: GoogleDriveProviderProps) {
 
         // Set the shared drive folder ID
         googleDriveService.setSharedDriveFolder(
-          process.env.NEXT_PUBLIC_DRIVE_FOLDER_ID || ""
+          process.env.NEXT_PUBLIC_DRIVE_FOLDER_ID || "",
         );
 
         // Check if user is already signed in
@@ -72,7 +73,7 @@ export function GoogleDriveProvider({ children }: GoogleDriveProviderProps) {
       } catch (err) {
         console.error("Failed to initialize Google Drive:", err);
         setError(
-          "Failed to initialize Google Drive. Please check your configuration."
+          "Failed to initialize Google Drive. Please check your configuration.",
         );
       } finally {
         setIsLoading(false);
@@ -153,7 +154,7 @@ export function GoogleDriveProvider({ children }: GoogleDriveProviderProps) {
         setIsLoading(false);
       }
     },
-    []
+    [],
   );
 
   /**
@@ -196,7 +197,7 @@ export function GoogleDriveProvider({ children }: GoogleDriveProviderProps) {
 
         const fileId = await googleDriveService.uploadHtmlToDrive(
           htmlContent,
-          filename
+          filename,
         );
         return fileId;
       } catch (err) {
@@ -209,7 +210,7 @@ export function GoogleDriveProvider({ children }: GoogleDriveProviderProps) {
         setIsLoading(false);
       }
     },
-    []
+    [],
   );
 
   /**
@@ -227,7 +228,7 @@ export function GoogleDriveProvider({ children }: GoogleDriveProviderProps) {
 
         const fileId = await googleDriveService.uploadJsxToDrive(
           jsxContent,
-          filename
+          filename,
         );
         return fileId;
       } catch (err) {
@@ -240,7 +241,7 @@ export function GoogleDriveProvider({ children }: GoogleDriveProviderProps) {
         setIsLoading(false);
       }
     },
-    []
+    [],
   );
 
   /**

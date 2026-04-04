@@ -14,7 +14,7 @@ export const STAT_SECTION_IMAGES = [
     alt: "600+ Hackers",
   },
   {
-    src: "/images/StatSection/DSC02664.webp",
+    src: "/images/StatSection/DSC026641.JPG",
     text: "20+ Schools",
     alt: "20+ Schools",
   },
