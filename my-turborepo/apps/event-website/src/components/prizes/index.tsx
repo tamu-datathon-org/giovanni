@@ -32,7 +32,7 @@ export default function Prizes() {
     <section
       id="prizes"
       aria-label="Prizes"
-      className="relative z-10 flex flex-col items-center overflow-visible bg-[#f0cf91] px-1 pt-16 pb-8 sm:pt-20 sm:pb-10 [--prize-base:clamp(135px,34vw,440px)] md:px-2 md:pt-24 md:pb-14 md:[--prize-base:clamp(105px,26vw,440px)]"
+      className="relative z-10 flex flex-col items-center overflow-visible bg-[#f0cf91] px-0 pt-8 pb-3 sm:px-1 sm:pt-20 sm:pb-10 [--prize-base:clamp(160px,40vw,440px)] md:px-2 md:pt-24 md:pb-14 md:[--prize-base:clamp(105px,26vw,440px)]"
     >
       {/* Bottom-left hanging basket (half visible) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -40,7 +40,7 @@ export default function Prizes() {
         src={PLANT_SIDE}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute z-0 h-auto w-[calc(var(--prize-base)*698/491*1.22824)] scale-x-[-1] object-contain max-[767px]:w-[calc(var(--prize-base)*698/491*0.93925)]"
+        className="pointer-events-none absolute z-0 hidden h-auto w-[calc(var(--prize-base)*698/491*1.22824)] scale-x-[-1] object-contain md:block"
         style={{
           top: "calc(var(--prize-base) * 530 / 491)",
           left: "calc(var(--prize-base) * -440 / 491)",
@@ -65,15 +65,15 @@ export default function Prizes() {
             i === 0
               ? "0"
               : "calc(var(--prize-base) * 0.10)";
-          const rowShift = prize.ribbonRight //shifts the left prizes left, and the right ones right
-            ? "translateX(calc(var(--prize-base) * -0.28))"
-            : "translateX(calc(var(--prize-base) * 0.28))";
+          const rowShiftClass = prize.ribbonRight // only shift on md+ screens
+            ? "md:[transform:translateX(calc(var(--prize-base)*-0.28))]"
+            : "md:[transform:translateX(calc(var(--prize-base)*0.28))]";
 
           return (
             <div
               key={i}
-              className={`flex w-full items-center gap-[calc(var(--prize-base)*0.15)] ${imageLeft ? "justify-center" : "flex-row-reverse justify-center"}`}
-              style={{ marginTop: rowGap, transform: rowShift }}
+              className={`flex w-full items-center gap-[calc(var(--prize-base)*0.15)] ${imageLeft ? "justify-center" : "flex-row-reverse justify-center"} ${rowShiftClass}`}
+              style={{ marginTop: rowGap }}
             >
               <div
                 className="relative shrink-0"

@@ -32,7 +32,7 @@ export default function Home() {
       <div id="pastries" className="scroll-mt-24">
         <Prizes />
       </div>
-      <div className="h-[100px] bg-[#f0cf91]" />
+      <div className="h-0 bg-[#f0cf91] sm:h-[100px]" />
       <div id="baristas-note" className="scroll-mt-24">
         <FAQ />
       </div>

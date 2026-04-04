@@ -131,13 +131,13 @@ export default function Location() {
         </div>
 
         {/* Under-panel decorative elements */}
-        <div className="pointer-events-none absolute -right-[18%] top-[73%] z-30 w-[68.4%] aspect-[1640/2360] sm:-right-[24%] sm:top-[76%] sm:z-10 sm:w-[61.2%]">
+        <div className="pointer-events-none absolute -right-[17%] top-[93%] z-0 w-[58%] aspect-[1640/2360] sm:-right-[24%] sm:top-[76%] sm:z-10 sm:w-[61.2%]">
           <Image
             src={LOCATION_BASKET}
             alt=""
             aria-hidden
             fill
-            sizes="(max-width: 768px) 61vw, 547px"
+            sizes="(max-width: 768px) 52vw, 547px"
             className="object-contain"
           />
         </div>
