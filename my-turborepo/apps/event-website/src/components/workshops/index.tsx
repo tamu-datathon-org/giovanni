@@ -38,14 +38,31 @@ function MenuBoardChrome({ children }: { children: ReactNode }) {
   );
 }
 
+function ChalkLedge() {
+  return (
+    <div
+      className="pointer-events-none absolute left-1/2 top-[calc(100%-12px)] z-20 w-[calc(100%+2.25rem)] max-w-none -translate-x-1/2 sm:w-[calc(100%+3rem)]"
+      aria-hidden
+    >
+      <div className="relative mx-auto h-7 rounded-b-lg border-x border-b border-[#3d2a1f]/18 bg-[#8d6e5e] shadow-[0_6px_14px_rgba(0,0,0,0.12)] sm:h-8">
+        <div className="absolute right-[10%] top-0 z-10 flex -translate-y-2 items-end gap-2 sm:right-[12%] md:right-[14%]">
+          <div className="h-2.5 w-[3.25rem] -rotate-[1deg] rounded-[3px] bg-gradient-to-b from-[#c4a882] to-[#6b4a32] shadow-[0_2px_4px_rgba(0,0,0,0.25)] ring-1 ring-[#4C321B]/35" />
+          <div className="mb-px h-2 w-9 rotate-[1deg] rounded-[2px] bg-gradient-to-b from-[#d2ecf7] to-[#6fa8c4] shadow-[0_2px_4px_rgba(0,0,0,0.2)] ring-1 ring-[#b4d8ee]/40" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Workshops() {
   return (
     <section
       aria-label="Workshops"
       className="relative z-20 flex justify-center overflow-visible bg-[#f0cf91] px-3 py-10 sm:px-4 sm:py-14 md:py-16"
     >
-      <div className="relative w-full max-w-[920px]">
-        <MenuBoardChrome>
+      <div className="relative w-full max-w-[920px] pb-10 sm:pb-11">
+        <div className="relative">
+          <MenuBoardChrome>
           <div className="px-5 pb-8 pt-8 sm:px-8 sm:pb-10 sm:pt-10 md:px-12 md:pb-12 md:pt-12">
             <header className="text-center">
               <p className="font-chilanka text-lg tracking-wide text-[#8D6E5E] sm:text-xl md:text-2xl">
@@ -145,6 +162,8 @@ export default function Workshops() {
             </div>
           </div>
         </MenuBoardChrome>
+          <ChalkLedge />
+        </div>
       </div>
     </section>
   );
