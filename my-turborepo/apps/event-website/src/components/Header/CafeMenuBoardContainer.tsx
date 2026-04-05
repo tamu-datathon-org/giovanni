@@ -18,8 +18,9 @@ type MenuTarget = {
 const MENU_TARGETS: MenuTarget[] = [
   { id: "menu", targetId: "menu", label: "Home", subtitle: "" },
   { id: "find-us", targetId: "find-us", label: "Location", subtitle: "" },
-  { id: "baristas-note", targetId: "baristas-note", label: "FAQ", subtitle: "" },
   { id: "Schedule", targetId: "Schedule", label: "Schedule", subtitle: ""},
+  { id: "baristas-note", targetId: "baristas-note", label: "FAQ", subtitle: "" },
+  
   // { id: "brew-methods", targetId: "brew-methods", label: "About / Team", subtitle: "Brew methods" },
   // { id: "specials", targetId: "specials", label: "Current Event", subtitle: "Datathon Lite" },
   // { id: "pastries", targetId: "pastries", label: "Gallery", subtitle: "Projects" },

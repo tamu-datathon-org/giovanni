@@ -27,12 +27,12 @@ export default function Home() {
       <div id="menu" className="scroll-mt-24">
         <Hero />
       </div>
-      {/* <div id="find-us" className="scroll-mt-24">
+      <div id="find-us" className="scroll-mt-24">
         <Location />
-      </div> */}
-      {/* <div id="pastries" className="scroll-mt-24">
+      </div> 
+       <div id="pastries" className="scroll-mt-24">
         <Prizes />
-      </div> */}
+      </div>
       <div id="Schedule" className="scroll-mt-24">
         <Schedule />
       </div>

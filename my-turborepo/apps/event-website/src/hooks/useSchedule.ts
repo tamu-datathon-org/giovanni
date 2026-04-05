@@ -3,42 +3,55 @@
 import { useCallback, useEffect, useState } from "react";
 
 export interface Event {
-  id: string | number;
-  startTime: string;
-  endTime: string;
-  title: string;
-  location: string | number;
-  category: string;
+    id: string | number;
+    startTime: string;
+    endTime: string;
+    title: string;
+    location: string | number;
+    category: string;
 }
 
 const CACHE_KEY = "cachedScheduleData";
-const CACHE_TIME = 20000;
+const POLL_INTERVAL = 20_000; // 20 s
+
+/** Return the time portion as-is — we don't need date parsing. */
+function normalizeTime(raw: unknown): string {
+    if (!raw) return "";
+    return String(raw).trim();
+}
+
+const normalizeEvent = (e: Record<string, unknown>): Event => ({
+    id:        e.id as string | number,
+    startTime: normalizeTime(e.startTime),
+    endTime:   normalizeTime(e.endTime),
+    title:     String(e.title ?? ""),
+    location:  e.location as string | number,
+    category:  String(e.category ?? ""),
+});
 
 const sortEvents = (data: Event[]) =>
-    [...data].sort((a, b) =>
-        new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
-    );
+    [...data].sort((a, b) => a.startTime.localeCompare(b.startTime));
 
 const hasChanged = (oldData: Event[], newData: Event[]) => {
     if (oldData.length !== newData.length) return true;
     return oldData.some((oldItem, i) => {
-        const newItem = newData[i];
+        const n = newData[i];
         return (
-            oldItem.id !== newItem.id ||
-            oldItem.startTime !== newItem.startTime ||
-            oldItem.endTime !== newItem.endTime ||
-            oldItem.title !== newItem.title ||
-            oldItem.location !== newItem.location ||
-            oldItem.category !== newItem.category
+            oldItem.id        !== n.id        ||
+            oldItem.startTime !== n.startTime ||
+            oldItem.endTime   !== n.endTime   ||
+            oldItem.title     !== n.title     ||
+            oldItem.location  !== n.location  ||
+            oldItem.category  !== n.category
         );
     });
 };
 
+// Safe localStorage helpers (SSR-safe)
 const getFromStorage = (key: string): string | null => {
     if (typeof window === "undefined") return null;
     try { return localStorage.getItem(key); } catch { return null; }
 };
-
 const setInStorage = (key: string, value: string): void => {
     if (typeof window === "undefined") return;
     try { localStorage.setItem(key, value); } catch (err) {
@@ -49,55 +62,65 @@ const setInStorage = (key: string, value: string): void => {
 export function useSchedule() {
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError]   = useState<string | null>(null);
     const [lastUpdated, setLastUpdated] = useState<number | null>(null);
 
     const loadEvents = useCallback(async (checkForChanges = false) => {
         try {
-        const res = await fetch("/api/schedule");
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            const res = await fetch("/api/schedule", { cache: "no-store" });
 
-        const data = (await res.json()) as Event[];
-        if (!Array.isArray(data)) throw new Error("API did not return an array");
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            }
 
-        const sorted = sortEvents(data);
-        const cachedString = getFromStorage(CACHE_KEY);
-        const cached = cachedString ? (JSON.parse(cachedString) as Event[]) : [];
-        const changed = hasChanged(cached, sorted);
+            const json: unknown = await res.json();
 
-        if (!checkForChanges || changed) {
-            setEvents(sorted);
-            setInStorage(CACHE_KEY, JSON.stringify(sorted));
-            setInStorage(`${CACHE_KEY}_time`, Date.now().toString());
-            setLastUpdated(Date.now());
-            setError(null);
-        }
+            // The API wraps errors as { error: string, data: [] }
+            if (!Array.isArray(json)) {
+                const maybeError = json as { error?: string };
+                throw new Error(maybeError?.error ?? "API did not return an array");
+            }
+
+            const sorted = sortEvents(
+                (json as Record<string, unknown>[]).map(normalizeEvent)
+            );
+
+            const cachedString = getFromStorage(CACHE_KEY);
+            const cached: Event[] = cachedString
+                ? (JSON.parse(cachedString) as Event[])
+                : [];
+
+            if (!checkForChanges || hasChanged(cached, sorted)) {
+                setEvents(sorted);
+                setInStorage(CACHE_KEY, JSON.stringify(sorted));
+                setLastUpdated(Date.now());
+                setError(null);
+            }
         } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load schedule");
+            const msg = err instanceof Error ? err.message : "Failed to load schedule";
+            setError(msg);
+            console.error("[useSchedule]", err);
         } finally {
-        setLoading(false);
+            setLoading(false);
         }
     }, []);
 
     useEffect(() => {
+        // Show cached data immediately while we fetch fresh data
         const cachedString = getFromStorage(CACHE_KEY);
         if (cachedString) {
-        try {
-            setEvents(sortEvents(JSON.parse(cachedString) as Event[]));
-            setLoading(false);
-        } catch (err) {
-            console.error("Failed to parse cached data:", err);
+            try {
+                setEvents(sortEvents(JSON.parse(cachedString) as Event[]));
+                setLoading(false);
+            } catch (err) {
+                console.error("Failed to parse cached schedule data:", err);
+            }
         }
-        }
+
         void loadEvents();
-        const interval = setInterval(() => void loadEvents(true), CACHE_TIME);
+        const interval = setInterval(() => void loadEvents(true), POLL_INTERVAL);
         return () => clearInterval(interval);
     }, [loadEvents]);
 
-    return {
-        events,
-        loading,
-        error,
-        lastUpdated,
-    };
+    return { events, loading, error, lastUpdated };
 }
