@@ -25,7 +25,7 @@ export default function FAQ() {
     <section
       aria-label="Frequently Asked Questions"
       //clipping/overflow happens here, might need to change in future depending on other components
-      className="relative z-30 w-full overflow-y-visible [overflow-x:clip] bg-[#FAE19D] py-32 sm:py-24" //yellow background/outer faq container
+      className="relative z-30 w-full overflow-y-visible [overflow-x:clip] bg-[#f0cf91] py-32 sm:py-24" //yellow background/outer faq container
       id="faq"
     >
       {/* outer brown rec section size*/}

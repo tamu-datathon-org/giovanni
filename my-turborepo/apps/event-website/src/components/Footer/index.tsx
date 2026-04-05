@@ -9,7 +9,7 @@ const Footer = () => {
   const { toast } = useToast();
   //F0CF91
   return (
-    <footer className="relative z-40 overflow-x-clip overflow-y-visible bg-[#FAE19D] pb-4 pt-6 md:pb-6 md:pt-12 lg:pt-28">
+    <footer className="relative z-40 overflow-x-clip overflow-y-visible bg-[#f0cf91] pb-4 pt-6 md:pb-6 md:pt-12 lg:pt-28">
       <div className="pointer-events-none absolute inset-x-0 bottom-0 top-0 bg-[#4C321B] md:-top-40 md:bg-transparent md:bg-[url(/images/footer_background.svg)] md:bg-[length:100%_180%] md:bg-top md:bg-no-repeat" />
       <Image
         src="/images/bearfooter.gif"
