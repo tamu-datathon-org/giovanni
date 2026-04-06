@@ -38,13 +38,29 @@ function MenuBoardChrome({ children }: { children: ReactNode }) {
   );
 }
 
+function ChalkLedge() {
+  return (
+    <div
+      className="pointer-events-none absolute left-1/2 top-[calc(100%-12px)] z-20 w-[calc(100%+2.25rem)] max-w-none -translate-x-1/2 sm:w-[calc(100%+3rem)]"
+      aria-hidden
+    >
+      <div className="relative mx-auto h-7 rounded-b-lg bg-[#8d6e5e] shadow-[0_6px_14px_rgba(0,0,0,0.12)] sm:h-8">
+        <div className="absolute right-[10%] top-0 z-10 flex -translate-y-2.5 items-end gap-2 sm:right-[12%] md:right-[14%]">
+          <div className="-mb-px h-2 w-[3.25rem] rounded-[2px] bg-gradient-to-b from-[#c4a882] to-[#6b4a32] shadow-[0_2px_4px_rgba(0,0,0,0.25)]" />
+          <div className="mb-px h-2 w-9 rounded-[2px] translate-y-0.5 bg-gradient-to-b from-[#d2ecf7] to-[#6fa8c4] shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Workshops() {
   return (
     <section
       aria-label="Workshops"
       className="relative z-20 flex justify-center overflow-visible bg-[#f0cf91] px-3 py-10 sm:px-4 sm:py-14 md:py-16"
     >
-      <div className="relative w-full max-w-[920px]">
+      <div className="relative w-full max-w-[920px] pb-10 sm:pb-11">
         <div className="relative">
           <MenuBoardChrome>
           <div className="px-5 pb-8 pt-8 sm:px-8 sm:pb-10 sm:pt-10 md:px-12 md:pb-12 md:pt-12">
@@ -85,6 +101,17 @@ export default function Workshops() {
                       <p className="mt-1 font-darumadrop-one text-lg leading-tight text-[#fae19d]/95 sm:text-xl">
                         {w.title}
                       </p>
+                    </div>
+
+                    <div
+                      className="relative flex items-center gap-0 bg-[#f0cf91]/40 px-1 py-0"
+                      aria-hidden
+                    >
+                      <div className="h-2 flex-1 border-t-2 translate-y-0.5 border-dashed border-[#4C321B]/35" />
+                      <span className="shrink-0 px-2 font-chilanka translate-y-0.5 text-xs uppercase tracking-widest text-[#8D6E5E]">
+                        tear along
+                      </span>
+                      <div className="h-2 flex-1 border-t-2 translate-y-0.5 border-dashed border-[#4C321B]/35" />
                     </div>
 
                     <div className="space-y-4 px-4 pb-5 pt-4 sm:px-5 sm:pb-6 sm:pt-5">
@@ -133,6 +160,7 @@ export default function Workshops() {
             </div>
           </div>
         </MenuBoardChrome>
+        <ChalkLedge />
         </div>
       </div>
     </section>
