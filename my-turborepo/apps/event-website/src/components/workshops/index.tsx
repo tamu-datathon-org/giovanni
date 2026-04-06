@@ -144,6 +144,9 @@ export default function Workshops() {
 
             <div className="mx-auto mt-12 max-w-md md:mt-14">
               <div className="relative overflow-hidden rounded-xl border-2 border-dashed border-[#4C321B]/25 bg-[#fefdf8] px-5 py-6 text-center shadow-inner sm:px-6 sm:py-7">
+                <p className="font-darumadrop-one text-sm uppercase tracking-[0.18em] text-[#8D6E5E]">
+                  Take a stub
+                </p>
                 <p className="mt-2 font-chilanka text-lg text-[#4C321B] sm:text-xl">
                   Please RSVP if you plan to attend.
                 </p>
