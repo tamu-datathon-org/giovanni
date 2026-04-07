@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import Location from "@/components/location";
-import Workshops from "@/components/workshops";
+import Schedule from "@/components/Schedule";
 
 import { ScrollUp } from "@vanni/ui/scroll-up";
 
@@ -29,14 +29,15 @@ export default function Home() {
       </div>
       <div id="find-us" className="scroll-mt-24">
         <Location />
-      </div>
-      <div id="workshops" className="scroll-mt-24">
-        <Workshops />
-      </div>
-      <div id="pastries" className="scroll-mt-24">
+      </div> 
+       <div id="pastries" className="scroll-mt-24">
         <Prizes />
       </div>
-      <div className="h-0 bg-[#f0cf91] sm:h-[100px]" />
+      <div id="Schedule" className="scroll-mt-24">
+        <Schedule />
+      </div>
+
+      <div className="h-[100px] bg-[#f0cf91]" />
       <div id="baristas-note" className="scroll-mt-24">
         <FAQ />
       </div>

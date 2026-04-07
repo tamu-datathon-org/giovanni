@@ -43,7 +43,7 @@ export default function Hero() {
                 md:pt-0
                 "
         >
-          <p className="text-center font-['Darumadrop_one'] text-5xl text-[#FAE19D] sm:text-6xl md:text-6xl lg:text-8xl">
+          <p className="text-center font-darumadrop-one text-5xl text-[#FAE19D] sm:text-6xl md:text-6xl lg:text-8xl">
             TAMU <br /> Datathon Lite
           </p>
           <p className="mt-6 text-center font-['Chilanka'] text-3xl text-[#FAE19D] sm:text-3xl md:mt-8 md:text-4xl lg:text-6xl">
@@ -58,7 +58,7 @@ export default function Hero() {
             className="
                             mt-6 rounded-xl
                             bg-[#FAE19D] px-8
-                            py-3 font-['Darumadrop_one']
+                            py-3 font-darumadrop-one
                             text-3xl text-[#8D6E5E]
                             shadow-xl
                             transition-colors
