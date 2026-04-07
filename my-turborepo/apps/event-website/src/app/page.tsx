@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import Location from "@/components/location";
 import Schedule from "@/components/Schedule";
+import Workshops from "@/components/workshops";
 
 import { ScrollUp } from "@vanni/ui/scroll-up";
 
@@ -30,6 +31,9 @@ export default function Home() {
       <div id="find-us" className="scroll-mt-24">
         <Location />
       </div> 
+      <div id="workshops" className="scroll-mt-24">
+        <Workshops />
+      </div>
        <div id="pastries" className="scroll-mt-24">
         <Prizes />
       </div>
