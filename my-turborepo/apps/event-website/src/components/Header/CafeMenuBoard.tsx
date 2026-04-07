@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import Image from "next/image";
 import clsx from "clsx";
 
 export type CafeMenuBoardItem = {
-  id: string; // menu item id (ex: "menu")
+  id: string;
   label: string;
   subtitle?: string;
   disabled?: boolean;
@@ -32,7 +31,6 @@ export default function CafeMenuBoard({
 
       if (!boardRef.current) return;
 
-      // Entrance motion (placed on the table)
       gsap.fromTo(
         boardRef.current,
         { opacity: 0, transformOrigin: "left center" },
@@ -58,7 +56,6 @@ export default function CafeMenuBoard({
         );
       };
 
-      // Ensure all underlines are reset before animating the active one.
       gsap.set(boardRef.current.querySelectorAll(underlineSelector), {
         scaleX: 0,
         opacity: 0.35,
@@ -71,9 +68,7 @@ export default function CafeMenuBoard({
       const prevActiveId = prevActiveIdRef.current;
       prevActiveIdRef.current = activeId;
 
-      // Tiny scale-up for the whole board.
       gsap.killTweensOf(boardRef.current);
-      // Ensure we never get stuck at the entrance `opacity: 0`.
       gsap.set(boardRef.current, { scale: 1, opacity: 1 });
       gsap.to(boardRef.current, {
         scale: 1.02,
@@ -114,107 +109,76 @@ export default function CafeMenuBoard({
     <div className="transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-[0_25px_60px_rgba(0,0,0,0.18)]">
       <div
         ref={boardRef}
-        className="relative w-60 overflow-hidden rounded-2xl border-4 border-[#b4d8ee]/40 bg-[#fdf3e3] p-6 text-[#4C321B] shadow-[0_16px_40px_rgba(0,0,0,0.12)] md:w-64"
+        className="relative w-60 rounded-2xl border-4 border-[#b4d8ee]/40 bg-[#fdf3e3] p-6 text-[#4C321B] shadow-[0_16px_40px_rgba(0,0,0,0.12)] md:w-64"
       >
-        {/* subtle stationery grain */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[calc(1rem-3px)] opacity-10 [background-image:radial-gradient(circle_at_20%_10%,rgba(180,216,238,0.45),transparent_40%),radial-gradient(circle_at_80%_30%,rgba(180,216,238,0.25),transparent_55%)]" />
         <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-10 [background-image:radial-gradient(circle_at_20%_10%,rgba(180,216,238,0.45),transparent_40%),radial-gradient(circle_at_80%_30%,rgba(180,216,238,0.25),transparent_55%)]"
-        />
-
-        {/* noise overlay (SVG turbulence) */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-30 mix-blend-multiply"
+          className="pointer-events-none absolute inset-0 overflow-hidden rounded-[calc(1rem-3px)] opacity-30 mix-blend-multiply"
           style={{
             backgroundImage:
               'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'180\' height=\'180\'><filter id=\'n\'><feTurbulence type=\'fractalNoise\' baseFrequency=\'.9\' numOctaves=\'3\' stitchTiles=\'stitch\'/></filter><rect width=\'180\' height=\'180\' filter=\'url(%23n)\' opacity=\'.35\'/></svg>")',
           }}
         />
-
-        {/* left-side chalk strip to sell the "note board" look */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-0 top-0 bottom-0 w-2 bg-[#b4d8ee]/10"
-        />
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-2 overflow-hidden rounded-l-[calc(1rem-3px)] bg-[#b4d8ee]/10" />
 
         <div className="relative z-10">
-          <div className="mb-2 flex items-center gap-2">
-            {/* tiny coffee cup doodle */}
-            <Image src="/images/tdlite2026.png" alt="Coffee Cup" width={40} height={40} className=""/>
-            <span className="font-darumadrop-one text-lg tracking-[0.14em] text-[#4C321B] mb-2">
-              MENU
-            </span>
-          </div>
-
-          <div className="mb-4 h-px w-full bg-[#b4d8ee]/30" />
-
-          <nav aria-label="Cafe navigation">
-            <div className="flex flex-col">
-              {items.map((item) => {
-                const isActive = item.id === activeId;
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    data-menu-id={item.id}
-                    disabled={item.disabled}
-                    aria-disabled={item.disabled}
-                    onClick={() => onItemClick(item.id)}
+          <div className="flex flex-col">
+            {items.map((item) => {
+              const isActive = item.id === activeId;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  data-menu-id={item.id}
+                  disabled={item.disabled}
+                  onClick={() => onItemClick(item.id)}
+                  className={clsx(
+                    "group relative flex w-full items-start gap-3 rounded-xl px-2 py-3.5 text-left transition-colors",
+                    isActive
+                      ? "text-[#4C321B]"
+                      : "text-[#8D6E5E] hover:text-[#4C321B]",
+                  )}
+                >
+                  <span
                     className={clsx(
-                      "group relative flex w-full items-start gap-3 rounded-xl px-2 py-3.5 text-left transition-colors",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b4d8ee]/60 focus-visible:ring-offset-1",
-                      isActive
-                        ? "text-[#4C321B]"
-                        : "text-[#8D6E5E] hover:text-[#4C321B]",
+                      "pointer-events-none absolute inset-y-1 left-1.5 right-1.5 rounded-lg bg-[#b4d8ee]/15 opacity-0 transition-opacity",
+                      isActive && "opacity-100",
                     )}
-                  >
-                    {/* active highlight behind the row */}
-                    <span
-                      aria-hidden
-                      className={clsx(
-                        "pointer-events-none absolute inset-y-1 left-1.5 right-1.5 rounded-lg bg-[#b4d8ee]/15 opacity-0 transition-opacity",
-                        isActive && "opacity-100",
-                      )}
-                    />
+                  />
 
-                    <span
-                      aria-hidden
-                      className={clsx(
-                        "relative z-10 mt-2.5 h-2 w-2 rounded-full",
-                        isActive ? "bg-[#b4d8ee]" : "bg-[#b4d8ee]/40",
-                      )}
-                    />
+                  <span
+                    className={clsx(
+                      "relative z-10 mt-2.5 h-2 w-2 rounded-full",
+                      isActive ? "bg-[#b4d8ee]" : "bg-[#b4d8ee]/40",
+                    )}
+                  />
 
-                    <div className="relative z-10 flex flex-col">
-                      <span className="font-darumadrop-one text-lg tracking-wide leading-none">
-                        {item.label}
-                      </span>
+                  <div className="relative z-10 flex flex-col pb-1">
+                    <span className="font-darumadrop-one text-lg tracking-wide leading-none">
+                      {item.label}
+                    </span>
 
-                      {item.subtitle ? (
-                        <span
-                          className={clsx(
-                            "mt-1 text-[11px] uppercase tracking-[0.18em] font-chilanka",
-                            isActive ? "text-[#b4d8ee]/70" : "text-[#b4d8ee]/40",
-                          )}
-                        >
-                          {item.subtitle}
-                        </span>
-                      ) : null}
-
-                      {/* animated active “chalk wipe” underline */}
+                    {item.subtitle ? (
                       <span
-                        aria-hidden
-                        className="pointer-events-none absolute -bottom-1 left-9 right-3 h-[3px] origin-left scale-x-0 rounded-full bg-[#b4d8ee] opacity-95"
-                        data-chalk-underline="true"
-                        data-menu-id={item.id}
-                      />
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </nav>
+                        className={clsx(
+                          "mt-1 text-[11px] uppercase tracking-[0.18em] font-chilanka",
+                          isActive ? "text-[#b4d8ee]/70" : "text-[#b4d8ee]/40",
+                        )}
+                      >
+                        {item.subtitle}
+                      </span>
+                    ) : null}
+
+                    <span
+                      className="pointer-events-none absolute bottom-0 left-0 right-0 h-[3px] origin-left scale-x-0 rounded-full bg-[#b4d8ee] opacity-95"
+                      data-chalk-underline="true"
+                      data-menu-id={item.id}
+                    />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

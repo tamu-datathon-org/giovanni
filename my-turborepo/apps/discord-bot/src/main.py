@@ -67,6 +67,12 @@ def build_message(event):
             time_str = f"Time: {start_dt.strftime('%I:%M %p')} – {end_dt.strftime('%I:%M %p %Z')}"
         except:
             pass
+    elif start_time:
+        try:
+            start_dt = EVENT_TZ.localize(parse_dt(start_time))
+            time_str = f"Starts at: {start_dt.strftime('%I:%M %p %Z')}"
+        except:
+            pass
     elif end_time:
         try:
             end_dt = EVENT_TZ.localize(parse_dt(end_time))

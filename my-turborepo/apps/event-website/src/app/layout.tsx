@@ -35,8 +35,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
   // redirect("https://tamudatathon.org/apply");
 
   return (
-    <html lang="en">
-      <body className={`m-0 h-full w-full ${inter.variable} ${darumadropOne.variable} ${chilanka.variable}`}>
+    <html lang="en" className="overflow-x-clip">
+      <body className={`m-0 h-full w-full overflow-x-clip ${inter.variable} ${darumadropOne.variable} ${chilanka.variable}`}>
 
 
         <Header />

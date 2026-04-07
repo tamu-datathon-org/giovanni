@@ -5,12 +5,14 @@ import { usePathname, useRouter } from "next/navigation";
 import CafeMenuBoard, { type CafeMenuBoardItem } from "./CafeMenuBoard";
 
 type CafeMenuBoardContainerProps = {
+  activeId: string;
+  onActiveIdChange: (id: string) => void;
   onItemSelected?: () => void;
 };
 
 type MenuTarget = {
-  id: string; // menu item id (also used as activeId)
-  targetId: string; // DOM section id to scroll to
+  id: string;
+  targetId: string;
   label: string;
   subtitle?: string;
 };
@@ -26,13 +28,17 @@ const MENU_TARGETS: MenuTarget[] = [
   // { id: "pastries", targetId: "pastries", label: "Gallery", subtitle: "Projects" },
 ];
 
+/** Finer steps so the observer fires often enough to keep state in sync. */
+const IO_THRESHOLDS = Array.from({ length: 21 }, (_, i) => i / 20);
+
 export default function CafeMenuBoardContainer({
+  activeId,
+  onActiveIdChange,
   onItemSelected,
 }: CafeMenuBoardContainerProps) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const [activeId, setActiveId] = useState<string>("menu");
   const [enabledMap, setEnabledMap] = useState<Record<string, boolean>>(() => {
     if (typeof document === "undefined") return {};
 
@@ -48,6 +54,10 @@ export default function CafeMenuBoardContainer({
     activeIdRef.current = activeId;
   }, [activeId]);
 
+  const sectionVisibilityRef = useRef(
+    new Map<string, { ratio: number; intersecting: boolean }>(),
+  );
+
   const pendingTargetIdRef = useRef<string | null>(null);
 
   const items: CafeMenuBoardItem[] = useMemo(() => {
@@ -55,8 +65,6 @@ export default function CafeMenuBoardContainer({
       id: t.id,
       label: t.label,
       subtitle: t.subtitle,
-      // On the home page we disable items whose anchor isn't present yet.
-      // On other routes we still allow navigation back to `/` so clicks work.
       disabled: pathname === "/" ? enabledMap[t.targetId] === false : false,
     }));
   }, [enabledMap, pathname]);
@@ -72,20 +80,18 @@ export default function CafeMenuBoardContainer({
     if (!maybeId) return;
     if (!MENU_TARGETS.some((t) => t.targetId === maybeId)) return;
 
-    // Best-effort: on first mount with a hash, scroll right away.
     const el = document.getElementById(maybeId);
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
-      setActiveId(
+      onActiveIdChange(
         MENU_TARGETS.find((t) => t.targetId === maybeId)?.id ?? "menu",
       );
     }
-  }, [pathname]);
+  }, [pathname, onActiveIdChange]);
 
   useEffect(() => {
     if (pathname !== "/") return;
 
-    // Keep menu items enabled/disabled based on whether the anchors exist.
     const nextEnabled: Record<string, boolean> = {};
     for (const t of MENU_TARGETS) {
       nextEnabled[t.targetId] = !!document.getElementById(t.targetId);
@@ -108,32 +114,41 @@ export default function CafeMenuBoardContainer({
 
     if (!targets.length) return;
 
-    // "Active" when a section intersects the middle-ish region of the viewport.
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting);
-        if (!visible.length) return;
+        for (const entry of entries) {
+          const id = (entry.target as HTMLElement).id;
+          sectionVisibilityRef.current.set(id, {
+            ratio: entry.intersectionRatio,
+            intersecting: entry.isIntersecting,
+          });
+        }
 
-        const best = visible
-          .slice()
-          .sort((a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0))[0];
-
-        const matched = MENU_TARGETS.find(
-          (t) => t.targetId === (best.target as HTMLElement).id,
+        const candidates = MENU_TARGETS.map((t) => ({
+          target: t,
+          state: sectionVisibilityRef.current.get(t.targetId),
+        })).filter(
+          (x): x is { target: MenuTarget; state: { ratio: number; intersecting: boolean } } =>
+            !!x.state?.intersecting,
         );
-        if (!matched) return;
-        if (activeIdRef.current !== matched.id) setActiveId(matched.id);
+
+        if (!candidates.length) return;
+
+        const best = candidates.sort((a, b) => b.state.ratio - a.state.ratio)[0];
+        if (activeIdRef.current !== best.target.id) {
+          onActiveIdChange(best.target.id);
+        }
       },
       {
-        threshold: [0.15, 0.33, 0.5, 0.66],
-        rootMargin: "-30% 0px -55% 0px",
+        threshold: IO_THRESHOLDS,
+        rootMargin: "-15% 0px -25% 0px",
       },
     );
 
     for (const t of targets) observer.observe(t.el);
 
     return () => observer.disconnect();
-  }, [pathname]);
+  }, [pathname, onActiveIdChange]);
 
   useEffect(() => {
     if (pathname !== "/" || !pendingTargetIdRef.current) return;
@@ -148,7 +163,7 @@ export default function CafeMenuBoardContainer({
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
         const matched = MENU_TARGETS.find((t) => t.targetId === targetId);
-        if (matched) setActiveId(matched.id);
+        if (matched) onActiveIdChange(matched.id);
         return;
       }
 
@@ -162,7 +177,7 @@ export default function CafeMenuBoardContainer({
     return () => {
       if (timeout) window.clearTimeout(timeout);
     };
-  }, [pathname]);
+  }, [pathname, onActiveIdChange]);
 
   const handleItemClick = (menuItemId: string) => {
     const target = MENU_TARGETS.find((t) => t.id === menuItemId);
@@ -178,15 +193,12 @@ export default function CafeMenuBoardContainer({
     const el = document.getElementById(target.targetId);
     if (!el) return;
 
-    // If the anchor exists but the menu item is still marked as disabled
-    // (ex: dynamic sections not ready yet), treat it as a no-op.
     if (enabledMap[target.targetId] === false) return;
 
     el.scrollIntoView({ behavior: "smooth", block: "start" });
-    setActiveId(menuItemId);
+    onActiveIdChange(menuItemId);
     onItemSelected?.();
   };
 
   return <CafeMenuBoard items={items} activeId={activeId} onItemClick={handleItemClick} />;
 }
-

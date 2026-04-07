@@ -11,7 +11,7 @@ const Prizes = dynamic(() => import("@/components/prizes"), {
 });
 
 const FAQ = dynamic(() => import("@/components/faq"), {
-  loading: () => <div className="min-h-[800px] bg-[#1B0706]" />,
+  loading: () => <div className="min-h-[800px] bg-[#f0cf91]" />,
 });
 
 export const metadata: Metadata = {

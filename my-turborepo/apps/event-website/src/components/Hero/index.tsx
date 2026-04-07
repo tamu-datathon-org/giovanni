@@ -38,9 +38,9 @@ export default function Hero() {
                     flex w-full flex-[0.85] flex-col items-center justify-center bg-[#966952]
                     px-6 pb-8 pt-10 mt-4 md:mt-0
                     text-center md:absolute md:right-0 md:top-0
-                    md:mr-[90px] md:h-full md:w-1/3 md:justify-start
+                md:mr-[90px] md:h-full md:w-1/3 md:justify-center
                     md:pb-10
-                    md:pt-40
+                md:pt-0
                 "
         >
           <p className="text-center font-darumadrop-one text-5xl text-[#FAE19D] sm:text-6xl md:text-6xl lg:text-8xl">
@@ -48,6 +48,9 @@ export default function Hero() {
           </p>
           <p className="mt-6 text-center font-['Chilanka'] text-3xl text-[#FAE19D] sm:text-3xl md:mt-8 md:text-4xl lg:text-6xl">
             April 11, 2026 <br />
+          </p>
+          <p className="mt-6 text-center font-['Chilanka'] text-xl text-[#FAE19D] sm:text-xl md:mt-8 md:text-2xl lg:text-4xl">
+            Applications Close <span className="font-['Darumadrop_one'] text-xl text-[#FAE19D] sm:text-xl md:mt-8 md:text-2xl lg:text-4xl">April 9</span>
           </p>
 
           <a

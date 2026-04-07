@@ -141,3 +141,27 @@ html {
     }
   }
 }
+
+@keyframes prize-sway {
+  0% {
+    transform: rotate(-3.5deg);
+  }
+  50% {
+    transform: rotate(3.5deg);
+  }
+  100% {
+    transform: rotate(-3.5deg);
+  }
+}
+
+.prize-sway {
+  animation: prize-sway 3.2s ease-in-out infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prize-sway {
+    animation: none;
+  }
+}
