@@ -17,7 +17,19 @@ const POLL_INTERVAL = 20_000; // 20 s
 /** Return the time portion as-is — we don't need date parsing. */
 function normalizeTime(raw: unknown): string {
     if (!raw) return "";
-    return String(raw).trim();
+    const str = String(raw).trim();
+
+    // Parse as a real Date object since it's a full JS date string
+    const date = new Date(str);
+    if (!isNaN(date.getTime())) {
+        let hour = date.getHours();
+        const minute = String(date.getMinutes()).padStart(2, "0");
+        const ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12 || 12;
+        return `${hour}:${minute} ${ampm}`;
+    }
+
+    return str;
 }
 
 const normalizeEvent = (e: Record<string, unknown>): Event => ({
@@ -30,7 +42,7 @@ const normalizeEvent = (e: Record<string, unknown>): Event => ({
 });
 
 const sortEvents = (data: Event[]) =>
-    [...data].sort((a, b) => a.startTime.localeCompare(b.startTime));
+    [...data].sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
 
 const hasChanged = (oldData: Event[], newData: Event[]) => {
     if (oldData.length !== newData.length) return true;
