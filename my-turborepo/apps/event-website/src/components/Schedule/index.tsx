@@ -43,13 +43,13 @@ export default function Schedule() {
                     className="relative bg-[#3d2f1f] rounded-xl p-8 md:p-12 w-full border-4 border-[#8D6E5E]"
                     style={{ maxWidth }}
                 >
-                    <Image
+                    {/* <Image
                         src="/images/left_vine.svg"
                         alt=""
                         width={96}
                         height={96}
                         className="absolute left-0 top-0 -translate-y-1/2 -translate-x-1/2 w-16 md:w-24 z-20 pointer-events-none"
-                    />
+                    /> */}
                     {/* Inner decorative border */}
                     <div className="absolute inset-3 border-2 border-white rounded-xl pointer-events-none" />
 
