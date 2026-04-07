@@ -44,10 +44,10 @@ function ChalkLedge() {
       className="pointer-events-none absolute left-1/2 top-[calc(100%-12px)] z-20 w-[calc(100%+2.25rem)] max-w-none -translate-x-1/2 sm:w-[calc(100%+3rem)]"
       aria-hidden
     >
-      <div className="relative mx-auto h-7 rounded-b-lg border-x border-b border-[#3d2a1f]/18 bg-[#8d6e5e] shadow-[0_6px_14px_rgba(0,0,0,0.12)] sm:h-8">
-        <div className="absolute right-[10%] top-0 z-10 flex -translate-y-2 items-end gap-2 sm:right-[12%] md:right-[14%]">
-          <div className="h-2.5 w-[3.25rem] -rotate-[1deg] rounded-[3px] bg-gradient-to-b from-[#c4a882] to-[#6b4a32] shadow-[0_2px_4px_rgba(0,0,0,0.25)] ring-1 ring-[#4C321B]/35" />
-          <div className="mb-px h-2 w-9 rotate-[1deg] rounded-[2px] bg-gradient-to-b from-[#d2ecf7] to-[#6fa8c4] shadow-[0_2px_4px_rgba(0,0,0,0.2)] ring-1 ring-[#b4d8ee]/40" />
+      <div className="relative mx-auto h-7 rounded-b-lg bg-[#8d6e5e] shadow-[0_6px_14px_rgba(0,0,0,0.12)] sm:h-8">
+        <div className="absolute right-[10%] top-0 z-10 flex -translate-y-2.5 items-end gap-2 sm:right-[12%] md:right-[14%]">
+          <div className="-mb-px h-2 w-[3.25rem] rounded-[2px] bg-gradient-to-b from-[#c4a882] to-[#6b4a32] shadow-[0_2px_4px_rgba(0,0,0,0.25)]" />
+          <div className="mb-px h-2 w-9 rounded-[2px] translate-y-0.5 bg-gradient-to-b from-[#d2ecf7] to-[#6fa8c4] shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@ export default function Workshops() {
                 aria-hidden
               />
               <p className="mx-auto mt-5 max-w-[540px] font-chilanka text-lg leading-snug text-[#4C321B]/90 sm:text-xl md:text-2xl">
-                Come learn with us the week before Datathon Lite—free sessions on campus.
+                Come learn with us the week before Datathon Lite!
               </p>
             </header>
 
@@ -107,11 +107,11 @@ export default function Workshops() {
                       className="relative flex items-center gap-0 bg-[#f0cf91]/40 px-1 py-0"
                       aria-hidden
                     >
-                      <div className="h-2 flex-1 border-t-2 border-dashed border-[#4C321B]/35" />
-                      <span className="shrink-0 px-2 font-chilanka text-xs uppercase tracking-widest text-[#8D6E5E]">
+                      <div className="h-2 flex-1 border-t-2 translate-y-0.5 border-dashed border-[#4C321B]/35" />
+                      <span className="shrink-0 px-2 font-chilanka translate-y-0.5 text-xs uppercase tracking-widest text-[#8D6E5E]">
                         tear along
                       </span>
-                      <div className="h-2 flex-1 border-t-2 border-dashed border-[#4C321B]/35" />
+                      <div className="h-2 flex-1 border-t-2 translate-y-0.5 border-dashed border-[#4C321B]/35" />
                     </div>
 
                     <div className="space-y-4 px-4 pb-5 pt-4 sm:px-5 sm:pb-6 sm:pt-5">
@@ -154,15 +154,16 @@ export default function Workshops() {
                   href={RSVP_FORM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-5 inline-block rounded-xl bg-[#FAE19D] px-8 py-3 font-darumadrop-one text-2xl text-[#8D6E5E] shadow-[0_10px_24px_rgba(76,50,27,0.15)] transition-colors hover:bg-[#FFF5DA] sm:px-10 sm:py-4 sm:text-3xl"
+                  className="mt-5 inline-flex items-center justify-center text-center rounded-xl bg-[#FAE19D] px-8 py-3 font-darumadrop-one text-2xl leading-none text-[#8D6E5E] shadow-[0_10px_24px_rgba(76,50,27,0.15)] transition-colors hover:bg-[#FFF5DA] sm:px-10 sm:py-4 sm:text-3xl"
                 >
-                  RSVP
+                  {/* font is not centered */}
+                  <span className="-translate-y-[4px]">RSVP</span>
                 </a>
               </div>
             </div>
           </div>
         </MenuBoardChrome>
-          <ChalkLedge />
+        <ChalkLedge />
         </div>
       </div>
     </section>
