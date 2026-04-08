@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import React, { useId, useState } from "react";
 import { useWindowWidth } from "@/hooks/useWindowWidth";
 
@@ -10,14 +9,46 @@ interface FaqItem {
 }
 
 const ITEMS: FaqItem[] = [
-  { question: "What is TAMU Datathon Lite?", answer: "TD Lite is a smaller, more **beginner** friendly version of our main event. It's a **one-day event**, but it will have everything Datathon normally has including free food, swag, workshops, and prizes!" },
-  { question: "Where is the event?", answer: "The event takes place at **Peterson**. Once you enter the building, organizers will be there to guide you to the main room! If you have any questions regarding transportation or parking, please **reach out to us on Discord.**" },
-  { question: "Why should I come?", answer: "**It is completely free!** Learn Data Science with interactive challenges and prizes. If you struggle to start to learn, TDLite offers a **beginner-focused** space to compete in. We have mentors to help and **free swag/food.**" },
-  { question: "How do I sign up?", answer: "Head over to https://tamudatathon.org/apply to get started! Admission decisions will be released shortly after registration closes." },
-  { question: "How much do I need to know?", answer: "If you are **new to data science**, TD Lite is the perfect time and place to learn. We will provide **introductory workshops and mentors** to guide you throughout the competition. We are committed to helping you build something you can be proud of!" },
-  { question: "Who can attend?", answer: "TD Lite is open to **beginner students** currently enrolled at **Texas A&M** who are at least **18 years old**. We welcome students from all majors!" },
-  { question: "What should I bring?", answer: "All you need is a **laptop and a charger** to get started at TD Lite! You may bring other items such as a pillow or a debugging duck if you wish to. Also make sure to **check the weather** in case you might need an umbrella :D." },
-  { question: "Have another question?", answer: "Send us an email at connect@tamudatathon.com or reach out to us on Discord!" },
+  {
+    question: "What is TAMU Datathon Lite?",
+    answer:
+      "TD Lite is a smaller, more **beginner** friendly version of our main event. It's a **one-day event**, but it will have everything Datathon normally has including free food, swag, workshops, and prizes!",
+  },
+  {
+    question: "Where is the event?",
+    answer:
+      "The event takes place at **Peterson**. Once you enter the building, organizers will be there to guide you to the main room! If you have any questions regarding transportation or parking, please **reach out to us on Discord.**",
+  },
+  {
+    question: "Why should I come?",
+    answer:
+      "**It is completely free!** Learn Data Science with interactive challenges and prizes. If you struggle to start to learn, TDLite offers a **beginner-focused** space to compete in. We have mentors to help and **free swag/food.**",
+  },
+  {
+    question: "How do I sign up?",
+    answer:
+      "Head over to https://tamudatathon.org/apply to get started! Admission decisions will be released shortly after registration closes.",
+  },
+  {
+    question: "How much do I need to know?",
+    answer:
+      "If you are **new to data science**, TD Lite is the perfect time and place to learn. We will provide **introductory workshops and mentors** to guide you throughout the competition. We are committed to helping you build something you can be proud of!",
+  },
+  {
+    question: "Who can attend?",
+    answer:
+      "TD Lite is open to **beginner students** currently enrolled at **Texas A&M** who are at least **18 years old**. We welcome students from all majors!",
+  },
+  {
+    question: "What should I bring?",
+    answer:
+      "All you need is a **laptop and a charger** to get started at TD Lite! You may bring other items such as a pillow or a debugging duck if you wish to. Also make sure to **check the weather** in case you might need an umbrella :D.",
+  },
+  {
+    question: "Have another question?",
+    answer:
+      "Send us an email at connect@tamudatathon.com or reach out to us on Discord!",
+  },
 ];
 
 export default function FAQ() {
@@ -332,7 +363,8 @@ interface LatteFaqItemProps {
 
 // Clickable links and **bold**/colored text inside answer strings
 const renderAnswerContent = (text: string): React.ReactNode => {
-  const linkPattern = /(https:\/\/tamudatathon\.org\/apply|connect@tamudatathon\.com)/g;
+  const linkPattern =
+    /(https:\/\/tamudatathon\.org\/apply|connect@tamudatathon\.com)/g;
   const boldPattern = /(\*\*[^*]+\*\*)/g;
 
   const renderLinks = (content: string, keyPrefix: string) => {
@@ -400,7 +432,8 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
   const handleClick = (e: React.MouseEvent) => {
     if (!mouseDownPos) return;
     const distance = Math.sqrt(
-      Math.pow(e.clientX - mouseDownPos.x, 2) + Math.pow(e.clientY - mouseDownPos.y, 2)
+      Math.pow(e.clientX - mouseDownPos.x, 2) +
+        Math.pow(e.clientY - mouseDownPos.y, 2),
     );
     if (distance < 5) {
       onToggle();

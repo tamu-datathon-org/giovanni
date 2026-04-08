@@ -3,7 +3,7 @@ from pathlib import Path
 import os
 import asyncio
 import discord
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import pytz
 import gspread
 from google.oauth2.service_account import Credentials
@@ -22,6 +22,10 @@ SERVICE_ACCOUNT_EMAIL = os.getenv("GOOGLE_SERVICE_ACCOUNT_EMAIL")
 PRIVATE_KEY = os.getenv("GOOGLE_PRIVATE_KEY").replace("\\n", "\n")
 PING_ROLE_ID = os.getenv("DISCORD_PING_ROLE_ID")  # set to a role ID, or leave unset to ping @everyone
 EVENT_TZ = pytz.timezone("America/Chicago")
+
+POLL_INTERVAL_SEC = 20
+ANNOUNCE_GRACE = timedelta(seconds=30)
+
 
 def parse_dt(val):
     val = str(val).strip()
@@ -53,18 +57,23 @@ def build_message(event):
     location = event.get("location")
     start_time = event.get("startTime")
     end_time = event.get("endTime")
+    description = event.get("description")
+    delay = int(event.get("delay")) # delay in minutes
 
     ping = f"<@&{PING_ROLE_ID}>" if PING_ROLE_ID else "@everyone"
-    lines = [f"{ping} **{title}** is starting in 10 minutes!"]
-    if location:
-        lines.append(f"Location: {location}")
-
+    lines = []
+    
+    # build title
+    title = f"{ping} **{title}** is starting in {delay} minutes!" if delay != 0 else f"{ping} **{title}** is starting now!"
+    lines.append(title)
+            
+    # build time
     time_str = None
     if start_time and end_time:
         try:
             start_dt = EVENT_TZ.localize(parse_dt(start_time))
             end_dt = EVENT_TZ.localize(parse_dt(end_time))
-            time_str = f"Time: {start_dt.strftime('%I:%M %p')} – {end_dt.strftime('%I:%M %p %Z')}"
+            time_str = f"Time: {start_dt.strftime('%I:%M %p')} - {end_dt.strftime('%I:%M %p %Z')}"
         except:
             pass
     elif start_time:
@@ -81,6 +90,14 @@ def build_message(event):
             pass
     if time_str:
         lines.append(time_str)
+        
+    # build location
+    if location:
+        lines.append(f"Location: {location}")
+
+    # build description
+    if description:
+        lines.append(f"Description: {description}")
 
     return "\n".join(lines)
 
@@ -90,43 +107,53 @@ class MyClient(discord.Client):
         self.announced = set()
 
     async def on_ready(self):
-        print(f"Logged in as {self.user}")
+        print(f"Logged in as {self.user}", flush=True)
         self.loop.create_task(self.announcement_loop())
 
     async def announcement_loop(self):
         await self.wait_until_ready()
         channel = self.get_channel(CHANNEL_ID) or await self.fetch_channel(CHANNEL_ID)
-        print(f"Watching channel: {channel.name}")
-
+        print(f"Watching channel: {channel.name}", flush=True)
+        events_len = 0
         while not self.is_closed():
             try:
                 events = await asyncio.get_event_loop().run_in_executor(None, get_sheet_events)
-                print(f"Fetched {len(events)} events")
+                if(events_len != len(events)):
+                    events_len = len(events)
+                    print(f"Fetched {events_len} events", flush=True)
                 now = datetime.now(timezone.utc)
 
                 for event in events:
-                    event_id = event.get("ID")
+                    event_id = event.get("id")
                     start_str = event.get("startTime")
-                    if not start_str or event_id is None:
+                    end_str = event.get("endTime")
+                    delay = int(event.get("delay"))  # delay in minutes
+
+                    event_dt = 0
+                    if start_str:
+                        event_dt = EVENT_TZ.localize(parse_dt(start_str))
+                    elif end_str:
+                        event_dt = EVENT_TZ.localize(parse_dt(end_str))
+                    else:
                         continue
-
-                    start_dt = parse_dt(start_str)
-                    start_dt = EVENT_TZ.localize(start_dt)
-
-                    delta = (start_dt.astimezone(timezone.utc) - now).total_seconds()
-                    if 570 < delta <= 600 and event_id not in self.announced:
+                        
+                    start_utc = event_dt.astimezone(timezone.utc)
+                    announce_at = start_utc - timedelta(minutes=delay)
+                    if not (announce_at <= now < announce_at + ANNOUNCE_GRACE):
+                        continue
+                    if event_id not in self.announced:
                         if PING_ROLE_ID:
                             mentions = discord.AllowedMentions(roles=True)
                         else:
                             mentions = discord.AllowedMentions(everyone=True)
                         await channel.send(build_message(event), allowed_mentions=mentions)
                         self.announced.add(event_id)
-                        print(f"Announced: {event.get('title')}")
+                        print(f"Announced: {event.get('title')}", flush=True)
 
             except Exception as e:
-                print(f"Error: {e}")
+                print(f"Error: {e}", flush=True)
 
-            await asyncio.sleep(30)
+            await asyncio.sleep(POLL_INTERVAL_SEC)
 
 intents = discord.Intents.default()
 client = MyClient(intents=intents)
