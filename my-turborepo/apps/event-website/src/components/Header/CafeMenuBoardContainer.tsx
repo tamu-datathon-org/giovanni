@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import CafeMenuBoard, { type CafeMenuBoardItem } from "./CafeMenuBoard";
+import HeaderQuickLinks, { hasHeaderQuickLinks } from "./HeaderQuickLinks";
 
 type CafeMenuBoardContainerProps = {
   activeId: string;
@@ -202,5 +203,20 @@ export default function CafeMenuBoardContainer({
     onItemSelected?.();
   };
 
-  return <CafeMenuBoard items={items} activeId={activeId} onItemClick={handleItemClick} />;
+  return (
+    <CafeMenuBoard
+      items={items}
+      activeId={activeId}
+      onItemClick={handleItemClick}
+      footer={
+        hasHeaderQuickLinks() ? (
+          <HeaderQuickLinks
+            className="w-full gap-2"
+            embedded
+            onNavigate={onItemSelected}
+          />
+        ) : undefined
+      }
+    />
+  );
 }

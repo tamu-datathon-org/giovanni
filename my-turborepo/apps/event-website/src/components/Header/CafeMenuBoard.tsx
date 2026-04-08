@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { type ReactNode, useEffect, useMemo, useRef } from "react";
 import clsx from "clsx";
 
 export type CafeMenuBoardItem = {
@@ -14,12 +14,14 @@ type CafeMenuBoardProps = {
   items: CafeMenuBoardItem[];
   activeId: string;
   onItemClick: (id: string) => void;
+  footer?: ReactNode;
 };
 
 export default function CafeMenuBoard({
   items,
   activeId,
   onItemClick,
+  footer,
 }: CafeMenuBoardProps) {
   const boardRef = useRef<HTMLDivElement | null>(null);
   const prevActiveIdRef = useRef<string | null>(null);
@@ -179,6 +181,10 @@ export default function CafeMenuBoard({
               );
             })}
           </div>
+
+          {footer ? (
+            <div className="mt-3 border-t border-[#b4d8ee]/25 pt-4">{footer}</div>
+          ) : null}
         </div>
       </div>
     </div>
