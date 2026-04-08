@@ -1,9 +1,10 @@
 import React from "react";
+
 import {
   Select,
-  SelectTrigger,
   SelectContent,
   SelectItem,
+  SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
 
@@ -30,27 +31,29 @@ export function PhaseSelector({
   isDisabled,
 }: PhaseSelectorProps) {
   return (
-    <div className="w-full sm:w-1/2 text-center p-4">
+    <div className="w-full p-4 text-center sm:w-1/2">
       <label className="mr-2 font-medium">Phase</label>
       <Select
         value={selectedPhase}
         onValueChange={setSelectedPhase}
         disabled={isDisabled}
       >
-        <SelectTrigger className="w-full bg-white">
+        <SelectTrigger className="w-full bg-white text-black">
           <SelectValue
             placeholder={
               isLoading
                 ? "Loading phases…"
                 : isError
-                ? "Failed to load phases"
-                : "Select phase"
+                  ? "Failed to load phases"
+                  : "Select phase"
             }
           />
         </SelectTrigger>
         <SelectContent>
           {phaseOptions.length === 0 && !isLoading ? (
-            <div className="px-3 py-2 text-sm opacity-70">No phases found for this event.</div>
+            <div className="px-3 py-2 text-sm opacity-70">
+              No phases found for this event.
+            </div>
           ) : (
             phaseOptions.map((opt) => (
               <SelectItem key={opt.value} value={opt.value}>

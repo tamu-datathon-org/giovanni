@@ -229,7 +229,7 @@ export const applicationRouter = {
       return response;
     }),
 
-  listPhases: protectedProcedure
+  listPhases: organizerProcedure
     .input(z.object({ eventName: z.string() }))
     .query(async ({ ctx, input }) => {
       // find event id
@@ -538,7 +538,7 @@ export const applicationRouter = {
       return application;
     }),
 
-  getCheckInStatus: protectedProcedure
+  getCheckInStatus: organizerProcedure
     .input(z.object({
       eventName: z.string(),
       email: z.string(),
