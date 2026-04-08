@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
+
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "~/components/ui/dialog";
-import { Button } from "~/components/ui/button";
 
 interface ParticipantData {
   userId: string;
@@ -43,7 +44,7 @@ export function ParticipantCard({
   onCheckIn,
   onRemove,
   isLoading,
-  isDisabled
+  isDisabled,
 }: ParticipantCardProps) {
   // Automatically open dialog when participant data is valid (not default)
   useEffect(() => {
@@ -54,48 +55,73 @@ export function ParticipantCard({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className={"bg-orange-100 dark:bg-orange-100 max-w-md " +
-        (participant.eventAttendance ? "border-4 border-green-700 dark:border-4 dark:border-green-700" :
-          "border-4 border-red-700 dark:border-4 dark:border-red-700")}>
+      <DialogContent
+        className={
+          "max-w-md bg-orange-100 dark:bg-orange-100 " +
+          (participant.eventAttendance
+            ? "border-4 border-green-700 dark:border-4 dark:border-green-700"
+            : "border-4 border-red-700 dark:border-4 dark:border-red-700")
+        }
+      >
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center text-gray-900">
+          <DialogTitle className="text-center text-2xl font-bold text-gray-900">
             Participant&apos;s Data
           </DialogTitle>
         </DialogHeader>
         <div>
-          <span className="text-sm flex flex-row gap-2 justify-center text-gray-900">
-            <p>Phase: {" "}
+          <span className="flex flex-row justify-center gap-2 text-sm text-gray-900">
+            <p>
+              Phase:{" "}
               <span className="text-indigo-700">{currentPhaseLabel}</span>
             </p>
             <p>
               Checked In:{" "}
-              <span className={participant.checkedIn ? "text-green-600" : "text-red-600"}>
+              <span
+                className={
+                  participant.checkedIn ? "text-green-600" : "text-red-600"
+                }
+              >
                 {participant.checkedIn ? "True" : "False"}
               </span>
             </p>
           </span>
           {participant.checkedInAt && (
-            <p className="text-sm opacity-70 text-center text-gray-900">
+            <p className="text-center text-sm text-gray-900 opacity-70">
               checked in at:{" "}
-              {new Date(participant.checkedInAt).toLocaleString(undefined, { hour12: true })}
+              {new Date(participant.checkedInAt).toLocaleString(undefined, {
+                hour12: true,
+              })}
             </p>
           )}
         </div>
         <div className="text-center text-gray-900">
-          <p>Name: {participant.firstName} {participant.lastName}</p>
+          <p>
+            Name: {participant.firstName} {participant.lastName}
+          </p>
           <p>Email: {participant.email}</p>
-          <p>Status: {" "}
-            <span className={participant.status === "accepted" ? "text-green-600" : "text-red-600"}>
+          <p>
+            Status:{" "}
+            <span
+              className={
+                participant.status === "accepted"
+                  ? "text-green-600"
+                  : "text-red-600"
+              }
+            >
               {participant.status}
             </span>
           </p>
           <p>
             Dietary Restrictions:{" "}
-            {participant.dietaryRestrictions ? participant.dietaryRestrictions : "None"}
+            {participant.dietaryRestrictions
+              ? participant.dietaryRestrictions
+              : "None"}
           </p>
-          <p>Extra Info: {participant.extraInfo ? participant.extraInfo : "None"}</p>
+          <p>
+            Extra Info: {participant.extraInfo ? participant.extraInfo : "None"}
+          </p>
         </div>
-        <DialogFooter className="flex flex-row justify-center sm:justify-center gap-4 mt-4">
+        <DialogFooter className="mt-4 flex flex-row justify-center gap-4 sm:justify-center">
           <Button
             className="bg-red-700 hover:bg-opacity-50"
             onClick={onRemove}
