@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import Location from "@/components/location";
 import Schedule from "@/components/Schedule";
-
+import Workshops from "@/components/workshops";
 import { ScrollUp } from "@vanni/ui/scroll-up";
 
 const Prizes = dynamic(() => import("@/components/prizes"), {
@@ -27,9 +27,12 @@ export default function Home() {
       <div id="menu" className="scroll-mt-24">
         <Hero />
       </div>
+      <div id="workshops" className="scroll-mt-24">
+        <Workshops />
+      </div>
       <div id="find-us" className="scroll-mt-24">
         <Location />
-      </div> 
+      </div>
        <div id="pastries" className="scroll-mt-24">
         <Prizes />
       </div>

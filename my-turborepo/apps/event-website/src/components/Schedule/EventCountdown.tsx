@@ -1,6 +1,7 @@
 "use client";
 
-import type { Event } from "@/app/schedule/page";
+
+import type { Event } from "@/hooks/useSchedule";
 import { useEffect, useState } from "react";
 
 interface EventCountdownProps {
@@ -8,13 +9,16 @@ interface EventCountdownProps {
 }
 
 export function EventCountdown({ events }: EventCountdownProps) {
+
   const [currentEvent, setCurrentEvent] = useState<{
     title: string;
     timeLeft: string;
+
   } | null>(null);
   const [nextEvent, setNextEvent] = useState<{
     title: string;
     timeLeft: string;
+
   } | null>(null);
 
   useEffect(() => {
@@ -90,42 +94,44 @@ export function EventCountdown({ events }: EventCountdownProps) {
   }
 
   return (
-    <div className="mb-8 border-4 border-double border-[#8B7355] bg-[#D4C5B9] p-6 shadow-lg">
+    <div className="relative mb-8 border-4 border-[#8D6E5E] bg-[#3d2f1f] p-6 shadow-lg rounded-xl">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {currentEvent ? (
-          <div className="border-l-4 border-[#8B7355] pl-4">
-            <p className="font-serif text-xs font-bold uppercase tracking-widest text-[#322C29]">
+          <div className="border-l-4 border-white pl-4">
+            <p className="font-darumadrop-one text-md font-bold uppercase tracking-widest text-white">
               NOW HAPPENING
             </p>
-            <p className="mt-2 font-mono text-3xl font-bold tracking-wider text-[#322C29]">
+            <p className="mt-2 font-darumadrop-one text-3xl font-bold tracking-wider text-white">
               {currentEvent.timeLeft}
             </p>
-            <p className="mt-2 font-serif text-base text-[#5A4A42]">
+            <p className="mt-2 font-['Chilanka'] text-base text-white/40">
               {currentEvent.title}
             </p>
           </div>
         ) : (
-          <div className="border-l-4 border-[#8B7355] pl-4">
-            <p className="font-serif text-xs font-bold uppercase tracking-widest text-[#8B7355]">
+          <div className="border-l-4 border-white pl-4">
+            <p className="font-darumadrop-one text-md font-bold uppercase tracking-widest text-white">
               No Current Event
             </p>
-            <p className="mt-2 font-serif text-base text-[#5A4A42]">
+            <p className="mt-2 font-['Chilanka'] text-base text-white/40">
               Awaiting next event...
             </p>
           </div>
         )}
 
         {nextEvent ? (
-          <div className="border-l-4 border-[#8B7355] pl-4">
-            <p className="font-serif text-xs font-bold uppercase tracking-widest text-[#322C29]">
+          <div className="border-l-4 border-white pl-4">
+            <p className="font-darumadrop-one text-md font-bold uppercase tracking-widest text-white">
               NEXT EVENT
             </p>
-            <p className="mt-2 font-mono text-3xl font-bold tracking-wider text-[#322C29]">
+            <p className="mt-2 font-darumadrop-one text-3xl font-bold tracking-wider text-white">
               {nextEvent.timeLeft}
             </p>
-            <p className="mt-2 font-serif text-base text-[#5A4A42]">
+            <p className="mt-2 font-['Chilanka'] text-base text-white/40">
               {nextEvent.title}
             </p>
+
+
           </div>
         ) : (
           <div className="border-l-4 border-[#8B7355] pl-4">
