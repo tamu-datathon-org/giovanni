@@ -34,13 +34,12 @@ export default function Home() {
       <div id="workshops" className="scroll-mt-24">
         <Workshops />
       </div>
-       <div id="pastries" className="scroll-mt-24">
+       <div id="prizes" className="scroll-mt-24">
         <Prizes />
       </div>
-      <div id="Schedule" className="scroll-mt-24">
+      <div id="schedule" className="scroll-mt-24">
         <Schedule />
       </div>
-
       <div className="h-[100px] bg-[#f0cf91]" />
       <div id="baristas-note" className="scroll-mt-24">
         <FAQ />

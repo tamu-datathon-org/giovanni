@@ -39,12 +39,17 @@ export default function Header() {
               className="pointer-events-none absolute inset-0 opacity-30 mix-blend-multiply"
               style={{
                 backgroundImage:
-                  'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'180\' height=\'180\'><filter id=\'n\'><feTurbulence type=\'fractalNoise\' baseFrequency=\'.9\' numOctaves=\'3\' stitchTiles=\'stitch\'/></filter><rect width=\'180\' height=\'180\' filter=\'url(%23n)\' opacity=\'.35\'/></svg>")',
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='.35'/></svg>\")",
               }}
             />
-            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-2 bg-[#b4d8ee]/10" />
+            <div className="pointer-events-none absolute bottom-0 left-0 top-0 w-2 bg-[#b4d8ee]/10" />
             <span className="relative z-10 flex shrink-0 items-center">
-              <Image src="/images/tdlite2026.png" alt="" width={40} height={40} />
+              <Image
+                src="/images/tdlite2026.png"
+                alt=""
+                width={40}
+                height={40}
+              />
             </span>
             <span className="font-darumadrop-one relative z-10 text-lg tracking-[0.14em]">
               MENU
@@ -58,7 +63,7 @@ export default function Header() {
       </div>
 
       {menuOpen ? (
-        <div className="fixed left-4 top-16 z-50 md:top-auto md:bottom-28 md:left-6">
+        <div className="fixed left-4 top-16 z-50 md:bottom-28 md:left-6 md:top-auto">
           <CafeMenuBoardContainer
             activeId={menuActiveId}
             onActiveIdChange={setMenuActiveId}
