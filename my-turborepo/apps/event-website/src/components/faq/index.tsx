@@ -2,7 +2,7 @@
 
 import React, { useId, useState } from "react";
 import { useWindowWidth } from "@/hooks/useWindowWidth";
-
+import Image from "next/image";
 interface FaqItem {
   question: string;
   answer: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-// FIXME: uncomment the colors if you want color for the diff catagories
+// FIXME: uncomment the colors if you want color for the diff categories
 export interface Event {
     id: string | number;
     startTime: string;      // raw ISO — for countdown
@@ -18,10 +18,11 @@ const POLL_INTERVAL = 20_000; // 20 s
 
 // only highlight on workshops and food
 const catColor: Record<string, string> = {
-    workshop: "#6994ae",
-    food: "#EABDAA",
-    "fun times": "#CDDCA5",
-    close: "#C66137",
+    workshop: "#B4D8EE",
+    food: "#F0CF91",
+    "fun stuff": "#CDDBA6",
+    deadline: "#FF8478",
+
 };
 
 // default is white
