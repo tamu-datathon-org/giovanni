@@ -170,15 +170,57 @@ function DecisionBanner({
 
 // ---------- QR Code Card ----------
 function QRCard({ qrCode }: { qrCode: string }) {
-  function handleSave() {
-    const link = document.createElement("a");
-    link.href = qrCode;
-    link.download = "checkin-qr.png";
-    link.click();
-    toast({
-      title: "QR Code saved!",
-      description: "Check your downloads folder.",
-    });
+  async function handleSave() {
+    try {
+      const res = await fetch(qrCode, { mode: "cors" });
+      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+
+      const blob = await res.blob();
+      const type = blob.type || "image/png";
+      const fileName = "Check_In_QR_Code.png";
+      const file = new File([blob], fileName, { type });
+
+      if (!navigator.share || !navigator.canShare) {
+        throw new Error("Web Share API not supported");
+      }
+
+      if (!navigator.canShare({ files: [file] })) {
+        throw new Error("This device/browser cannot share this file");
+      }
+
+      await navigator.share({
+        files: [file],
+        title: "Check-in QR Code",
+      });
+
+      toast({
+        title: "QR Code shared",
+        description: "On iPhone, choose Save Image or Add to Photos.",
+      });
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Unable to share QR code";
+
+      try {
+        const a = document.createElement("a");
+        a.href = qrCode;
+        a.download = "check-in-qr.png";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        toast({
+          title: "Download Started Successfully",
+          description: "Check your downloads folder",
+        });
+      } catch {
+        toast({
+          title: "Could not save QR code",
+          description: "Please take a screenshot instead",
+          variant: "destructive",
+        });
+      }
+    }
   }
 
   return (
@@ -453,7 +495,11 @@ export default function Page() {
                       size="sm"
                       type="button"
                     >
-                      <Link href="https://tamudatathon.com/" target="_blank" className="w-full text-white">
+                      <Link
+                        href="https://tamudatathon.com/"
+                        target="_blank"
+                        className="w-full text-white"
+                      >
                         Event Website
                       </Link>
                     </Button>
@@ -462,7 +508,11 @@ export default function Page() {
                       size="sm"
                       type="button"
                     >
-                      <Link href="https://discord.com/invite/pHsNmjuWSc" target="_blank" className="w-full text-white">
+                      <Link
+                        href="https://discord.com/invite/pHsNmjuWSc"
+                        target="_blank"
+                        className="w-full text-white"
+                      >
                         Discord
                       </Link>
                     </Button>
@@ -471,7 +521,11 @@ export default function Page() {
                       size="sm"
                       type="button"
                     >
-                      <Link href="https://www.instagram.com/tamudatathon/" target="_blank" className="w-full text-white">
+                      <Link
+                        href="https://www.instagram.com/tamudatathon/"
+                        target="_blank"
+                        className="w-full text-white"
+                      >
                         Instagram
                       </Link>
                     </Button>
@@ -480,7 +534,11 @@ export default function Page() {
                       size="sm"
                       type="button"
                     >
-                      <Link href="https://www.youtube.com/@tamu-datathon/featured" target="_blank" className="w-full text-white">
+                      <Link
+                        href="https://www.youtube.com/@tamu-datathon/featured"
+                        target="_blank"
+                        className="w-full text-white"
+                      >
                         YouTube
                       </Link>
                     </Button>
