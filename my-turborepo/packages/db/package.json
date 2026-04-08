@@ -40,7 +40,7 @@
   "dependencies": {
     "@t3-oss/env-core": "^0.10.1",
     "@vercel/postgres": "^0.8.0",
-    "drizzle-orm": "^0.30.10",
+    "drizzle-orm": "^0.45.2",
     "drizzle-zod": "^0.5.1",
     "minimatch": "^10.2.3",
     "tsx": "^4.19.3",
