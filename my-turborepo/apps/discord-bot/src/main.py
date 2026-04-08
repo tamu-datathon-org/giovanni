@@ -126,13 +126,18 @@ class MyClient(discord.Client):
                 for event in events:
                     event_id = event.get("id")
                     start_str = event.get("startTime")
+                    end_str = event.get("endTime")
                     delay = int(event.get("delay"))  # delay in minutes
 
-                    if not start_str or event_id is None:
+                    event_dt = 0
+                    if start_str:
+                        event_dt = EVENT_TZ.localize(parse_dt(start_str))
+                    elif end_str:
+                        event_dt = EVENT_TZ.localize(parse_dt(end_str))
+                    else:
                         continue
-
-                    start_dt = EVENT_TZ.localize(parse_dt(start_str))
-                    start_utc = start_dt.astimezone(timezone.utc)
+                        
+                    start_utc = event_dt.astimezone(timezone.utc)
                     announce_at = start_utc - timedelta(minutes=delay)
                     if not (announce_at <= now < announce_at + ANNOUNCE_GRACE):
                         continue
