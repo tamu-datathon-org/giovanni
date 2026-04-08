@@ -1,11 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-
+// FIXME: uncomment the colors if you want color for the diff catagories
 export interface Event {
     id: string | number;
-    startTime: string;
-    endTime: string;
+    startTime: string;      // raw ISO — for countdown
+    endTime: string;        // raw ISO — for countdown
+    displayStart: string;   // formatted — for schedule display
+    displayEnd: string;     // formatted — for schedule display
     title: string;
     location: string | number;
     category: string;
@@ -13,6 +15,21 @@ export interface Event {
 
 const CACHE_KEY = "cachedScheduleData";
 const POLL_INTERVAL = 20_000; // 20 s
+
+// only highlight on workshops and food
+const catColor: Record<string, string> = {
+    workshop: "#6994ae",
+    food: "#EABDAA",
+    "fun times": "#CDDCA5",
+    close: "#C66137",
+};
+
+// default is white
+function getCatColor(category: string): string {
+    if (!category) return "#FFFFFF";
+    const key = category.trim().toLowerCase();
+    return catColor[key] ?? "#FFFFFF";
+}
 
 /** Return the time portion as-is — we don't need date parsing. */
 function normalizeTime(raw: unknown): string {
@@ -32,13 +49,16 @@ function normalizeTime(raw: unknown): string {
     return str;
 }
 
+// timer and schedule need two diff times the timer depends on actual
 const normalizeEvent = (e: Record<string, unknown>): Event => ({
-    id:        e.id as string | number,
-    startTime: normalizeTime(e.startTime),
-    endTime:   normalizeTime(e.endTime),
-    title:     String(e.title ?? ""),
-    location:  e.location as string | number,
-    category:  String(e.category ?? ""),
+    id:           e.id as string | number,
+    startTime:    String(e.startTime ?? ""),
+    endTime:      String(e.endTime ?? ""),
+    displayStart: normalizeTime(e.startTime),
+    displayEnd:   normalizeTime(e.endTime),
+    title:        String(e.title ?? ""),
+    location:     e.location as string | number,
+    category:     String(e.category ?? ""),
 });
 
 const sortEvents = (data: Event[]) =>
@@ -50,14 +70,16 @@ const hasChanged = (oldData: Event[], newData: Event[]) => {
         const n = newData[i];
         return (
             oldItem.id        !== n.id        ||
-            oldItem.startTime !== n.startTime ||
-            oldItem.endTime   !== n.endTime   ||
+            oldItem.displayStart !== n.displayStart ||
+            oldItem.displayEnd   !== n.displayEnd  ||
             oldItem.title     !== n.title     ||
             oldItem.location  !== n.location  ||
             oldItem.category  !== n.category
         );
     });
 };
+
+
 
 // Safe localStorage helpers (SSR-safe)
 const getFromStorage = (key: string): string | null => {
@@ -134,5 +156,5 @@ export function useSchedule() {
         return () => clearInterval(interval);
     }, [loadEvents]);
 
-    return { events, loading, error, lastUpdated };
+    return { events, loading, error, lastUpdated, getCatColor };
 }
