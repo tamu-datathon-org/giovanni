@@ -109,10 +109,12 @@ function DecisionBanner({
   status,
   isLoading,
   gradient,
+  foodGroup,
 }: {
   status?: string;
   isLoading: boolean;
   gradient: string;
+  foodGroup?: string | null;
 }) {
   const statusLabel = isLoading
     ? "LOADING..."
@@ -143,6 +145,12 @@ function DecisionBanner({
           {statusMessage[status] ?? ""}
         </p>
       )}
+      {foodGroup ? (
+        <p className="mt-3 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/85">
+          <span className="text-white/55">Food group</span>{" "}
+          <span className="font-semibold text-white">{foodGroup}</span>
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -293,6 +301,7 @@ export default function Page() {
               status={data?.status}
               isLoading={isLoading}
               gradient={gradient}
+              foodGroup={data?.foodGroup}
             />
 
             {/* Main grid */}

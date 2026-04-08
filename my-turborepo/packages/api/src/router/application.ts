@@ -527,6 +527,7 @@ export const applicationRouter = {
           id: true,
           status: true,
           email: true,
+          foodGroup: true,
         },
         where: and(
           eq(Application.eventId, event.id),
@@ -694,7 +695,9 @@ export const applicationRouter = {
         where: and(eq(Application.email, email), eq(Application.eventId, event.id)),
         columns: {
           id: true,
+          status: true,
           invitationStatus: true,
+          foodGroup: true,
         },
       });
 
@@ -702,9 +705,34 @@ export const applicationRouter = {
         throw new TRPCError({ code: "NOT_FOUND", message: "Application not found" });
       }
 
-      return await ctx.db
+      const foodGroups = event.foodGroups ?? [];
+
+      const setValues: {
+        invitationStatus: boolean;
+        foodGroup?: string | null;
+      } = { invitationStatus: newStatus };
+
+      if (
+        application.status === "accepted" &&
+        foodGroups.length > 0 &&
+        (application.foodGroup == null || application.foodGroup === "")
+      ) {
+        const pick = foodGroups[Math.floor(Math.random() * foodGroups.length)];
+        if (pick != null && pick !== "") {
+          setValues.foodGroup = pick;
+        }
+      }
+
+      const updated = await ctx.db
         .update(Application)
-        .set({ invitationStatus: newStatus })
-        .where(and(eq(Application.email, email), eq(Application.eventId, event.id)));
+        .set(setValues)
+        .where(and(eq(Application.email, email), eq(Application.eventId, event.id)))
+        .returning({
+          id: Application.id,
+          invitationStatus: Application.invitationStatus,
+          foodGroup: Application.foodGroup,
+        });
+
+      return updated[0];
     }),
 };
