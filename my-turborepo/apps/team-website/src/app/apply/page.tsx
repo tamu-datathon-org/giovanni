@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -42,8 +42,14 @@ function Confetti() {
     }[] = [];
 
     const colors = [
-      "#ff6b6b", "#ffd93d", "#6bcb77", "#4d96ff",
-      "#ff922b", "#cc5de8", "#f06595", "#74c0fc",
+      "#ff6b6b",
+      "#ffd93d",
+      "#6bcb77",
+      "#4d96ff",
+      "#ff922b",
+      "#cc5de8",
+      "#f06595",
+      "#74c0fc",
     ];
 
     for (let i = 0; i < 160; i++) {
@@ -149,18 +155,65 @@ function DecisionBanner({
 
 // ---------- QR Code Card ----------
 function QRCard({ qrCode }: { qrCode: string }) {
-  function handleSave() {
-    const link = document.createElement("a");
-    link.href = qrCode;
-    link.download = "checkin-qr.png";
-    link.click();
-    toast({ title: "QR Code saved!", description: "Check your downloads folder." });
+  async function handleSave() {
+    try {
+      const res = await fetch(qrCode, { mode: "cors" });
+      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+
+      const blob = await res.blob();
+      const type = blob.type || "image/png";
+      const fileName = "Check_In_QR_Code.png";
+      const file = new File([blob], fileName, { type });
+
+      if (!navigator.share || !navigator.canShare) {
+        throw new Error("Web Share API not supported");
+      }
+
+      if (!navigator.canShare({ files: [file] })) {
+        throw new Error("This device/browser cannot share this file");
+      }
+
+      await navigator.share({
+        files: [file],
+        title: "Check-in QR Code",
+      });
+
+      toast({
+        title: "QR Code shared",
+        description: "On iPhone, choose Save Image or Add to Photos.",
+      });
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Unable to share QR code";
+
+      try {
+        const a = document.createElement("a");
+        a.href = qrCode;
+        a.download = "check-in-qr.png";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        toast({
+          title: "Download Started Successfully",
+          description: "Check your downloads folder",
+        });
+      } catch {
+        toast({
+          title: "Could not save QR code",
+          description: "Please take a screenshot instead",
+          variant: "destructive",
+        });
+      }
+    }
   }
 
   return (
     <div className="flex flex-col items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
       <div className="text-lg font-semibold text-white">Check-in QR Code</div>
-      <p className="text-sm text-white/60">Click the QR code to save it as an image</p>
+      <p className="text-sm text-white/60">
+        Click the QR code to save it as an image
+      </p>
       <button
         onClick={handleSave}
         className="group relative mx-auto cursor-pointer overflow-hidden rounded-xl border-4 border-gray-400 p-2 transition-all hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/30"
@@ -220,10 +273,11 @@ export default function Page() {
 
   const [qrCode, setQrCode] = useState<string>("");
 
-  const { data, isLoading, refetch } = api.application.getApplicationStatus.useQuery(
-    { eventName: EVENT_NAME },
-    { enabled: !!EVENT_NAME, retry: 2 },
-  );
+  const { data, isLoading, refetch } =
+    api.application.getApplicationStatus.useQuery(
+      { eventName: EVENT_NAME },
+      { enabled: !!EVENT_NAME, retry: 2 },
+    );
 
   const updateInvitation = api.application.updateInvitationStatus.useMutation({
     onSuccess: () => {
@@ -236,7 +290,8 @@ export default function Page() {
     onError: () => {
       toast({
         title: "Something went wrong",
-        description: "Could not update your invitation status. Please try again.",
+        description:
+          "Could not update your invitation status. Please try again.",
         variant: "destructive",
       });
     },
@@ -261,11 +316,21 @@ export default function Page() {
   let gradient = "from-blue-400 to-cyan-500";
   if (!isLoading) {
     switch (data?.status) {
-      case "pending":    gradient = "from-gray-300 to-cyan-500"; break;
-      case "accepted":   gradient = "from-pink-400 to-cyan-400"; break;
-      case "rejected":   gradient = "from-red-400 to-orange-500"; break;
-      case "checkedin":  gradient = "from-green-400 to-emerald-500"; break;
-      case "waitlisted": gradient = "from-yellow-400 to-amber-500"; break;
+      case "pending":
+        gradient = "from-gray-300 to-cyan-500";
+        break;
+      case "accepted":
+        gradient = "from-pink-400 to-cyan-400";
+        break;
+      case "rejected":
+        gradient = "from-red-400 to-orange-500";
+        break;
+      case "checkedin":
+        gradient = "from-green-400 to-emerald-500";
+        break;
+      case "waitlisted":
+        gradient = "from-yellow-400 to-amber-500";
+        break;
     }
   }
 
@@ -276,10 +341,11 @@ export default function Page() {
       <div className="flex min-h-screen w-full justify-center px-4 py-24">
         <div className="w-full max-w-4xl">
           <div className="mx-auto flex w-full flex-col gap-6 text-white">
-
             {/* Header */}
             <div className="text-center">
-              <h1 className="text-3xl font-bold md:text-4xl">Applicant Dashboard</h1>
+              <h1 className="text-3xl font-bold md:text-4xl">
+                Applicant Dashboard
+              </h1>
               <p className="mt-1 text-sm text-white/60">
                 Logged in as{" "}
                 <span className="rounded-full bg-white/10 px-3 py-1 text-white">
@@ -297,35 +363,46 @@ export default function Page() {
 
             {/* Main grid */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-
               {/* LEFT COLUMN */}
               <div className="flex flex-col gap-6">
-
                 {/* QR Code */}
                 {qrCode && <QRCard qrCode={qrCode} />}
 
                 {/* Event Info */}
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 text-lg font-semibold">📅 Event Info</div>
+                  <div className="mb-3 text-lg font-semibold">
+                    📅 Event Info
+                  </div>
                   <div className="space-y-2 text-sm text-white/80">
-                    <div><span className="text-white/50">Event:</span> TAMU Datathon Lite</div>
-                    <div><span className="text-white/50">Date:</span> April 11, 2026</div>
-                    <div><span className="text-white/50">Location:</span> Texas A&M University</div>
+                    <div>
+                      <span className="text-white/50">Event:</span> TAMU
+                      Datathon Lite
+                    </div>
+                    <div>
+                      <span className="text-white/50">Date:</span> April 11,
+                      2026
+                    </div>
+                    <div>
+                      <span className="text-white/50">Location:</span> Texas A&M
+                      University
+                    </div>
                     <div>
                       <span className="text-white/50">Contact:</span>{" "}
-                      <span className="text-cyan-400">connect@tamudatathon.com</span>
+                      <span className="text-cyan-400">
+                        connect@tamudatathon.com
+                      </span>
                     </div>
                   </div>
                 </div>
-
               </div>
 
               {/* RIGHT COLUMN */}
               <div className="flex flex-col gap-6">
-
                 {/* Your Application */}
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 text-lg font-semibold">📋 Your Application</div>
+                  <div className="mb-3 text-lg font-semibold">
+                    📋 Your Application
+                  </div>
                   <div className="flex flex-col gap-3">
                     {appsOpen && (
                       <Button
@@ -333,14 +410,20 @@ export default function Page() {
                         size="lg"
                         type="button"
                       >
-                        <Link href="/apply/application" className="w-full text-white">
-                          {data?.status ? "View / Edit Application" : "Start Application"}
+                        <Link
+                          href="/apply/application"
+                          className="w-full text-white"
+                        >
+                          {data?.status
+                            ? "View / Edit Application"
+                            : "Start Application"}
                         </Link>
                       </Button>
                     )}
                     {!appsOpen && (
                       <p className="text-sm text-white/60">
-                        Applications are closed. We are reviewing submissions — keep an eye on your email!
+                        Applications are closed. We are reviewing submissions —
+                        keep an eye on your email!
                       </p>
                     )}
                   </div>
@@ -349,7 +432,9 @@ export default function Page() {
                 {/* Accept / Decline — only shown when accepted */}
                 {data?.status === "accepted" && (
                   <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                    <div className="mb-1 text-lg font-semibold">🎟️ Admission Offer Response</div>
+                    <div className="mb-1 text-lg font-semibold">
+                      🎟️ Admission Offer Response
+                    </div>
                     <p className="mb-4 text-sm text-white/60">
                       Let us know whether you accept or decline your offer.
                     </p>
@@ -365,7 +450,9 @@ export default function Page() {
                         disabled={updateInvitation.isPending}
                         className="w-full rounded-xl bg-green-600 py-3 text-sm font-semibold text-white transition hover:bg-green-500 disabled:opacity-50"
                       >
-                        {updateInvitation.isPending ? "Saving..." : "Accept Offer"}
+                        {updateInvitation.isPending
+                          ? "Saving..."
+                          : "Accept Offer"}
                       </button>
                       <button
                         onClick={() =>
@@ -378,7 +465,9 @@ export default function Page() {
                         disabled={updateInvitation.isPending}
                         className="w-full rounded-xl bg-red-600 py-3 text-sm font-semibold text-white transition hover:bg-red-500 disabled:opacity-50"
                       >
-                        {updateInvitation.isPending ? "Saving..." : "Decline Offer"}
+                        {updateInvitation.isPending
+                          ? "Saving..."
+                          : "Decline Offer"}
                       </button>
                     </div>
                   </div>
@@ -386,14 +475,20 @@ export default function Page() {
 
                 {/* Quick Links */}
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 text-lg font-semibold">🔗 Quick Links</div>
+                  <div className="mb-3 text-lg font-semibold">
+                    🔗 Quick Links
+                  </div>
                   <div className="grid grid-cols-2 gap-3">
                     <Button
                       className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
                       size="sm"
                       type="button"
                     >
-                      <Link href="https://tamudatathon.com/" target="_blank" className="w-full text-white">
+                      <Link
+                        href="https://tamudatathon.com/"
+                        target="_blank"
+                        className="w-full text-white"
+                      >
                         Event Website
                       </Link>
                     </Button>
@@ -402,7 +497,11 @@ export default function Page() {
                       size="sm"
                       type="button"
                     >
-                      <Link href="https://discord.com/invite/pHsNmjuWSc" target="_blank" className="w-full text-white">
+                      <Link
+                        href="https://discord.com/invite/pHsNmjuWSc"
+                        target="_blank"
+                        className="w-full text-white"
+                      >
                         Discord
                       </Link>
                     </Button>
@@ -411,7 +510,11 @@ export default function Page() {
                       size="sm"
                       type="button"
                     >
-                      <Link href="https://www.instagram.com/tamudatathon/" target="_blank" className="w-full text-white">
+                      <Link
+                        href="https://www.instagram.com/tamudatathon/"
+                        target="_blank"
+                        className="w-full text-white"
+                      >
                         Instagram
                       </Link>
                     </Button>
@@ -420,7 +523,11 @@ export default function Page() {
                       size="sm"
                       type="button"
                     >
-                      <Link href="https://www.youtube.com/@tamu-datathon/featured" target="_blank" className="w-full text-white">
+                      <Link
+                        href="https://www.youtube.com/@tamu-datathon/featured"
+                        target="_blank"
+                        className="w-full text-white"
+                      >
                         YouTube
                       </Link>
                     </Button>
@@ -439,7 +546,6 @@ export default function Page() {
                     Change Accounts
                   </Button>
                 </div>
-
               </div>
             </div>
           </div>
