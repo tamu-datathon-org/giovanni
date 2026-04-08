@@ -187,17 +187,12 @@ function QRCard({ qrCode }: { qrCode: string }) {
       if (!navigator.canShare({ files: [file] })) {
         throw new Error("This device/browser cannot share this file");
       }
-
       await navigator.share({
         files: [file],
         title: "Check-in QR Code",
       });
-
-      toast({
-        title: "QR Code shared",
-        description: "On iPhone, choose Save Image or Add to Photos.",
-      });
     } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") return;
       const message =
         err instanceof Error ? err.message : "Unable to share QR code";
 
@@ -208,11 +203,6 @@ function QRCard({ qrCode }: { qrCode: string }) {
         document.body.appendChild(a);
         a.click();
         a.remove();
-
-        toast({
-          title: "Download Started Successfully",
-          description: "Check your downloads folder",
-        });
       } catch {
         toast({
           title: "Could not save QR code",
