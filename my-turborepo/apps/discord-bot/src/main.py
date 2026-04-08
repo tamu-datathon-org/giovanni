@@ -107,24 +107,24 @@ class MyClient(discord.Client):
         self.announced = set()
 
     async def on_ready(self):
-        print(f"Logged in as {self.user}")
+        print(f"Logged in as {self.user}", flush=True)
         self.loop.create_task(self.announcement_loop())
 
     async def announcement_loop(self):
         await self.wait_until_ready()
         channel = self.get_channel(CHANNEL_ID) or await self.fetch_channel(CHANNEL_ID)
-        print(f"Watching channel: {channel.name}")
+        print(f"Watching channel: {channel.name}", flush=True)
         events_len = 0
         while not self.is_closed():
             try:
                 events = await asyncio.get_event_loop().run_in_executor(None, get_sheet_events)
                 if(events_len != len(events)):
                     events_len = len(events)
-                    print(f"Fetched {events_len} events")
+                    print(f"Fetched {events_len} events", flush=True)
                 now = datetime.now(timezone.utc)
 
                 for event in events:
-                    event_id = event.get("ID")
+                    event_id = event.get("id")
                     start_str = event.get("startTime")
                     delay = int(event.get("delay"))  # delay in minutes
 
@@ -143,10 +143,10 @@ class MyClient(discord.Client):
                             mentions = discord.AllowedMentions(everyone=True)
                         await channel.send(build_message(event), allowed_mentions=mentions)
                         self.announced.add(event_id)
-                        print(f"Announced: {event.get('title')}")
+                        print(f"Announced: {event.get('title')}", flush=True)
 
             except Exception as e:
-                print(f"Error: {e}")
+                print(f"Error: {e}", flush=True)
 
             await asyncio.sleep(POLL_INTERVAL_SEC)
 
