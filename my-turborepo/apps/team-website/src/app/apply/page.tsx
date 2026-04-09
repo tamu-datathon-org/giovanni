@@ -1,9 +1,16 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import {
+  CalendarDays,
+  Download,
+  FileText,
+  Settings,
+  Ticket,
+} from "lucide-react";
 import { toDataURL } from "qrcode";
 
 import { authClient } from "@vanni/auth/client";
@@ -42,8 +49,14 @@ function Confetti() {
     }[] = [];
 
     const colors = [
-      "#ff6b6b", "#ffd93d", "#6bcb77", "#4d96ff",
-      "#ff922b", "#cc5de8", "#f06595", "#74c0fc",
+      "#ff6b6b",
+      "#ffd93d",
+      "#6bcb77",
+      "#4d96ff",
+      "#ff922b",
+      "#cc5de8",
+      "#f06595",
+      "#74c0fc",
     ];
 
     for (let i = 0; i < 160; i++) {
@@ -108,12 +121,12 @@ function Confetti() {
 function DecisionBanner({
   status,
   isLoading,
-  gradient,
+  textColor,
   foodGroup,
 }: {
   status?: string;
   isLoading: boolean;
-  gradient: string;
+  textColor: string;
   foodGroup?: string | null;
 }) {
   const statusLabel = isLoading
@@ -131,12 +144,12 @@ function DecisionBanner({
   };
 
   return (
-    <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-sm">
+    <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-center shadow-[0_0_40px_rgba(59,130,246,0.08)]">
       <div className="mb-1 text-sm font-medium uppercase tracking-widest text-white/60">
         Application Status
       </div>
       <div
-        className={`bg-gradient-to-r bg-clip-text text-5xl font-bold text-transparent md:text-6xl ${gradient}`}
+        className={`bg-clip-text text-5xl font-bold md:text-6xl ${textColor}`}
       >
         {statusLabel}
       </div>
@@ -146,8 +159,8 @@ function DecisionBanner({
         </p>
       )}
       {foodGroup ? (
-        <p className="mt-3 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/85">
-          <span className="text-white/55">Food group</span>{" "}
+        <p className="mx-auto mt-3 w-fit rounded-lg border border-white/10 bg-[#2d69df] px-3 py-2 text-sm text-white">
+          <span className="text-white">Lunch group</span>{" "}
           <span className="font-semibold text-white">{foodGroup}</span>
         </p>
       ) : null}
@@ -162,13 +175,18 @@ function QRCard({ qrCode }: { qrCode: string }) {
     link.href = qrCode;
     link.download = "checkin-qr.png";
     link.click();
-    toast({ title: "QR Code saved!", description: "Check your downloads folder." });
+    toast({
+      title: "QR Code saved!",
+      description: "Check your downloads folder.",
+    });
   }
 
   return (
-    <div className="flex flex-col items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+    <div className="flex cursor-pointer flex-col items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg">
       <div className="text-lg font-semibold text-white">Check-in QR Code</div>
-      <p className="text-sm text-white/60">Click the QR code to save it as an image</p>
+      <p className="text-sm text-white/60">
+        Click the QR code to save it as an image
+      </p>
       <button
         onClick={handleSave}
         className="group relative mx-auto cursor-pointer overflow-hidden rounded-xl border-4 border-gray-400 p-2 transition-all hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/30"
@@ -183,7 +201,9 @@ function QRCard({ qrCode }: { qrCode: string }) {
           />
         </div>
         <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
-          <span className="text-sm font-semibold text-white">⬇ Save Image</span>
+          <span className="flex items-center gap-2 text-sm font-semibold text-white">
+            <Download /> Save Image
+          </span>
         </div>
       </button>
     </div>
@@ -228,10 +248,11 @@ export default function Page() {
 
   const [qrCode, setQrCode] = useState<string>("");
 
-  const { data, isLoading, refetch } = api.application.getApplicationStatus.useQuery(
-    { eventName: EVENT_NAME },
-    { enabled: !!EVENT_NAME, retry: 2 },
-  );
+  const { data, isLoading, refetch } =
+    api.application.getApplicationStatus.useQuery(
+      { eventName: EVENT_NAME },
+      { enabled: !!EVENT_NAME, retry: 2 },
+    );
 
   const updateInvitation = api.application.updateInvitationStatus.useMutation({
     onSuccess: () => {
@@ -244,7 +265,8 @@ export default function Page() {
     onError: () => {
       toast({
         title: "Something went wrong",
-        description: "Could not update your invitation status. Please try again.",
+        description:
+          "Could not update your invitation status. Please try again.",
         variant: "destructive",
       });
     },
@@ -266,14 +288,24 @@ export default function Page() {
     }
   }, [data]);
 
-  let gradient = "from-blue-400 to-cyan-500";
+  let textColor = "text-blue-400";
   if (!isLoading) {
     switch (data?.status) {
-      case "pending":    gradient = "from-gray-300 to-cyan-500"; break;
-      case "accepted":   gradient = "from-pink-400 to-cyan-400"; break;
-      case "rejected":   gradient = "from-red-400 to-orange-500"; break;
-      case "checkedin":  gradient = "from-green-400 to-emerald-500"; break;
-      case "waitlisted": gradient = "from-yellow-400 to-amber-500"; break;
+      case "pending":
+        textColor = "text-gray-300";
+        break;
+      case "accepted":
+        textColor = "text-[#2d69df]";
+        break;
+      case "rejected":
+        textColor = "text-red-400";
+        break;
+      case "checkedin":
+        textColor = "text-green-400";
+        break;
+      case "waitlisted":
+        textColor = "text-yellow-400";
+        break;
     }
   }
 
@@ -284,10 +316,11 @@ export default function Page() {
       <div className="flex min-h-screen w-full justify-center px-4 py-24">
         <div className="w-full max-w-4xl">
           <div className="mx-auto flex w-full flex-col gap-6 text-white">
-
             {/* Header */}
             <div className="text-center">
-              <h1 className="text-3xl font-bold md:text-4xl">Applicant Dashboard</h1>
+              <h1 className="text-3xl font-bold md:text-4xl">
+                Applicant Dashboard
+              </h1>
               <p className="mt-1 text-sm text-white/60">
                 Logged in as{" "}
                 <span className="rounded-full bg-white/10 px-3 py-1 text-white">
@@ -300,65 +333,47 @@ export default function Page() {
             <DecisionBanner
               status={data?.status}
               isLoading={isLoading}
-              gradient={gradient}
+              textColor={textColor}
               foodGroup={data?.foodGroup}
             />
 
             {/* Main grid */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-
               {/* LEFT COLUMN */}
-              <div className="flex flex-col gap-6">
-
+              <div className="flex h-full flex-col gap-6">
                 {/* QR Code */}
                 {qrCode && <QRCard qrCode={qrCode} />}
 
                 {/* Event Info */}
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 text-lg font-semibold">📅 Event Info</div>
+                  <div className="mb-3 flex items-center gap-2 text-lg font-semibold">
+                    <CalendarDays /> Event Info
+                  </div>
                   <div className="space-y-2 text-sm text-white/80">
-                    <div><span className="text-white/50">Event:</span> TAMU Datathon Lite</div>
-                    <div><span className="text-white/50">Date:</span> April 11, 2026</div>
-                    <div><span className="text-white/50">Location:</span> Texas A&M University</div>
                     <div>
-                      <span className="text-white/50">Contact:</span>{" "}
-                      <span className="text-cyan-400">connect@tamudatathon.com</span>
+                      <span className="text-white/50">Event:</span> TAMU
+                      Datathon Lite
+                    </div>
+                    <div>
+                      <span className="text-white/50">Date:</span> April 11,
+                      2026 | 9:00 AM - 5:00 PM
+                    </div>
+                    <div>
+                      <span className="text-white/50">Location:</span> Peterson
+                      Building
                     </div>
                   </div>
                 </div>
-
               </div>
 
               {/* RIGHT COLUMN */}
-              <div className="flex flex-col gap-6">
-
-                {/* Your Application */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 text-lg font-semibold">📋 Your Application</div>
-                  <div className="flex flex-col gap-3">
-                    {appsOpen && (
-                      <Button
-                        className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
-                        size="lg"
-                        type="button"
-                      >
-                        <Link href="/apply/application" className="w-full text-white">
-                          {data?.status ? "View / Edit Application" : "Start Application"}
-                        </Link>
-                      </Button>
-                    )}
-                    {!appsOpen && (
-                      <p className="text-sm text-white/60">
-                        Applications are closed. We are reviewing submissions — keep an eye on your email!
-                      </p>
-                    )}
-                  </div>
-                </div>
-
+              <div className="flex h-full flex-col justify-between gap-6">
                 {/* Accept / Decline — only shown when accepted */}
                 {data?.status === "accepted" && (
                   <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                    <div className="mb-1 text-lg font-semibold">🎟️ Admission Offer Response</div>
+                    <div className="mb-1 flex items-center gap-2 text-lg font-semibold">
+                      <Ticket /> Admission Offer Response
+                    </div>
                     <p className="mb-4 text-sm text-white/60">
                       Let us know whether you accept or decline your offer.
                     </p>
@@ -374,7 +389,9 @@ export default function Page() {
                         disabled={updateInvitation.isPending}
                         className="w-full rounded-xl bg-green-600 py-3 text-sm font-semibold text-white transition hover:bg-green-500 disabled:opacity-50"
                       >
-                        {updateInvitation.isPending ? "Saving..." : "Accept Offer"}
+                        {updateInvitation.isPending
+                          ? "Saving..."
+                          : "Accept Offer"}
                       </button>
                       <button
                         onClick={() =>
@@ -387,15 +404,49 @@ export default function Page() {
                         disabled={updateInvitation.isPending}
                         className="w-full rounded-xl bg-red-600 py-3 text-sm font-semibold text-white transition hover:bg-red-500 disabled:opacity-50"
                       >
-                        {updateInvitation.isPending ? "Saving..." : "Decline Offer"}
+                        {updateInvitation.isPending
+                          ? "Saving..."
+                          : "Decline Offer"}
                       </button>
                     </div>
                   </div>
                 )}
+                {/* Your Application */}
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="mb-3 flex items-center gap-2 text-lg font-semibold">
+                    <FileText /> Your Application
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {appsOpen && (
+                      <Button
+                        className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
+                        size="lg"
+                        type="button"
+                      >
+                        <Link
+                          href="/apply/application"
+                          className="w-full text-white"
+                        >
+                          {data?.status
+                            ? "View / Edit Application"
+                            : "Start Application"}
+                        </Link>
+                      </Button>
+                    )}
+                    {!appsOpen && (
+                      <p className="text-sm text-white/60">
+                        Applications are closed. We are reviewing submissions —
+                        keep an eye on your email!
+                      </p>
+                    )}
+                  </div>
+                </div>
 
                 {/* Quick Links */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 text-lg font-semibold">🔗 Quick Links</div>
+                {/* <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="mb-3 text-lg font-semibold">
+                    🔗 Quick Links
+                  </div>
                   <div className="grid grid-cols-2 gap-3">
                     <Button
                       className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
@@ -434,11 +485,13 @@ export default function Page() {
                       </Link>
                     </Button>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Account */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 text-lg font-semibold">⚙️ Account</div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm ">
+                  <div className="mb-3 flex items-center gap-2 text-lg font-semibold">
+                    <Settings /> Account
+                  </div>
                   <Button
                     onClick={signOutHandler}
                     className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
@@ -448,7 +501,6 @@ export default function Page() {
                     Change Accounts
                   </Button>
                 </div>
-
               </div>
             </div>
           </div>
