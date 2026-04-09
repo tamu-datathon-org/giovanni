@@ -614,6 +614,7 @@ export const applicationRouter = {
         eventAttendance: checkInAttendance[0]?.checkedIn ?? false,
         checkedIn: phaseAttendance[0].checkedIn ?? false,
         checkedInAt: phaseAttendance[0].checkedInAt ?? null,
+        foodGroup: application.foodGroup ?? null,
       };
     }),
 
