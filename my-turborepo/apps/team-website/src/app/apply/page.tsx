@@ -4,6 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import {
+  CalendarDays,
+  Download,
+  FileText,
+  Settings,
+  Ticket,
+} from "lucide-react";
 import { toDataURL } from "qrcode";
 
 import { authClient } from "@vanni/auth/client";
@@ -114,11 +121,13 @@ function Confetti() {
 function DecisionBanner({
   status,
   isLoading,
-  gradient,
+  textColor,
+  foodGroup,
 }: {
   status?: string;
   isLoading: boolean;
-  gradient: string;
+  textColor: string;
+  foodGroup?: string | null;
 }) {
   const statusLabel = isLoading
     ? "LOADING..."
@@ -135,12 +144,12 @@ function DecisionBanner({
   };
 
   return (
-    <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-sm">
+    <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-center shadow-[0_0_40px_rgba(59,130,246,0.08)]">
       <div className="mb-1 text-sm font-medium uppercase tracking-widest text-white/60">
         Application Status
       </div>
       <div
-        className={`bg-gradient-to-r bg-clip-text text-5xl font-bold text-transparent md:text-6xl ${gradient}`}
+        className={`bg-clip-text text-5xl font-bold md:text-6xl ${textColor}`}
       >
         {statusLabel}
       </div>
@@ -149,6 +158,12 @@ function DecisionBanner({
           {statusMessage[status] ?? ""}
         </p>
       )}
+      {foodGroup ? (
+        <p className="mx-auto mt-3 w-fit rounded-lg border border-white/10 bg-[#2d69df] px-3 py-2 text-sm text-white">
+          <span className="text-white">Lunch group</span>{" "}
+          <span className="font-semibold text-white">{foodGroup}</span>
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -199,7 +214,7 @@ function QRCard({ qrCode }: { qrCode: string }) {
   }
 
   return (
-    <div className="flex flex-col items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+    <div className="flex cursor-pointer flex-col items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg">
       <div className="text-lg font-semibold text-white">Check-in QR Code</div>
       <p className="text-sm text-white/60">
         Click the QR code to save it as an image
@@ -218,7 +233,9 @@ function QRCard({ qrCode }: { qrCode: string }) {
           />
         </div>
         <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
-          <span className="text-sm font-semibold text-white">⬇ Save Image</span>
+          <span className="flex items-center gap-2 text-sm font-semibold text-white">
+            <Download /> Save Image
+          </span>
         </div>
       </button>
     </div>
@@ -303,23 +320,23 @@ export default function Page() {
     }
   }, [data]);
 
-  let gradient = "from-blue-400 to-cyan-500";
+  let textColor = "text-blue-400";
   if (!isLoading) {
     switch (data?.status) {
       case "pending":
-        gradient = "from-gray-300 to-cyan-500";
+        textColor = "text-gray-300";
         break;
       case "accepted":
-        gradient = "from-pink-400 to-cyan-400";
+        textColor = "text-[#2d69df]";
         break;
       case "rejected":
-        gradient = "from-red-400 to-orange-500";
+        textColor = "text-red-400";
         break;
       case "checkedin":
-        gradient = "from-green-400 to-emerald-500";
+        textColor = "text-green-400";
         break;
       case "waitlisted":
-        gradient = "from-yellow-400 to-amber-500";
+        textColor = "text-yellow-400";
         break;
     }
   }
@@ -348,20 +365,21 @@ export default function Page() {
             <DecisionBanner
               status={data?.status}
               isLoading={isLoading}
-              gradient={gradient}
+              textColor={textColor}
+              foodGroup={data?.foodGroup}
             />
 
             {/* Main grid */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {/* LEFT COLUMN */}
-              <div className="flex flex-col gap-6">
+              <div className="flex h-full flex-col gap-6">
                 {/* QR Code */}
                 {qrCode && <QRCard qrCode={qrCode} />}
 
                 {/* Event Info */}
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 text-lg font-semibold">
-                    📅 Event Info
+                  <div className="mb-3 flex items-center gap-2 text-lg font-semibold">
+                    <CalendarDays /> Event Info
                   </div>
                   <div className="space-y-2 text-sm text-white/80">
                     <div>
@@ -370,60 +388,23 @@ export default function Page() {
                     </div>
                     <div>
                       <span className="text-white/50">Date:</span> April 11,
-                      2026
+                      2026 | 9:00 AM - 5:00 PM
                     </div>
                     <div>
-                      <span className="text-white/50">Location:</span> Texas A&M
-                      University
-                    </div>
-                    <div>
-                      <span className="text-white/50">Contact:</span>{" "}
-                      <span className="text-cyan-400">
-                        connect@tamudatathon.com
-                      </span>
+                      <span className="text-white/50">Location:</span> Peterson
+                      Building
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* RIGHT COLUMN */}
-              <div className="flex flex-col gap-6">
-                {/* Your Application */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 text-lg font-semibold">
-                    📋 Your Application
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    {appsOpen && (
-                      <Button
-                        className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
-                        size="lg"
-                        type="button"
-                      >
-                        <Link
-                          href="/apply/application"
-                          className="w-full text-white"
-                        >
-                          {data?.status
-                            ? "View / Edit Application"
-                            : "Start Application"}
-                        </Link>
-                      </Button>
-                    )}
-                    {!appsOpen && (
-                      <p className="text-sm text-white/60">
-                        Applications are closed. We are reviewing submissions —
-                        keep an eye on your email!
-                      </p>
-                    )}
-                  </div>
-                </div>
-
+              <div className="flex h-full flex-col justify-between gap-6">
                 {/* Accept / Decline — only shown when accepted */}
                 {data?.status === "accepted" && (
                   <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                    <div className="mb-1 text-lg font-semibold">
-                      🎟️ Admission Offer Response
+                    <div className="mb-1 flex items-center gap-2 text-lg font-semibold">
+                      <Ticket /> Admission Offer Response
                     </div>
                     <p className="mb-4 text-sm text-white/60">
                       Let us know whether you accept or decline your offer.
@@ -462,9 +443,39 @@ export default function Page() {
                     </div>
                   </div>
                 )}
+                {/* Your Application */}
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="mb-3 flex items-center gap-2 text-lg font-semibold">
+                    <FileText /> Your Application
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {appsOpen && (
+                      <Button
+                        className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
+                        size="lg"
+                        type="button"
+                      >
+                        <Link
+                          href="/apply/application"
+                          className="w-full text-white"
+                        >
+                          {data?.status
+                            ? "View / Edit Application"
+                            : "Start Application"}
+                        </Link>
+                      </Button>
+                    )}
+                    {!appsOpen && (
+                      <p className="text-sm text-white/60">
+                        Applications are closed. We are reviewing submissions —
+                        keep an eye on your email!
+                      </p>
+                    )}
+                  </div>
+                </div>
 
                 {/* Quick Links */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                {/* <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
                   <div className="mb-3 text-lg font-semibold">
                     🔗 Quick Links
                   </div>
@@ -522,11 +533,13 @@ export default function Page() {
                       </Link>
                     </Button>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Account */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 text-lg font-semibold">⚙️ Account</div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm ">
+                  <div className="mb-3 flex items-center gap-2 text-lg font-semibold">
+                    <Settings /> Account
+                  </div>
                   <Button
                     onClick={signOutHandler}
                     className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"

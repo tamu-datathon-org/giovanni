@@ -4,7 +4,6 @@ import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -21,6 +20,7 @@ interface ParticipantData {
   eventAttendance: boolean;
   checkedIn: boolean;
   checkedInAt?: string | null;
+  foodGroup?: string | null;
 }
 
 interface ParticipantCardProps {
@@ -110,6 +110,9 @@ export function ParticipantCard({
             >
               {participant.status}
             </span>
+          </p>
+          <p>
+            Food Group: {participant.foodGroup ? participant.foodGroup : "None"}
           </p>
           <p>
             Dietary Restrictions:{" "}
