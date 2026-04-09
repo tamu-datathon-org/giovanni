@@ -101,7 +101,7 @@ def build_message(event):
 
     # build description
     if description:
-        lines.append(f"**Description:** > {description}")
+        lines.append(f"**Description:** \n> {description}")
 
     return "\n".join(lines)
 
