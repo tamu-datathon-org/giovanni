@@ -169,6 +169,31 @@ export async function updateBatchStatus(
   }
 }
 
+function isCoffeeGroupLabel(g: string): boolean {
+  return g.trim().toLowerCase().includes("coffee");
+}
+
+function isDietaryCoffeeEligible(dietaryRestriction: string | null | undefined): boolean {
+  const d = (dietaryRestriction ?? "").toLowerCase();
+  if (!d.trim()) return false;
+  return (
+    d.includes("vegan") ||
+    d.includes("vegetarian") ||
+    d.includes("gluten")
+  );
+}
+
+function coffeeLabelFromEventFoodGroups(foodGroups: string[]): string {
+  const found = foodGroups.find((g) => isCoffeeGroupLabel(g));
+  return found ?? "Coffee";
+}
+
+function pickRandomNonCoffeeGroup(foodGroups: string[]): string | null {
+  const others = foodGroups.filter((g) => !isCoffeeGroupLabel(g));
+  if (others.length === 0) return null;
+  return others[Math.floor(Math.random() * others.length)] ?? null;
+}
+
 // the batch requires the page/limit, I need to get all of them in each
 // Get batch status gives all applications -> filter the status to 3 categories -> send it to the email router
 // the email router will send the emails based on the status one at a time but all at the same time
@@ -699,6 +724,7 @@ export const applicationRouter = {
           status: true,
           invitationStatus: true,
           foodGroup: true,
+          dietaryRestriction: true,
         },
       });
 
@@ -715,12 +741,15 @@ export const applicationRouter = {
 
       if (
         application.status === "accepted" &&
-        foodGroups.length > 0 &&
         (application.foodGroup == null || application.foodGroup === "")
       ) {
-        const pick = foodGroups[Math.floor(Math.random() * foodGroups.length)];
-        if (pick != null && pick !== "") {
-          setValues.foodGroup = pick;
+        if (isDietaryCoffeeEligible(application.dietaryRestriction)) {
+          setValues.foodGroup = coffeeLabelFromEventFoodGroups(foodGroups);
+        } else {
+          const pick = pickRandomNonCoffeeGroup(foodGroups);
+          if (pick != null && pick !== "") {
+            setValues.foodGroup = pick;
+          }
         }
       }
 
