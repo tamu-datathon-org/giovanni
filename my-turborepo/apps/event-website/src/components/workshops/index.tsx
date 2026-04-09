@@ -11,7 +11,7 @@ const workshops = [
     dateLabel: "APRIL 7",
     title: "ML BASICS",
     description: "Learning the basics of machine learning.",
-    time: "7:00 – 8:00 PM",
+    time: "6:30 - 7:30 PM",
     room: "PETR 126",
   },
   {

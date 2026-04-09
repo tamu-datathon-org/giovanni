@@ -42,7 +42,7 @@ const Footer = () => {
               </Link>
               <h3 className="text-base text-white md:text-lg">TAMU Datathon</h3>
               <p className="mb-3 text-center text-sm text-gray-400 md:mb-6 md:text-left md:text-base">
-                change learning with data
+                Changing Learning with Data
               </p>
             </div>
 
@@ -116,13 +116,13 @@ const Footer = () => {
             <div className="flex flex-col items-center space-y-3 md:items-start md:space-y-4 border-t border-white/20 pt-4 first:border-t-0 first:pt-0 sm:border-t-0 sm:pt-0">
               <h3 className="text-base font-semibold md:text-lg">Quick Links</h3>
               <Link
-                href="/#about"
+                href="https://tamudatathon.org"
                 className="text-sm text-gray-400 hover:text-white md:text-base"
               >
                 About Us
               </Link>
               <Link
-                href="/#contact"
+                href="mailto:connect@tamudatathon.com"
                 className="text-sm text-gray-400 hover:text-white md:text-base"
               >
                 Contact
