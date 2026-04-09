@@ -64,7 +64,6 @@ def build_message(event):
     lines = []
     
     # build title
-    title = ""
     if start_time:
         title = f"## {ping} {title} is starting in {delay} minutes!" if delay != 0 else f"## {ping} {title} is starting now!"
     else: 
