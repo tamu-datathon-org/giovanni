@@ -64,7 +64,12 @@ def build_message(event):
     lines = []
     
     # build title
-    title = f"{ping} **{title}** is starting in {delay} minutes!" if delay != 0 else f"{ping} **{title}** is starting now!"
+    title = ""
+    if start_time:
+        title = f"## {ping} {title} is starting in {delay} minutes!" if delay != 0 else f"## {ping} {title} is starting now!"
+    else: 
+        title = f"## {ping} {title} is ending in {delay} minutes!" if delay != 0 else f"## {ping} {title} is ending now!"
+        
     lines.append(title)
             
     # build time
@@ -73,19 +78,19 @@ def build_message(event):
         try:
             start_dt = EVENT_TZ.localize(parse_dt(start_time))
             end_dt = EVENT_TZ.localize(parse_dt(end_time))
-            time_str = f"Time: {start_dt.strftime('%I:%M %p')} - {end_dt.strftime('%I:%M %p %Z')}"
+            time_str = f"**Time:** {start_dt.strftime('%I:%M %p')} - {end_dt.strftime('%I:%M %p')}"
         except:
             pass
     elif start_time:
         try:
             start_dt = EVENT_TZ.localize(parse_dt(start_time))
-            time_str = f"Starts at: {start_dt.strftime('%I:%M %p %Z')}"
+            time_str = f"**Starts at:** {start_dt.strftime('%I:%M %p')}"
         except:
             pass
     elif end_time:
         try:
             end_dt = EVENT_TZ.localize(parse_dt(end_time))
-            time_str = f"Ends at: {end_dt.strftime('%I:%M %p %Z')}"
+            time_str = f"**Ends at:** {end_dt.strftime('%I:%M %p')}"
         except:
             pass
     if time_str:
@@ -93,11 +98,11 @@ def build_message(event):
         
     # build location
     if location:
-        lines.append(f"Location: {location}")
+        lines.append(f"**Location:** {location}")
 
     # build description
     if description:
-        lines.append(f"Description: {description}")
+        lines.append(f"**Description:**\n > {description}")
 
     return "\n".join(lines)
 
@@ -127,7 +132,10 @@ class MyClient(discord.Client):
                     event_id = event.get("id")
                     start_str = event.get("startTime")
                     end_str = event.get("endTime")
-                    delay = int(event.get("delay"))  # delay in minutes
+                    try:
+                        delay = int(event.get("delay"))
+                    except (TypeError, ValueError):
+                        delay = 0  # delay in minutes
 
                     event_dt = 0
                     if start_str:
