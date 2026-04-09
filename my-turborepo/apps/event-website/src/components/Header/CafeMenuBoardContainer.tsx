@@ -21,7 +21,6 @@ const MENU_TARGETS: MenuTarget[] = [
   { id: "menu", targetId: "menu", label: "Home", subtitle: "" },
   { id: "workshops", targetId: "workshops", label: "Workshops", subtitle: "" },
   { id: "find-us", targetId: "find-us", label: "Location", subtitle: "" },
-  { id: "workshops", targetId: "workshops", label: "Workshops", subtitle: ""},
   { id: "prizes", targetId: "prizes", label: "Prizes", subtitle: ""},
   { id: "schedule", targetId: "schedule", label: "Schedule", subtitle: ""},
   { id: "baristas-note", targetId: "baristas-note", label: "FAQ", subtitle: "" },

@@ -104,9 +104,9 @@ export default function Schedule() {
                                             {/* Event Title to add color cats do getCatColor(item.category) */}
                                             <span
                                                 style={{
-                                                    color: passed ? "#888888" : "#FFFFFF",
+                                                    color: passed ? "#888888" : getCatColor(item.category),
                                                 }}
-                                                className={`font-darumadrop-one text-xl whitespace-nowrap transition-all duration-300 ${
+                                                className={`font-darumadrop-one text-md sm:text-lg md:text-2xl lg:text-3xl whitespace-nowrap transition-all duration-300 ${
                                                     passed ? "line-through decoration-2" : ""
                                                 }`}
                                             >
@@ -123,9 +123,9 @@ export default function Schedule() {
                                             {/* Event Time */}
                                             <span
                                                 style={{
-                                                    color: passed ? "#888888" : "#FFFFFF",
+                                                    color: passed ? "#888888" : getCatColor(item.category),
                                                 }}
-                                                className={`font-darumadrop-one text-xl whitespace-nowrap transition-all duration-300 ${
+                                                className={`font-darumadrop-one text-md sm:text-lg md:text-2xl lg:text-3xl whitespace-nowrap transition-all duration-300 ${
                                                     passed ? "line-through decoration-2" : ""
                                                 }`}
                                             >
@@ -138,11 +138,11 @@ export default function Schedule() {
                         )}
 
                         {/* Last updated */}
-                        {lastUpdated && (
+                        {/* {lastUpdated && (
                             <p className="mt-8 text-center text-xs text-white/40">
                                 Last updated: {new Date(lastUpdated).toLocaleTimeString()}
                             </p>
-                        )}
+                        )} */}
                     </div>
                 </section>
             </div>
