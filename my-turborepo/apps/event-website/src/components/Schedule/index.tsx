@@ -53,7 +53,7 @@ export default function Schedule() {
 
                     <div className="relative z-10">
                         {/* Title */}
-                        <div className="text-center mb-2">
+                        <div className="text-center mb-4">
                             <h1 className="font-bold text-3xl md:text-4xl tracking-widest text-white uppercase font-darumadrop-one">
                                 Schedule
                             </h1>
@@ -80,11 +80,9 @@ export default function Schedule() {
                                     bg-[#99B254]
                                     font-darumadrop-one
                                     text-white
-                                    shadow-xl
-                                    transition-colors
-                                    hover:bg-white
-                                    hover:text-[#99B254]
-                                    hover:border-[#99B254]
+                                    transition-transform
+                                    hover:-translate-y-2
+                                    hover:shadow-xl
                                 "
                                 style={{
                                     padding: isMobile

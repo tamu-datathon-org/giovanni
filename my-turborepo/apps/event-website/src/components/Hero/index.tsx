@@ -89,11 +89,8 @@ export default function Hero() {
                         April 11, 2026 <br />
                     </p>
 
-                    <p className="mt-6 text-center font-['Chilanka'] text-xl text-[#FAE19D] sm:text-xl md:mt-8 md:text-2xl lg:text-4xl">
-                        Applications Close{" "}
-                        <span className="font-['Darumadrop_one'] text-xl text-[#FAE19D] sm:text-xl md:mt-8 md:text-2xl lg:text-4xl">
-                        April 9
-                        </span>
+                    <p className="mt-6 text-center font-['Chilanka'] text-lg text-[#B4D8EE] sm:text-xl md:mt-8 md:text-2xl lg:text-4xl">
+                        Applications Closed
                     </p>
 
                     <div className="w-full border-b-4 border-dashed border-[#FAE19D] my-6" />
@@ -106,16 +103,15 @@ export default function Hero() {
                             className="
                             w-fit text-center
                             border-4
-                            border-white
+                            border-[#B4D8EE]
                             rounded-xl
-                            bg-[#B4D8EE]
+                            bg-[#F7EEDF]
                             font-darumadrop-one
-                            text-white
-                            shadow-xl
-                            transition-colors
-                            hover:bg-white
-                            hover:text-[#B4D8EE]
-                            hover:border-[#B4D8EE]
+                            text-[#533A24]
+
+                            transition-transform
+                            hover:-translate-y-2
+                            hover:shadow-xl
                             "
                             style={{
                                 padding: isMobile
@@ -134,16 +130,15 @@ export default function Hero() {
                             className="
                             w-fit text-center
                             border-4
-                            border-white
+                            border-[#B4D8EE]
                             rounded-xl
-                            bg-[#99B254]
+                            bg-[#F7EEDF]
                             font-darumadrop-one
-                            text-white
-                            shadow-xl
-                            transition-colors
-                            hover:bg-white
-                            hover:text-[#99B254]
-                            hover:border-[#99B254]
+                            text-[#533A24]
+
+                            transition-transform
+                            hover:-translate-y-2
+                            hover:shadow-xl
                             "
                             style={{
                                 padding: isMobile
