@@ -151,10 +151,10 @@ export default function Workshops() {
                   Please RSVP if you plan to attend.
                 </p>
                 <a
-                  href={RSVP_FORM_URL}
+                  href="#workshops"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-5 inline-flex items-center justify-center text-center rounded-xl bg-[#FAE19D] px-8 py-3 font-darumadrop-one text-2xl leading-none text-[#8D6E5E] shadow-[0_10px_24px_rgba(76,50,27,0.15)] transition-colors hover:bg-[#FFF5DA] sm:px-10 sm:py-4 sm:text-3xl"
+                  className="mt-5 inline-flex items-center justify-center text-center rounded-xl bg-[#cccaca] px-8 py-3 font-darumadrop-one text-2xl leading-none text-white shadow-[0_10px_24px_rgba(76,50,27,0.15)] transition-colors hover:bg-[#919090] sm:px-10 sm:py-4 sm:text-3xl"
                 >
                   {/* font is not centered */}
                   <span className="-translate-y-[4px]">RSVP</span>
