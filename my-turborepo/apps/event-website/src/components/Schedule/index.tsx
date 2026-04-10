@@ -53,7 +53,7 @@ export default function Schedule() {
 
                     <div className="relative z-10">
                         {/* Title */}
-                        <div className="text-center mb-10">
+                        <div className="text-center mb-2">
                             <h1 className="font-bold text-3xl md:text-4xl tracking-widest text-white uppercase font-darumadrop-one">
                                 Schedule
                             </h1>
@@ -66,6 +66,38 @@ export default function Schedule() {
                                     strokeLinecap="round"
                                 />
                             </svg>
+                        </div>
+
+                        <div className="flex flex-col items-center w-full mb-2">
+                            <a
+                                href="/menu_fn.pdf"
+                                target="_blank"
+                                className="
+                                    w-fit text-center
+                                    border-4
+                                    border-white
+                                    rounded-xl
+                                    bg-[#99B254]
+                                    font-darumadrop-one
+                                    text-white
+                                    shadow-xl
+                                    transition-colors
+                                    hover:bg-white
+                                    hover:text-[#99B254]
+                                    hover:border-[#99B254]
+                                "
+                                style={{
+                                    padding: isMobile
+                                        ? "8px 16px"
+                                        : isTablet
+                                        ? "10px 20px"
+                                        : "12px 24px",
+                                    fontSize: isMobile ? "20px" : isTablet ? "22px" : "24px",
+                                }}
+                            >
+                                MENU
+                            </a>
+
                         </div>
 
                         {/* Loading */}
