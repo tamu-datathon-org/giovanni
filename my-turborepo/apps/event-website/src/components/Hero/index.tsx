@@ -96,13 +96,15 @@ export default function Hero() {
                         </span>
                     </p>
 
-                    {/* <div className="w-full border-b-2 border-dashed border-[#FAE19D] my-6" /> */}
+                    <div className="w-full border-b-4 border-dashed border-[#FAE19D] my-6" />
+
 
                     {/* Dynamic button size based on screen */}
-                    <div className="flex flex-col md:flex-row items-center gap-4 mt-6 md:mt-8">
+                    <div className="flex flex-col items-center gap-4 mt-6 md:mt-8 w-full">
                         <a
-                            href="https://tamudatathon.org/apply"
+                            href="https://td26.ctfd.io/"
                             className="
+                            w-fit text-center
                             border-4
                             border-white
                             rounded-xl
@@ -120,16 +122,17 @@ export default function Hero() {
                                     ? "12px 24px"
                                     : isTablet
                                     ? "14px 32px"
-                                    : "18px 40px",  // was 24px 64px — 64px side padding was too wide
-                                fontSize: isMobile ? "24px" : isTablet ? "28px" : "32px",
+                                    : "18px 40px",
+                                fontSize: isMobile ? "20px" : isTablet ? "22px" : "24px",
                             }}
                         >
-                            CHALLANGES
+                            CHALLENGES
                         </a>
 
                         <a
-                            href="https://tamudatathon.org/apply"
+                            href="https://helpqueue.tamudatathon.com/"
                             className="
+                            w-fit text-center
                             border-4
                             border-white
                             rounded-xl
@@ -147,8 +150,8 @@ export default function Hero() {
                                     ? "12px 24px"
                                     : isTablet
                                     ? "14px 32px"
-                                    : "18px 40px",  // was 24px 64px — 64px side padding was too wide
-                                fontSize: isMobile ? "24px" : isTablet ? "28px" : "32px",
+                                    : "18px 40px",
+                                fontSize: isMobile ? "20px" : isTablet ? "22px" : "24px",
                             }}
                         >
                             HELP QUEUE
@@ -156,11 +159,11 @@ export default function Hero() {
                     </div>
 
                     {/* dev mode only - comment out for production (shows current screensize) */}
-                    {process.env.NODE_ENV === "development" && (
+                    {/* {process.env.NODE_ENV === "development" && (
                         <p className="mt-4 text-xs text-[#FAE19D]/50">
                         {isMobile ? "📱 Mobile" : isTablet ? "📟 Tablet" : "🖥️ Desktop"} ({windowWidth}px)
                         </p>
-                    )}
+                    )} */}
                 </div>
             </section>
         </>
