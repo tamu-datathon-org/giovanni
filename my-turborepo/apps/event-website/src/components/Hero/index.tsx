@@ -36,10 +36,12 @@ export default function Hero() {
         <>
             <section
                 id="hero"
-                className="relative flex h-screen flex-col bg-[url(/images/background.svg)] md:flex-row"
+                className="relative flex min-h-screen flex-col md:flex-row bg-[url(/images/background.svg)]"
             >
-                {/* cup+napkin — full width on mobile, left half on desktop */}
-                <div className="relative flex w-full justify-center md:absolute md:left-0 md:top-0 md:block md:w-[50vw] md:max-w-[800px]">
+                {/* CHANGED: w-2/3 → w-3/5 for a better visual balance with the brown panel.
+                    CHANGED: added items-center and md:min-h-screen so the cup is
+                    vertically centered in its column instead of floating at the top. */}
+                <div className="relative flex w-full items-start justify-center md:w-3/5 md:min-h-screen md:justify-start">
                     <Image
                         src="/images/group_napcup.svg"
                         alt="Napkin"
@@ -47,7 +49,9 @@ export default function Hero() {
                         height={napkinHeight}
                         priority
                         sizes="(max-width: 768px) 100vw, (min-width: 769px) 50vw"
-                        className="block h-auto w-full lg:w-6/7"
+                        // CHANGED: removed lg:w-6/7 → w-full so the image fills
+                        // its container properly without awkward leftover space
+                        className="block h-auto w-full md:max-w-[85%]"
                     />
                     <Image
                         src="/images/steam.gif"
@@ -65,15 +69,16 @@ export default function Hero() {
                     />
                 </div>
 
-                {/* Brown panel — bottom on mobile, right side on desktop */}
+                {/* CHANGED: w-1/3 → w-2/5 to give the panel more breathing room
+                    so text and button don't feel cramped at desktop sizes */}
                 <div
                     className="
-                        flex w-full flex-[0.85] flex-col items-center justify-center bg-[#966952]
-                        px-6 pb-8 pt-10 mt-4 md:mt-0
-                        text-center md:absolute md:right-0 md:top-0
-                        md:mr-[90px] md:h-full md:w-1/3 md:justify-center
-                        md:pb-10
-                        md:pt-0
+                        flex w-full flex-col items-center justify-center
+                        bg-[#966952]
+                        px-6 py-10 text-center
+                        md:w-2/5
+                        md:min-h-screen
+
                     "
                     >
                     <p className="text-center font-darumadrop-one text-5xl text-[#FAE19D] sm:text-6xl md:text-6xl lg:text-8xl">
@@ -84,37 +89,71 @@ export default function Hero() {
                         April 11, 2026 <br />
                     </p>
 
-                    <p className="mt-6 text-center font-['Chilanka'] text-xl text-[#FAE19D] sm:text-xl md:mt-8 md:text-2xl lg:text-4xl">
-                        Applications Close{" "}
-                        <span className="font-['Darumadrop_one'] text-xl text-[#FAE19D] sm:text-xl md:mt-8 md:text-2xl lg:text-4xl">
-                        April 9
-                        </span>
+                    <p className="mt-6 text-center font-['Chilanka'] text-lg text-[#B4D8EE] sm:text-xl md:mt-8 md:text-2xl lg:text-4xl">
+                        Applications Closed
                     </p>
 
-                    {/* Dynamic button size based on screen */}
-                    <a
-                        href="https://tamudatathon.org/apply"
-                        className="
-                        mt-6 rounded-xl
-                        bg-[#FAE19D]
-                        font-darumadrop-one
-                        text-[#8D6E5E]
-                        shadow-xl
-                        transition-colors
-                        hover:bg-[#FFF5DA]
-                        md:mt-8
-                        "
-                        style={{
-                        padding: isMobile
-                            ? "12px 32px"
-                            : isTablet
-                            ? "16px 48px"
-                            : "24px 64px",
-                        fontSize: isMobile ? "24px" : isTablet ? "28px" : "36px",
-                        }}
-                    >
-                        APPLY
-                    </a>
+                    <div className="w-full border-b-4 border-dashed border-[#FAE19D] my-6" />
+
+
+                    <div className="flex flex-col items-center gap-4 mt-6 md:mt-8 w-full">
+                    {/* 
+
+                        <a
+                            href="https://td26.ctfd.io/"
+                            className="
+                            w-fit text-center
+                            border-4
+                            border-[#B4D8EE]
+                            rounded-xl
+                            bg-[#F7EEDF]
+                            font-darumadrop-one
+                            text-[#533A24]
+
+                            transition-transform
+                            hover:-translate-y-2
+                            hover:shadow-xl
+                            "
+                            style={{
+                                padding: isMobile
+                                    ? "12px 24px"
+                                    : isTablet
+                                    ? "14px 32px"
+                                    : "18px 40px",
+                                fontSize: isMobile ? "20px" : isTablet ? "22px" : "24px",
+                            }}
+                        >
+                            CHALLENGES
+                        </a>
+
+                        */}
+                        <a
+                            href="https://helpqueue.tamudatathon.com/"
+                            className="
+                            w-fit text-center
+                            border-4
+                            border-[#B4D8EE]
+                            rounded-xl
+                            bg-[#F7EEDF]
+                            font-darumadrop-one
+                            text-[#533A24]
+
+                            transition-transform
+                            hover:-translate-y-2
+                            hover:shadow-xl
+                            "
+                            style={{
+                                padding: isMobile
+                                    ? "12px 24px"
+                                    : isTablet
+                                    ? "14px 32px"
+                                    : "18px 40px",
+                                fontSize: isMobile ? "20px" : isTablet ? "22px" : "24px",
+                            }}
+                        >
+                            HELP QUEUE
+                        </a>
+                    </div>
 
                     {/* dev mode only - comment out for production (shows current screensize) */}
                     {/* {process.env.NODE_ENV === "development" && (
