@@ -96,8 +96,9 @@ export default function Hero() {
                     <div className="w-full border-b-4 border-dashed border-[#FAE19D] my-6" />
 
 
-                    {/* Dynamic button size based on screen */}
                     <div className="flex flex-col items-center gap-4 mt-6 md:mt-8 w-full">
+                    {/* 
+
                         <a
                             href="https://td26.ctfd.io/"
                             className="
@@ -125,6 +126,7 @@ export default function Hero() {
                             CHALLENGES
                         </a>
 
+                        */}
                         <a
                             href="https://helpqueue.tamudatathon.com/"
                             className="
