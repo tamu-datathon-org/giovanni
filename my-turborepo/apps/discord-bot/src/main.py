@@ -105,10 +105,13 @@ class MyClient(discord.Client):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.announced = set()
+        self._announcement_task = None
 
     async def on_ready(self):
         print(f"Logged in as {self.user}", flush=True)
-        self.loop.create_task(self.announcement_loop())
+        if self._announcement_task is not None and not self._announcement_task.done():
+            return
+        self._announcement_task = asyncio.create_task(self.announcement_loop())
 
     async def announcement_loop(self):
         await self.wait_until_ready()
