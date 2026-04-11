@@ -97,7 +97,7 @@ export default function Hero() {
 
 
                     <div className="flex flex-col items-center gap-4 mt-6 md:mt-8 w-full">
-                    {/* 
+
 
                         <a
                             href="https://td26.ctfd.io/"
@@ -126,7 +126,7 @@ export default function Hero() {
                             CHALLENGES
                         </a>
 
-                        */}
+                       
                         <a
                             href="https://helpqueue.tamudatathon.com/"
                             className="
