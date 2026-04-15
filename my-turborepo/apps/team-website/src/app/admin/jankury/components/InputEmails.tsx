@@ -18,7 +18,7 @@ const InputEmails: React.FC = () => {
         rows={5}
         cols={30}
         placeholder="Enter emails separated by commas: ex. email1@gmail.com, email2@gmail.com..."
-        className='rounded-md border border-gray-400 bg-gray-100 p-2 text-black'
+        className='w-full rounded-md border border-neutral-300 bg-white px-3 py-1 text-sm text-neutral-900 shadow-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-300'
         {...register('additionalEmails')}
       />
       {additionalEmailsError?.message ? (

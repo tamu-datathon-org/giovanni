@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import {
     Dialog,
     DialogContent,
@@ -142,7 +142,8 @@ const templates = [
 
 export default function Content() {
   const form = useFormContext();
-    const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
+  const content = useWatch({ control: form.control, name: "content" }) ?? "";
+  const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
 
     useEffect(() => {
         if (!form.getValues("content")) {
@@ -168,51 +169,79 @@ export default function Content() {
 
                 return (
                     <FormItem>
-                    <div className="flex items-center gap-2">
                         <FormLabel className="text-base font-semibold text-white">
                             Write Custom Email (HTML Body)
                         </FormLabel>
-                        <Dialog
-                            open={isTemplateDialogOpen}
-                            onOpenChange={setIsTemplateDialogOpen}
-                        >
-                            <DialogTrigger asChild>
-                                <Button
-                                    type="button"
-                                    className="ml-2 rounded-md border-2 border-black bg-black p-2 text-white hover:border-gray-700 hover:bg-gray-800"
-                                >
-                                    Select Template
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="w-[92vw] max-w-2xl max-h-[80vh] overflow-auto bg-gray-800 text-white">
-                                <DialogHeader>
-                                    <DialogTitle>Select Template</DialogTitle>
-                                </DialogHeader>
-
-                                <div className="grid gap-3 pt-2">
-                                    {templates.map((template) => (
-                                        <button
-                                            key={template.name}
-                                            type="button"
-                                            onClick={() => selectTemplate(template.html)}
-                                            className="rounded-md border border-gray-500 bg-gray-900 px-4 py-3 text-left text-sm text-white transition hover:border-gray-300 hover:bg-gray-700"
-                                        >
-                                            {template.name}
-                                        </button>
-                                    ))}
-                                </div>
-                            </DialogContent>
-                        </Dialog>
-                    </div>
-          <FormControl>
-            <Textarea
-                            className="min-h-[240px] resize-none"
-                                                        value={value ?? ""}
-                            {...fieldProps}
-            />
-          </FormControl>
-          <FormMessage />
-                </FormItem>
+                        <FormControl>
+                            <Textarea
+                                className="min-h-[240px] resize-none"
+                                value={value ?? ""}
+                                {...fieldProps}
+                            />
+                        </FormControl>
+                        <FormMessage />
+                        <div className="flex gap-2 pt-1">
+                            <Dialog
+                                open={isTemplateDialogOpen}
+                                onOpenChange={setIsTemplateDialogOpen}
+                            >
+                                <DialogTrigger asChild>
+                                    <Button
+                                        type="button"
+                                        className="flex-1 rounded-md border border-gray-500 bg-gray-700 px-3 py-1.5 text-sm text-white hover:border-gray-400 hover:bg-gray-600"
+                                    >
+                                        Select Template
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent className="w-[92vw] max-w-2xl max-h-[80vh] overflow-auto bg-gray-800 text-white">
+                                    <DialogHeader>
+                                        <DialogTitle>Select Template</DialogTitle>
+                                    </DialogHeader>
+                                    <div className="grid gap-3 pt-2">
+                                        {templates.map((template) => {
+                                            const isSelected = content === template.html;
+                                            return (
+                                                <button
+                                                    key={template.name}
+                                                    type="button"
+                                                    onClick={() => selectTemplate(template.html)}
+                                                    className={`flex items-center justify-between rounded-md border px-4 py-3 text-left text-sm text-white transition ${
+                                                        isSelected
+                                                            ? "border-blue-500 bg-blue-950/40"
+                                                            : "border-gray-500 bg-gray-900 hover:border-gray-300 hover:bg-gray-700"
+                                                    }`}
+                                                >
+                                                    <span>{template.name}</span>
+                                                    {isSelected && (
+                                                        <span className="ml-2 rounded-full bg-blue-500 px-2 py-0.5 text-[10px] font-semibold text-white">
+                                                            Selected
+                                                        </span>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </DialogContent>
+                            </Dialog>
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <button
+                                        type="button"
+                                        className="flex-1 rounded-md border border-gray-500 bg-gray-700 px-3 py-1.5 text-sm text-white hover:border-gray-400 hover:bg-gray-600"
+                                    >
+                                        Preview Email
+                                    </button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-[90vw] overflow-hidden bg-black p-0 [&>button]:z-50 [&>button]:rounded-full [&>button]:bg-black/80 [&>button]:p-1 [&>button]:text-white [&>button]:ring-1 [&>button]:ring-white/40">
+                                    <iframe
+                                        title="Email preview"
+                                        className="h-[80vh] w-[90vw] bg-white"
+                                        srcDoc={content}
+                                    />
+                                </DialogContent>
+                            </Dialog>
+                        </div>
+                    </FormItem>
             );
             }}
     />

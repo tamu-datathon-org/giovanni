@@ -15,7 +15,6 @@ import BatchSize from "./components/BatchSize";
 import Confirmation from "./components/Confirmation";
 import Content from "./components/Content";
 import EmailLists from "./components/EmailLists";
-import Preview from "./components/Preview";
 import Subject from "./components/Subject";
 import InputEmails from "./components/InputEmails";
 import {
@@ -192,28 +191,38 @@ export default function JankuryPage() {
               <Form {...form}>
                 <form
                   onSubmit={(event) => event.preventDefault()}
-                  className="overflow-x-hidden rounded-lg bg-gray-700 p-3 lg:px-6"
+                  className="overflow-x-hidden rounded-lg bg-gray-900 p-4 lg:px-6"
                 >
+                  <div className="mb-4 border-b border-gray-700 pb-3">
+                    <h1 className="text-2xl font-bold tracking-tight text-white">Jankury</h1>
+                  </div>
                   <div className="grid gap-4 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)_minmax(0,0.45fr)]">
-                    <div className="space-y-2 rounded-md bg-gray-800/40 p-3">
-                      <h2 className="text-lg font-semibold text-blue-400">Recipient Settings</h2>
-                      <p className="mt-0 text-[12px] font-medium leading-none text-purple-500">
-                        NOTE: PLEASE SEND TO A <strong>TEST EMAIL/LIST</strong> FIRST
-                      </p>
+                    <div className="space-y-3 rounded-md border border-gray-700/50 bg-gray-800/70 p-4">
+                      <div className="border-b border-gray-700 pb-2">
+                        <h2 className="text-base font-semibold text-blue-400">Recipient Settings</h2>
+                      </div>
+                      <div className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2">
+                        <p className="text-[11px] font-semibold text-amber-400">
+                          SEND TO A <strong>TEST EMAIL/LIST</strong> FIRST
+                        </p>
+                      </div>
                       <EmailLists />
                       <InputEmails />
                       <BatchSize />
                     </div>
 
-                    <div className="space-y-6 rounded-md bg-gray-800/40 p-3">
-                      <h2 className="text-lg font-semibold text-blue-400">Custom Email</h2>
+                    <div className="space-y-4 rounded-md border border-gray-700/50 bg-gray-800/70 p-4">
+                      <div className="border-b border-gray-700 pb-2">
+                        <h2 className="text-base font-semibold text-blue-400">Custom Email</h2>
+                      </div>
                       <Subject />
                       <Content />
-                      <Preview />
                     </div>
 
-                    <div className="space-y-4 rounded-md bg-gray-800/40 p-3">
-                      <h2 className="text-lg font-semibold text-blue-400">Actions</h2>
+                    <div className="space-y-4 rounded-md border border-purple-500/30 bg-purple-950/20 p-4">
+                      <div className="border-b border-purple-500/30 pb-2">
+                        <h2 className="text-base font-semibold text-purple-300">Actions</h2>
+                      </div>
                       <Confirmation />
                       <Button
                         type="button"

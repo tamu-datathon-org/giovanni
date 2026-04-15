@@ -17,7 +17,7 @@ export default function Preview() {
         <DialogTrigger asChild>
           <button
             type="button"
-            className="rounded-md border-2 border-black bg-black p-2 text-white hover:border-gray-700 hover:bg-gray-800"
+            className="rounded-md border border-gray-500 bg-gray-700 px-3 py-1.5 text-sm text-white hover:border-gray-400 hover:bg-gray-600"
           >
             Preview Email
           </button>

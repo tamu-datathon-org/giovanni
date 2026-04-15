@@ -49,16 +49,18 @@ export default function EmailLists() {
       defaultValue={[]}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-base font-semibold text-white">Mailing Lists</FormLabel>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                type="button"
-                className="ml-2 rounded-md border-2 border-black bg-black p-2 text-white hover:border-gray-700 hover:bg-gray-800"
-              >
-                Select Email Lists
-              </Button>
-            </DialogTrigger>
+          <div className="flex items-center justify-between">
+            <FormLabel className="text-base font-semibold text-white">Mailing Lists</FormLabel>
+            <Dialog>
+              <DialogTrigger asChild>
+                <button
+                  type="button"
+                  className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-500 bg-gray-700 text-white hover:border-gray-400 hover:bg-gray-600"
+                  title="Add mailing list"
+                >
+                  <span className="text-base leading-none">+</span>
+                </button>
+              </DialogTrigger>
             <DialogContent className="w-[92vw] max-w-4xl max-h-[80vh] overflow-auto bg-gray-800 text-white">
               <DialogHeader>
                 <div className="flex items-center gap-3">
@@ -143,22 +145,30 @@ export default function EmailLists() {
                 </div>
               </div>
             </DialogContent>
-          </Dialog>
+            </Dialog>
+          </div>
 
-          <div className="mt-3">
+          <div className="mt-3 min-h-[56px] rounded-md border border-gray-600/50 bg-gray-900/50 p-2">
             {field.value.length > 0 ? (
               <div className="flex flex-wrap gap-2">
                 {field.value.map((selectedList: string) => (
                   <span
                     key={selectedList}
-                    className="rounded-full border border-gray-400 bg-gray-800 px-3 py-1 text-xs text-gray-50"
+                    className="flex items-center gap-1 rounded-full border border-gray-400 bg-gray-800 pl-3 pr-1.5 py-1 text-xs text-gray-50"
                   >
                     {selectedList}
+                    <button
+                      type="button"
+                      onClick={() => field.onChange(field.value.filter((v: string) => v !== selectedList))}
+                      className="ml-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-gray-600 text-gray-300 hover:bg-gray-500 hover:text-white"
+                    >
+                      ×
+                    </button>
                   </span>
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-gray-300">No mailing lists selected yet.</p>
+              <p className="text-xs text-gray-500 italic">No mailing lists selected yet. Click + button to add.</p>
             )}
           </div>
           <FormMessage />
