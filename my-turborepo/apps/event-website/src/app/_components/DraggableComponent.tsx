@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { isMobile } from "react-device-detect";
 import Draggable from "react-draggable";
 
@@ -19,8 +19,11 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({
   focus,
   className,
 }) => {
+  const nodeRef = useRef<HTMLDivElement>(null);
+
   return (
     <Draggable
+      nodeRef={nodeRef}
       disabled={isMobile}
       onDrag={() => {
         onFocus(name);
@@ -28,6 +31,7 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({
       }}
     >
       <div
+        ref={nodeRef}
         className={`h-fit w-fit cursor-move overflow-hidden ${focus === name ? "z-40" : "z-10"} ${className}`}
         // style={{
         //   // width: 100,

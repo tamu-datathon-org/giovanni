@@ -12,8 +12,6 @@ import IconList from "./_components/IconList";
 import { TAMUy2k } from "./_components/preregistration-form";
 import WindowContainer from "./_components/WindowContainer";
 
-export const runtime = "edge";
-
 const logos = [
   "/company_Logos/C1_Logo.png",
   "/company_Logos/GM_Logo.png",
