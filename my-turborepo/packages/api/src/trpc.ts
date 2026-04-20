@@ -113,32 +113,35 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   // TEMP: Dev mode bypass - remove this before production!
   const DEV_MODE_SKIP_AUTH = "true" === "true";
   const DEV_USER_EMAIL = "michael_rao@tamu.edu"; // Change this to your test email
-  
-  if (DEV_MODE_SKIP_AUTH && !ctx.session?.user) {
-    // Look up real user from database by email
-    const devUser = await ctx.db.query.User.findFirst({
-      where: eq(User.email, DEV_USER_EMAIL),
-    });
-    
-    if (!devUser) {
-      throw new TRPCError({ 
-        code: "INTERNAL_SERVER_ERROR",
-        message: `Dev user not found in database with email: ${DEV_USER_EMAIL}. Please create an account first or update DEV_USER_EMAIL in trpc.ts`
-      });
-    }
-    
-    // Use real user from database
-    return await next({
-      ctx: {
-        session: {
-          user: devUser,
-        },
-      },
-    });
-  }
-  
+
+  // if (DEV_MODE_SKIP_AUTH && !ctx.session?.user) {
+  //   // Look up real user from database by email
+  //   const devUser = await ctx.db.query.User.findFirst({
+  //     where: eq(User.email, DEV_USER_EMAIL),
+  //   });
+
+  //   if (!devUser) {
+  //     throw new TRPCError({ 
+  //       code: "INTERNAL_SERVER_ERROR",
+  //       message: `Dev user not found in database with email: ${DEV_USER_EMAIL}. Please create an account first or update DEV_USER_EMAIL in trpc.ts`
+  //     });
+  //   }
+
+  //   // Use real user from database
+  //   return await next({
+  //     ctx: {
+  //       session: {
+  //         user: devUser,
+  //       },
+  //     },
+  //   });
+  // }
+
   if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  if (!ctx.session.user.email.endsWith("@tamu.edu")) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Must use a TAMU email" });
   }
   return await next({
     ctx: {
@@ -158,6 +161,11 @@ export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
       "le.tamu.c7@tamu.edu",
       "ddmds66@gmail.com",
       "jonathan.a.herrera0@tamu.edu",
+      "hkorad@tamu.edu",
+      "michael_rao@tamu.edu",
+      "angelayue06@tamu.edu",
+      "dayob@tamu.edu",
+
     ].includes(ctx.session.user.email)
   ) {
     throw new TRPCError({
@@ -187,28 +195,27 @@ export const organizerProcedure = t.procedure.use(async ({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  // Query for the user role based on userid and eventname
+  // Query for the user role based on email and event name.
+  // (Email-only is intentional to avoid issues when multiple auth "User" rows
+  // exist for the same email, e.g. applicant vs organizer.)
   const user_role = await ctx.db
     .select()
     .from(Role)
     .leftJoin(Event, eq(Role.eventId, Event.id))
     .leftJoin(UserRole, eq(Role.id, UserRole.roleId))
+    .leftJoin(User, eq(User.id, UserRole.userId))
     .where(
-      and(eq(Event.name, eventName), eq(UserRole.userId, ctx.session.user.id)),
+      and(
+        eq(Event.name, eventName),
+        eq(User.email, ctx.session.user.email),
+        eq(Role.name, "Organizer"),
+      ),
     );
 
   if (user_role.length === 0) {
     throw new TRPCError({
       code: "NOT_FOUND",
       message: "User_role was not found",
-    });
-  }
-
-  // Ensure that the user role matches
-  if (user_role[0]?.role.name !== "Organizer") {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "User is not an organizer",
     });
   }
 

@@ -11,7 +11,7 @@ export default async function OrganizerLayout({
   children: React.ReactNode;
 }) {
   const session = await auth.api.getSession({
-    headers: headers(),
+    headers: await headers(),
   });
 
   if (session) {
@@ -26,7 +26,7 @@ export default async function OrganizerLayout({
 
   return (
     <>
-      <div className="min-h-screen bg-slate-400 font-mono pt-24 pb-24">
+      <div className="min-h-screen bg-slate-400 font-mono pt-9 pb-10">
         <OrganizerNavBar></OrganizerNavBar>
         {children}
       </div>

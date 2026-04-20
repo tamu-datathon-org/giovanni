@@ -1,0 +1,1 @@
+ALTER TABLE "application" RENAME COLUMN "acceptance_status" TO "invitation_status";

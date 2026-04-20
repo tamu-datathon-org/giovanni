@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 import {
@@ -35,31 +35,41 @@ const GenericTextArea: React.FC<GenericTextAreaProps> = ({
             control={form.control}
             name={name}
             defaultValue={defaultValue}
-            render={({ field }) => (
-                <FormItem>
-                    <FormLabel className="text-xl">
-                        {label}
-                        {required ? <Asterisk /> : ""}
-                    </FormLabel>
-                    <FormControl>
-                        <textarea
-                            className="bg-white w-full p-2 border rounded text-sm text-black"
-                            placeholder={placeholder}
-                            {...field}
-                            maxLength={155}
-                            onChange={(e) => {
-                                field.onChange(e);
-                                setCharCounter(e.target.value.length);
-                            }}
-                            value={typeof field.value === "string" ? field.value : ""}
-                        />
-                    </FormControl>
-                    <FormMessage />
-                    <p className="mt-1 text-sm text-gray-500">
-                        {charCounter}/150 characters
-                    </p>
-                </FormItem>
-            )}
+            render={({ field }) => {
+                useEffect(() => {
+                    const currentValue =
+                        typeof field.value === "string" ? field.value : "";
+                    setCharCounter(currentValue.length);
+                }, [field.value]);
+
+                return (
+                    <FormItem>
+                        <FormLabel className="text-xl">
+                            {label}
+                            {required ? <Asterisk /> : ""}
+                        </FormLabel>
+                        <FormControl>
+                            <textarea
+                                className="bg-white w-full p-2 border rounded text-sm text-black"
+                                placeholder={placeholder}
+                                {...field}
+                                maxLength={150}
+                                onChange={(e) => {
+                                    field.onChange(e);
+                                    setCharCounter(e.target.value.length);
+                                }}
+                                value={
+                                    typeof field.value === "string" ? field.value : ""
+                                }
+                            />
+                        </FormControl>
+                        <FormMessage />
+                        <p className="mt-1 text-sm text-gray-500">
+                            {charCounter}/150 characters
+                        </p>
+                    </FormItem>
+                );
+            }}
         />
     );
 };

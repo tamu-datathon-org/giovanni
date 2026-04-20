@@ -1,7 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import type { z } from "zod";
+import { ZodError, type ZodIssue } from "zod";
 import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -216,6 +216,8 @@ export function ApplicationForm() {
         dietaryRestriction: importedValues.app.dietaryRestriction ?? "",
         references: importedValues.app.references || "",
         extraInfo: importedValues.app.extraInfo ?? "",
+        liabilityWaiver: false,
+        mlhPrivacyPolicy: false,
         mlhEmailConsent: importedValues.app.mlhEmailConsent ?? false,
       });
 
@@ -320,87 +322,192 @@ export function ApplicationForm() {
       return;
     }
 
-    if (!importedValues?.app) {
-      const createApplicationData = {
-        resumeUrl: blob_url ?? "",
-        resumeName: blob_name ?? "",
-        eventName: EVENT_NAME,
-        applicationData: {
-          ...data,
-          address: `${data.address}|${data.city}|${data.region}|${data.zipCode}`,
-          gradYear: Number(data.gradYear),
-        },
-      };
+    setDisableSubmit(true);
 
-      await createApplication.mutateAsync(createApplicationData, {
-        onSuccess: () => {
-          toast({
-            variant: "success",
-            title: "Application submitted successfully!",
-            description:
-              "Your application has been received. You can now update and resubmit.",
-          });
+    try {
+      if (!importedValues?.app) {
+        const createApplicationData = {
+          resumeUrl: blob_url ?? "",
+          resumeName: blob_name ?? "",
+          eventName: EVENT_NAME,
+          applicationData: {
+            ...data,
+            address: `${data.address}|${data.city}|${data.region}|${data.zipCode}`,
+            gradYear: Number(data.gradYear),
+          },
+        };
 
-          localStorage.removeItem(DRAFT_STORAGE_KEY);
-
-          setTimeout(() => {
-            router.replace("/apply");
-          }, 1500);
-        },
-        onError: (error: { message: any }) => {
-          if (error instanceof TRPCClientError) {
+        await createApplication.mutateAsync(createApplicationData, {
+          onSuccess: () => {
             toast({
-              variant: "destructive",
-              title: "Submission failed",
-              description: error.message,
+              variant: "success",
+              title: "Application submitted successfully!",
+              description:
+                "Your application has been received. You can now update and resubmit.",
             });
-          }
-        },
-      });
-    } else {
-      const combinedAddress = [
-        data.address,
-        data.city,
-        data.region,
-        data.zipCode,
-      ]
-        .filter(Boolean)
-        .join(ADDRESS_DELIMITER);
-      const updateApplicationData = {
-        id: importedValues.app.id,
-        userId: importedValues.app.userId,
-        resumeUrl: blob_url ?? "",
-        resumeName: blob_name ?? "",
-        eventName: EVENT_NAME,
-        application: {
-          ...data,
-          address: combinedAddress,
-          gradYear: Number(data.gradYear),
-        },
-      };
 
-      await updateApplication.mutateAsync(updateApplicationData, {
-        onSuccess: () => {
-          toast({
-            variant: "success",
-            title: "Application updated successfully!",
-            description: "Your application has been received.",
-          });
+            localStorage.removeItem(DRAFT_STORAGE_KEY);
 
-          setTimeout(() => {
-            router.replace("/apply");
-          }, 1500);
-        },
-        onError: (error: any) => {
-          if (error instanceof TRPCClientError) {
+            setTimeout(() => {
+              router.replace("/apply");
+            }, 1500);
+          },
+        });
+      } else {
+        const combinedAddress = [
+          data.address,
+          data.city,
+          data.region,
+          data.zipCode,
+        ]
+          .filter(Boolean)
+          .join(ADDRESS_DELIMITER);
+        const updateApplicationData = {
+          id: importedValues.app.id,
+          userId: importedValues.app.userId,
+          resumeUrl: blob_url ?? "",
+          resumeName: blob_name ?? "",
+          eventName: EVENT_NAME,
+          application: {
+            ...data,
+            address: combinedAddress,
+            gradYear: Number(data.gradYear),
+          },
+        };
+
+        await updateApplication.mutateAsync(updateApplicationData, {
+          onSuccess: () => {
             toast({
-              variant: "destructive",
-              title: "Update failed",
-              description: error.message,
+              variant: "success",
+              title: "Application updated successfully!",
+              description: "Your application has been received.",
             });
+
+            setTimeout(() => {
+              router.replace("/apply");
+            }, 1500);
+          },
+        });
+      }
+    } catch (error: unknown) {
+      const messages: string[] = [];
+
+      // Handle tRPC Zod errors (server-side validation)
+      const zodErrorData = (error as any)?.data?.zodError as
+        | {
+            fieldErrors?: Record<string, string[]>;
+            formErrors?: string[];
           }
+        | undefined;
+
+      if (zodErrorData?.fieldErrors) {
+        Object.entries(zodErrorData.fieldErrors).forEach(
+          ([field, fieldMessages]) => {
+            if (!fieldMessages || fieldMessages.length === 0) return;
+            const msg = fieldMessages[0] as string;
+            const fieldName = field as keyof ApplicationSchema;
+            form.setError(fieldName, {
+              type: "server",
+              message: msg,
+            });
+            messages.push(msg);
+          },
+        );
+      }
+
+      if (Array.isArray(zodErrorData?.formErrors)) {
+        messages.push(...zodErrorData.formErrors);
+      }
+
+      // Handle direct ZodError thrown on the client
+      if (error instanceof ZodError) {
+        (error.issues as ZodIssue[]).forEach((issue) => {
+          const pathKey = issue.path?.[0];
+          if (!pathKey || typeof pathKey !== "string") return;
+          const fieldName = pathKey as keyof ApplicationSchema;
+          form.setError(fieldName, {
+            type: "server",
+            message: issue.message,
+          });
+          messages.push(issue.message);
+        });
+      }
+
+      if (messages.length > 0) {
+        toast({
+          variant: "destructive",
+          title: "Missing required information",
+          description: messages.join(" "),
+        });
+        return;
+      }
+
+      if (error instanceof TRPCClientError) {
+        toast({
+          variant: "destructive",
+          title: importedValues?.app ? "Update failed" : "Submission failed",
+          description: (error as any).message,
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Something went wrong",
+          description: "Please try again.",
+        });
+      }
+    } finally {
+      setDisableSubmit(false);
+    }
+  };
+
+  const handleFormSubmit: React.FormEventHandler<HTMLFormElement> = async (
+    event,
+  ) => {
+    event.preventDefault();
+
+    try {
+      await form.handleSubmit(
+        onSubmit,
+        (errors) => {
+          const firstError = Object.values(errors)[0];
+          const message =
+            typeof firstError === "object" &&
+            firstError &&
+            "message" in firstError &&
+            typeof (firstError as { message?: unknown }).message === "string"
+              ? (firstError as { message: string }).message
+              : "Please fill in all required fields.";
+          toast({
+            variant: "destructive",
+            title: "Missing required information",
+            description: message,
+          });
         },
-      });
+      )(event);
+    } catch (error: unknown) {
+      if (error instanceof ZodError) {
+        const messages: string[] = [];
+        (error.issues as ZodIssue[]).forEach((issue) => {
+          const pathKey = issue.path?.[0];
+          if (!pathKey || typeof pathKey !== "string") return;
+          const fieldName = pathKey as keyof ApplicationSchema;
+          form.setError(fieldName, {
+            type: "server",
+            message: issue.message,
+          });
+          messages.push(issue.message);
+        });
+
+        if (messages.length > 0) {
+          toast({
+            variant: "destructive",
+            title: "Missing required information",
+            description: messages.join(" "),
+          });
+        }
+        return;
+      }
+      throw error;
     }
   };
 
@@ -495,21 +602,7 @@ export function ApplicationForm() {
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit, (errors) => {
-              const firstError = Object.values(errors)[0];
-              const message =
-                typeof firstError === "object" &&
-                "message" in firstError &&
-                typeof (firstError as { message?: unknown }).message ===
-                  "string"
-                  ? (firstError as { message: string }).message
-                  : "Please fill in all required fields.";
-              toast({
-                variant: "destructive",
-                title: "Missing required information",
-                description: message,
-              });
-            })}
+            onSubmit={handleFormSubmit}
             className="relative z-40 space-y-8"
           >
             {/* Header */}
@@ -769,7 +862,7 @@ export function ApplicationForm() {
                   defaultValue={importedValues?.app?.references ?? ""}
                   label="Point us to anything you'd like us to look at while considering your application."
                   placeholder="Provide other links or references here."
-                  required={true}
+                  required={false}
                 />
               </div>
               {/* What drives your interest in being a part of TAMU Datathon? */}
@@ -867,7 +960,7 @@ export function ApplicationForm() {
               <div className="mt-6">
                 <GenericTextArea
                   name="extraInfo"
-                  label="Anything else you'd like us to know any questions for us?"
+                  label="Any questions for us?"
                   required={false}
                   defaultValue={importedValues?.app?.extraInfo ?? ""}
                   placeholder="Share anything else that might be relevant..."
@@ -986,25 +1079,20 @@ export function ApplicationForm() {
 
             {/* Submit Button */}
             <div className="flex justify-center pb-12">
-              {!form.formState.isSubmitting && (
-                <Button
-                  type="submit"
-                  disabled={disableSubmit}
-                  className="h-14 w-full max-w-md transform rounded-xl bg-[#01c0cc] px-12 text-lg font-bold text-white shadow-lg transition-all hover:bg-[#28979b] hover:shadow-xl disabled:opacity-50 md:w-auto"
-                >
-                  Submit Application
-                </Button>
-              )}
-              {form.formState.isSubmitting && (
-                <Button
-                  type="submit"
-                  disabled
-                  className="h-14 w-full max-w-md rounded-xl bg-[#01c0cc] px-12 text-lg font-bold text-white shadow-lg md:w-auto"
-                >
-                  <ReloadIcon className="mr-2 h-5 w-5 animate-spin" />
-                  Submitting...
-                </Button>
-              )}
+              <Button
+                type="submit"
+                disabled={disableSubmit}
+                className="h-14 w-full max-w-md transform rounded-xl bg-[#01c0cc] px-12 text-lg font-bold text-white shadow-lg transition-all hover:bg-[#28979b] hover:shadow-xl disabled:opacity-50 md:w-auto"
+              >
+                {disableSubmit ? (
+                  <>
+                    <ReloadIcon className="mr-2 h-5 w-5 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit Application"
+                )}
+              </Button>
             </div>
           </form>
         </Form>

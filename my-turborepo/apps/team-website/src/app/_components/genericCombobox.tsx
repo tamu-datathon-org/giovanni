@@ -45,6 +45,10 @@ interface GenericDropdownProps {
   required?: boolean;
 }
 
+const OTHER_VALUE = "__other__";
+const OTHER_PREFIX = "Other (";
+const OTHER_LABEL = "Other (please specify)";
+
 const GenericCombobox: React.FC<GenericDropdownProps> = ({
   name,
   label,
@@ -57,8 +61,6 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   const [searchValue, setSearchValue] = useState("");
   const { debouncedValue, isDebouncing } = useDebounce(searchValue, 250);
   const [open, setOpen] = React.useState(false);
-  const [otherOption, setOtherOption] = useState(false);
-  // Remove local selectedOption and otherValue state
 
   const filter20Items = useMemo(() => {
     if (isDebouncing) {
@@ -83,15 +85,17 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
       name={name}
       defaultValue={defaultOption?.value}
       render={({ field }) => {
-        // Derive selectedOption from field.value
-        const selectedOption = options.find((option) => option.value === field.value) ??
-          (field.value && !options.find((option) => option.value === field.value)
-            ? { value: field.value, label: "Other (please specify)" }
-            : null);
+        const fieldValue = typeof field.value === "string" ? field.value : "";
+        const isOther =
+          fieldValue === OTHER_VALUE || fieldValue.startsWith(OTHER_PREFIX);
 
-        if (field.value && !options.find((option) => option.value === field.value)) {
-          setOtherOption(true);
-        }
+        const otherRaw = fieldValue.startsWith(OTHER_PREFIX)
+          ? fieldValue.slice(OTHER_PREFIX.length, -1)
+          : "";
+
+        const selectedOption = isOther
+          ? { value: OTHER_VALUE, label: OTHER_LABEL }
+          : options.find((option) => option.value === fieldValue) ?? null;
 
         return (
           <FormItem className="flex flex-col">
@@ -108,8 +112,10 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                     className="w-full justify-between overflow-hidden"
                   >
                     <span className="truncate">
-                      {otherOption
-                        ? "Other (please specify)"
+                      {isOther
+                        ? otherRaw
+                          ? `Other(${otherRaw})`
+                          : OTHER_LABEL
                         : selectedOption
                         ? selectedOption.label
                         : "Select ..."}
@@ -134,20 +140,17 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                           key={(option).value}
                           value={(option).value}
                           onSelect={(currentValue) => {
-                            if (currentValue === "Other (please specify)") {
-                              setOtherOption(true);
-                              form.setValue(name, "", { shouldValidate: true });
-                            } else {
-                              setOtherOption(false);
-                              form.setValue(name, currentValue, { shouldValidate: true });
-                            }
+                            form.setValue(name, currentValue, {
+                              shouldDirty: true,
+                              shouldTouch: true,
+                            });
                             setOpen(false);
                           }}
                         >
                           <AiOutlineCheck
                             className={cn(
                               "mr-2 h-4 w-4",
-                              field.value === (option).value
+                              fieldValue === (option).value
                                 ? "opacity-100"
                                 : "opacity-0",
                             )}
@@ -155,18 +158,43 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                           {(option).label}
                         </CommandItem>
                       ))}
+                      <CommandItem
+                        key={OTHER_VALUE}
+                        value={OTHER_LABEL}
+                        onSelect={() => {
+                          form.setValue(name, OTHER_VALUE, {
+                            shouldDirty: true,
+                            shouldTouch: true,
+                          });
+                          setOpen(false);
+                        }}
+                      >
+                        <AiOutlineCheck
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            isOther ? "opacity-100" : "opacity-0",
+                          )}
+                        />
+                        {OTHER_LABEL}
+                      </CommandItem>
                     </CommandGroup>
                   </CommandList>
                 </Command>
               </PopoverContent>
             </Popover>
-            {otherOption && (
+            {isOther && (
               <div className="mt-2 flex flex-col">
                 <FormControl>
                   <Input
-                    value={typeof field.value === "string" ? field.value : ""}
+                    autoFocus
+                    value={otherRaw}
                     onChange={(e) => {
-                      form.setValue(name, e.target.value, { shouldValidate: true });
+                      const val = e.target.value;
+                      form.setValue(
+                        name,
+                        val ? `${OTHER_PREFIX}${val})` : OTHER_VALUE,
+                        { shouldDirty: true },
+                      );
                     }}
                     className="border p-2 bg-white text-black"
                     placeholder="Please specify..."

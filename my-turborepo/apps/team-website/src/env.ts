@@ -27,12 +27,18 @@ export const env = createEnv({
       (v) => (v === "" || v == null ? undefined : v),
       z.string().min(1).default("Datathon"),
     ),
+    NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string().default(""),
+    NEXT_PUBLIC_DRIVE_FOLDER_ID: z.string().default(""),
+    NEXT_PUBLIC_DRIVE_FOLDER_NAME: z.string().default(""),
   },
   /**
    * Destructure all variables from `process.env` to make sure they aren't tree-shaken away.
    */
   experimental__runtimeEnv: {
     NEXT_PUBLIC_EVENT_NAME: process.env.NEXT_PUBLIC_EVENT_NAME,
+    NEXT_PUBLIC_GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+    NEXT_PUBLIC_DRIVE_FOLDER_ID: process.env.NEXT_PUBLIC_DRIVE_FOLDER_ID,
+    NEXT_PUBLIC_DRIVE_FOLDER_NAME: process.env.NEXT_PUBLIC_DRIVE_FOLDER_NAME,
   },
   skipValidation:
     !!process.env.CI ||

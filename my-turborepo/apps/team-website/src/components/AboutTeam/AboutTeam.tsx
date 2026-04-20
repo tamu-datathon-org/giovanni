@@ -13,11 +13,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 const AboutTeam = () => {
   const teamSectionRef = useRef<HTMLDivElement | null>(null);
+  const imageBaseUrl = "/images/teampics_v2026";
   const teamList_v2026 = [
     {
       teamMembers: [
         {
-          image: "/images/teampics_v2025/Dayo_Headshot.jpg",
+          image: `${imageBaseUrl}/dayo.JPG`,
           name: "Oluwadayo Bamgbelu",
           position: "President",
           socialLinks: [
@@ -33,7 +34,7 @@ const AboutTeam = () => {
         },
 
         {
-          image: "/images/teampics_v2025/Mallika_Headshot.jpg",
+          image: `${imageBaseUrl}/mallika.JPG`,
           name: "Mallika Parajuli",
           position: "Vice-President",
           socialLinks: [
@@ -49,12 +50,19 @@ const AboutTeam = () => {
     {
       teamMembers: [
         {
-          image: "/images/teampics_v2025/Rishab_Headshot.jpg",
+          image: `${imageBaseUrl}/rishab.JPG`,
           name: "Rishab Jadhav",
           position: "Challenges Lead",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/rishabjadhav/",
+            },
+            { type: "github", url: "https://github.com/rishabjadhav" },
+          ],
         },
         {
-          image: "/images/teampics_v2025/Pranav_Headshot.jpg",
+          image: `${imageBaseUrl}/Pranav_Headshot.jpg`,
           name: "Pranav Harwadekar",
           position: "Challenges",
           socialLinks: [
@@ -66,7 +74,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: "/images/teampics_v2025/Nishit_Headshot.jpg",
+          image: `${imageBaseUrl}/nishit.JPG`,
           name: "Nishit Aggarwal",
           position: "Challenges",
           socialLinks: [
@@ -78,7 +86,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: "/images/teampics_v2025/Abhinav_Headshot.jpg",
+          image: `${imageBaseUrl}/abhinav.JPG`,
           name: "Abhinav Vurakaranam",
           position: "Challenges",
           socialLinks: [
@@ -93,7 +101,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: "/images/teampics_v2025/Ali_Headshot.png",
+          image: `${imageBaseUrl}/ali.JPG`,
           name: "Ali Abouelazam",
           position: "Challenges",
           socialLinks: [
@@ -104,9 +112,42 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: "/images/teampics_v2025/Susan_Headshot.jpg",
-          name: "Susan Hamilton",
+          image: `${imageBaseUrl}/haanh.JPG`,
+          name: "Vu Ha Anh Nguyen",
           position: "Challenges",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://linkedin.com/in/vu-ha-anh-nguyen-b9691b314",
+            },
+            {
+              type: "github",
+              url: "https://github.com/anh-nguyen28",
+            },
+          ],
+        },
+        {
+          image: `${imageBaseUrl}/dylan.JPG`,
+          name: "Dylan Bago",
+          position: "Challenges",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/dylan-bago/",
+            },
+          ],
+        },
+        {
+          image: `${imageBaseUrl}/pranav2.JPG`,
+          name: "Pranav Nair",
+          position: "Challenges",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/pranavnair2005/",
+            },
+            { type: "github", url: "https://github.com/PNair05" },
+          ],
         },
       ],
       description: "Challenges",
@@ -114,9 +155,9 @@ const AboutTeam = () => {
     {
       teamMembers: [
         {
-          image: "/images/teampics_v2025/Het_Headshot.jpg",
+          image: `${imageBaseUrl}/Het_Headshot.jpg`,
           name: "Het Koradia",
-          position: "Dev Co-Lead",
+          position: "Dev Lead",
           socialLinks: [
             {
               type: "linkedin",
@@ -126,18 +167,7 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: "/images/teampics_v2025/Bethany_Headshot.jpg",
-          name: "Bethany Tran",
-          position: "Dev Co-Lead",
-          socialLinks: [
-            {
-              type: "linkedin",
-              url: "https://www.linkedin.com/in/bethany-tran-69671a247?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
-            },
-          ],
-        },
-        {
-          image: "/images/teampics_v2025/Layla_Headshot.jpg",
+          image: `${imageBaseUrl}/layla.JPG`,
           name: "Layla Serrano",
           position: "Dev",
           socialLinks: [
@@ -149,13 +179,62 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: "/images/teampics_v2025/Michael_Headshot.jpg",
+          image: `${imageBaseUrl}/michael.JPG`,
           name: "Michael Rao",
           position: "Dev",
           socialLinks: [
             {
               type: "linkedin",
               url: "https://www.linkedin.com/in/michael-rao-p/",
+            },
+            {
+              type: "github",
+              url: "https://github.com/mike-rao",
+            },
+          ],
+        },
+        {
+          image: `${imageBaseUrl}/zayd.JPG`,
+          name: "Zayd Nadir",
+          position: "Dev",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://linkedin.com/in/zaydn",
+            },
+            {
+              type: "github",
+              url: "https://github.com/zaydn4321",
+            },
+          ],
+        },
+        {
+          image: `${imageBaseUrl}/angela.JPG`,
+          name: "Angela Yue",
+          position: "Dev",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/angela-yue-a48962247/",
+            },
+            {
+              type: "github",
+              url: "https://github.com/AngelaYue2006",
+            },
+          ],
+        },
+        {
+          image: `${imageBaseUrl}/aarav.JPG`,
+          name: "Aarav Pulsani",
+          position: "Dev",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/aarav-pulsani-7874b3271",
+            },
+            {
+              type: "github",
+              url: "https://github.com/s155003",
             },
           ],
         },
@@ -165,7 +244,7 @@ const AboutTeam = () => {
     {
       teamMembers: [
         {
-          image: "/images/teampics_v2025/Shreyas_Headshot.jpg",
+          image: `${imageBaseUrl}/shreyas.JPG`,
           name: "Shreyas Kumar",
           position: "Outreach Lead",
           socialLinks: [
@@ -177,20 +256,37 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: "/images/teampics_v2025/Anderson_Headshot.jpg",
-          name: "Anderson Loan",
+          image: `${imageBaseUrl}/roa.JPG`,
+          name: "Roa Elsaigh",
           position: "Outreach",
           socialLinks: [
             {
               type: "linkedin",
-              url: "https://www.linkedin.com/in/anderson-loan?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+              url: "https://www.linkedin.com/in/roa-e-431b29224/",
             },
           ],
         },
         {
-          image: "/images/teampics_v2025/Roa_Headshot.jpg",
-          name: "Roa Elsaigh",
+          image: `${imageBaseUrl}/jonathan2.JPG`,
+          name: "Jonathan Jackson",
           position: "Outreach",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/jonathan-jackson-20a29b28b",
+            },
+          ],
+        },
+        {
+          image: `${imageBaseUrl}/sharon.png`,
+          name: "Sharon Alex",
+          position: "Outreach",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "http://www.linkedin.com/in/sharon-alex",
+            },
+          ],
         },
       ],
       description: "Outreach",
@@ -198,7 +294,7 @@ const AboutTeam = () => {
     {
       teamMembers: [
         {
-          image: "/images/teampics_v2025/Harshini_Headshot.jpg",
+          image: `${imageBaseUrl}/Harshini_Headshot.jpg`,
           name: "Harshini Srinivasan",
           position: "Logistics Lead",
           socialLinks: [
@@ -206,22 +302,14 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/harshinisriniv",
             },
-          ],
-        },
-        {
-          image: "/images/teampics_v2025/Summer_Headshot.jpg",
-          name: "Summer Wong",
-          position: "Logistics",
-          socialLinks: [
             {
-              type: "linkedin",
-              url: "https://www.linkedin.com/in/summerrwong/",
+              type: "github",
+              url: "https://github.com/harshinisriniv",
             },
-            { type: "github", url: "https://github.com/sumshiu" },
           ],
         },
         {
-          image: "/images/teampics_v2025/Dakota_Headshot.jpg",
+          image: `${imageBaseUrl}/dakota.JPG`,
           name: "Dakota Pound",
           position: "Logistics",
           socialLinks: [
@@ -233,12 +321,18 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: "/images/teampics_v2025/Ragd_Headshot.jpg",
+          image: `${imageBaseUrl}/ragd.JPG`,
           name: "Ragd Elsaigh",
           position: "Logistics",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/ragdelsaigh/",
+            },
+          ],
         },
         {
-          image: "/images/teampics_v2025/Trey_Headshot.jpg",
+          image: `${imageBaseUrl}/trey.JPG`,
           name: "Trey Schaider",
           position: "Logistics",
           socialLinks: [
@@ -248,18 +342,57 @@ const AboutTeam = () => {
             },
           ],
         },
+        {
+          image: `${imageBaseUrl}/pragya.JPG`,
+          name: "Pragya Vetri",
+          position: "Logistics",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/pragya-vetri-b46b36382",
+            },
+          ],
+        },
+        {
+          image: `${imageBaseUrl}/ryan.JPG`,
+          name: "Ryan Dobbelaere",
+          position: "Logistics",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/ryan-dobbelaere/",
+            },
+          ],
+        },
+        {
+          image: `${imageBaseUrl}/ram.JPG`,
+          name: "Ram Pillai",
+          position: "Logistics",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/ram-pillai-933507249/",
+            },
+          ],
+        },
       ],
       description: "Logistics",
     },
     {
       teamMembers: [
         {
-          image: "/images/teampics_v2025/Kendall_Headshot.jpg",
+          image: `${imageBaseUrl}/kendall.JPG`,
           name: "Kendall Nguyen",
           position: "Design Lead",
+          socialLinks: [
+            {
+              type: "linkedin",
+              url: "https://www.linkedin.com/in/kendall-nguyen-229133332/",
+            },
+          ],
         },
         {
-          image: "/images/teampics_v2025/Antony_Headshot.jpg",
+          image: `${imageBaseUrl}/antony.png`,
           name: "Antony Quach",
           position: "Design",
           socialLinks: [
@@ -271,24 +404,22 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: "/images/teampics_v2025/Bhavana_Headshot.jpg",
+          image: `${imageBaseUrl}/bhavana.png`,
           name: "Bhavana Venkatesh",
-          position: "Design",
-        },
-        {
-          image: "/images/teampics_v2025/Erica_Headshot.jpg",
-          name: "Erica Tong",
           position: "Design",
           socialLinks: [
             {
               type: "linkedin",
-              url: "https://www.linkedin.com/in/ericatongtong?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+              url: "https://www.linkedin.com/in/bhavana-venkatesh-aggie27/",
             },
-            { type: "github", url: "https://github.com/lichtrune" },
+            {
+              type: "github",
+              url: "https://github.com/chocta",
+            },
           ],
         },
         {
-          image: "/images/teampics_v2025/Jessica_Headshot.jpg",
+          image: `${imageBaseUrl}/jessica.JPG`,
           name: "Jessica Tran",
           position: "Design",
           socialLinks: [
@@ -299,11 +430,19 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: "/images/teampics_v2025/Naomi_Headshot.jpg",
+          image: `${imageBaseUrl}/naomi.JPG`,
           name: "Naomi Dao",
           position: "Design",
           socialLinks: [
             { type: "linkedin", url: "https://www.linkedin.com/in/naomidao" },
+          ],
+        },
+        {
+          image: `${imageBaseUrl}/avery.png`,
+          name: "Avery Shih",
+          position: "Design",
+          socialLinks: [
+            { type: "linkedin", url: "http://www.linkedin.com/in/averyshih" },
           ],
         },
       ],

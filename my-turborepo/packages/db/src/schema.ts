@@ -83,6 +83,12 @@ export const Event = pgTable("event", {
     mode: "date",
     withTimezone: true,
   }).notNull(),
+  capacity: integer("capacity").notNull().default(0),
+  /** Café-themed group names for random assignment (e.g. 6 entries). */
+  foodGroups: text("food_groups")
+    .array()
+    .notNull()
+    .default(sql`'{}'::text[]`),
 });
 
 export const Role = pgTable("role", {
@@ -172,7 +178,8 @@ export const Application = pgTable("application", {
   acceptedEmail: boolean("accepted_email").notNull().default(false),
   waitlistEmail: boolean("waitlist_email").notNull().default(false),
   rejectedEmail: boolean("rejected_email").notNull().default(false),
-
+  invitationStatus: boolean("invitation_status").notNull().default(false), // true = accepted invitation, false = declined invitation
+  foodGroup: varchar("food_group", { length: 255 }),
   checkedIn: boolean("checked_in").notNull().default(false),
 });
 
@@ -328,7 +335,8 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
   references: z
     .string()
     .min(1, "References is missing")
-    .max(255)
+    .max(150)
+    .optional()
     .default(""),
   linkedinUrl: z
     .string()
@@ -371,6 +379,7 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
   acceptedEmail: true,
   waitlistEmail: true,
   rejectedEmail: true,
+  foodGroup: true,
   checkedIn: true,
 });
 

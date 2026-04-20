@@ -1,6 +1,6 @@
-import { Button } from "@vanni/ui/button";
 import Link from "next/link";
-import { signOutAction } from "../auth/signOutAction";
+
+import { Button } from "@vanni/ui/button";
 
 import {
   NavigationMenu,
@@ -9,10 +9,11 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "~/components/ui/navigation-menu";
+import { signOutAction } from "../auth/signOutAction";
 
 const OrganizerNavBar = () => {
   return (
-    <NavigationMenu className="pt-8 sm:pt-0">
+    <NavigationMenu className="mx-auto w-full pb-8 ">
       <NavigationMenuList className="flex-row flex-wrap gap-2">
         <NavigationMenuItem>
           <Link href="/organizer" legacyBehavior passHref>
@@ -35,6 +36,13 @@ const OrganizerNavBar = () => {
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link href="/organizer/email-generator" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Email Generator
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
         {/* <NavigationMenuItem>
           <Link href="/organizer/schedule-manager" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -43,7 +51,7 @@ const OrganizerNavBar = () => {
           </Link>
         </NavigationMenuItem> */}
         <NavigationMenuItem>
-          <form action={signOutAction.bind(null, "/organizer")}> 
+          <form action={signOutAction.bind(null, "/organizer")}>
             <Button variant="ghost" type="submit">
               Signout
             </Button>

@@ -222,7 +222,7 @@ const Header = () => {
           <div ref={logoRef} className="px-4">
             <Link href="/">
               <Image
-                src="/images/past-logos/TD2024.png"
+                src="/images/past-logos/TD2026.png"
                 alt="TAMU Datathon logo"
                 width={100}
                 height={100}

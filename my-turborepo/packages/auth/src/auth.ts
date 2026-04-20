@@ -1,4 +1,5 @@
 import { db } from "@vanni/db/client";
+import { and, eq } from "@vanni/db";
 import { genericOAuth, oAuthProxy } from "better-auth/plugins"
 import type { BetterAuthOptions } from "better-auth";
 import { betterAuth } from "better-auth";
@@ -6,6 +7,14 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { env } from "../env";
 import { expo } from "@better-auth/expo";
 import * as authSchema from "@vanni/db/auth-schema";
+import { Event, Role, UserRole } from "@vanni/db/schema";
+
+//Regex for @tamu.edu emails
+const TAMU_EMAIL_REGEX = /^[^\s@]+@tamu\.edu$/i;
+
+function isAllowedTamuEmail(email: unknown): boolean {
+    return typeof email === "string" && TAMU_EMAIL_REGEX.test(email);
+}
 
 export const config = {
     database: drizzleAdapter(db, {
@@ -18,6 +27,54 @@ export const config = {
         }
     }),
     secret: env.AUTH_SECRET,
+    databaseHooks: {
+        // user: {
+        //     create: { //Block new account creation if the email is not a @tamu.edu email
+        //         before: async (user) => {
+        //             if (!isAllowedTamuEmail(user.email)) {
+        //                 return false;
+        //             }
+        //         },
+        //     },
+        // },
+        session: {
+            // Block session creation for non-@tamu.edu users unless they are an
+            // Organizer for the configured event.
+            create: {
+                before: async (session, endpointContext) => {
+                    const authContext = endpointContext?.context;
+                    if (!authContext) return false;
+
+                    const user = await authContext.internalAdapter.findUserById(
+                        session.userId,
+                    );
+                    if (!user) return false;
+
+                    // Allow TAMU emails.
+                    if (isAllowedTamuEmail(user.email)) return true;
+
+                    // Allow organizer exception even with a non-TAMU email.
+                    const eventName = process.env.NEXT_PUBLIC_EVENT_NAME;
+                    if (!eventName) return false;
+
+                    const organizerRole = await db
+                        .select()
+                        .from(Role)
+                        .leftJoin(Event, eq(Role.eventId, Event.id))
+                        .leftJoin(UserRole, eq(Role.id, UserRole.roleId))
+                        .where(
+                            and(
+                                eq(Role.name, "Organizer"),
+                                eq(Event.name, eventName),
+                                eq(UserRole.userId, session.userId),
+                            ),
+                        );
+
+                    return organizerRole.length > 0;
+                },
+            },
+        },
+    },
     plugins: [
         oAuthProxy({
             // Use the production URL for the OAuth provider callback,

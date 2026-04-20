@@ -38,20 +38,20 @@ const TeamMember: React.FC<TeamMemberProps> = ({
   socialLinks = [],
 }) => {
   return (
-    <div className="w-32 lg:w-40 px-2 pb-2 text-center">
-      <Image
-        src={image || "/placeholder.svg"}
-        alt={name}
-        width={100}
-        height={100}
-        className="mx-auto my-2 h-22 w-22 rounded-full object-cover lg:h-28 lg:w-28"
-      />
+    <div className="w-32 px-2 pb-2 text-center lg:w-40">
+      <div className="relative mx-auto my-2 h-22 w-22 overflow-hidden rounded-full lg:h-28 lg:w-28">
+        <Image
+          src={image || "/placeholder.svg"}
+          alt={name}
+          fill
+          className="scale-125 object-cover"
+          
+        />
+      </div>
       <h3 className="h-auto w-full text-wrap text-sm font-semibold text-white lg:text-xl">
         {name}
       </h3>
-      <p className="text-xs text-neutral-300 lg:text-sm">
-        {position}
-      </p>
+      <p className="text-xs text-neutral-300 lg:text-sm">{position}</p>
 
       {socialLinks.length > 0 && (
         <div className="lg:gap- mt-1 flex justify-center gap-3 ">

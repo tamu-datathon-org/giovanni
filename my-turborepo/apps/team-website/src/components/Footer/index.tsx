@@ -19,7 +19,7 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start">
             <Link href="/" className="mb-6 inline-block">
               <Image
-                src="/images/past-logos/TD2024.png"
+                src="/images/past-logos/TD2026.png"
                 alt="logo"
                 className="mx-auto w-[128px] dark:hidden"
                 width={100}
@@ -101,13 +101,13 @@ const Footer = () => {
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <Link
               href="/#about"
-              className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+              className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
               About Us
             </Link>
             <Link
               href="/#contact"
-              className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+              className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
               Contact
             </Link>
@@ -127,7 +127,7 @@ const Footer = () => {
                 aria-label="Discord"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
                   className="h-6 w-6"
@@ -142,7 +142,7 @@ const Footer = () => {
                 aria-label="Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
                   className="h-6 w-6"
@@ -157,7 +157,7 @@ const Footer = () => {
                 aria-label="YouTube"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
                   className="h-6 w-6"
@@ -172,7 +172,7 @@ const Footer = () => {
                 aria-label="LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
                   className="h-6 w-6"
