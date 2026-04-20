@@ -13,9 +13,6 @@ export interface Event {
     category: string;
 }
 
-const CACHE_KEY = "cachedScheduleData";
-const POLL_INTERVAL = 20_000; // 20 s
-
 // only highlight on workshops and food
 const catColor: Record<string, string> = {
     workshop: "#B4D8EE",
@@ -65,44 +62,15 @@ const normalizeEvent = (e: Record<string, unknown>): Event => ({
 const sortEvents = (data: Event[]) =>
     [...data].sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
 
-const hasChanged = (oldData: Event[], newData: Event[]) => {
-    if (oldData.length !== newData.length) return true;
-    return oldData.some((oldItem, i) => {
-        const n = newData[i];
-        return (
-            oldItem.id        !== n.id        ||
-            oldItem.displayStart !== n.displayStart ||
-            oldItem.displayEnd   !== n.displayEnd  ||
-            oldItem.title     !== n.title     ||
-            oldItem.location  !== n.location  ||
-            oldItem.category  !== n.category
-        );
-    });
-};
-
-
-
-// Safe localStorage helpers (SSR-safe)
-const getFromStorage = (key: string): string | null => {
-    if (typeof window === "undefined") return null;
-    try { return localStorage.getItem(key); } catch { return null; }
-};
-const setInStorage = (key: string, value: string): void => {
-    if (typeof window === "undefined") return;
-    try { localStorage.setItem(key, value); } catch (err) {
-        console.warn("localStorage not available:", err);
-    }
-};
-
 export function useSchedule() {
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError]   = useState<string | null>(null);
     const [lastUpdated, setLastUpdated] = useState<number | null>(null);
 
-    const loadEvents = useCallback(async (checkForChanges = false) => {
+    const loadEvents = useCallback(async () => {
         try {
-            const res = await fetch("/api/schedule", { cache: "no-store" });
+            const res = await fetch("/api/schedule");
 
             if (!res.ok) {
                 throw new Error(`HTTP ${res.status}: ${res.statusText}`);
@@ -120,17 +88,9 @@ export function useSchedule() {
                 (json as Record<string, unknown>[]).map(normalizeEvent)
             );
 
-            const cachedString = getFromStorage(CACHE_KEY);
-            const cached: Event[] = cachedString
-                ? (JSON.parse(cachedString) as Event[])
-                : [];
-
-            if (!checkForChanges || hasChanged(cached, sorted)) {
-                setEvents(sorted);
-                setInStorage(CACHE_KEY, JSON.stringify(sorted));
-                setLastUpdated(Date.now());
-                setError(null);
-            }
+            setEvents(sorted);
+            setLastUpdated(Date.now());
+            setError(null);
         } catch (err) {
             const msg = err instanceof Error ? err.message : "Failed to load schedule";
             setError(msg);
@@ -141,20 +101,7 @@ export function useSchedule() {
     }, []);
 
     useEffect(() => {
-        // Show cached data immediately while we fetch fresh data
-        const cachedString = getFromStorage(CACHE_KEY);
-        if (cachedString) {
-            try {
-                setEvents(sortEvents(JSON.parse(cachedString) as Event[]));
-                setLoading(false);
-            } catch (err) {
-                console.error("Failed to parse cached schedule data:", err);
-            }
-        }
-
         void loadEvents();
-        const interval = setInterval(() => void loadEvents(true), POLL_INTERVAL);
-        return () => clearInterval(interval);
     }, [loadEvents]);
 
     return { events, loading, error, lastUpdated, getCatColor };

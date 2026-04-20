@@ -1,6 +1,32 @@
 import { NextResponse } from "next/server";
 
-// Mark this route as dynamic to allow no-store fetches
+/** Frozen schedule (Hall of Fame) — Eastern Daylight Time, April 2026. */
+const STATIC_SCHEDULE = [
+    { id: 0, startTime: "2026-04-11T08:30:00-04:00", endTime: "2026-04-11T09:30:00-04:00", title: "Check in", location: "", category: "" },
+    { id: 1, startTime: "2026-04-11T09:30:00-04:00", endTime: "2026-04-11T09:30:00-04:00", title: "Opening Ceremony", location: "", category: "" },
+    { id: 2, startTime: "2026-04-11T10:00:00-04:00", endTime: "2026-04-11T10:00:00-04:00", title: "Hacking Starts", location: "", category: "" },
+    { id: 3, startTime: "2026-04-11T10:15:00-04:00", endTime: "2026-04-11T10:45:00-04:00", title: "Prompting Workshop", location: "", category: "" },
+    { id: 4, startTime: "2026-04-11T10:50:00-04:00", endTime: "2026-04-11T10:50:00-04:00", title: "Snack Drop!", location: "", category: "" },
+    { id: 5, startTime: "2026-04-11T11:05:00-04:00", endTime: "2026-04-11T11:35:00-04:00", title: "Audio Processing Workshop", location: "", category: "" },
+    { id: 6, startTime: "2026-04-11T11:40:00-04:00", endTime: "2026-04-11T12:10:00-04:00", title: "Webscraping Workshop", location: "", category: "" },
+    { id: 7, startTime: "2026-04-11T12:15:00-04:00", endTime: "2026-04-11T12:15:00-04:00", title: "Lunch", location: "", category: "" },
+    { id: 8, startTime: "2026-04-11T13:30:00-04:00", endTime: "2026-04-11T14:00:00-04:00", title: "Mini Event 1", location: "", category: "" },
+    { id: 9, startTime: "2026-04-11T15:30:00-04:00", endTime: "2026-04-12T15:30:00-04:00", title: "Submissions Close", location: "", category: "" },
+    { id: 10, startTime: "2026-04-11T15:30:00-04:00", endTime: "2026-04-11T16:30:00-04:00", title: "Mini Event 2", location: "", category: "" },
+    { id: 11, startTime: "2026-04-11T16:00:00-04:00", endTime: "2026-04-11T16:00:00-04:00", title: "Closing Ceremony", location: "", category: "" },
+] as const;
+
+export async function GET() {
+    return NextResponse.json(STATIC_SCHEDULE, {
+        headers: {
+            "Cache-Control": "public, max-age=86400",
+        },
+    });
+}
+
+/*
+Previous dynamic Google Sheets implementation (event concluded):
+
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
@@ -10,15 +36,10 @@ export async function GET() {
             throw new Error("Google Sheet API URL is not configured");
         }
 
-        console.log("Fetching from Google Sheets URL:", googleSheetUrl);
-
         const response = await fetch(googleSheetUrl, {
-            headers: {
-                Accept: "application/json",
-                
-            },
+            headers: { Accept: "application/json" },
             cache: "no-store",
-             redirect: "follow",
+            redirect: "follow",
         });
 
         if (!response.ok) {
@@ -26,17 +47,14 @@ export async function GET() {
         }
 
         const responseText = await response.text();
-
         let data: unknown[];
         try {
             data = JSON.parse(responseText) as unknown[];
             if (!Array.isArray(data)) {
-                console.warn("Google Sheets returned non-array data:", data);
-                data = []; // fallback to empty array
+                data = [];
             }
-        } catch (parseError) {
-            console.error("JSON parsing failed, returning empty array:", parseError);
-            data = []; // fallback to empty array
+        } catch {
+            data = [];
         }
 
         return NextResponse.json(data, {
@@ -57,3 +75,4 @@ export async function GET() {
         );
     }
 }
+*/
