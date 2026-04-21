@@ -33,6 +33,22 @@ export const eventsOrdered = [
     season: "Fall",
   },
   {
+    url: "https://2023.tamudatathon.com/",
+    year: 2023,
+    logo: "/images/past-logos/TD2023.png",
+    lite: false,
+    label: "2023 Datathon",
+    season: "Fall",
+  },
+  {
+    url: "https://2023-lite.tamudatathon.com/",
+    year: 2023,
+    logo: "/images/past-logos/TD2023.png",
+    lite: true,
+    label: "2023 Lite Datathon",
+    season: "Spring",
+  },
+  {
     url: "https://2024.tamudatathon.com/",
     year: 2024,
     logo: "/images/past-logos/TD2024.png",
@@ -55,5 +71,13 @@ export const eventsOrdered = [
     lite: false,
     label: "2025 Datathon",
     season: "Fall",
+  },
+  {
+    url: "https://2026-lite.tamudatathon.com/",
+    year: 2026,
+    logo: "/images/past-logos/TD2026.png",
+    lite: true,
+    label: "2026 Lite Datathon",
+    season: "Spring",
   },
 ];
