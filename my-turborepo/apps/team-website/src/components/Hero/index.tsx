@@ -118,7 +118,7 @@ const Hero = () => {
       <section
         ref={sectionRef}
         id="home"
-        className="bg-neutral-90 relative h-screen w-full overflow-hidden"
+        className="bg-neutral-90 relative h-dvh w-full overflow-hidden"
       >
         <div className="relative z-0 flex h-full w-full items-center justify-center px-4">
           {/* Old text — tamudatathon */}
