@@ -41,11 +41,11 @@ export const eventsOrdered = [
     season: "Fall",
   },
   {
-    url: "https://2023-lite.tamudatathon.com/",
-    year: 2023,
+    url: "https://2024-lite.tamudatathon.com/",
+    year: 2024,
     logo: "/images/past-logos/TD2023.png",
     lite: true,
-    label: "2023 Lite Datathon",
+    label: "2024 Lite Datathon",
     season: "Spring",
   },
   {
