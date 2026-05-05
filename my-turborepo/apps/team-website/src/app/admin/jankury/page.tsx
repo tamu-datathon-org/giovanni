@@ -199,7 +199,7 @@ export default function JankuryPage() {
                   <div className="grid gap-4 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)_minmax(0,0.45fr)]">
                     <div className="space-y-3 rounded-md border border-gray-700/50 bg-gray-800/70 p-4">
                       <div className="border-b border-gray-700 pb-2">
-                        <h2 className="text-base font-semibold text-blue-400">Recipient Settings</h2>
+                        <h2 className="text-base font-semibold text-blue-400">1. Recipient Settings</h2>
                       </div>
                       <div className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2">
                         <p className="text-[11px] font-semibold text-amber-400">
@@ -213,7 +213,7 @@ export default function JankuryPage() {
 
                     <div className="space-y-4 rounded-md border border-gray-700/50 bg-gray-800/70 p-4">
                       <div className="border-b border-gray-700 pb-2">
-                        <h2 className="text-base font-semibold text-blue-400">Custom Email</h2>
+                        <h2 className="text-base font-semibold text-blue-400">2. Custom Email</h2>
                       </div>
                       <Subject />
                       <Content />
@@ -221,7 +221,7 @@ export default function JankuryPage() {
 
                     <div className="space-y-4 rounded-md border border-purple-500/30 bg-purple-950/20 p-4">
                       <div className="border-b border-purple-500/30 pb-2">
-                        <h2 className="text-base font-semibold text-purple-300">Actions</h2>
+                        <h2 className="text-base font-semibold text-purple-300">3. Actions</h2>
                       </div>
                       <Confirmation />
                       <Button
