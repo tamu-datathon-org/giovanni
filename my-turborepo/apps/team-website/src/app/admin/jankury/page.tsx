@@ -1,7 +1,7 @@
 "use client";
 
 import type { z } from "zod";
-import { Suspense, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 
@@ -9,6 +9,7 @@ import { Button } from "@vanni/ui/button";
 import { Form } from "@vanni/ui/form";
 
 import { FormSchema } from "~/app/admin/jankury/formSchema";
+import { env } from "~/env";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
 import BatchSize from "./components/BatchSize";
@@ -36,6 +37,7 @@ export const runtime = "edge";
 
 export default function JankuryPage() {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isStatusConfirmOpen, setIsStatusConfirmOpen] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     // Start every field in a known-safe state so the form can send only
@@ -52,6 +54,30 @@ export default function JankuryPage() {
 
   const sendBulk = api.emailSending.sendBulkEmails.useMutation();
   const sendStatus = api.emailSending.sendStatusEmails.useMutation();
+  const statusEmailCandidates = api.application.getAllApplicationsByEventName.useQuery(
+    env.NEXT_PUBLIC_EVENT_NAME,
+    {
+    enabled: isStatusConfirmOpen,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
+  const statusCounts = useMemo(() => {
+    const apps = statusEmailCandidates.data ?? [];
+    return {
+      accepted: apps.filter(
+        (application) =>
+          application.status === "accepted" && application.acceptedEmail === false,
+      ).length,
+      rejected: apps.filter(
+        (application) =>
+          application.status === "rejected" && application.rejectedEmail === false,
+      ).length,
+      waitlisted: apps.filter(
+        (application) =>
+          application.status === "waitlisted" && application.waitlistEmail === false,
+      ).length,
+    };
+  }, [statusEmailCandidates.data]);
   const mailingLists = useWatch({ control: form.control, name: "mailing_lists" }) ?? [];
   const subject = useWatch({ control: form.control, name: "subject" }) ?? "";
   const content = useWatch({ control: form.control, name: "content" }) ?? "";
@@ -59,11 +85,15 @@ export default function JankuryPage() {
   const parsedAdditionalEmails = splitRecipients(additionalEmails);
 
   function handleSendStatus() {
+    setIsStatusConfirmOpen(false);
     sendStatus.mutate(
-      {
+      ({
         statusBatchSize: 100,
         emailBatchSize: 4,
-      },
+        sendAccepted: true,
+        sendRejected: true,
+        sendWaitlisted: true,
+      } as any),
       {
         onSuccess: () => {
           toast({
@@ -72,6 +102,39 @@ export default function JankuryPage() {
             description:
               "The emails have finished sending. You can now exit this page.",
           });
+        },
+        onError: (error: { message: any }) => {
+          toast({
+            title: "Error sending emails",
+            description: error.message,
+            variant: "destructive",
+          });
+        },
+      },
+    );
+  }
+
+  function handleSendStatusSelection(options: {
+    sendAccepted: boolean;
+    sendRejected: boolean;
+    sendWaitlisted: boolean;
+  }) {
+    setIsStatusConfirmOpen(false);
+    sendStatus.mutate(
+      ({
+        statusBatchSize: 100,
+        emailBatchSize: 4,
+        ...options,
+      } as any),
+      {
+        onSuccess: () => {
+          toast({
+            variant: "success",
+            title: "Emails have finished sending",
+            description:
+              "The emails have finished sending. You can now exit this page.",
+          });
+          void statusEmailCandidates.refetch();
         },
         onError: (error: { message: any }) => {
           toast({
@@ -237,11 +300,87 @@ export default function JankuryPage() {
                       </p>
                       <Button
                         type="button"
-                        onClick={handleSendStatus}
+                        onClick={() => setIsStatusConfirmOpen(true)}
                         className="w-full min-h-12 whitespace-normal px-4 py-3 text-sm leading-tight bg-purple-600 text-white hover:bg-purple-700"
                       >
                         Send Application Status Emails
                       </Button>
+                      <Dialog open={isStatusConfirmOpen} onOpenChange={setIsStatusConfirmOpen}>
+                        <DialogContent className="max-h-[85vh] w-[92vw] max-w-2xl overflow-auto bg-gray-900 text-white">
+                          <DialogHeader>
+                            <DialogTitle>Confirm Application Status Email Send</DialogTitle>
+                          </DialogHeader>
+
+                          <div className="space-y-3 rounded-md border border-gray-700 bg-gray-800/70 p-4">
+                            <div className="flex items-center gap-3 rounded-md border border-gray-600 bg-gray-900 px-3 py-2">
+                              <span className="text-sm font-semibold text-emerald-300">Accepted:</span>
+                              <span className="text-sm font-bold text-white">
+                                {statusCounts.accepted}
+                              </span>
+                              <Button
+                                type="button"
+                                onClick={() =>
+                                  handleSendStatusSelection({
+                                    sendAccepted: true,
+                                    sendRejected: false,
+                                    sendWaitlisted: false,
+                                  })}
+                                className="ml-auto bg-red-600 font-bold uppercase tracking-wide text-white hover:bg-red-700"
+                              >
+                                Send Accepted Recipients
+                              </Button>
+                            </div>
+                            <div className="flex items-center gap-3 rounded-md border border-gray-600 bg-gray-900 px-3 py-2">
+                              <span className="text-sm font-semibold text-red-300">Rejected:</span>
+                              <span className="text-sm font-bold text-white">
+                                {statusCounts.rejected}
+                              </span>
+                              <Button
+                                type="button"
+                                onClick={() =>
+                                  handleSendStatusSelection({
+                                    sendAccepted: false,
+                                    sendRejected: true,
+                                    sendWaitlisted: false,
+                                  })}
+                                className="ml-auto bg-red-600 font-bold uppercase tracking-wide text-white hover:bg-red-700"
+                              >
+                                Send Rejected Recipients
+                              </Button>
+                            </div>
+                            <div className="flex items-center gap-3 rounded-md border border-gray-600 bg-gray-900 px-3 py-2">
+                              <span className="text-sm font-semibold text-amber-300">Waitlisted:</span>
+                              <span className="text-sm font-bold text-white">
+                                {statusCounts.waitlisted}
+                              </span>
+                              <Button
+                                type="button"
+                                onClick={() =>
+                                  handleSendStatusSelection({
+                                    sendAccepted: false,
+                                    sendRejected: false,
+                                    sendWaitlisted: true,
+                                  })}
+                                className="ml-auto bg-red-600 font-bold uppercase tracking-wide text-white hover:bg-red-700"
+                              >
+                                Send Waitlisted Recipients
+                              </Button>
+                            </div>
+                          </div>
+
+                          <p className="text-sm font-semibold leading-snug text-red-400">
+                            THIS EMAIL WILL BE SENT TO ALL ACCEPTED, REJECTED, and WAITLISTED RECIPIENTS IMMEDIATELY UPON CONFIRMATION.
+                          </p>
+
+                          <Button
+                            type="button"
+                            onClick={handleSendStatus}
+                            className="w-full bg-red-600 font-bold uppercase tracking-wide text-white hover:bg-red-700"
+                          >
+                            Send All
+                          </Button>
+                        </DialogContent>
+                      </Dialog>
 
                       <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
                         <DialogContent className="max-h-[85vh] w-[92vw] max-w-5xl overflow-auto bg-gray-900 text-white">
