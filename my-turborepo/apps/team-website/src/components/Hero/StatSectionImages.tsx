@@ -14,7 +14,7 @@ export const STAT_SECTION_IMAGES = [
     alt: "600+ Hackers",
   },
   {
-    src: "/images/StatSection/DSC026641.JPG",
+    src: "/images/StatSection/DSC026641.webp",
     text: "20+ Schools",
     alt: "20+ Schools",
   },
@@ -61,8 +61,7 @@ export default function StatSectionImages({ refs }: StatSectionImagesProps) {
             className="absolute left-0 top-0 flex h-full w-full items-center justify-center"
             style={{
               zIndex: i + 1,
-              // First image visible on load for LCP; others start off-screen and slide in via GSAP
-              transform: "translateY(100vh)",
+              transform: "translateY(100dvh)",
             }}
           >
             <div className="relative inline-block aspect-[9/16] h-full w-auto max-w-full sm:aspect-auto sm:max-h-full sm:w-full">

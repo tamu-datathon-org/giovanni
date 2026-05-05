@@ -52,7 +52,7 @@
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
     "dotenv-cli": "^7.4.4",
-    "drizzle-kit": "^0.21.4",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^9.39.1",
     "prettier": "^3.6.2",
     "typescript": "^5.9.3"

@@ -22,7 +22,7 @@ const PastEventsSection = dynamic(
   }
 );
 
-const AboutTeam = dynamic(() => import("~/components/AboutTeam/AboutTeam"), {
+const AboutTeam = dynamic(() => import("~/components/AboutTeam"), {
   ssr: true,
   loading: () => (
     <section className="bg-[#121723] px-4 py-16">

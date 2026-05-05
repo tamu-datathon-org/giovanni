@@ -38,7 +38,6 @@ const Hero = () => {
         const gsap = gsapModule.default;
         const ScrollTrigger = scrollTriggerModule.default;
         gsap.registerPlugin(ScrollTrigger);
-
         requestAnimationFrame(() => {
           if (killed) return;
           isNarrowRef.current = isNarrow;
@@ -76,25 +75,16 @@ const Hero = () => {
               ">",
             )
             .to({}, { duration: 0.2 })
-            .set([imageRefs[1], imageRefs[2]], { y: "100vh" }, ">")
+            .set([imageRefs[1], imageRefs[2]], { y: "100dvh" }, ">")
             .to(imageRefs[0], { y: 0, duration: 0.5, ease: "power2.out" }, ">")
             .to(imageRefs[1], { y: 0, duration: 0.5, ease: "power2.out" }, ">")
             .to(imageRefs[2], { y: 0, duration: 0.5, ease: "power2.out" }, ">");
 
           const scrollTrigger = tl.scrollTrigger;
-          const onResize = () => {
-            ScrollTrigger.refresh();
-            const narrow = window.innerWidth < 768;
-            if (narrow !== isNarrowRef.current) {
-              isNarrowRef.current = narrow;
-              setNarrowState(narrow);
-            }
-          };
-          window.addEventListener("resize", onResize);
+          
           killTimeline = () => {
             tl.kill();
             scrollTrigger?.kill();
-            window.removeEventListener("resize", onResize);
           };
         });
       },
@@ -118,7 +108,7 @@ const Hero = () => {
       <section
         ref={sectionRef}
         id="home"
-        className="bg-neutral-90 relative h-screen w-full overflow-hidden"
+        className="bg-neutral-90 relative h-svh w-full overflow-hidden"
       >
         <div className="relative z-0 flex h-full w-full items-center justify-center px-4">
           {/* Old text — tamudatathon */}
