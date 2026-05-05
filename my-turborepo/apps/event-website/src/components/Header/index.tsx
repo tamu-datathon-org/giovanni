@@ -2,113 +2,75 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-const Header = () => {
-  const pathname = usePathname();
-  const [navbarOpen, setNavbarOpen] = useState(false);
+import CafeMenuBoardContainer from "./CafeMenuBoardContainer";
 
-  const navbarToggleHandler = () => {
-    setNavbarOpen(!navbarOpen);
-  };
+function MenuButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex items-center gap-3 rounded-2xl border-2 border-[#b4d8ee]/40 bg-[#fdf3e3] px-4 py-3 text-[#4C321B] shadow-[0_16px_40px_rgba(0,0,0,0.12)]"
+    >
+      <span className="relative block h-4 w-6">
+        <span className="absolute left-0 top-0 block h-[3px] w-6 rounded-full bg-[#4C321B]" />
+        <span className="absolute left-0 top-1.5 block h-[3px] w-6 rounded-full bg-[#4C321B]" />
+        <span className="absolute left-0 top-3 block h-[3px] w-6 rounded-full bg-[#4C321B]" />
+      </span>
+    </button>
+  );
+}
 
-  // Helper to determine if we need to go back to home for anchor links
-  const getHref = (anchor: string) => {
-    return pathname === "/" ? anchor : `/${anchor}`;
-  };
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuActiveId, setMenuActiveId] = useState("menu");
 
   return (
-    <header className="font-anonymous sticky left-0 top-0 z-50 w-full bg-[#1C0808]">
-      <div className="relative flex h-full items-center justify-between px-4 py-4 pr-32 md:pr-40">
-        <div className="flex h-full items-end gap-6">
-          <Link
-            href="/"
-            className="inline-flex h-full items-center"
-            aria-label="Home"
+    <>
+      <div className="fixed left-4 top-16 z-50 hidden md:bottom-10 md:left-6 md:top-auto md:block">
+        <div className="transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-[0_25px_60px_rgba(0,0,0,0.18)]">
+          <button
+            type="button"
+            onClick={() => setMenuOpen((v) => !v)}
+            className="relative flex w-full items-center gap-3 overflow-hidden rounded-2xl border-4 border-[#b4d8ee]/40 bg-[#fdf3e3] px-4 py-3 text-left text-[#4C321B] shadow-[0_16px_40px_rgba(0,0,0,0.12)] transition-shadow"
           >
-            <Image
-              src="/images/logo/event-logo.png"
-              alt="logo"
-              width={400}
-              height={400}
-              objectFit="contain"
-              className="h-6 w-auto shrink-0 drop-shadow"
-              priority
-              unoptimized
+            <div className="pointer-events-none absolute inset-0 opacity-10 [background-image:radial-gradient(circle_at_20%_10%,rgba(180,216,238,0.45),transparent_40%),radial-gradient(circle_at_80%_30%,rgba(180,216,238,0.25),transparent_55%)]" />
+            <div
+              className="pointer-events-none absolute inset-0 opacity-30 mix-blend-multiply"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='.35'/></svg>\")",
+              }}
             />
-          </Link>
-        </div>
-
-        {/* Hamburger Menu Button */}
-        <button
-          onClick={navbarToggleHandler}
-          className="text-white focus:outline-none md:hidden"
-          aria-label="Toggle Menu"
-        >
-          <div className="flex h-5 w-6 flex-col justify-between">
-            <span
-              className={`h-0.5 w-full bg-white transition-all duration-300 ${navbarOpen ? "translate-y-[9px] rotate-45" : ""}`}
-            ></span>
-            <span
-              className={`h-0.5 w-full bg-white transition-all duration-300 ${navbarOpen ? "opacity-0" : ""}`}
-            ></span>
-            <span
-              className={`h-0.5 w-full bg-white transition-all duration-300 ${navbarOpen ? "-translate-y-[9px] -rotate-45" : ""}`}
-            ></span>
-          </div>
-        </button>
-
-        {/* Navigation Links */}
-        <div
-          className={`items-center justify-center gap-4 text-white md:flex ${navbarOpen ? "absolute left-0 right-0 top-full flex flex-col bg-[#1C0808] py-4 shadow-lg" : "hidden"} md:static md:flex md:flex-row md:py-0 md:shadow-none`}
-        >
-          <Link
-            href={getHref("#location")}
-            onClick={() => setNavbarOpen(false)}
-            className="py-2 hover:text-gray-300 md:py-0"
-          >
-            Location
-          </Link>
-          <Link
-            href={getHref("#prizes")}
-            onClick={() => setNavbarOpen(false)}
-            className="py-2 hover:text-gray-300 md:py-0"
-          >
-            Prizes
-          </Link>
-          <Link
-            href={getHref("#sponsors")}
-            onClick={() => setNavbarOpen(false)}
-            className="py-2 hover:text-gray-300 md:py-0"
-          >
-            Sponsors
-          </Link>
-          <Link
-            href={getHref("#faq")}
-            onClick={() => setNavbarOpen(false)}
-            className="py-2 hover:text-gray-300 md:py-0"
-          >
-            FAQ
-          </Link>
-          <Link
-            href="/schedule"
-            onClick={() => setNavbarOpen(false)}
-            className="py-2 hover:text-gray-300 md:py-0"
-          >
-            Schedule
-          </Link>
-          <Link
-            href="/challenges"
-            onClick={() => setNavbarOpen(false)}
-            className="py-2 hover:text-gray-300 md:py-0"
-          >
-            Challenge
-          </Link>
+            <div className="pointer-events-none absolute bottom-0 left-0 top-0 w-2 bg-[#b4d8ee]/10" />
+            <span className="relative z-10 flex shrink-0 items-center">
+              <Image
+                src="/images/tdlite2026.png"
+                alt=""
+                width={40}
+                height={40}
+              />
+            </span>
+            <span className="font-darumadrop-one relative z-10 text-lg tracking-[0.14em]">
+              MENU
+            </span>
+          </button>
         </div>
       </div>
-    </header>
-  );
-};
 
-export default Header;
+      <div className="fixed left-4 top-4 z-50 md:hidden">
+        <MenuButton onClick={() => setMenuOpen((v) => !v)} />
+      </div>
+
+      {menuOpen ? (
+        <div className="fixed left-4 top-16 z-50 md:bottom-28 md:left-6 md:top-auto">
+          <CafeMenuBoardContainer
+            activeId={menuActiveId}
+            onActiveIdChange={setMenuActiveId}
+            onItemSelected={() => setMenuOpen(false)}
+          />
+        </div>
+      ) : null}
+    </>
+  );
+}

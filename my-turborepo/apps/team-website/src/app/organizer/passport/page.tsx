@@ -34,6 +34,7 @@ interface ParticipantData {
   eventAttendance: boolean;
   checkedIn: boolean; // phase-specific
   checkedInAt?: string | null;
+  foodGroup?: string | null;
 }
 
 const DEFAULT_PARTICIPANT: ParticipantData = {
@@ -47,6 +48,7 @@ const DEFAULT_PARTICIPANT: ParticipantData = {
   eventAttendance: false,
   checkedIn: false,
   checkedInAt: null,
+  foodGroup: null,
 };
 
 /** ---------------------------------------------

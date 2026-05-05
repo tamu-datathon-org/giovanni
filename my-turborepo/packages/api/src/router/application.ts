@@ -169,6 +169,31 @@ export async function updateBatchStatus(
   }
 }
 
+function isCoffeeGroupLabel(g: string): boolean {
+  return g.trim().toLowerCase().includes("coffee");
+}
+
+function isDietaryCoffeeEligible(dietaryRestriction: string | null | undefined): boolean {
+  const d = (dietaryRestriction ?? "").toLowerCase();
+  if (!d.trim()) return false;
+  return (
+    d.includes("vegan") ||
+    d.includes("vegetarian") ||
+    d.includes("gluten")
+  );
+}
+
+function coffeeLabelFromEventFoodGroups(foodGroups: string[]): string {
+  const found = foodGroups.find((g) => isCoffeeGroupLabel(g));
+  return found ?? "Coffee";
+}
+
+function pickRandomNonCoffeeGroup(foodGroups: string[]): string | null {
+  const others = foodGroups.filter((g) => !isCoffeeGroupLabel(g));
+  if (others.length === 0) return null;
+  return others[Math.floor(Math.random() * others.length)] ?? null;
+}
+
 // the batch requires the page/limit, I need to get all of them in each
 // Get batch status gives all applications -> filter the status to 3 categories -> send it to the email router
 // the email router will send the emails based on the status one at a time but all at the same time
@@ -229,7 +254,7 @@ export const applicationRouter = {
       return response;
     }),
 
-  listPhases: protectedProcedure
+  listPhases: organizerProcedure
     .input(z.object({ eventName: z.string() }))
     .query(async ({ ctx, input }) => {
       // find event id
@@ -527,6 +552,7 @@ export const applicationRouter = {
           id: true,
           status: true,
           email: true,
+          foodGroup: true,
         },
         where: and(
           eq(Application.eventId, event.id),
@@ -537,7 +563,7 @@ export const applicationRouter = {
       return application;
     }),
 
-  getCheckInStatus: protectedProcedure
+  getCheckInStatus: organizerProcedure
     .input(z.object({
       eventName: z.string(),
       email: z.string(),
@@ -613,6 +639,7 @@ export const applicationRouter = {
         eventAttendance: checkInAttendance[0]?.checkedIn ?? false,
         checkedIn: phaseAttendance[0].checkedIn ?? false,
         checkedInAt: phaseAttendance[0].checkedInAt ?? null,
+        foodGroup: application.foodGroup ?? null,
       };
     }),
 
@@ -672,7 +699,7 @@ export const applicationRouter = {
 
       return updated[0];
     }),
-  updateInvitationStatus: organizerProcedure
+  updateInvitationStatus: protectedProcedure
     .input(z.object({
       eventName: z.string(),
       email: z.string(),
@@ -681,13 +708,23 @@ export const applicationRouter = {
     .mutation(async ({ ctx, input }) => {
       const { eventName, email, newStatus } = input;
 
+      if (email.toLowerCase() !== ctx.session.user.email.toLowerCase()) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You can only update your own invitation response",
+        });
+      }
+
       const event = await getEventData({ ctx, eventName });
 
       const application = await ctx.db.query.Application.findFirst({
         where: and(eq(Application.email, email), eq(Application.eventId, event.id)),
         columns: {
           id: true,
+          status: true,
           invitationStatus: true,
+          foodGroup: true,
+          dietaryRestriction: true,
         },
       });
 
@@ -695,6 +732,37 @@ export const applicationRouter = {
         throw new TRPCError({ code: "NOT_FOUND", message: "Application not found" });
       }
 
-      return await ctx.db.update(Application).set({ invitationStatus: newStatus }).where(eq(Application.email, email));
+      const foodGroups = event.foodGroups ?? [];
+
+      const setValues: {
+        invitationStatus: boolean;
+        foodGroup?: string | null;
+      } = { invitationStatus: newStatus };
+
+      if (
+        application.status === "accepted" &&
+        (application.foodGroup == null || application.foodGroup === "")
+      ) {
+        if (isDietaryCoffeeEligible(application.dietaryRestriction)) {
+          setValues.foodGroup = coffeeLabelFromEventFoodGroups(foodGroups);
+        } else {
+          const pick = pickRandomNonCoffeeGroup(foodGroups);
+          if (pick != null && pick !== "") {
+            setValues.foodGroup = pick;
+          }
+        }
+      }
+
+      const updated = await ctx.db
+        .update(Application)
+        .set(setValues)
+        .where(and(eq(Application.email, email), eq(Application.eventId, event.id)))
+        .returning({
+          id: Application.id,
+          invitationStatus: Application.invitationStatus,
+          foodGroup: Application.foodGroup,
+        });
+
+      return updated[0];
     }),
 };

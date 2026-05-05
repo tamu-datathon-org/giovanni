@@ -1,22 +1,17 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
-
+import Location from "@/components/location";
+import Schedule from "@/components/Schedule";
+import Workshops from "@/components/workshops";
 import { ScrollUp } from "@vanni/ui/scroll-up";
-
-// Lazy load below-the-fold components to reduce initial bundle size
-const Location = dynamic(() => import("@/components/location"), {
-  loading: () => <div className="min-h-[50vh] bg-[#f0cf91]" />,
-});
 
 const Prizes = dynamic(() => import("@/components/prizes"), {
   loading: () => <div className="min-h-[400px] py-20" />,
 });
 
 const FAQ = dynamic(() => import("@/components/faq"), {
-  loading: () => (
-    <div className="min-h-[800px] bg-[#1B0706]" />
-  ),
+  loading: () => <div className="min-h-[800px] bg-[#f0cf91]" />,
 });
 
 export const metadata: Metadata = {
@@ -28,11 +23,31 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <ScrollUp />
-      <Hero />
-      <Location />
-      <Prizes />
-      <FAQ />
+      {/* <ScrollUp /> */}
+      <div id="menu" className="scroll-mt-24">
+        <Hero />
+      </div>
+      
+      <div id="workshops" className="scroll-mt-24">
+        <Workshops />
+      </div>
+      
+      <div id="find-us" className="scroll-mt-24">
+        <Location />
+      </div>
+   
+      <div id="prizes" className="scroll-mt-24">
+        <Prizes />
+      </div>
+      
+      <div id="schedule" className="scroll-mt-24">
+        <Schedule />
+      </div>
+      
+      <div className="h-[100px] bg-[#f0cf91]" />
+      <div id="baristas-note" className="scroll-mt-24">
+        <FAQ />
+      </div>
     </>
   );
 }

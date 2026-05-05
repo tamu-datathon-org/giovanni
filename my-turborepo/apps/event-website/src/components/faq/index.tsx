@@ -1,45 +1,264 @@
-
 "use client";
 
-import Image from "next/image";
 import React, { useId, useState } from "react";
-
-interface FaqItem { question: string; answer: string }
+import { useWindowWidth } from "@/hooks/useWindowWidth";
+import Image from "next/image";
+interface FaqItem {
+  question: string;
+  answer: string;
+}
 
 const ITEMS: FaqItem[] = [
-  { question: "What is TAMU Datathon Lite?", answer: "TD Lite is a smaller, more **beginner** friendly version of our main event. It's a **one-day event**, but it will have everything Datathon normally has including free food, swag, workshops, and prizes!" },
-  { question: "Where is the event?", answer: "The event takes place at the **ILCB**. Once you enter the building, organizers will be there to guide you to the main room! If you have any questions regarding transportation or parking, please **reach out to us on Discord.**" },
-  { question: "Why should I come?", answer: "**It is completely free!** Learn Data Science with interactive challenges and prizes. If you struggle to start to learn, TDLite offers a **beginner-focused** space to compete in. We have mentors to help and **free swag/food.**" },
-  { question: "How do I sign up?", answer: "Head over to https://tamudatathon.org/apply to get started! Admission decisions will be released shortly after registration closes." },
-  { question: "How much do I need to know?", answer: "If you are **new to data science**, TD Lite is the perfect time and place to learn. We will provide **introductory workshops and mentors** to guide you throughout the competition. We are committed to helping you build something you can be proud of!" },
-  { question: "Who can attend?", answer: "TD Lite is open to **beginner students** currently enrolled at **Texas A&M** who are at least **18 years old**. We welcome students from all majors!" },
-  { question: "What should I bring?", answer: "All you need is a **laptop and a charger** to get started at TD Lite! You may bring other items such as a pillow or a debugging duck if you wish to. Also make sure to **check the weather** in case you might need an umbrella :D." },
-  { question: "Have another question?", answer: "Send us an email at connect@tamudatathon.com or reach out to us on Discord!" },
-  { question: "Placeholder question", answer: "Placeholder answer" },
+  {
+    question: "What is TAMU Datathon Lite?",
+    answer:
+      "TD Lite is a smaller, more **beginner** friendly version of our main event. It's a **one-day event**, but it will have everything Datathon normally has including free food, swag, workshops, and prizes!",
+  },
+  {
+    question: "Where is the event?",
+    answer:
+      "The event takes place at **Peterson**. Once you enter the building, organizers will be there to guide you to the main room! If you have any questions regarding transportation or parking, please **reach out to us on Discord.**",
+  },
+  {
+    question: "Why should I come?",
+    answer:
+      "**It is completely free!** Learn Data Science with interactive challenges and prizes. If you struggle to start to learn, TDLite offers a **beginner-focused** space to compete in. We have mentors to help and **free swag/food.**",
+  },
+  {
+    question: "How do I sign up?",
+    answer:
+      "Head over to https://tamudatathon.org/apply to get started! Admission decisions will be released shortly after registration closes.",
+  },
+  {
+    question: "How much do I need to know?",
+    answer:
+      "If you are **new to data science**, TD Lite is the perfect time and place to learn. We will provide **introductory workshops and mentors** to guide you throughout the competition. We are committed to helping you build something you can be proud of!",
+  },
+  {
+    question: "Who can attend?",
+    answer:
+      "TD Lite is open to **beginner students** currently enrolled at **Texas A&M** who are at least **18 years old**. We welcome students from all majors!",
+  },
+  {
+    question: "What should I bring?",
+    answer:
+      "All you need is a **laptop and a charger** to get started at TD Lite! You may bring other items such as a pillow or a debugging duck if you wish to. Also make sure to **check the weather** in case you might need an umbrella :D.",
+  },
+  {
+    question: "Have another question?",
+    answer:
+      "Send us an email at connect@tamudatathon.com or reach out to us on Discord!",
+  },
 ];
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const idBase = useId();
+  const windowWidth = useWindowWidth();
+
+  // Breakpoints - matching Prizes component
+  const isMobile = windowWidth > 0 && windowWidth < 768;
+  const isSmallTablet = windowWidth >= 768 && windowWidth < 900;
+  const isMediumTablet = windowWidth >= 900 && windowWidth < 1024;
+  const isSmallDesktop = windowWidth >= 1024 && windowWidth < 1280;
+  const isLargeDesktop = windowWidth >= 1280 && windowWidth < 1536;
+  const isXLDesktop = windowWidth >= 1536;
+
+  // Base unit for scaling - proportional to Prizes component
+  const getBaseUnit = () => {
+    if (isMobile) return Math.min(Math.max(140, windowWidth * 0.38), 280);
+    if (isSmallTablet) return Math.min(Math.max(180, windowWidth * 0.26), 240);
+    if (isMediumTablet) return Math.min(Math.max(200, windowWidth * 0.26), 280);
+    if (isSmallDesktop) return Math.min(Math.max(240, windowWidth * 0.24), 320);
+    if (isLargeDesktop) return Math.min(Math.max(280, windowWidth * 0.22), 360);
+    return Math.min(Math.max(320, windowWidth * 0.2), 400);
+  };
+
+  const baseUnit = getBaseUnit();
+
+  // Dynamic container max width - matches Prizes/Location
+  const getContainerMaxWidth = () => {
+    if (isMobile) return "96vw";
+    if (isSmallTablet) return "680px";
+    if (isMediumTablet) return "780px";
+    if (isSmallDesktop) return "880px";
+    if (isLargeDesktop) return "960px";
+    return "1020px";
+  };
+
+  // Dynamic section padding
+  const getSectionPadding = () => {
+    if (isMobile) return { py: "80px" };
+    if (isSmallTablet) return { py: "72px" };
+    if (isMediumTablet) return { py: "80px" };
+    if (isSmallDesktop) return { py: "88px" };
+    return { py: "96px" };
+  };
+
+  // Dynamic outer card padding
+  const getOuterCardPadding = () => {
+    if (isMobile) return "16px";
+    if (isSmallTablet) return "20px";
+    if (isMediumTablet) return "24px";
+    return "28px";
+  };
+
+  // Dynamic inner card padding
+  const getInnerCardPadding = () => {
+    if (isMobile) return { px: "12px", pt: "14px", pb: "24px" };
+    if (isSmallTablet) return { px: "20px", pt: "16px", pb: "28px" };
+    if (isMediumTablet) return { px: "24px", pt: "18px", pb: "32px" };
+    return { px: "28px", pt: "20px", pb: "36px" };
+  };
+
+  // Dynamic title font size
+  const getTitleFontSize = () => {
+    if (isMobile) return "32px";
+    if (isSmallTablet) return "40px";
+    if (isMediumTablet) return "48px";
+    if (isSmallDesktop) return "52px";
+    return "56px";
+  };
+
+  // Dynamic subtitle font size
+  const getSubtitleFontSize = () => {
+    if (isMobile) return "14px";
+    if (isSmallTablet) return "18px";
+    if (isMediumTablet) return "20px";
+    if (isSmallDesktop) return "22px";
+    return "24px";
+  };
+
+  // Dynamic grid margin top
+  const getGridMarginTop = () => {
+    if (isMobile) return "36px";
+    if (isSmallTablet) return "72px";
+    if (isMediumTablet) return "84px";
+    if (isSmallDesktop) return "96px";
+    return "108px";
+  };
+
+  // Dynamic grid gaps
+  const getGridGaps = () => {
+    if (isMobile) return { x: "16px", y: "32px" };
+    if (isSmallTablet) return { x: "20px", y: "56px" };
+    if (isMediumTablet) return { x: "28px", y: "64px" };
+    if (isSmallDesktop) return { x: "36px", y: "72px" };
+    return { x: "44px", y: "80px" };
+  };
+
+  // Dynamic latte dimensions
+  const getLatteDimensions = () => {
+    if (isMobile) return { wrapperW: "120px", wrapperH: "160px", containerW: "180px", pt: "32px" };
+    if (isSmallTablet) return { wrapperW: "160px", wrapperH: "220px", containerW: "280px", pt: "40px" };
+    if (isMediumTablet) return { wrapperW: "175px", wrapperH: "240px", containerW: "310px", pt: "44px" };
+    if (isSmallDesktop) return { wrapperW: "190px", wrapperH: "260px", containerW: "340px", pt: "48px" };
+    return { wrapperW: "200px", wrapperH: "280px", containerW: "360px", pt: "52px" };
+  };
+
+  // Dynamic question text size
+  const getQuestionFontSize = () => {
+    if (isMobile) return "10px";
+    if (isSmallTablet) return "16px";
+    if (isMediumTablet) return "18px";
+    if (isSmallDesktop) return "19px";
+    return "20px";
+  };
+
+  // Dynamic answer text size
+  const getAnswerFontSize = () => {
+    if (isMobile) return "8px";
+    if (isSmallTablet) return "11px";
+    if (isMediumTablet) return "12px";
+    return "13px";
+  };
+
+  // Dynamic answer container width
+  const getAnswerWidth = () => {
+    if (isMobile) return "38%";
+    if (isSmallTablet) return "36%";
+    return "35%";
+  };
+
+  // Dynamic vine 1 (top-left) styles
+  const getVine1Styles = () => {
+    if (isMobile) return { width: "130px", left: "-16px", top: "-80px", rotate: "-3deg" };
+    if (isSmallTablet) return { width: "220px", left: "-28px", top: "-160px", rotate: "-3deg" };
+    if (isMediumTablet) return { width: "260px", left: "-32px", top: "-190px", rotate: "-3deg" };
+    if (isSmallDesktop) return { width: "290px", left: "-36px", top: "-210px", rotate: "-3deg" };
+    return { width: "320px", left: "-40px", top: "-230px", rotate: "-3deg" };
+  };
+
+  // Dynamic vine 2 (top-right) styles
+  const getVine2Styles = () => {
+    if (isMobile) return { width: "200px", right: "-72px", top: "-40px", rotate: "-14deg" };
+    if (isSmallTablet) return { width: "340px", right: "-160px", top: "-90px", rotate: "-14deg" };
+    if (isMediumTablet) return { width: "400px", right: "-185px", top: "-105px", rotate: "-14deg" };
+    if (isSmallDesktop) return { width: "450px", right: "-200px", top: "-115px", rotate: "-14deg" };
+    return { width: "500px", right: "-210px", top: "-120px", rotate: "-14deg" };
+  };
+
+  // Dynamic button dimensions
+  const getButtonDimensions = () => {
+    if (isMobile) return "120px";
+    if (isSmallTablet) return "160px";
+    if (isMediumTablet) return "175px";
+    if (isSmallDesktop) return "190px";
+    return "200px";
+  };
+
+  // Prevent flash of unstyled content
+  if (windowWidth === 0) {
+    return (
+      <section
+        id="faq"
+        aria-label="Frequently Asked Questions"
+        className="flex min-h-[400px] items-center justify-center bg-[#f0cf91]"
+      >
+        <div className="animate-pulse text-2xl text-[#4c321b]">Loading...</div>
+      </section>
+    );
+  }
+
+  const sectionPadding = getSectionPadding();
+  const innerCardPadding = getInnerCardPadding();
+  const gridGaps = getGridGaps();
+  const latteDims = getLatteDimensions();
+  const vine1 = getVine1Styles();
+  const vine2 = getVine2Styles();
 
   return (
     <section
       aria-label="Frequently Asked Questions"
-      //clipping/overflow happens here, might need to change in future depending on other components
-      className="relative z-30 w-full overflow-y-visible [overflow-x:clip] bg-[#FAE19D] py-16 sm:py-24" //yellow background/outer faq container
+      className="relative z-30 w-full overflow-y-visible [overflow-x:clip] bg-[#f0cf91]"
       id="faq"
+      style={{
+        paddingTop: sectionPadding.py,
+        paddingBottom: sectionPadding.py,
+      }}
     >
-      {/* outer brown rec section size*/}
-      <div className="mx-auto max-w-[1080px] px-4">
-        <div className="relative overflow-visible rounded-3xl bg-[#966952] p-6 sm:p-10">
-          {/* vine decorations*/}
+      {/* outer container */}
+      <div
+        className="mx-auto px-4"
+        style={{ maxWidth: getContainerMaxWidth() }}
+      >
+        <div
+          className="relative overflow-visible rounded-3xl bg-[#966952]"
+          style={{ padding: getOuterCardPadding() }}
+        >
+          {/* vine decorations */}
           <Image
             src="/images/faq/vines1.png"
             alt="Vines decoration"
             width={320}
             height={220}
-            //top left vine styling
-            className="pointer-events-none absolute -left-[20px] -top-[100px] z-20 h-auto w-[160px] sm:w-[330px] sm:-left-10 sm:-top-[242px] lg:w-[370px] -rotate-3"
+            className="pointer-events-none absolute z-20 h-auto"
+            style={{
+              width: vine1.width,
+              left: vine1.left,
+              top: vine1.top,
+              transform: `rotate(${vine1.rotate})`,
+            }}
             priority
           />
           <Image
@@ -47,45 +266,69 @@ export default function FAQ() {
             alt="Vines decoration"
             width={320}
             height={220}
-            //top right vine styling
-            //className="pointer-events-none absolute -right-[220px] -top-[124px] z-20 h-auto w-[400px] sm:w-[460px] lg:w-[540px] -rotate-[14deg]"
-            className="pointer-events-none absolute -right-[92px] -top-[50px] z-20 h-auto w-[250px] sm:w-[460px] sm:-right-[220px] sm:-top-[124px] lg:w-[540px] -rotate-[14deg]"
+            className="pointer-events-none absolute z-20 h-auto"
+            style={{
+              width: vine2.width,
+              right: vine2.right,
+              top: vine2.top,
+              transform: `rotate(${vine2.rotate})`,
+            }}
             priority
           />
 
           {/* inner dark-brown rectangle */}
-          <div className="relative rounded-2xl bg-[#4C321B] px-5 pb-10 pt-4 sm:px-10 sm:pb-12 sm:pt-6">
-            {/* Transparent strip to allow vines to visually overlap into the inner rectangle */}
-            <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 sm:h-16" />
+          <div
+            className="relative rounded-2xl bg-[#4C321B]"
+            style={{
+              paddingLeft: innerCardPadding.px,
+              paddingRight: innerCardPadding.px,
+              paddingTop: innerCardPadding.pt,
+              paddingBottom: innerCardPadding.pb,
+            }}
+          >
+            {/* Transparent strip for vines overlap */}
+            <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-10 sm:h-14" />
 
             {/* title and subtitle */}
             <div className="text-center">
-              <h2 className="text-5xl sm:text-7xl lg:text-8xl font-darumadropone tracking-wide text-[#FFFFFF]">
+              <h2
+                className="font-darumadropone tracking-wide text-[#FFFFFF]"
+                style={{ fontSize: getTitleFontSize() }}
+              >
                 FAQ
               </h2>
-              <p className="mt-3 text-lg font-chilanka tracking-wide text-[#FFFFFF]/90 sm:text-4xl">
+              <p
+                className="mt-2 font-chilanka tracking-wide text-[#FFFFFF]/90"
+                style={{ fontSize: getSubtitleFontSize() }}
+              >
                 Click on the lattes!
               </p>
             </div>
 
-            {/* 3x3 grid lattes */}
-            {/* to change space btwn subtitle and grid, change mt-[152px] */}
-            {/* to change padding for grid, change gap-y-20 */}
-            <div className="mt-[60px] grid grid-cols-2 justify-items-center gap-x-8 gap-y-12 sm:mt-[156px] sm:grid-cols-2 sm:gap-x-8 sm:gap-y-32 lg:grid-cols-3">
-                {ITEMS.slice(0, 9).map((it, i) => {
+            {/* latte grid */}
+            <div
+              className="grid grid-cols-2 justify-items-center lg:grid-cols-4"
+              style={{
+                marginTop: getGridMarginTop(),
+                columnGap: gridGaps.x,
+                rowGap: gridGaps.y,
+              }}
+            >
+              {ITEMS.map((it, i) => {
                 const panelId = `${idBase}-faq-${i}`;
-                const isLast = i === ITEMS.slice(0, 9).length - 1;
                 return (
-                  <div
-                    key={i}
-                    className={isLast ? "col-span-2 flex justify-center sm:col-span-1" : ""} //puts last row single latte in center
-                  >
+                  <div key={i}>
                     <LatteFaqItem
                       question={it.question}
                       answer={it.answer}
                       isOpen={openIndex === i}
                       panelId={panelId}
                       onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+                      latteDims={latteDims}
+                      questionFontSize={getQuestionFontSize()}
+                      answerFontSize={getAnswerFontSize()}
+                      answerWidth={getAnswerWidth()}
+                      buttonWidth={getButtonDimensions()}
                     />
                   </div>
                 );
@@ -94,6 +337,13 @@ export default function FAQ() {
           </div>
         </div>
       </div>
+
+      {/* screen indicator comment out in production */}
+      {/* {process.env.NODE_ENV === "development" && (
+        <p className="mt-4 text-center text-xs text-[#4c321b]/50">
+          FAQ Base: {Math.round(baseUnit)}px | Width: {windowWidth}px
+        </p>
+      )} */}
     </section>
   );
 }
@@ -104,14 +354,17 @@ interface LatteFaqItemProps {
   isOpen: boolean;
   panelId: string;
   onToggle: () => void;
+  latteDims: { wrapperW: string; wrapperH: string; containerW: string; pt: string };
+  questionFontSize: string;
+  answerFontSize: string;
+  answerWidth: string;
+  buttonWidth: string;
 }
 
-
-
-
-//clickable links and **bold**/colored text inside answer strings
+// Clickable links and **bold**/colored text inside answer strings
 const renderAnswerContent = (text: string): React.ReactNode => {
-  const linkPattern = /(https:\/\/tamudatathon\.org\/apply|connect@tamudatathon\.com)/g;
+  const linkPattern =
+    /(https:\/\/tamudatathon\.org\/apply|connect@tamudatathon\.com)/g;
   const boldPattern = /(\*\*[^*]+\*\*)/g;
 
   const renderLinks = (content: string, keyPrefix: string) => {
@@ -129,7 +382,6 @@ const renderAnswerContent = (text: string): React.ReactNode => {
           </a>
         );
       }
-
       if (part === "connect@tamudatathon.com") {
         return (
           <a
@@ -141,50 +393,36 @@ const renderAnswerContent = (text: string): React.ReactNode => {
           </a>
         );
       }
-
       return <React.Fragment key={`${keyPrefix}-text-${index}`}>{part}</React.Fragment>;
     });
   };
 
-  //allows for bolding in the answer text, wrap with **hi**
   return text.split(boldPattern).map((part, index) => {
     if (part.startsWith("**") && part.endsWith("**")) {
       const boldText = part.slice(2, -2);
-
       return (
-        <strong
-          key={index}
-          className="font-bold text-[#FAE19D]"
-        >
+        <strong key={index} className="font-bold text-[#FAE19D]">
           {renderLinks(boldText, `bold-${index}`)}
         </strong>
       );
     }
-
     return <React.Fragment key={index}>{renderLinks(part, `plain-${index}`)}</React.Fragment>;
   });
 };
- 
 
-
-
-//react component, one latte
+// React component, one latte
 const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
-  question, //faq question
-  answer, //answer behind the latte
-  isOpen, //whether the latte is open or not
-  panelId, //id for accessibility
-  onToggle, //on click
+  question,
+  answer,
+  isOpen,
+  panelId,
+  onToggle,
+  latteDims,
+  questionFontSize,
+  answerFontSize,
+  answerWidth,
+  buttonWidth,
 }) => {
-  
-
-  /*
-  Highlight text under latte functionality:
-  tracks if mouse is dragging (highlighting) or clicking. 
-  if clicking, then just close the latte. 
-  if dragging, then allow user to select text without closing latte
-  */
-
   const [mouseDownPos, setMouseDownPos] = React.useState<{ x: number; y: number } | null>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -192,70 +430,74 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    if (!mouseDownPos) return; //allows user to highlight text without the latte closing again
-
-    //calc dist btwn mouse down and click, used to tell diff btwn click and drag (highlight)
+    if (!mouseDownPos) return;
     const distance = Math.sqrt(
-      Math.pow(e.clientX - mouseDownPos.x, 2) + Math.pow(e.clientY - mouseDownPos.y, 2)
+      Math.pow(e.clientX - mouseDownPos.x, 2) +
+        Math.pow(e.clientY - mouseDownPos.y, 2),
     );
-
-    //latte opens only if click (small distance)
     if (distance < 5) {
       onToggle();
     }
-
     setMouseDownPos(null);
   };
 
-
   return (
-    //wrapper container, both question and latte
     <div
-      className="group relative h-[220px] w-[160px] rounded-2xl pt-12 font-chilanka sm:h-[340px] sm:w-[250px] sm:pt-14"
+      className="group relative rounded-2xl font-chilanka"
+      style={{
+        width: latteDims.wrapperW,
+        height: latteDims.wrapperH,
+        paddingTop: latteDims.pt,
+      }}
     >
       <div
         id={panelId}
-        className={[
-          //visible content: question label, latte images, and in-cup answer text
-          "absolute inset-x-0 bottom-0 z-10 flex flex-col items-center",
-          "transition-opacity duration-300 ease-out",
-        ].join(" ")}
+        className="absolute inset-x-0 bottom-0 z-30 flex flex-col items-center transition-opacity duration-300 ease-out"
       >
-        {/* question text above the latte wrapper */}
-        <div className="pointer-events-none relative z-20 mb-4 w-full px-2 sm:mb-5">
-          <div className="mx-auto max-w-[240px] text-center text-sm font-darumadropone leading-snug text-white sm:max-w-[270px] sm:text-3xl">
+        {/* question text above the latte */}
+        <div className="pointer-events-none relative z-40 mb-2 w-full px-1 sm:mb-3">
+          <div
+            className="mx-auto text-center font-darumadropone leading-snug text-white"
+            style={{ fontSize: questionFontSize }}
+          >
             {question}
           </div>
         </div>
 
         {/* latte container and images */}
-        <div className="relative w-[260px] aspect-[5/4] sm:w-[440px]">
         <div
-          className={[
-            "absolute left-1/2 top-[48%] z-20 w-[40%] -translate-x-1/2 -translate-y-1/2 text-center text-[10px] leading-snug text-[#F6E7D8] sm:w-[36%] sm:text-base",
-            "transition-opacity duration-300 ease-out",
-            isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
-          ].join(" ")}
+          className="relative aspect-[5/4]"
+          style={{ width: latteDims.containerW }}
         >
-          {/* answer text customization, wraps the text */}
-          <p 
-            className="whitespace-normal break-words [overflow-wrap:anywhere] select-text cursor-text"
-            onMouseDown={(e) => {
-              e.stopPropagation();
-              setMouseDownPos(null); //prevents click event(closing latte) when trying to highlight text
+          <div
+            className={[
+              "absolute left-1/2 top-[48%] z-20 -translate-x-1/2 -translate-y-1/2 text-center leading-snug text-[#F6E7D8]",
+              "transition-opacity duration-300 ease-out",
+              isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
+            ].join(" ")}
+            style={{
+              width: answerWidth,
+              fontSize: answerFontSize,
             }}
-            onClick={(e) => e.stopPropagation()}
           >
-            {renderAnswerContent(answer)}
-          </p>
-        </div>
+            <p
+              className="cursor-text select-text whitespace-normal break-words [overflow-wrap:anywhere]"
+              onMouseDown={(e) => {
+                e.stopPropagation();
+                setMouseDownPos(null);
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {renderAnswerContent(answer)}
+            </p>
+          </div>
 
-          {/* images before and after clicking on latte, latte -> latteoutline, and fade animation */}
+          {/* latte images */}
           <Image
             src="/images/faq/latte.png"
             alt="Latte cup"
             fill
-            sizes="(max-width: 640px) 400px, 440px"
+            sizes="(max-width: 640px) 180px, 360px"
             className={[
               "pointer-events-none absolute inset-0 h-full w-full object-contain",
               "transition-opacity duration-300 ease-out",
@@ -266,7 +508,7 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
             src="/images/faq/latteoutline.png"
             alt="Latte outline"
             fill
-            sizes="(max-width: 640px) 400px, 440px"
+            sizes="(max-width: 640px) 180px, 360px"
             className={[
               "pointer-events-none absolute inset-0 h-full w-full object-contain",
               "transition-opacity duration-300 ease-out",
@@ -274,16 +516,15 @@ const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
             ].join(" ")}
           />
 
-          {/* clickable button (overlay for interaction) */}
+          {/* clickable button */}
           <button
             type="button"
             onMouseDown={handleMouseDown}
-            onClick={handleClick}
+            onMouseUp={handleClick}
             aria-expanded={isOpen}
             aria-controls={panelId}
-            //adds red border for debugging button
-            //className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] sm:w-[260px] h-full border-2 border-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6E7D8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#4C321B] rounded"
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] sm:w-[260px] h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6E7D8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#4C321B] rounded"
+            className="absolute left-1/2 top-1/2 h-full -translate-x-1/2 -translate-y-1/2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6E7D8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#4C321B]"
+            style={{ width: buttonWidth }}
           />
         </div>
       </div>

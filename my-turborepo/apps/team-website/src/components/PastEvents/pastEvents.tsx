@@ -20,6 +20,7 @@ export const EventButton: React.FC<EventProp> = ({
   season,
   year,
   logo,
+  lite,
 }) => {
   return (
     <a
@@ -28,7 +29,7 @@ export const EventButton: React.FC<EventProp> = ({
       rel="noopener noreferrer"
       className="group block w-full overflow-visible"
     >
-      <div className="relative flex cursor-pointer flex-row items-center justify-start gap-5 overflow-visible rounded-sm bg-[#2c68dc]/95 px-4 py-3.5 shadow-lg shadow-black/25 ring-1 ring-inset ring-white/20 transition-all duration-300 ease-out hover:scale-[1.02] hover:border-white/20 hover:bg-[#5BA0F2] hover:shadow-xl hover:shadow-[#4A90E2]/30 hover:ring-white/30">
+      <div className={`relative flex cursor-pointer flex-row items-center justify-start gap-5 overflow-visible rounded-sm ${lite ?  "bg-[#4A90E2]": "bg-[#2c68dc]/95"} px-4 py-3.5 shadow-lg shadow-black/25 ring-1 ring-inset ring-white/20 transition-all duration-300 ease-out hover:scale-[1.02] hover:border-white/20 hover:bg-[#5BA0F2] hover:shadow-xl hover:shadow-[#4A90E2]/30 hover:ring-white/30`}>
         <div className="-my-3 flex shrink-0 drop-shadow-lg">
           <Image
             src={logo}
@@ -47,8 +48,8 @@ export const EventButton: React.FC<EventProp> = ({
 };
 
 export const PastEventsSection: React.FC = () => {
-  const leftColumn = eventsOrdered.filter((_, index) => index < 4);
-  const rightColumn = eventsOrdered.filter((_, index) => index >= 4);
+  const leftColumn = eventsOrdered.filter((_, index) => index < Math.floor(eventsOrdered.length / 2));
+  const rightColumn = eventsOrdered.filter((_, index) => index >= Math.floor(eventsOrdered.length / 2));
 
   return (
     <section id="past-events" className="bg-[#121723] px-4 py-16">
@@ -68,7 +69,7 @@ export const PastEventsSection: React.FC = () => {
           </div>
 
           {/* Event Buttons Grid */}
-          <div className="grid w-full max-w-2xl flex-1 grid-cols-1 gap-8 md:gap-4 md:grid-cols-2">
+          <div className="grid w-full max-w-2xl flex-1 grid-cols-1 gap-8 md:grid-cols-2 md:gap-4">
             {/* Left Column */}
             <div className="flex flex-col gap-8">
               {leftColumn.map((event) => (

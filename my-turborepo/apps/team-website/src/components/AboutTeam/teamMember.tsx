@@ -39,13 +39,14 @@ const TeamMember: React.FC<TeamMemberProps> = ({
 }) => {
   return (
     <div className="w-32 px-2 pb-2 text-center lg:w-40">
-      <div className="relative mx-auto my-2 h-22 w-22 overflow-hidden rounded-full lg:h-28 lg:w-28">
+      <div className="relative mx-auto my-2 size-[88px] overflow-hidden rounded-full lg:size-28">
         <Image
           src={image || "/placeholder.svg"}
           alt={name}
           fill
+          sizes="88px, (min-width: 992px) 112px"
           className="scale-125 object-cover"
-          
+          quality={75}
         />
       </div>
       <h3 className="h-auto w-full text-wrap text-sm font-semibold text-white lg:text-xl">
@@ -54,7 +55,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({
       <p className="text-xs text-neutral-300 lg:text-sm">{position}</p>
 
       {socialLinks.length > 0 && (
-        <div className="lg:gap- mt-1 flex justify-center gap-3 ">
+        <div className="mt-1 flex justify-center gap-3">
           {socialLinks.map((link, index) => (
             <a
               key={index}
