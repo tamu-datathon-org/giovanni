@@ -6,7 +6,7 @@ RUN apk add --no-cache libc6-compat
 RUN apk update
 
 ENV PNPM_HOME=/app/.pnpm
-ENV PATH=$PNPM_HOME:$PATH
+ENV PATH=$PNPM_HOME/bin:$PATH
 
 # Set working directory
 WORKDIR /app
