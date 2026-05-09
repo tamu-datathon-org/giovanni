@@ -3,7 +3,9 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { appRouter, createTRPCContext } from "@vanni/api";
 import type { NextRequest } from "next/server";
 
-export const runtime = "edge";
+// Email sending uses the AWS SDK (SQS). Running tRPC on Node.js runtime
+// avoids Edge-runtime compatibility pitfalls and makes failures observable.
+export const runtime = "nodejs";
 
 /**
  * Configure basic CORS headers
