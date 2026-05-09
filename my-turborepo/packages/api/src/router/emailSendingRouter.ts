@@ -1,8 +1,8 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { count } from "@vanni/db";
-import { Application } from "@vanni/db/schema";
+import { and, count, eq } from "@vanni/db";
+import { Application, Event } from "@vanni/db/schema";
 
 import type { VerifiedContext } from "../trpc";
 import { adminProcedure, protectedProcedure } from "../trpc";
@@ -29,11 +29,12 @@ async function checkStatusEmails(
   const successfulEmails: string[] = emailList.filter(
     (email) => !failedSet.has(email),
   );
-  let ids: string[] = [];
-  ids = ids.concat(
-    successfulEmails
-      .map((email) => statusMap.get(email))
-      .filter((id): id is string => id !== undefined),
+  const ids = Array.from(
+    new Set(
+      successfulEmails
+        .map((email) => statusMap.get(email))
+        .filter((id): id is string => id !== undefined),
+    ),
   );
 
   // Update all the batch status
@@ -68,8 +69,13 @@ export const emailSendingRouter = {
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const emails = await getEmailsByLabelList(ctx, input.mailing_lists);
-      const finalEmails = emails.concat(input.additionalEmails);
+      // Skip the mailing-list lookup entirely when no list is selected,
+      // so Additional Recipient Emails can be the only destination set.
+      const mailingListEmails =
+        input.mailing_lists.length > 0
+          ? await getEmailsByLabelList(ctx, input.mailing_lists)
+          : [];
+      const finalEmails = mailingListEmails.concat(input.additionalEmails);
 
       const failed = await queueBulkEmail(
         finalEmails,
@@ -96,10 +102,19 @@ export const emailSendingRouter = {
       z.object({
         statusBatchSize: z.number().int().min(1).max(100).default(100),
         emailBatchSize: z.number().int().min(1).max(10).default(6),
+        sendAccepted: z.boolean().default(true),
+        sendRejected: z.boolean().default(true),
+        sendWaitlisted: z.boolean().default(true),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { statusBatchSize, emailBatchSize } = input;
+      const {
+        statusBatchSize,
+        emailBatchSize,
+        sendAccepted,
+        sendRejected,
+        sendWaitlisted,
+      } = input;
       const applicationCountResult = await ctx.db
         .select({ count: count() })
         .from(Application);
@@ -127,33 +142,45 @@ export const emailSendingRouter = {
         );
         const emailMap = new Map<string, string>();
 
-        const waitlistEmails = [];
-        const acceptedEmails = [];
-        const rejectedEmails = [];
+        const waitlistEmailSet = new Set<string>();
+        const acceptedEmailSet = new Set<string>();
+        const rejectedEmailSet = new Set<string>();
 
-        // // Filter by status
+        //filter by status
         for (const application of batch) {
           if (!emailMap.has(application.email)) {
             emailMap.set(application.email, application.id);
           }
+          if (application.userEmail && application.userEmail !== application.email) {
+            if (!emailMap.has(application.userEmail)) {
+              emailMap.set(application.userEmail, application.id);
+            }
+          }
 
           if (application.status === "waitlisted") {
-            waitlistEmails.push(application.email);
-            if (application.userEmail !== application.email && application.userEmail != null)
-              waitlistEmails.push(application.userEmail);
+            waitlistEmailSet.add(application.email);
+            if (application.userEmail != null && application.userEmail !== application.email) {
+              waitlistEmailSet.add(application.userEmail);
+            }
           } else if (application.status === "accepted") {
-            acceptedEmails.push(application.email);
-            if (application.userEmail !== application.email && application.userEmail != null)
-              acceptedEmails.push(application.userEmail);
+            acceptedEmailSet.add(application.email);
+            if (application.userEmail != null && application.userEmail !== application.email) {
+              acceptedEmailSet.add(application.userEmail);
+            }
           } else if (application.status === "rejected") {
-            rejectedEmails.push(application.email);
-            if (application.userEmail !== application.email && application.userEmail != null)
-              rejectedEmails.push(application.userEmail);
+            rejectedEmailSet.add(application.email);
+            if (application.userEmail != null && application.userEmail !== application.email) {
+              rejectedEmailSet.add(application.userEmail);
+            }
           }
         }
 
+        const waitlistEmails = Array.from(waitlistEmailSet);
+        const acceptedEmails = Array.from(acceptedEmailSet);
+        const rejectedEmails = Array.from(rejectedEmailSet);
+
         // Rejection Emails
-        if (rejectedEmails.length > 0) {
+        if (sendRejected && rejectedEmails.length > 0) {
           const failedRejected = await queueBulkEmail(
             rejectedEmails,
             rejected_title,
@@ -173,7 +200,7 @@ export const emailSendingRouter = {
         }
 
         // // Waitlist emails
-        if (waitlistEmails.length > 0) {
+        if (sendWaitlisted && waitlistEmails.length > 0) {
           const failedWaitlist = await queueBulkEmail(
             waitlistEmails,
             "TODO REPLACE WAITLIST HERE",
@@ -194,7 +221,7 @@ export const emailSendingRouter = {
         }
 
         // Accepted Emails
-        if (acceptedEmails.length > 0) {
+        if (sendAccepted && acceptedEmails.length > 0) {
           const failedAccepted = await queueBulkEmail(
             acceptedEmails,
             accepted_title,
@@ -219,4 +246,49 @@ export const emailSendingRouter = {
         message: "Emails Successfully Queued!",
       };
     }),
+  getStatusEmailCounts: adminProcedure.query(async ({ ctx }) => {
+    const eventName = process.env.NEXT_PUBLIC_EVENT_NAME ?? "";
+
+    const [accepted, rejected, waitlisted] = await Promise.all([
+      ctx.db
+        .select({ count: count() })
+        .from(Application)
+        .leftJoin(Event, eq(Event.id, Application.eventId))
+        .where(
+          and(
+            eq(Event.name, eventName),
+            eq(Application.status, "accepted"),
+            eq(Application.acceptedEmail, false),
+          ),
+        ),
+      ctx.db
+        .select({ count: count() })
+        .from(Application)
+        .leftJoin(Event, eq(Event.id, Application.eventId))
+        .where(
+          and(
+            eq(Event.name, eventName),
+            eq(Application.status, "rejected"),
+            eq(Application.rejectedEmail, false),
+          ),
+        ),
+      ctx.db
+        .select({ count: count() })
+        .from(Application)
+        .leftJoin(Event, eq(Event.id, Application.eventId))
+        .where(
+          and(
+            eq(Event.name, eventName),
+            eq(Application.status, "waitlisted"),
+            eq(Application.waitlistEmail, false),
+          ),
+        ),
+    ]);
+
+    return {
+      accepted: accepted[0]?.count ?? 0,
+      rejected: rejected[0]?.count ?? 0,
+      waitlisted: waitlisted[0]?.count ?? 0,
+    };
+  }),
 };

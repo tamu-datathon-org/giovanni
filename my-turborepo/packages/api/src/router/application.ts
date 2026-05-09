@@ -413,18 +413,35 @@ export const applicationRouter = {
       const event = await getEventData({ ctx, eventName: input.eventName });
 
       console.log(email);
+      const statusUpdate: {
+        status:
+          | "pending"
+          | "accepted"
+          | "checkedin"
+          | "rejected"
+          | "waitlisted";
+        acceptedEmail?: boolean;
+        rejectedEmail?: boolean;
+        waitlistEmail?: boolean;
+      } = {
+        status: newStatus as
+          | "pending"
+          | "accepted"
+          | "checkedin"
+          | "rejected"
+          | "waitlisted",
+      };
+
+      // When status changes, allow re-sending the corresponding status email.
+      if (statusUpdate.status === "accepted") statusUpdate.acceptedEmail = false;
+      if (statusUpdate.status === "rejected") statusUpdate.rejectedEmail = false;
+      if (statusUpdate.status === "waitlisted") statusUpdate.waitlistEmail = false;
+
       // Query based on email or id
       if (email !== undefined && email !== "") {
         const results = await ctx.db
           .update(Application)
-          .set({
-            status: newStatus as
-              | "pending"
-              | "accepted"
-              | "checkedin"
-              | "rejected"
-              | "waitlisted",
-          })
+          .set(statusUpdate)
           .where(
             and(
               eq(Application.email, email),
@@ -456,14 +473,7 @@ export const applicationRouter = {
       } else if (id !== undefined && id !== "") {
         await ctx.db
           .update(Application)
-          .set({
-            status: newStatus as
-              | "pending"
-              | "accepted"
-              | "checkedin"
-              | "rejected"
-              | "waitlisted",
-          })
+          .set(statusUpdate)
           .where(
             and(eq(Application.id, id), eq(Application.eventId, event.id)),
           );
@@ -504,10 +514,19 @@ export const applicationRouter = {
 
       const finalSql: SQL = sql.join(sqlChunks, sql.raw(" "));
 
-      return await db
-        .update(Application)
-        .set({ status: finalSql })
-        .where(inArray(Application.id, ids));
+      const setValues: {
+        status: SQL;
+        acceptedEmail?: boolean;
+        rejectedEmail?: boolean;
+        waitlistEmail?: boolean;
+      } = { status: finalSql };
+
+      // When status changes, allow re-sending the corresponding status email.
+      if (newStatus === "accepted") setValues.acceptedEmail = false;
+      if (newStatus === "rejected") setValues.rejectedEmail = false;
+      if (newStatus === "waitlisted") setValues.waitlistEmail = false;
+
+      return await db.update(Application).set(setValues).where(inArray(Application.id, ids));
     }),
   updateBatchAccepted: organizerProcedure
     .input(
