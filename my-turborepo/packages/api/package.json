@@ -20,10 +20,13 @@
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
+    "@aws-sdk/client-sqs": "^3.1006.0",
     "@trpc/server": "11.0.0-rc.364",
     "@vanni/auth": "workspace:*",
     "@vanni/db": "workspace:*",
     "@vanni/validators": "workspace:*",
+    "@vercel/blob": "^0.24.1",
+    "drizzle-orm": "^0.45.2",
     "minimatch": "^10.2.3",
     "superjson": "2.2.1",
     "zod": "^4.3.6"

@@ -1,32 +1,47 @@
-import { createAuthClient } from 'better-auth/client'
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
+import { createAuthClient } from "better-auth/client";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export const client = createAuthClient();
 
-// Configurable list of protected routes (can be regex or string match)
-const protectedRoutes: (string | RegExp)[] = [
-    '/test',
-    /^\/admin/,
+/** Keep in sync with `protectedRoutes` and `team-website` `middleware.ts` `config.matcher`. */
+export const AUTH_MIDDLEWARE_MATCHER: string[] = [
+  "/admin/:path*",
+  "/apply/:path*",
+  "/organizer/:path*",
 ];
 
+const PROTECTED_PATH_ROOTS = ["admin", "apply", "organizer"] as const;
+
+const protectedRoutes: RegExp[] = PROTECTED_PATH_ROOTS.map(
+  (root) => new RegExp(`^/${root}(/|$)`),
+);
+
 function isProtectedRoute(pathname: string) {
-    return protectedRoutes.some(route =>
-        typeof route === 'string' ? pathname.startsWith(route) : route.test(pathname)
-    );
+  return protectedRoutes.some((route) => route.test(pathname));
 }
 
 export async function authMiddleware(request: NextRequest) {
-    const { data: session } = await client.getSession({
-        fetchOptions: {
-            headers: {
-                cookie: request.headers.get('cookie') ?? ""
-            }
-        }
-    });
-    const { pathname } = new URL(request.url);
-    if (!session && isProtectedRoute(pathname)) {
-        return NextResponse.redirect(new URL(`login?callbackUrl=${encodeURIComponent(request.url)}`, request.url));
-    }
+  const { pathname } = new URL(request.url);
+  if (!isProtectedRoute(pathname)) {
     return NextResponse.next();
+  }
+
+  const { data: session } = await client.getSession({
+    fetchOptions: {
+      headers: {
+        cookie: request.headers.get("cookie") ?? "",
+      },
+    },
+  });
+
+  if (!session) {
+    return NextResponse.redirect(
+      new URL(
+        `/login?callbackUrl=${encodeURIComponent(request.url)}`,
+        request.url,
+      ),
+    );
+  }
+  return NextResponse.next();
 }
