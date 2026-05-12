@@ -596,7 +596,7 @@ export function ApplicationForm() {
             alt=""
             width={80}
             height={80}
-            className="-rotate-3"
+            className="-rotate-3 w-auto h-auto"
           />
         </div>
 
