@@ -1,0 +1,27 @@
+# Dependencies (re-installed inside the image)
+**/node_modules
+
+# Build output / caches
+**/.next
+**/.turbo
+**/.expo
+**/.output
+**/.vercel
+**/dist
+**/out
+
+# Local env files and logs
+**/.env
+**/.env.*
+!**/.env.example
+**/*.log
+
+# VCS and editor
+.git
+.gitignore
+.idea
+.vscode
+
+# Docker
+**/Dockerfile
+**/.dockerignore
