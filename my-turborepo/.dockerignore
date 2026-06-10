@@ -1,0 +1,23 @@
+# Dependencies and build artifacts (largest context savings)
+**/node_modules
+**/.next
+**/.turbo
+**/dist
+**/.cache
+
+# Git and local env
+.git
+.gitignore
+**/.env
+**/.env.*
+**/*.log
+
+# Editor / OS noise
+.DS_Store
+**/.DS_Store
+.idea
+.vscode
+
+# Per-app docker metadata (not needed in build context)
+**/Dockerfile
+**/.dockerignore

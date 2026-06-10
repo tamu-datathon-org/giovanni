@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@types/minimatch": "^5.1.2",
+    "@types/node": "^20.19.24",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
