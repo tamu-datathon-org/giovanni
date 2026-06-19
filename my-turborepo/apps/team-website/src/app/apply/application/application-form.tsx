@@ -93,7 +93,7 @@ export function Asterisk() {
 }
 
 // Section Card Component
-function SectionCard({
+export function SectionCard({
   title,
   children,
 }: {

@@ -194,6 +194,48 @@ function pickRandomNonCoffeeGroup(foodGroups: string[]): string | null {
   return others[Math.floor(Math.random() * others.length)] ?? null;
 }
 
+// Assign a food group only when one isn't already set, mirroring the logic in
+// `updateInvitationStatus` so walk-ins get a group at acceptance time.
+function assignFoodGroup(
+  foodGroups: string[],
+  dietaryRestriction: string | null | undefined,
+  currentFoodGroup: string | null | undefined,
+): string | undefined {
+  if (currentFoodGroup != null && currentFoodGroup !== "") return undefined;
+  if (isDietaryCoffeeEligible(dietaryRestriction)) {
+    return coffeeLabelFromEventFoodGroups(foodGroups);
+  }
+  const pick = pickRandomNonCoffeeGroup(foodGroups);
+  return pick != null && pick !== "" ? pick : undefined;
+}
+
+// Shared field set for auto-accepting an applicant (walk-in create + accept).
+// `invitationStatus: true` lets them skip the accept-offer step on /apply.
+function buildAcceptanceValues(
+  foodGroups: string[],
+  opts: {
+    dietaryRestriction?: string | null;
+    currentFoodGroup?: string | null;
+  },
+): {
+  status: "accepted";
+  invitationStatus: true;
+  acceptedEmail: false;
+  foodGroup?: string;
+} {
+  const base = {
+    status: "accepted" as const,
+    invitationStatus: true as const,
+    acceptedEmail: false as const,
+  };
+  const foodGroup = assignFoodGroup(
+    foodGroups,
+    opts.dietaryRestriction,
+    opts.currentFoodGroup,
+  );
+  return foodGroup !== undefined ? { ...base, foodGroup } : base;
+}
+
 // the batch requires the page/limit, I need to get all of them in each
 // Get batch status gives all applications -> filter the status to 3 categories -> send it to the email router
 // the email router will send the emails based on the status one at a time but all at the same time
@@ -779,6 +821,199 @@ export const applicationRouter = {
         .returning({
           id: Application.id,
           invitationStatus: Application.invitationStatus,
+          foodGroup: Application.foodGroup,
+        });
+
+      return updated[0];
+    }),
+
+  // Step 1 of the walk-in wizard: check whether an account exists for the email
+  // and surface any existing application (with its status) for this event.
+  lookupWalkIn: organizerProcedure
+    .input(z.object({ eventName: z.string(), email: z.string().email() }))
+    .query(async ({ ctx, input }) => {
+      const event = await getEventData({ ctx, eventName: input.eventName });
+      const email = input.email.trim();
+
+      // Multiple auth User rows can share an email (e.g. applicant vs organizer).
+      const users = await ctx.db
+        .select({ id: User.id })
+        .from(User)
+        .where(eq(User.email, email));
+
+      const userIds = users.map((u) => u.id);
+
+      const application = await ctx.db.query.Application.findFirst({
+        where: and(
+          eq(Application.eventId, event.id),
+          userIds.length > 0
+            ? or(
+                eq(Application.email, email),
+                inArray(Application.userId, userIds),
+              )
+            : eq(Application.email, email),
+        ),
+        columns: {
+          id: true,
+          status: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          userId: true,
+        },
+      });
+
+      return {
+        accountExists: users.length > 0,
+        // Prefer the user tied to the existing application, else the first match.
+        userId: application?.userId ?? userIds[0] ?? null,
+        application: application
+          ? {
+              id: application.id,
+              status: application.status,
+              firstName: application.firstName,
+              lastName: application.lastName,
+              email: application.email,
+            }
+          : null,
+      };
+    }),
+
+  // Step 2 of the walk-in wizard: create a new, auto-accepted application for an
+  // existing account. Skips resume handling and the confirmation email.
+  createWalkIn: organizerProcedure
+    .input(
+      z.object({
+        eventName: z.string(),
+        email: z.string().email(),
+        applicationData: CreateApplicationSchema,
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { eventName, applicationData } = input;
+      const email = input.email.trim();
+
+      const event = await getEventData({ ctx, eventName });
+
+      const users = await ctx.db
+        .select({ id: User.id })
+        .from(User)
+        .where(eq(User.email, email));
+
+      if (users.length === 0) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "No account found for this email. Have the participant sign in first.",
+        });
+      }
+
+      const userIds = users.map((u) => u.id);
+
+      const existing = await ctx.db.query.Application.findFirst({
+        where: and(
+          eq(Application.eventId, event.id),
+          or(eq(Application.email, email), inArray(Application.userId, userIds)),
+        ),
+        columns: { id: true },
+      });
+
+      if (existing) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message:
+            "An application already exists for this participant. Use the accept option instead.",
+        });
+      }
+
+      const userId = userIds[0]!;
+
+      // Mirror `create`: ensure the participant has the Applicant role.
+      const role = await ctx.db.query.Role.findFirst({
+        where: and(eq(Role.eventId, event.id), eq(Role.name, "Applicant")),
+      });
+
+      if (role == undefined) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message:
+            "Role query was not successful. Contact a datathon officer.",
+        });
+      }
+
+      const existingRole = await ctx.db.query.UserRole.findFirst({
+        where: and(eq(UserRole.userId, userId), eq(UserRole.roleId, role.id)),
+      });
+
+      if (!existingRole) {
+        await ctx.db.insert(UserRole).values({ userId, roleId: role.id });
+      }
+
+      const acceptance = buildAcceptanceValues(event.foodGroups ?? [], {
+        dietaryRestriction: applicationData.dietaryRestriction,
+        currentFoodGroup: null,
+      });
+
+      await ctx.db.insert(Application).values({
+        ...applicationData,
+        userId,
+        eventId: event.id,
+        ...acceptance,
+      });
+
+      return { foodGroup: acceptance.foodGroup ?? null };
+    }),
+
+  // Existing-application branch of the wizard: flip status to accepted (plus
+  // invitation/food group) without overwriting any of their data.
+  acceptWalkIn: organizerProcedure
+    .input(z.object({ eventName: z.string(), email: z.string().email() }))
+    .mutation(async ({ ctx, input }) => {
+      const email = input.email.trim();
+      const event = await getEventData({ ctx, eventName: input.eventName });
+
+      const users = await ctx.db
+        .select({ id: User.id })
+        .from(User)
+        .where(eq(User.email, email));
+      const userIds = users.map((u) => u.id);
+
+      const application = await ctx.db.query.Application.findFirst({
+        where: and(
+          eq(Application.eventId, event.id),
+          userIds.length > 0
+            ? or(
+                eq(Application.email, email),
+                inArray(Application.userId, userIds),
+              )
+            : eq(Application.email, email),
+        ),
+        columns: {
+          id: true,
+          dietaryRestriction: true,
+          foodGroup: true,
+        },
+      });
+
+      if (!application) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Application not found for this participant.",
+        });
+      }
+
+      const acceptance = buildAcceptanceValues(event.foodGroups ?? [], {
+        dietaryRestriction: application.dietaryRestriction,
+        currentFoodGroup: application.foodGroup,
+      });
+
+      const updated = await ctx.db
+        .update(Application)
+        .set(acceptance)
+        .where(eq(Application.id, application.id))
+        .returning({
+          id: Application.id,
+          status: Application.status,
           foodGroup: Application.foodGroup,
         });
 
