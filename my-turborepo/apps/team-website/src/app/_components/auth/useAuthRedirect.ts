@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { normalizeCallbackPath } from '@vanni/auth/callback-url';
 import { authClient } from '@vanni/auth/client';
 
 export type AuthRedirectSession = {
@@ -28,7 +29,9 @@ export function useAuthRedirect() {
     async function fetchSession() {
       const { data } = await authClient.getSession();
       if (!data) {
-        router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
+        router.push(
+          `/login?callbackUrl=${encodeURIComponent(normalizeCallbackPath(pathname))}`,
+        );
       }
       setSession(data);
     }

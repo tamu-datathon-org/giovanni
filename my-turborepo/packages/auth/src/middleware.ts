@@ -2,6 +2,8 @@ import { createAuthClient } from "better-auth/client";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import { normalizeCallbackPath } from "./callback-url";
+
 export const client = createAuthClient();
 
 /** Keep in sync with `protectedRoutes` and `team-website` `middleware.ts` `config.matcher`. */
@@ -22,7 +24,7 @@ function isProtectedRoute(pathname: string) {
 }
 
 export async function authMiddleware(request: NextRequest) {
-  const { pathname } = new URL(request.url);
+  const { pathname } = request.nextUrl;
   if (!isProtectedRoute(pathname)) {
     return NextResponse.next();
   }
@@ -36,12 +38,13 @@ export async function authMiddleware(request: NextRequest) {
   });
 
   if (!session) {
-    return NextResponse.redirect(
-      new URL(
-        `/login?callbackUrl=${encodeURIComponent(request.url)}`,
-        request.url,
-      ),
+    const callbackPath = normalizeCallbackPath(
+      request.nextUrl.pathname + request.nextUrl.search,
     );
+    const loginUrl = request.nextUrl.clone();
+    loginUrl.pathname = "/login";
+    loginUrl.search = `callbackUrl=${encodeURIComponent(callbackPath)}`;
+    return NextResponse.redirect(loginUrl);
   }
   return NextResponse.next();
 }

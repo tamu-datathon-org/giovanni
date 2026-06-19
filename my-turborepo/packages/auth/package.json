@@ -10,6 +10,7 @@
       "default": "./src/index.ts"
     },
     "./expo": "./src/expo.ts",
+    "./callback-url": "./src/callback-url.ts",
     "./middleware": "./src/middleware.ts",
     "./client": "./src/client.ts",
     "./env": "./env.ts"
