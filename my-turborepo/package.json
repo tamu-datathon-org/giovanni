@@ -26,7 +26,7 @@
     "@vanni/prettier-config": "workspace:*",
     "check-dependency-version-consistency": "^4.1.1",
     "prettier": "^3.6.2",
-    "turbo": "^2.4.4",
+    "turbo": "^2.9.14",
     "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@10.32.1",
