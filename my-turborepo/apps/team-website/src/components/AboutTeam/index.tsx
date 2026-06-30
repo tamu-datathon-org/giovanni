@@ -97,17 +97,6 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/ali.webp`,
-          name: "Ali Abouelazam",
-          position: "Challenges",
-          socialLinks: [
-            {
-              type: "linkedin",
-              url: "https://www.linkedin.com/in/ali-abouelazm",
-            },
-          ],
-        },
-        {
           image: `${imageBaseUrl}/haanh.webp`,
           name: "Vu Ha Anh Nguyen",
           position: "Challenges",
@@ -305,18 +294,6 @@ const AboutTeam = () => {
           ],
         },
         {
-          image: `${imageBaseUrl}/dakota.webp`,
-          name: "Dakota Pound",
-          position: "Logistics",
-          socialLinks: [
-            {
-              type: "linkedin",
-              url: "https://www.linkedin.com/in/dakota-pound",
-            },
-            { type: "github", url: "https://github.com/dakotaPPP" },
-          ],
-        },
-        {
           image: `${imageBaseUrl}/ragd.webp`,
           name: "Ragd Elsaigh",
           position: "Logistics",
@@ -377,14 +354,11 @@ const AboutTeam = () => {
     {
       teamMembers: [
         {
-          image: `${imageBaseUrl}/kendall.webp`,
-          name: "Kendall Nguyen",
+          image: `${imageBaseUrl}/naomi.webp`,
+          name: "Naomi Dao",
           position: "Design Lead",
           socialLinks: [
-            {
-              type: "linkedin",
-              url: "https://www.linkedin.com/in/kendall-nguyen-229133332/",
-            },
+            { type: "linkedin", url: "https://www.linkedin.com/in/naomidao" },
           ],
         },
         {
@@ -423,14 +397,6 @@ const AboutTeam = () => {
               type: "linkedin",
               url: "https://www.linkedin.com/in/jessica-tran28",
             },
-          ],
-        },
-        {
-          image: `${imageBaseUrl}/naomi.webp`,
-          name: "Naomi Dao",
-          position: "Design",
-          socialLinks: [
-            { type: "linkedin", url: "https://www.linkedin.com/in/naomidao" },
           ],
         },
         {
