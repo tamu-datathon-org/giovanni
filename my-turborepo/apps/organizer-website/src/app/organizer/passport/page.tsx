@@ -8,6 +8,7 @@ import { ManualEmailInput } from "~/app/_components/organizer/passport/manual-em
 import { ParticipantCard } from "~/app/_components/organizer/passport/participant-card";
 import { PhaseSelector } from "~/app/_components/organizer/passport/phase-selector";
 import QRScanner from "~/app/_components/organizer/passport/qr-scanner";
+import { WalkInDialog } from "~/app/_components/organizer/walkin-dialog";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
 
@@ -275,6 +276,15 @@ export default function PassportPage() {
       <LoadingOverlay show={anyBlockingLoad} label={overlayLabel} />
 
       <h1 className="text-3xl font-bold">Check-in System</h1>
+
+      {/* Walk-in registration */}
+      <WalkInDialog
+        onCompleted={() => {
+          if (effectiveEmail && queryData.refetch) {
+            void queryData.refetch();
+          }
+        }}
+      />
 
       {/* Phase Selector (dynamic) */}
       <PhaseSelector

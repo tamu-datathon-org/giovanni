@@ -121,6 +121,7 @@ export default function SponsorTicker() {
               <Image
                 src={logo}
                 alt={`Sponsor logo ${(i % logos.length) + 1}`}
+                sizes="100px"
                 fill
                 className="object-contain"
               />

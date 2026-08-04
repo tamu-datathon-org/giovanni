@@ -2,3 +2,9 @@ packages:
   - apps/*
   - packages/*
   - tooling/*
+allowBuilds:
+  '@parcel/watcher': true
+  bufferutil: true
+  esbuild: true
+  sharp: true
+  utf-8-validate: true

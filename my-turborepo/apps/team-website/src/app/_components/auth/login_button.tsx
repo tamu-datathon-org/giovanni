@@ -1,4 +1,5 @@
 "use client";
+import { normalizeCallbackPath } from "@vanni/auth/callback-url";
 import { authClient } from "@vanni/auth/client";
 import { Button } from "@vanni/ui/button";
 
@@ -18,12 +19,13 @@ const LoginButton = ({
   logo,
 }: LoginButtonProps) => {
   async function signInHandler() {
+    const callbackPath = normalizeCallbackPath(callbackUrl);
     try {
       const result = await authClient.signIn.oauth2({
         providerId: `auth0-${connectionId}`,
-        callbackURL: callbackUrl ?? "/",
+        callbackURL: callbackPath,
         disableRedirect: false,
-        errorCallbackURL: `/login?callbackUrl=${encodeURIComponent(callbackUrl ?? "/")}&message=unauthorized`,
+        errorCallbackURL: `/login?callbackUrl=${encodeURIComponent(callbackPath)}&message=unauthorized`,
       });
       console.log("Sign-in successful:", result);
     } catch (error) {

@@ -64,7 +64,7 @@ export const PastEventsSection: React.FC = () => {
               alt="Datathon Mascot"
               width={256}
               height={256}
-              className="h-auto w-full"
+              className="h-auto w-auto"
             />
           </div>
 

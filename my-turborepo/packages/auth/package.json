@@ -10,6 +10,7 @@
       "default": "./src/index.ts"
     },
     "./expo": "./src/expo.ts",
+    "./callback-url": "./src/callback-url.ts",
     "./middleware": "./src/middleware.ts",
     "./client": "./src/client.ts",
     "./env": "./env.ts"
@@ -28,7 +29,7 @@
     "@t3-oss/env-core": "^0.10.1",
     "@vanni/db": "workspace:*",
     "better-auth": "1.4.18",
-    "next": "^16.2.3",
+    "next": "^16.2.7",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "zod": "^4.3.6"
