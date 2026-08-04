@@ -89,7 +89,7 @@ importers:
         version: 1.15.9
       nitropack:
         specifier: ^2.13.4
-        version: 2.13.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))(encoding@0.1.13)
+        version: 2.13.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))(encoding@0.1.13)
       prettier:
         specifier: ^3.6.2
         version: 3.8.1
@@ -166,11 +166,11 @@ importers:
         specifier: 10.0.0
         version: 10.0.0
       postcss:
-        specifier: ^8.5.11
-        version: 8.5.11
+        specifier: ^8.5.12
+        version: 8.5.12
       postcss-preset-env:
         specifier: ^9.6.0
-        version: 9.6.0(postcss@8.5.11)
+        version: 9.6.0(postcss@8.5.12)
       prismjs:
         specifier: ^1.30.0
         version: 1.30.0
@@ -216,7 +216,7 @@ importers:
     devDependencies:
       '@csstools/postcss-global-data':
         specifier: ^2.1.1
-        version: 2.1.1(postcss@8.5.11)
+        version: 2.1.1(postcss@8.5.12)
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.2))
@@ -273,10 +273,10 @@ importers:
         version: 9.0.3
       postcss-custom-media:
         specifier: ^10.0.8
-        version: 10.0.8(postcss@8.5.11)
+        version: 10.0.8(postcss@8.5.12)
       postcss-flexbugs-fixes:
         specifier: ^5.0.2
-        version: 5.0.2(postcss@8.5.11)
+        version: 5.0.2(postcss@8.5.12)
       prettier:
         specifier: ^3.6.2
         version: 3.8.1
@@ -650,7 +650,7 @@ importers:
         version: 1.4.1(nodemailer@7.0.11)
       '@better-auth/expo':
         specifier: 1.4.18
-        version: 1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(better-auth@1.6.11(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))(next@15.5.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        version: 1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(better-auth@1.6.13(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))(next@15.5.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@better-auth/utils':
         specifier: 0.3.1
         version: 0.3.1
@@ -661,8 +661,8 @@ importers:
         specifier: workspace:*
         version: link:../db
       better-auth:
-        specifier: 1.6.11
-        version: 1.6.11(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))(next@15.5.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.6.13
+        version: 1.6.13(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))(next@15.5.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next:
         specifier: 15.5.10
         version: 15.5.10(@babel/core@7.29.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0)
@@ -705,10 +705,10 @@ importers:
         version: 0.8.0
       drizzle-orm:
         specifier: ^0.45.2
-        version: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17)
+        version: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3)
       drizzle-zod:
         specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))(zod@4.3.6)
+        version: 0.5.1(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))(zod@4.3.6)
       minimatch:
         specifier: 3.1.4
         version: 3.1.4
@@ -921,8 +921,8 @@ importers:
   tooling/tailwind:
     dependencies:
       postcss:
-        specifier: ^8.5.11
-        version: 8.5.11
+        specifier: ^8.5.12
+        version: 8.5.12
       tailwindcss:
         specifier: ^3.4.18
         version: 3.4.19(tsx@4.21.0)(yaml@2.8.2)
@@ -1211,8 +1211,8 @@ packages:
       kysely: ^0.28.5
       nanostores: ^1.0.1
 
-  '@better-auth/core@1.6.11':
-    resolution: {integrity: sha512-LrwidLCV8azdMGjvtwp30nj9tIv1BwI3VhtC0UaGSjQkAVWw4bN42I8qwbxRziPeSQoj+zUVkOpxZzAWBDARtQ==}
+  '@better-auth/core@1.6.13':
+    resolution: {integrity: sha512-3YNjiLUmlNt5T9qQ/weu0tZgGgXDSYax4EE/uLUBIBBGtQI9Q3KdEnO6tfPgDedborcSE1bIspuAIaHpaHwxZQ==}
     peerDependencies:
       '@better-auth/utils': 0.3.1
       '@better-fetch/fetch': 1.1.21
@@ -1220,7 +1220,7 @@ packages:
       '@opentelemetry/api': ^1.9.0
       better-call: 1.3.5
       jose: ^6.1.0
-      kysely: ^0.28.5
+      kysely: ^0.28.5 || ^0.29.0
       nanostores: ^1.0.1
     peerDependenciesMeta:
       '@cloudflare/workers-types':
@@ -1228,10 +1228,10 @@ packages:
       '@opentelemetry/api':
         optional: true
 
-  '@better-auth/drizzle-adapter@1.6.11':
-    resolution: {integrity: sha512-4jpkETIGZOHCf7BK4jnu22fdN6jjomH0/HhEzkaWy3+Eppi5PYlHTF/460jrTmA3Xc+Vqwp9t282ymHiEPypGw==}
+  '@better-auth/drizzle-adapter@1.6.13':
+    resolution: {integrity: sha512-0V6e+e7TnIZZDjhQP/tvAberSrdrf5yfbDSx5oDFsfI5MCh2ATvbuTPNxGWbLdbGnUYfbX4K9FZwzKMj8RpLmg==}
     peerDependencies:
-      '@better-auth/core': ^1.6.11
+      '@better-auth/core': ^1.6.13
       '@better-auth/utils': 0.3.1
       drizzle-orm: ^0.45.2
     peerDependenciesMeta:
@@ -1257,36 +1257,36 @@ packages:
       expo-web-browser:
         optional: true
 
-  '@better-auth/kysely-adapter@1.6.11':
-    resolution: {integrity: sha512-/g8M9RfIjdcZDnbstSUvQiINkvdNlCeZr248zwqx2/PVksQI1MhQofbzUn3RnQnbPKp0EPwpX/dR3oudRFenUg==}
+  '@better-auth/kysely-adapter@1.6.13':
+    resolution: {integrity: sha512-r+TeBL9dJecuCaSMqL3106qwaXYL3GAkoJDfmtbZ2eZ/Ejr9xVj5msJnSULb0ZqyQ1g5SCbnM39WZaCOFirziQ==}
     peerDependencies:
-      '@better-auth/core': ^1.6.11
+      '@better-auth/core': ^1.6.13
       '@better-auth/utils': 0.3.1
-      kysely: ^0.28.17
+      kysely: ^0.28.17 || ^0.29.0
     peerDependenciesMeta:
       kysely:
         optional: true
 
-  '@better-auth/memory-adapter@1.6.11':
-    resolution: {integrity: sha512-hpdfw0BBf8MuzLkIdmbcUZICbY9r/bhLO2RxSnkzT5+/O+0I0u2I8+m0YUP7vNllP/ZCKASHOYgXPLO75Z0f9Q==}
+  '@better-auth/memory-adapter@1.6.13':
+    resolution: {integrity: sha512-upmNncEwm9Q0MpWLVOdx9Pe3fU/aqobO80zwI+WVCavxmL59SufW5Ud7194/J5ushw4Dd52XNn0XWPJT1ZUThg==}
     peerDependencies:
-      '@better-auth/core': ^1.6.11
+      '@better-auth/core': ^1.6.13
       '@better-auth/utils': 0.3.1
 
-  '@better-auth/mongo-adapter@1.6.11':
-    resolution: {integrity: sha512-3Tor8rSv8vSEIMEaV2PFpPEuVhqc1gNoZ6eGvoh3LwExXXuj8madew6ob+H1pH7Aphn3Ar5PQ08AguT8TbwFAA==}
+  '@better-auth/mongo-adapter@1.6.13':
+    resolution: {integrity: sha512-u0g5KThZQInx4QxsaXDJ+Yg5A9z/ia/3EBwi+gI7+kSTKkeT9PZZ6J+erwJ5Sh4d0JUQsEX2DX2YRsg/mYnXWQ==}
     peerDependencies:
-      '@better-auth/core': ^1.6.11
+      '@better-auth/core': ^1.6.13
       '@better-auth/utils': 0.3.1
       mongodb: ^6.0.0 || ^7.0.0
     peerDependenciesMeta:
       mongodb:
         optional: true
 
-  '@better-auth/prisma-adapter@1.6.11':
-    resolution: {integrity: sha512-Pw+7q7zTp+VSci1V+CYMvuxIbAeVMZLe4lRo46LJoAKMHfjFl5T/ycsyFvWs/DkWC7n9gZZzRDEbHp0I5FiKKw==}
+  '@better-auth/prisma-adapter@1.6.13':
+    resolution: {integrity: sha512-gjmUIdqmxWb4WoNEN5rTQYQli6A9fPopAaVDiLh/gwO3ET10/PuOEwfESePEwUbArlKLLK3hPEWWe0RBojyxgQ==}
     peerDependencies:
-      '@better-auth/core': ^1.6.11
+      '@better-auth/core': ^1.6.13
       '@better-auth/utils': 0.3.1
       '@prisma/client': ^5.0.0 || ^6.0.0 || ^7.0.0
       prisma: ^5.0.0 || ^6.0.0 || ^7.0.0
@@ -1296,10 +1296,10 @@ packages:
       prisma:
         optional: true
 
-  '@better-auth/telemetry@1.6.11':
-    resolution: {integrity: sha512-hsjDHc8MZbm6/AHeNdtywrWedXevnBjmdvnHTcZub+rTVjOv+Td0roI8USKuC6uUibmrl//2rJfVCsGbopihNA==}
+  '@better-auth/telemetry@1.6.13':
+    resolution: {integrity: sha512-CXfPPL55mZrGH1FUhZOw9REp2WRJoVjCh9egn+cIx3ReB/OnPz+eHSRft/IVLD2PQyP1FNr1Au89SXd2oPBUPg==}
     peerDependencies:
-      '@better-auth/core': ^1.6.11
+      '@better-auth/core': ^1.6.13
       '@better-auth/utils': 0.3.1
       '@better-fetch/fetch': 1.1.21
 
@@ -1568,8 +1568,8 @@ packages:
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
 
-  '@emnapi/runtime@1.11.1':
-    resolution: {integrity: sha512-vgj7R3y3Wgx24IQaGPA/R6YFXLHVMOZ0uVEyIQPaWs+rd1AzfEMXlAC22FYwO1XkKR6NPsq7mUandH8oIRdZFw==}
+  '@emnapi/runtime@1.11.2':
+    resolution: {integrity: sha512-kyOl3X0DuTiT1h2ft8r2fYO8JYtU9a9Xis/zBSiGArNaagCOWx90N1k2wxp18czFDH+OgcWGb5ZP/XMt3dcyPA==}
 
   '@emnapi/runtime@1.8.1':
     resolution: {integrity: sha512-mehfKSMWjjNol8659Z8KxEMrdSJDDot5SXMq00dM8BN4o+CLNXQ0xH2V7EchNHV4RmbZLmmPdEaXZc5H2FXmDg==}
@@ -2405,8 +2405,8 @@ packages:
     resolution: {integrity: sha512-q9CRWjpHCMIh5sVyefoD1cA7PkvILqCZsnSOEUUivORLjxCO/Irmue2DprETiNgEqktDBZaM1Bi+jrarx1XdCg==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
-  '@opentelemetry/semantic-conventions@1.41.1':
-    resolution: {integrity: sha512-/UhIkaZgPutTFmQ7RnIJGgDXZmtEJ7Dvi86xNTFWcnRxVRNk/aotsqDJYeEvDP+FSMB2SdW+pQzNMcWP0rwuNA==}
+  '@opentelemetry/semantic-conventions@1.43.0':
+    resolution: {integrity: sha512-eSYWTm620tTk45EKSedaUL8MFYI8hW164hIXsgIHyxu3VobUB3fFCu5t0hQby6OoWRPsG1KkKUG2M5UadiLiVg==}
     engines: {node: '>=14'}
 
   '@panva/hkdf@1.2.1':
@@ -4475,8 +4475,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  better-auth@1.6.11:
-    resolution: {integrity: sha512-Wwt6+q07dwIhsp6XiM7L1qSXVUWBEtNl+eZvwM778CguFqDZFBN9Pt6LtFaHl55t8Z+Zc//5kxcbgDY8/79vFQ==}
+  better-auth@1.6.13:
+    resolution: {integrity: sha512-jn8ATnGWDzMwpO4a/3iyW1/RayOF/aoPQOfAeqyCVnQCdqkaONVas9CjbY6PovMsTMa/MG+GRABySfzqtj5J/g==}
     peerDependencies:
       '@lynx-js/react': '*'
       '@prisma/client': ^5.0.0 || ^6.0.0 || ^7.0.0
@@ -4654,8 +4654,8 @@ packages:
   camelize@1.0.1:
     resolution: {integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==}
 
-  caniuse-lite@1.0.30001799:
-    resolution: {integrity: sha512-hG1bReV+OUU+MOqK4t/ZWI0tZOyz3rqS9XuhOUz1cIcbwBKjOyJEJuw9ER5JuNyqxNk8u/JUVbGibBOL1yrjFw==}
+  caniuse-lite@1.0.30001803:
+    resolution: {integrity: sha512-g/uHREV2ZpK9qMalCsWaxmA6ol+DX8GYhuf3T40RKoP+oL7vhRJh8LNt73PCjpnR6l14FzfPrB5Yux4PKm2meg==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -6247,9 +6247,9 @@ packages:
   knitwork@1.3.0:
     resolution: {integrity: sha512-4LqMNoONzR43B1W0ek0fhXMsDNW/zxa1NdFAVMY+k28pgZLovR4G3PB5MrpTxCy1QaZCqNoiaKPr5w5qZHfSNw==}
 
-  kysely@0.28.17:
-    resolution: {integrity: sha512-nbD8lB9EB3wNdMhOCdx5Li8DxnLbvKByylRLcJ1h+4SkrowVeECAyZlyiKMThF7xFdRz0jSQ2MoJr+wXux2y0Q==}
-    engines: {node: '>=20.0.0'}
+  kysely@0.29.3:
+    resolution: {integrity: sha512-VHtBdW6XB/pgoTSqraM3UAa2rYoYdNXqnNPpX+8XXP+cwYbVEFuAp3HyPt1vpNfU9l7Y2kpUrA9QDPsy8uUqOQ==}
+    engines: {node: '>=22.0.0'}
 
   language-subtag-registry@0.3.23:
     resolution: {integrity: sha512-0K65Lea881pHotoGEa5gDlMxt3pctLi2RplBb7Ezh4rRdLEOtgi7n4EwK9lamnUCkKBqaeKRVebTq6BAxSkpXQ==}
@@ -6742,8 +6742,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nanostores@1.3.0:
-    resolution: {integrity: sha512-XPUa/jz+P1oJvN9VBxw4L9MtdFfaH3DAryqPssqhb2kXjmb9npz0dly6rCsgFWOPr4Yg9mTfM3MDZgZZ+7A3lA==}
+  nanostores@1.4.0:
+    resolution: {integrity: sha512-i0tloweeudshAEuddpDxcg9Ik6pkPfVsHIgKyf143JrgG7/MOh0+q7BypdLXZPoOP7fOYt1eTcwGkyiVmhJFkA==}
     engines: {node: ^20.0.0 || >=22.0.0}
 
   natural-compare@1.4.0:
@@ -7291,8 +7291,8 @@ packages:
     resolution: {integrity: sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==}
     engines: {node: ^10 || ^12 || >=14}
 
-  postcss@8.5.11:
-    resolution: {integrity: sha512-5dDj8+lmvA8XB78SmzGI8NlQoksv7IfutGWeVZxiixHbO+p4LDPT3wuG/D9sM/wrjZZ9I+Siy/e117vbFPxSZg==}
+  postcss@8.5.12:
+    resolution: {integrity: sha512-W62t/Se6rA0Az3DfCL0AqJwXuKwBeYg6nOaIgzP+xZ7N5BFCI7DYi1qs6ygUYT6rvfi6t9k65UMLJC+PHZpDAA==}
     engines: {node: ^10 || ^12 || >=14}
 
   postgres-array@2.0.0:
@@ -7841,8 +7841,8 @@ packages:
   set-cookie-parser@2.7.2:
     resolution: {integrity: sha512-oeM1lpU/UvhTxw+g3cIfxXHyJRc/uidd3yK1P242gzHds0udQBYzs3y8j4gCCW+ZJ7ad0yctld8RYO+bdurlvw==}
 
-  set-cookie-parser@3.1.0:
-    resolution: {integrity: sha512-kjnC1DXBHcxaOaOXBHBeRtltsDG2nUiUni+jP92M9gYdW12rsmx92UsfpH7o5tDRs7I1ZZPSQJQGv3UaRfCiuw==}
+  set-cookie-parser@3.1.2:
+    resolution: {integrity: sha512-5/r/lTwbJ3zQ+qwdUFZYeRNqda7P5HD8zQKqlSjdGt1/S0cjLAphHusj4Y58ahDtWn/g32xrIS58/ikOvwl0Lw==}
 
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
@@ -9201,69 +9201,69 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0)':
+  '@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)':
     dependencies:
       '@better-auth/utils': 0.3.1
       '@better-fetch/fetch': 1.1.21
       '@standard-schema/spec': 1.1.0
       better-call: 1.3.5(zod@4.3.6)
       jose: 6.2.3
-      kysely: 0.28.17
-      nanostores: 1.3.0
+      kysely: 0.29.3
+      nanostores: 1.4.0
       zod: 4.3.6
 
-  '@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0)':
+  '@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)':
     dependencies:
       '@better-auth/utils': 0.3.1
       '@better-fetch/fetch': 1.1.21
-      '@opentelemetry/semantic-conventions': 1.41.1
+      '@opentelemetry/semantic-conventions': 1.43.0
       '@standard-schema/spec': 1.1.0
       better-call: 1.3.5(zod@4.3.6)
       jose: 6.2.3
-      kysely: 0.28.17
-      nanostores: 1.3.0
+      kysely: 0.29.3
+      nanostores: 1.4.0
       zod: 4.3.6
 
-  '@better-auth/drizzle-adapter@1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))':
+  '@better-auth/drizzle-adapter@1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))':
     dependencies:
-      '@better-auth/core': 1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0)
+      '@better-auth/core': 1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)
       '@better-auth/utils': 0.3.1
     optionalDependencies:
-      drizzle-orm: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17)
+      drizzle-orm: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3)
 
-  '@better-auth/expo@1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(better-auth@1.6.11(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))(next@15.5.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@better-auth/expo@1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(better-auth@1.6.13(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))(next@15.5.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@better-auth/core': 1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0)
+      '@better-auth/core': 1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)
       '@better-fetch/fetch': 1.1.21
-      better-auth: 1.6.11(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))(next@15.5.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      better-auth: 1.6.13(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))(next@15.5.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       better-call: 1.1.8(zod@4.3.6)
       zod: 4.3.6
 
-  '@better-auth/kysely-adapter@1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)(kysely@0.28.17)':
+  '@better-auth/kysely-adapter@1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)(kysely@0.29.3)':
     dependencies:
-      '@better-auth/core': 1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0)
+      '@better-auth/core': 1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)
       '@better-auth/utils': 0.3.1
     optionalDependencies:
-      kysely: 0.28.17
+      kysely: 0.29.3
 
-  '@better-auth/memory-adapter@1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)':
+  '@better-auth/memory-adapter@1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)':
     dependencies:
-      '@better-auth/core': 1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0)
+      '@better-auth/core': 1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)
       '@better-auth/utils': 0.3.1
 
-  '@better-auth/mongo-adapter@1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)':
+  '@better-auth/mongo-adapter@1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)':
     dependencies:
-      '@better-auth/core': 1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0)
+      '@better-auth/core': 1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)
       '@better-auth/utils': 0.3.1
 
-  '@better-auth/prisma-adapter@1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)':
+  '@better-auth/prisma-adapter@1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)':
     dependencies:
-      '@better-auth/core': 1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0)
+      '@better-auth/core': 1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)
       '@better-auth/utils': 0.3.1
 
-  '@better-auth/telemetry@1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)':
+  '@better-auth/telemetry@1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)':
     dependencies:
-      '@better-auth/core': 1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0)
+      '@better-auth/core': 1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)
       '@better-auth/utils': 0.3.1
       '@better-fetch/fetch': 1.1.21
 
@@ -9314,205 +9314,205 @@ snapshots:
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
 
-  '@csstools/postcss-cascade-layers@4.0.6(postcss@8.5.11)':
+  '@csstools/postcss-cascade-layers@4.0.6(postcss@8.5.12)':
     dependencies:
       '@csstools/selector-specificity': 3.1.1(postcss-selector-parser@6.1.2)
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
-  '@csstools/postcss-color-function@3.0.19(postcss@8.5.11)':
+  '@csstools/postcss-color-function@3.0.19(postcss@8.5.12)':
     dependencies:
       '@csstools/css-color-parser': 2.0.5(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
 
-  '@csstools/postcss-color-mix-function@2.0.19(postcss@8.5.11)':
+  '@csstools/postcss-color-mix-function@2.0.19(postcss@8.5.12)':
     dependencies:
       '@csstools/css-color-parser': 2.0.5(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
 
-  '@csstools/postcss-content-alt-text@1.0.0(postcss@8.5.11)':
+  '@csstools/postcss-content-alt-text@1.0.0(postcss@8.5.12)':
     dependencies:
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
 
-  '@csstools/postcss-exponential-functions@1.0.9(postcss@8.5.11)':
+  '@csstools/postcss-exponential-functions@1.0.9(postcss@8.5.12)':
     dependencies:
       '@csstools/css-calc': 1.2.4(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  '@csstools/postcss-font-format-keywords@3.0.2(postcss@8.5.11)':
+  '@csstools/postcss-font-format-keywords@3.0.2(postcss@8.5.12)':
     dependencies:
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  '@csstools/postcss-gamut-mapping@1.0.11(postcss@8.5.11)':
+  '@csstools/postcss-gamut-mapping@1.0.11(postcss@8.5.12)':
     dependencies:
       '@csstools/css-color-parser': 2.0.5(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  '@csstools/postcss-global-data@2.1.1(postcss@8.5.11)':
+  '@csstools/postcss-global-data@2.1.1(postcss@8.5.12)':
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  '@csstools/postcss-gradients-interpolation-method@4.0.20(postcss@8.5.11)':
-    dependencies:
-      '@csstools/css-color-parser': 2.0.5(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
-      '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
-      '@csstools/css-tokenizer': 2.4.1
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
-
-  '@csstools/postcss-hwb-function@3.0.18(postcss@8.5.11)':
+  '@csstools/postcss-gradients-interpolation-method@4.0.20(postcss@8.5.12)':
     dependencies:
       '@csstools/css-color-parser': 2.0.5(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
 
-  '@csstools/postcss-ic-unit@3.0.7(postcss@8.5.11)':
+  '@csstools/postcss-hwb-function@3.0.18(postcss@8.5.12)':
     dependencies:
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/css-color-parser': 2.0.5(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
+      '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
+      '@csstools/css-tokenizer': 2.4.1
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
+
+  '@csstools/postcss-ic-unit@3.0.7(postcss@8.5.12)':
+    dependencies:
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  '@csstools/postcss-initial@1.0.1(postcss@8.5.11)':
+  '@csstools/postcss-initial@1.0.1(postcss@8.5.12)':
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  '@csstools/postcss-is-pseudo-class@4.0.8(postcss@8.5.11)':
+  '@csstools/postcss-is-pseudo-class@4.0.8(postcss@8.5.12)':
     dependencies:
       '@csstools/selector-specificity': 3.1.1(postcss-selector-parser@6.1.2)
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
-  '@csstools/postcss-light-dark-function@1.0.8(postcss@8.5.11)':
+  '@csstools/postcss-light-dark-function@1.0.8(postcss@8.5.12)':
     dependencies:
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
 
-  '@csstools/postcss-logical-float-and-clear@2.0.1(postcss@8.5.11)':
+  '@csstools/postcss-logical-float-and-clear@2.0.1(postcss@8.5.12)':
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  '@csstools/postcss-logical-overflow@1.0.1(postcss@8.5.11)':
+  '@csstools/postcss-logical-overflow@1.0.1(postcss@8.5.12)':
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  '@csstools/postcss-logical-overscroll-behavior@1.0.1(postcss@8.5.11)':
+  '@csstools/postcss-logical-overscroll-behavior@1.0.1(postcss@8.5.12)':
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  '@csstools/postcss-logical-resize@2.0.1(postcss@8.5.11)':
+  '@csstools/postcss-logical-resize@2.0.1(postcss@8.5.12)':
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  '@csstools/postcss-logical-viewport-units@2.0.11(postcss@8.5.11)':
+  '@csstools/postcss-logical-viewport-units@2.0.11(postcss@8.5.12)':
     dependencies:
       '@csstools/css-tokenizer': 2.4.1
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
 
-  '@csstools/postcss-media-minmax@1.1.8(postcss@8.5.11)':
+  '@csstools/postcss-media-minmax@1.1.8(postcss@8.5.12)':
     dependencies:
       '@csstools/css-calc': 1.2.4(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
       '@csstools/media-query-list-parser': 2.1.13(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  '@csstools/postcss-media-queries-aspect-ratio-number-values@2.0.11(postcss@8.5.11)':
+  '@csstools/postcss-media-queries-aspect-ratio-number-values@2.0.11(postcss@8.5.12)':
     dependencies:
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
       '@csstools/media-query-list-parser': 2.1.13(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  '@csstools/postcss-nested-calc@3.0.2(postcss@8.5.11)':
+  '@csstools/postcss-nested-calc@3.0.2(postcss@8.5.12)':
     dependencies:
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  '@csstools/postcss-normalize-display-values@3.0.2(postcss@8.5.11)':
+  '@csstools/postcss-normalize-display-values@3.0.2(postcss@8.5.12)':
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  '@csstools/postcss-oklab-function@3.0.19(postcss@8.5.11)':
+  '@csstools/postcss-oklab-function@3.0.19(postcss@8.5.12)':
     dependencies:
       '@csstools/css-color-parser': 2.0.5(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
 
-  '@csstools/postcss-progressive-custom-properties@3.3.0(postcss@8.5.11)':
+  '@csstools/postcss-progressive-custom-properties@3.3.0(postcss@8.5.12)':
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  '@csstools/postcss-relative-color-syntax@2.0.19(postcss@8.5.11)':
+  '@csstools/postcss-relative-color-syntax@2.0.19(postcss@8.5.12)':
     dependencies:
       '@csstools/css-color-parser': 2.0.5(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
 
-  '@csstools/postcss-scope-pseudo-class@3.0.1(postcss@8.5.11)':
+  '@csstools/postcss-scope-pseudo-class@3.0.1(postcss@8.5.12)':
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
-  '@csstools/postcss-stepped-value-functions@3.0.10(postcss@8.5.11)':
+  '@csstools/postcss-stepped-value-functions@3.0.10(postcss@8.5.12)':
     dependencies:
       '@csstools/css-calc': 1.2.4(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  '@csstools/postcss-text-decoration-shorthand@3.0.7(postcss@8.5.11)':
+  '@csstools/postcss-text-decoration-shorthand@3.0.7(postcss@8.5.12)':
     dependencies:
       '@csstools/color-helpers': 4.2.1
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  '@csstools/postcss-trigonometric-functions@3.0.10(postcss@8.5.11)':
+  '@csstools/postcss-trigonometric-functions@3.0.10(postcss@8.5.12)':
     dependencies:
       '@csstools/css-calc': 1.2.4(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  '@csstools/postcss-unset-value@3.0.1(postcss@8.5.11)':
+  '@csstools/postcss-unset-value@3.0.1(postcss@8.5.12)':
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
   '@csstools/selector-resolve-nested@1.1.0(postcss-selector-parser@6.1.2)':
     dependencies:
@@ -9522,13 +9522,13 @@ snapshots:
     dependencies:
       postcss-selector-parser: 6.1.2
 
-  '@csstools/utilities@1.0.0(postcss@8.5.11)':
+  '@csstools/utilities@1.0.0(postcss@8.5.12)':
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
   '@drizzle-team/brocli@0.10.2': {}
 
-  '@emnapi/runtime@1.11.1':
+  '@emnapi/runtime@1.11.2':
     dependencies:
       tslib: 2.8.1
     optional: true
@@ -9884,7 +9884,7 @@ snapshots:
 
   '@img/sharp-wasm32@0.34.5':
     dependencies:
-      '@emnapi/runtime': 1.11.1
+      '@emnapi/runtime': 1.11.2
     optional: true
 
   '@img/sharp-win32-arm64@0.34.5':
@@ -10204,7 +10204,7 @@ snapshots:
     dependencies:
       semver: 7.8.5
 
-  '@opentelemetry/semantic-conventions@1.41.1': {}
+  '@opentelemetry/semantic-conventions@1.43.0': {}
 
   '@panva/hkdf@1.2.1': {}
 
@@ -11615,7 +11615,7 @@ snapshots:
       '@alloc/quick-lru': 5.2.0
       '@tailwindcss/node': 4.2.1
       '@tailwindcss/oxide': 4.2.1
-      postcss: 8.5.11
+      postcss: 8.5.12
       tailwindcss: 4.2.1
 
   '@tailwindcss/typography@0.5.19(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.2))':
@@ -12181,13 +12181,13 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  autoprefixer@10.4.27(postcss@8.5.11):
+  autoprefixer@10.4.27(postcss@8.5.12):
     dependencies:
       browserslist: 4.28.1
-      caniuse-lite: 1.0.30001799
+      caniuse-lite: 1.0.30001803
       fraction.js: 5.3.4
       picocolors: 1.1.1
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
   available-typed-arrays@1.0.7:
@@ -12255,15 +12255,15 @@ snapshots:
 
   baseline-browser-mapping@2.10.8: {}
 
-  better-auth@1.6.11(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))(next@15.5.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  better-auth@1.6.13(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))(next@15.5.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@better-auth/core': 1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0)
-      '@better-auth/drizzle-adapter': 1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))
-      '@better-auth/kysely-adapter': 1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)(kysely@0.28.17)
-      '@better-auth/memory-adapter': 1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)
-      '@better-auth/mongo-adapter': 1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)
-      '@better-auth/prisma-adapter': 1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)
-      '@better-auth/telemetry': 1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)
+      '@better-auth/core': 1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)
+      '@better-auth/drizzle-adapter': 1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))
+      '@better-auth/kysely-adapter': 1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)(kysely@0.29.3)
+      '@better-auth/memory-adapter': 1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)
+      '@better-auth/mongo-adapter': 1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)
+      '@better-auth/prisma-adapter': 1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)
+      '@better-auth/telemetry': 1.6.13(@better-auth/core@1.6.13(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.3.6))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)
       '@better-auth/utils': 0.3.1
       '@better-fetch/fetch': 1.1.21
       '@noble/ciphers': 2.2.0
@@ -12271,12 +12271,12 @@ snapshots:
       better-call: 1.3.5(zod@4.3.6)
       defu: 6.1.7
       jose: 6.2.3
-      kysely: 0.28.17
-      nanostores: 1.3.0
+      kysely: 0.29.3
+      nanostores: 1.4.0
       zod: 4.3.6
     optionalDependencies:
       drizzle-kit: 0.31.10
-      drizzle-orm: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17)
+      drizzle-orm: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3)
       next: 15.5.10(@babel/core@7.29.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -12298,7 +12298,7 @@ snapshots:
       '@better-auth/utils': 0.3.1
       '@better-fetch/fetch': 1.1.21
       rou3: 0.7.12
-      set-cookie-parser: 3.1.0
+      set-cookie-parser: 3.1.2
     optionalDependencies:
       zod: 4.3.6
 
@@ -12334,7 +12334,7 @@ snapshots:
   browserslist@4.28.1:
     dependencies:
       baseline-browser-mapping: 2.10.8
-      caniuse-lite: 1.0.30001799
+      caniuse-lite: 1.0.30001803
       electron-to-chromium: 1.5.307
       node-releases: 2.0.36
       update-browserslist-db: 1.2.3(browserslist@4.28.1)
@@ -12422,7 +12422,7 @@ snapshots:
 
   camelize@1.0.1: {}
 
-  caniuse-lite@1.0.30001799: {}
+  caniuse-lite@1.0.30001803: {}
 
   ccount@2.0.1: {}
 
@@ -12616,23 +12616,23 @@ snapshots:
     dependencies:
       uncrypto: 0.1.3
 
-  css-blank-pseudo@6.0.2(postcss@8.5.11):
+  css-blank-pseudo@6.0.2(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
   css-color-keywords@1.0.0: {}
 
-  css-has-pseudo@6.0.5(postcss@8.5.11):
+  css-has-pseudo@6.0.5(postcss@8.5.12):
     dependencies:
       '@csstools/selector-specificity': 3.1.1(postcss-selector-parser@6.1.2)
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
       postcss-value-parser: 4.2.0
 
-  css-prefers-color-scheme@9.0.1(postcss@8.5.11):
+  css-prefers-color-scheme@9.0.1(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
   css-select@5.2.2:
     dependencies:
@@ -12694,9 +12694,9 @@ snapshots:
 
   date-fns@3.6.0: {}
 
-  db0@0.3.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17)):
+  db0@0.3.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3)):
     optionalDependencies:
-      drizzle-orm: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17)
+      drizzle-orm: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3)
 
   debug@3.2.7:
     dependencies:
@@ -12825,15 +12825,15 @@ snapshots:
       esbuild: 0.25.4
       tsx: 4.21.0
 
-  drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17):
+  drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3):
     optionalDependencies:
       '@types/pg': 8.6.6
       '@vercel/postgres': 0.8.0
-      kysely: 0.28.17
+      kysely: 0.29.3
 
-  drizzle-zod@0.5.1(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))(zod@4.3.6):
+  drizzle-zod@0.5.1(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))(zod@4.3.6):
     dependencies:
-      drizzle-orm: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17)
+      drizzle-orm: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3)
       zod: 4.3.6
 
   dunder-proto@1.0.1:
@@ -14139,7 +14139,7 @@ snapshots:
 
   knitwork@1.3.0: {}
 
-  kysely@0.28.17: {}
+  kysely@0.29.3: {}
 
   language-subtag-registry@0.3.23: {}
 
@@ -14874,7 +14874,7 @@ snapshots:
 
   nanoid@3.3.15: {}
 
-  nanostores@1.3.0: {}
+  nanostores@1.4.0: {}
 
   natural-compare@1.4.0: {}
 
@@ -14905,7 +14905,7 @@ snapshots:
     dependencies:
       '@next/env': 15.5.10
       '@swc/helpers': 0.5.15
-      caniuse-lite: 1.0.30001799
+      caniuse-lite: 1.0.30001803
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -14925,7 +14925,7 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  nitropack@2.13.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))(encoding@0.1.13):
+  nitropack@2.13.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))(encoding@0.1.13):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.2
       '@rollup/plugin-alias': 6.0.0(rollup@4.59.0)
@@ -14946,7 +14946,7 @@ snapshots:
       cookie-es: 2.0.1
       croner: 10.0.1
       crossws: 0.3.5
-      db0: 0.3.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))
+      db0: 0.3.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))
       defu: 6.1.7
       destr: 2.0.5
       dot-prop: 10.1.0
@@ -14992,7 +14992,7 @@ snapshots:
       unenv: 2.0.0-rc.24
       unimport: 6.3.0
       unplugin-utils: 0.3.1
-      unstorage: 1.17.5(db0@0.3.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17)))(ioredis@5.11.1)
+      unstorage: 1.17.5(db0@0.3.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3)))(ioredis@5.11.1)
       untyped: 2.0.0
       unwasm: 0.5.3
       youch: 4.1.1
@@ -15324,244 +15324,244 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
-  postcss-attribute-case-insensitive@6.0.3(postcss@8.5.11):
+  postcss-attribute-case-insensitive@6.0.3(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
-  postcss-clamp@4.1.0(postcss@8.5.11):
+  postcss-clamp@4.1.0(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  postcss-color-functional-notation@6.0.14(postcss@8.5.11):
+  postcss-color-functional-notation@6.0.14(postcss@8.5.12):
     dependencies:
       '@csstools/css-color-parser': 2.0.5(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
 
-  postcss-color-hex-alpha@9.0.4(postcss@8.5.11):
+  postcss-color-hex-alpha@9.0.4(postcss@8.5.12):
     dependencies:
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  postcss-color-rebeccapurple@9.0.3(postcss@8.5.11):
+  postcss-color-rebeccapurple@9.0.3(postcss@8.5.12):
     dependencies:
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  postcss-custom-media@10.0.8(postcss@8.5.11):
+  postcss-custom-media@10.0.8(postcss@8.5.12):
     dependencies:
       '@csstools/cascade-layer-name-parser': 1.0.13(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
       '@csstools/media-query-list-parser': 2.1.13(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  postcss-custom-properties@13.3.12(postcss@8.5.11):
+  postcss-custom-properties@13.3.12(postcss@8.5.12):
     dependencies:
       '@csstools/cascade-layer-name-parser': 1.0.13(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  postcss-custom-selectors@7.1.12(postcss@8.5.11):
+  postcss-custom-selectors@7.1.12(postcss@8.5.12):
     dependencies:
       '@csstools/cascade-layer-name-parser': 1.0.13(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
-  postcss-dir-pseudo-class@8.0.1(postcss@8.5.11):
+  postcss-dir-pseudo-class@8.0.1(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
-  postcss-double-position-gradients@5.0.7(postcss@8.5.11):
+  postcss-double-position-gradients@5.0.7(postcss@8.5.12):
     dependencies:
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  postcss-flexbugs-fixes@5.0.2(postcss@8.5.11):
+  postcss-flexbugs-fixes@5.0.2(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  postcss-focus-visible@9.0.1(postcss@8.5.11):
+  postcss-focus-visible@9.0.1(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
-  postcss-focus-within@8.0.1(postcss@8.5.11):
+  postcss-focus-within@8.0.1(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
-  postcss-font-variant@5.0.0(postcss@8.5.11):
+  postcss-font-variant@5.0.0(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  postcss-gap-properties@5.0.1(postcss@8.5.11):
+  postcss-gap-properties@5.0.1(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  postcss-image-set-function@6.0.3(postcss@8.5.11):
+  postcss-image-set-function@6.0.3(postcss@8.5.12):
     dependencies:
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  postcss-import@15.1.0(postcss@8.5.11):
+  postcss-import@15.1.0(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.11
 
-  postcss-js@4.1.0(postcss@8.5.11):
+  postcss-js@4.1.0(postcss@8.5.12):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  postcss-lab-function@6.0.19(postcss@8.5.11):
+  postcss-lab-function@6.0.19(postcss@8.5.12):
     dependencies:
       '@csstools/css-color-parser': 2.0.5(@csstools/css-parser-algorithms@2.7.1(@csstools/css-tokenizer@2.4.1))(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/utilities': 1.0.0(postcss@8.5.11)
-      postcss: 8.5.11
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/utilities': 1.0.0(postcss@8.5.12)
+      postcss: 8.5.12
 
-  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.11)(tsx@4.21.0)(yaml@2.8.2):
+  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.12)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
       lilconfig: 3.1.3
     optionalDependencies:
       jiti: 1.21.7
-      postcss: 8.5.11
+      postcss: 8.5.12
       tsx: 4.21.0
       yaml: 2.8.2
 
-  postcss-logical@7.0.1(postcss@8.5.11):
+  postcss-logical@7.0.1(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  postcss-nested@6.2.0(postcss@8.5.11):
+  postcss-nested@6.2.0(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
-  postcss-nesting@12.1.5(postcss@8.5.11):
+  postcss-nesting@12.1.5(postcss@8.5.12):
     dependencies:
       '@csstools/selector-resolve-nested': 1.1.0(postcss-selector-parser@6.1.2)
       '@csstools/selector-specificity': 3.1.1(postcss-selector-parser@6.1.2)
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
-  postcss-opacity-percentage@2.0.0(postcss@8.5.11):
+  postcss-opacity-percentage@2.0.0(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  postcss-overflow-shorthand@5.0.1(postcss@8.5.11):
+  postcss-overflow-shorthand@5.0.1(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  postcss-page-break@3.0.4(postcss@8.5.11):
+  postcss-page-break@3.0.4(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  postcss-place@9.0.1(postcss@8.5.11):
+  postcss-place@9.0.1(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-value-parser: 4.2.0
 
-  postcss-preset-env@9.6.0(postcss@8.5.11):
+  postcss-preset-env@9.6.0(postcss@8.5.12):
     dependencies:
-      '@csstools/postcss-cascade-layers': 4.0.6(postcss@8.5.11)
-      '@csstools/postcss-color-function': 3.0.19(postcss@8.5.11)
-      '@csstools/postcss-color-mix-function': 2.0.19(postcss@8.5.11)
-      '@csstools/postcss-content-alt-text': 1.0.0(postcss@8.5.11)
-      '@csstools/postcss-exponential-functions': 1.0.9(postcss@8.5.11)
-      '@csstools/postcss-font-format-keywords': 3.0.2(postcss@8.5.11)
-      '@csstools/postcss-gamut-mapping': 1.0.11(postcss@8.5.11)
-      '@csstools/postcss-gradients-interpolation-method': 4.0.20(postcss@8.5.11)
-      '@csstools/postcss-hwb-function': 3.0.18(postcss@8.5.11)
-      '@csstools/postcss-ic-unit': 3.0.7(postcss@8.5.11)
-      '@csstools/postcss-initial': 1.0.1(postcss@8.5.11)
-      '@csstools/postcss-is-pseudo-class': 4.0.8(postcss@8.5.11)
-      '@csstools/postcss-light-dark-function': 1.0.8(postcss@8.5.11)
-      '@csstools/postcss-logical-float-and-clear': 2.0.1(postcss@8.5.11)
-      '@csstools/postcss-logical-overflow': 1.0.1(postcss@8.5.11)
-      '@csstools/postcss-logical-overscroll-behavior': 1.0.1(postcss@8.5.11)
-      '@csstools/postcss-logical-resize': 2.0.1(postcss@8.5.11)
-      '@csstools/postcss-logical-viewport-units': 2.0.11(postcss@8.5.11)
-      '@csstools/postcss-media-minmax': 1.1.8(postcss@8.5.11)
-      '@csstools/postcss-media-queries-aspect-ratio-number-values': 2.0.11(postcss@8.5.11)
-      '@csstools/postcss-nested-calc': 3.0.2(postcss@8.5.11)
-      '@csstools/postcss-normalize-display-values': 3.0.2(postcss@8.5.11)
-      '@csstools/postcss-oklab-function': 3.0.19(postcss@8.5.11)
-      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.11)
-      '@csstools/postcss-relative-color-syntax': 2.0.19(postcss@8.5.11)
-      '@csstools/postcss-scope-pseudo-class': 3.0.1(postcss@8.5.11)
-      '@csstools/postcss-stepped-value-functions': 3.0.10(postcss@8.5.11)
-      '@csstools/postcss-text-decoration-shorthand': 3.0.7(postcss@8.5.11)
-      '@csstools/postcss-trigonometric-functions': 3.0.10(postcss@8.5.11)
-      '@csstools/postcss-unset-value': 3.0.1(postcss@8.5.11)
-      autoprefixer: 10.4.27(postcss@8.5.11)
+      '@csstools/postcss-cascade-layers': 4.0.6(postcss@8.5.12)
+      '@csstools/postcss-color-function': 3.0.19(postcss@8.5.12)
+      '@csstools/postcss-color-mix-function': 2.0.19(postcss@8.5.12)
+      '@csstools/postcss-content-alt-text': 1.0.0(postcss@8.5.12)
+      '@csstools/postcss-exponential-functions': 1.0.9(postcss@8.5.12)
+      '@csstools/postcss-font-format-keywords': 3.0.2(postcss@8.5.12)
+      '@csstools/postcss-gamut-mapping': 1.0.11(postcss@8.5.12)
+      '@csstools/postcss-gradients-interpolation-method': 4.0.20(postcss@8.5.12)
+      '@csstools/postcss-hwb-function': 3.0.18(postcss@8.5.12)
+      '@csstools/postcss-ic-unit': 3.0.7(postcss@8.5.12)
+      '@csstools/postcss-initial': 1.0.1(postcss@8.5.12)
+      '@csstools/postcss-is-pseudo-class': 4.0.8(postcss@8.5.12)
+      '@csstools/postcss-light-dark-function': 1.0.8(postcss@8.5.12)
+      '@csstools/postcss-logical-float-and-clear': 2.0.1(postcss@8.5.12)
+      '@csstools/postcss-logical-overflow': 1.0.1(postcss@8.5.12)
+      '@csstools/postcss-logical-overscroll-behavior': 1.0.1(postcss@8.5.12)
+      '@csstools/postcss-logical-resize': 2.0.1(postcss@8.5.12)
+      '@csstools/postcss-logical-viewport-units': 2.0.11(postcss@8.5.12)
+      '@csstools/postcss-media-minmax': 1.1.8(postcss@8.5.12)
+      '@csstools/postcss-media-queries-aspect-ratio-number-values': 2.0.11(postcss@8.5.12)
+      '@csstools/postcss-nested-calc': 3.0.2(postcss@8.5.12)
+      '@csstools/postcss-normalize-display-values': 3.0.2(postcss@8.5.12)
+      '@csstools/postcss-oklab-function': 3.0.19(postcss@8.5.12)
+      '@csstools/postcss-progressive-custom-properties': 3.3.0(postcss@8.5.12)
+      '@csstools/postcss-relative-color-syntax': 2.0.19(postcss@8.5.12)
+      '@csstools/postcss-scope-pseudo-class': 3.0.1(postcss@8.5.12)
+      '@csstools/postcss-stepped-value-functions': 3.0.10(postcss@8.5.12)
+      '@csstools/postcss-text-decoration-shorthand': 3.0.7(postcss@8.5.12)
+      '@csstools/postcss-trigonometric-functions': 3.0.10(postcss@8.5.12)
+      '@csstools/postcss-unset-value': 3.0.1(postcss@8.5.12)
+      autoprefixer: 10.4.27(postcss@8.5.12)
       browserslist: 4.28.1
-      css-blank-pseudo: 6.0.2(postcss@8.5.11)
-      css-has-pseudo: 6.0.5(postcss@8.5.11)
-      css-prefers-color-scheme: 9.0.1(postcss@8.5.11)
+      css-blank-pseudo: 6.0.2(postcss@8.5.12)
+      css-has-pseudo: 6.0.5(postcss@8.5.12)
+      css-prefers-color-scheme: 9.0.1(postcss@8.5.12)
       cssdb: 8.8.0
-      postcss: 8.5.11
-      postcss-attribute-case-insensitive: 6.0.3(postcss@8.5.11)
-      postcss-clamp: 4.1.0(postcss@8.5.11)
-      postcss-color-functional-notation: 6.0.14(postcss@8.5.11)
-      postcss-color-hex-alpha: 9.0.4(postcss@8.5.11)
-      postcss-color-rebeccapurple: 9.0.3(postcss@8.5.11)
-      postcss-custom-media: 10.0.8(postcss@8.5.11)
-      postcss-custom-properties: 13.3.12(postcss@8.5.11)
-      postcss-custom-selectors: 7.1.12(postcss@8.5.11)
-      postcss-dir-pseudo-class: 8.0.1(postcss@8.5.11)
-      postcss-double-position-gradients: 5.0.7(postcss@8.5.11)
-      postcss-focus-visible: 9.0.1(postcss@8.5.11)
-      postcss-focus-within: 8.0.1(postcss@8.5.11)
-      postcss-font-variant: 5.0.0(postcss@8.5.11)
-      postcss-gap-properties: 5.0.1(postcss@8.5.11)
-      postcss-image-set-function: 6.0.3(postcss@8.5.11)
-      postcss-lab-function: 6.0.19(postcss@8.5.11)
-      postcss-logical: 7.0.1(postcss@8.5.11)
-      postcss-nesting: 12.1.5(postcss@8.5.11)
-      postcss-opacity-percentage: 2.0.0(postcss@8.5.11)
-      postcss-overflow-shorthand: 5.0.1(postcss@8.5.11)
-      postcss-page-break: 3.0.4(postcss@8.5.11)
-      postcss-place: 9.0.1(postcss@8.5.11)
-      postcss-pseudo-class-any-link: 9.0.2(postcss@8.5.11)
-      postcss-replace-overflow-wrap: 4.0.0(postcss@8.5.11)
-      postcss-selector-not: 7.0.2(postcss@8.5.11)
+      postcss: 8.5.12
+      postcss-attribute-case-insensitive: 6.0.3(postcss@8.5.12)
+      postcss-clamp: 4.1.0(postcss@8.5.12)
+      postcss-color-functional-notation: 6.0.14(postcss@8.5.12)
+      postcss-color-hex-alpha: 9.0.4(postcss@8.5.12)
+      postcss-color-rebeccapurple: 9.0.3(postcss@8.5.12)
+      postcss-custom-media: 10.0.8(postcss@8.5.12)
+      postcss-custom-properties: 13.3.12(postcss@8.5.12)
+      postcss-custom-selectors: 7.1.12(postcss@8.5.12)
+      postcss-dir-pseudo-class: 8.0.1(postcss@8.5.12)
+      postcss-double-position-gradients: 5.0.7(postcss@8.5.12)
+      postcss-focus-visible: 9.0.1(postcss@8.5.12)
+      postcss-focus-within: 8.0.1(postcss@8.5.12)
+      postcss-font-variant: 5.0.0(postcss@8.5.12)
+      postcss-gap-properties: 5.0.1(postcss@8.5.12)
+      postcss-image-set-function: 6.0.3(postcss@8.5.12)
+      postcss-lab-function: 6.0.19(postcss@8.5.12)
+      postcss-logical: 7.0.1(postcss@8.5.12)
+      postcss-nesting: 12.1.5(postcss@8.5.12)
+      postcss-opacity-percentage: 2.0.0(postcss@8.5.12)
+      postcss-overflow-shorthand: 5.0.1(postcss@8.5.12)
+      postcss-page-break: 3.0.4(postcss@8.5.12)
+      postcss-place: 9.0.1(postcss@8.5.12)
+      postcss-pseudo-class-any-link: 9.0.2(postcss@8.5.12)
+      postcss-replace-overflow-wrap: 4.0.0(postcss@8.5.12)
+      postcss-selector-not: 7.0.2(postcss@8.5.12)
 
-  postcss-pseudo-class-any-link@9.0.2(postcss@8.5.11):
+  postcss-pseudo-class-any-link@9.0.2(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
-  postcss-replace-overflow-wrap@4.0.0(postcss@8.5.11):
+  postcss-replace-overflow-wrap@4.0.0(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
 
-  postcss-selector-not@7.0.2(postcss@8.5.11):
+  postcss-selector-not@7.0.2(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.11
+      postcss: 8.5.12
       postcss-selector-parser: 6.1.2
 
   postcss-selector-parser@6.0.10:
@@ -15588,7 +15588,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  postcss@8.5.11:
+  postcss@8.5.12:
     dependencies:
       nanoid: 3.3.15
       picocolors: 1.1.1
@@ -16184,7 +16184,7 @@ snapshots:
 
   set-cookie-parser@2.7.2: {}
 
-  set-cookie-parser@3.1.0: {}
+  set-cookie-parser@3.1.2: {}
 
   set-function-length@1.2.2:
     dependencies:
@@ -16589,11 +16589,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.5.11
-      postcss-import: 15.1.0(postcss@8.5.11)
-      postcss-js: 4.1.0(postcss@8.5.11)
-      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.11)(tsx@4.21.0)(yaml@2.8.2)
-      postcss-nested: 6.2.0(postcss@8.5.11)
+      postcss: 8.5.12
+      postcss-import: 15.1.0(postcss@8.5.12)
+      postcss-js: 4.1.0(postcss@8.5.12)
+      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.12)(tsx@4.21.0)(yaml@2.8.2)
+      postcss-nested: 6.2.0(postcss@8.5.12)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.11
       sucrase: 3.35.1
@@ -16898,7 +16898,7 @@ snapshots:
       picomatch: 4.0.4
       webpack-virtual-modules: 0.6.2
 
-  unstorage@1.17.5(db0@0.3.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17)))(ioredis@5.11.1):
+  unstorage@1.17.5(db0@0.3.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3)))(ioredis@5.11.1):
     dependencies:
       anymatch: 3.1.3
       chokidar: 5.0.0
@@ -16909,7 +16909,7 @@ snapshots:
       ofetch: 1.5.1
       ufo: 1.6.4
     optionalDependencies:
-      db0: 0.3.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.17))
+      db0: 0.3.4(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.3))
       ioredis: 5.11.1
 
   untun@0.1.3:
