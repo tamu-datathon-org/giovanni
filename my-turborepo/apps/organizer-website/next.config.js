@@ -2,6 +2,12 @@
 const config = {
   reactStrictMode: true,
 
+  /** Per-app auth cookie name so organizer-website's session is independent
+   * from team-website's (see packages/auth advanced.cookiePrefix). */
+  env: {
+    AUTH_COOKIE_PREFIX: "organizer",
+  },
+
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
     "@monaco-editor/react",
