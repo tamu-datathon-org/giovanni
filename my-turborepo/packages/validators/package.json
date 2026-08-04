@@ -20,17 +20,17 @@
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
-    "minimatch": "^10.2.3",
-    "zod": "^4.3.6"
+    "minimatch": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@types/minimatch": "^5.1.2",
-    "@types/node": "^20.19.24",
+    "@types/node": "catalog:",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "eslint": "^9.39.1",
-    "prettier": "^3.6.2",
-    "typescript": "^5.9.3"
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
   }
 }

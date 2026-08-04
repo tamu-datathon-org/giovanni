@@ -25,9 +25,9 @@
     "@turbo/gen": "^2.4.4",
     "@vanni/prettier-config": "workspace:*",
     "check-dependency-version-consistency": "^4.1.1",
-    "prettier": "^3.6.2",
+    "prettier": "catalog:",
     "turbo": "^2.4.4",
-    "typescript": "^5.9.3"
+    "typescript": "catalog:"
   },
   "packageManager": "pnpm@11.1.1",
   "engines": {

@@ -4,6 +4,297 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@aws-sdk/client-ses':
+      specifier: ^3.990.0
+      version: 3.1006.0
+    '@aws-sdk/client-sqs':
+      specifier: ^3.1006.0
+      version: 3.1006.0
+    '@aws-sdk/credential-provider-node':
+      specifier: ^3.922.0
+      version: 3.972.19
+    '@aws-sdk/types':
+      specifier: ^3.922.0
+      version: 3.973.5
+    '@babel/standalone':
+      specifier: ^7.29.2
+      version: 7.29.2
+    '@gsap/react':
+      specifier: ^2.1.2
+      version: 2.1.2
+    '@hookform/resolvers':
+      specifier: ^3.10.0
+      version: 3.10.0
+    '@monaco-editor/react':
+      specifier: ^4.7.0
+      version: 4.7.0
+    '@radix-ui/react-checkbox':
+      specifier: ^1.3.3
+      version: 1.3.3
+    '@radix-ui/react-collapsible':
+      specifier: ^1.1.12
+      version: 1.1.12
+    '@radix-ui/react-dialog':
+      specifier: ^1.1.15
+      version: 1.1.15
+    '@radix-ui/react-dropdown-menu':
+      specifier: ^2.1.16
+      version: 2.1.16
+    '@radix-ui/react-icons':
+      specifier: ^1.3.2
+      version: 1.3.2
+    '@radix-ui/react-label':
+      specifier: ^2.1.7
+      version: 2.1.8
+    '@radix-ui/react-navigation-menu':
+      specifier: ^1.2.14
+      version: 1.2.14
+    '@radix-ui/react-popover':
+      specifier: ^1.1.15
+      version: 1.1.15
+    '@radix-ui/react-scroll-area':
+      specifier: ^1.2.10
+      version: 1.2.10
+    '@radix-ui/react-select':
+      specifier: ^2.2.6
+      version: 2.2.6
+    '@radix-ui/react-separator':
+      specifier: ^1.1.7
+      version: 1.1.8
+    '@radix-ui/react-slider':
+      specifier: ^1.3.6
+      version: 1.3.6
+    '@radix-ui/react-slot':
+      specifier: ^1.2.3
+      version: 1.2.4
+    '@radix-ui/react-tabs':
+      specifier: ^1.1.13
+      version: 1.1.13
+    '@radix-ui/react-toast':
+      specifier: ^1.2.15
+      version: 1.2.15
+    '@react-email/components':
+      specifier: ^1.0.10
+      version: 1.0.10
+    '@react-email/render':
+      specifier: ^2.0.4
+      version: 2.0.4
+    '@react-oauth/google':
+      specifier: ^0.13.4
+      version: 0.13.4
+    '@t3-oss/env-core':
+      specifier: ^0.10.1
+      version: 0.10.1
+    '@t3-oss/env-nextjs':
+      specifier: ^0.9.2
+      version: 0.9.2
+    '@tanstack/react-query':
+      specifier: ^5.90.6
+      version: 5.90.21
+    '@tanstack/react-table':
+      specifier: ^8.21.3
+      version: 8.21.3
+    '@total-typescript/ts-reset':
+      specifier: ^0.4.2
+      version: 0.4.2
+    '@trpc/client':
+      specifier: 11.0.0-rc.364
+      version: 11.0.0-rc.364
+    '@trpc/react-query':
+      specifier: 11.0.0-rc.364
+      version: 11.0.0-rc.364
+    '@trpc/server':
+      specifier: 11.0.0-rc.364
+      version: 11.0.0-rc.364
+    '@types/babel__standalone':
+      specifier: ^7.1.9
+      version: 7.1.9
+    '@types/jsonwebtoken':
+      specifier: ^9.0.10
+      version: 9.0.10
+    '@types/node':
+      specifier: ^20.19.24
+      version: 20.19.37
+    '@types/nodemailer':
+      specifier: ^6.4.21
+      version: 6.4.23
+    '@types/nodemailer-ses-transport':
+      specifier: ^1.5.5
+      version: 1.5.5
+    '@types/qrcode':
+      specifier: ^1.5.6
+      version: 1.5.6
+    '@types/react':
+      specifier: ^18.3.26
+      version: 18.3.28
+    '@types/react-dom':
+      specifier: ^18.3.7
+      version: 18.3.7
+    '@typescript-eslint/parser':
+      specifier: ^8.46.3
+      version: 8.57.0
+    '@vercel/blob':
+      specifier: ^0.24.1
+      version: 0.24.1
+    '@vercel/speed-insights':
+      specifier: ^1.2.0
+      version: 1.3.1
+    '@yudiel/react-qr-scanner':
+      specifier: ^2.4.1
+      version: 2.5.1
+    axios:
+      specifier: ^1.13.6
+      version: 1.13.6
+    class-variance-authority:
+      specifier: ^0.7.1
+      version: 0.7.1
+    clsx:
+      specifier: ^2.1.1
+      version: 2.1.1
+    cmdk:
+      specifier: 1.0.0
+      version: 1.0.0
+    date-fns:
+      specifier: ^3.6.0
+      version: 3.6.0
+    dotenv-cli:
+      specifier: ^7.4.4
+      version: 7.4.4
+    drizzle-orm:
+      specifier: ^0.45.2
+      version: 0.45.2
+    embla-carousel-react:
+      specifier: ^8.6.0
+      version: 8.6.0
+    eslint:
+      specifier: ^9.39.1
+      version: 9.39.4
+    framer-motion:
+      specifier: ^11.18.2
+      version: 11.18.2
+    gapi-script:
+      specifier: ^1.2.0
+      version: 1.2.0
+    geist:
+      specifier: ^1.5.1
+      version: 1.7.0
+    googleapis:
+      specifier: ^171.4.0
+      version: 171.4.0
+    gray-matter:
+      specifier: ^4.0.3
+      version: 4.0.3
+    gsap:
+      specifier: ^3.14.2
+      version: 3.14.2
+    jiti:
+      specifier: ^1.21.7
+      version: 1.21.7
+    jose:
+      specifier: ^6.2.2
+      version: 6.2.2
+    jsonwebtoken:
+      specifier: ^9.0.2
+      version: 9.0.3
+    lucide-react:
+      specifier: ^0.439.0
+      version: 0.439.0
+    minimatch:
+      specifier: ^10.2.3
+      version: 10.2.5
+    next:
+      specifier: ^16.2.7
+      version: 16.2.7
+    node-gyp:
+      specifier: 10.0.0
+      version: 10.0.0
+    nodemailer:
+      specifier: ^8.0.5
+      version: 8.0.7
+    postcss:
+      specifier: ^8.5.3
+      version: 8.5.8
+    prettier:
+      specifier: ^3.6.2
+      version: 3.8.1
+    qrcode:
+      specifier: ^1.5.4
+      version: 1.5.4
+    react:
+      specifier: 18.3.1
+      version: 18.3.1
+    react-device-detect:
+      specifier: ^2.2.3
+      version: 2.2.3
+    react-dom:
+      specifier: 18.3.1
+      version: 18.3.1
+    react-draggable:
+      specifier: ^4.5.0
+      version: 4.5.0
+    react-hook-form:
+      specifier: ^7.66.0
+      version: 7.71.2
+    react-hot-toast:
+      specifier: ^2.6.0
+      version: 2.6.0
+    react-icons:
+      specifier: ^5.5.0
+      version: 5.6.0
+    react-markdown:
+      specifier: ^9.1.0
+      version: 9.1.0
+    react-router-dom:
+      specifier: ^6.30.1
+      version: 6.30.3
+    react-scan:
+      specifier: ^0.1.4
+      version: 0.1.4
+    react95:
+      specifier: ^4.0.0
+      version: 4.0.0
+    remark:
+      specifier: ^15.0.1
+      version: 15.0.1
+    remark-html:
+      specifier: ^16.0.1
+      version: 16.0.1
+    sass:
+      specifier: ^1.93.3
+      version: 1.98.0
+    scss:
+      specifier: ^0.2.4
+      version: 0.2.4
+    sharp:
+      specifier: ^0.33.5
+      version: 0.33.5
+    styled-components:
+      specifier: ^6.1.19
+      version: 6.3.11
+    superjson:
+      specifier: 2.2.1
+      version: 2.2.1
+    tailwind-merge:
+      specifier: ^2.6.0
+      version: 2.6.1
+    tailwindcss:
+      specifier: ^3.4.18
+      version: 3.4.19
+    tailwindcss-animate:
+      specifier: ^1.0.7
+      version: 1.0.7
+    typescript:
+      specifier: ^5.9.3
+      version: 5.9.3
+    zod:
+      specifier: ^4.3.6
+      version: 4.3.6
+    zod-form-data:
+      specifier: ^2.0.8
+      version: 2.0.8
+
 importers:
 
   .:
@@ -18,13 +309,13 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       turbo:
         specifier: ^2.4.4
         version: 2.8.16
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   apps/auth-proxy:
@@ -33,11 +324,11 @@ importers:
         specifier: 0.31.0
         version: 0.31.0(nodemailer@8.0.7)
       nodemailer:
-        specifier: ^8.0.5
+        specifier: 'catalog:'
         version: 8.0.7
     devDependencies:
       '@types/node':
-        specifier: ^20.19.24
+        specifier: 'catalog:'
         version: 20.19.37
       '@vanni/eslint-config':
         specifier: workspace:*
@@ -52,7 +343,7 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/typescript
       eslint:
-        specifier: ^9.39.1
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.6.1)
       h3:
         specifier: ^1.15.9
@@ -61,10 +352,10 @@ importers:
         specifier: ^2.11.7
         version: 2.13.1(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.11))(encoding@0.1.13)
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   apps/event-website:
@@ -79,19 +370,19 @@ importers:
         specifier: ^16.2.7
         version: 16.2.7(@mdx-js/loader@3.1.1)(@mdx-js/react@3.1.1(@types/react@18.3.28)(react@18.3.1))
       '@radix-ui/react-dialog':
-        specifier: ^1.1.15
+        specifier: 'catalog:'
         version: 1.1.15(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@t3-oss/env-nextjs':
-        specifier: ^0.9.2
+        specifier: 'catalog:'
         version: 0.9.2(typescript@5.9.3)(zod@4.3.6)
       '@tailwindcss/postcss':
         specifier: ^4.0.15
         version: 4.2.1
       '@tanstack/react-query':
-        specifier: ^5.90.6
+        specifier: 'catalog:'
         version: 5.90.21(react@18.3.1)
       '@tanstack/react-table':
-        specifier: ^8.21.3
+        specifier: 'catalog:'
         version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@vanni/ui':
         specifier: workspace:*
@@ -100,43 +391,43 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validators
       '@vercel/blob':
-        specifier: ^0.24.1
+        specifier: 'catalog:'
         version: 0.24.1
       class-variance-authority:
-        specifier: ^0.7.1
+        specifier: 'catalog:'
         version: 0.7.1
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
       clsx:
-        specifier: ^2.1.1
+        specifier: 'catalog:'
         version: 2.1.1
       cookie:
         specifier: ^1.0.2
         version: 1.1.1
       gray-matter:
-        specifier: ^4.0.3
+        specifier: 'catalog:'
         version: 4.0.3
       gsap:
-        specifier: ^3.14.2
+        specifier: 'catalog:'
         version: 3.14.2
       lucide-react:
-        specifier: ^0.439.0
+        specifier: 'catalog:'
         version: 0.439.0(react@18.3.1)
       motion:
         specifier: ^12.23.22
         version: 12.37.0(@emotion/is-prop-valid@1.4.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next:
-        specifier: ^16.2.7
+        specifier: 'catalog:'
         version: 16.2.7(@babel/core@7.29.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0)
       next-mdx-remote:
         specifier: ^6.0.0
         version: 6.0.0(@types/react@18.3.28)(react@18.3.1)
       node-gyp:
-        specifier: 10.0.0
+        specifier: 'catalog:'
         version: 10.0.0
       postcss:
-        specifier: ^8.5.3
+        specifier: 'catalog:'
         version: 8.5.8
       postcss-preset-env:
         specifier: ^9.6.0
@@ -145,43 +436,43 @@ importers:
         specifier: ^1.30.0
         version: 1.30.0
       react:
-        specifier: 18.3.1
+        specifier: 'catalog:'
         version: 18.3.1
       react-dom:
-        specifier: 18.3.1
+        specifier: 'catalog:'
         version: 18.3.1(react@18.3.1)
       react-icons:
-        specifier: ^5.5.0
+        specifier: 'catalog:'
         version: 5.6.0(react@18.3.1)
       react-markdown:
-        specifier: ^9.1.0
+        specifier: 'catalog:'
         version: 9.1.0(@types/react@18.3.28)(react@18.3.1)
       react-masonry-css:
         specifier: ^1.0.16
         version: 1.0.16(react@18.3.1)
       react-scan:
-        specifier: ^0.1.4
+        specifier: 'catalog:'
         version: 0.1.4(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router@6.30.3(react@18.3.1))(react@18.3.1)(rollup@4.59.0)
       remark:
-        specifier: ^15.0.1
+        specifier: 'catalog:'
         version: 15.0.1
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
       remark-html:
-        specifier: ^16.0.1
+        specifier: 'catalog:'
         version: 16.0.1
       sass:
-        specifier: ^1.93.3
+        specifier: 'catalog:'
         version: 1.98.0
       sharp:
-        specifier: ^0.33.5
+        specifier: 'catalog:'
         version: 0.33.5
       tailwind-merge:
-        specifier: ^2.6.0
+        specifier: 'catalog:'
         version: 2.6.1
       tailwindcss-animate:
-        specifier: ^1.0.7
+        specifier: 'catalog:'
         version: 1.0.7(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.2))
     devDependencies:
       '@csstools/postcss-global-data':
@@ -191,31 +482,31 @@ importers:
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.2))
       '@total-typescript/ts-reset':
-        specifier: ^0.4.2
+        specifier: 'catalog:'
         version: 0.4.2
       '@types/cookie':
         specifier: ^0.6.0
         version: 0.6.0
       '@types/jsonwebtoken':
-        specifier: ^9.0.10
+        specifier: 'catalog:'
         version: 9.0.10
       '@types/node':
-        specifier: ^20.19.24
+        specifier: 'catalog:'
         version: 20.19.37
       '@types/nodemailer':
-        specifier: ^6.4.21
+        specifier: 'catalog:'
         version: 6.4.23
       '@types/nodemailer-ses-transport':
-        specifier: ^1.5.5
+        specifier: 'catalog:'
         version: 1.5.5
       '@types/react':
-        specifier: ^18.3.26
+        specifier: 'catalog:'
         version: 18.3.28
       '@types/react-dom':
-        specifier: ^18.3.7
+        specifier: 'catalog:'
         version: 18.3.7(@types/react@18.3.28)
       '@typescript-eslint/parser':
-        specifier: ^8.46.3
+        specifier: 'catalog:'
         version: 8.57.0(eslint@9.39.4(jiti@1.21.7))(typescript@5.9.3)
       '@vanni/eslint-config':
         specifier: workspace:*
@@ -230,16 +521,16 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/typescript
       dotenv-cli:
-        specifier: ^7.4.4
+        specifier: 'catalog:'
         version: 7.4.4
       eslint:
-        specifier: ^9.39.1
+        specifier: 'catalog:'
         version: 9.39.4(jiti@1.21.7)
       jiti:
-        specifier: ^1.21.7
+        specifier: 'catalog:'
         version: 1.21.7
       jsonwebtoken:
-        specifier: ^9.0.2
+        specifier: 'catalog:'
         version: 9.0.3
       postcss-custom-media:
         specifier: ^10.0.8
@@ -248,112 +539,112 @@ importers:
         specifier: ^5.0.2
         version: 5.0.2(postcss@8.5.8)
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       svgo:
         specifier: ^4.0.1
         version: 4.0.1
       tailwindcss:
-        specifier: ^3.4.18
+        specifier: 'catalog:'
         version: 3.4.19(tsx@4.21.0)(yaml@2.8.2)
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
-  apps/team-website:
+  apps/organizer-website:
     dependencies:
       '@aws-sdk/client-ses':
-        specifier: ^3.990.0
+        specifier: 'catalog:'
         version: 3.1006.0
       '@aws-sdk/client-sqs':
-        specifier: ^3.1006.0
+        specifier: 'catalog:'
         version: 3.1006.0
       '@aws-sdk/credential-provider-node':
-        specifier: ^3.922.0
+        specifier: 'catalog:'
         version: 3.972.19
       '@babel/standalone':
-        specifier: ^7.29.2
+        specifier: 'catalog:'
         version: 7.29.2
       '@gsap/react':
-        specifier: ^2.1.2
+        specifier: 'catalog:'
         version: 2.1.2(gsap@3.14.2)(react@18.3.1)
       '@hookform/resolvers':
-        specifier: ^3.10.0
+        specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.71.2(react@18.3.1))
       '@monaco-editor/react':
-        specifier: ^4.7.0
+        specifier: 'catalog:'
         version: 4.7.0(monaco-editor@0.55.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-checkbox':
-        specifier: ^1.3.3
+        specifier: 'catalog:'
         version: 1.3.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-collapsible':
-        specifier: ^1.1.12
+        specifier: 'catalog:'
         version: 1.1.12(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dialog':
-        specifier: ^1.1.15
+        specifier: 'catalog:'
         version: 1.1.15(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dropdown-menu':
-        specifier: ^2.1.16
+        specifier: 'catalog:'
         version: 2.1.16(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-icons':
-        specifier: ^1.3.2
+        specifier: 'catalog:'
         version: 1.3.2(react@18.3.1)
       '@radix-ui/react-label':
-        specifier: ^2.1.7
+        specifier: 'catalog:'
         version: 2.1.8(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-navigation-menu':
-        specifier: ^1.2.14
+        specifier: 'catalog:'
         version: 1.2.14(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-popover':
-        specifier: ^1.1.15
+        specifier: 'catalog:'
         version: 1.1.15(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-scroll-area':
-        specifier: ^1.2.10
+        specifier: 'catalog:'
         version: 1.2.10(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-select':
-        specifier: ^2.2.6
+        specifier: 'catalog:'
         version: 2.2.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-separator':
-        specifier: ^1.1.7
+        specifier: 'catalog:'
         version: 1.1.8(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slider':
-        specifier: ^1.3.6
+        specifier: 'catalog:'
         version: 1.3.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slot':
-        specifier: ^1.2.3
+        specifier: 'catalog:'
         version: 1.2.4(@types/react@18.3.28)(react@18.3.1)
       '@radix-ui/react-tabs':
-        specifier: ^1.1.13
+        specifier: 'catalog:'
         version: 1.1.13(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-toast':
-        specifier: ^1.2.15
+        specifier: 'catalog:'
         version: 1.2.15(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-email/components':
-        specifier: ^1.0.10
+        specifier: 'catalog:'
         version: 1.0.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-email/render':
-        specifier: ^2.0.4
+        specifier: 'catalog:'
         version: 2.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-oauth/google':
-        specifier: ^0.13.4
+        specifier: 'catalog:'
         version: 0.13.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@t3-oss/env-nextjs':
-        specifier: ^0.9.2
+        specifier: 'catalog:'
         version: 0.9.2(typescript@5.9.3)(zod@4.3.6)
       '@tanstack/react-query':
-        specifier: ^5.90.6
+        specifier: 'catalog:'
         version: 5.90.21(react@18.3.1)
       '@tanstack/react-table':
-        specifier: ^8.21.3
+        specifier: 'catalog:'
         version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@trpc/client':
-        specifier: 11.0.0-rc.364
+        specifier: 'catalog:'
         version: 11.0.0-rc.364(@trpc/server@11.0.0-rc.364)
       '@trpc/react-query':
-        specifier: 11.0.0-rc.364
+        specifier: 'catalog:'
         version: 11.0.0-rc.364(@tanstack/react-query@5.90.21(react@18.3.1))(@trpc/client@11.0.0-rc.364(@trpc/server@11.0.0-rc.364))(@trpc/server@11.0.0-rc.364)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@trpc/server':
-        specifier: 11.0.0-rc.364
+        specifier: 'catalog:'
         version: 11.0.0-rc.364
       '@vanni/api':
         specifier: workspace:*
@@ -371,167 +662,167 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validators
       '@vercel/blob':
-        specifier: ^0.24.1
+        specifier: 'catalog:'
         version: 0.24.1
       '@vercel/speed-insights':
-        specifier: ^1.2.0
+        specifier: 'catalog:'
         version: 1.3.1(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react@18.3.1)
       '@yudiel/react-qr-scanner':
-        specifier: ^2.4.1
+        specifier: 'catalog:'
         version: 2.5.1(@types/emscripten@1.41.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       axios:
-        specifier: ^1.13.6
+        specifier: 'catalog:'
         version: 1.13.6
       class-variance-authority:
-        specifier: ^0.7.1
+        specifier: 'catalog:'
         version: 0.7.1
       clsx:
-        specifier: ^2.1.1
+        specifier: 'catalog:'
         version: 2.1.1
       cmdk:
-        specifier: 1.0.0
+        specifier: 'catalog:'
         version: 1.0.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       date-fns:
-        specifier: ^3.6.0
+        specifier: 'catalog:'
         version: 3.6.0
       embla-carousel-react:
-        specifier: ^8.6.0
+        specifier: 'catalog:'
         version: 8.6.0(react@18.3.1)
       framer-motion:
-        specifier: ^11.18.2
+        specifier: 'catalog:'
         version: 11.18.2(@emotion/is-prop-valid@1.4.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       gapi-script:
-        specifier: ^1.2.0
+        specifier: 'catalog:'
         version: 1.2.0
       geist:
-        specifier: ^1.5.1
+        specifier: 'catalog:'
         version: 1.7.0(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))
       googleapis:
-        specifier: ^171.4.0
+        specifier: 'catalog:'
         version: 171.4.0
       gray-matter:
-        specifier: ^4.0.3
+        specifier: 'catalog:'
         version: 4.0.3
       gsap:
-        specifier: ^3.14.2
+        specifier: 'catalog:'
         version: 3.14.2
       jose:
-        specifier: ^6.2.2
+        specifier: 'catalog:'
         version: 6.2.2
       lucide-react:
-        specifier: ^0.439.0
+        specifier: 'catalog:'
         version: 0.439.0(react@18.3.1)
       next:
-        specifier: ^16.2.7
+        specifier: 'catalog:'
         version: 16.2.7(@babel/core@7.29.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0)
       node-gyp:
-        specifier: 10.0.0
+        specifier: 'catalog:'
         version: 10.0.0
       nodemailer:
-        specifier: ^8.0.5
+        specifier: 'catalog:'
         version: 8.0.7
       qrcode:
-        specifier: ^1.5.4
+        specifier: 'catalog:'
         version: 1.5.4
       react:
-        specifier: 18.3.1
+        specifier: 'catalog:'
         version: 18.3.1
       react-device-detect:
-        specifier: ^2.2.3
+        specifier: 'catalog:'
         version: 2.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-dom:
-        specifier: 18.3.1
+        specifier: 'catalog:'
         version: 18.3.1(react@18.3.1)
       react-draggable:
-        specifier: ^4.5.0
+        specifier: 'catalog:'
         version: 4.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-hook-form:
-        specifier: ^7.66.0
+        specifier: 'catalog:'
         version: 7.71.2(react@18.3.1)
       react-hot-toast:
-        specifier: ^2.6.0
+        specifier: 'catalog:'
         version: 2.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-icons:
-        specifier: ^5.5.0
+        specifier: 'catalog:'
         version: 5.6.0(react@18.3.1)
       react-markdown:
-        specifier: ^9.1.0
+        specifier: 'catalog:'
         version: 9.1.0(@types/react@18.3.28)(react@18.3.1)
       react-router-dom:
-        specifier: ^6.30.1
+        specifier: 'catalog:'
         version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-scan:
-        specifier: ^0.1.4
+        specifier: 'catalog:'
         version: 0.1.4(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router@6.30.3(react@18.3.1))(react@18.3.1)(rollup@4.59.0)
       react95:
-        specifier: ^4.0.0
+        specifier: 'catalog:'
         version: 4.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       remark:
-        specifier: ^15.0.1
+        specifier: 'catalog:'
         version: 15.0.1
       remark-html:
-        specifier: ^16.0.1
+        specifier: 'catalog:'
         version: 16.0.1
       sass:
-        specifier: ^1.93.3
+        specifier: 'catalog:'
         version: 1.98.0
       scss:
-        specifier: ^0.2.4
+        specifier: 'catalog:'
         version: 0.2.4
       sharp:
-        specifier: ^0.33.5
+        specifier: 'catalog:'
         version: 0.33.5
       styled-components:
-        specifier: ^6.1.19
+        specifier: 'catalog:'
         version: 6.3.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       superjson:
-        specifier: 2.2.1
+        specifier: 'catalog:'
         version: 2.2.1
       tailwind-merge:
-        specifier: ^2.6.0
+        specifier: 'catalog:'
         version: 2.6.1
       tailwindcss-animate:
-        specifier: ^1.0.7
+        specifier: 'catalog:'
         version: 1.0.7(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.2))
       zod:
-        specifier: ^4.3.6
+        specifier: 'catalog:'
         version: 4.3.6
       zod-form-data:
-        specifier: ^2.0.8
+        specifier: 'catalog:'
         version: 2.0.8(zod@4.3.6)
     devDependencies:
       '@aws-sdk/types':
-        specifier: ^3.922.0
+        specifier: 'catalog:'
         version: 3.973.5
       '@total-typescript/ts-reset':
-        specifier: ^0.4.2
+        specifier: 'catalog:'
         version: 0.4.2
       '@types/babel__standalone':
-        specifier: ^7.1.9
+        specifier: 'catalog:'
         version: 7.1.9
       '@types/jsonwebtoken':
-        specifier: ^9.0.10
+        specifier: 'catalog:'
         version: 9.0.10
       '@types/node':
-        specifier: ^20.19.24
+        specifier: 'catalog:'
         version: 20.19.37
       '@types/nodemailer':
-        specifier: ^6.4.21
+        specifier: 'catalog:'
         version: 6.4.23
       '@types/nodemailer-ses-transport':
-        specifier: ^1.5.5
+        specifier: 'catalog:'
         version: 1.5.5
       '@types/qrcode':
-        specifier: ^1.5.6
+        specifier: 'catalog:'
         version: 1.5.6
       '@types/react':
-        specifier: ^18.3.26
+        specifier: 'catalog:'
         version: 18.3.28
       '@types/react-dom':
-        specifier: ^18.3.7
+        specifier: 'catalog:'
         version: 18.3.7(@types/react@18.3.28)
       '@typescript-eslint/parser':
-        specifier: ^8.46.3
+        specifier: 'catalog:'
         version: 8.57.0(eslint@9.39.4(jiti@1.21.7))(typescript@5.9.3)
       '@vanni/eslint-config':
         specifier: workspace:*
@@ -546,34 +837,341 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/typescript
       dotenv-cli:
-        specifier: ^7.4.4
+        specifier: 'catalog:'
         version: 7.4.4
       eslint:
-        specifier: ^9.39.1
+        specifier: 'catalog:'
         version: 9.39.4(jiti@1.21.7)
       jiti:
-        specifier: ^1.21.7
+        specifier: 'catalog:'
         version: 1.21.7
       jsonwebtoken:
-        specifier: ^9.0.2
+        specifier: 'catalog:'
         version: 9.0.3
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       tailwindcss:
-        specifier: ^3.4.18
+        specifier: 'catalog:'
         version: 3.4.19(tsx@4.21.0)(yaml@2.8.2)
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  apps/team-website:
+    dependencies:
+      '@aws-sdk/client-ses':
+        specifier: 'catalog:'
+        version: 3.1006.0
+      '@aws-sdk/client-sqs':
+        specifier: 'catalog:'
+        version: 3.1006.0
+      '@aws-sdk/credential-provider-node':
+        specifier: 'catalog:'
+        version: 3.972.19
+      '@babel/standalone':
+        specifier: 'catalog:'
+        version: 7.29.2
+      '@gsap/react':
+        specifier: 'catalog:'
+        version: 2.1.2(gsap@3.14.2)(react@18.3.1)
+      '@hookform/resolvers':
+        specifier: 'catalog:'
+        version: 3.10.0(react-hook-form@7.71.2(react@18.3.1))
+      '@monaco-editor/react':
+        specifier: 'catalog:'
+        version: 4.7.0(monaco-editor@0.55.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-checkbox':
+        specifier: 'catalog:'
+        version: 1.3.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-collapsible':
+        specifier: 'catalog:'
+        version: 1.1.12(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-dialog':
+        specifier: 'catalog:'
+        version: 1.1.15(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-dropdown-menu':
+        specifier: 'catalog:'
+        version: 2.1.16(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-icons':
+        specifier: 'catalog:'
+        version: 1.3.2(react@18.3.1)
+      '@radix-ui/react-label':
+        specifier: 'catalog:'
+        version: 2.1.8(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-navigation-menu':
+        specifier: 'catalog:'
+        version: 1.2.14(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-popover':
+        specifier: 'catalog:'
+        version: 1.1.15(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-scroll-area':
+        specifier: 'catalog:'
+        version: 1.2.10(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-select':
+        specifier: 'catalog:'
+        version: 2.2.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-separator':
+        specifier: 'catalog:'
+        version: 1.1.8(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-slider':
+        specifier: 'catalog:'
+        version: 1.3.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-slot':
+        specifier: 'catalog:'
+        version: 1.2.4(@types/react@18.3.28)(react@18.3.1)
+      '@radix-ui/react-tabs':
+        specifier: 'catalog:'
+        version: 1.1.13(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-toast':
+        specifier: 'catalog:'
+        version: 1.2.15(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-email/components':
+        specifier: 'catalog:'
+        version: 1.0.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-email/render':
+        specifier: 'catalog:'
+        version: 2.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-oauth/google':
+        specifier: 'catalog:'
+        version: 0.13.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@t3-oss/env-nextjs':
+        specifier: 'catalog:'
+        version: 0.9.2(typescript@5.9.3)(zod@4.3.6)
+      '@tanstack/react-query':
+        specifier: 'catalog:'
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: 'catalog:'
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@trpc/client':
+        specifier: 'catalog:'
+        version: 11.0.0-rc.364(@trpc/server@11.0.0-rc.364)
+      '@trpc/react-query':
+        specifier: 'catalog:'
+        version: 11.0.0-rc.364(@tanstack/react-query@5.90.21(react@18.3.1))(@trpc/client@11.0.0-rc.364(@trpc/server@11.0.0-rc.364))(@trpc/server@11.0.0-rc.364)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@trpc/server':
+        specifier: 'catalog:'
+        version: 11.0.0-rc.364
+      '@vanni/api':
+        specifier: workspace:*
+        version: link:../../packages/api
+      '@vanni/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
+      '@vanni/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@vanni/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@vanni/validators':
+        specifier: workspace:*
+        version: link:../../packages/validators
+      '@vercel/blob':
+        specifier: 'catalog:'
+        version: 0.24.1
+      '@vercel/speed-insights':
+        specifier: 'catalog:'
+        version: 1.3.1(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react@18.3.1)
+      '@yudiel/react-qr-scanner':
+        specifier: 'catalog:'
+        version: 2.5.1(@types/emscripten@1.41.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      axios:
+        specifier: 'catalog:'
+        version: 1.13.6
+      class-variance-authority:
+        specifier: 'catalog:'
+        version: 0.7.1
+      clsx:
+        specifier: 'catalog:'
+        version: 2.1.1
+      cmdk:
+        specifier: 'catalog:'
+        version: 1.0.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      date-fns:
+        specifier: 'catalog:'
+        version: 3.6.0
+      embla-carousel-react:
+        specifier: 'catalog:'
+        version: 8.6.0(react@18.3.1)
+      framer-motion:
+        specifier: 'catalog:'
+        version: 11.18.2(@emotion/is-prop-valid@1.4.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      gapi-script:
+        specifier: 'catalog:'
+        version: 1.2.0
+      geist:
+        specifier: 'catalog:'
+        version: 1.7.0(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))
+      googleapis:
+        specifier: 'catalog:'
+        version: 171.4.0
+      gray-matter:
+        specifier: 'catalog:'
+        version: 4.0.3
+      gsap:
+        specifier: 'catalog:'
+        version: 3.14.2
+      jose:
+        specifier: 'catalog:'
+        version: 6.2.2
+      lucide-react:
+        specifier: 'catalog:'
+        version: 0.439.0(react@18.3.1)
+      next:
+        specifier: 'catalog:'
+        version: 16.2.7(@babel/core@7.29.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0)
+      node-gyp:
+        specifier: 'catalog:'
+        version: 10.0.0
+      nodemailer:
+        specifier: 'catalog:'
+        version: 8.0.7
+      qrcode:
+        specifier: 'catalog:'
+        version: 1.5.4
+      react:
+        specifier: 'catalog:'
+        version: 18.3.1
+      react-device-detect:
+        specifier: 'catalog:'
+        version: 2.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dom:
+        specifier: 'catalog:'
+        version: 18.3.1(react@18.3.1)
+      react-draggable:
+        specifier: 'catalog:'
+        version: 4.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-hook-form:
+        specifier: 'catalog:'
+        version: 7.71.2(react@18.3.1)
+      react-hot-toast:
+        specifier: 'catalog:'
+        version: 2.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-icons:
+        specifier: 'catalog:'
+        version: 5.6.0(react@18.3.1)
+      react-markdown:
+        specifier: 'catalog:'
+        version: 9.1.0(@types/react@18.3.28)(react@18.3.1)
+      react-router-dom:
+        specifier: 'catalog:'
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-scan:
+        specifier: 'catalog:'
+        version: 0.1.4(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router@6.30.3(react@18.3.1))(react@18.3.1)(rollup@4.59.0)
+      react95:
+        specifier: 'catalog:'
+        version: 4.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+      remark:
+        specifier: 'catalog:'
+        version: 15.0.1
+      remark-html:
+        specifier: 'catalog:'
+        version: 16.0.1
+      sass:
+        specifier: 'catalog:'
+        version: 1.98.0
+      scss:
+        specifier: 'catalog:'
+        version: 0.2.4
+      sharp:
+        specifier: 'catalog:'
+        version: 0.33.5
+      styled-components:
+        specifier: 'catalog:'
+        version: 6.3.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      superjson:
+        specifier: 'catalog:'
+        version: 2.2.1
+      tailwind-merge:
+        specifier: 'catalog:'
+        version: 2.6.1
+      tailwindcss-animate:
+        specifier: 'catalog:'
+        version: 1.0.7(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.2))
+      zod:
+        specifier: 'catalog:'
+        version: 4.3.6
+      zod-form-data:
+        specifier: 'catalog:'
+        version: 2.0.8(zod@4.3.6)
+    devDependencies:
+      '@aws-sdk/types':
+        specifier: 'catalog:'
+        version: 3.973.5
+      '@total-typescript/ts-reset':
+        specifier: 'catalog:'
+        version: 0.4.2
+      '@types/babel__standalone':
+        specifier: 'catalog:'
+        version: 7.1.9
+      '@types/jsonwebtoken':
+        specifier: 'catalog:'
+        version: 9.0.10
+      '@types/node':
+        specifier: 'catalog:'
+        version: 20.19.37
+      '@types/nodemailer':
+        specifier: 'catalog:'
+        version: 6.4.23
+      '@types/nodemailer-ses-transport':
+        specifier: 'catalog:'
+        version: 1.5.5
+      '@types/qrcode':
+        specifier: 'catalog:'
+        version: 1.5.6
+      '@types/react':
+        specifier: 'catalog:'
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 18.3.7(@types/react@18.3.28)
+      '@typescript-eslint/parser':
+        specifier: 'catalog:'
+        version: 8.57.0(eslint@9.39.4(jiti@1.21.7))(typescript@5.9.3)
+      '@vanni/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@vanni/prettier-config':
+        specifier: workspace:*
+        version: link:../../tooling/prettier
+      '@vanni/tailwind-config':
+        specifier: workspace:*
+        version: link:../../tooling/tailwind
+      '@vanni/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
+      dotenv-cli:
+        specifier: 'catalog:'
+        version: 7.4.4
+      eslint:
+        specifier: 'catalog:'
+        version: 9.39.4(jiti@1.21.7)
+      jiti:
+        specifier: 'catalog:'
+        version: 1.21.7
+      jsonwebtoken:
+        specifier: 'catalog:'
+        version: 9.0.3
+      prettier:
+        specifier: 'catalog:'
+        version: 3.8.1
+      tailwindcss:
+        specifier: 'catalog:'
+        version: 3.4.19(tsx@4.21.0)(yaml@2.8.2)
+      typescript:
+        specifier: 'catalog:'
         version: 5.9.3
 
   packages/api:
     dependencies:
       '@aws-sdk/client-sqs':
-        specifier: ^3.1006.0
+        specifier: 'catalog:'
         version: 3.1006.0
       '@trpc/server':
-        specifier: 11.0.0-rc.364
+        specifier: 'catalog:'
         version: 11.0.0-rc.364
       '@vanni/auth':
         specifier: workspace:*
@@ -585,26 +1183,26 @@ importers:
         specifier: workspace:*
         version: link:../validators
       '@vercel/blob':
-        specifier: ^0.24.1
+        specifier: 'catalog:'
         version: 0.24.1
       drizzle-orm:
-        specifier: ^0.45.2
+        specifier: 'catalog:'
         version: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.11)
       minimatch:
-        specifier: ^10.2.3
+        specifier: 'catalog:'
         version: 10.2.5
       superjson:
-        specifier: 2.2.1
+        specifier: 'catalog:'
         version: 2.2.1
       zod:
-        specifier: ^4.3.6
+        specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
       '@total-typescript/ts-reset':
-        specifier: ^0.4.2
+        specifier: 'catalog:'
         version: 0.4.2
       '@types/node':
-        specifier: ^20.19.24
+        specifier: 'catalog:'
         version: 20.19.37
       '@vanni/eslint-config':
         specifier: workspace:*
@@ -616,13 +1214,13 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/typescript
       eslint:
-        specifier: ^9.39.1
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.6.1)
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   packages/auth:
@@ -632,12 +1230,12 @@ importers:
         version: 1.4.1
       '@better-auth/expo':
         specifier: 1.4.18
-        version: 1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.1)(kysely@0.28.11)(nanostores@1.1.1))(better-auth@1.4.18(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.11))(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        version: 1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.2)(kysely@0.28.11)(nanostores@1.1.1))(better-auth@1.4.18(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.11))(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@better-auth/utils':
         specifier: 0.3.1
         version: 0.3.1
       '@t3-oss/env-core':
-        specifier: ^0.10.1
+        specifier: 'catalog:'
         version: 0.10.1(typescript@5.9.3)(zod@4.3.6)
       '@vanni/db':
         specifier: workspace:*
@@ -646,16 +1244,16 @@ importers:
         specifier: 1.4.18
         version: 1.4.18(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.11))(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next:
-        specifier: ^16.2.7
+        specifier: 'catalog:'
         version: 16.2.7(@babel/core@7.29.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0)
       react:
-        specifier: 18.3.1
+        specifier: 'catalog:'
         version: 18.3.1
       react-dom:
-        specifier: 18.3.1
+        specifier: 'catalog:'
         version: 18.3.1(react@18.3.1)
       zod:
-        specifier: ^4.3.6
+        specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
       '@vanni/eslint-config':
@@ -668,41 +1266,41 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/typescript
       eslint:
-        specifier: ^9.39.1
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.6.1)
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   packages/db:
     dependencies:
       '@t3-oss/env-core':
-        specifier: ^0.10.1
+        specifier: 'catalog:'
         version: 0.10.1(typescript@5.9.3)(zod@4.3.6)
       '@vercel/postgres':
         specifier: ^0.8.0
         version: 0.8.0
       drizzle-orm:
-        specifier: ^0.45.2
+        specifier: 'catalog:'
         version: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.11)
       drizzle-zod:
         specifier: ^0.5.1
         version: 0.5.1(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.11))(zod@4.3.6)
       minimatch:
-        specifier: ^10.2.3
+        specifier: 'catalog:'
         version: 10.2.5
       tsx:
         specifier: ^4.19.3
         version: 4.21.0
       zod:
-        specifier: ^4.3.6
+        specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
       '@types/node':
-        specifier: ^20.19.24
+        specifier: 'catalog:'
         version: 20.19.37
       '@vanni/eslint-config':
         specifier: workspace:*
@@ -714,62 +1312,62 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/typescript
       dotenv-cli:
-        specifier: ^7.4.4
+        specifier: 'catalog:'
         version: 7.4.4
       drizzle-kit:
         specifier: ^0.31.10
         version: 0.31.10
       eslint:
-        specifier: ^9.39.1
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.6.1)
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   packages/ui:
     dependencies:
       '@hookform/resolvers':
-        specifier: ^3.10.0
+        specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.71.2(react@18.3.1))
       '@radix-ui/react-dropdown-menu':
-        specifier: ^2.1.16
+        specifier: 'catalog:'
         version: 2.1.16(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-icons':
-        specifier: ^1.3.2
+        specifier: 'catalog:'
         version: 1.3.2(react@18.3.1)
       '@radix-ui/react-label':
-        specifier: ^2.1.7
+        specifier: 'catalog:'
         version: 2.1.8(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slider':
-        specifier: ^1.3.6
+        specifier: 'catalog:'
         version: 1.3.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slot':
-        specifier: ^1.2.3
+        specifier: 'catalog:'
         version: 1.2.4(@types/react@18.3.28)(react@18.3.1)
       class-variance-authority:
-        specifier: ^0.7.1
+        specifier: 'catalog:'
         version: 0.7.1
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-hook-form:
-        specifier: ^7.66.0
+        specifier: 'catalog:'
         version: 7.71.2(react@18.3.1)
       sonner:
         specifier: ^1.7.4
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwind-merge:
-        specifier: ^2.6.0
+        specifier: 'catalog:'
         version: 2.6.1
       tailwindcss-animate:
-        specifier: ^1.0.7
+        specifier: 'catalog:'
         version: 1.0.7(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.2))
     devDependencies:
       '@types/react':
-        specifier: ^18.3.26
+        specifier: 'catalog:'
         version: 18.3.28
       '@vanni/eslint-config':
         specifier: workspace:*
@@ -784,41 +1382,41 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/typescript
       eslint:
-        specifier: ^9.39.1
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.6.1)
       next:
-        specifier: ^16.2.7
+        specifier: 'catalog:'
         version: 16.2.7(@babel/core@7.29.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0)
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       react:
-        specifier: 18.3.1
+        specifier: 'catalog:'
         version: 18.3.1
       tailwindcss:
-        specifier: ^3.4.18
+        specifier: 'catalog:'
         version: 3.4.19(tsx@4.21.0)(yaml@2.8.2)
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       zod:
-        specifier: ^4.3.6
+        specifier: 'catalog:'
         version: 4.3.6
 
   packages/validators:
     dependencies:
       minimatch:
-        specifier: ^10.2.3
+        specifier: 'catalog:'
         version: 10.2.5
       zod:
-        specifier: ^4.3.6
+        specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
       '@types/minimatch':
         specifier: ^5.1.2
         version: 5.1.2
       '@types/node':
-        specifier: ^20.19.24
+        specifier: 'catalog:'
         version: 20.19.37
       '@vanni/eslint-config':
         specifier: workspace:*
@@ -830,13 +1428,13 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/typescript
       eslint:
-        specifier: ^9.39.1
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.6.1)
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   tooling/eslint:
@@ -870,13 +1468,13 @@ importers:
         specifier: workspace:*
         version: link:../typescript
       eslint:
-        specifier: ^9.39.1
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.6.1)
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   tooling/github: {}
@@ -887,32 +1485,32 @@ importers:
         specifier: ^4.4.1
         version: 4.7.1(prettier@3.8.1)
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       prettier-plugin-tailwindcss:
         specifier: ^0.5.14
         version: 0.5.14(@ianvs/prettier-plugin-sort-imports@4.7.1(prettier@3.8.1))(prettier@3.8.1)
     devDependencies:
       '@types/node':
-        specifier: ^20.19.24
+        specifier: 'catalog:'
         version: 20.19.37
       '@vanni/tsconfig':
         specifier: workspace:*
         version: link:../typescript
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   tooling/tailwind:
     dependencies:
       postcss:
-        specifier: ^8.5.3
+        specifier: 'catalog:'
         version: 8.5.8
       tailwindcss:
-        specifier: ^3.4.18
+        specifier: 'catalog:'
         version: 3.4.19(tsx@4.21.0)(yaml@2.8.2)
       tailwindcss-animate:
-        specifier: ^1.0.7
+        specifier: 'catalog:'
         version: 1.0.7(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.2))
     devDependencies:
       '@vanni/eslint-config':
@@ -925,13 +1523,13 @@ importers:
         specifier: workspace:*
         version: link:../typescript
       eslint:
-        specifier: ^9.39.1
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.6.1)
       prettier:
-        specifier: ^3.6.2
+        specifier: 'catalog:'
         version: 3.8.1
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   tooling/typescript: {}
@@ -1470,9 +2068,6 @@ packages:
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
-
-  '@emnapi/runtime@1.8.1':
-    resolution: {integrity: sha512-mehfKSMWjjNol8659Z8KxEMrdSJDDot5SXMq00dM8BN4o+CLNXQ0xH2V7EchNHV4RmbZLmmPdEaXZc5H2FXmDg==}
 
   '@emnapi/runtime@1.9.2':
     resolution: {integrity: sha512-3U4+MIWHImeyu1wnmVygh5WlgfYDtyf0k8AbLhMFxOipihf6nrWC4syIm/SwEeec0mNSafiiNnMJwbza/Is6Lw==}
@@ -6506,9 +7101,6 @@ packages:
   jose@5.10.0:
     resolution: {integrity: sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==}
 
-  jose@6.2.1:
-    resolution: {integrity: sha512-jUaKr1yrbfaImV7R2TN/b3IcZzsw38/chqMpo2XJ7i2F8AfM/lA4G1goC3JVEwg0H7UldTmSt3P68nt31W7/mw==}
-
   jose@6.2.2:
     resolution: {integrity: sha512-d7kPDd34KO/YnzaDOlikGpOurfF0ByC2sEV4cANCtdqLlTfBlw2p14O/5d/zv40gJPbIQxfES3nSx1/oYNyuZQ==}
 
@@ -7001,9 +7593,6 @@ packages:
   minimatch@10.2.5:
     resolution: {integrity: sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg==}
     engines: {node: 18 || 20 || >=22}
-
-  minimatch@3.1.4:
-    resolution: {integrity: sha512-twmL+S8+7yIsE9wsqgzU3E8/LumN3M3QELrBZ20OdmQ9jB2JvW5oZtBEmft84k/Gs5CG9mqtWc6Y9vW+JEzGxw==}
 
   minimatch@3.1.5:
     resolution: {integrity: sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==}
@@ -9586,39 +10175,39 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@better-auth/core@1.4.18(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.1)(kysely@0.28.11)(nanostores@1.1.1)':
+  '@better-auth/core@1.4.18(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.2)(kysely@0.28.11)(nanostores@1.1.1)':
     dependencies:
       '@better-auth/utils': 0.3.0
       '@better-fetch/fetch': 1.1.21
       '@standard-schema/spec': 1.1.0
       better-call: 1.1.8(zod@4.3.6)
-      jose: 6.2.1
+      jose: 6.2.2
       kysely: 0.28.11
       nanostores: 1.1.1
       zod: 4.3.6
 
-  '@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.1)(kysely@0.28.11)(nanostores@1.1.1)':
+  '@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.2)(kysely@0.28.11)(nanostores@1.1.1)':
     dependencies:
       '@better-auth/utils': 0.3.1
       '@better-fetch/fetch': 1.1.21
       '@standard-schema/spec': 1.1.0
       better-call: 1.1.8(zod@4.3.6)
-      jose: 6.2.1
+      jose: 6.2.2
       kysely: 0.28.11
       nanostores: 1.1.1
       zod: 4.3.6
 
-  '@better-auth/expo@1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.1)(kysely@0.28.11)(nanostores@1.1.1))(better-auth@1.4.18(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.11))(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@better-auth/expo@1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.2)(kysely@0.28.11)(nanostores@1.1.1))(better-auth@1.4.18(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.11))(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@better-auth/core': 1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.1)(kysely@0.28.11)(nanostores@1.1.1)
+      '@better-auth/core': 1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.2)(kysely@0.28.11)(nanostores@1.1.1)
       '@better-fetch/fetch': 1.1.21
       better-auth: 1.4.18(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.11))(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       better-call: 1.1.8(zod@4.3.6)
       zod: 4.3.6
 
-  '@better-auth/telemetry@1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.1)(kysely@0.28.11)(nanostores@1.1.1))':
+  '@better-auth/telemetry@1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.2)(kysely@0.28.11)(nanostores@1.1.1))':
     dependencies:
-      '@better-auth/core': 1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.1)(kysely@0.28.11)(nanostores@1.1.1)
+      '@better-auth/core': 1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.2)(kysely@0.28.11)(nanostores@1.1.1)
       '@better-auth/utils': 0.3.0
       '@better-fetch/fetch': 1.1.21
 
@@ -9884,11 +10473,6 @@ snapshots:
       postcss: 8.5.8
 
   '@drizzle-team/brocli@0.10.2': {}
-
-  '@emnapi/runtime@1.8.1':
-    dependencies:
-      tslib: 2.8.1
-    optional: true
 
   '@emnapi/runtime@1.9.2':
     dependencies:
@@ -10457,7 +11041,7 @@ snapshots:
 
   '@img/sharp-wasm32@0.33.5':
     dependencies:
-      '@emnapi/runtime': 1.8.1
+      '@emnapi/runtime': 1.9.2
     optional: true
 
   '@img/sharp-wasm32@0.34.5':
@@ -12808,15 +13392,15 @@ snapshots:
 
   better-auth@1.4.18(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.28.11))(next@16.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@better-auth/core': 1.4.18(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.1)(kysely@0.28.11)(nanostores@1.1.1)
-      '@better-auth/telemetry': 1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.1)(kysely@0.28.11)(nanostores@1.1.1))
+      '@better-auth/core': 1.4.18(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.2)(kysely@0.28.11)(nanostores@1.1.1)
+      '@better-auth/telemetry': 1.4.18(@better-auth/core@1.4.18(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.1.8(zod@4.3.6))(jose@6.2.2)(kysely@0.28.11)(nanostores@1.1.1))
       '@better-auth/utils': 0.3.0
       '@better-fetch/fetch': 1.1.21
       '@noble/ciphers': 2.1.1
       '@noble/hashes': 2.0.1
       better-call: 1.1.8(zod@4.3.6)
       defu: 6.1.4
-      jose: 6.2.1
+      jose: 6.2.2
       kysely: 0.28.11
       nanostores: 1.1.1
       zod: 4.3.6
@@ -13706,7 +14290,7 @@ snapshots:
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
-      minimatch: 3.1.4
+      minimatch: 3.1.5
       object.fromentries: 2.0.8
       object.groupby: 1.0.3
       object.values: 1.2.1
@@ -13734,7 +14318,7 @@ snapshots:
       hasown: 2.0.2
       jsx-ast-utils: 3.3.5
       language-tags: 1.0.9
-      minimatch: 3.1.4
+      minimatch: 3.1.5
       object.fromentries: 2.0.8
       safe-regex-test: 1.1.0
       string.prototype.includes: 2.0.1
@@ -13755,7 +14339,7 @@ snapshots:
       estraverse: 5.3.0
       hasown: 2.0.2
       jsx-ast-utils: 3.3.5
-      minimatch: 3.1.4
+      minimatch: 3.1.5
       object.entries: 1.1.9
       object.fromentries: 2.0.8
       object.values: 1.2.1
@@ -14723,8 +15307,6 @@ snapshots:
 
   jose@5.10.0: {}
 
-  jose@6.2.1: {}
-
   jose@6.2.2: {}
 
   js-tokens@4.0.0: {}
@@ -15455,10 +16037,6 @@ snapshots:
   minimatch@10.2.5:
     dependencies:
       brace-expansion: 5.0.6
-
-  minimatch@3.1.4:
-    dependencies:
-      brace-expansion: 1.1.12
 
   minimatch@3.1.5:
     dependencies:
