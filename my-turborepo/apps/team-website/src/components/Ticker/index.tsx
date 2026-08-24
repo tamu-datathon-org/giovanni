@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-import { SectionTitle } from "@vanni/ui/section-title";
+import { konkhmerSleokchher } from "~/app/_components/fonts";
 
 //TODO: will need to change out the all black logos with white or something if sticking with the dark theme
 
@@ -101,8 +101,12 @@ export default function SponsorTicker() {
   }, []);
 
   return (
-    <div className="flex w-full flex-col items-center justify-center bg-[#121723] cursor-pointer">
-      <SectionTitle title="Past Sponsors" paragraph={""} center mb="-40px" />
+    <div
+      className={`${konkhmerSleokchher.variable} flex w-full cursor-pointer flex-col items-center justify-center bg-[#F3F3F3]`}
+    >
+      <h2 className="mb-4 font-konkhmer text-5xl font-normal text-[#377BB0] sm:mb-6 sm:text-6xl md:text-7xl">
+        SPONSORS
+      </h2>
 
       <div
         className="relative h-28 w-full overflow-hidden sm:h-40"
