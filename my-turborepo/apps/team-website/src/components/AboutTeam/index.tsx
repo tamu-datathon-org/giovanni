@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useRef } from "react";
+import Image from "next/image";
 
-import { SectionTitle } from "@vanni/ui/section-title";
+import { konkhmerSleokchher } from "~/app/_components/fonts";
+import Star from "~/app/assets/Star.png";
 
 import type { TeamMemberProps } from "./teamMember";
 import Teams from "./teams";
@@ -413,24 +415,64 @@ const AboutTeam = () => {
   ] as { teamMembers: TeamMemberProps[]; description: string }[];
 
   return (
-    <>
-      <div
-        ref={teamSectionRef}
-        id="team"
-        className="w-full py-2 text-center dark:bg-transparent"
-      >
-        <SectionTitle title="Meet the Teams" paragraph={""} center mb="20px" />
-        <div className="flex flex-col justify-center gap-4">
-          {teamList_v2026.map((team, team_index) => (
-            <Teams
-              key={team_index}
-              teamMembers={team.teamMembers}
-              description={team.description}
-            />
-          ))}
+    <div
+      ref={teamSectionRef}
+      id="team"
+      className={`${konkhmerSleokchher.variable} relative w-full overflow-hidden py-12 text-center`}
+      style={{
+        backgroundColor: "#F3F3F3",
+        backgroundImage: `
+          linear-gradient(#D9D9D9 1px, transparent 1px),
+          linear-gradient(90deg, #D9D9D9 1px, transparent 1px)
+        `,
+        backgroundSize: "28px 28px",
+      }}
+    >
+      <h2 className="font-konkhmer mb-8 text-5xl font-normal sm:text-6xl md:text-7xl">
+        <span className="text-[#377BB0]">MEET THE </span>
+        <span className="text-[#10AEA4]">TEAM</span>
+      </h2>
+
+      <div className="flex flex-col justify-center gap-4">
+        {teamList_v2026.map((team, team_index) => (
+          <Teams
+            key={team_index}
+            teamMembers={team.teamMembers}
+            description={team.description}
+          />
+        ))}
+      </div>
+
+      <div className="mx-auto mt-12 w-[94%] max-w-6xl">
+        <div className="h-1.5 w-full bg-[#FF9A42]" />
+        <div className="mt-4 flex justify-end gap-4">
+          <Image
+            src={Star}
+            alt=""
+            width={40}
+            height={40}
+            className="h-10 w-10"
+            aria-hidden="true"
+          />
+          <Image
+            src={Star}
+            alt=""
+            width={40}
+            height={40}
+            className="h-10 w-10"
+            aria-hidden="true"
+          />
+          <Image
+            src={Star}
+            alt=""
+            width={40}
+            height={40}
+            className="h-10 w-10"
+            aria-hidden="true"
+          />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
