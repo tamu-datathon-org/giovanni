@@ -14,7 +14,7 @@ export default function SponsorTicker() {
   const animationRef = useRef<gsap.core.Tween | null>(null);
 
   const logos = [
-    "/images/sponsor-logo/amd.webp",
+    "/images/sponsor-logo/AMD.webp",
     "/images/sponsor-logo/amex.webp",
     "/images/sponsor-logo/bp.webp",
     // "/images/sponsor-logo/cbre.webp",
@@ -24,7 +24,7 @@ export default function SponsorTicker() {
     "/images/sponsor-logo/gm.webp",
     "/images/sponsor-logo/goldman.webp",
     "/images/sponsor-logo/heb.webp",
-    "/images/sponsor-logo/hewlett.webp",
+    "/images/sponsor-logo/HPE.webp",
     "/images/sponsor-logo/johnson.webp",
     // "/images/sponsor-logo/mathworks.webp",
     // "/images/sponsor-logo/msy.webp",
@@ -33,7 +33,7 @@ export default function SponsorTicker() {
     "/images/sponsor-logo/qualcomm.webp",
     "/images/sponsor-logo/shell.webp",
     // "/images/sponsor-logo/sparx.webp",
-    "/images/sponsor-logo/splunk.webp",
+    "/images/sponsor-logo/Splunk.webp",
     "/images/sponsor-logo/tableau.webp",
     "/images/sponsor-logo/walmart.webp",
   ];
