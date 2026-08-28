@@ -8,6 +8,21 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Fetch AWS's IAM Roles Anywhere credential helper. No secrets in this image
+FROM base AS awscreds
+ARG TARGETARCH
+RUN apk add --no-cache curl
+RUN set -eux; \
+    case "$TARGETARCH" in \
+      amd64) ARCH_PATH="X86_64" ; SHA=beec9ed1c492d93db809890f16713e3556353294b823c2184ad4e891f1b2b54d ;; \
+      arm64) ARCH_PATH="Aarch64" ; SHA=3d131aa888cd56da446f9c6bb460b1f0569f6c7edc74eae6193a2fe3928883ba ;; \
+      *) echo "unsupported TARGETARCH: $TARGETARCH" >&2; exit 1 ;; \
+    esac; \
+    curl -sSL -o /usr/local/bin/aws_signing_helper \
+      "https://rolesanywhere.amazonaws.com/releases/1.8.5/${ARCH_PATH}/Linux/Amzn2023/aws_signing_helper"; \
+    echo "${SHA}  /usr/local/bin/aws_signing_helper" | sha256sum -c -; \
+    chmod +x /usr/local/bin/aws_signing_helper
+
 # Produce an isolated, pruned subset of the monorepo for this app.
 FROM base AS builder
 WORKDIR /app
@@ -48,6 +63,12 @@ ENV HOSTNAME=0.0.0.0
 RUN addgroup --system --gid 1001 nodejs \
  && adduser --system --uid 1001 nextjs
 USER nextjs
+
+# credential_process reads its cert/key/config from here at runtime; Coolify
+# mounts the actual files into this directory (see infra runbook) — nothing
+# sensitive is copied into the image.
+ENV AWS_CONFIG_FILE=/app/.aws/config
+COPY --from=awscreds /usr/local/bin/aws_signing_helper /usr/local/bin/aws_signing_helper
 
 # Leverage Next.js output file tracing (standalone) to keep the image small.
 COPY --from=installer --chown=nextjs:nodejs /app/apps/team-website/.next/standalone ./
