@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 
 import { ScrollUp } from "@vanni/ui/scroll-up";
 
+import Announcement from "~/components/Announcement";
 import Hero from "~/components/Hero";
 import { SectionDivider } from "~/components/SectionDivider";
 import { env } from "~/env";
@@ -45,6 +46,7 @@ export default function HomePage() {
   return (
     <>
       <ScrollUp />
+      <Announcement />
       <Hero />
       <PastEventsSection />
       <SectionDivider variant="curvy" />
