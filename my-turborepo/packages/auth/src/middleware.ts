@@ -1,32 +1,23 @@
-import { createAuthClient } from "better-auth/client";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { normalizeCallbackPath } from "./callback-url";
+/**
+ * Cookie prefix must match `advanced.cookiePrefix` in ./auth.ts. Each app sets
+ * AUTH_COOKIE_PREFIX in its next.config.js (organizer-website -> "organizer",
+ * team-website -> "team") so their sessions stay independent; the fallback here
+ * mirrors Better Auth's own default for any consumer that leaves it unset.
+ */
+const COOKIE_PREFIX = process.env.AUTH_COOKIE_PREFIX ?? "better-auth";
 
 /**
- * Session clients keyed by request origin.
- *
- * `createAuthClient()` with no `baseURL` resolves it from `BETTER_AUTH_URL` at
- * runtime (Next copies the whole parent env into the middleware sandbox), so a
- * single shared client makes every app fetch sessions from whichever app that
- * env var happens to name. Building per request origin keeps the lookup
- * same-origin no matter how the env is configured.
- *
- * Note `baseURL: ""` does not work here -- `getBaseURL` guards with `if (url)`,
- * so an empty string falls through to the env var. It must be a real origin,
- * which better-auth then suffixes with its basePath.
+ * Better Auth prepends `__Secure-` to its cookies whenever the instance is
+ * served over HTTPS (see `createCookieGetter` in better-auth/dist/cookies).
+ * Production is HTTPS and local dev is not, so both spellings are checked.
  */
-const clients = new Map<string, ReturnType<typeof createAuthClient>>();
-
-function getClient(origin: string) {
-  let client = clients.get(origin);
-  if (!client) {
-    client = createAuthClient({ baseURL: origin });
-    clients.set(origin, client);
-  }
-  return client;
-}
+const SESSION_COOKIE_NAMES = [
+  `${COOKIE_PREFIX}.session_token`,
+  `__Secure-${COOKIE_PREFIX}.session_token`,
+];
 
 /** Keep in sync with `protectedRoutes` and `team-website` `middleware.ts` `config.matcher`. */
 export const AUTH_MIDDLEWARE_MATCHER: string[] = [
@@ -45,28 +36,34 @@ function isProtectedRoute(pathname: string) {
   return protectedRoutes.some((route) => route.test(pathname));
 }
 
-export async function authMiddleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  if (!isProtectedRoute(pathname)) {
-    return NextResponse.next();
-  }
-
-  const { data: session } = await getClient(request.nextUrl.origin).getSession({
-    fetchOptions: {
-      headers: {
-        cookie: request.headers.get("cookie") ?? "",
-      },
-    },
+/**
+ * Presence check only -- this deliberately does NOT validate the session.
+ *
+ * The previous implementation called `authClient.getSession()`, which issued an
+ * HTTP request to BETTER_AUTH_URL on every page route (the matcher covers all
+ * of them). In a container that means the app calling its own public domain and
+ * hairpinning back through the reverse proxy on each navigation, and it fails
+ * outright when the container cannot reach that URL.
+ *
+ * Real authorization is unchanged and still happens server-side, after this:
+ * `/organizer` and `/admin` layouts both call `auth.api.getSession()` and then
+ * `api.auth.validateOrganizerAuth()`, and tRPC routes go through
+ * `organizerProcedure`. A forged cookie therefore only gets past this
+ * redirect-to-login shortcut; it grants no access to data or pages.
+ */
+function hasSessionCookie(request: NextRequest): boolean {
+  return SESSION_COOKIE_NAMES.some((name) => {
+    const value = request.cookies.get(name)?.value;
+    return typeof value === "string" && value.length > 0;
   });
+}
 
-  if (!session) {
-    const callbackPath = normalizeCallbackPath(
-      request.nextUrl.pathname + request.nextUrl.search,
+export async function authMiddleware(request: NextRequest) {
+  const { pathname } = new URL(request.url);
+  if (!hasSessionCookie(request) && isProtectedRoute(pathname)) {
+    return NextResponse.redirect(
+      new URL(`login?callbackUrl=${encodeURIComponent(request.url)}`, request.url),
     );
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/login";
-    loginUrl.search = `callbackUrl=${encodeURIComponent(callbackPath)}`;
-    return NextResponse.redirect(loginUrl);
   }
   return NextResponse.next();
 }

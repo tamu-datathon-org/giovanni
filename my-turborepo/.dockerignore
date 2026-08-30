@@ -1,23 +1,43 @@
-# Dependencies and build artifacts (largest context savings)
+# Docker reads .dockerignore from the build context root. Since the organizer
+# image builds with the monorepo root as its context, this is the file that
+# actually applies.
+
+# Dependencies -- reinstalled inside the image from the pruned lockfile
 **/node_modules
+
+# Build output / caches
 **/.next
 **/.turbo
+**/.vercel
+**/.expo
 **/dist
-**/.cache
+**/.output
+**/out
+**/*.tsbuildinfo
 
-# Git and local env
-.git
-.gitignore
+# Secrets -- these must never enter the build context
+.env
+.env.*
 **/.env
-**/.env.*
-**/*.log
+**/.env.local
+**/.env.*.local
+!**/.env.example
+!**/.env.local.example
 
-# Editor / OS noise
-.DS_Store
-**/.DS_Store
-.idea
+# VCS / editor / OS
+.git
+.github
+.gitignore
 .vscode
+.idea
+**/.DS_Store
+Thumbs.db
 
-# Per-app docker metadata (not needed in build context)
+# Docs and local-only tooling
+**/*.log
+README.md
+LICENSE
+**/plan.md
+Dockerfile
 **/Dockerfile
-**/.dockerignore
+.dockerignore

@@ -103,6 +103,7 @@ export const config = {
         "http://localhost:3001",
         "https://*.tamudatathon.com",
         "https://*.tamudatathon.org",
+        "https://tamudatathon.org",
     ]
 } satisfies BetterAuthOptions
 
