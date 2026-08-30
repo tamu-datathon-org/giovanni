@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from "react";
 
-import StatSectionImages from "../Hero/StatSectionImages";
 import { Noise } from "~/components/shared/Noise";
+
+import PhotosSectionImages from "./PhotosSectionImages";
 
 const ABOUT_US_SECTION_ID = "about-us";
 
@@ -42,7 +43,6 @@ const Photos = () => {
             imageWrapperRef3.current,
           ];
 
-          // Start when About Us has fully left the viewport (bottom edge at top of screen).
           const aboutUsSection = document.getElementById(ABOUT_US_SECTION_ID);
           const scrollTriggerTarget = aboutUsSection ?? sectionRef.current;
 
@@ -91,8 +91,7 @@ const Photos = () => {
       className="relative h-svh w-full overflow-hidden bg-[#377BB0]"
     >
       <Noise />
-      <StatSectionImages
-        firstImageVisible
+      <PhotosSectionImages
         refs={{
           imageWrapperRef1,
           imageWrapperRef2,

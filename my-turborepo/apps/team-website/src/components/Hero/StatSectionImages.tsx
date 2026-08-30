@@ -28,8 +28,6 @@ export interface StatSectionImagesRefs {
 
 interface StatSectionImagesProps {
   refs: StatSectionImagesRefs;
-  /** When true, the first image is visible immediately instead of off-screen below. */
-  firstImageVisible?: boolean;
 }
 
 /** Responsive sizes: full viewport width for hero images */
@@ -40,10 +38,7 @@ const HERO_IMAGE_SIZES =
  * Full-screen images that slide in from the right of the viewport one by one.
  * First image uses priority for LCP; all use next/image for optimization.
  */
-export default function StatSectionImages({
-  refs,
-  firstImageVisible = false,
-}: StatSectionImagesProps) {
+export default function StatSectionImages({ refs }: StatSectionImagesProps) {
   const { imageWrapperRef1, imageWrapperRef2, imageWrapperRef3 } = refs;
 
   return (
@@ -66,10 +61,7 @@ export default function StatSectionImages({
             className="absolute left-0 top-0 flex h-full w-full items-center justify-center"
             style={{
               zIndex: i + 1,
-              transform:
-                firstImageVisible && i === 0
-                  ? undefined
-                  : "translateY(100dvh)",
+              transform: "translateY(100dvh)",
             }}
           >
             <div className="relative inline-block aspect-[9/16] h-full w-auto max-w-full sm:aspect-auto sm:max-h-full sm:w-full">
