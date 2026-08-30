@@ -10,7 +10,11 @@ interface Event {
 }
 
 export default function CMSPage() {
-  const API_URL = process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_URL!;
+  // Not asserted non-null: the deploy may legitimately be missing this, and a
+  // silent failure here renders an empty list that looks like a working page.
+  const API_URL = process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_URL;
+  const isConfigured = typeof API_URL === "string" && API_URL.length > 0;
+  const [error, setError] = useState<string | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [form, setForm] = useState<Event>({
     id: "",
@@ -30,23 +34,39 @@ export default function CMSPage() {
 
   // Fetch events
   const loadEvents = useCallback(async () => {
+    if (!isConfigured) {
+      setError(
+        "NEXT_PUBLIC_GOOGLE_SHEET_API_URL is not set. This page cannot load or save events until it is configured at build time.",
+      );
+      return;
+    }
     setLoading(true);
+    setError(null);
     try {
       const res = await fetch(API_URL);
+      if (!res.ok) {
+        throw new Error(`Schedule API responded ${res.status} ${res.statusText}`);
+      }
       const data = (await res.json()) as Event[];
       setEvents(data);
+    } catch (e) {
+      setEvents([]);
+      setError(
+        `Could not load events from the schedule API. ${e instanceof Error ? e.message : String(e)}`,
+      );
     } finally {
       setLoading(false);
     }
-  }, [API_URL]);
+  }, [API_URL, isConfigured]);
 
   // Add or edit event
   const handleSubmit = async () => {
-    if (!isFormValid) return;
+    if (!isFormValid || !isConfigured) return;
     setLoading(true);
+    setError(null);
     try {
       const action = editingId ? "edit" : "add";
-      await fetch(API_URL, {
+      const res = await fetch(API_URL, {
         method: "POST",
         body: JSON.stringify({
           action,
@@ -56,11 +76,18 @@ export default function CMSPage() {
           description: String(form.description),
         }),
       });
+      if (!res.ok) {
+        throw new Error(`Schedule API responded ${res.status} ${res.statusText}`);
+      }
 
       // Reset form
       setForm({ id: "", date: "", title: "", description: "" });
       setEditingId(null);
       await loadEvents();
+    } catch (e) {
+      setError(
+        `Could not save the event. ${e instanceof Error ? e.message : String(e)}`,
+      );
     } finally {
       setLoading(false);
     }
@@ -68,13 +95,22 @@ export default function CMSPage() {
 
   // Delete event
   const handleDelete = async (id: string | number) => {
+    if (!isConfigured) return;
     setLoading(true);
+    setError(null);
     try {
-      await fetch(API_URL, {
+      const res = await fetch(API_URL, {
         method: "POST",
         body: JSON.stringify({ action: "delete", id: String(id) }),
       });
+      if (!res.ok) {
+        throw new Error(`Schedule API responded ${res.status} ${res.statusText}`);
+      }
       await loadEvents();
+    } catch (e) {
+      setError(
+        `Could not delete the event. ${e instanceof Error ? e.message : String(e)}`,
+      );
     } finally {
       setLoading(false);
     }
@@ -108,6 +144,24 @@ export default function CMSPage() {
       )}
 
       <h1 className="mb-6 text-2xl font-bold">Schedule CMS</h1>
+
+      {error && (
+        <div
+          role="alert"
+          className="mb-6 rounded border border-red-300 bg-red-50 p-3 text-sm text-red-800"
+        >
+          <p className="font-semibold">Schedule API unavailable</p>
+          <p className="mt-1">{error}</p>
+          {isConfigured && (
+            <button
+              onClick={() => void loadEvents()}
+              className="mt-2 rounded bg-red-600 px-3 py-1 text-white"
+            >
+              Retry
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Form */}
       <div className="mb-8">
@@ -143,7 +197,7 @@ export default function CMSPage() {
         <div className="flex gap-2">
           <button
             onClick={handleSubmit}
-            disabled={!isFormValid || loading}
+            disabled={!isFormValid || loading || !isConfigured}
             className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
           >
             {editingId ? "Save Changes" : "Add Event"}

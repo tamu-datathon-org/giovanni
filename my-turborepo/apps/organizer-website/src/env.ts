@@ -9,8 +9,6 @@ export const env = createEnv({
   server: {
     POSTGRES_URL: z.string().url(),
     AUTH_SECRET: z.string(),
-    JWT_SECRET: z.string(),
-    JWT_EXPIRES_IN: z.string(),
 
     AWS_ACCESS_KEY_ID: z.string(),
     AWS_SECRET_ACCESS_KEY: z.string(),
@@ -30,6 +28,10 @@ export const env = createEnv({
     NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string().default(""),
     NEXT_PUBLIC_DRIVE_FOLDER_ID: z.string().default(""),
     NEXT_PUBLIC_DRIVE_FOLDER_NAME: z.string().default(""),
+    // Apps Script /exec endpoint backing /organizer/schedule-manager. Optional
+    // so the app still builds and boots without it; the page surfaces its own
+    // error state when it is missing.
+    NEXT_PUBLIC_GOOGLE_SHEET_API_URL: z.string().url().optional().or(z.literal("")),
   },
   /**
    * Destructure all variables from `process.env` to make sure they aren't tree-shaken away.
@@ -39,6 +41,7 @@ export const env = createEnv({
     NEXT_PUBLIC_GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
     NEXT_PUBLIC_DRIVE_FOLDER_ID: process.env.NEXT_PUBLIC_DRIVE_FOLDER_ID,
     NEXT_PUBLIC_DRIVE_FOLDER_NAME: process.env.NEXT_PUBLIC_DRIVE_FOLDER_NAME,
+    NEXT_PUBLIC_GOOGLE_SHEET_API_URL: process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_URL,
   },
   skipValidation:
     !!process.env.CI ||

@@ -107,7 +107,9 @@ export const config = {
     trustedOrigins: [
         "exp://",
         "http://localhost:3000",
+        "http://localhost:3001",
         "https://tamudatathon.org",
+        "https://organizer.tamudatathon.org",
     ]
 } satisfies BetterAuthOptions
 
