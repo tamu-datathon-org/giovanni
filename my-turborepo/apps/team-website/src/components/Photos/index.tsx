@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 
 import StatSectionImages from "../Hero/StatSectionImages";
+import { Noise } from "~/components/shared/Noise";
 
 const ABOUT_US_SECTION_ID = "about-us";
 
@@ -87,8 +88,9 @@ const Photos = () => {
     <section
       ref={sectionRef}
       id="photos"
-      className="relative h-svh w-full overflow-hidden bg-[#2d69df]"
+      className="relative h-svh w-full overflow-hidden bg-[#377BB0]"
     >
+      <Noise />
       <StatSectionImages
         firstImageVisible
         refs={{
