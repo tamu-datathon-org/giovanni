@@ -17,15 +17,15 @@ export interface TeamMemberProps {
 const getSocialIcon = (type: string) => {
   switch (type) {
     case "linkedin":
-      return <Linkedin className="h-5 w-5" />;
+      return <Linkedin className="h-4 w-4" />;
     case "github":
-      return <Github className="h-5 w-5" />;
+      return <Github className="h-4 w-4" />;
     case "email":
-      return <Mail className="h-5 w-5" />;
+      return <Mail className="h-4 w-4" />;
     case "website":
-      return <Globe className="h-5 w-5" />;
+      return <Globe className="h-4 w-4" />;
     case "instagram":
-      return <Instagram className="h-5 w-5" />;
+      return <Instagram className="h-4 w-4" />;
     default:
       return null;
   }
@@ -41,20 +41,20 @@ const TeamMember: React.FC<TeamMemberProps> = ({
   const lastName = rest.join(" ");
 
   return (
-    <div className="m-2 flex w-36 flex-col rounded-2xl bg-[#EEEEEE] px-3 py-4 text-center shadow-[0_0_12px_rgba(0,0,0,0.18)] lg:w-44">
-      <div className="relative mx-auto my-2 size-[88px] shrink-0 overflow-hidden rounded-full lg:size-28">
+    <div className="m-1.5 flex w-32 flex-col rounded-2xl bg-[#EEEEEE] px-2.5 py-3 text-center shadow-[0_0_12px_rgba(0,0,0,0.18)] lg:w-40">
+      <div className="relative mx-auto my-1.5 size-20 shrink-0 overflow-hidden rounded-full lg:size-24">
         <Image
           src={image || "/placeholder.svg"}
           alt={name}
           fill
-          sizes="88px, (min-width: 992px) 112px"
+          sizes="80px, (min-width: 992px) 96px"
           className="scale-125 object-cover"
           quality={75}
         />
       </div>
 
-      <div className="flex h-[2.5rem] shrink-0 items-start justify-center lg:h-[3.5rem]">
-        <h3 className="font-inter w-full text-sm leading-snug text-[#949494] lg:text-xl">
+      <div className="flex h-[2.25rem] shrink-0 items-start justify-center lg:h-[3rem]">
+        <h3 className="font-inter w-full text-xs leading-snug text-[#377BB0] lg:text-lg">
           <span className="block">{firstName}</span>
           <span className="block">{lastName || "\u00A0"}</span>
         </h3>
