@@ -185,7 +185,7 @@ export default function HoverCrossfade({
 
         {/* RIGHT: crossfading poster stage */}
         <div className="p-4">
-          <div className="group relative aspect-[4/5] w-full overflow-hidden rounded-lg bg-slate-950 ring-1 ring-white/10">
+          <div className="group relative mx-auto my-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-lg bg-slate-950 ring-1 ring-white/10">
             {([0, 1] as const).map((i) => {
               const item = layers[i];
               return (
