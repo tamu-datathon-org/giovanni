@@ -126,20 +126,10 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(10px)" },
         },
-        "gradient-wave": {
-          "0%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" },
-        },
-        "border-spin": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
-        },
       },
       animation: {
         float: "floatx 3s ease-in-out infinite",
         bob: "bob 2s ease-in-out infinite",
-        "gradient-wave": "gradient-wave 4s linear infinite",
-        "border-spin": "border-spin 4s linear infinite",
       },
     },
   },
