@@ -101,7 +101,10 @@ export default function SponsorTicker() {
   }, []);
 
   return (
-    <div className="flex w-full flex-col items-center justify-center bg-[#121723] cursor-pointer">
+    <div
+      id="sponsors"
+      className="flex w-full cursor-pointer flex-col items-center justify-center bg-[#121723]"
+    >
       <SectionTitle title="Past Sponsors" paragraph={""} center mb="-40px" />
 
       <div
