@@ -4,9 +4,10 @@ import ScrambleTextGrid from "./scramble";
 
 export default function Hero() {
   return (
-    <main className="min-h-screen bg-[#0d1526] px-6 py-16">
+    <main className="grid-background-sm min-h-screen bg-[#0d1526] px-6 py-16">
       <div className="mx-auto max-w-4xl">
         {/* Page heading */}
+
         <header className="mb-10 text-center">
           <p className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-emerald-400">
 
