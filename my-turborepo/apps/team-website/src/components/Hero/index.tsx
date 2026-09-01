@@ -4,7 +4,8 @@ import ScrambleTextGrid from "./scramble";
 
 export default function Hero() {
   return (
-    <main className="grid-background-sm min-h-screen bg-[#0d1526] px-6 py-16">
+    <main className="grid-background-sm min-h-screen bg-white px-6 py-16">
+      <div className="mt-2 text-right justify-start text-orange-400 text-4xl font-normal font-['Konkhmer_Sleokchher'] uppercase">/////////////////////////////////</div>
       <div className="mx-auto max-w-4xl">
         {/* Page heading */}
 
@@ -12,36 +13,36 @@ export default function Hero() {
           <p className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-emerald-400">
 
           </p>
-          <h1 className="mt-8 text-4xl font-bold text-white sm:text-5xl">
-            TAMU Datathon
+          <h1 className="mt-8 text-4xl font-bold sm:text-5xl">
+            <span className="text-[#10AEA4]">TAMU</span>
+            <span className="text-[#377BB0]">Datathon</span>
           </h1>
-          <p className="mt-4 mx-auto font-mono mt-3 max-w-xl text-emerald-400">
+          <p className="mt-4 mx-auto font-mono mt-3 max-w-xl text-[#FF9A42]">
             Data, AI and Machine learning focused hackathon
           </p>
         </header>
 
         {/* Contained grid panel */}
-        <section className="overflow-hidden rounded-2xl border border-white/10 bg-white shadow-2xl">
+        {/* <section className="overflow-hidden rounded-2xl border border-white/10 bg-white shadow-2xl"> */}
           {/* fixed height wraps the grid so it stays a small portion */}
-          <div className="h-[320px] w-full sm:h-[380px]">
+          {/* <div className="h-[320px] w-full sm:h-[380px]">
             <ScrambleTextGrid
               cols={22}
               rows={9}
               fontSize={14}
-              gapX={18}
-              gapY={14}
+              gapX={12}
+              gapY={8}
               background="#ffffff"
               phrases={[
                 "DATA SCIENCE",
                 "MACHINE LEARNING",
-                "NEURAL NETWORK",
                 "ALGORITHM",
                 "HACKATHON",
                 "AI",
               ]}
             />
-          </div>
-        </section>
+          </div> */}
+        {/* </section> */}
 
         {/* Optional caption / CTA below
         <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
@@ -56,6 +57,7 @@ export default function Hero() {
           </a>
         </div> */}
       </div>
+      <div className="mt-8 text-left justify-start text-orange-400 text-4xl font-normal font-['Konkhmer_Sleokchher'] uppercase">/////////////////////////////////</div>
     </main>
   );
 }

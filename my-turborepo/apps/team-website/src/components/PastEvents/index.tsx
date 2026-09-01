@@ -7,9 +7,9 @@ export default function PastEvents() {
       <div className="mx-auto max-w-5xl">
         <header className="mb-10">
           <h1 className="text-3xl font-bold text-white">Past Events</h1>
-          <p className="mt-1 text-slate-400">
+          {/* <p className="mt-1 text-slate-400">
             Hover a semester in the tree to preview its poster.
-          </p>
+          </p> */}
         </header>
 
         <HoverCrossfade groups={PAST_EVENTS} />

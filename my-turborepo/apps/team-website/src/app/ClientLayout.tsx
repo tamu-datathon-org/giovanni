@@ -21,7 +21,7 @@ export default function ClientLayout({
       <main className="min-h-screen w-full">
         {!hideMarketingChrome && (
           <div className="flex w-full items-center justify-center">
-            <Header />
+            {/* <Header /> */}
           </div>
         )}
         {children}

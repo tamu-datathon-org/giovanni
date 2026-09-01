@@ -11,6 +11,7 @@ export interface HoverCrossfadeItem {
   alt?: string;
   caption?: string;
   kicker?: string; // small label above the caption, e.g. "Event Poster"
+  url?: string;
 }
 
 export interface HoverCrossfadeGroup {
@@ -156,25 +157,26 @@ export default function HoverCrossfade({
                   const isActive = activeId === item.id;
                   return (
                     <li key={item.id}>
-                      <button
-                        type="button"
+                      <a
+                        href={item.url ?? "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         onMouseEnter={() => handleHover(item)}
                         onFocus={() => handleHover(item)}
-                        onClick={() => handleHover(item)}
-                        aria-pressed={isActive}
+                        aria-current={isActive ? "true" : undefined}
                         className={`group relative flex w-full select-none items-center gap-2 rounded-md px-2 py-1.5 text-left outline-none transition-colors before:absolute before:left-0 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400 ${
                           isActive
-                            ? "bg-emerald-400/15 text-white before:bg-emerald-400"
-                            : "text-slate-400 before:bg-transparent hover:bg-white/5 hover:text-slate-200"
+                              ? "bg-emerald-400/15 text-white before:bg-emerald-400"
+                              : "text-slate-400 before:bg-transparent hover:bg-white/5 hover:text-slate-200"
                         }`}
                       >
                         <FileIcon
-                          className={`h-3.5 w-3.5 shrink-0 transition-colors ${
+                        className={`h-3.5 w-3.5 shrink-0 transition-colors ${
                             isActive ? "text-emerald-400" : "text-sky-400/60"
-                          }`}
+                        }`}
                         />
                         <span className="truncate">{item.label}</span>
-                      </button>
+                      </a>
                     </li>
                   );
                 })}

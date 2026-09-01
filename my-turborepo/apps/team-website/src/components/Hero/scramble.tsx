@@ -22,18 +22,17 @@ gsap.registerPlugin(ScrambleTextPlugin);
 
 export default function ScrambleTextGrid({
   phrases = [
-    "DATA SCIENCE",
-    "MACHINE LEARNING",
-    "ARTIFICIAL INTELLIGENCE",
-    "HACKATHON",
-    "NEURAL NETWORK",
-    "ALGORITHM",
+    /*...*/
   ],
   cols = 30,
   rows = 16,
   chars = "!@#$%^&*()_+-=[]{}|;:,.<>?/\\~`0123456789",
   dimColor = "#c9cdd6",
   hitColor = "#1e3a8a",
+  fontSize = 20,
+  gapX = 34,
+  gapY = 28,
+  background = "#ffffff",
 }) {
   const gridRef = useRef(null);
   const tweensRef = useRef([]);
@@ -155,15 +154,15 @@ export default function ScrambleTextGrid({
           display: flex;
           align-items: center;
           justify-content: center;
-          background: #ffffff;
+          background: ${background};
           overflow: hidden;
         }
         .stg-grid {
           display: grid;
           grid-template-columns: repeat(${cols}, 1fr);
-          gap: 28px 34px;
+          gap: ${gapY}px ${gapX}px;
           font-family: "Courier New", ui-monospace, Menlo, monospace;
-          font-size: 20px;
+          font-size: ${fontSize}px;
           letter-spacing: 1px;
           user-select: none;
         }
