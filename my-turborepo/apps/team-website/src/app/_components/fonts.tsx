@@ -9,8 +9,9 @@ export const w95fa = localFont({
 
 export const inter = Inter({
   subsets: ["latin"],
-  weight: "400",
   display: "swap",
+  variable: "--font-inter",
+  weight: "400",
 });
 
 export const konkhmerSleokchher = Konkhmer_Sleokchher({

@@ -54,6 +54,8 @@ export default {
         // The var is defined in a component somewhere
         // We need this so NextJS does its font optimizations
         XPfont: ["var(--font-w95fa)"],
+        inter: ["var(--font-inter)"],
+        konkhmer: ["var(--font-konkhmer-sleokchher)"],
       },
       borderRadius: {
         lg: "var(--radius)",
