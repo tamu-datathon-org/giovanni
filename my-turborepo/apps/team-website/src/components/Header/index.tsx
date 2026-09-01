@@ -215,7 +215,7 @@ const Header = () => {
 
       <div
         ref={containerRef}
-        className="bg-[#377BB0] relative mx-auto w-full border border-white/10 backdrop-blur-xl backdrop-saturate-150"
+        className="bg-gray-dark/50 relative mx-auto w-full border border-white/10 backdrop-blur-xl backdrop-saturate-150"
       >
         <div className="flex items-center">
           {/* LOGO */}

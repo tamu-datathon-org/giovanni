@@ -7,7 +7,12 @@ import Hero from "~/components/Hero";
 import { SectionDivider } from "~/components/SectionDivider";
 import { env } from "~/env";
 
-const PastEventsSection = dynamic(() => import("~/components/PastEvents"), {
+const PastEventsSection = dynamic(
+  () =>
+    import("~/components/PastEvents/pastEvents").then((m) => ({
+      default: m.PastEventsSection,
+    })),
+  {
     ssr: true,
     loading: () => (
       <section className="bg-[#121723] px-4 py-16">

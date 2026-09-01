@@ -47,28 +47,6 @@
   .text-stroke-2 {
     -webkit-text-stroke-width: 2px;
   }
-
-  /* Grid backgrounds */
-  .grid-background {
-    background-size: 40px 40px;
-    background-image:
-        linear-gradient(to right, grey 1px, transparent 1px),
-        linear-gradient(to bottom, grey 1px, transparent 1px);
-  }
-
-  .grid-background-light {
-    background-size: 40px 40px;
-    background-image:
-        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
-        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
-  }
-
-  .grid-background-sm {
-    background-size: 20px 20px;
-    background-image:
-        linear-gradient(to right, #374151 1px, transparent 1px),
-        linear-gradient(to bottom, #374151 1px, transparent 1px);
-  }
 }
 
 #mlh-trust-badge {
