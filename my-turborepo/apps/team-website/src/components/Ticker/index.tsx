@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-import { SectionTitle } from "@vanni/ui/section-title";
+import { konkhmerSleokchher } from "~/app/_components/fonts";
 
 //TODO: will need to change out the all black logos with white or something if sticking with the dark theme
 
@@ -14,7 +14,7 @@ export default function SponsorTicker() {
   const animationRef = useRef<gsap.core.Tween | null>(null);
 
   const logos = [
-    "/images/sponsor-logo/amd.webp",
+    "/images/sponsor-logo/AMD.webp",
     "/images/sponsor-logo/amex.webp",
     "/images/sponsor-logo/bp.webp",
     // "/images/sponsor-logo/cbre.webp",
@@ -24,7 +24,7 @@ export default function SponsorTicker() {
     "/images/sponsor-logo/gm.webp",
     "/images/sponsor-logo/goldman.webp",
     "/images/sponsor-logo/heb.webp",
-    "/images/sponsor-logo/hewlett.webp",
+    "/images/sponsor-logo/HPE.webp",
     "/images/sponsor-logo/johnson.webp",
     // "/images/sponsor-logo/mathworks.webp",
     // "/images/sponsor-logo/msy.webp",
@@ -33,7 +33,7 @@ export default function SponsorTicker() {
     "/images/sponsor-logo/qualcomm.webp",
     "/images/sponsor-logo/shell.webp",
     // "/images/sponsor-logo/sparx.webp",
-    "/images/sponsor-logo/splunk.webp",
+    "/images/sponsor-logo/Splunk.webp",
     "/images/sponsor-logo/tableau.webp",
     "/images/sponsor-logo/walmart.webp",
   ];
@@ -102,10 +102,11 @@ export default function SponsorTicker() {
 
   return (
     <div
-      id="sponsors"
-      className="flex w-full cursor-pointer flex-col items-center justify-center bg-[#121723]"
+      className={`${konkhmerSleokchher.variable} flex w-full cursor-pointer flex-col items-center justify-center bg-[#F3F3F3]`}
     >
-      <SectionTitle title="Past Sponsors" paragraph={""} center mb="-40px" />
+      <h2 className="mb-4 font-konkhmer text-5xl font-normal text-[#377BB0] sm:mb-6 sm:text-6xl md:text-7xl">
+        SPONSORS
+      </h2>
 
       <div
         className="relative h-28 w-full overflow-hidden sm:h-40"
