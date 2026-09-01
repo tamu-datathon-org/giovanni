@@ -89,10 +89,10 @@ const AnnouncementBanner = ({ onDismiss }: { onDismiss: () => void }) => {
           type="button"
           onClick={() => openAfter(0)}
           aria-expanded={expanded}
-          className="order-1 flex h-11 shrink-0 items-center gap-2 rounded-full px-4 text-sm text-white/80 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-datalightblue"
+          className="order-1 flex h-14 shrink-0 items-center gap-2.5 rounded-full px-5 text-base text-white/80 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-datalightblue sm:px-6"
         >
-          <Megaphone className="h-4 w-4 shrink-0 text-datalightblue" />
-          <span className="truncate">Now Recruiting Organizers!</span>
+          <Megaphone className="h-5 w-5 shrink-0 text-datalightblue" />
+          <span className="truncate font-bold text-lg">Now Recruiting Organizers!</span>
         </button>
 
         <div
@@ -106,11 +106,11 @@ const AnnouncementBanner = ({ onDismiss }: { onDismiss: () => void }) => {
           <div className="overflow-hidden">
             <div
               aria-hidden={!expanded}
-              className="flex flex-wrap items-center gap-3 whitespace-nowrap px-4 pb-3 pt-1 text-sm sm:w-max sm:flex-nowrap sm:px-0 sm:pb-0 sm:pt-0"
+              className="flex flex-wrap items-center gap-4 whitespace-nowrap px-5 pb-4 pt-1 text-base sm:w-max sm:flex-nowrap sm:px-0 sm:pb-0 sm:pt-0"
             >
               <span
                 aria-hidden
-                className="hidden h-4 w-px shrink-0 bg-white/10 sm:block"
+                className="hidden h-5 w-px shrink-0 bg-white/10 sm:block"
               />
 
               <RoleLabel label="Design" />
@@ -123,17 +123,17 @@ const AnnouncementBanner = ({ onDismiss }: { onDismiss: () => void }) => {
 
               <span
                 aria-hidden
-                className="hidden h-4 w-px shrink-0 bg-white/10 sm:block"
+                className="hidden h-5 w-px shrink-0 bg-white/10 sm:block"
               />
 
-              <span className="text-xs text-white/45">Closes Sept 11</span>
+              <span className="text-sm text-white/45">Closes Sept 11</span>
 
               <a
                 href="https://forms.gle/qhatGGHSJRNt1Qey6"
                 target="_blank"
                 rel="noopener noreferrer"
                 tabIndex={expanded ? undefined : -1}
-                className="rounded-full bg-datadarkblue px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-datadarkblue/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-datalightblue focus-visible:ring-offset-2 focus-visible:ring-offset-[#171C28]"
+                className="rounded-full bg-datadarkblue px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-datadarkblue/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-datalightblue focus-visible:ring-offset-2 focus-visible:ring-offset-[#171C28]"
               >
                 Apply
               </a>
@@ -145,9 +145,9 @@ const AnnouncementBanner = ({ onDismiss }: { onDismiss: () => void }) => {
           type="button"
           onClick={onDismiss}
           aria-label="Dismiss announcement"
-          className="order-2 mr-1 ml-auto flex h-11 w-9 shrink-0 items-center justify-center rounded-full text-white/40 transition-colors hover:bg-white/5 hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/30 sm:order-3 sm:ml-0"
+          className="order-2 mr-1.5 ml-auto flex h-14 w-11 shrink-0 items-center justify-center rounded-full text-white/40 transition-colors hover:bg-white/5 hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/30 sm:order-3 sm:ml-0"
         >
-          <X className="h-4 w-4" />
+          <X className="h-5 w-5" />
         </button>
       </div>
     </div>,
