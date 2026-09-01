@@ -19,8 +19,8 @@ const LoginButton = ({
 }: LoginButtonProps) => {
   async function signInHandler() {
     try {
-      const result = await authClient.signIn.oauth2({
-        providerId: `auth0-${connectionId}`,
+      const result = await authClient.signIn.social({
+        provider: `auth0-${connectionId}`,
         callbackURL: callbackUrl ?? "/",
         disableRedirect: false,
         errorCallbackURL: `/login?callbackUrl=${encodeURIComponent(callbackUrl ?? "/")}&message=unauthorized`,
