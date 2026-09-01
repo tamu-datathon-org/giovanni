@@ -11,6 +11,7 @@ export const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+  weight: "400",
 });
 
 export const konkhmerSleokchher = Konkhmer_Sleokchher({

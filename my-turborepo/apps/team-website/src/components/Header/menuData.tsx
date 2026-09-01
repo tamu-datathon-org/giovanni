@@ -1,5 +1,7 @@
 import type { Menu } from "~/types/menu";
 
+// Order matters: the rail treats this as document order when deciding which
+// section is active, and renders the labels top-to-bottom in the same order.
 const menuData: Menu[] = [
   {
     id: 1,
@@ -7,55 +9,33 @@ const menuData: Menu[] = [
     path: "/#home",
     newTab: false,
   },
-  // {
-  //   id: 3,
-  //   title: "About",
-  //   path: "/#about",
-  //   newTab: false,
-  // },
   {
-    id: 6,
+    id: 2,
+    title: "About Us",
+    path: "/#about-us",
+    newTab: false,
+  },
+  {
+    id: 3,
     title: "Past Events",
     path: "/#past-events",
     newTab: false,
   },
-  // {
-  //   id: 2,
-  //   title: "Apply",
-  //   path: "#apply",
-  //   newTab: false,
-  // },
   {
     id: 4,
+    title: "Sponsors",
+    path: "/#sponsors",
+    newTab: false,
+  },
+  {
+    id: 5,
     title: "Team",
     path: "/#team",
     newTab: false,
   },
-  // submenu: [
-  // INSERT NEW BLOG POSTS HERE
-  // {
-  //   id: 41,
-  //   title: "About Page",
-  //   path: "/about",
-  //   newTab: false,
-  // },
-  // {
-  //   id: 42,
-  //   title: "Contact Page",
-  //   path: "/contact",
-  //   newTab: false,
-  // },
-  //   ],
-  // },
   {
-    id: 5,
-    title: "Contact",
-    path: "/#contact",
-    newTab: false,
-  },
-  {
-    id: 7,
-    title: "Applications",
+    id: 6,
+    title: "Apply",
     path: "/apply",
     newTab: false,
   },
