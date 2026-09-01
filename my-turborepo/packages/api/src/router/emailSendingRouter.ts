@@ -29,11 +29,12 @@ async function checkStatusEmails(
   const successfulEmails: string[] = emailList.filter(
     (email) => !failedSet.has(email),
   );
-  let ids: string[] = [];
-  ids = ids.concat(
-    successfulEmails
-      .map((email) => statusMap.get(email))
-      .filter((id): id is string => id !== undefined),
+  const ids = Array.from(
+    new Set(
+      successfulEmails
+        .map((email) => statusMap.get(email))
+        .filter((id): id is string => id !== undefined),
+    ),
   );
 
   // Update all the batch status
@@ -141,30 +142,42 @@ export const emailSendingRouter = {
         );
         const emailMap = new Map<string, string>();
 
-        const waitlistEmails = [];
-        const acceptedEmails = [];
-        const rejectedEmails = [];
+        const waitlistEmailSet = new Set<string>();
+        const acceptedEmailSet = new Set<string>();
+        const rejectedEmailSet = new Set<string>();
 
-        // // Filter by status
+        //filter by status
         for (const application of batch) {
           if (!emailMap.has(application.email)) {
             emailMap.set(application.email, application.id);
           }
+          if (application.userEmail && application.userEmail !== application.email) {
+            if (!emailMap.has(application.userEmail)) {
+              emailMap.set(application.userEmail, application.id);
+            }
+          }
 
           if (application.status === "waitlisted") {
-            waitlistEmails.push(application.email);
-            if (application.userEmail !== application.email && application.userEmail != null)
-              waitlistEmails.push(application.userEmail);
+            waitlistEmailSet.add(application.email);
+            if (application.userEmail != null && application.userEmail !== application.email) {
+              waitlistEmailSet.add(application.userEmail);
+            }
           } else if (application.status === "accepted") {
-            acceptedEmails.push(application.email);
-            if (application.userEmail !== application.email && application.userEmail != null)
-              acceptedEmails.push(application.userEmail);
+            acceptedEmailSet.add(application.email);
+            if (application.userEmail != null && application.userEmail !== application.email) {
+              acceptedEmailSet.add(application.userEmail);
+            }
           } else if (application.status === "rejected") {
-            rejectedEmails.push(application.email);
-            if (application.userEmail !== application.email && application.userEmail != null)
-              rejectedEmails.push(application.userEmail);
+            rejectedEmailSet.add(application.email);
+            if (application.userEmail != null && application.userEmail !== application.email) {
+              rejectedEmailSet.add(application.userEmail);
+            }
           }
         }
+
+        const waitlistEmails = Array.from(waitlistEmailSet);
+        const acceptedEmails = Array.from(acceptedEmailSet);
+        const rejectedEmails = Array.from(rejectedEmailSet);
 
         // Rejection Emails
         if (sendRejected && rejectedEmails.length > 0) {

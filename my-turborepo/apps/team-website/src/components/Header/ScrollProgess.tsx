@@ -2,27 +2,41 @@
 
 import { useEffect, useState } from "react";
 
+/**
+ * Vertical scroll progress track for the left rail.
+ */
 export function ScrollProgress() {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const updateScrollProgress = () => {
-      const scrollTop = window.scrollY;
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrollTop / docHeight) * 100;
-      setScrollProgress(progress);
+      // Short pages have nothing to scroll — avoid dividing by zero.
+      if (docHeight <= 0) {
+        setScrollProgress(0);
+        return;
+      }
+      setScrollProgress(Math.min(100, (window.scrollY / docHeight) * 100));
     };
 
-    window.addEventListener("scroll", updateScrollProgress);
-    return () => window.removeEventListener("scroll", updateScrollProgress);
+    updateScrollProgress();
+    window.addEventListener("scroll", updateScrollProgress, { passive: true });
+    window.addEventListener("resize", updateScrollProgress);
+    return () => {
+      window.removeEventListener("scroll", updateScrollProgress);
+      window.removeEventListener("resize", updateScrollProgress);
+    };
   }, []);
 
   return (
-    <div className="fixed left-0 right-0 top-0 z-50 h-1">
+    <div
+      aria-hidden
+      className="relative h-24 w-[3px] shrink-0 overflow-hidden rounded-full bg-white/20 xl:h-32"
+    >
       <div
-        className="h-full bg-gradient-to-r from-[#6cfdea] via-[#029db1] to-[#3969d0] transition-all duration-150 ease-out"
-        style={{ width: `${scrollProgress}%` }}
+        className="w-full rounded-full bg-gradient-to-b from-[#6cfdea] via-[#029db1] to-[#3969d0] transition-[height] duration-150 ease-out"
+        style={{ height: `${scrollProgress}%` }}
       />
     </div>
   );

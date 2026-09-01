@@ -20,21 +20,25 @@
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
-    "@trpc/server": "11.0.0-rc.364",
+    "@aws-sdk/client-sqs": "catalog:",
+    "@trpc/server": "catalog:",
     "@vanni/auth": "workspace:*",
     "@vanni/db": "workspace:*",
     "@vanni/validators": "workspace:*",
-    "minimatch": "^10.2.3",
-    "superjson": "2.2.1",
-    "zod": "^4.3.6"
+    "@vercel/blob": "catalog:",
+    "drizzle-orm": "catalog:",
+    "minimatch": "catalog:",
+    "superjson": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@total-typescript/ts-reset": "^0.4.2",
+    "@total-typescript/ts-reset": "catalog:",
+    "@types/node": "catalog:",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tsconfig": "workspace:*",
-    "eslint": "^9.39.1",
-    "prettier": "^3.6.2",
-    "typescript": "^5.9.3"
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
   }
 }
