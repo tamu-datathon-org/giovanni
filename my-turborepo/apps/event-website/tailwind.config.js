@@ -44,7 +44,6 @@ export const theme = {
       black: "#121723",
       dark: "#1D2430",
       primary: "#4A6CF7",
-      yellow: "#FBB040",
       datablue: "#2C41DB",
       dalgonabase: "#EBAD5C",
       dalgonatext: "#B86B28",
