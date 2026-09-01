@@ -94,6 +94,12 @@ export const config = {
         })
     ],
     advanced: {
+        // Per-app cookie name so each app (team-website, organizer-website)
+        // maintains an independent session. On shared hosts like localhost
+        // (cookies ignore the port) a shared cookie name would couple the two
+        // apps' sessions. Set AUTH_COOKIE_PREFIX per app; defaults to the
+        // Better Auth default ("better-auth") when unset for other consumers.
+        cookiePrefix: process.env.AUTH_COOKIE_PREFIX ?? "better-auth",
         database: {
             generateId: false,
         }

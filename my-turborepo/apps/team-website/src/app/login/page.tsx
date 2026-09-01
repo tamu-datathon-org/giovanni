@@ -1,4 +1,5 @@
 "use client";
+import { normalizeCallbackPath } from "@vanni/auth/callback-url";
 import LoginButton from "../_components/auth/login_button";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub, FaWindows } from "react-icons/fa";
@@ -8,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 
 function LoginContent() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? undefined;
+  const callbackUrl = normalizeCallbackPath(searchParams.get("callbackUrl"));
   const message = searchParams.get("message") ?? undefined;
   const errorDescription = searchParams.get("error_description") ?? undefined;
 
