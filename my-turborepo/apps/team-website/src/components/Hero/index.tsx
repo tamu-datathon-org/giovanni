@@ -4,24 +4,24 @@ import ScrambleTextGrid from "./scramble";
 
 export default function Hero() {
   return (
-    <main className="grid-background-sm min-h-screen bg-[#0d1526] px-6 py-16">
+    <main className="grid-background-sm-light min-h-screen bg-[#F3F3F3] px-6 py-16">
       <div className="mx-auto max-w-4xl">
         {/* Page heading */}
 
         <header className="mb-10 text-center">
-          <p className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-emerald-400">
+          <p className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-emerald-600">
 
           </p>
-          <h1 className="mt-8 text-4xl font-bold text-white sm:text-5xl">
+          <h1 className="mt-8 text-4xl font-bold text-[#121723] sm:text-5xl">
             TAMU Datathon
           </h1>
-          <p className="mt-4 mx-auto font-mono mt-3 max-w-xl text-emerald-400">
+          <p className="mt-4 mx-auto font-mono mt-3 max-w-xl text-emerald-600">
             Data, AI and Machine learning focused hackathon
           </p>
         </header>
 
         {/* Contained grid panel */}
-        <section className="overflow-hidden rounded-2xl border border-white/10 bg-white shadow-2xl">
+        <section className="overflow-hidden rounded-2xl border border-[#E3E8EF] bg-white shadow-two">
           {/* fixed height wraps the grid so it stays a small portion */}
           <div className="h-[320px] w-full sm:h-[380px]">
             <ScrambleTextGrid

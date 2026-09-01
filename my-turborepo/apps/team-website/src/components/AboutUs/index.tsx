@@ -57,7 +57,7 @@ export default function AboutUs() {
   return (
     <section
       id="about-us"
-      className={`relative z-20 w-full overflow-visible ${konkhmerSleokchher.className}`}
+      className={`relative z-20 w-full overflow-visible scroll-mt-20 lg:scroll-mt-0 ${konkhmerSleokchher.className}`}
       style={{ marginTop: `calc(${jaggedHeight} * ${-JAGGED.overlap})` }}
     >
       <div className="relative z-[2] w-full leading-[0]">

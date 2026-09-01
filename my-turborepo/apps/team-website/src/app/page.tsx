@@ -5,7 +5,6 @@ import { ScrollUp } from "@vanni/ui/scroll-up";
 
 import Hero from "~/components/Hero";
 import Photos from "~/components/Photos";
-import { SectionDivider } from "~/components/SectionDivider";
 import { env } from "~/env";
 
 const PastEventsSection = dynamic(() => import("~/components/PastEvents"), {
@@ -49,12 +48,17 @@ export default function HomePage() {
   return (
     <>
       <ScrollUp />
-      <Hero />
+      <div id="home" className="scroll-mt-20 lg:scroll-mt-0">
+        <Hero />
+      </div>
       <AboutUs />
       <Photos />
-      <PastEventsSection />
-      <SectionDivider variant="curvy" />
-      <SponsorTicker />
+      <div id="past-events" className="scroll-mt-20 lg:scroll-mt-0">
+        <PastEventsSection />
+      </div>
+      <div id="sponsors" className="scroll-mt-20 lg:scroll-mt-0">
+        <SponsorTicker />
+      </div>
       <AboutTeam />
     </>
   );

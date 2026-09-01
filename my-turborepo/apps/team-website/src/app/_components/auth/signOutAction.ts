@@ -6,7 +6,7 @@ import { headers } from "next/headers";
 
 export async function signOutAction(pathname: string) {
   await auth.api.signOut({
-    headers: headers(),
+    headers: await headers(),
   });
   const callbackPath = normalizeCallbackPath(pathname);
   redirect(

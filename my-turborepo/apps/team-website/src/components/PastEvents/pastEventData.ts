@@ -11,16 +11,21 @@ import fall2021 from "../../../public/images/past_cards/card_2021.png";
 import fall2020 from "../../../public/images/past_cards/card_2020.png";
 import fall2019 from "../../../public/images/past_cards/card_2019.png";
 
-
-
+// Each item links out to that event's archived site in a new tab:
+//   fall   -> https://<year>.tamudatathon.com        (e.g. 2019.tamudatathon.com)
+//   spring -> https://<year>-lite.tamudatathon.com   (e.g. 2025-lite.tamudatathon.com)
+// Items without `href` stay hover-only.
 export const PAST_EVENTS: HoverCrossfadeGroup[] = [
     {
         title: "2026",
         items: [
             {
                 id: "2026-spring",
+                href: "https://2026-lite.tamudatathon.com",
                 label: "spring_td.ts",
                 image: spring2026,
+                alt: "TAMU Datathon 2026 Spring poster",
+                caption: "2026 · Spring",
             },
         ],
     },
@@ -29,14 +34,18 @@ export const PAST_EVENTS: HoverCrossfadeGroup[] = [
         items: [
             {
                 id: "2025-spring",
+                href: "https://2025-lite.tamudatathon.com",
                 label: "spring_td.ts",
                 image: spring2025,
+                alt: "TAMU Datathon 2025 Spring poster",
                 caption: "2025 · Spring",
             },
             {
                 id: "2025-fall",
+                href: "https://2025.tamudatathon.com",
                 label: "fall_td.ts",
                 image: fall2025,
+                alt: "TAMU Datathon 2025 Fall poster",
                 caption: "2025 · Fall",
             },
         ],
@@ -46,14 +55,18 @@ export const PAST_EVENTS: HoverCrossfadeGroup[] = [
         items: [
             {
                 id: "2024-spring",
+                href: "https://2024-lite.tamudatathon.com",
                 label: "spring_td.ts",
                 image: spring2024,
+                alt: "TAMU Datathon 2024 Spring poster",
                 caption: "2024 · Spring",
             },
             {
                 id: "2024-fall",
+                href: "https://2024.tamudatathon.com",
                 label: "fall_td.ts",
                 image: fall2024,
+                alt: "TAMU Datathon 2024 Fall poster",
                 caption: "2024 · Fall",
             },
         ],
@@ -63,8 +76,10 @@ export const PAST_EVENTS: HoverCrossfadeGroup[] = [
         items: [
             {
                 id: "2023-fall",
+                href: "https://2023.tamudatathon.com",
                 label: "fall_td.ts",
                 image: fall2023,
+                alt: "TAMU Datathon 2023 Fall poster",
                 caption: "2023 · Fall",
             },
         ],
@@ -74,8 +89,10 @@ export const PAST_EVENTS: HoverCrossfadeGroup[] = [
         items: [
             {
                 id: "2022-fall",
+                href: "https://2022.tamudatathon.com",
                 label: "fall_td.ts",
                 image: fall2022,
+                alt: "TAMU Datathon 2022 Fall poster",
                 caption: "2022 · Fall",
             },
         ],
@@ -85,8 +102,10 @@ export const PAST_EVENTS: HoverCrossfadeGroup[] = [
         items: [
             {
                 id: "2021-fall",
+                href: "https://2021.tamudatathon.com",
                 label: "fall_td.ts",
                 image: fall2021,
+                alt: "TAMU Datathon 2021 Fall poster",
                 caption: "2021 · Fall",
             },
         ],
@@ -96,8 +115,10 @@ export const PAST_EVENTS: HoverCrossfadeGroup[] = [
         items: [
             {
                 id: "2020-fall",
+                href: "https://2020.tamudatathon.com",
                 label: "fall_td.ts",
                 image: fall2020,
+                alt: "TAMU Datathon 2020 Fall poster",
                 caption: "2020 · Fall",
             },
         ],
@@ -107,8 +128,10 @@ export const PAST_EVENTS: HoverCrossfadeGroup[] = [
         items: [
             {
                 id: "2019-fall",
+                href: "https://2019.tamudatathon.com",
                 label: "fall_td.ts",
                 image: fall2019,
+                alt: "TAMU Datathon 2019 Fall poster",
                 caption: "2019 · Fall",
             },
         ],

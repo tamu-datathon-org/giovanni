@@ -16,27 +16,15 @@
   :root {
     --radius: 0.5rem;
 
-    /* Logo colors - light mode */
+    /* Logo colors */
     --logo-primary: #6dfdea;
     --logo-secondary: #01c0cc;
     --logo-tertiary: #28979b;
 
-    /* Branch colors - light mode */
+    /* Branch colors */
     --branch-primary: #6dfdea;
     --branch-secondary: #01c0cc;
     --branch-tertiary: #28979b;
-  }
-
-  .dark {
-    /* Logo colors - dark mode */
-    --logo-primary: #66cae0;
-    --logo-secondary: #2b67e1;
-    --logo-tertiary: #2a42d3;
-
-    /* Branch colors - dark mode */
-    --branch-primary: #66cae0;
-    --branch-secondary: #2b67e1;
-    --branch-tertiary: #2a42d3;
   }
   .text-stroke {
     -webkit-text-stroke-width: 1px;
@@ -68,6 +56,13 @@
     background-image:
         linear-gradient(to right, #374151 1px, transparent 1px),
         linear-gradient(to bottom, #374151 1px, transparent 1px);
+  }
+
+  .grid-background-sm-light {
+    background-size: 20px 20px;
+    background-image:
+        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
   }
 }
 

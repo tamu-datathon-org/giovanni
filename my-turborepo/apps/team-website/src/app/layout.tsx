@@ -26,13 +26,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${w95fa.variable} ${inter.variable}`}
-    >
+    <html lang="en" className={`${w95fa.variable} ${inter.variable}`}>
       <head />
-      <body className={`bg-[#121723] text-white ${inter.className}`}>
+      <body className={`bg-[#F3F3F3] text-[#121723] ${inter.className}`}>
         <ClientLayout>{props.children}</ClientLayout>
       </body>
     </html>

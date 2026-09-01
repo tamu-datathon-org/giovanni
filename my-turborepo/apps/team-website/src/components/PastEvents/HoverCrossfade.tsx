@@ -11,6 +11,7 @@ export interface HoverCrossfadeItem {
   alt?: string;
   caption?: string;
   kicker?: string; // small label above the caption, e.g. "Event Poster"
+  href?: string; // link to that year's archived site, opens in a new tab
 }
 
 export interface HoverCrossfadeGroup {
@@ -125,12 +126,12 @@ export default function HoverCrossfade({
 
   return (
     <div
-      className={`overflow-hidden rounded-xl border border-white/10 bg-[#0d1526] shadow-2xl ${
+      className={`overflow-hidden rounded-xl border border-[#E3E8EF] bg-white shadow-two ${
         className ?? ""
       }`}
     >
       {/* Editor title bar */}
-      <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.03] px-4 py-3">
+      <div className="flex items-center gap-2 border-b border-[#E3E8EF] bg-[#F3F3F3] px-4 py-3">
         <span className="h-3 w-3 rounded-full bg-red-400/80" />
         <span className="h-3 w-3 rounded-full bg-yellow-400/80" />
         <span className="h-3 w-3 rounded-full bg-green-400/80" />
@@ -143,7 +144,7 @@ export default function HoverCrossfade({
         {/* LEFT: file tree */}
         <nav
           aria-label="Past events"
-          className="max-h-[70vh] overflow-y-auto border-b border-white/10 p-4 font-mono text-sm md:border-b-0 md:border-r"
+          className="max-h-[70vh] overflow-y-auto border-b border-[#E3E8EF] p-4 font-mono text-sm md:border-b-0 md:border-r"
         >
           {groups.map((group) => (
             <div key={group.title} className="mb-5">
@@ -151,30 +152,51 @@ export default function HoverCrossfade({
                 <ChevronIcon className="h-3 w-3" />
                 {group.title}
               </h3>
-              <ul className="ml-3 space-y-0.5 border-l border-white/10 pl-3">
+              <ul className="ml-3 space-y-0.5 border-l border-[#E3E8EF] pl-3">
                 {group.items.map((item) => {
                   const isActive = activeId === item.id;
+                  const rowClassName = `group relative flex w-full select-none items-center gap-2 rounded-md px-2 py-1.5 text-left outline-none transition-colors before:absolute before:left-0 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:transition-colors focus-visible:ring-2 focus-visible:ring-emerald-600 ${
+                    isActive
+                      ? "bg-emerald-600/10 text-[#121723] before:bg-emerald-600"
+                      : "text-slate-600 before:bg-transparent hover:bg-black/[0.04] hover:text-[#121723]"
+                  }`;
+                  const rowChildren = (
+                    <>
+                      <FileIcon
+                        className={`h-3.5 w-3.5 shrink-0 transition-colors ${
+                          isActive ? "text-emerald-600" : "text-sky-500/70"
+                        }`}
+                      />
+                      <span className="truncate">{item.label}</span>
+                    </>
+                  );
                   return (
                     <li key={item.id}>
-                      <button
-                        type="button"
-                        onMouseEnter={() => handleHover(item)}
-                        onFocus={() => handleHover(item)}
-                        onClick={() => handleHover(item)}
-                        aria-pressed={isActive}
-                        className={`group relative flex w-full select-none items-center gap-2 rounded-md px-2 py-1.5 text-left outline-none transition-colors before:absolute before:left-0 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400 ${
-                          isActive
-                            ? "bg-emerald-400/15 text-white before:bg-emerald-400"
-                            : "text-slate-400 before:bg-transparent hover:bg-white/5 hover:text-slate-200"
-                        }`}
-                      >
-                        <FileIcon
-                          className={`h-3.5 w-3.5 shrink-0 transition-colors ${
-                            isActive ? "text-emerald-400" : "text-sky-400/60"
-                          }`}
-                        />
-                        <span className="truncate">{item.label}</span>
-                      </button>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onMouseEnter={() => handleHover(item)}
+                          onFocus={() => handleHover(item)}
+                          onClick={() => handleHover(item)}
+                          aria-current={isActive ? "true" : undefined}
+                          className={rowClassName}
+                        >
+                          {rowChildren}
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          onMouseEnter={() => handleHover(item)}
+                          onFocus={() => handleHover(item)}
+                          onClick={() => handleHover(item)}
+                          aria-pressed={isActive}
+                          className={rowClassName}
+                        >
+                          {rowChildren}
+                        </button>
+                      )}
                     </li>
                   );
                 })}
@@ -185,7 +207,7 @@ export default function HoverCrossfade({
 
         {/* RIGHT: crossfading poster stage */}
         <div className="p-4">
-          <div className="group relative mx-auto my-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-lg bg-slate-950 ring-1 ring-white/10">
+          <div className="group relative aspect-[1659/1779] w-full max-h-[70vh] overflow-hidden rounded-lg bg-[#F3F3F3] ring-1 ring-[#E3E8EF]">
             {([0, 1] as const).map((i) => {
               const item = layers[i];
               return (
@@ -203,7 +225,7 @@ export default function HoverCrossfade({
                         src={item.image}
                         alt={item.alt ?? item.caption ?? ""}
                         fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        sizes="(max-width: 768px) 100vw, 60vw"
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                         priority={i === 0}
                       />

@@ -980,7 +980,7 @@ export function ApplicationForm() {
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="mt-3 !border-2 !border-white dark:!border-white"
+                          className="mt-3 !border-2 !border-white"
                         />
                       </FormControl>
                       <div className="space-y-1">
@@ -1010,7 +1010,7 @@ export function ApplicationForm() {
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="mt-3 !border-2 !border-white dark:!border-white"
+                          className="mt-3 !border-2 !border-white"
                         />
                       </FormControl>
                       <div className="space-y-1">
@@ -1059,7 +1059,7 @@ export function ApplicationForm() {
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="mt-3 !border-2 !border-white dark:!border-white"
+                          className="mt-3 !border-2 !border-white"
                         />
                       </FormControl>
                       <div className="space-y-1">

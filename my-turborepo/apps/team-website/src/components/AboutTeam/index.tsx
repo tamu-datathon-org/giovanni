@@ -418,7 +418,7 @@ const AboutTeam = () => {
     <div
       ref={teamSectionRef}
       id="team"
-      className={`${konkhmerSleokchher.variable} relative w-full overflow-hidden py-12 text-center`}
+      className={`${konkhmerSleokchher.variable} relative w-full overflow-hidden py-12 text-center scroll-mt-20 lg:scroll-mt-0`}
       style={{
         backgroundColor: "#F3F3F3",
         backgroundImage: `

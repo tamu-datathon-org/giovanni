@@ -49,13 +49,6 @@ const IDLE_DOT = "#EEEEEE";
 const DOT_ACTIVE_PX = 32;
 const DOT_IDLE_PX = 18;
 
-/**
- * Sections the rail highlights. The hero's #about is deliberately absent: it
- * is an animated <h1> inside a pinned ScrollTrigger rather than a real
- * section, so its rect is frozen for the length of the pin and highlighting it
- * flickers. #about-us is the standalone section on the angela-aboutus branch —
- * listing it here means the nav starts highlighting it the moment that merges.
- */
 const TRACKED_IDS = new Set([
   "home",
   "about-us",
@@ -64,51 +57,12 @@ const TRACKED_IDS = new Set([
   "team",
 ]);
 
-/**
- * Fallback ids to try when a nav target is missing, in priority order. Until
- * angela-aboutus merges we fall back to the hero's #about keyframe.
- */
-const CLICK_ALIASES: Record<string, string[]> = {
-  "about-us": ["about-us", "about"],
-};
-
 const resolveTarget = (id: string) =>
-  (CLICK_ALIASES[id] ?? [id]).find((candidate) =>
-    document.getElementById(candidate),
-  ) ?? null;
+  document.getElementById(id) ? id : null;
 
 /** "/#past-events" -> "past-events"; anything else (e.g. "/apply") -> null. */
 const sectionIdOf = (path?: string) =>
   path?.startsWith("/#") ? path.slice(2) : null;
-
-/**
- * Scroll with our own easing. The hero reveal is scrubbed by scroll position,
- * so the browser's native smooth scroll (~500ms) blows through the whole
- * animation in a couple of frames. Taking longer lets it actually play.
- */
-const easedScrollTo = (top: number, duration = 1400) => {
-  const prefersReduced = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-  const start = window.scrollY;
-  const delta = top - start;
-  if (prefersReduced || delta === 0) {
-    window.scrollTo({ top, behavior: "instant" });
-    return;
-  }
-  const began = performance.now();
-  const step = (now: number) => {
-    const t = Math.min(1, (now - began) / duration);
-    // easeInOutQuad
-    const eased = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
-    // "instant" is required: styles/index.css sets scroll-behavior: smooth
-    // globally, which would make each of these steps its own animated scroll
-    // and fight the easing.
-    window.scrollTo({ top: start + delta * eased, behavior: "instant" });
-    if (t < 1) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-};
 
 const Header = ({
   collapsed = false,
@@ -163,16 +117,6 @@ const Header = ({
         if (!el) continue;
         if (el.getBoundingClientRect().top <= line) current = id;
       }
-      // While the hero still owns the viewport and the real #about-us section
-      // has not merged yet, hand the highlight to ABOUT US once the hero's
-      // reveal has actually faded in. The keyframe's rect never moves (it is
-      // pinned), so the reveal itself is the only reliable signal.
-      if (current === "home" && !document.getElementById("about-us")) {
-        const keyframe = document.getElementById("about");
-        if (keyframe && Number(getComputedStyle(keyframe).opacity) >= 0.5) {
-          current = "about-us";
-        }
-      }
       setActiveId(current);
     };
 
@@ -221,14 +165,12 @@ const Header = ({
       const target = resolveTarget(sectionId);
       if (sectionId === "home") {
         window.scrollTo({ top: 0, behavior: "smooth" });
-      } else if (target === "about") {
-        // The hero's #about already sits on screen at scrollY 0, so
-        // scrollIntoView is a no-op and the reveal never plays. One viewport
-        // down is where the animation has finished. Once the real #about-us
-        // section merges, the branch below handles it normally.
-        easedScrollTo(window.innerHeight);
       } else if (target) {
         document.getElementById(target)?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        // Target not in the DOM yet (e.g. a dynamic section still loading) —
+        // fall back to a hash jump instead of silently doing nothing.
+        window.location.hash = sectionId;
       }
     }
     setNavbarOpen(false);

@@ -10,36 +10,26 @@ const Footer = () => {
   const { toast } = useToast();
 
   return (
-    <footer
-      id="contact"
-      className="dark:bg-gray-dark relative z-10 bg-[#1e232e] pb-8 pt-12 md:pt-16 lg:pt-20"
-    >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+    <footer id="contact" className="relative z-10 bg-[#EEEEEE] py-8 md:py-10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col items-center md:items-start">
-            <Link href="/" className="mb-6 inline-block">
+            <Link href="/" className="mb-3 inline-block">
               <Image
                 src="/images/past-logos/TD2026.png"
                 alt="logo"
-                className="mx-auto w-[128px] dark:hidden"
-                width={100}
-                height={100}
-              />
-              <Image
-                src="/images/past-logos/TD2024.png"
-                alt="logo"
-                className="mx-auto hidden w-[200px] dark:block md:w-[150px] lg:w-[128px]"
+                className="mx-auto w-[128px]"
                 width={100}
                 height={100}
               />
             </Link>
-            <h3>TAMU Datathon</h3>
-            <p className="mb-6 text-center text-sm text-gray-600 dark:text-gray-400 md:text-left">
+            <h3 className="text-lg font-semibold">TAMU Datathon</h3>
+            <p className="mb-0 text-center text-sm text-gray-600 md:text-left">
               Change Learning with Data
             </p>
           </div>
 
-          <div className="flex flex-col items-center space-y-4 md:items-start">
+          <div className="flex flex-col items-center space-y-2 md:items-start">
             <h3 className="text-lg font-semibold">Contacts</h3>
             {/* Contact for sponsors */}
             <div>
@@ -47,7 +37,7 @@ const Footer = () => {
               <span className="flex items-center space-x-2">
                 <a
                   href="mailto:sponsor@tamudatathon.com"
-                  className="mt-0 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-900"
+                  className="mt-0 text-blue-600 hover:text-blue-900"
                 >
                   sponsor@tamudatathon.com
                 </a>
@@ -74,7 +64,7 @@ const Footer = () => {
               <span className="flex items-center space-x-2">
                 <a
                   href="mailto:connect@tamudatathon.com"
-                  className="mt-0 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-900"
+                  className="mt-0 text-blue-600 hover:text-blue-900"
                 >
                   connect@tamudatathon.com
                 </a>
@@ -97,29 +87,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center space-y-4 md:items-start">
-            <h3 className="text-lg font-semibold">Quick Links</h3>
-            <Link
-              href="/#about"
-              className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-            >
-              About Us
-            </Link>
-            <Link
-              href="/#contact"
-              className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-            >
-              Contact
-            </Link>
-            {/* <Link
-              href="/faq"
-              className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-            >
-              FAQ
-            </Link> */}
-          </div>
-
-          <div className="flex flex-col items-center space-y-4 md:items-start">
+          <div className="flex flex-col items-center space-y-2 md:items-start">
             <h3 className="text-lg font-semibold">Follow Us</h3>
             <div className="flex space-x-4">
               <a
@@ -127,7 +95,7 @@ const Footer = () => {
                 aria-label="Discord"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                className="text-gray-400 hover:text-gray-900"
               >
                 <svg
                   className="h-6 w-6"
@@ -142,7 +110,7 @@ const Footer = () => {
                 aria-label="Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                className="text-gray-400 hover:text-gray-900"
               >
                 <svg
                   className="h-6 w-6"
@@ -157,7 +125,7 @@ const Footer = () => {
                 aria-label="YouTube"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                className="text-gray-400 hover:text-gray-900"
               >
                 <svg
                   className="h-6 w-6"
@@ -172,7 +140,7 @@ const Footer = () => {
                 aria-label="LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                className="text-gray-400 hover:text-gray-900"
               >
                 <svg
                   className="h-6 w-6"
@@ -186,8 +154,8 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-gray-200 pt-8 dark:border-gray-700">
-          <p className="text-center text-xs text-gray-500 dark:text-gray-400">
+        <div className="mt-6 border-t border-gray-200 pt-6">
+          <p className="text-center text-xs text-gray-500">
             © {new Date().getFullYear()} TAMU Datathon. All rights reserved.
           </p>
         </div>

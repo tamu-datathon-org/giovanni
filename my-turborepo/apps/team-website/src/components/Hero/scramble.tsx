@@ -6,6 +6,24 @@ import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
 gsap.registerPlugin(ScrambleTextPlugin);
 
+interface ScrambleTextGridProps {
+  phrases?: string[];
+  cols?: number;
+  rows?: number;
+  chars?: string;
+  dimColor?: string;
+  hitColor?: string;
+  fontSize?: number;
+  gapX?: number;
+  gapY?: number;
+  background?: string;
+}
+
+interface Placement {
+  letters: string[];
+  cellIdxs: number[];
+}
+
 /**
  * ScrambleTextGrid
  * A grid of cells, each animated by GSAP's real ScrambleTextPlugin.
@@ -34,21 +52,25 @@ export default function ScrambleTextGrid({
   chars = "!@#$%^&*()_+-=[]{}|;:,.<>?/\\~`0123456789",
   dimColor = "#c9cdd6",
   hitColor = "#1e3a8a",
-}) {
-  const gridRef = useRef(null);
-  const tweensRef = useRef([]);
+  fontSize = 20,
+  gapX = 34,
+  gapY = 28,
+  background = "#ffffff",
+}: ScrambleTextGridProps) {
+  const gridRef = useRef<HTMLDivElement | null>(null);
+  const tweensRef = useRef<(gsap.core.Tween | gsap.core.Timeline)[]>([]);
 
   useEffect(() => {
     const gridEl = gridRef.current;
     if (!gridEl) return;
 
     const charArr = chars.split("");
-    const randChar = () => charArr[Math.floor(Math.random() * charArr.length)];
-    const idx = (r, c) => r * cols + c;
+    const randChar = () => charArr[Math.floor(Math.random() * charArr.length)] ?? "";
+    const idx = (r: number, c: number) => r * cols + c;
 
     // build the DOM grid of cells
     gridEl.innerHTML = "";
-    const cells = [];
+    const cells: HTMLDivElement[] = [];
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const div = document.createElement("div");
@@ -60,8 +82,8 @@ export default function ScrambleTextGrid({
     }
 
     // choose non-overlapping horizontal placements for each phrase
-    const occupied = new Set();
-    const placements = [];
+    const occupied = new Set<number>();
+    const placements: Placement[] = [];
 
     phrases.forEach((phrase) => {
       const clean = phrase.replace(/ /g, "");
@@ -79,7 +101,7 @@ export default function ScrambleTextGrid({
           }
         }
         if (ok) {
-          const cellIdxs = [];
+          const cellIdxs: number[] = [];
           for (let i = 0; i < clean.length; i++) cellIdxs.push(idx(r, c + i));
           cellIdxs.forEach((ci) => occupied.add(ci));
           placements.push({ letters: clean.split(""), cellIdxs });
@@ -95,6 +117,7 @@ export default function ScrambleTextGrid({
     placements.forEach(({ letters, cellIdxs }) => {
       cellIdxs.forEach((cellIndex, i) => {
         const cell = cells[cellIndex];
+        if (!cell) return;
         const letterDelay = 1 + i * 0.08 + Math.random() * 0.3;
 
         const tween = gsap.to(cell, {
@@ -155,15 +178,15 @@ export default function ScrambleTextGrid({
           display: flex;
           align-items: center;
           justify-content: center;
-          background: #ffffff;
+          background: ${background};
           overflow: hidden;
         }
         .stg-grid {
           display: grid;
           grid-template-columns: repeat(${cols}, 1fr);
-          gap: 28px 34px;
+          gap: ${gapY}px ${gapX}px;
           font-family: "Courier New", ui-monospace, Menlo, monospace;
-          font-size: 20px;
+          font-size: ${fontSize}px;
           letter-spacing: 1px;
           user-select: none;
         }

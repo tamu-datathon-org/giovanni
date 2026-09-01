@@ -56,21 +56,22 @@ export default function PhotosSectionImages({ refs }: PhotosSectionImagesProps) 
         <div
           key={src}
           ref={imageRefs[i] as React.RefObject<HTMLDivElement>}
-          className="absolute left-0 top-0 flex h-full w-full items-center justify-center"
-          style={{
-            zIndex: i + 1,
-            transform: i === 0 ? undefined : "translateY(100dvh)",
-          }}
+          // `translate-y-full` is only the no-JS parked state. GSAP parses it
+          // into its `y` cache and *adds* yPercent on top, so Photos/index.tsx
+          // must set `y: 0` alongside every yPercent — don't drop that.
+          className={`absolute left-0 top-0 flex h-full w-full items-center justify-center will-change-transform ${
+            i === 0 ? "" : "translate-y-full"
+          }`}
+          style={{ zIndex: i + 1 }}
         >
           <div className="relative inline-block aspect-[9/16] h-full w-auto max-w-full sm:aspect-auto sm:max-h-full sm:w-full">
             <Image
               src={src}
               alt={alt}
-              width={1920}
-              height={1080}
+              fill
               sizes={PHOTOS_IMAGE_SIZES}
-              priority={i === 0}
-              className="block h-full max-h-full w-full max-w-full object-cover"
+              priority
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-black/50" aria-hidden />
             <span
