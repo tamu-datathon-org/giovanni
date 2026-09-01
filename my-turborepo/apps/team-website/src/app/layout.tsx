@@ -1,8 +1,6 @@
 import "~/app/globals.css";
 
-import { Inter } from "next/font/google";
-
-import { w95fa } from "~/app/_components/fonts";
+import { inter, w95fa } from "~/app/_components/fonts";
 import ClientLayout from "~/app/ClientLayout";
 
 import "../styles/index.css";
@@ -25,8 +23,6 @@ export const metadata: Metadata = {
     icon: "/images/past-logos/TD2024.png",
   },
 };
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (

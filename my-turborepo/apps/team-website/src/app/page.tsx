@@ -22,6 +22,15 @@ const PastEventsSection = dynamic(
   }
 );
 
+const AboutUs = dynamic(() => import("~/components/AboutUs"), {
+  ssr: true,
+  loading: () => (
+    <section className="bg-[#377BB0] px-4 py-16">
+      <div className="mx-auto max-w-4xl animate-pulse rounded-2xl bg-white/10 py-24" />
+    </section>
+  ),
+});
+
 const AboutTeam = dynamic(() => import("~/components/AboutTeam"), {
   ssr: true,
   loading: () => (
@@ -40,12 +49,12 @@ const SponsorTicker = dynamic(() => import("~/components/Ticker"), {
   ),
 });
 
-
 export default function HomePage() {
   return (
     <>
       <ScrollUp />
       <Hero />
+      <AboutUs />
       <PastEventsSection />
       <SectionDivider variant="curvy" />
       <SponsorTicker />
