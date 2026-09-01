@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { ScrollUp } from "@vanni/ui/scroll-up";
 
 import Hero from "~/components/Hero";
+import Photos from "~/components/Photos";
 import { SectionDivider } from "~/components/SectionDivider";
 import { env } from "~/env";
 
@@ -21,6 +22,15 @@ const PastEventsSection = dynamic(
     ),
   }
 );
+
+const AboutUs = dynamic(() => import("~/components/AboutUs"), {
+  ssr: true,
+  loading: () => (
+    <section className="bg-[#377BB0] px-4 py-16">
+      <div className="mx-auto max-w-4xl animate-pulse rounded-2xl bg-white/10 py-24" />
+    </section>
+  ),
+});
 
 const AboutTeam = dynamic(() => import("~/components/AboutTeam"), {
   ssr: true,
@@ -40,12 +50,13 @@ const SponsorTicker = dynamic(() => import("~/components/Ticker"), {
   ),
 });
 
-
 export default function HomePage() {
   return (
     <>
       <ScrollUp />
       <Hero />
+      <AboutUs />
+      <Photos />
       <PastEventsSection />
       <SectionDivider variant="curvy" />
       <SponsorTicker />
