@@ -1,6 +1,6 @@
 import { db } from "@vanni/db/client";
 import { and, eq } from "@vanni/db";
-import { genericOAuth, oAuthProxy } from "better-auth/plugins"
+import { genericOAuth } from "better-auth/plugins"
 import type { BetterAuthOptions } from "better-auth";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -76,14 +76,6 @@ export const config = {
         },
     },
     plugins: [
-        oAuthProxy({
-            // Use the production URL for the OAuth provider callback,
-            // even when running locally. This should match the callback
-            // URL registered in Auth0.
-            productionURL: env.BETTER_AUTH_URL,
-            currentURL: env.BETTER_AUTH_URL,
-
-        }),
         expo(),
         genericOAuth({
             config: [
@@ -106,8 +98,11 @@ export const config = {
     },
     trustedOrigins: [
         "exp://",
+
         "http://localhost:3000",
-        "https://tamudatathon.org",
+        "http://localhost:3001",
+        "https://*.tamudatathon.com",
+        "https://*.tamudatathon.org",
     ]
 } satisfies BetterAuthOptions
 
