@@ -59,11 +59,13 @@ function hasSessionCookie(request: NextRequest): boolean {
 }
 
 export async function authMiddleware(request: NextRequest) {
-  const { pathname } = new URL(request.url);
+  const { pathname } = request.nextUrl;
   if (!hasSessionCookie(request) && isProtectedRoute(pathname)) {
-    return NextResponse.redirect(
-      new URL(`login?callbackUrl=${encodeURIComponent(request.url)}`, request.url),
-    );
+    const loginUrl = request.nextUrl.clone();
+    const callbackPath = request.nextUrl.pathname + request.nextUrl.search;
+    loginUrl.pathname = "/login";
+    loginUrl.search = `callbackUrl=${encodeURIComponent(callbackPath)}`;
+    return NextResponse.redirect(loginUrl);
   }
   return NextResponse.next();
 }
