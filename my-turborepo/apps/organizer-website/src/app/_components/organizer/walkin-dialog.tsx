@@ -17,13 +17,13 @@ import {
   FormMessage,
 } from "@vanni/ui/form";
 
-import type { ApplicationSchema } from "~/app/apply/validation";
-import { applicationSchema } from "~/app/apply/validation";
-import { SectionCard } from "~/app/apply/application/application-form";
+import type { ApplicationSchema } from "~/lib/application-schema";
+import { applicationSchema } from "~/lib/application-schema";
+import { SectionCard } from "~/components/ui/form-section";
 import GenericCombobox from "~/app/_components/genericCombobox";
 import GenericInputField from "~/app/_components/genericInputField";
 import GenericMultiSelect from "~/app/_components/genericMultiSelect";
-import schoolsJson from "~/app/apply/application/application-data/schools.json";
+import schoolsJson from "~/lib/data/schools.json";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import {

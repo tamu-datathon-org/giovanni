@@ -3,9 +3,9 @@ import { useFormContext } from "react-hook-form";
 
 import { FormField, FormItem, FormLabel, FormMessage } from "@vanni/ui/form";
 
-import type { ApplicationSchema } from "~/app/apply/validation";
+import type { ApplicationSchema } from "~/lib/application-schema";
 import { Input } from "~/components/ui/input";
-import { Asterisk } from "../apply/application/application-form";
+import { Asterisk } from "~/components/ui/form-section";
 
 interface GenericInputProps {
   name: keyof ApplicationSchema;

@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@vanni/ui/form";
 
-import type { ApplicationSchema } from "~/app/apply/validation";
+import type { ApplicationSchema } from "~/lib/application-schema";
 import { Button } from "~/components/ui/button";
 import {
   Command,
@@ -29,7 +29,7 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { Input } from "~/components/ui/input";
-import { Asterisk } from "../apply/application/application-form";
+import { Asterisk } from "~/components/ui/form-section";
 
 interface DropdownOption {
   value: string;

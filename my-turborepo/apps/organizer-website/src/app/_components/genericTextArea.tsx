@@ -9,8 +9,8 @@ import {
     FormMessage,
 } from "@vanni/ui/form";
 
-import type { ApplicationSchema } from "~/app/apply/validation";
-import { Asterisk } from "../apply/application/application-form";
+import type { ApplicationSchema } from "~/lib/application-schema";
+import { Asterisk } from "~/components/ui/form-section";
 
 interface GenericTextAreaProps {
     name: keyof ApplicationSchema;

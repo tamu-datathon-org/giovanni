@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@vanni/ui/form";
 
-import type { ApplicationSchema } from "~/app/apply/validation";
+import type { ApplicationSchema } from "~/lib/application-schema";
 import { Button } from "~/components/ui/button";
 import {
   Command,
@@ -30,7 +30,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import { Asterisk } from "../apply/application/application-form";
+import { Asterisk } from "~/components/ui/form-section";
 
 interface Option { label: string; value: string }
 
