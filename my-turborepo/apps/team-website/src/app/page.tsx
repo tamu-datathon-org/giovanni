@@ -1,21 +1,17 @@
-import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 
 import { ScrollUp } from "@vanni/ui/scroll-up";
 
 import Hero from "~/components/Hero";
-import Photos from "~/components/Photos";
-import { env } from "~/env";
 
 const PastEventsSection = dynamic(() => import("~/components/PastEvents"), {
-    ssr: true,
-    loading: () => (
-      <section className="bg-[#121723] px-4 py-16">
-        <div className="mx-auto max-w-4xl animate-pulse rounded-2xl bg-white/10 py-24" />
-      </section>
-    ),
-  }
-);
+  ssr: true,
+  loading: () => (
+    <section className="bg-[#121723] px-4 py-16">
+      <div className="mx-auto max-w-4xl animate-pulse rounded-2xl bg-white/10 py-24" />
+    </section>
+  ),
+});
 
 const AboutUs = dynamic(() => import("~/components/AboutUs"), {
   ssr: true,
@@ -52,7 +48,6 @@ export default function HomePage() {
         <Hero />
       </div>
       <AboutUs />
-      <Photos />
       <div id="past-events" className="scroll-mt-20 lg:scroll-mt-0">
         <PastEventsSection />
       </div>

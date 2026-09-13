@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { inter, konkhmerSleokchher } from "~/app/_components/fonts";
 import { Noise } from "~/components/shared/Noise";
+import BearShowcase from "./BearShowcase";
 
 // ── Layout knobs (tweak these) ───────────────────────────────────────────────
 // Must match jagged.svg viewBox
@@ -57,7 +58,7 @@ export default function AboutUs() {
   return (
     <section
       id="about-us"
-      className={`relative z-20 w-full overflow-visible scroll-mt-20 lg:scroll-mt-0 ${konkhmerSleokchher.className}`}
+      className={`relative z-20 w-full scroll-mt-20 overflow-visible lg:scroll-mt-0 ${konkhmerSleokchher.className}`}
       style={{ marginTop: `calc(${jaggedHeight} * ${-JAGGED.overlap})` }}
     >
       <div className="relative z-[2] w-full leading-[0]">
@@ -73,12 +74,12 @@ export default function AboutUs() {
       <div className="relative -mt-px bg-[#377BB0] px-6 pb-20 pt-8 md:px-12 md:pb-28 md:pt-12">
         <Noise />
         <div className="relative z-10 mx-auto max-w-5xl text-white">
-          <h2 className="text-[96px] font-normal leading-none tracking-[-0.07em]">
+          <h2 className="text-[56px] font-normal leading-none tracking-[-0.07em] sm:text-[72px] md:text-[96px]">
             <span className="text-[#83EFE8]">ABOUT</span>{" "}
             <span className="text-white">US</span>
           </h2>
           <p
-            className={`${inter.className} mt-6 max-w-2xl text-[36px] font-normal uppercase leading-none tracking-normal`}
+            className={`${inter.className} mt-6 max-w-2xl text-[24px] font-normal uppercase leading-none tracking-normal md:text-[36px]`}
           >
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -88,11 +89,24 @@ export default function AboutUs() {
             pariatur.
           </p>
           <div className="mt-8 flex gap-3" aria-hidden>
-            <img src="/images/about-us/star.svg" alt="" className="h-8 w-8 md:h-10 md:w-10" />
-            <img src="/images/about-us/star.svg" alt="" className="h-8 w-8 md:h-10 md:w-10" />
-            <img src="/images/about-us/star.svg" alt="" className="h-8 w-8 md:h-10 md:w-10" />
+            <img
+              src="/images/about-us/star.svg"
+              alt=""
+              className="h-8 w-8 md:h-10 md:w-10"
+            />
+            <img
+              src="/images/about-us/star.svg"
+              alt=""
+              className="h-8 w-8 md:h-10 md:w-10"
+            />
+            <img
+              src="/images/about-us/star.svg"
+              alt=""
+              className="h-8 w-8 md:h-10 md:w-10"
+            />
           </div>
         </div>
+        <BearShowcase />
       </div>
 
       <Squigly jaggedHeight={jaggedHeight} />
