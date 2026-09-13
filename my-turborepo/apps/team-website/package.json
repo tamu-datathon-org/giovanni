@@ -93,6 +93,7 @@
     "superjson": "catalog:",
     "tailwind-merge": "catalog:",
     "tailwindcss-animate": "catalog:",
+    "three": "0.170.0",
     "zod": "catalog:",
     "zod-form-data": "catalog:"
   },
@@ -107,6 +108,7 @@
     "@types/qrcode": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@types/three": "0.170.0",
     "@typescript-eslint/parser": "catalog:",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
