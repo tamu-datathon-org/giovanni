@@ -14,9 +14,7 @@ import {
   BEAR_POSTER_URL,
   BEAR_STATS,
   bearZoom,
-  clampRotation,
-  MAX_PITCH,
-  MAX_YAW,
+  wrapRotation,
 } from "./bear-config";
 import styles from "./bear.module.css";
 
@@ -71,12 +69,10 @@ export default function BearShowcase() {
     const state = motion.current;
     state.dragging = false;
     state.returnAt = performance.now();
-    state.fromYaw = reduced ? 0 : state.yaw;
-    state.fromPitch = reduced ? 0 : state.pitch;
-    if (reduced) {
-      state.yaw = 0;
-      state.pitch = 0;
-    }
+    state.fromYaw = reduced ? 0 : wrapRotation(state.yaw);
+    state.fromPitch = reduced ? 0 : wrapRotation(state.pitch);
+    state.yaw = state.fromYaw;
+    state.pitch = state.fromPitch;
     wake.current();
   }, [reduced]);
 
@@ -278,17 +274,17 @@ export default function BearShowcase() {
   function pointerMove(event: PointerEvent<HTMLDivElement>) {
     const origin = drag.current;
     if (origin?.id !== event.pointerId) return;
-    motion.current.yaw = clampRotation(
-      origin.yaw + (event.clientX - origin.x) * 0.006,
-      MAX_YAW,
-    );
+    // One full turn across 80% of the stage, including on narrow touchscreens.
+    const yawSensitivity =
+      (Math.PI * 2) / (event.currentTarget.clientWidth * 0.8);
+    const pitchSensitivity =
+      (Math.PI * 2) / (event.currentTarget.clientHeight * 0.8);
+    motion.current.yaw =
+      origin.yaw + (event.clientX - origin.x) * yawSensitivity;
     motion.current.pitch =
       event.pointerType === "touch"
         ? 0
-        : clampRotation(
-            origin.pitch + (event.clientY - origin.y) * 0.004,
-            MAX_PITCH,
-          );
+        : origin.pitch + (event.clientY - origin.y) * pitchSensitivity;
     wake.current();
   }
 
@@ -330,24 +326,18 @@ export default function BearShowcase() {
             }
             const state = motion.current;
             state.dragging = true;
-            state.yaw = clampRotation(
-              state.yaw +
-                (event.key === "ArrowRight"
-                  ? 0.08
-                  : event.key === "ArrowLeft"
-                    ? -0.08
-                    : 0),
-              MAX_YAW,
-            );
-            state.pitch = clampRotation(
-              state.pitch +
-                (event.key === "ArrowDown"
-                  ? 0.04
-                  : event.key === "ArrowUp"
-                    ? -0.04
-                    : 0),
-              MAX_PITCH,
-            );
+            state.yaw +=
+              event.key === "ArrowRight"
+                ? 0.08
+                : event.key === "ArrowLeft"
+                  ? -0.08
+                  : 0;
+            state.pitch +=
+              event.key === "ArrowDown"
+                ? 0.04
+                : event.key === "ArrowUp"
+                  ? -0.04
+                  : 0;
             wake.current();
           }}
           onKeyUp={(event) => {

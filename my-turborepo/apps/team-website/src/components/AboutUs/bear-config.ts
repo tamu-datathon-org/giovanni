@@ -2,8 +2,6 @@ export const BEAR_MODEL_URL = "/models/about-bear.glb";
 export const BEAR_POSTER_URL = "/images/about-us/bear-poster.webp";
 export const BEAR_BACKDROP_URL = "/images/about-us/bear-dots.png";
 
-export const MAX_YAW = Math.PI / 6;
-export const MAX_PITCH = Math.PI / 15;
 export const RETURN_DURATION = 800;
 
 // The supplied model is 0.735 units wide per unit of height. Reserve the
@@ -69,8 +67,9 @@ export type ProjectAnchors = (
   height: number,
 ) => void;
 
-export function clampRotation(value: number, limit: number) {
-  return Math.max(-limit, Math.min(limit, value));
+// Discard completed turns so recentering does not unwind every revolution.
+export function wrapRotation(value: number) {
+  return Math.atan2(Math.sin(value), Math.cos(value));
 }
 
 export function returnProgress(elapsed: number) {
