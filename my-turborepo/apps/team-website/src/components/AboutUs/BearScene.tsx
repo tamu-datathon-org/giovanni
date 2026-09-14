@@ -8,13 +8,17 @@ import {
   AmbientLight,
   Box3,
   DirectionalLight,
+  DoubleSide,
   Group,
   HemisphereLight,
   Mesh,
+  MeshBasicMaterial,
   OrthographicCamera,
+  PlaneGeometry,
   Scene,
   SRGBColorSpace,
   Texture,
+  TextureLoader,
   Vector3,
   WebGLRenderer,
 } from "three";
@@ -23,6 +27,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import type { BearMotion, ProjectAnchors } from "./bear-config";
 import {
+  BEAR_BACKDROP_URL,
   BEAR_MODEL_URL,
   BEAR_STATS,
   bearZoom,
@@ -118,6 +123,23 @@ export default function BearScene({
     scene.add(fill);
     const pivot = new Group();
     scene.add(pivot);
+    // A separate pass keeps the flat artwork behind the bear even after a
+    // half-turn, when its plane would otherwise move in front of the model.
+    const backdropScene = new Scene();
+    const backdropPivot = new Group();
+    backdropScene.add(backdropPivot);
+    const backdropGeometry = new PlaneGeometry(2.1 * (595 / 600), 2.1);
+    const backdropMaterial = new MeshBasicMaterial({
+      transparent: true,
+      side: DoubleSide,
+      depthWrite: false,
+      toneMapped: false,
+    });
+    const backdrop = new Mesh(backdropGeometry, backdropMaterial);
+    backdrop.position.set(0.083, -0.084, -0.65);
+    backdrop.visible = false;
+    backdropPivot.add(backdrop);
+    renderer.autoClear = false;
     const points = BEAR_STATS.map((stat) => ({
       local: new Vector3(...stat.anchor),
       projected: new Vector3(),
@@ -145,6 +167,7 @@ export default function BearScene({
           invalidate();
       }
       pivot.rotation.set(state.pitch, state.yaw, 0, "YXZ");
+      backdropPivot.rotation.copy(pivot.rotation);
       pivot.updateWorldMatrix(true, true);
       onProject(
         points.map(({ local, projected }) => {
@@ -158,8 +181,12 @@ export default function BearScene({
         width,
         height,
       );
+      renderer.clear();
+      if (!loaded || !backdrop.visible) return;
+      renderer.render(backdropScene, camera);
+      renderer.clearDepth();
       renderer.render(scene, camera);
-      if (loaded && !announced) {
+      if (!announced) {
         announced = true;
         onReady();
       }
@@ -193,6 +220,24 @@ export default function BearScene({
       onError();
     };
     renderer.domElement.addEventListener("webglcontextlost", contextLost);
+    const backdropTexture = new TextureLoader().load(
+      BEAR_BACKDROP_URL,
+      (texture) => {
+        if (cancelled) {
+          texture.dispose();
+          return;
+        }
+        texture.colorSpace = SRGBColorSpace;
+        backdropMaterial.map = texture;
+        backdropMaterial.needsUpdate = true;
+        backdrop.visible = true;
+        invalidate();
+      },
+      undefined,
+      () => {
+        if (!cancelled) onError();
+      },
+    );
     const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
     loader.load(
       BEAR_MODEL_URL,
@@ -225,6 +270,10 @@ export default function BearScene({
       wake.current = () => undefined;
       pause.current = () => undefined;
       if (loaded) disposeModel(loaded);
+      backdropTexture.dispose();
+      backdropGeometry.dispose();
+      backdropMaterial.dispose();
+      backdropScene.clear();
       scene.clear();
       renderer.dispose();
       renderer.forceContextLoss();

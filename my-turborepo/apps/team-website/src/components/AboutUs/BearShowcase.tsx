@@ -346,6 +346,7 @@ export default function BearShowcase() {
         >
           <img
             className={styles.backdrop}
+            data-loaded={ready}
             src={BEAR_BACKDROP_URL}
             alt=""
             aria-hidden

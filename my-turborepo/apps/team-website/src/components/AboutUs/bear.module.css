@@ -54,7 +54,8 @@
 .poster {
   transition: opacity 180ms ease;
 }
-.poster[data-loaded="true"] {
+.poster[data-loaded="true"],
+.backdrop[data-loaded="true"] {
   opacity: 0;
 }
 .canvas {
