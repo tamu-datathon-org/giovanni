@@ -58,10 +58,10 @@ export const config = {
                     if (!eventName) return false;
 
                     const organizerRole = await db
-                        .select()
+                        .select({ roleId: Role.id })
                         .from(Role)
-                        .leftJoin(Event, eq(Role.eventId, Event.id))
-                        .leftJoin(UserRole, eq(Role.id, UserRole.roleId))
+                        .innerJoin(Event, eq(Role.eventId, Event.id))
+                        .innerJoin(UserRole, eq(Role.id, UserRole.roleId))
                         .where(
                             and(
                                 eq(Role.name, "Organizer"),
