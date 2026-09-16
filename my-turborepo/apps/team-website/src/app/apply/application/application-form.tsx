@@ -13,6 +13,7 @@ import { LucideArrowBigLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import type { CreateApplicationSchema } from "@vanni/db/schema";
+import { REFERRAL_EVENT_SOURCE } from "@vanni/db/schema";
 import {
   Form,
   FormControl,
@@ -148,6 +149,7 @@ export function ApplicationForm() {
       hackathonsAttended: "",
       experience: "",
       eventSource: "",
+      referrerEmail: "",
       shirtSize: "",
       address: "",
       city: "",
@@ -208,6 +210,7 @@ export function ApplicationForm() {
         hackathonsAttended: importedValues.app.hackathonsAttended || "",
         experience: importedValues.app.experience || "",
         eventSource: importedValues.app.eventSource || "",
+        referrerEmail: importedValues.app.referrerEmail ?? "",
         shirtSize: importedValues.app.shirtSize || "",
         address: street,
         city: city,
@@ -281,6 +284,16 @@ export function ApplicationForm() {
   }, [form, importedValues?.app]);
 
   const watchedValues = form.watch();
+  const referredByFriend = watchedValues.eventSource === REFERRAL_EVENT_SOURCE;
+
+  // The referrer field only shows for "From a friend", but hidden fields are
+  // still validated — clear it on the way out so a half-typed email can't
+  // silently block submission.
+  useEffect(() => {
+    if (!referredByFriend && form.getValues("referrerEmail")) {
+      form.setValue("referrerEmail", "");
+    }
+  }, [referredByFriend, form]);
 
   useEffect(() => {
     if (importedValues?.app) return;
@@ -821,6 +834,18 @@ export function ApplicationForm() {
                   required={true}
                 />
               </div>
+
+              {referredByFriend && (
+                <div className="mt-6">
+                  <GenericInputField
+                    name="referrerEmail"
+                    label="Who referred you? Enter their email so they get credit."
+                    defaultValue={importedValues?.app?.referrerEmail ?? ""}
+                    placeholder="friend@tamu.edu"
+                    required={false}
+                  />
+                </div>
+              )}
 
               <div className="mt-6">
                 <FormField

@@ -1,7 +1,7 @@
 import type { SQL } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { del } from "@vercel/blob";
-import { inArray, or, sql } from "drizzle-orm";
+import { asc, count, desc, inArray, isNotNull, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { and, eq } from "@vanni/db";
@@ -15,6 +15,7 @@ import {
   UserRole,
   Attendance,
   EventPhase,
+  REFERRAL_EVENT_SOURCE,
 } from "@vanni/db/schema";
 
 import { User } from "@vanni/db/auth-schema";
@@ -241,6 +242,30 @@ function buildAcceptanceValues(
 // the email router will send the emails based on the status one at a time but all at the same time
 // email router needs the batch and trickles it down
 
+/**
+ * Referral points are keyed by email, so normalise it: "john@tamu.edu " and
+ * "John@tamu.edu" have to count as the same person. Returns null when the
+ * referral can't count — they didn't say a friend told them, left it blank,
+ * or named themselves.
+ */
+function normalizeReferrerEmail(
+  application: {
+    eventSource: string;
+    email: string;
+    referrerEmail?: string | null;
+  },
+  loginEmail: string,
+) {
+  const referrer = application.referrerEmail?.trim().toLowerCase();
+  if (!referrer || application.eventSource !== REFERRAL_EVENT_SOURCE) {
+    return null;
+  }
+  const ownEmails = [application.email, loginEmail].map((email) =>
+    email.trim().toLowerCase(),
+  );
+  return ownEmails.includes(referrer) ? null : referrer;
+}
+
 export const applicationRouter = {
   create: protectedProcedure
     .input(
@@ -283,6 +308,10 @@ export const applicationRouter = {
 
       const response = await db.insert(Application).values({
         ...applicationData,
+        referrerEmail: normalizeReferrerEmail(
+          applicationData,
+          ctx.session.user.email,
+        ),
         userId: ctx.session.user.id,
         eventId: event.id,
         status: "pending",
@@ -365,7 +394,13 @@ export const applicationRouter = {
 
       const response = await db
         .update(Application)
-        .set(application)
+        .set({
+          ...application,
+          referrerEmail: normalizeReferrerEmail(
+            application,
+            ctx.session.user.email,
+          ),
+        })
         .where(eq(Application.id, id));
 
       const loginEmail = ctx.session.user.email;
@@ -440,6 +475,68 @@ export const applicationRouter = {
         };
       });
     }),
+  topReferrers: organizerProcedure
+    .input(
+      z.object({
+        eventName: z.string(),
+        limit: z.number().int().min(1).max(50).default(10),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const event = await getEventData({ ctx, eventName: input.eventName });
+
+      const points = count(Application.id);
+      const leaders = await ctx.db
+        .select({ email: Application.referrerEmail, points })
+        .from(Application)
+        .where(
+          and(
+            eq(Application.eventId, event.id),
+            isNotNull(Application.referrerEmail),
+          ),
+        )
+        .groupBy(Application.referrerEmail)
+        .orderBy(desc(points), asc(Application.referrerEmail))
+        .limit(input.limit);
+
+      const emails = leaders.flatMap((leader) =>
+        leader.email ? [leader.email] : [],
+      );
+      if (emails.length === 0) return [];
+
+      // Names come from a separate lookup rather than a join: joining would
+      // count a referrer twice if their email is on more than one application.
+      const applicants = await ctx.db
+        .select({
+          email: sql<string>`lower(${Application.email})`,
+          firstName: Application.firstName,
+          lastName: Application.lastName,
+        })
+        .from(Application)
+        .where(
+          and(
+            eq(Application.eventId, event.id),
+            inArray(sql`lower(${Application.email})`, emails),
+          ),
+        );
+      const nameByEmail = new Map(
+        applicants.map((a) => [a.email, `${a.firstName} ${a.lastName}`]),
+      );
+
+      return leaders.flatMap((leader) =>
+        leader.email
+          ? [
+              {
+                email: leader.email,
+                points: leader.points,
+                // Referrers don't have to have applied themselves.
+                name: nameByEmail.get(leader.email) ?? null,
+              },
+            ]
+          : [],
+      );
+    }),
+
   updateStatus: organizerProcedure
     .input(
       z.object({
