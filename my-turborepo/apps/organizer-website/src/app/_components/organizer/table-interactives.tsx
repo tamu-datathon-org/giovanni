@@ -11,13 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { env } from "~/env";
 import { toast } from "~/hooks/use-toast";
 
 interface SelectStatusProps {
   name: string;
   id: string;
   currStatus: string;
+  eventName: string;
   mutation: any;
   setData: React.Dispatch<React.SetStateAction<any>>;
   setPendingCount: React.Dispatch<React.SetStateAction<number>>;
@@ -28,6 +28,7 @@ const SelectStatus: React.FC<SelectStatusProps> = ({
   name,
   id,
   currStatus,
+  eventName,
   mutation,
   setData,
   setPendingCount,
@@ -43,7 +44,7 @@ const SelectStatus: React.FC<SelectStatusProps> = ({
       onValueChange={(value) => {
         mutation.mutateAsync(
           {
-            eventName: env.NEXT_PUBLIC_EVENT_NAME,
+            eventName,
             id: id,
             newStatus: value,
           },
@@ -108,11 +109,19 @@ const SelectStatus: React.FC<SelectStatusProps> = ({
 
 export const SelectStatusCell: React.FC<{
   row: any;
+  eventName: string;
   mutation: any;
   setData: React.Dispatch<React.SetStateAction<any>>;
   setPendingCount: React.Dispatch<React.SetStateAction<number>>;
   setAcceptedCount: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ row, mutation, setData, setPendingCount, setAcceptedCount }) => {
+}> = ({
+  row,
+  eventName,
+  mutation,
+  setData,
+  setPendingCount,
+  setAcceptedCount,
+}) => {
   return (
     <td>
       <div className="rounded bg-white">
@@ -120,6 +129,7 @@ export const SelectStatusCell: React.FC<{
           name={row.original.firstName + " " + row.original.lastName}
           id={row.original.id}
           currStatus={row.original.status}
+          eventName={eventName}
           mutation={mutation}
           setData={setData}
           setPendingCount={setPendingCount}

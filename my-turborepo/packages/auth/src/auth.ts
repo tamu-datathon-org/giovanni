@@ -7,7 +7,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { env } from "../env";
 import { expo } from "@better-auth/expo";
 import * as authSchema from "@vanni/db/auth-schema";
-import { Event, Role, UserRole } from "@vanni/db/schema";
+import { Role, UserRole } from "@vanni/db/schema";
 
 //Regex for @tamu.edu emails
 const TAMU_EMAIL_REGEX = /^[^\s@]+@tamu\.edu$/i;
@@ -39,7 +39,7 @@ export const config = {
         // },
         session: {
             // Block session creation for non-@tamu.edu users unless they are an
-            // Organizer for the configured event.
+            // Organizer for any event.
             create: {
                 before: async (session, endpointContext) => {
                     const authContext = endpointContext?.context;
@@ -54,18 +54,13 @@ export const config = {
                     if (isAllowedTamuEmail(user.email)) return true;
 
                     // Allow organizer exception even with a non-TAMU email.
-                    const eventName = process.env.NEXT_PUBLIC_EVENT_NAME;
-                    if (!eventName) return false;
-
                     const organizerRole = await db
                         .select({ roleId: Role.id })
                         .from(Role)
-                        .innerJoin(Event, eq(Role.eventId, Event.id))
                         .innerJoin(UserRole, eq(Role.id, UserRole.roleId))
                         .where(
                             and(
                                 eq(Role.name, "Organizer"),
-                                eq(Event.name, eventName),
                                 eq(UserRole.userId, session.userId),
                             ),
                         );

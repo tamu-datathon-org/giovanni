@@ -19,12 +19,12 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { useOrganizerEvent } from "~/app/_components/organizer/event-selection";
 import {
   EDUCATION_LEVELS,
   GENDER_OPTIONS,
   HEARD_ABOUT_OPTIONS,
 } from "~/lib/dropdownOptions";
-import { env } from "~/env";
 import { api } from "~/trpc/react";
 
 type DistRow = { label: string; count: number };
@@ -107,7 +107,7 @@ function DistributionCard({
 }
 
 export default function AnalyticsDashboard() {
-  const eventName = env.NEXT_PUBLIC_EVENT_NAME;
+  const { eventName } = useOrganizerEvent();
   const [exporting, setExporting] = useState(false);
 
   const dashboardQuery = api.analytics.getDashboard.useQuery({ eventName });
