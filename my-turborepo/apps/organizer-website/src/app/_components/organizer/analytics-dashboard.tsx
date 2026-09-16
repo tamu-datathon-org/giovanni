@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Download } from "lucide-react";
+import { ChevronDown, Download } from "lucide-react";
 
+import { useOrganizerEvent } from "~/app/_components/organizer/event-selection";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -12,6 +13,11 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "~/components/ui/collapsible";
+import {
   Table,
   TableBody,
   TableCell,
@@ -19,7 +25,6 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { useOrganizerEvent } from "~/app/_components/organizer/event-selection";
 import {
   EDUCATION_LEVELS,
   GENDER_OPTIONS,
@@ -103,6 +108,102 @@ function DistributionCard({
         ) : null}
       </CardContent>
     </Card>
+  );
+}
+
+type DietaryRow = {
+  tag: string;
+  acceptedCount: number;
+  checkedInCount: number;
+  rawAnswers: {
+    text: string;
+    acceptedCount: number;
+    checkedInCount: number;
+  }[];
+};
+
+function DietaryCategoryRow({
+  row,
+  maxAccepted,
+}: {
+  row: DietaryRow;
+  maxAccepted: number;
+}) {
+  const [open, setOpen] = useState(false);
+  const rawCount = row.rawAnswers.length;
+  const barWidth =
+    maxAccepted > 0
+      ? Math.max((row.acceptedCount / maxAccepted) * 100, row.acceptedCount > 0 ? 2 : 0)
+      : 0;
+
+  return (
+    <Collapsible open={open} onOpenChange={setOpen}>
+      <div className="rounded-lg border border-neutral-800 bg-neutral-950">
+        <CollapsibleTrigger asChild>
+          <button
+            type="button"
+            className="flex w-full flex-col gap-2 px-4 py-3 text-left hover:bg-neutral-900"
+          >
+            <div className="flex w-full items-center gap-3">
+              <ChevronDown
+                className={`h-4 w-4 shrink-0 text-neutral-400 transition-transform ${
+                  open ? "rotate-0" : "-rotate-90"
+                }`}
+              />
+              <span className="min-w-0 flex-1 font-medium">{row.tag}</span>
+              <span className="shrink-0 text-sm tabular-nums text-neutral-300">
+                Accepted {row.acceptedCount}
+              </span>
+              <span className="shrink-0 text-sm tabular-nums text-neutral-400">
+                Checked in {row.checkedInCount}
+              </span>
+            </div>
+            <div className="ml-7 h-2 overflow-hidden rounded bg-neutral-800">
+              <div
+                className="h-full rounded bg-datadarkblue"
+                style={{ width: `${barWidth}%` }}
+              />
+            </div>
+          </button>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <div className="border-t border-neutral-800 px-4 py-3">
+            {rawCount === 0 ? (
+              <p className="text-sm text-neutral-500">No raw answers</p>
+            ) : (
+              <div className="max-h-64 overflow-y-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Raw answer</TableHead>
+                      <TableHead className="w-24 text-right">Accepted</TableHead>
+                      <TableHead className="w-28 text-right">
+                        Checked in
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {row.rawAnswers.map((raw) => (
+                      <TableRow key={raw.text}>
+                        <TableCell className="whitespace-normal break-words text-sm text-neutral-300">
+                          {raw.text}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {raw.acceptedCount}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {raw.checkedInCount}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </div>
+        </CollapsibleContent>
+      </div>
+    </Collapsible>
   );
 }
 
@@ -210,6 +311,10 @@ export default function AnalyticsDashboard() {
   }
 
   const phaseMax = Math.max(1, ...data.phaseAttendance.map((p) => p.count));
+  const dietaryMax = Math.max(
+    1,
+    ...data.dietary.map((d) => d.acceptedCount),
+  );
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-6 text-white">
@@ -222,6 +327,14 @@ export default function AnalyticsDashboard() {
             Demographics below are for{" "}
             <span className="font-semibold">accepted</span> applicants unless
             noted.
+            {data.checkInSource === "application" ? (
+              <>
+                {" · "}
+                Check-in uses legacy{" "}
+                <code className="text-xs">application.checked_in</code> (no
+                Passport attendance rows for this event).
+              </>
+            ) : null}
           </p>
         </div>
         <Button
@@ -274,7 +387,7 @@ export default function AnalyticsDashboard() {
                 </div>
                 <div className="h-2 overflow-hidden rounded bg-neutral-800">
                   <div
-                    className="h-full rounded bg-datalightblue"
+                    className="h-full rounded bg-datadarkblue"
                     style={{
                       width: `${Math.max((phase.count / phaseMax) * 100, phase.count > 0 ? 2 : 0)}%`,
                     }}
@@ -290,37 +403,21 @@ export default function AnalyticsDashboard() {
         <CardHeader>
           <CardTitle className="text-lg">Dietary restrictions</CardTitle>
           <CardDescription>
-            Multi-select tags are counted separately (one person can appear in
-            multiple rows). Accepted = application status accepted; checked in
-            = present at the check-in phase.
+            Free-text answers are normalized into categories. Expand a row to
+            see the raw answers. One person can appear in multiple categories.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-2">
           {data.dietary.length === 0 ? (
             <p className="text-sm text-neutral-400">No dietary data</p>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Restriction</TableHead>
-                  <TableHead className="text-right">Accepted</TableHead>
-                  <TableHead className="text-right">Checked in</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.dietary.map((row) => (
-                  <TableRow key={row.tag}>
-                    <TableCell>{row.tag}</TableCell>
-                    <TableCell className="text-right tabular-nums">
-                      {row.acceptedCount}
-                    </TableCell>
-                    <TableCell className="text-right tabular-nums">
-                      {row.checkedInCount}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            data.dietary.map((row) => (
+              <DietaryCategoryRow
+                key={row.tag}
+                row={row}
+                maxAccepted={dietaryMax}
+              />
+            ))
           )}
         </CardContent>
       </Card>

@@ -37,12 +37,207 @@ function countBy<T>(
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 }
 
-function splitDietaryTags(value: string | null | undefined): string[] {
-  if (!value?.trim()) return [];
+/**
+ * Map free-text / multi-select dietary answers onto apply-form categories.
+ * Older apps used free response; newer ones use comma-joined dropdown values.
+ * One answer can map to multiple categories (e.g. "vegetarian, peanut allergy").
+ */
+const DIETARY_CATEGORY_ORDER = [
+  "None",
+  "Vegetarian",
+  "Vegan",
+  "Chicketarian",
+  "Halal",
+  "Kosher",
+  "Gluten-Free",
+  "Lactose Intolerant",
+  "Nut Allergy",
+  "Shellfish Allergy",
+  "No Beef",
+  "No Pork",
+  "Other",
+] as const;
+
+type DietaryCategory = (typeof DIETARY_CATEGORY_ORDER)[number];
+
+function normalizeDietaryText(value: string): string {
   return value
-    .split(",")
-    .map((t) => t.trim())
-    .filter(Boolean);
+    .toLowerCase()
+    // Drop apostrophes so "don't" / "can't" become "dont" / "cant"
+    .replace(/[’']/g, "")
+    .replace(/[^\w\s/+&()-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function isNoneOnlyDietary(text: string): boolean {
+  if (!text) return true;
+  // Short / explicit none answers
+  if (
+    /^(none|n ?\/? ?a|na|no|nope|nah|nada|nil|null|--|n\/a\.?|none\.?|no\.?)$/i.test(
+      text,
+    )
+  ) {
+    return true;
+  }
+  if (
+    /\b(no (dietary )?restrictions?|no accommodations?|no special accommodations?|can eat anything|eat (all|whatever|everything)|i eat all|all good|nothing|no dietary|just about anything)\b/.test(
+      text,
+    ) &&
+    !/\b(beef|pork|meat|nut|peanut|halal|vegan|vegetarian|gluten|lactose|dairy|diary|shellfish|egg|allergy|allergic)\b/.test(
+      text,
+    )
+  ) {
+    return true;
+  }
+  // Joke / rock diet → treat as none for catering
+  if (
+    /\brock(s)? only\b/.test(text) ||
+    text === "rock" ||
+    /\bjust not rocks\b/.test(text) ||
+    /\bnot rocks\b/.test(text) ||
+    /\bspontaneously combust\b/.test(text) ||
+    /\bibuprofen\b/.test(text)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function classifyDietaryRestriction(
+  value: string | null | undefined,
+): DietaryCategory[] {
+  if (!value?.trim()) return [];
+
+  const text = normalizeDietaryText(value);
+  if (!text) return [];
+
+  const found = new Set<DietaryCategory>();
+
+  // Exact dropdown values (case-insensitive), including comma-joined multi-select
+  for (const part of text.split(/[,;/|]+/).map((p) => p.trim()).filter(Boolean)) {
+    const exact: Record<string, DietaryCategory> = {
+      none: "None",
+      vegetarian: "Vegetarian",
+      vegan: "Vegan",
+      chicketarian: "Chicketarian",
+      halal: "Halal",
+      kosher: "Kosher",
+      "gluten-free": "Gluten-Free",
+      "gluten free": "Gluten-Free",
+      "lactose intolerant": "Lactose Intolerant",
+      "nut allergy": "Nut Allergy",
+      "shellfish allergy": "Shellfish Allergy",
+    };
+    const hit = exact[part];
+    if (hit) found.add(hit);
+  }
+
+  // Keyword matching on the full free-text blob
+  if (
+    /\b(vegetarian|vegeterian|lactovegetarian|no meat|dont eat meat)\b/.test(
+      text,
+    ) ||
+    /\bim a vegetarian\b/.test(text) ||
+    /\bi am vegetarian\b/.test(text)
+  ) {
+    found.add("Vegetarian");
+  }
+  if (/\bvegan\b/.test(text)) found.add("Vegan");
+  if (
+    /\bchicketarian\b/.test(text) ||
+    /\b(only|just|can only) (eat )?chicken\b/.test(text) ||
+    /\bchicken (or vegetarian|options?)\b/.test(text)
+  ) {
+    found.add("Chicketarian");
+  }
+  if (/\bhalal\b/.test(text)) found.add("Halal");
+  if (/\bkosher\b/.test(text)) found.add("Kosher");
+  if (/\bgluten[ -]?free\b/.test(text)) found.add("Gluten-Free");
+  if (
+    /\blactose\b/.test(text) ||
+    /\blactose intoleran/.test(text) ||
+    /\bno dairy\b/.test(text) ||
+    /\bdairy allerg/.test(text) ||
+    text === "dairy" ||
+    text === "diary"
+  ) {
+    found.add("Lactose Intolerant");
+  }
+  if (
+    /\b(nut|peanut|tree ?nut|almond|cashew|pistachio|walnut)s?\b/.test(text) &&
+    /\b(allerg|intoleran|no nuts|cant|cannot|avoid)\b/.test(text)
+  ) {
+    found.add("Nut Allergy");
+  } else if (
+    /\b(peanut|nut|tree ?nut)s?\s+allerg/.test(text) ||
+    /\ballergic to (all )?(nuts?|peanuts?|walnuts?|almonds?|cashews?|pistachios?|tree ?nuts?)\b/.test(
+      text,
+    )
+  ) {
+    found.add("Nut Allergy");
+  } else if (
+    /^(peanuts?|nuts?|treenuts?|tree nuts?|almonds?|cashews?|pistachios?)$/.test(
+      text,
+    )
+  ) {
+    found.add("Nut Allergy");
+  }
+  if (
+    /\bshellfish allerg/.test(text) ||
+    /\ballergic to shellfish\b/.test(text) ||
+    /\bno shellfish\b/.test(text) ||
+    /\bcrustaceans?\b/.test(text)
+  ) {
+    found.add("Shellfish Allergy");
+  } else if (/\bno seafood\b/.test(text)) {
+    found.add("Shellfish Allergy");
+  }
+
+  // High-volume free-text buckets not on the apply form
+  if (
+    /\bno (beef|red meat)\b/.test(text) ||
+    /\bcant eat beef\b/.test(text) ||
+    /\bcannot eat beef\b/.test(text) ||
+    /\bdont eat beef\b/.test(text) ||
+    /\bi dont eat beef\b/.test(text) ||
+    /\banything but beef\b/.test(text) ||
+    /\bexcept beef\b/.test(text) ||
+    /\b(avoid|without) beef\b/.test(text)
+  ) {
+    found.add("No Beef");
+  }
+  if (
+    /\bno pork\b/.test(text) ||
+    /\bno pig\b/.test(text) ||
+    /\bcant eat pork\b/.test(text) ||
+    /\bcannot eat pork\b/.test(text) ||
+    /\bdont eat pork\b/.test(text) ||
+    /\bno bacon\b/.test(text) ||
+    /\banything but pork\b/.test(text) ||
+    /\bexcept pork\b/.test(text)
+  ) {
+    found.add("No Pork");
+  }
+  // Combined "no beef or pork" / "no red meat" → both
+  if (
+    /\bno (beef|pork).*(beef|pork)\b/.test(text) ||
+    /\bno beef\/pork\b/.test(text) ||
+    /\bno beef & pork\b/.test(text) ||
+    /\bno red meat\b/.test(text)
+  ) {
+    found.add("No Beef");
+    found.add("No Pork");
+  }  if (found.size === 0) {
+    if (isNoneOnlyDietary(text)) return ["None"];
+    return ["Other"];
+  }
+
+  // If they said a real restriction, drop pure "None" from multi-select noise
+  found.delete("None");
+  if (found.size === 0) return ["None"];
+
+  return DIETARY_CATEGORY_ORDER.filter((c) => found.has(c));
 }
 
 const EventNameInput = z.object({ eventName: z.string().min(1) });
@@ -65,6 +260,7 @@ export const analyticsRouter = {
           gender: true,
           eventSource: true,
           dietaryRestriction: true,
+          checkedIn: true,
         },
       });
 
@@ -87,11 +283,24 @@ export const analyticsRouter = {
       });
 
       const checkInPhase = phases.find((p) => p.name === "check-in");
-      const checkedInAppIds = new Set(
+      const attendanceCheckInIds = new Set(
         attendanceRows
           .filter((r) => checkInPhase && r.eventPhaseId === checkInPhase.id)
           .map((r) => r.applicationId),
       );
+
+      // Prefer Passport attendance; fall back to legacy application.checked_in
+      // when no phases/attendance exist (older events).
+      const useLegacyCheckIn =
+        !checkInPhase || attendanceCheckInIds.size === 0;
+      const checkedInAppIds = useLegacyCheckIn
+        ? new Set(
+            applications.filter((a) => a.checkedIn).map((a) => a.id),
+          )
+        : attendanceCheckInIds;
+      const checkInSource = useLegacyCheckIn
+        ? ("application" as const)
+        : ("attendance" as const);
 
       const statusCounts = {
         pending: 0,
@@ -107,43 +316,88 @@ export const analyticsRouter = {
         }
       }
 
-      const phaseAttendance = phases.map((phase) => ({
+      let phaseAttendance = phases.map((phase) => ({
         name: phase.name,
         sortOrder: phase.sortOrder,
         count: attendanceRows.filter((r) => r.eventPhaseId === phase.id).length,
       }));
 
+      if (phaseAttendance.length === 0 && checkedInAppIds.size > 0) {
+        phaseAttendance = [
+          {
+            name: "check-in (legacy)",
+            sortOrder: 0,
+            count: checkedInAppIds.size,
+          },
+        ];
+      }
+
       const acceptedApps = applications.filter((a) => a.status === "accepted");
-      const dietaryMap = new Map<
-        string,
-        { tag: string; acceptedCount: number; checkedInCount: number }
-      >();
+      type DietaryEntry = {
+        tag: string;
+        acceptedCount: number;
+        checkedInCount: number;
+        rawAnswers: Map<
+          string,
+          { text: string; acceptedCount: number; checkedInCount: number }
+        >;
+      };
+      const dietaryMap = new Map<string, DietaryEntry>();
 
       for (const app of applications) {
-        const tags = splitDietaryTags(app.dietaryRestriction);
+        const raw = app.dietaryRestriction?.trim() || "";
+        if (!raw) continue;
+        const tags = classifyDietaryRestriction(raw);
         const isAccepted = app.status === "accepted";
         const isCheckedIn = checkedInAppIds.has(app.id);
         for (const tag of tags) {
-          const entry = dietaryMap.get(tag) ?? {
-            tag,
+          let entry = dietaryMap.get(tag);
+          if (!entry) {
+            entry = {
+              tag,
+              acceptedCount: 0,
+              checkedInCount: 0,
+              rawAnswers: new Map(),
+            };
+            dietaryMap.set(tag, entry);
+          }
+          if (isAccepted) entry.acceptedCount += 1;
+          if (isCheckedIn) entry.checkedInCount += 1;
+
+          const rawKey = raw;
+          const rawEntry = entry.rawAnswers.get(rawKey) ?? {
+            text: rawKey,
             acceptedCount: 0,
             checkedInCount: 0,
           };
-          if (isAccepted) entry.acceptedCount += 1;
-          if (isCheckedIn) entry.checkedInCount += 1;
-          dietaryMap.set(tag, entry);
+          if (isAccepted) rawEntry.acceptedCount += 1;
+          if (isCheckedIn) rawEntry.checkedInCount += 1;
+          entry.rawAnswers.set(rawKey, rawEntry);
         }
       }
 
-      const dietary = [...dietaryMap.values()].sort(
-        (a, b) =>
-          b.acceptedCount - a.acceptedCount ||
-          b.checkedInCount - a.checkedInCount ||
-          a.tag.localeCompare(b.tag),
-      );
+      const dietary = DIETARY_CATEGORY_ORDER.map((tag) => {
+        const entry = dietaryMap.get(tag);
+        if (!entry) return null;
+        if (entry.acceptedCount === 0 && entry.checkedInCount === 0) {
+          return null;
+        }
+        return {
+          tag,
+          acceptedCount: entry.acceptedCount,
+          checkedInCount: entry.checkedInCount,
+          rawAnswers: [...entry.rawAnswers.values()].sort(
+            (a, b) =>
+              b.acceptedCount - a.acceptedCount ||
+              b.checkedInCount - a.checkedInCount ||
+              a.text.localeCompare(b.text),
+          ),
+        };
+      }).filter((row): row is NonNullable<typeof row> => row != null);
 
       return {
         eventName: input.eventName,
+        checkInSource,
         kpis: {
           applied: applications.length,
           accepted: statusCounts.accepted,
@@ -185,6 +439,7 @@ export const analyticsRouter = {
           email: true,
           school: true,
           status: true,
+          checkedIn: true,
         },
       });
 
@@ -215,21 +470,35 @@ export const analyticsRouter = {
         });
       }
 
+      const exportPhases =
+        phases.length > 0
+          ? phases.map((p) => ({ name: p.name, sortOrder: p.sortOrder }))
+          : [{ name: "check-in (legacy)", sortOrder: 0 }];
+
       const rows = applications.map((app) => {
         const phaseMap = attendanceByApp.get(app.id);
         const phasesData: Record<
           string,
           { checkedIn: boolean; checkedInAt: string | null }
         > = {};
-        for (const phase of phases) {
-          const att = phaseMap?.get(phase.id);
-          phasesData[phase.name] = {
-            checkedIn: att?.checkedIn ?? false,
-            checkedInAt: att?.checkedInAt
-              ? att.checkedInAt.toISOString()
-              : null,
+
+        if (phases.length > 0) {
+          for (const phase of phases) {
+            const att = phaseMap?.get(phase.id);
+            phasesData[phase.name] = {
+              checkedIn: att?.checkedIn ?? false,
+              checkedInAt: att?.checkedInAt
+                ? att.checkedInAt.toISOString()
+                : null,
+            };
+          }
+        } else {
+          phasesData["check-in (legacy)"] = {
+            checkedIn: app.checkedIn,
+            checkedInAt: null,
           };
         }
+
         return {
           firstName: app.firstName,
           lastName: app.lastName,
@@ -242,7 +511,7 @@ export const analyticsRouter = {
 
       return {
         eventName: input.eventName,
-        phases: phases.map((p) => ({ name: p.name, sortOrder: p.sortOrder })),
+        phases: exportPhases,
         rows,
       };
     }),
