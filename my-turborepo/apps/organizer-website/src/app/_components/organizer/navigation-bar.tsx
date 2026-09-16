@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 import { Button } from "@vanni/ui/button";
@@ -16,39 +18,34 @@ const OrganizerNavBar = () => {
     <NavigationMenu className="mx-auto w-full pb-8 ">
       <NavigationMenuList className="flex-row flex-wrap gap-2">
         <NavigationMenuItem>
-          <Link href="/organizer" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Home
-            </NavigationMenuLink>
-          </Link>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link href="/organizer">Home</Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/organizer/applications" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Applications
-            </NavigationMenuLink>
-          </Link>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link href="/organizer/applications">Applications</Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/organizer/passport" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Passport
-            </NavigationMenuLink>
-          </Link>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link href="/organizer/passport">Passport</Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/organizer/email-generator" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Email Generator
-            </NavigationMenuLink>
-          </Link>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link href="/organizer/analytics">Analytics</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link href="/organizer/email-generator">Email Generator</Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
         {/* <NavigationMenuItem>
-          <Link href="/organizer/schedule-manager" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Schedule Manager
-            </NavigationMenuLink>
-          </Link>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link href="/organizer/schedule-manager">Schedule Manager</Link>
+          </NavigationMenuLink>
         </NavigationMenuItem> */}
         <NavigationMenuItem>
           <form action={signOutAction.bind(null, "/organizer")}>
