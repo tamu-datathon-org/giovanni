@@ -25,7 +25,7 @@ const AboutUs = dynamic(() => import("~/components/AboutUs"), {
 const AboutTeam = dynamic(() => import("~/components/AboutTeam"), {
   ssr: true,
   loading: () => (
-    <section className="bg-[#F3F3F3] px-4 py-16">
+    <section className="bg-[#e9f6ff] px-4 py-16">
       <div className="mx-auto max-w-4xl animate-pulse rounded-2xl bg-[#D9D9D9]/40 py-24" />
     </section>
   ),
