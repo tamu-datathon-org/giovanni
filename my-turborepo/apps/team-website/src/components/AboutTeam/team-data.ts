@@ -20,6 +20,9 @@ export interface Team {
 
 const imageBaseUrl = "/images/teampics_v2026";
 
+// Order matters for the bubble field: the first team sits in the middle, the
+// rest are arranged clockwise around it in this order, and each team's first
+// member (its lead) is placed closest to the middle.
 export const teams: Team[] = [
   {
     teamMembers: [

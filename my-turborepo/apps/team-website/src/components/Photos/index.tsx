@@ -6,7 +6,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
 import { Noise } from "~/components/shared/Noise";
-
+import { refreshOnLayoutShift } from "~/lib/scroll-trigger-refresh";
 import PhotosSectionImages from "./PhotosSectionImages";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -93,57 +93,12 @@ const Photos = () => {
       .fromTo(imageRefs[2], parked(), slideUp())
       .to({}, { duration: 0.3 });
 
-    // Everything above this section settles late: AboutUs is a next/dynamic
-    // chunk whose jagged.svg is an unsized <img>, so for the first few frames it
-    // measures 0px tall and only reaches its real ~1121px once the chunk renders
-    // and the SVG loads. That pushes this section ~578px further down the page.
-    // ScrollTrigger caches `start` at refresh time, so a refresh landing before
-    // that growth pins the section 578px down the viewport and the whole
-    // slide-up plays out below the fold.
-    //
-    // Watching the section itself is not enough — its own box never changes
-    // (h-svh); only its position does. Watch the document, the way
-    // Header/index.tsx already does, and re-measure whenever the geometry this
-    // trigger actually depends on has moved.
-    const spacerOf = (el: HTMLElement) =>
-      el.parentElement?.classList.contains("pin-spacer") ? el.parentElement : el;
-    const signature = () => {
-      const el = sectionRef.current;
-      if (!el) return "";
-      const r = spacerOf(el).getBoundingClientRect();
-      return [
-        Math.round(r.top + window.scrollY),
-        Math.round(r.width),
-        document.documentElement.scrollHeight,
-      ].join("|");
-    };
-
-    let frame = 0;
-    let lastSignature = signature();
-    const sync = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        if (signature() === lastSignature) return;
-        ScrollTrigger.refresh();
-        // Refreshing resizes the pin-spacer, which feeds straight back into the
-        // observer — record the settled geometry so that doesn't loop.
-        lastSignature = signature();
-      });
-    };
-
-    // body catches the section being pushed down; the section catches width
-    // changes from the sidebar collapsing, which leave body height untouched.
-    const observer = new ResizeObserver(sync);
-    observer.observe(document.body);
-    observer.observe(sectionRef.current);
-    window.addEventListener("load", sync);
-    if (document.fonts) void document.fonts.ready.then(sync);
+    // AboutUs above settles late and shifts this section down; keep start/end
+    // in step with it (see refreshOnLayoutShift).
+    const stopRefreshing = refreshOnLayoutShift(sectionRef.current);
 
     return () => {
-      window.removeEventListener("load", sync);
-      if (frame) cancelAnimationFrame(frame);
-      observer.disconnect();
+      stopRefreshing();
       tl.scrollTrigger?.kill();
       tl.kill();
     };

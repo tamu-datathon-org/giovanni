@@ -10,7 +10,7 @@ import styles from "./about.module.css";
 const JAGGED = {
   width: 1176,
   height: 331,
-  overlap: 0.55,
+  overlap: 0.9,
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -92,10 +92,9 @@ export default function AboutUs() {
           </h2>
           <div className={`${inter.className} ${styles.copy}`}>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Founded in 2019, TAMU Datathon is Texas A&M's premier hackathon focused on Data Science, Machine Learning, and AI. 
             </p>
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+            <p>We take a unique approach to hackathons by creating deterministic, engaging challenges that encourage students to develop and strengthen critical skills for today's rapidly evolving AI landscape.</p>
           </div>
           <AboutStars />
         </div>

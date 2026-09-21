@@ -384,15 +384,15 @@ export default function Page() {
                   <div className="space-y-2 text-sm text-white/80">
                     <div>
                       <span className="text-white/50">Event:</span> TAMU
-                      Datathon Lite
+                      Datathon 
                     </div>
                     <div>
-                      <span className="text-white/50">Date:</span> April 11,
-                      2026 | 9:00 AM - 5:00 PM
+                      <span className="text-white/50">Date:</span> November 7-8th,
+                      2026 
+                      
                     </div>
                     <div>
-                      <span className="text-white/50">Location:</span> Peterson
-                      Building
+                      <span className="text-white/50">Location:</span> Bethancourt Ballroom - MSC
                     </div>
                   </div>
                 </div>

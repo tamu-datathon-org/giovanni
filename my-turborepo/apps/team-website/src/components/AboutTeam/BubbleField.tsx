@@ -21,7 +21,7 @@ import {
   Mail,
 } from "lucide-react";
 
-import type { BubbleLayout, BubbleSlot } from "./bubble-layout";
+import type { BubbleGrid, BubbleLayout, BubbleSlot } from "./bubble-layout";
 import type { SocialLink, Team, TeamMember } from "./team-data";
 import {
   clamp,
@@ -39,6 +39,9 @@ const socialIcons = {
   website: Globe,
   twitter: ArrowUpRight,
 } satisfies Record<SocialLink["type"], typeof Globe>;
+
+// Below this field width the `mobile` grid is used (matches Tailwind's md).
+const MOBILE_GRID_BREAKPOINT = 768;
 
 function Portrait({ member }: { member: TeamMember }) {
   const [failed, setFailed] = useState(false);
@@ -111,6 +114,7 @@ function Bubble({
   cameraY,
   cameraLift,
   selectedId,
+  fieldWidth,
   fieldHeight,
   onSelect,
 }: {
@@ -120,30 +124,39 @@ function Bubble({
   cameraY: MotionValue<number>;
   cameraLift: MotionValue<number>;
   selectedId: string | null;
+  fieldWidth: number;
   fieldHeight: number;
   onSelect: (slot: BubbleSlot) => void;
 }) {
   const [interactive, setInteractive] = useState(false);
   const interactiveRef = useRef(false);
   const selected = selectedId === slot.member.id;
+  // The lift is folded in here (rather than subtracted from the result)
+  // so a lifted face still shrinks smoothly as it nears the top edge.
   const projection = useTransform(() =>
     projectBubble(
-      slot.row * layout.rowPitch - cameraY.get(),
-      fieldHeight,
-      slot,
+      slot.x - cameraX.get(),
+      slot.y - cameraY.get() - cameraLift.get(),
+      { width: fieldWidth, height: fieldHeight },
       layout.diameter,
-      cameraX.get(),
     ),
   );
-  const y = useTransform(() => projection.get().y - cameraLift.get());
+  const y = useTransform(() => projection.get().y);
   const x = useTransform(() => projection.get().x);
   const scale = useTransform(() => projection.get().scale);
+  const visibility = useTransform(() =>
+    scale.get() > 0.05 ? "visible" : "hidden",
+  );
   const captionY = useTransform(() => (layout.diameter / 2) * scale.get() + 12);
   const captionTarget = useTransform(() => {
     if (!selectedId) return projection.get().captionOpacity;
     if (!selected) return 0;
-    // Reveal the selected details as the whole cluster settles at the lens.
-    const distance = Math.hypot(projection.get().x, projection.get().y);
+    // Reveal the selected details as the whole cluster settles at the lens,
+    // measured against the un-lifted position so the caption still lands
+    // once the camera finishes raising the selected face.
+    const relX = slot.x - cameraX.get();
+    const relY = slot.y - cameraY.get();
+    const distance = Math.hypot(relX, relY);
     return clamp(1 - distance / (layout.diameter * 0.4), 0, 1);
   });
   const opacity = useSpring(captionTarget, { stiffness: 200, damping: 30 });
@@ -178,7 +191,7 @@ function Bubble({
       <motion.button
         type="button"
         className={styles.portrait}
-        style={{ scale }}
+        style={{ scale, visibility }}
         aria-label={`${slot.member.name}, ${slot.member.position}, ${slot.team.name}. Show details`}
         aria-describedby={`details-${slot.member.id}`}
         aria-pressed={selected}
@@ -217,10 +230,16 @@ function Bubble({
   );
 }
 
-export default function BubbleField({ teams }: { teams: Team[] }) {
+export default function BubbleField({
+  teams,
+  grid,
+}: {
+  teams: Team[];
+  /** Honeycomb shape per breakpoint; see `BubbleGrid`. */
+  grid: { desktop: BubbleGrid; mobile: BubbleGrid };
+}) {
   const stageRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const legendRef = useRef<HTMLElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
   const [geometry, setGeometry] = useState({
@@ -229,10 +248,10 @@ export default function BubbleField({ teams }: { teams: Team[] }) {
     stageHeight: 0,
     fits: false,
   });
-  const [activeTeam, setActiveTeam] = useState("");
-  const activeTeamRef = useRef("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selectedRef = useRef<string | null>(null);
+  const [isActive, setIsActive] = useState(false);
+  const inactivityTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cameraXTarget = useMotionValue(0);
   const cameraYTarget = useMotionValue(0);
   const cameraX = useSpring(cameraXTarget, {
@@ -250,12 +269,21 @@ export default function BubbleField({ teams }: { teams: Team[] }) {
     () => teams.filter((team) => team.teamMembers.length),
     [teams],
   );
+  const { columns, rows } =
+    geometry.width < MOBILE_GRID_BREAKPOINT ? grid.mobile : grid.desktop;
   const layout = useMemo(
-    () => createBubbleLayout(visibleTeams, geometry.width, geometry.height),
-    [visibleTeams, geometry.width, geometry.height],
+    () =>
+      createBubbleLayout(visibleTeams, geometry.width, geometry.height, {
+        columns,
+        rows,
+      }),
+    [visibleTeams, geometry.width, geometry.height, columns, rows],
   );
-  const animated = geometry.fits && !reducedMotion && layout.rowCount > 0;
+  const animated = geometry.fits && !reducedMotion && layout.slots.length > 0;
   const bounds = useMemo(() => getBubbleBounds(layout), [layout]);
+  // The resting view centers on the middle team's first face (the President),
+  // which the layout places at the heart of the cluster.
+  const { home } = layout;
 
   const clearSelection = useCallback(() => {
     selectedRef.current = null;
@@ -276,77 +304,63 @@ export default function BubbleField({ teams }: { teams: Team[] }) {
 
   const resetView = useCallback(() => {
     clearSelection();
-    panTo(0, 0);
-  }, [clearSelection, panTo]);
+    panTo(home.x, home.y);
+  }, [clearSelection, panTo, home]);
+
+  const resetInactivityTimer = useCallback(() => {
+    if (inactivityTimeoutRef.current) {
+      clearTimeout(inactivityTimeoutRef.current);
+    }
+    setIsActive(true);
+    inactivityTimeoutRef.current = setTimeout(() => {
+      panTo(home.x, home.y);
+      setIsActive(false);
+    }, 5000); // 5 seconds of inactivity
+  }, [panTo, home]);
 
   const syncPan = useCallback(() => {
     const field = fieldRef.current;
     if (!field || !animated) return;
-    const x = clamp(field.scrollLeft + bounds.minX, bounds.minX, bounds.maxX);
-    const y = clamp(field.scrollTop + bounds.minY, bounds.minY, bounds.maxY);
-    cameraXTarget.set(x);
-    cameraYTarget.set(y);
-    if (selectedRef.current) return;
-    // The key follows the closest face, including when panning diagonally.
-    let closest: BubbleSlot | undefined;
-    let nearestDistance = Infinity;
-    for (const slot of layout.slots) {
-      const distance = Math.hypot(
-        slot.x - x,
-        slot.row * layout.rowPitch + slot.offsetY - y,
-      );
-      if (distance < nearestDistance) {
-        closest = slot;
-        nearestDistance = distance;
-      }
-    }
-    const team = closest?.team.id ?? "";
-    if (team !== activeTeamRef.current) {
-      activeTeamRef.current = team;
-      setActiveTeam(team);
-    }
-  }, [animated, bounds, cameraXTarget, cameraYTarget, layout]);
+    cameraXTarget.set(
+      clamp(field.scrollLeft + bounds.minX, bounds.minX, bounds.maxX),
+    );
+    cameraYTarget.set(
+      clamp(field.scrollTop + bounds.minY, bounds.minY, bounds.maxY),
+    );
+  }, [animated, bounds, cameraXTarget, cameraYTarget]);
 
   const selectMember = useCallback(
     (slot: BubbleSlot) => {
       if (selectedRef.current === slot.member.id) return;
       selectedRef.current = slot.member.id;
       setSelectedId(slot.member.id);
-      panTo(slot.x, slot.row * layout.rowPitch + slot.offsetY);
+      panTo(slot.x, slot.y);
       // On short screens, leave space for the selected caption without
       // disabling the bubble experience or clipping its social links.
       cameraLift.set(
         Math.max(0, layout.diameter / 2 + 172 - geometry.height / 2),
       );
-      activeTeamRef.current = slot.team.id;
-      setActiveTeam(slot.team.id);
     },
-    [panTo, cameraLift, layout.rowPitch, layout.diameter, geometry.height],
+    [panTo, cameraLift, layout.diameter, geometry.height],
   );
 
   useEffect(() => {
     clearSelection();
     if (animated) {
-      panTo(0, 0, false);
+      panTo(home.x, home.y, false);
       syncPan();
     }
-  }, [layout, animated, clearSelection, panTo, syncPan]);
+  }, [layout, animated, clearSelection, panTo, syncPan, home]);
 
   useEffect(() => {
     const stage = stageRef.current;
     const field = fieldRef.current;
     const heading = headingRef.current;
-    const legend = legendRef.current;
-    if (!stage || !field || !heading || !legend) return;
+    if (!stage || !field || !heading) return;
     const measure = () => {
       const top = window.innerWidth < 992 ? 72 : 0;
       const stageHeight = window.innerHeight - top;
-      const wide = stage.clientWidth >= 1100;
-      const height =
-        stageHeight -
-        heading.offsetHeight -
-        104 -
-        (wide ? 0 : legend.offsetHeight + 16);
+      const height = stageHeight - heading.offsetHeight - 104;
       const fontSize = parseFloat(
         getComputedStyle(document.documentElement).fontSize,
       );
@@ -367,9 +381,7 @@ export default function BubbleField({ teams }: { teams: Team[] }) {
       );
     };
     const observer = new ResizeObserver(measure);
-    [stage, field, heading, legend].forEach((element) =>
-      observer.observe(element),
-    );
+    [stage, field, heading].forEach((element) => observer.observe(element));
     window.addEventListener("resize", measure);
     measure();
     return () => {
@@ -409,51 +421,6 @@ export default function BubbleField({ teams }: { teams: Team[] }) {
           MEET THE <span>TEAM</span>
         </h2>
         <div className={styles.body}>
-          <nav
-            ref={legendRef}
-            className={styles.legend}
-            aria-label="Jump to a subteam"
-          >
-            <span className={styles.legendTitle}>OUR TEAMS</span>
-            <div className={styles.legendLinks}>
-              {visibleTeams.map((team) => (
-                <a
-                  key={team.id}
-                  href={`#team-${team.id}`}
-                  className={styles.teamLink}
-                  aria-current={
-                    animated && activeTeam === team.id ? "true" : undefined
-                  }
-                  style={{ "--team-color": team.color } as CSSProperties}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    if (animated) {
-                      clearSelection();
-                      const target = layout.slots.find(
-                        (slot) =>
-                          slot.team.id === team.id &&
-                          slot.row === layout.firstRows[team.id],
-                      );
-                      if (target) selectMember(target);
-                    } else {
-                      document
-                        .getElementById(`team-${team.id}`)
-                        ?.scrollIntoView({
-                          behavior: "instant",
-                          block: "start",
-                        });
-                    }
-                  }}
-                >
-                  <span className={styles.swatch} aria-hidden="true" />
-                  {team.name}
-                  <span className={styles.teamCount}>
-                    {team.teamMembers.length}
-                  </span>
-                </a>
-              ))}
-            </div>
-          </nav>
           <div
             ref={fieldRef}
             className={styles.field}
@@ -464,11 +431,16 @@ export default function BubbleField({ teams }: { teams: Team[] }) {
                 ? "Team faces. Scroll in any direction to explore; scroll outside this area to move down the page."
                 : undefined
             }
-            onScroll={syncPan}
+            onScroll={() => {
+              resetInactivityTimer();
+              syncPan();
+            }}
             onWheelCapture={(event) => {
+              resetInactivityTimer();
               if (!event.ctrlKey && selectedRef.current) clearSelection();
             }}
             onTouchMoveCapture={() => {
+              resetInactivityTimer();
               if (selectedRef.current) clearSelection();
             }}
             onKeyDown={(event) => {
@@ -507,6 +479,7 @@ export default function BubbleField({ teams }: { teams: Team[] }) {
                       cameraY={cameraY}
                       cameraLift={cameraLift}
                       selectedId={selectedId}
+                      fieldWidth={geometry.width}
                       fieldHeight={geometry.height}
                       onSelect={selectMember}
                     />

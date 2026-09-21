@@ -14,18 +14,27 @@ export default function ScrollToTop() {
   };
 
   useEffect(() => {
-    // Button is displayed after scrolling for 500 pixels
+    // Button is displayed only once the user has scrolled to the bottom of
+    // the page (and only if the page is actually tall enough to scroll).
+    const bottomThreshold = 24;
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      const scrollTop = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const fullHeight = document.documentElement.scrollHeight;
+      const scrollable = fullHeight > viewportHeight + bottomThreshold;
+      const atBottom =
+        scrollTop + viewportHeight >= fullHeight - bottomThreshold;
+      setIsVisible(scrollable && atBottom);
     };
 
-    window.addEventListener("scroll", toggleVisibility);
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
+    window.addEventListener("resize", toggleVisibility);
+    toggleVisibility();
 
-    return () => window.removeEventListener("scroll", toggleVisibility);
+    return () => {
+      window.removeEventListener("scroll", toggleVisibility);
+      window.removeEventListener("resize", toggleVisibility);
+    };
   }, []);
 
   return (

@@ -51,10 +51,12 @@ export default function HomePage() {
       <div id="past-events" className="scroll-mt-20 lg:scroll-mt-0">
         <PastEventsSection />
       </div>
+      <div id="team" className="scroll-mt-20 lg:scroll-mt-0">
+        <AboutTeam />
+      </div>
       <div id="sponsors" className="scroll-mt-20 lg:scroll-mt-0">
         <SponsorTicker />
       </div>
-      <AboutTeam />
     </>
   );
 }

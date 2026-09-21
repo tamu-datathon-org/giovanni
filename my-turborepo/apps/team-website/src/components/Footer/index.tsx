@@ -16,7 +16,7 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start">
             <Link href="/" className="mb-3 inline-block">
               <Image
-                src="/images/past-logos/TD2026.png"
+                src="/images/td-logos/logo/logoTD26.png"
                 alt="logo"
                 className="mx-auto w-[128px]"
                 width={100}
