@@ -1,4 +1,6 @@
 .section {
+  position: relative;
+  z-index: 1;
   container-type: inline-size;
 }
 
@@ -12,7 +14,8 @@
 
 .intro {
   position: relative;
-  z-index: 2;
+  /* Above jagged (z-10) so the sparkle isn’t covered */
+  z-index: 20;
   max-width: 88rem;
   margin-inline: auto;
   color: white;
@@ -73,10 +76,11 @@
   backface-visibility: visible;
 }
 
-/* Scale the placement and cutoff together using the section's actual width. */
+/* Scale the placement and cutoff together using the section's actual width.
+   Above jagged (z-10) and the right splotch (z-0). */
 .squiggles {
   position: absolute;
-  z-index: 1;
+  z-index: 15;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
@@ -116,14 +120,14 @@
   height: auto;
 }
 
-/* Right splotch in About Us: behind squigly (z-0 < squigly z-1), no page scroll */
+/* One right splotch: under squiggly/sparkle, hangs into Past Events, clipped on the right. */
 .splotchesRightShell {
   position: absolute;
   z-index: 0;
   right: 0;
-  bottom: 0;
+  bottom: -22rem;
   left: 0;
-  height: clamp(18rem, 42cqw, 34rem);
+  height: calc(22rem + clamp(18rem, 48cqw, 44rem) * 650 / 641);
   overflow-x: clip;
   pointer-events: none;
 }
@@ -131,7 +135,7 @@
 .splotchesRight {
   position: absolute;
   right: -22%;
-  bottom: clamp(-4rem, -6cqw, -1rem);
+  bottom: 0;
   width: clamp(18rem, 48cqw, 44rem);
   max-width: none;
   height: auto;

@@ -43,10 +43,10 @@ export default function AboutUs() {
   return (
     <section
       id="about-us"
-      className={`relative isolate z-20 w-full scroll-mt-20 overflow-visible lg:scroll-mt-0 ${styles.section} ${konkhmerSleokchher.className}`}
+      className={`relative w-full scroll-mt-20 overflow-visible lg:scroll-mt-0 ${styles.section} ${konkhmerSleokchher.className}`}
       style={{ marginTop: overlap }}
     >
-      <div className="relative w-full leading-[0]">
+      <div className="relative z-10 w-full leading-[0]">
         <img
           src="/images/about-us/jagged.svg"
           alt=""
@@ -66,7 +66,6 @@ export default function AboutUs() {
             className={styles.splotches}
           />
         </div>
-        {/* Upper half of the right splotch — behind squigly, clipped on the right */}
         <div className={styles.splotchesRightShell} aria-hidden>
           <img
             src="/images/about-us/splotches.svg"
