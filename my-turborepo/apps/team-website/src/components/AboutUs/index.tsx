@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { inter, konkhmerSleokchher } from "~/app/_components/fonts";
 import { Noise } from "~/components/shared/Noise";
+import AboutStars from "./AboutStars";
 import BearShowcase from "./BearShowcase";
 import styles from "./about.module.css";
 
@@ -65,15 +66,16 @@ export default function AboutUs() {
             className={styles.splotches}
           />
         </div>
-        {/* Sits on About Us and overlaps into Past Events below */}
-        <img
-          src="/images/about-us/splotches.svg"
-          alt=""
-          aria-hidden
-          width={641}
-          height={650}
-          className={styles.splotchesRight}
-        />
+        {/* Upper half of the right splotch — behind squigly, clipped on the right */}
+        <div className={styles.splotchesRightShell} aria-hidden>
+          <img
+            src="/images/about-us/splotches.svg"
+            alt=""
+            width={641}
+            height={650}
+            className={styles.splotchesRight}
+          />
+        </div>
         <Noise />
         <div className={styles.intro}>
           <img
@@ -96,23 +98,7 @@ export default function AboutUs() {
             </p>
             <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
           </div>
-          <div className={styles.stars} aria-hidden>
-            <img
-              src="/images/about-us/star.svg"
-              alt=""
-              className={styles.star}
-            />
-            <img
-              src="/images/about-us/star.svg"
-              alt=""
-              className={styles.star}
-            />
-            <img
-              src="/images/about-us/star.svg"
-              alt=""
-              className={styles.star}
-            />
-          </div>
+          <AboutStars />
         </div>
         <BearShowcase />
       </div>

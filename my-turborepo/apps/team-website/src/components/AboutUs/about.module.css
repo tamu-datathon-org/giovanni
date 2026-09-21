@@ -67,6 +67,10 @@
 .star {
   width: clamp(2rem, 4.76cqw, 3.5rem);
   height: auto;
+  will-change: transform;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
 }
 
 /* Scale the placement and cutoff together using the section's actual width. */
@@ -112,16 +116,26 @@
   height: auto;
 }
 
+/* Right splotch in About Us: behind squigly (z-0 < squigly z-1), no page scroll */
+.splotchesRightShell {
+  position: absolute;
+  z-index: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: clamp(18rem, 42cqw, 34rem);
+  overflow-x: clip;
+  pointer-events: none;
+}
+
 .splotchesRight {
   position: absolute;
-  z-index: 1;
   right: -22%;
-  bottom: clamp(-14rem, -18cqw, -8rem);
+  bottom: clamp(-4rem, -6cqw, -1rem);
   width: clamp(18rem, 48cqw, 44rem);
   max-width: none;
   height: auto;
   transform: scaleX(-1);
-  pointer-events: none;
 }
 
 @container (max-width: 639px) {
