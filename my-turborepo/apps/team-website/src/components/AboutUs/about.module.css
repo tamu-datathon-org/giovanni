@@ -7,6 +7,7 @@
   margin-top: -1px;
   padding: 6rem clamp(1.5rem, 4.08cqw, 4rem) clamp(5rem, 8cqw, 7rem);
   background: #377bb0;
+  overflow: visible;
 }
 
 .intro {
@@ -109,6 +110,18 @@
   width: clamp(20rem, 55cqw, 50rem);
   max-width: none;
   height: auto;
+}
+
+.splotchesRight {
+  position: absolute;
+  z-index: 1;
+  right: -22%;
+  bottom: clamp(-14rem, -18cqw, -8rem);
+  width: clamp(18rem, 48cqw, 44rem);
+  max-width: none;
+  height: auto;
+  transform: scaleX(-1);
+  pointer-events: none;
 }
 
 @container (max-width: 639px) {

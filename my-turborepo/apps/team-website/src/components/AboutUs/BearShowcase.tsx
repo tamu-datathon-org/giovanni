@@ -294,6 +294,9 @@ export default function BearShowcase() {
         <style>{`[data-stat] [data-value], [data-stat] [data-label] { opacity: 1; }`}</style>
       </noscript>
       <div className={styles.composition}>
+        <p className={styles.datathon} aria-hidden>
+          DATATHON
+        </p>
         <div
           ref={stage}
           className={styles.stage}

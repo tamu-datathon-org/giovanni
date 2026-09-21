@@ -65,6 +65,15 @@ export default function AboutUs() {
             className={styles.splotches}
           />
         </div>
+        {/* Sits on About Us and overlaps into Past Events below */}
+        <img
+          src="/images/about-us/splotches.svg"
+          alt=""
+          aria-hidden
+          width={641}
+          height={650}
+          className={styles.splotchesRight}
+        />
         <Noise />
         <div className={styles.intro}>
           <img

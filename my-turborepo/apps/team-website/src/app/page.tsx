@@ -7,7 +7,7 @@ import Hero from "~/components/Hero";
 const PastEventsSection = dynamic(() => import("~/components/PastEvents"), {
   ssr: true,
   loading: () => (
-    <section className="bg-[#121723] px-4 py-16">
+    <section className="bg-[#377BB0] px-4 py-16">
       <div className="mx-auto max-w-4xl animate-pulse rounded-2xl bg-white/10 py-24" />
     </section>
   ),
