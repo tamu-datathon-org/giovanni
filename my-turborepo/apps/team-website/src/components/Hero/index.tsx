@@ -45,10 +45,32 @@ export default function Hero() {
         />
       </div>
       {/* bear animation */}
-      <div className="absolute z-[999]" style={{ top: "20%", right: "10%" }}>
+      <div className="absolute z-[999]" style={{ top: "20%", right: "14%" }}>
         <FlickerImage />
       </div>
+      {/* Speech bubble */}
+      <div
+        className="absolute z-[999]"
+        style={{ top: "30%", right: "38%" }}
+      >
+        <div className="relative bg-[#377BB0] text-white font-semibold text-lg px-5 py-2 rounded-2xl">
+            Hi
 
+          <div
+            className="absolute"
+            style={{
+                right: "-8px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: 0,
+                height: 0,
+                borderTop: "8px solid transparent",
+                borderBottom: "8px solid transparent",
+                borderLeft: "10px solid #377BB0",
+            }}
+          />
+        </div>
+      </div>
       {/* --- curved line */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 right-0 w-[615.46px] h-[726px]">
