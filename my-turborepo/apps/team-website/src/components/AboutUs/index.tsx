@@ -74,6 +74,15 @@ export default function AboutUs() {
       <div className="relative -mt-px bg-[#377BB0] px-6 pb-20 pt-8 md:px-12 md:pb-28 md:pt-12">
         <Noise />
         <div className="relative z-10 mx-auto max-w-5xl text-white">
+          <img
+            src="/images/about-us/heading-sparkle.svg"
+            alt=""
+            aria-hidden
+            draggable={false}
+            width={95}
+            height={107}
+            className="pointer-events-none mb-[clamp(1.5rem,4vw,3rem)] ml-[clamp(-1.5rem,-2vw,-0.5rem)] block h-auto w-[clamp(6rem,12vw,9rem)] max-w-full select-none"
+          />
           <h2 className="text-[56px] font-normal leading-none tracking-[-0.07em] sm:text-[72px] md:text-[96px]">
             <span className="text-[#83EFE8]">ABOUT</span>{" "}
             <span className="text-white">US</span>
