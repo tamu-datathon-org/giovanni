@@ -28,6 +28,7 @@
     "@better-auth/utils": "0.4.2",
     "@t3-oss/env-core": "catalog:",
     "@vanni/db": "workspace:*",
+    "@vanni/validators": "workspace:*",
     "better-auth": "1.6.30",
     "next": "catalog:",
     "react": "catalog:",

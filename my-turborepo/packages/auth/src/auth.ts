@@ -8,13 +8,7 @@ import { env } from "../env";
 import { expo } from "@better-auth/expo";
 import * as authSchema from "@vanni/db/auth-schema";
 import { Event, Role, UserRole } from "@vanni/db/schema";
-
-//Regex for @tamu.edu emails
-const TAMU_EMAIL_REGEX = /^[^\s@]+@tamu\.edu$/i;
-
-function isAllowedTamuEmail(email: unknown): boolean {
-    return typeof email === "string" && TAMU_EMAIL_REGEX.test(email);
-}
+import { isAllowedApplicantEmail } from "@vanni/validators";
 
 export const config = {
     database: drizzleAdapter(db, {
@@ -50,8 +44,8 @@ export const config = {
                     );
                     if (!user) return false;
 
-                    // Allow TAMU emails.
-                    if (isAllowedTamuEmail(user.email)) return true;
+                    // Allow applicant emails (TAMU-only unless opened up for this event).
+                    if (isAllowedApplicantEmail(user.email)) return true;
 
                     // Allow organizer exception even with a non-TAMU email.
                     const eventName = process.env.NEXT_PUBLIC_EVENT_NAME;

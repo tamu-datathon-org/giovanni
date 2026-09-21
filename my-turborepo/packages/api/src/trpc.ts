@@ -15,6 +15,7 @@ import { and, eq } from "@vanni/db";
 import { User } from "@vanni/db/auth-schema";
 import { db } from "@vanni/db/client";
 import { Event, Role, UserRole } from "@vanni/db/schema";
+import { isAllowedApplicantEmail } from "@vanni/validators";
 
 /**
  * 1. CONTEXT
@@ -140,8 +141,11 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  if (!ctx.session.user.email.endsWith("@tamu.edu")) {
-    throw new TRPCError({ code: "UNAUTHORIZED", message: "Must use a TAMU email" });
+  if (!isAllowedApplicantEmail(ctx.session.user.email)) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "This account is not allowed to access this resource.",
+    });
   }
   return await next({
     ctx: {
