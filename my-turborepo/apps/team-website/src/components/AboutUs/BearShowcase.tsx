@@ -423,7 +423,7 @@ export default function BearShowcase() {
           id="bear-instructions"
           className={`${styles.hint} ${inter.className}`}
         >
-          {failed ? "SNOWFLAKE BEAR" : "DRAG TO ROTATE · RELEASE TO RECENTER"}
+          {failed ? "SNOWFLAKE BEAR" : "DRAG TO ROTATE"}
           <span className="sr-only">
             . Keyboard: focus the bear and hold an arrow key to rotate. Release
             to recenter.

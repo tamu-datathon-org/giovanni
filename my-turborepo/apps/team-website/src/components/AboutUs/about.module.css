@@ -1,0 +1,118 @@
+.section {
+  container-type: inline-size;
+}
+
+.body {
+  position: relative;
+  margin-top: -1px;
+  padding: 6rem clamp(1.5rem, 4.08cqw, 4rem) clamp(5rem, 8cqw, 7rem);
+  background: #377bb0;
+}
+
+.intro {
+  position: relative;
+  z-index: 2;
+  max-width: 88rem;
+  margin-inline: auto;
+  color: white;
+}
+
+/* Reserve the existing transition space, rather than adding a row above h2. */
+.sparkle {
+  position: absolute;
+  bottom: calc(100% + 1.5rem);
+  left: clamp(-1.5rem, -2cqw, -0.5rem);
+  width: clamp(5rem, 9cqw, 7rem);
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.heading {
+  margin: 0;
+  font-size: clamp(3rem, 8.164cqw, 6rem);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: -0.07em;
+}
+
+.copy {
+  width: 68%;
+  max-width: 48rem;
+  margin-top: clamp(1.5rem, 3cqw, 2.5rem);
+  font-size: clamp(1.125rem, 3.06cqw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+
+.copy p {
+  margin: 0;
+}
+
+.copy p + p {
+  margin-top: clamp(1.5rem, 4cqw, 3rem);
+}
+
+.stars {
+  display: flex;
+  gap: clamp(0.5rem, 1cqw, 0.875rem);
+  margin-top: clamp(1.5rem, 4cqw, 3rem);
+}
+
+.star {
+  width: clamp(2rem, 4.76cqw, 3.5rem);
+  height: auto;
+}
+
+/* Scale the placement and cutoff together using the section's actual width. */
+.squiggles {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Match the reference's curve origin (590, 198) and slightly taller bends.
+   Cap the artwork at its design size on wide screens and anchor it to the
+   right edge. Only the top attachment follows the expanding jagged band. */
+.squiggleArt {
+  --art-unit: min(calc(100cqw / 1176), 1px);
+  position: absolute;
+  top: calc(100cqw * 198 / 1176 - 160 * var(--art-unit));
+  right: calc(-680 * var(--art-unit));
+  width: calc(1650 * var(--art-unit));
+  aspect-ratio: 1536 / 768;
+  /* Color comes from CSS; the SVG supplies only the shape. */
+  background-color: #91b3e2;
+  -webkit-mask: url("/images/about-us/squigly.svg?v=smooth-bottom") center /
+    100% 100% no-repeat;
+  mask: url("/images/about-us/squigly.svg?v=smooth-bottom") center / 100% 100%
+    no-repeat;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.splotches {
+  position: absolute;
+  top: clamp(12rem, 22cqw, 22rem);
+  left: -5%;
+  width: clamp(20rem, 55cqw, 50rem);
+  max-width: none;
+  height: auto;
+}
+
+@container (max-width: 639px) {
+  .copy {
+    width: 100%;
+  }
+}
