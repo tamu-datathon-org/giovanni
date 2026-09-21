@@ -5,7 +5,7 @@
 .body {
   position: relative;
   margin-top: -1px;
-  padding: 6rem clamp(1.5rem, 4.08cqw, 4rem) clamp(5rem, 8cqw, 7rem);
+  padding: 6rem clamp(1.5rem, 4.08cqw, 4rem) clamp(2rem, 4cqw, 3rem);
   background: #377bb0;
   overflow: visible;
 }

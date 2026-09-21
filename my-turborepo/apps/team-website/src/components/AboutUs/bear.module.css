@@ -12,7 +12,7 @@
 .composition {
   --stage-h: clamp(650px, 65vw, 800px);
   position: relative;
-  height: calc(var(--stage-h) + clamp(7rem, 15cqw, 13rem));
+  height: calc(var(--stage-h) + clamp(6rem, 13cqw, 11rem));
   isolation: isolate;
 }
 
