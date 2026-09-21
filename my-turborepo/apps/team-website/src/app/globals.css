@@ -44,11 +44,11 @@
         linear-gradient(to bottom, grey 1px, transparent 1px);
   }
 
-  .grid-background-light {
-    background-size: 40px 40px;
+  .grid-background-blue {
+    background-size: 20px 20px;
     background-image:
-        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
-        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+        linear-gradient(to right, #DFEBF3 1px, transparent 1px),
+        linear-gradient(to bottom, #DFEBF3 1px, transparent 1px);
   }
 
   .grid-background-sm {
