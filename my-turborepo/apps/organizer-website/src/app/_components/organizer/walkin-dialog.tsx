@@ -35,7 +35,6 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
-import { env } from "~/env";
 import { toast } from "~/hooks/use-toast";
 import {
   AGE,
@@ -51,8 +50,6 @@ import {
   SHIRT_SIZES,
 } from "~/lib/dropdownOptions";
 import { api } from "~/trpc/react";
-
-const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME ?? "Datathon";
 
 const SCHOOL_OPTIONS = schoolsJson.map((entry) => ({
   value: entry.schoolName,
@@ -93,6 +90,7 @@ function buildDefaultValues(email: string): Partial<ApplicationSchema> {
     hackathonsAttended: "",
     experience: "",
     eventSource: "Walk-in",
+    referrerEmail: "",
     shirtSize: "",
     address: "",
     city: "",
@@ -113,11 +111,12 @@ function buildDefaultValues(email: string): Partial<ApplicationSchema> {
 }
 
 interface WalkInDialogProps {
+  eventName: string;
   /** Called after a successful create/accept so the caller can refresh. */
   onCompleted?: () => void;
 }
 
-export function WalkInDialog({ onCompleted }: WalkInDialogProps) {
+export function WalkInDialog({ eventName, onCompleted }: WalkInDialogProps) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
@@ -183,7 +182,7 @@ export function WalkInDialog({ onCompleted }: WalkInDialogProps) {
     setIsLookingUp(true);
     try {
       const result = await utils.application.lookupWalkIn.fetch({
-        eventName: EVENT_NAME,
+        eventName: eventName,
         email: trimmed,
       });
 
@@ -231,7 +230,7 @@ export function WalkInDialog({ onCompleted }: WalkInDialogProps) {
   const handleAccept = async () => {
     try {
       const result = await acceptWalkIn.mutateAsync({
-        eventName: EVENT_NAME,
+        eventName: eventName,
         email: email.trim(),
       });
       toast({
@@ -270,6 +269,7 @@ export function WalkInDialog({ onCompleted }: WalkInDialogProps) {
       experience: data.experience,
       hasTeam: data.hasTeam || "No",
       eventSource: "Walk-in",
+      referrerEmail: data.referrerEmail ?? null,
       shirtSize: data.shirtSize,
       address: [data.address, data.city, data.region, data.zipCode]
         .filter(Boolean)
@@ -287,7 +287,7 @@ export function WalkInDialog({ onCompleted }: WalkInDialogProps) {
 
     try {
       const result = await createWalkIn.mutateAsync({
-        eventName: EVENT_NAME,
+        eventName: eventName,
         email: walkInEmail,
         applicationData,
       });
@@ -326,7 +326,7 @@ export function WalkInDialog({ onCompleted }: WalkInDialogProps) {
       <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto border-2 border-[#374151] bg-[#121723] text-neutral-50">
         <DialogHeader>
           <DialogTitle className="text-3xl font-bold text-white">
-            {EVENT_NAME} Walk-in
+            {eventName} Walk-in
           </DialogTitle>
           <DialogDescription className="text-neutral-300">
             {step === "email" &&
@@ -615,6 +615,17 @@ export function WalkInDialog({ onCompleted }: WalkInDialogProps) {
                     label="Shirt Size"
                     options={SHIRT_SIZES}
                     required
+                  />
+                </div>
+
+                {/* Walk-ins get referred too — usually by whoever dragged them
+                    through the door. */}
+                <div className="mt-6">
+                  <GenericInputField
+                    name="referrerEmail"
+                    label="Did someone refer them? Enter their email so they get credit."
+                    required={false}
+                    placeholder="friend@tamu.edu"
                   />
                 </div>
               </SectionCard>

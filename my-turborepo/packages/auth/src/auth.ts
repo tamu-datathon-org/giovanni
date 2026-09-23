@@ -7,7 +7,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { env } from "../env";
 import { expo } from "@better-auth/expo";
 import * as authSchema from "@vanni/db/auth-schema";
-import { Event, Role, UserRole } from "@vanni/db/schema";
+import { Role, UserRole } from "@vanni/db/schema";
 import { isAllowedApplicantEmail } from "@vanni/validators";
 
 export const config = {
@@ -32,8 +32,9 @@ export const config = {
         //     },
         // },
         session: {
-            // Block session creation for non-@tamu.edu users unless they are an
-            // Organizer for the configured event.
+            // Block session creation for disallowed applicant emails (TAMU-only
+            // unless NEXT_PUBLIC_ALLOW_NON_TAMU_APPLICANTS opens it up) unless
+            // they are an Organizer for any event.
             create: {
                 before: async (session, endpointContext) => {
                     const authContext = endpointContext?.context;
@@ -48,18 +49,13 @@ export const config = {
                     if (isAllowedApplicantEmail(user.email)) return true;
 
                     // Allow organizer exception even with a non-TAMU email.
-                    const eventName = process.env.NEXT_PUBLIC_EVENT_NAME;
-                    if (!eventName) return false;
-
                     const organizerRole = await db
-                        .select()
+                        .select({ roleId: Role.id })
                         .from(Role)
-                        .leftJoin(Event, eq(Role.eventId, Event.id))
-                        .leftJoin(UserRole, eq(Role.id, UserRole.roleId))
+                        .innerJoin(UserRole, eq(Role.id, UserRole.roleId))
                         .where(
                             and(
                                 eq(Role.name, "Organizer"),
-                                eq(Event.name, eventName),
                                 eq(UserRole.userId, session.userId),
                             ),
                         );

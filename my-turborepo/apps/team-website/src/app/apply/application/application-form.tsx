@@ -148,6 +148,7 @@ export function ApplicationForm() {
       hackathonsAttended: "",
       experience: "",
       eventSource: "",
+      referrerEmail: "",
       shirtSize: "",
       address: "",
       city: "",
@@ -208,6 +209,7 @@ export function ApplicationForm() {
         hackathonsAttended: importedValues.app.hackathonsAttended || "",
         experience: importedValues.app.experience || "",
         eventSource: importedValues.app.eventSource || "",
+        referrerEmail: importedValues.app.referrerEmail ?? "",
         shirtSize: importedValues.app.shirtSize || "",
         address: street,
         city: city,
@@ -819,6 +821,19 @@ export function ApplicationForm() {
                       option.value === importedValues?.app?.eventSource,
                   )}
                   required={true}
+                />
+              </div>
+
+              {/* Asked of everyone, not just "From a friend" — someone can find
+                  us through a student org or MLH and still have been talked
+                  into applying by a person who deserves the credit. */}
+              <div className="mt-6">
+                <GenericInputField
+                  name="referrerEmail"
+                  label="Did someone refer you? Enter their email so they get credit."
+                  defaultValue={importedValues?.app?.referrerEmail ?? ""}
+                  placeholder="friend@tamu.edu"
+                  required={false}
                 />
               </div>
 

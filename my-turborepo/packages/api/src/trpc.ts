@@ -14,7 +14,7 @@ import { auth } from "@vanni/auth";
 import { and, eq } from "@vanni/db";
 import { User } from "@vanni/db/auth-schema";
 import { db } from "@vanni/db/client";
-import { Event, Role, UserRole } from "@vanni/db/schema";
+import { Role, UserRole } from "@vanni/db/schema";
 import { isAllowedApplicantEmail } from "@vanni/validators";
 
 /**
@@ -185,32 +185,22 @@ export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 });
 
 export const organizerProcedure = t.procedure.use(async ({ ctx, next }) => {
-  const eventName = process.env.NEXT_PUBLIC_EVENT_NAME;
-
-  // Verify the event name and user exists
-  if (!eventName) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Event name was not found",
-    });
-  }
-
   if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  // Query for the user role based on email and event name.
-  // (Email-only is intentional to avoid issues when multiple auth "User" rows
-  // exist for the same email, e.g. applicant vs organizer.)
+  // Any Organizer role unlocks the organizer site. Event-scoping is for
+  // which data you view (via event picker / NEXT_PUBLIC_EVENT_NAME default),
+  // not whether you can sign in.
+  // Select only Role.id so this check does not depend on Event columns
+  // (e.g. capacity) that may not exist yet on older databases.
   const user_role = await ctx.db
-    .select()
+    .select({ roleId: Role.id })
     .from(Role)
-    .leftJoin(Event, eq(Role.eventId, Event.id))
-    .leftJoin(UserRole, eq(Role.id, UserRole.roleId))
-    .leftJoin(User, eq(User.id, UserRole.userId))
+    .innerJoin(UserRole, eq(Role.id, UserRole.roleId))
+    .innerJoin(User, eq(User.id, UserRole.userId))
     .where(
       and(
-        eq(Event.name, eventName),
         eq(User.email, ctx.session.user.email),
         eq(Role.name, "Organizer"),
       ),

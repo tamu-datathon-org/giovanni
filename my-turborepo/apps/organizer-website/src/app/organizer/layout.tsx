@@ -3,10 +3,11 @@ import { api } from "~/trpc/server";
 import { auth } from "@vanni/auth";
 import { headers } from "next/headers";
 
+import { EventSelectionProvider } from "../_components/organizer/event-selection";
 import OrganizerNavBar from "../_components/organizer/navigation-bar";
 
 export default async function OrganizerLayout({
-  children, // will be a page or nested layout
+  children,
 }: {
   children: React.ReactNode;
 }) {
@@ -17,7 +18,7 @@ export default async function OrganizerLayout({
   if (session) {
     try {
       await api.auth.validateOrganizerAuth();
-    } catch (e) {
+    } catch (_e) {
       redirect("/login?callbackUrl=/organizer&message=unauthorized");
     }
   } else {
@@ -25,11 +26,11 @@ export default async function OrganizerLayout({
   }
 
   return (
-    <>
+    <EventSelectionProvider>
       <div className="min-h-screen bg-slate-400 font-mono pt-9 pb-10">
-        <OrganizerNavBar></OrganizerNavBar>
+        <OrganizerNavBar />
         {children}
       </div>
-    </>
+    </EventSelectionProvider>
   );
 }

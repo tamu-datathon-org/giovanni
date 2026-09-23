@@ -1,7 +1,7 @@
 import type { SQL } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { del } from "@vercel/blob";
-import { inArray, or, sql } from "drizzle-orm";
+import { asc, inArray, isNotNull, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { and, eq } from "@vanni/db";
@@ -241,6 +241,31 @@ function buildAcceptanceValues(
 // the email router will send the emails based on the status one at a time but all at the same time
 // email router needs the batch and trickles it down
 
+/**
+ * Referral points are keyed by email, so normalise it: "john@tamu.edu " and
+ * "John@tamu.edu" have to count as the same person. Returns null when the
+ * referral can't count — left blank, or they named themselves.
+ *
+ * `ownEmails` are the addresses belonging to the applicant. On a self-submitted
+ * application that is their application email plus the email they logged in
+ * with; on a walk-in the session belongs to the *organizer* taking the
+ * registration, so only the participant's own addresses go in — otherwise an
+ * organizer could never be credited for a walk-in they brought to the door.
+ */
+function normalizeReferrerEmail(
+  referrerEmail: string | null | undefined,
+  ownEmails: (string | null | undefined)[],
+) {
+  const referrer = referrerEmail?.trim().toLowerCase();
+  if (!referrer) {
+    return null;
+  }
+  const owned = ownEmails.flatMap((email) =>
+    email ? [email.trim().toLowerCase()] : [],
+  );
+  return owned.includes(referrer) ? null : referrer;
+}
+
 export const applicationRouter = {
   create: protectedProcedure
     .input(
@@ -283,6 +308,10 @@ export const applicationRouter = {
 
       const response = await db.insert(Application).values({
         ...applicationData,
+        referrerEmail: normalizeReferrerEmail(applicationData.referrerEmail, [
+          applicationData.email,
+          ctx.session.user.email,
+        ]),
         userId: ctx.session.user.id,
         eventId: event.id,
         status: "pending",
@@ -365,7 +394,13 @@ export const applicationRouter = {
 
       const response = await db
         .update(Application)
-        .set(application)
+        .set({
+          ...application,
+          referrerEmail: normalizeReferrerEmail(application.referrerEmail, [
+            application.email,
+            ctx.session.user.email,
+          ]),
+        })
         .where(eq(Application.id, id));
 
       const loginEmail = ctx.session.user.email;
@@ -956,6 +991,12 @@ export const applicationRouter = {
 
       await ctx.db.insert(Application).values({
         ...applicationData,
+        // `email` here is the participant's, not the organizer's — the session
+        // on this procedure belongs to whoever is running the walk-in desk.
+        referrerEmail: normalizeReferrerEmail(applicationData.referrerEmail, [
+          applicationData.email,
+          email,
+        ]),
         userId,
         eventId: event.id,
         ...acceptance,
