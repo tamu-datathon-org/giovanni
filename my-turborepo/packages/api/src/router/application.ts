@@ -15,7 +15,6 @@ import {
   UserRole,
   Attendance,
   EventPhase,
-  REFERRAL_EVENT_SOURCE,
 } from "@vanni/db/schema";
 
 import { User } from "@vanni/db/auth-schema";
@@ -245,25 +244,26 @@ function buildAcceptanceValues(
 /**
  * Referral points are keyed by email, so normalise it: "john@tamu.edu " and
  * "John@tamu.edu" have to count as the same person. Returns null when the
- * referral can't count — they didn't say a friend told them, left it blank,
- * or named themselves.
+ * referral can't count — left blank, or they named themselves.
+ *
+ * `ownEmails` are the addresses belonging to the applicant. On a self-submitted
+ * application that is their application email plus the email they logged in
+ * with; on a walk-in the session belongs to the *organizer* taking the
+ * registration, so only the participant's own addresses go in — otherwise an
+ * organizer could never be credited for a walk-in they brought to the door.
  */
 function normalizeReferrerEmail(
-  application: {
-    eventSource: string;
-    email: string;
-    referrerEmail?: string | null;
-  },
-  loginEmail: string,
+  referrerEmail: string | null | undefined,
+  ownEmails: (string | null | undefined)[],
 ) {
-  const referrer = application.referrerEmail?.trim().toLowerCase();
-  if (!referrer || application.eventSource !== REFERRAL_EVENT_SOURCE) {
+  const referrer = referrerEmail?.trim().toLowerCase();
+  if (!referrer) {
     return null;
   }
-  const ownEmails = [application.email, loginEmail].map((email) =>
-    email.trim().toLowerCase(),
+  const owned = ownEmails.flatMap((email) =>
+    email ? [email.trim().toLowerCase()] : [],
   );
-  return ownEmails.includes(referrer) ? null : referrer;
+  return owned.includes(referrer) ? null : referrer;
 }
 
 export const applicationRouter = {
@@ -308,10 +308,10 @@ export const applicationRouter = {
 
       const response = await db.insert(Application).values({
         ...applicationData,
-        referrerEmail: normalizeReferrerEmail(
-          applicationData,
+        referrerEmail: normalizeReferrerEmail(applicationData.referrerEmail, [
+          applicationData.email,
           ctx.session.user.email,
-        ),
+        ]),
         userId: ctx.session.user.id,
         eventId: event.id,
         status: "pending",
@@ -396,10 +396,10 @@ export const applicationRouter = {
         .update(Application)
         .set({
           ...application,
-          referrerEmail: normalizeReferrerEmail(
-            application,
+          referrerEmail: normalizeReferrerEmail(application.referrerEmail, [
+            application.email,
             ctx.session.user.email,
-          ),
+          ]),
         })
         .where(eq(Application.id, id));
 
@@ -480,10 +480,40 @@ export const applicationRouter = {
       z.object({
         eventName: z.string(),
         limit: z.number().int().min(1).max(50).default(10),
+        // Which applications a referral point is worth: every one of them, only
+        // the ones that got in, or only the ones that actually turned up.
+        filter: z.enum(["all", "accepted", "checkedIn"]).default("all"),
       }),
     )
     .query(async ({ ctx, input }) => {
       const event = await getEventData({ ctx, eventName: input.eventName });
+
+      let filterCondition: SQL | undefined;
+      if (input.filter === "accepted") {
+        // "checkedin" is a leftover status the current flow never writes, but
+        // the status dropdown still offers it and it plainly means accepted.
+        filterCondition = inArray(Application.status, [
+          "accepted",
+          "checkedin",
+        ]);
+      } else if (input.filter === "checkedIn") {
+        // Check-in lives in Attendance against the event's "check-in" phase.
+        // Application.checkedIn is dead and the status is never flipped either,
+        // so neither of those can answer this.
+        const phase = await getEventPhase(ctx, event.id, "check-in");
+        filterCondition = inArray(
+          Application.id,
+          ctx.db
+            .select({ id: Attendance.applicationId })
+            .from(Attendance)
+            .where(
+              and(
+                eq(Attendance.eventPhaseId, phase.id),
+                eq(Attendance.checkedIn, true),
+              ),
+            ),
+        );
+      }
 
       const points = count(Application.id);
       const leaders = await ctx.db
@@ -493,6 +523,7 @@ export const applicationRouter = {
           and(
             eq(Application.eventId, event.id),
             isNotNull(Application.referrerEmail),
+            filterCondition,
           ),
         )
         .groupBy(Application.referrerEmail)
@@ -1053,6 +1084,12 @@ export const applicationRouter = {
 
       await ctx.db.insert(Application).values({
         ...applicationData,
+        // `email` here is the participant's, not the organizer's — the session
+        // on this procedure belongs to whoever is running the walk-in desk.
+        referrerEmail: normalizeReferrerEmail(applicationData.referrerEmail, [
+          applicationData.email,
+          email,
+        ]),
         userId,
         eventId: event.id,
         ...acceptance,

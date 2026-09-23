@@ -278,9 +278,6 @@ export const UserResumeRelations = relations(UserResume, ({ one }) => ({
 const phoneRegex =
   /^([+][0-9]+)?[\s]?([(]?[0-9]{3}[)]?)[-\s]?([0-9]{3})[-\s]?([0-9]{4})$/;
 
-/** The "How did you hear about us?" answer that asks who referred you. */
-export const REFERRAL_EVENT_SOURCE = "Friend";
-
 export const CreateApplicationSchema = createInsertSchema(Application, {
   firstName: z
     .string()
@@ -334,8 +331,10 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .string()
     .trim()
     .max(255, "Referrer email is too long")
-    .email("Enter a valid email")
-    .or(z.literal(""))
+    // Trim, then branch. Checking `.email()` first and falling back to `""`
+    // compares the *untrimmed* input against the empty literal, so a field the
+    // applicant only ever typed a space into fails both ways.
+    .pipe(z.union([z.literal(""), z.string().email("Enter a valid email")]))
     .nullish(),
   shirtSize: z
     .string()

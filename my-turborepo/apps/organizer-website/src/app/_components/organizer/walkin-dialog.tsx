@@ -93,6 +93,7 @@ function buildDefaultValues(email: string): Partial<ApplicationSchema> {
     hackathonsAttended: "",
     experience: "",
     eventSource: "Walk-in",
+    referrerEmail: "",
     shirtSize: "",
     address: "",
     city: "",
@@ -270,6 +271,7 @@ export function WalkInDialog({ onCompleted }: WalkInDialogProps) {
       experience: data.experience,
       hasTeam: data.hasTeam || "No",
       eventSource: "Walk-in",
+      referrerEmail: data.referrerEmail ?? null,
       shirtSize: data.shirtSize,
       address: [data.address, data.city, data.region, data.zipCode]
         .filter(Boolean)
@@ -615,6 +617,17 @@ export function WalkInDialog({ onCompleted }: WalkInDialogProps) {
                     label="Shirt Size"
                     options={SHIRT_SIZES}
                     required
+                  />
+                </div>
+
+                {/* Walk-ins get referred too — usually by whoever dragged them
+                    through the door. */}
+                <div className="mt-6">
+                  <GenericInputField
+                    name="referrerEmail"
+                    label="Did someone refer them? Enter their email so they get credit."
+                    required={false}
+                    placeholder="friend@tamu.edu"
                   />
                 </div>
               </SectionCard>

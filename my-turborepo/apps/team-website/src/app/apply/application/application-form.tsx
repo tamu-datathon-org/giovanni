@@ -13,7 +13,6 @@ import { LucideArrowBigLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import type { CreateApplicationSchema } from "@vanni/db/schema";
-import { REFERRAL_EVENT_SOURCE } from "@vanni/db/schema";
 import {
   Form,
   FormControl,
@@ -284,16 +283,6 @@ export function ApplicationForm() {
   }, [form, importedValues?.app]);
 
   const watchedValues = form.watch();
-  const referredByFriend = watchedValues.eventSource === REFERRAL_EVENT_SOURCE;
-
-  // The referrer field only shows for "From a friend", but hidden fields are
-  // still validated — clear it on the way out so a half-typed email can't
-  // silently block submission.
-  useEffect(() => {
-    if (!referredByFriend && form.getValues("referrerEmail")) {
-      form.setValue("referrerEmail", "");
-    }
-  }, [referredByFriend, form]);
 
   useEffect(() => {
     if (importedValues?.app) return;
@@ -835,17 +824,18 @@ export function ApplicationForm() {
                 />
               </div>
 
-              {referredByFriend && (
-                <div className="mt-6">
-                  <GenericInputField
-                    name="referrerEmail"
-                    label="Who referred you? Enter their email so they get credit."
-                    defaultValue={importedValues?.app?.referrerEmail ?? ""}
-                    placeholder="friend@tamu.edu"
-                    required={false}
-                  />
-                </div>
-              )}
+              {/* Asked of everyone, not just "From a friend" — someone can find
+                  us through a student org or MLH and still have been talked
+                  into applying by a person who deserves the credit. */}
+              <div className="mt-6">
+                <GenericInputField
+                  name="referrerEmail"
+                  label="Did someone refer you? Enter their email so they get credit."
+                  defaultValue={importedValues?.app?.referrerEmail ?? ""}
+                  placeholder="friend@tamu.edu"
+                  required={false}
+                />
+              </div>
 
               <div className="mt-6">
                 <FormField

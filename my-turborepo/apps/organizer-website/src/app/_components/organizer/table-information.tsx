@@ -48,7 +48,7 @@ export const StatusInformation: React.FC<InformationProps> = ({
   );
 };
 
-// Personal Info: First, Last, Age, Country, Race, Phone #, shirt size, event source
+// Personal Info: First, Last, Age, Country, Race, Phone #, shirt size, event source, referred by
 export const PersonalInformation: React.FC<InformationProps> = ({
   application,
 }) => {
@@ -83,6 +83,10 @@ export const PersonalInformation: React.FC<InformationProps> = ({
         <p>
           <span className="font-bold">Event Source:</span>{" "}
           {application.eventSource}
+        </p>
+        <p>
+          <span className="font-bold">Referred By:</span>{" "}
+          {application.referrerEmail ?? "—"}
         </p>
         <p>
           <span className="font-bold">Dietary Restrictions:</span>{" "}
