@@ -1,7 +1,8 @@
 "use client";
 
+import type { StaticImageData } from "next/image";
 import { useCallback, useMemo, useRef, useState } from "react";
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import gsap from "gsap";
 
 export interface HoverCrossfadeItem {
@@ -29,7 +30,12 @@ interface HoverCrossfadeProps {
 
 function ChevronIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 16 16" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <path
         d="M6 4l4 4-4 4"
         stroke="currentColor"
@@ -43,14 +49,46 @@ function ChevronIcon({ className }: { className?: string }) {
 
 function FileIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 16 16" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <path
         d="M4 1.5h5L12.5 5v9.5h-9v-13z"
         stroke="currentColor"
         strokeWidth="1.2"
         strokeLinejoin="round"
       />
-      <path d="M9 1.5V5h3.5" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+      <path
+        d="M9 1.5V5h3.5"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+const LIGHT_CLASS = "block h-3 w-3 shrink-0 rounded-full p-0";
+
+// Glyph opacity follows real hover/focus via CSS and the scripted cursor via
+// the --lights-hover var, so the two never fight over an inline opacity.
+function LightGlyph({ d }: { d: string }) {
+  return (
+    <svg
+      viewBox="0 0 12 12"
+      fill="none"
+      aria-hidden="true"
+      className="h-full w-full opacity-[var(--lights-hover,0)] group-focus-within/lights:opacity-100 group-hover/lights:opacity-100"
+    >
+      <path
+        d={d}
+        stroke="rgba(0,0,0,0.55)"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -69,7 +107,9 @@ export default function HoverCrossfade({
   >([allItems[0] ?? null, null]);
 
   // Reactive active id so the sidebar can show a selected state.
-  const [activeId, setActiveId] = useState<string | null>(allItems[0]?.id ?? null);
+  const [activeId, setActiveId] = useState<string | null>(
+    allItems[0]?.id ?? null,
+  );
 
   const activeIndexRef = useRef<0 | 1>(0);
   const layerRefs = useRef<[HTMLDivElement | null, HTMLDivElement | null]>([
@@ -97,7 +137,7 @@ export default function HoverCrossfade({
         if (!incoming) return;
 
         const reduce = window.matchMedia(
-          "(prefers-reduced-motion: reduce)"
+          "(prefers-reduced-motion: reduce)",
         ).matches;
         const d = reduce ? 0 : duration;
 
@@ -121,20 +161,35 @@ export default function HoverCrossfade({
         activeIndexRef.current = next;
       });
     },
-    [activeId, duration]
+    [activeId, duration],
   );
 
   return (
     <div
-      className={`overflow-hidden rounded-xl border border-[#E3E8EF] bg-white shadow-two ${
+      data-genie-window
+      className={`shadow-two overflow-hidden rounded-xl border border-[#E3E8EF] bg-white ${
         className ?? ""
       }`}
     >
-      {/* Editor title bar */}
+      {/* Editor title bar. The lights show their glyphs on hover like macOS;
+          MinimizeToDock drives the same state through --lights-hover. */}
       <div className="flex items-center gap-2 border-b border-[#E3E8EF] bg-[#F3F3F3] px-4 py-3">
-        <span className="h-3 w-3 rounded-full bg-red-400/80" />
-        <span className="h-3 w-3 rounded-full bg-yellow-400/80" />
-        <span className="h-3 w-3 rounded-full bg-green-400/80" />
+        <div data-genie-lights className="group/lights flex items-center gap-2">
+          <span className={`${LIGHT_CLASS} bg-red-400/80`}>
+            <LightGlyph d="M4.25 4.25l3.5 3.5M7.75 4.25l-3.5 3.5" />
+          </span>
+          <button
+            type="button"
+            data-genie-minimize
+            aria-label="Minimize window"
+            className={`${LIGHT_CLASS} bg-yellow-400/80 outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-1`}
+          >
+            <LightGlyph d="M3.5 6h5" />
+          </button>
+          <span className={`${LIGHT_CLASS} bg-green-400/80`}>
+            <LightGlyph d="M6 3.5v5M3.5 6h5" />
+          </span>
+        </div>
         <span className="ml-3 font-mono text-xs text-slate-500">
           past_events/
         </span>
@@ -144,7 +199,9 @@ export default function HoverCrossfade({
         {/* LEFT: file tree */}
         <nav
           aria-label="Past events"
-          className="max-h-[70vh] overflow-y-auto border-b border-[#E3E8EF] p-4 font-mono text-sm md:border-b-0 md:border-r"
+          // Bounded by 100svh on md+ (MinimizeToDock pins this window inside
+          // one viewport): 19rem covers the heading, title bar and padding.
+          className="max-h-[70vh] overflow-y-auto border-b border-[#E3E8EF] p-4 font-mono text-sm md:max-h-[min(70vh,calc(100svh_-_19rem))] md:border-b-0 md:border-r"
         >
           {groups.map((group) => (
             <div key={group.title} className="mb-5">
@@ -207,7 +264,7 @@ export default function HoverCrossfade({
 
         {/* RIGHT: crossfading poster stage */}
         <div className="p-4">
-          <div className="group relative aspect-[1659/1779] w-full max-h-[70vh] overflow-hidden rounded-lg bg-[#F3F3F3] ring-1 ring-[#E3E8EF]">
+          <div className="group relative aspect-[1659/1779] max-h-[70vh] w-full overflow-hidden rounded-lg bg-[#F3F3F3] ring-1 ring-[#E3E8EF] md:max-h-[min(70vh,calc(100svh_-_19rem))]">
             {([0, 1] as const).map((i) => {
               const item = layers[i];
               return (

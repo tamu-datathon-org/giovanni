@@ -23,14 +23,14 @@ const menuData: Menu[] = [
   },
   {
     id: 4,
-    title: "Sponsors",
-    path: "/#sponsors",
+    title: "Team",
+    path: "/#team",
     newTab: false,
   },
   {
     id: 5,
-    title: "Team",
-    path: "/#team",
+    title: "Sponsors",
+    path: "/#sponsors",
     newTab: false,
   },
   {

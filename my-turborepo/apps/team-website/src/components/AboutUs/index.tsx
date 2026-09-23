@@ -1,28 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
 import { inter, konkhmerSleokchher } from "~/app/_components/fonts";
 import { Noise } from "~/components/shared/Noise";
+import AboutStars from "./AboutStars";
+import BearShowcase from "./BearShowcase";
+import styles from "./about.module.css";
 
 // ── Layout knobs (tweak these) ───────────────────────────────────────────────
 // Must match jagged.svg viewBox
 const JAGGED = {
   width: 1176,
   height: 331,
-  overlap: 0.55,
+  overlap: 0.9,
 } as const;
 
-// top:  % of jagged band height — higher = lower on screen
-// left: % from section left where squiggle starts — lower = bigger (right stays at edge)
-const SQUIGLY = {
-  top: "60%",
-  left: "50%",
-} as const;
 // ─────────────────────────────────────────────────────────────────────────────
 
-function Squigly({ jaggedHeight }: { jaggedHeight: string }) {
+function Squigly() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-0 z-[3]"
+      className={styles.squiggles}
       style={{
         WebkitMaskImage: "url(/images/about-us/squigly-clip.svg)",
         maskImage: "url(/images/about-us/squigly-clip.svg)",
@@ -34,33 +31,22 @@ function Squigly({ jaggedHeight }: { jaggedHeight: string }) {
         maskRepeat: "no-repeat",
       }}
     >
-      <div className="relative w-full" style={{ height: jaggedHeight }}>
-        <img
-          src="/images/about-us/squigly.svg"
-          alt=""
-          className="absolute"
-          style={{
-            top: SQUIGLY.top,
-            right: 0,
-            width: `calc(100% - ${SQUIGLY.left})`,
-            height: "auto",
-          }}
-        />
-      </div>
+      <div className={styles.squiggleArt} />
     </div>
   );
 }
 
 export default function AboutUs() {
-  const jaggedHeight = `calc(100vw * ${JAGGED.height} / ${JAGGED.width})`;
+  // Percentage margins follow the content width as the sidebar opens or closes.
+  const overlap = `${(-JAGGED.height / JAGGED.width) * JAGGED.overlap * 100}%`;
 
   return (
     <section
       id="about-us"
-      className={`relative z-20 w-full overflow-visible scroll-mt-20 lg:scroll-mt-0 ${konkhmerSleokchher.className}`}
-      style={{ marginTop: `calc(${jaggedHeight} * ${-JAGGED.overlap})` }}
+      className={`relative w-full scroll-mt-20 overflow-visible lg:scroll-mt-0 ${styles.section} ${konkhmerSleokchher.className}`}
+      style={{ marginTop: overlap }}
     >
-      <div className="relative z-[2] w-full leading-[0]">
+      <div className="relative z-10 w-full leading-[0]">
         <img
           src="/images/about-us/jagged.svg"
           alt=""
@@ -70,32 +56,52 @@ export default function AboutUs() {
         <Noise mask="/images/about-us/jagged.svg" />
       </div>
 
-      <div className="relative -mt-px bg-[#377BB0] px-6 pb-20 pt-8 md:px-12 md:pb-28 md:pt-12">
-        <Noise />
-        <div className="relative z-10 mx-auto max-w-5xl text-white">
-          <h2 className="text-[96px] font-normal leading-none tracking-[-0.07em]">
-            <span className="text-[#83EFE8]">ABOUT</span>{" "}
-            <span className="text-white">US</span>
-          </h2>
-          <p
-            className={`${inter.className} mt-6 max-w-2xl text-[36px] font-normal uppercase leading-none tracking-normal`}
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur.
-          </p>
-          <div className="mt-8 flex gap-3" aria-hidden>
-            <img src="/images/about-us/star.svg" alt="" className="h-8 w-8 md:h-10 md:w-10" />
-            <img src="/images/about-us/star.svg" alt="" className="h-8 w-8 md:h-10 md:w-10" />
-            <img src="/images/about-us/star.svg" alt="" className="h-8 w-8 md:h-10 md:w-10" />
-          </div>
+      <div className={styles.body}>
+        <div className={styles.background} aria-hidden>
+          <img
+            src="/images/about-us/splotches.svg"
+            alt=""
+            width={641}
+            height={650}
+            className={styles.splotches}
+          />
         </div>
+        <div className={styles.splotchesRightShell} aria-hidden>
+          <img
+            src="/images/about-us/splotches.svg"
+            alt=""
+            width={641}
+            height={650}
+            className={styles.splotchesRight}
+          />
+        </div>
+        <Noise />
+        <div className={styles.intro}>
+          <img
+            src="/images/about-us/heading-sparkle.svg"
+            alt=""
+            aria-hidden
+            draggable={false}
+            width={95}
+            height={107}
+            className={styles.sparkle}
+          />
+          <h2 className={styles.heading}>
+            <span className="text-[#83EFE8]">About</span>{" "}
+            <span className="text-white">us</span>
+          </h2>
+          <div className={`${inter.className} ${styles.copy}`}>
+            <p>
+              Founded in 2019, TAMU Datathon is Texas A&M's premier hackathon focused on Data Science, Machine Learning, and AI. 
+            </p>
+            <p>We take a unique approach to hackathons by creating deterministic, engaging challenges that encourage students to develop and strengthen critical skills for today's rapidly evolving AI landscape.</p>
+          </div>
+          <AboutStars />
+        </div>
+        <BearShowcase />
       </div>
 
-      <Squigly jaggedHeight={jaggedHeight} />
+      <Squigly />
     </section>
   );
 }

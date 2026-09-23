@@ -17,7 +17,7 @@ function LoginContent() {
     if (message === "unauthorized") {
       toast({
         title: "Unauthorized",
-        description: "You do not have access to that page. Try signing in with a different account. (TAMU Email Required)",
+        description: "You do not have access to that page. Try signing in with a different account.",
         variant: "destructive",
         duration: 3000,
       });

@@ -23,7 +23,8 @@
         "AUTH_AUTH0_DOMAIN",
         "BETTER_AUTH_URL",
         "AUTH_SECRET",
-        "NEXT_PUBLIC_EVENT_NAME"
+        "NEXT_PUBLIC_EVENT_NAME",
+        "NEXT_PUBLIC_ALLOW_NON_TAMU_APPLICANTS"
       ]
     },
     "dev": {

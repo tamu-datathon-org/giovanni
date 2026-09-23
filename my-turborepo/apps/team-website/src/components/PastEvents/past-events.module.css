@@ -1,0 +1,70 @@
+/* Lets .splotchOverhang's cqw values resolve against this pinned frame's own
+   width, which matches AboutUs's `.section` width (both are full-bleed
+   siblings under the same layout), so the two line up exactly. `position`
+   lives here rather than in a Tailwind class so the sticky override below
+   wins deterministically. */
+.frame {
+  position: relative;
+  container-type: inline-size;
+}
+
+/* A frozen copy of AboutUs's right splotch overhang (see
+   about.module.css `.splotchesRightShell` / `.splotchesRight`), redrawn
+   inside the pinned frame so it keeps its current bridging look without
+   moving while the section is pinned. The frame's own overflow-hidden clips
+   everything above `top: 0` (i.e. everything except the ~22rem sliver that
+   used to hang below AboutUs into this section).
+   Keep these numbers in sync with about.module.css if that ever changes. */
+.splotchOverhang {
+  position: absolute;
+  z-index: 1;
+  top: calc(22rem - clamp(18rem, 48cqw, 44rem) * 650 / 641);
+  right: -22%;
+  width: clamp(18rem, 48cqw, 44rem);
+  max-width: none;
+  height: auto;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+
+/* Mirrors AboutUs's "DRAG TO ROTATE" `.hint` (bear.module.css), which
+   inherits white from `.showcase`. Sits on the same bottom inset as the
+   folder, centered under the window. */
+.scrollHint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.5rem;
+  z-index: 20;
+  display: none;
+  margin: 0;
+  color: white;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* Keep in sync with FULL_MOTION in MinimizeToDock.tsx. The frame sticks for
+   one viewport while the shell scrolls the remaining 120svh past it (the old
+   pin's `end: "+=120%"`). Sticky is composited by the browser, so the frame
+   can't jitter the way a main-thread transform pin does.
+   The negative margin pulls the next section up under the frame's final
+   stuck position (the shell's last 100svh), so Meet the Team is already in
+   place when the frame finishes fading out instead of a screen of empty grid. */
+@media (min-width: 768px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .shell {
+    height: 220svh;
+    margin-bottom: -100svh;
+  }
+
+  .frame {
+    position: sticky;
+    top: 0;
+  }
+
+  .scrollHint {
+    display: block;
+  }
+}

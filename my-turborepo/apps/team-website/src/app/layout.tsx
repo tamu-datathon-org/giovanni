@@ -2,6 +2,7 @@ import "~/app/globals.css";
 
 import { inter, w95fa } from "~/app/_components/fonts";
 import ClientLayout from "~/app/ClientLayout";
+import { Noise } from "~/components/shared/Noise";
 
 import "../styles/index.css";
 
@@ -28,8 +29,13 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${w95fa.variable} ${inter.variable}`}>
       <head />
-      <body className={`bg-[#F3F3F3] text-[#121723] ${inter.className}`}>
-        <ClientLayout>{props.children}</ClientLayout>
+      <body className={`relative bg-[#377BB0] text-[#121723] ${inter.className}`}>
+        <div className="pointer-events-none absolute inset-0">
+          <Noise />
+        </div>
+        <div className="relative z-10">
+          <ClientLayout>{props.children}</ClientLayout>
+        </div>
       </body>
     </html>
   );

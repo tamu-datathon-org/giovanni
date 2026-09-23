@@ -8,13 +8,7 @@ import { env } from "../env";
 import { expo } from "@better-auth/expo";
 import * as authSchema from "@vanni/db/auth-schema";
 import { Role, UserRole } from "@vanni/db/schema";
-
-//Regex for @tamu.edu emails
-const TAMU_EMAIL_REGEX = /^[^\s@]+@tamu\.edu$/i;
-
-function isAllowedTamuEmail(email: unknown): boolean {
-    return typeof email === "string" && TAMU_EMAIL_REGEX.test(email);
-}
+import { isAllowedApplicantEmail } from "@vanni/validators";
 
 export const config = {
     database: drizzleAdapter(db, {
@@ -38,8 +32,9 @@ export const config = {
         //     },
         // },
         session: {
-            // Block session creation for non-@tamu.edu users unless they are an
-            // Organizer for any event.
+            // Block session creation for disallowed applicant emails (TAMU-only
+            // unless NEXT_PUBLIC_ALLOW_NON_TAMU_APPLICANTS opens it up) unless
+            // they are an Organizer for any event.
             create: {
                 before: async (session, endpointContext) => {
                     const authContext = endpointContext?.context;
@@ -50,8 +45,8 @@ export const config = {
                     );
                     if (!user) return false;
 
-                    // Allow TAMU emails.
-                    if (isAllowedTamuEmail(user.email)) return true;
+                    // Allow applicant emails (TAMU-only unless opened up for this event).
+                    if (isAllowedApplicantEmail(user.email)) return true;
 
                     // Allow organizer exception even with a non-TAMU email.
                     const organizerRole = await db

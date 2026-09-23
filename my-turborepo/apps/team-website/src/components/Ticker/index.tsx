@@ -55,19 +55,32 @@ function LogoRow({ logos }: { logos: string[] }) {
 export default function SponsorTicker() {
   return (
     <div
-      className={`${konkhmerSleokchher.variable} flex w-full flex-col items-center justify-center bg-[#F3F3F3] py-10`}
+      className={`${konkhmerSleokchher.variable} relative w-full bg-[#e9f6ff] py-10`}
     >
-      <h2 className="mb-4 font-konkhmer text-5xl font-normal text-[#377BB0] sm:mb-6 sm:text-6xl md:text-7xl">
-        SPONSORS
-      </h2>
+      {/* Grid background pattern */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-10"
+        style={{
+          background: "url('/images/team/grid.png') repeat",
+          backgroundAttachment: "fixed",
+        }}
+      />
 
-      <div className="flex w-full flex-col gap-6 sm:gap-8">
-        <Marquee>
-          <LogoRow logos={ROW_1} />
-        </Marquee>
-        <Marquee reverse>
-          <LogoRow logos={ROW_2} />
-        </Marquee>
+      {/* Content */}
+      <div className="relative z-10 flex w-full flex-col items-center justify-center">
+        <h2 className="mb-4 font-konkhmer text-5xl font-normal text-[#377BB0] sm:mb-6 sm:text-6xl md:text-7xl">
+          SPONSORS
+        </h2>
+
+        <div className="flex w-full flex-col gap-6 sm:gap-8">
+          <Marquee>
+            <LogoRow logos={ROW_1} />
+          </Marquee>
+          <Marquee reverse>
+            <LogoRow logos={ROW_2} />
+          </Marquee>
+        </div>
       </div>
     </div>
   );
