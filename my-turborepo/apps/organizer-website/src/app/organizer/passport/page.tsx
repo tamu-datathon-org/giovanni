@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Cat, Dog, Fish, Loader2, Turtle } from "lucide-react";
 
 import { MultiSelect } from "~/app/_components/multiselect";
+import { useOrganizerEvent } from "~/app/_components/organizer/event-selection";
 import { ManualEmailInput } from "~/app/_components/organizer/passport/manual-email-input";
 import { ParticipantCard } from "~/app/_components/organizer/passport/participant-card";
 import { PhaseSelector } from "~/app/_components/organizer/passport/phase-selector";
@@ -68,7 +69,7 @@ function LoadingOverlay({ show, label }: { show: boolean; label: string }) {
 }
 
 export default function PassportPage() {
-  const eventName = process.env.NEXT_PUBLIC_EVENT_NAME as string | undefined;
+  const { eventName } = useOrganizerEvent();
 
   /** ---------------- State ---------------- */
   const [participant, setParticipant] =
@@ -88,7 +89,7 @@ export default function PassportPage() {
 
   /** ---------------- Phases (dynamic) ---------------- */
   const phasesQuery = api.application.listPhases.useQuery(
-    { eventName: eventName ?? "" },
+    { eventName },
     { enabled: Boolean(eventName), refetchOnWindowFocus: false },
   );
 
@@ -101,20 +102,24 @@ export default function PassportPage() {
     [phasesQuery.data],
   );
 
-  // Default phase once loaded
+  // Default phase once loaded; reset when event changes
+  useEffect(() => {
+    setSelectedPhase("");
+  }, [eventName]);
+
   useEffect(() => {
     if (!selectedPhase && phaseOptions.length > 0) {
       setSelectedPhase(phaseOptions[0]!.value);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phaseOptions.length]);
+  }, [phaseOptions.length, eventName]);
 
   const effectiveEmail = useMemo(() => submittedEmail.trim(), [submittedEmail]);
 
   /** ---------------- Queries ---------------- */
   const queryData = api.application.getCheckInStatus.useQuery(
     {
-      eventName: eventName ?? "",
+      eventName,
       email: effectiveEmail,
       phase: selectedPhase,
     } as any,
@@ -170,7 +175,7 @@ export default function PassportPage() {
       toast({
         variant: "destructive",
         title: "Missing event",
-        description: "NEXT_PUBLIC_EVENT_NAME is not set.",
+        description: "Select an event from the nav bar.",
       });
       return;
     }
@@ -250,10 +255,7 @@ export default function PassportPage() {
     return (
       <div className="p-6 text-red-600">
         <h1 className="text-2xl font-bold">Configuration Error</h1>
-        <p className="mt-2">
-          <code>NEXT_PUBLIC_EVENT_NAME</code> is not set. Please define it in
-          your environment.
-        </p>
+        <p className="mt-2">Select an event from the nav bar.</p>
       </div>
     );
   }
@@ -276,9 +278,11 @@ export default function PassportPage() {
       <LoadingOverlay show={anyBlockingLoad} label={overlayLabel} />
 
       <h1 className="text-3xl font-bold">Check-in System</h1>
+      <p className="text-sm text-neutral-700">Event: {eventName}</p>
 
       {/* Walk-in registration */}
       <WalkInDialog
+        eventName={eventName}
         onCompleted={() => {
           if (effectiveEmail && queryData.refetch) {
             void queryData.refetch();
