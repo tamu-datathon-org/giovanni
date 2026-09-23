@@ -1,7 +1,7 @@
 import type { SQL } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { del } from "@vercel/blob";
-import { asc, count, desc, inArray, isNotNull, or, sql } from "drizzle-orm";
+import { asc, inArray, isNotNull, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { and, eq } from "@vanni/db";
@@ -475,99 +475,6 @@ export const applicationRouter = {
         };
       });
     }),
-  topReferrers: organizerProcedure
-    .input(
-      z.object({
-        eventName: z.string(),
-        limit: z.number().int().min(1).max(50).default(10),
-        // Which applications a referral point is worth: every one of them, only
-        // the ones that got in, or only the ones that actually turned up.
-        filter: z.enum(["all", "accepted", "checkedIn"]).default("all"),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      const event = await getEventData({ ctx, eventName: input.eventName });
-
-      let filterCondition: SQL | undefined;
-      if (input.filter === "accepted") {
-        // "checkedin" is a leftover status the current flow never writes, but
-        // the status dropdown still offers it and it plainly means accepted.
-        filterCondition = inArray(Application.status, [
-          "accepted",
-          "checkedin",
-        ]);
-      } else if (input.filter === "checkedIn") {
-        // Check-in lives in Attendance against the event's "check-in" phase.
-        // Application.checkedIn is dead and the status is never flipped either,
-        // so neither of those can answer this.
-        const phase = await getEventPhase(ctx, event.id, "check-in");
-        filterCondition = inArray(
-          Application.id,
-          ctx.db
-            .select({ id: Attendance.applicationId })
-            .from(Attendance)
-            .where(
-              and(
-                eq(Attendance.eventPhaseId, phase.id),
-                eq(Attendance.checkedIn, true),
-              ),
-            ),
-        );
-      }
-
-      const points = count(Application.id);
-      const leaders = await ctx.db
-        .select({ email: Application.referrerEmail, points })
-        .from(Application)
-        .where(
-          and(
-            eq(Application.eventId, event.id),
-            isNotNull(Application.referrerEmail),
-            filterCondition,
-          ),
-        )
-        .groupBy(Application.referrerEmail)
-        .orderBy(desc(points), asc(Application.referrerEmail))
-        .limit(input.limit);
-
-      const emails = leaders.flatMap((leader) =>
-        leader.email ? [leader.email] : [],
-      );
-      if (emails.length === 0) return [];
-
-      // Names come from a separate lookup rather than a join: joining would
-      // count a referrer twice if their email is on more than one application.
-      const applicants = await ctx.db
-        .select({
-          email: sql<string>`lower(${Application.email})`,
-          firstName: Application.firstName,
-          lastName: Application.lastName,
-        })
-        .from(Application)
-        .where(
-          and(
-            eq(Application.eventId, event.id),
-            inArray(sql`lower(${Application.email})`, emails),
-          ),
-        );
-      const nameByEmail = new Map(
-        applicants.map((a) => [a.email, `${a.firstName} ${a.lastName}`]),
-      );
-
-      return leaders.flatMap((leader) =>
-        leader.email
-          ? [
-              {
-                email: leader.email,
-                points: leader.points,
-                // Referrers don't have to have applied themselves.
-                name: nameByEmail.get(leader.email) ?? null,
-              },
-            ]
-          : [],
-      );
-    }),
-
   updateStatus: organizerProcedure
     .input(
       z.object({

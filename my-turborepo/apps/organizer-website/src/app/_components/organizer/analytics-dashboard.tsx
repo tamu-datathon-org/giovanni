@@ -18,6 +18,13 @@ import {
   CollapsibleTrigger,
 } from "~/components/ui/collapsible";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -207,6 +214,103 @@ function DietaryCategoryRow({
   );
 }
 
+// `blurb` finishes the sentence "One point per ..." so the header always says
+// what the numbers underneath it actually count.
+const REFERRAL_FILTERS = [
+  { value: "all", label: "All applications", blurb: "application" },
+  { value: "accepted", label: "Accepted only", blurb: "accepted applicant" },
+  {
+    value: "checkedIn",
+    label: "Checked in only",
+    blurb: "attendee who checked in",
+  },
+] as const;
+
+type ReferralFilter = (typeof REFERRAL_FILTERS)[number]["value"];
+
+function TopReferrersCard({ eventName }: { eventName: string }) {
+  // Local state + its own query so changing the filter refetches this card
+  // instead of the whole dashboard.
+  const [filter, setFilter] = useState<ReferralFilter>("all");
+
+  const {
+    data: leaders,
+    isLoading,
+    error,
+  } = api.analytics.getTopReferrers.useQuery({ eventName, filter });
+
+  const selected = REFERRAL_FILTERS.find((option) => option.value === filter);
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Top referrers</CardTitle>
+        <CardDescription>
+          The people named most often under &ldquo;Did someone refer
+          you?&rdquo;. One point per {selected?.blurb}.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="mb-4 flex flex-wrap items-center gap-2">
+          <span className="text-sm text-neutral-400">Count</span>
+          <Select
+            value={filter}
+            onValueChange={(value) => setFilter(value as ReferralFilter)}
+          >
+            <SelectTrigger className="h-9 w-[200px] border-neutral-600 bg-neutral-900 text-white">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {REFERRAL_FILTERS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {isLoading ? (
+          <p className="text-sm text-neutral-400">Loading&hellip;</p>
+        ) : error ? (
+          <p className="text-sm text-red-300">{error.message}</p>
+        ) : !leaders?.length ? (
+          <p className="text-sm text-neutral-400">No referrals yet</p>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-12">#</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead className="w-24 text-right">Points</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {leaders.map((leader, index) => (
+                <TableRow key={leader.email}>
+                  <TableCell className="tabular-nums">{index + 1}</TableCell>
+                  <TableCell>
+                    {leader.name ?? (
+                      <span className="text-neutral-500">
+                        Didn&rsquo;t apply
+                      </span>
+                    )}
+                  </TableCell>
+                  <TableCell>{leader.email}</TableCell>
+                  <TableCell className="text-right font-semibold tabular-nums">
+                    {leader.points}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function AnalyticsDashboard() {
   const { eventName } = useOrganizerEvent();
   const [exporting, setExporting] = useState(false);
@@ -362,6 +466,8 @@ export default function AnalyticsDashboard() {
           </Card>
         ))}
       </div>
+
+      <TopReferrersCard eventName={eventName} />
 
       <Card>
         <CardHeader>

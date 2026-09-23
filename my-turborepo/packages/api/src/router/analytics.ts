@@ -1,8 +1,10 @@
+import type { SQL } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
+import { asc, count, desc, inArray, isNotNull, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { and, eq } from "@vanni/db";
-import { Attendance, Event, EventPhase } from "@vanni/db/schema";
+import { Application, Attendance, Event, EventPhase } from "@vanni/db/schema";
 
 import type { VerifiedContext } from "../trpc";
 import { organizerProcedure } from "../trpc";
@@ -240,6 +242,64 @@ function classifyDietaryRestriction(
   return DIETARY_CATEGORY_ORDER.filter((c) => found.has(c));
 }
 
+type CheckInResolution = {
+  ids: Set<string>;
+  source: "attendance" | "application";
+};
+
+/**
+ * Prefer Passport attendance; fall back to legacy application.checked_in when
+ * no phases/attendance exist (older events). Shared so the KPI tile and the
+ * referrer leaderboard's "checked in" filter can never disagree.
+ */
+function pickCheckedInAppIds(
+  applications: { id: string; checkedIn: boolean }[],
+  phases: { id: string; name: string }[],
+  attendanceRows: { applicationId: string; eventPhaseId: string }[],
+): CheckInResolution {
+  const checkInPhase = phases.find((p) => p.name === "check-in");
+  const attendanceCheckInIds = new Set(
+    attendanceRows
+      .filter((r) => checkInPhase && r.eventPhaseId === checkInPhase.id)
+      .map((r) => r.applicationId),
+  );
+
+  if (!checkInPhase || attendanceCheckInIds.size === 0) {
+    return {
+      ids: new Set(applications.filter((a) => a.checkedIn).map((a) => a.id)),
+      source: "application",
+    };
+  }
+
+  return { ids: attendanceCheckInIds, source: "attendance" };
+}
+
+/** Same resolution, for callers that haven't already loaded the rows. */
+async function resolveCheckedInAppIds(
+  ctx: VerifiedContext,
+  eventId: string,
+): Promise<CheckInResolution> {
+  const [applications, phases, attendanceRows] = await Promise.all([
+    ctx.db.query.Application.findMany({
+      where: (t, { eq: eqOp }) => eqOp(t.eventId, eventId),
+      columns: { id: true, checkedIn: true },
+    }),
+    ctx.db.query.EventPhase.findMany({
+      where: eq(EventPhase.eventId, eventId),
+      columns: { id: true, name: true },
+    }),
+    ctx.db.query.Attendance.findMany({
+      where: and(
+        eq(Attendance.eventId, eventId),
+        eq(Attendance.checkedIn, true),
+      ),
+      columns: { applicationId: true, eventPhaseId: true },
+    }),
+  ]);
+
+  return pickCheckedInAppIds(applications, phases, attendanceRows);
+}
+
 const EventNameInput = z.object({ eventName: z.string().min(1) });
 
 export const analyticsRouter = {
@@ -282,25 +342,8 @@ export const analyticsRouter = {
         },
       });
 
-      const checkInPhase = phases.find((p) => p.name === "check-in");
-      const attendanceCheckInIds = new Set(
-        attendanceRows
-          .filter((r) => checkInPhase && r.eventPhaseId === checkInPhase.id)
-          .map((r) => r.applicationId),
-      );
-
-      // Prefer Passport attendance; fall back to legacy application.checked_in
-      // when no phases/attendance exist (older events).
-      const useLegacyCheckIn =
-        !checkInPhase || attendanceCheckInIds.size === 0;
-      const checkedInAppIds = useLegacyCheckIn
-        ? new Set(
-            applications.filter((a) => a.checkedIn).map((a) => a.id),
-          )
-        : attendanceCheckInIds;
-      const checkInSource = useLegacyCheckIn
-        ? ("application" as const)
-        : ("attendance" as const);
+      const { ids: checkedInAppIds, source: checkInSource } =
+        pickCheckedInAppIds(applications, phases, attendanceRows);
 
       const statusCounts = {
         pending: 0,
@@ -417,6 +460,94 @@ export const analyticsRouter = {
         },
         dietary,
       };
+    }),
+
+  getTopReferrers: organizerProcedure
+    .input(
+      EventNameInput.extend({
+        limit: z.number().int().min(1).max(50).default(10),
+        // Which applications a referral point is worth: every one of them, only
+        // the ones that got in, or only the ones that actually turned up.
+        filter: z.enum(["all", "accepted", "checkedIn"]).default("all"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const eventId = await getEventId(ctx, input.eventName);
+
+      let filterCondition: SQL | undefined;
+      if (input.filter === "accepted") {
+        // "checkedin" is a leftover status the current flow never writes, but
+        // the status dropdown still offers it and it plainly means accepted.
+        filterCondition = inArray(Application.status, [
+          "accepted",
+          "checkedin",
+        ]);
+      } else if (input.filter === "checkedIn") {
+        // Same resolution the KPI tile uses, so the two can't disagree — on an
+        // event that never got Passport attendance rows this falls back to
+        // legacy application.checked_in instead of erroring out.
+        const { ids, source } = await resolveCheckedInAppIds(ctx, eventId);
+        if (source === "application") {
+          // Equivalent to the resolved id set, but as a plain column predicate
+          // rather than an IN list the width of the attendee count.
+          filterCondition = eq(Application.checkedIn, true);
+        } else {
+          if (ids.size === 0) return [];
+          filterCondition = inArray(Application.id, [...ids]);
+        }
+      }
+
+      const points = count(Application.id);
+      const leaders = await ctx.db
+        .select({ email: Application.referrerEmail, points })
+        .from(Application)
+        .where(
+          and(
+            eq(Application.eventId, eventId),
+            isNotNull(Application.referrerEmail),
+            filterCondition,
+          ),
+        )
+        .groupBy(Application.referrerEmail)
+        .orderBy(desc(points), asc(Application.referrerEmail))
+        .limit(input.limit);
+
+      const emails = leaders.flatMap((leader) =>
+        leader.email ? [leader.email] : [],
+      );
+      if (emails.length === 0) return [];
+
+      // Names come from a separate lookup rather than a join: joining would
+      // count a referrer twice if their email is on more than one application.
+      const applicants = await ctx.db
+        .select({
+          email: sql<string>`lower(${Application.email})`,
+          firstName: Application.firstName,
+          lastName: Application.lastName,
+        })
+        .from(Application)
+        .where(
+          and(
+            eq(Application.eventId, eventId),
+            inArray(sql`lower(${Application.email})`, emails),
+          ),
+        );
+      const nameByEmail = new Map(
+        applicants.map((a) => [a.email, `${a.firstName} ${a.lastName}`]),
+      );
+
+      return leaders.flatMap((leader) =>
+        leader.email
+          ? [
+              {
+                email: leader.email,
+                points: leader.points,
+                // Referrers don't have to have applied themselves.
+                name: nameByEmail.get(leader.email) ?? null,
+              },
+            ]
+          : [],
+      );
     }),
 
   getAttendanceExport: organizerProcedure
