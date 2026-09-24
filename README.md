@@ -1,4 +1,4 @@
-# TAMU Datathon — Engineering Onboarding
+# TAMU Datathon — Dev Onboarding
 
 Welcome. This repo (`giovanni`) holds **every website TAMU Datathon runs**, plus the shared backend behind them.
 
