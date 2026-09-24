@@ -19,12 +19,9 @@ export async function queueBulkEmail(
     subject,
   );
 
+  // For emails log into AWS CLI and it will work locally
   const config: SQSClientConfig = {
     region: process.env.AWS_REGION,
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? "",
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? "",
-    },
   };
 
   const client = new SQSClient(config);
