@@ -266,9 +266,7 @@ flowchart LR
 
 Also note: the Docker build context is the monorepo root, so the root `.dockerignore` is the one that applies.
 
-### CI does not deploy
 
-`.github/workflows/main.yml` runs on every pull request: it typechecks, lints, formats, and auto-commits any fixes back to your branch. It does **not** build images or deploy. Coolify handles deploys itself, straight from Git.
 
 ---
 
