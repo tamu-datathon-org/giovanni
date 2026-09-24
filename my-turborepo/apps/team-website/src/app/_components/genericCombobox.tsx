@@ -43,6 +43,7 @@ interface GenericDropdownProps {
   defaultOption?: DropdownOption;
   filter?: boolean;
   required?: boolean;
+  allowOther?: boolean;
 }
 
 const OTHER_VALUE = "__other__";
@@ -56,6 +57,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   filter,
   defaultOption,
   required,
+  allowOther = true,
 }) => {
   const form = useFormContext<ApplicationSchema>();
   const [searchValue, setSearchValue] = useState("");
@@ -158,25 +160,27 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                           {(option).label}
                         </CommandItem>
                       ))}
-                      <CommandItem
-                        key={OTHER_VALUE}
-                        value={OTHER_LABEL}
-                        onSelect={() => {
-                          form.setValue(name, OTHER_VALUE, {
-                            shouldDirty: true,
-                            shouldTouch: true,
-                          });
-                          setOpen(false);
-                        }}
-                      >
-                        <AiOutlineCheck
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            isOther ? "opacity-100" : "opacity-0",
-                          )}
-                        />
-                        {OTHER_LABEL}
-                      </CommandItem>
+                      {allowOther && (
+                        <CommandItem
+                          key={OTHER_VALUE}
+                          value={OTHER_LABEL}
+                          onSelect={() => {
+                            form.setValue(name, OTHER_VALUE, {
+                              shouldDirty: true,
+                              shouldTouch: true,
+                            });
+                            setOpen(false);
+                          }}
+                        >
+                          <AiOutlineCheck
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              isOther ? "opacity-100" : "opacity-0",
+                            )}
+                          />
+                          {OTHER_LABEL}
+                        </CommandItem>
+                      )}
                     </CommandGroup>
                   </CommandList>
                 </Command>

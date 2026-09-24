@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import { ChevronDown, Download } from "lucide-react";
 
+import type { RouterOutputs } from "@vanni/api";
+
 import { useOrganizerEvent } from "~/app/_components/organizer/event-selection";
 import { Button } from "~/components/ui/button";
 import {
@@ -61,6 +63,67 @@ function escapeCsvCell(value: string) {
   }
   return value;
 }
+
+type ExportRow =
+  RouterOutputs["analytics"]["getApplicationsExport"]["rows"][number];
+
+function yesNo(value: boolean | null) {
+  if (value == null) return "";
+  return value ? "Yes" : "No";
+}
+
+/** Stored as "street|city|region|zip" by the application form. */
+function addressPart(row: ExportRow, index: number) {
+  return row.address.split("|")[index]?.trim() ?? "";
+}
+
+/** CSV columns, in the same order as the hacker application form. */
+const EXPORT_COLUMNS: { header: string; value: (row: ExportRow) => string }[] =
+  [
+    { header: "First Name", value: (r) => r.firstName },
+    { header: "Last Name", value: (r) => r.lastName },
+    { header: "Email", value: (r) => r.email },
+    { header: "Phone Number", value: (r) => r.phoneNumber },
+    { header: "Age", value: (r) => r.age },
+    { header: "Country of Residence", value: (r) => r.country },
+    { header: "Gender", value: (r) => displayLabel("gender", r.gender) },
+    { header: "Race", value: (r) => r.race },
+    { header: "LinkedIn URL", value: (r) => r.linkedinUrl ?? "" },
+    { header: "School", value: (r) => r.school },
+    { header: "Major", value: (r) => r.major },
+    {
+      header: "Level of Study",
+      value: (r) => displayLabel("classification", r.classification),
+    },
+    { header: "Graduation Year", value: (r) => String(r.gradYear) },
+    { header: "Hackathons Attended", value: (r) => r.hackathonsAttended },
+    { header: "Programming Experience", value: (r) => r.experience },
+    {
+      header: "How did you hear about us?",
+      value: (r) => displayLabel("eventSource", r.eventSource),
+    },
+    { header: "Referred By", value: (r) => r.referrerEmail ?? "" },
+    { header: "Resume URL", value: (r) => r.resumeUrl ?? "" },
+    { header: "References", value: (r) => r.references },
+    { header: "Why TAMU Datathon?", value: (r) => r.interestOne },
+    { header: "Unlimited Resources Build", value: (r) => r.interestTwo },
+    { header: "Programming Joke", value: (r) => r.interestThree },
+    { header: "T-Shirt Size", value: (r) => r.shirtSize },
+    { header: "Street Address", value: (r) => addressPart(r, 0) },
+    { header: "City", value: (r) => addressPart(r, 1) },
+    { header: "State/Region", value: (r) => addressPart(r, 2) },
+    { header: "Zip Code", value: (r) => addressPart(r, 3) },
+    { header: "Dietary Restrictions", value: (r) => r.dietaryRestriction ?? "" },
+    { header: "Questions for Us", value: (r) => r.extraInfo ?? "" },
+    {
+      header: "Travel Reimbursement",
+      value: (r) => yesNo(r.travelReimbursement),
+    },
+    { header: "MLH Email Consent", value: (r) => yesNo(r.mlhEmailConsent) },
+    { header: "Status", value: (r) => r.status },
+    { header: "Submitted At", value: (r) => r.createdAt },
+    { header: "Updated At", value: (r) => r.updatedAt },
+  ];
 
 function DistributionCard({
   title,
@@ -316,7 +379,7 @@ export default function AnalyticsDashboard() {
   const [exporting, setExporting] = useState(false);
 
   const dashboardQuery = api.analytics.getDashboard.useQuery({ eventName });
-  const exportQuery = api.analytics.getAttendanceExport.useQuery(
+  const exportQuery = api.analytics.getApplicationsExport.useQuery(
     { eventName },
     { enabled: false },
   );
@@ -347,11 +410,7 @@ export default function AnalyticsDashboard() {
 
       const phaseNames = exportData.phases.map((p) => p.name);
       const headers = [
-        "firstName",
-        "lastName",
-        "email",
-        "school",
-        "status",
+        ...EXPORT_COLUMNS.map((col) => col.header),
         ...phaseNames.flatMap((name) => [
           `${name}_checkedIn`,
           `${name}_checkedInAt`,
@@ -362,11 +421,7 @@ export default function AnalyticsDashboard() {
         headers.map(escapeCsvCell).join(","),
         ...exportData.rows.map((row) => {
           const cells = [
-            row.firstName,
-            row.lastName,
-            row.email,
-            row.school,
-            row.status,
+            ...EXPORT_COLUMNS.map((col) => col.value(row)),
             ...phaseNames.flatMap((name) => {
               const phase = row.phases[name];
               return [
@@ -385,7 +440,7 @@ export default function AnalyticsDashboard() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `datathon-attendance-${eventName}.csv`;
+      a.download = `datathon-applications-${eventName}.csv`;
       a.click();
       URL.revokeObjectURL(url);
     } catch (err) {
@@ -448,7 +503,7 @@ export default function AnalyticsDashboard() {
           className="bg-datadarkblue hover:bg-datadarkblue/80"
         >
           <Download className="mr-2 h-4 w-4" />
-          {exporting ? "Preparing…" : "Download attendance CSV"}
+          {exporting ? "Preparing…" : "Download applications CSV"}
         </Button>
       </div>
 

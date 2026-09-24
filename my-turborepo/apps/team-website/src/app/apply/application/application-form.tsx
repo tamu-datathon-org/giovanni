@@ -45,6 +45,7 @@ import {
   PROGRAMMING_SKILL_LEVELS,
   RACE_OPTIONS,
   SHIRT_SIZES,
+  YES_NO,
 } from "~/lib/dropdownOptions";
 import { api } from "~/trpc/react";
 import GenericCombobox from "../../_components/genericCombobox";
@@ -82,6 +83,8 @@ const ADDRESS_DELIMITER = "|";
 const DRAFT_STORAGE_KEY = "applicationData";
 
 const RESUME_OPTIONAL = true;
+
+const TRAVEL_REIMBURSEMENT_FORM_URL = "" as string;
 
 const eventName = EVENT_NAME?.endsWith("Spring") ? "TD-Lite" : "TD";
 const eventDescription = EVENT_NAME?.endsWith("Spring")
@@ -161,6 +164,7 @@ export function ApplicationForm() {
       interestOne: "",
       interestTwo: "",
       interestThree: "",
+      travelReimbursement: "",
       liabilityWaiver: false,
       mlhPrivacyPolicy: false,
       mlhEmailConsent: false,
@@ -218,6 +222,14 @@ export function ApplicationForm() {
         dietaryRestriction: importedValues.app.dietaryRestriction ?? "",
         references: importedValues.app.references || "",
         extraInfo: importedValues.app.extraInfo ?? "",
+        // Left blank for applications from before this question existed, so
+        // those applicants have to answer it when they next update.
+        travelReimbursement:
+          importedValues.app.travelReimbursement == null
+            ? ""
+            : importedValues.app.travelReimbursement
+              ? "Yes"
+              : "No",
         liabilityWaiver: false,
         mlhPrivacyPolicy: false,
         mlhEmailConsent: importedValues.app.mlhEmailConsent ?? false,
@@ -336,6 +348,7 @@ export function ApplicationForm() {
             ...data,
             address: `${data.address}|${data.city}|${data.region}|${data.zipCode}`,
             gradYear: Number(data.gradYear),
+            travelReimbursement: data.travelReimbursement === "Yes",
           },
         };
 
@@ -374,6 +387,7 @@ export function ApplicationForm() {
             ...data,
             address: combinedAddress,
             gradYear: Number(data.gradYear),
+            travelReimbursement: data.travelReimbursement === "Yes",
           },
         };
 
@@ -980,6 +994,41 @@ export function ApplicationForm() {
                   defaultValue={importedValues?.app?.extraInfo ?? ""}
                   placeholder="Share anything else that might be relevant..."
                 />
+              </div>
+            </SectionCard>
+
+            {/* Travel Reimbursement Section */}
+            <SectionCard title="Travel Reimbursement">
+              <div className="grid gap-6 md:grid-cols-1">
+                <GenericCombobox
+                  name={"travelReimbursement"}
+                  label={"Do you require travel reimbursement?"}
+                  options={YES_NO}
+                  allowOther={false}
+                  required={true}
+                />
+                <div className="space-y-3 rounded-lg border-2 border-neutral-700 p-4 text-base leading-relaxed text-neutral-100">
+                  <p className="font-extrabold">
+                    {
+                      <>
+                        To request reimbursement, fill out the{" "}
+                        <a
+                          className="text-[#01c0cc] underline hover:text-[#28979b]"
+                          href="https://forms.gle/zULt3yVC9Lq7MQGh6"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          travel reimbursement form
+                        </a>
+                        .
+                      </>
+                    }
+                  </p>
+                  <p className="text-neutral-300">
+                    If you are applying for reimbursement as a group, only 1
+                    person needs to apply.
+                  </p>
+                </div>
               </div>
             </SectionCard>
 

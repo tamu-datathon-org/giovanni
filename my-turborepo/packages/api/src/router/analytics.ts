@@ -4,7 +4,13 @@ import { asc, count, desc, inArray, isNotNull, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { and, eq } from "@vanni/db";
-import { Application, Attendance, Event, EventPhase } from "@vanni/db/schema";
+import {
+  Application,
+  Attendance,
+  Event,
+  EventPhase,
+  UserResume,
+} from "@vanni/db/schema";
 
 import type { VerifiedContext } from "../trpc";
 import { organizerProcedure } from "../trpc";
@@ -550,7 +556,7 @@ export const analyticsRouter = {
       );
     }),
 
-  getAttendanceExport: organizerProcedure
+  getApplicationsExport: organizerProcedure
     .input(EventNameInput)
     .query(async ({ ctx, input }) => {
       const eventId = await getEventId(ctx, input.eventName);
@@ -565,14 +571,52 @@ export const analyticsRouter = {
         where: (t, { eq: eqOp }) => eqOp(t.eventId, eventId),
         columns: {
           id: true,
+          userId: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true,
+          checkedIn: true,
           firstName: true,
           lastName: true,
           email: true,
+          age: true,
+          country: true,
+          phoneNumber: true,
           school: true,
-          status: true,
-          checkedIn: true,
+          major: true,
+          classification: true,
+          gradYear: true,
+          gender: true,
+          race: true,
+          hackathonsAttended: true,
+          experience: true,
+          eventSource: true,
+          referrerEmail: true,
+          shirtSize: true,
+          address: true,
+          references: true,
+          linkedinUrl: true,
+          interestOne: true,
+          interestTwo: true,
+          interestThree: true,
+          dietaryRestriction: true,
+          extraInfo: true,
+          travelReimbursement: true,
+          mlhEmailConsent: true,
         },
       });
+
+      const userIds = applications.map((app) => app.userId);
+      const resumes =
+        userIds.length > 0
+          ? await ctx.db.query.UserResume.findMany({
+              where: inArray(UserResume.userId, userIds),
+              columns: { userId: true, resumeUrl: true },
+            })
+          : [];
+      const resumeUrlByUser = new Map(
+        resumes.map((r) => [r.userId, r.resumeUrl]),
+      );
 
       const attendanceRows = await ctx.db.query.Attendance.findMany({
         where: eq(Attendance.eventId, eventId),
@@ -630,12 +674,12 @@ export const analyticsRouter = {
           };
         }
 
+        const { id: _id, userId, checkedIn: _checkedIn, ...answers } = app;
         return {
-          firstName: app.firstName,
-          lastName: app.lastName,
-          email: app.email,
-          school: app.school,
-          status: app.status,
+          ...answers,
+          createdAt: app.createdAt.toISOString(),
+          updatedAt: app.updatedAt.toISOString(),
+          resumeUrl: resumeUrlByUser.get(userId) ?? null,
           phases: phasesData,
         };
       });

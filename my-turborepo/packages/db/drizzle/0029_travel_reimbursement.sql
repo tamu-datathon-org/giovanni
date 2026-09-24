@@ -1,0 +1,1 @@
+ALTER TABLE "application" ADD COLUMN "travel_reimbursement" boolean;
