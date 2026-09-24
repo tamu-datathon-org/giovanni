@@ -234,8 +234,7 @@ sequenceDiagram
 
 These are easy to confuse, and they do different jobs:
 
-1. **Session gate** — `packages/auth/src/auth.ts`, in `databaseHooks.session.create.before`. A session is refused unless the email ends in `@tamu.edu` **or** the user holds the `Organizer` role for the event named by `NEXT_PUBLIC_EVENT_NAME`. This is exactly how a non-TAMU organizer is still able to log in.
-2. **Route gate** — `packages/auth/src/middleware.ts`. Checks for a `better-auth.session_token` cookie on any `/admin`, `/apply`, or `/organizer` route, and redirects to `/login?callbackUrl=…` if it's missing.
+1. **Route gate** — `packages/auth/src/middleware.ts`. Checks for a `better-auth.session_token` cookie on any `/admin`, `/apply`, or `/organizer` route, and redirects to `/login?callbackUrl=…` if it's missing.
 
 > **Gotcha:** `BETTER_AUTH_URL` must exactly match the origin you're browsing. Locally that's `http://localhost:3001` for organizer-website and `http://localhost:3000` for team-website. A wrong value here is the usual cause of a `state_mismatch` error on login.
 
@@ -314,5 +313,3 @@ Remember: anything starting with `NEXT_PUBLIC_` is **visible to anyone using the
 > You'll see branches named `main`, `main-fall-2025`, `main-teamv3`, and so on. We branch per semester, so ask which one is current before you start — the newest is not always the right one.
 
 ---
-
-_Cleanup TODO: `apps/auth-proxy/` and `apps/discord-bot/` (untracked leftovers), `packages/validators` (placeholder only), the `Post` table and router, and the stale `nixpacks.toml`, `vercel.json`, and `AUTH_REDIRECT_PROXY_URL`/`DATABASE_URL` entries in `turbo.json` should all be deleted._

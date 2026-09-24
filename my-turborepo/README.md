@@ -12,4 +12,4 @@ pnpm dev        # run all three sites
 pnpm typecheck  # check types before pushing
 ```
 
-The structure originates from [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo), which is useful background for the general layout — but our auth, database, and deployment setup have all diverged from it. Trust `../README.md` and the source over upstream docs.
+
