@@ -1025,8 +1025,9 @@ export function ApplicationForm() {
                     }
                   </p>
                   <p className="text-neutral-300">
-                    If you are applying for reimbursement as a group, only 1
-                    person needs to apply.
+                    If you are applying for reimbursement as a group, only one
+                    person needs to submit the reimbursement form. However,
+                    every participant must still complete this application.
                   </p>
                 </div>
               </div>
