@@ -1,0 +1,212 @@
+.showcase {
+  position: relative;
+  z-index: 4;
+  container-type: inline-size;
+  width: 100%;
+  max-width: 1200px;
+  margin: 3rem auto 0;
+  color: white;
+}
+
+/* Bear stage height + room underneath for DATATHON */
+.composition {
+  --stage-h: clamp(650px, 65vw, 800px);
+  position: relative;
+  height: calc(var(--stage-h) + clamp(6rem, 13cqw, 11rem));
+  isolation: isolate;
+}
+
+.datathon {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--stage-h) + 0.15rem);
+  z-index: 0;
+  margin: 0;
+  transform: translateX(-50%);
+  font-size: clamp(4.5rem, 16.5cqw, 12.5rem);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: -0.07em;
+  color: #113a5a1a;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--stage-h);
+  z-index: 1;
+  outline: none;
+  touch-action: pan-y;
+  user-select: none;
+  cursor: grab;
+  border-radius: 12px;
+}
+
+.stage:active {
+  cursor: grabbing;
+}
+.stage:focus-visible {
+  outline: 2px solid #83efe8;
+  outline-offset: 4px;
+}
+
+.poster,
+.backdrop {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 80%;
+  width: auto;
+  max-width: 42%;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.backdrop {
+  height: 84%;
+  max-width: 60%;
+  transform: translate(-46%, -46%);
+}
+
+.poster {
+  transition: opacity 180ms ease;
+}
+.poster[data-loaded="true"],
+.backdrop[data-loaded="true"] {
+  opacity: 0;
+}
+.canvas {
+  position: absolute;
+  inset: 0;
+}
+/* Match the stage box so label % positions stay correct */
+.connectors {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--stage-h);
+  z-index: 2;
+  width: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.stats {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--stage-h);
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+.stat {
+  position: absolute;
+  width: 25%;
+}
+.value,
+.label {
+  opacity: 0;
+}
+.stat[data-revealed="true"] .value,
+.stat[data-revealed="true"] .label {
+  opacity: 1;
+}
+.value {
+  display: block;
+  font-size: clamp(44px, 7.8cqw, 94px);
+  letter-spacing: -0.065em;
+  line-height: 1.05;
+  color: #ff8b60;
+}
+.label {
+  display: block;
+  margin-top: 8px;
+  font-size: clamp(15px, 2.55cqw, 30px);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.hint {
+  position: absolute;
+  top: calc(var(--stage-h) - 1.5rem);
+  left: 0;
+  right: 0;
+  z-index: 2;
+  margin: 0;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+@container (max-width: 639px) {
+  .poster {
+    max-width: 86%;
+  }
+  .backdrop {
+    max-width: 90%;
+  }
+  .composition {
+    --stage-h: clamp(340px, 112cqw, 540px);
+    height: auto;
+    padding-top: var(--stage-h);
+    padding-bottom: clamp(4rem, 14cqw, 6rem);
+  }
+  .stage {
+    bottom: auto;
+    height: var(--stage-h);
+  }
+  .connectors {
+    display: none;
+  }
+  .stats {
+    position: relative;
+    top: auto;
+    height: auto;
+    display: grid;
+    gap: 22px;
+    padding-top: 30px;
+    text-align: center;
+  }
+  .stat {
+    position: static;
+    width: auto;
+  }
+  .value {
+    font-size: clamp(52px, 16cqw, 72px);
+  }
+  .label {
+    font-size: 19px;
+    margin-top: 2px;
+  }
+  .hint {
+    position: static;
+    padding-top: 30px;
+  }
+  .datathon {
+    top: auto;
+    bottom: 0.25rem;
+    font-size: clamp(3.25rem, 22cqw, 5.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .value,
+  .label {
+    opacity: 1;
+  }
+  .poster {
+    transition: none;
+  }
+}

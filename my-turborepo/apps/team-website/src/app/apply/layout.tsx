@@ -1,11 +1,7 @@
 import { auth } from "@vanni/auth";
+import { isAllowedApplicantEmail } from "@vanni/validators";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-
-/** Mirrors `protectedProcedure` in packages/api/src/trpc.ts (TAMU email for applicant APIs). */
-function isTamuEmail(email: string) {
-  return email.endsWith("@tamu.edu");
-}
 
 export default async function ApplyLayout({
   children,
@@ -20,7 +16,7 @@ export default async function ApplyLayout({
     redirect("/login?callbackUrl=/apply");
   }
 
-  if (!isTamuEmail(session.user.email)) {
+  if (!isAllowedApplicantEmail(session.user.email)) {
     redirect("/wrong-account");
   }
 

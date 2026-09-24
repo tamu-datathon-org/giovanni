@@ -19,6 +19,7 @@ import {
 import { ArrowUpDown, ChevronDown } from "lucide-react";
 
 import type { TableData } from "./schema";
+import { useOrganizerEvent } from "~/app/_components/organizer/event-selection";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -35,7 +36,6 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { env } from "~/env";
 import { api } from "~/trpc/react";
 import {
   PersonalInformation,
@@ -119,6 +119,7 @@ export const columns: ColumnDef<TableData>[] = [
 ];
 
 export function VettingTable() {
+  const { eventName } = useOrganizerEvent();
   const statusMutation = api.application.updateStatus.useMutation();
   const batchStatusMutation = api.application.updateBatchStatus.useMutation();
 
@@ -142,13 +143,10 @@ export function VettingTable() {
   const [tableData, setTableData] = useState<TableData[]>([]);
 
   const { data, isLoading } =
-    api.application.getAllApplicationsByEventName.useQuery(
-      env.NEXT_PUBLIC_EVENT_NAME,
-      {
-        retry: false,
-        refetchOnWindowFocus: false,
-      },
-    );
+    api.application.getAllApplicationsByEventName.useQuery(eventName, {
+      retry: false,
+      refetchOnWindowFocus: false,
+    });
 
   useEffect(() => {
     if (data) {
@@ -231,7 +229,7 @@ export function VettingTable() {
         <span className="ml-4 text-white">Total Pending: {pendingCount}</span>
         <span className="ml-4 text-white">Total Accepted: {acceptedCount}</span>
         <span className="ml-4 text-white">
-          Event: {env.NEXT_PUBLIC_EVENT_NAME}
+          Event: {eventName}
         </span>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -299,6 +297,7 @@ export function VettingTable() {
                   ))}
                   <SelectStatusCell
                     row={row}
+                    eventName={eventName}
                     mutation={statusMutation}
                     setData={setTableData}
                     setPendingCount={setPendingCount}

@@ -163,6 +163,9 @@ export const Application = pgTable("application", {
     // .$type<"Beginner" | "Intermediate" | "Advanced">()
     .notNull(),
   eventSource: varchar("event_source", { length: 100 }).notNull(),
+  // Email of whoever told this applicant about the event. Each application
+  // naming an email is one referral point for that person.
+  referrerEmail: varchar("referrer_email", { length: 255 }),
   shirtSize: varchar("shirt_size", { length: 25 })
     // .$type<"S" | "M" | "L" | "XL" | "XXL">()
     .notNull(),
@@ -324,6 +327,15 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .string()
     .min(1, "Event Source is missing")
     .max(100, "Event Source is too long"),
+  referrerEmail: z
+    .string()
+    .trim()
+    .max(255, "Referrer email is too long")
+    // Trim, then branch. Checking `.email()` first and falling back to `""`
+    // compares the *untrimmed* input against the empty literal, so a field the
+    // applicant only ever typed a space into fails both ways.
+    .pipe(z.union([z.literal(""), z.string().email("Enter a valid email")]))
+    .nullish(),
   shirtSize: z
     .string()
     .min(1, "Shirt Size is missing")

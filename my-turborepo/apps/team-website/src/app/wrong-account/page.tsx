@@ -13,8 +13,8 @@ export default function WrongAccountPage() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#121723] px-4 text-center text-white">
       <h1 className="text-2xl font-bold">Account not allowed for applications</h1>
       <p className="max-w-md text-sm text-white/70">
-        The apply portal requires a Texas A&amp;M University email (@tamu.edu).
-        Sign out and sign in with a TAMU Google account, or return home.
+        This account isn&apos;t allowed to apply right now. Sign out and try a
+        different account, or return home.
       </p>
       <div className="flex flex-wrap justify-center gap-3">
         <Button
