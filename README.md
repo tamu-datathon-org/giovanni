@@ -99,7 +99,7 @@ Run these from `my-turborepo/`:
 
 ---
 
-## 5. The shared packages
+## 4. The shared packages
 
 | Package       | What it is                                                                                                  |
 | ------------- | ----------------------------------------------------------------------------------------------------------- |
@@ -111,7 +111,7 @@ Run these from `my-turborepo/`:
 
 ---
 
-## 6. How a request works (tRPC)
+## 5. How a request works (tRPC)
 
 **tRPC** lets the website call a function on the server as if it were a normal function in the same file — and TypeScript checks the arguments and return type for you. No manually written REST endpoints, no guessing at JSON shapes.
 
@@ -155,7 +155,7 @@ Defined in `packages/api/src/router/`, combined in `root.ts`:
 
 ---
 
-## 7. The database (Drizzle + Postgres)
+## 6. The database (Drizzle + Postgres)
 
 Our data lives in a **PostgreSQL** database hosted by **Supabase**.
 
@@ -202,7 +202,7 @@ const rows = await db
 
 ---
 
-## 8. Login (Auth0 via better-auth)
+## 7. Login (Auth0 via better-auth)
 
 **better-auth** is the library that manages sessions and cookies. **Auth0** is a hosted service that handles the actual "Sign in with Google" screens for us.
 
@@ -240,7 +240,7 @@ These are easy to confuse, and they do different jobs:
 
 ---
 
-## 9. Hosting and deploys (Oracle Cloud + Coolify)
+## 8. Hosting and deploys (Oracle Cloud + Coolify)
 
 - **Oracle Cloud** provides the raw computing resources — the virtual machines and CPU our sites run on.
 - **Coolify** is a self-hosted deployment platform that runs _on_ that Oracle infrastructure. It's what we actually interact with: it watches GitHub, builds each site, holds the environment variables, manages domains and HTTPS, and divides the Oracle CPU resources among the sites.
@@ -272,7 +272,7 @@ Also note: the Docker build context is the monorepo root, so the root `.dockerig
 
 ---
 
-## 10. Environment variables
+## 9. Environment variables
 
 
 
@@ -290,7 +290,7 @@ Remember: anything starting with `NEXT_PUBLIC_` is **visible to anyone using the
 
 ---
 
-## 11. Outside services we depend on
+## 10. Outside services we depend on
 
 | Service                    | What we use it for                                                                                                  | Where in the code                                           |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
@@ -303,7 +303,7 @@ Remember: anything starting with `NEXT_PUBLIC_` is **visible to anyone using the
 
 ---
 
-## 12. Contributing
+## 11. Contributing
 
 1. Branch off the current working branch (`main-teamv3` today) — never commit directly to it.
 2. Make your change, then run and `pnpm lint:fix` before pushing.
