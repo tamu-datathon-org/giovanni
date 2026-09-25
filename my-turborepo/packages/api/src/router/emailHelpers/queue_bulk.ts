@@ -1,4 +1,3 @@
-import type { SQSClientConfig } from "@aws-sdk/client-sqs";
 import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
 
 // This function adds an email to the AWS SQS queue
@@ -19,12 +18,9 @@ export async function queueBulkEmail(
     subject,
   );
 
-  // For emails log into AWS CLI and it will work locally
-  const config: SQSClientConfig = {
-    region: process.env.AWS_REGION,
-  };
-
-  const client = new SQSClient(config);
+  // Credentials come from the SDK's default provider chain: an `aws login`
+  // session locally, IAM Roles Anywhere (credential_process) in production.
+  const client = new SQSClient({ region: process.env.AWS_REGION });
 
   // SQS limits batch sizes to 10 emails
   maxBatchSize ??= 10;
