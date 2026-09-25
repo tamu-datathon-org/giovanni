@@ -68,8 +68,22 @@ RUN printf '%s\n' \
  && pnpm turbo run build --filter=@vanni/organizer-website \
  && rm -f .env
 
+FROM base AS awscreds
+ARG TARGETARCH
+RUN apk add --no-cache curl
+RUN set -eux; \
+    case "$TARGETARCH" in \
+      amd64) ARCH_PATH="X86_64" ; SHA=beec9ed1c492d93db809890f16713e3556353294b823c2184ad4e891f1b2b54d ;; \
+      arm64) ARCH_PATH="Aarch64" ; SHA=3d131aa888cd56da446f9c6bb460b1f0569f6c7edc74eae6193a2fe3928883ba ;; \
+      *) echo "unsupported TARGETARCH: $TARGETARCH" >&2; exit 1 ;; \
+    esac; \
+    curl -sSL -o /usr/local/bin/aws_signing_helper \
+      "https://rolesanywhere.amazonaws.com/releases/1.8.5/${ARCH_PATH}/Linux/Amzn2023/aws_signing_helper"; \
+    echo "${SHA}  /usr/local/bin/aws_signing_helper" | sha256sum -c -; \
+    chmod +x /usr/local/bin/aws_signing_helper
+
 # ---------------------------------------------------------------------------
-# 4. Minimal runtime image (Next.js standalone output)
+# 5. Minimal runtime image (Next.js standalone output)
 # ---------------------------------------------------------------------------
 FROM node:22-alpine AS runner
 WORKDIR /app
@@ -78,9 +92,15 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
+# libc6-compat is also what lets the glibc-built aws_signing_helper run on alpine.
 RUN apk add --no-cache libc6-compat \
  && addgroup --system --gid 1001 nodejs \
  && adduser --system --uid 1001 nextjs
+
+# The AWS SDK's credential_process reads its cert/key/config from /app/.aws at
+# runtime; Coolify mounts the actual files there.
+ENV AWS_CONFIG_FILE=/app/.aws/config
+COPY --from=awscreds /usr/local/bin/aws_signing_helper /usr/local/bin/aws_signing_helper
 
 COPY --from=builder --chown=nextjs:nodejs /app/apps/organizer-website/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/organizer-website/.next/static ./apps/organizer-website/.next/static
