@@ -56,13 +56,13 @@ function LoginContent() {
   }, [errorDescription, message]);
 
   return (
-    <div className="flex flex-col items-center justify-center pb-8 h-screen">
+    <div className="grid-background-blue bg-[#E9F6FF] flex flex-col items-center justify-center pb-8 h-screen">
         <div>
-          <h1 className="text-5xl font-bold tracking-tight text-datalightblue">
+          <h1 className="text-5xl font-bold tracking-tight text-[#10AEA4]">
             tamu
-            <span className="text-datadarkblue">datathon</span>
+            <span className="text-[#377BB0]">datathon</span>
           </h1>
-          <p className="text-sm mb-10 text-white text-center">
+          <p className="text-sm mb-10 text-[#377BB0] text-center">
             Sign in with a provider below
           </p>
         </div>
@@ -71,21 +71,21 @@ function LoginContent() {
             title="Google"
             connectionId="google-oauth2"
             callbackUrl={callbackUrl}
-            className="bg-datadarkblue hover:bg-datadarkblue/70"
+            className="text-[#E9F6FF] bg-[#377BB0] hover:bg-[#377BB0]/70"
             logo={<FcGoogle />}
           />
           <LoginButton
             title="Windows"
             connectionId="windowslive"
             callbackUrl={callbackUrl}
-            className="bg-datadarkblue hover:bg-datadarkblue/70"
+            className="text-[#E9F6FF] bg-[#377BB0] hover:bg-[#377BB0]/70"
             logo={<FaWindows />}
           />
           <LoginButton
             title="GitHub"
             connectionId="github"
             callbackUrl={callbackUrl}
-            className="bg-datadarkblue hover:bg-datadarkblue/70"
+            className="text-[#E9F6FF] bg-[#377BB0] hover:bg-[#377BB0]/70"
             logo={<FaGithub />}
           />
         </div>
