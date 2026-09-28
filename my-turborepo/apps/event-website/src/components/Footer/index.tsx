@@ -105,7 +105,9 @@ const Footer = () => {
               <div className="text-sm md:text-base">
                 Review the{" "}
                 <a
-                  href="http://mlh.io/code-of-conduct"
+                  href="https://mlh.io/code-of-conduct"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-0 text-gray-400 hover:text-white"
                 >
                   MLH Code of Conduct

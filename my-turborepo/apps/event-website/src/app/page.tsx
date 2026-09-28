@@ -28,7 +28,7 @@ export default function Home() {
         <Hero />
       </div>
       
-      <div id="workshops" className="scroll-mt-24">
+      {/* <div id="workshops" className="scroll-mt-24">
         <Workshops />
       </div>
       
@@ -47,7 +47,7 @@ export default function Home() {
       <div className="h-[100px] bg-[#f0cf91]" />
       <div id="baristas-note" className="scroll-mt-24">
         <FAQ />
-      </div>
+      </div> */}
     </>
   );
 }

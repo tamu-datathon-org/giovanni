@@ -1,5 +1,6 @@
-import { Inter, Darumadrop_One, Chilanka } from "next/font/google";
+import { Inter, Darumadrop_One, Chilanka, Righteous } from "next/font/google";
 import Header from "@/components/Header";
+import MlhBadge from "@/components/MlhBadge";
 
 import ScrollToTop from "@vanni/ui/scroll-to-top";
 
@@ -27,6 +28,13 @@ const chilanka = Chilanka({
   display: "swap",
 });
 
+const righteous = Righteous({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-righteous",
+  display: "swap",
+});
+
 interface RootLayoutProps {
   children: React.ReactNode;
 }
@@ -36,12 +44,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="en" className="overflow-x-clip">
-      <body className={`m-0 h-full w-full overflow-x-clip ${inter.variable} ${darumadropOne.variable} ${chilanka.variable}`}>
+      <body className={`m-0 h-full w-full overflow-x-clip ${inter.variable} ${darumadropOne.variable} ${chilanka.variable} ${righteous.variable}`}>
 
 
-        <Header />
+        {/* <Header /> */}
+        <MlhBadge />
         {children}
-        <Footer />
+        {/* <Footer /> */}
         <ScrollToTop />
       </body>
     </html>
