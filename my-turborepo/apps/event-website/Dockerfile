@@ -47,12 +47,6 @@ RUN addgroup --system --gid 1001 nodejs \
  && adduser --system --uid 1001 nextjs
 USER nextjs
 
-# credential_process reads its cert/key/config from here at runtime; Coolify
-# mounts the actual files into this directory (see infra runbook) — nothing
-# sensitive is copied into the image.
-ENV AWS_CONFIG_FILE=/app/.aws/config
-COPY --from=awscreds /usr/local/bin/aws_signing_helper /usr/local/bin/aws_signing_helper
-
 # Leverage Next.js output file tracing (standalone) to keep the image small.
 COPY --from=installer --chown=nextjs:nodejs /app/apps/event-website/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/event-website/.next/static ./apps/event-website/.next/static
