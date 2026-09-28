@@ -8,6 +8,7 @@ import { ApplyButton } from "./ApplyButton";
 import { EventDate } from "./EventDate";
 import { MarqueeSign, SignGlow } from "./MarqueeSign";
 import { ASSETS, cssVars, DRIVE_SPAN, SIGN_BOX, TIMING } from "./scene";
+import { SiteNotice } from "./SiteNotice";
 import { SkyLayer } from "./SkyLayer";
 import { Street } from "./Street";
 
@@ -191,6 +192,7 @@ export default function Hero() {
         <EventDate />
         <ApplyButton />
       </div>
+      <SiteNotice />
       {/* MLH member events must link the Code of Conduct. */}
       <a
         href="https://mlh.io/code-of-conduct"
