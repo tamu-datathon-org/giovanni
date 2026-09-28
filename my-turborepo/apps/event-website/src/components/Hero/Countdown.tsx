@@ -1,13 +1,18 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
-
-import styles from "./hero.module.css";
 
 // Kickoff: Saturday, November 7, 2026 at 9:00 AM Central (CST, UTC-6 once
 // daylight saving ends on Nov 1). Keep the explicit offset when changing it.
 const KICKOFF_MS = new Date("2026-11-07T09:00:00-06:00").getTime();
 const MINUTE_MS = 60_000;
+
+// Cream tiles with a warm rim, lit from above.
+const TILE_STYLE: CSSProperties = {
+  boxShadow:
+    "inset 0 calc(-5 * var(--g)) 0 rgb(226 150 60 / 0.3), inset 0 0 0 calc(2.5 * var(--g)) rgb(244 176 88 / 0.85), 0 calc(3 * var(--g)) calc(6 * var(--g)) rgb(110 45 0 / 0.35)",
+};
 
 /** Whole minutes until `targetMs` (0 once it passes); null until mounted, so SSR stays stable. */
 function useMinutesUntil(targetMs: number) {
@@ -47,7 +52,9 @@ export function Countdown() {
 
   return (
     <div
-      className={styles.countdown}
+      // Sits on the sign's blank orange panel. Padding percentages are of the
+      // sign's width: 41 and 36 of its 1010 units. Hidden until the power comes on.
+      className="font-righteous absolute left-[31.68%] top-[46.68%] grid h-[16.17%] w-[38.12%] grid-cols-3 grid-rows-[16.5%_60.5%_1fr] gap-x-[5.5%] pl-[4.06%] pr-[3.56%] leading-none group-data-[stage=off]/hero:invisible [@media(scripting:none)]:!visible"
       role="timer"
       aria-label={
         left
@@ -62,14 +69,19 @@ export function Countdown() {
           <span
             key={unit}
             aria-hidden="true"
-            className={`${styles.tile} ${text.length > 2 ? styles.tileWide : ""}`}
+            className={`row-start-2 grid place-items-center rounded-[calc(12*var(--g))] bg-gradient-to-b from-[#fffdf5] to-[#fbecd0] text-[#1b1414] ${text.length > 2 ? "text-[length:calc(46*var(--g))]" : "text-[length:calc(64*var(--g))]"}`}
+            style={TILE_STYLE}
           >
             {text}
           </span>
         );
       })}
       {cells.map(({ unit }) => (
-        <span key={unit} aria-hidden="true" className={styles.unit}>
+        <span
+          key={unit}
+          aria-hidden="true"
+          className="row-start-3 self-center text-center text-[length:calc(29*var(--g))] tracking-[0.02em] text-[#fff4dc] [text-shadow:0_calc(2*var(--g))_0_rgb(150_64_0/0.55)]"
+        >
           {unit}
         </span>
       ))}

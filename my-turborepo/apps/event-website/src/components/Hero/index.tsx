@@ -6,9 +6,8 @@ import Image from "next/image";
 
 import { ApplyButton } from "./ApplyButton";
 import { EventDate } from "./EventDate";
-import styles from "./hero.module.css";
 import { MarqueeSign, SignGlow } from "./MarqueeSign";
-import { ASSETS, cssVars, DRIVE_SPAN, TIMING } from "./scene";
+import { ASSETS, cssVars, DRIVE_SPAN, SIGN_BOX, TIMING } from "./scene";
 import { SkyLayer } from "./SkyLayer";
 import { Street } from "./Street";
 
@@ -63,7 +62,7 @@ function useScrollDrive(ref: RefObject<HTMLElement | null>) {
   }, [ref]);
 }
 
-/** Flags the hero while it's out of view so the CSS can pause its idle loops. */
+/** Flags the hero while it's out of view so its idle loops can pause. */
 function usePauseOffscreen(ref: RefObject<HTMLElement | null>) {
   useEffect(() => {
     const el = ref.current;
@@ -144,11 +143,31 @@ export default function Hero() {
     <section
       ref={heroRef}
       id="hero"
-      className={styles.hero}
       data-stage={stage}
-      style={cssVars({ "--flicker": `${TIMING.flicker}ms` })}
+      // group/hero: children style themselves off data-stage. Idle loops pause while off-screen.
+      className="group/hero relative isolate h-svh min-h-[320px] overflow-hidden bg-[#190148] [container-type:size] [&[data-offscreen]_*]:![animation-play-state:paused]"
+      style={cssVars({
+        "--flicker": `${TIMING.flicker}ms`,
+        // Road-top line: 72% of the height on square and portrait screens, rising to 88% on very wide ones.
+        "--road-y": "clamp(72cqh, 56cqh + 16cqw, 88cqh)",
+        "--gutter": "clamp(12px, 3cqw, 24px)",
+        "--top-gap": "12px",
+        // px per unit of background.png: the scene always covers the width and reaches the top.
+        "--s": "max(100cqw / 1440, var(--road-y) / 950)",
+        // px per unit of hero_sign.png: never beyond the mockup's proportions, the width, or the space above the road.
+        "--g":
+          "min(var(--s), (100cqw - 2 * var(--gutter)) / 921, (var(--road-y) - var(--top-gap)) / 911)",
+        "--car-w": "calc(410 * var(--g))",
+      })}
     >
-      <div className={styles.scene}>
+      <div
+        className="absolute left-[calc(50%_-_720*var(--s))] top-[calc(var(--road-y)_-_950*var(--s))] z-0 h-[calc(1394*var(--s))] w-[calc(1440*var(--s))]"
+        // The art's own sky colours, shown while background.png loads.
+        style={{
+          background:
+            "linear-gradient(#190148, #4b2346 14.3%, #713a3f 28.7%, #894438 43%, #8d4536 46%)",
+        }}
+      >
         <Image
           ref={backgroundRef}
           src={ASSETS.background}
@@ -168,15 +187,16 @@ export default function Hero() {
       />
       <Street />
       {/* Same box as the sign, but above the road and the car. */}
-      <div className={`${styles.signBox} ${styles.signFront}`}>
+      <div className={`${SIGN_BOX} pointer-events-none z-[5]`}>
         <EventDate />
         <ApplyButton />
       </div>
+      {/* MLH member events must link the Code of Conduct. */}
       <a
         href="https://mlh.io/code-of-conduct"
         target="_blank"
         rel="noopener noreferrer"
-        className={styles.conduct}
+        className="absolute bottom-[max(10px,1.5cqh)] right-[max(12px,1.5cqw)] z-[6] text-[length:clamp(11px,0.9cqw,14px)] tracking-[0.02em] text-[rgb(255_244_220/0.75)] underline underline-offset-[3px] hover:text-[#fff4dc] focus-visible:rounded focus-visible:text-[#fff4dc] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#3edbd3]"
       >
         MLH Code of Conduct
       </a>

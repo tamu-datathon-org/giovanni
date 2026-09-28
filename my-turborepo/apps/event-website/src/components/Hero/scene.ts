@@ -1,14 +1,21 @@
 /**
  * Geometry for the hero scene, measured from the source art in
  * public/event_assets. Positions are percentages of the source image they sit
- * on; sizes are source pixels ("units") that the CSS scales with --s (scene)
- * or --g (sign).
+ * on; sizes are source pixels ("units") scaled by two CSS variables set on the
+ * hero: --s (px per unit of background.png) and --g (px per unit of hero_sign.png).
  */
 import type { CSSProperties } from "react";
 
 /** Passes CSS custom properties through a `style` prop. */
 export const cssVars = (vars: Record<`--${string}`, string | number>) =>
   vars as CSSProperties;
+
+/**
+ * The box every sign layer shares (glow, sign, front): hero_sign.png at --g
+ * px per unit, centred on the visible art, with sign row 911 on the road line.
+ */
+export const SIGN_BOX =
+  "absolute left-[calc(50%_-_501.5*var(--g))] top-[calc(var(--road-y)_-_911*var(--g))] h-[calc(1206*var(--g))] w-[calc(1010*var(--g))]";
 
 export const ASSETS = {
   background: "/event_assets/background.png",
