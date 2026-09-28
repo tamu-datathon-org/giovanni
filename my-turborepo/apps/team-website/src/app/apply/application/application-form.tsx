@@ -844,7 +844,8 @@ export function ApplicationForm() {
               <div className="mt-6">
                 <GenericInputField
                   name="referrerEmail"
-                  label="Did someone refer you? Enter their email so they get credit."
+                  label="Did someone refer you?"
+                  description="If someone encouraged you to apply, enter their email so they get credit for the referral. The top 3 people with the most referrals will win a prize!"
                   defaultValue={importedValues?.app?.referrerEmail ?? ""}
                   placeholder="friend@tamu.edu"
                   required={false}

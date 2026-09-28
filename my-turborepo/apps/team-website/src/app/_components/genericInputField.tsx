@@ -1,7 +1,13 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
-import { FormField, FormItem, FormLabel, FormMessage } from "@vanni/ui/form";
+import {
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@vanni/ui/form";
 
 import type { ApplicationSchema } from "~/app/apply/validation";
 import { Input } from "~/components/ui/input";
@@ -10,6 +16,7 @@ import { Asterisk } from "../apply/application/application-form";
 interface GenericInputProps {
   name: keyof ApplicationSchema;
   label?: string;
+  description?: React.ReactNode;
   defaultValue?: string;
   required?: boolean;
   placeholder: string;
@@ -19,6 +26,7 @@ interface GenericInputProps {
 const GenericInputField: React.FC<GenericInputProps> = ({
   name,
   label,
+  description,
   defaultValue,
   required,
   placeholder,
@@ -36,6 +44,11 @@ const GenericInputField: React.FC<GenericInputProps> = ({
             {label}
             {required ? <Asterisk /> : ""}
           </FormLabel>
+          {description && (
+            <FormDescription className="text-sm text-gray-400">
+              {description}
+            </FormDescription>
+          )}
           <Input
             className="bg-white text-neutral-900 placeholder-neutral-500"
             placeholder={placeholder}
