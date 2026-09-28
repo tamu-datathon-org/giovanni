@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 
 import { ScrollUp } from "@vanni/ui/scroll-up";
 
-import Announcement from "~/components/Announcement";
 import Hero from "~/components/Hero";
 
 const PastEventsSection = dynamic(() => import("~/components/PastEvents"), {
@@ -45,7 +44,6 @@ export default function HomePage() {
   return (
     <>
       <ScrollUp />
-      <Announcement />
       <div id="home" className="scroll-mt-20 lg:scroll-mt-0">
         <Hero />
       </div>
