@@ -89,7 +89,6 @@ const RESUME_OPTIONAL = true;
 
 const TRAVEL_REIMBURSEMENT_FORM_URL = "" as string;
 
-const eventDescription = "datathon is a 24-hour hackathon for all skill levels";
 
 const dropdownClassName = `${kodeMono.className} ${styles.dropdown}`;
 
@@ -588,7 +587,6 @@ export function ApplicationForm() {
                 height={52}
               />
               <h1 className={styles.title}>hacker application</h1>
-              <p className={styles.description}>{eventDescription}</p>
               <StarRow
                 className={styles.starsRight}
                 src="/images/about-us/star.svg"
