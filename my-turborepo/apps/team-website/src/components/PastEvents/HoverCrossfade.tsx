@@ -274,7 +274,10 @@ export default function HoverCrossfade({
                     layerRefs.current[i] = el;
                   }}
                   className="absolute inset-0"
-                  style={{ opacity: i === 0 ? 1 : 0 }}
+                  style={{ 
+                    opacity: i === 0 ? 1 : 0,
+                    zIndex: i === 0 ? 2 : 1 
+                  }}
                 >
                   {item && (
                     <>
@@ -301,6 +304,13 @@ export default function HoverCrossfade({
                           </div>
                         </div>
                       )}
+                      <a 
+                        href={item.href ?? "https://tamudatathon.com"} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        aria-label={item.caption ? `${item.caption} TAMU Datathon Website` : "Past Event Website"} 
+                        className="absolute inset-0">
+                      </a>
                     </>
                   )}
                 </div>
