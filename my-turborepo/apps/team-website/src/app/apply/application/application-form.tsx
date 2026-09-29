@@ -1082,8 +1082,17 @@ export function ApplicationForm() {
                         <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
                           I authorize you to share my application/registration
                           information with Major League Hacking for event
-                          administration, ranking, and MLH administration
-                          in-line with the{" "}
+                          administration, ranking, and administration
+                          (including the creation of linked accounts on MLH and
+                          DEV (
+                          <a
+                            className="text-[#01c0cc] underline hover:text-[#28979b]"
+                            href="https://dev.to"
+                            target="_blank"
+                          >
+                            dev.to
+                          </a>
+                          )) in line with the{" "}
                           <a
                             className="text-[#01c0cc] underline hover:text-[#28979b]"
                             href="https://mlh.io/privacy"
@@ -1130,9 +1139,9 @@ export function ApplicationForm() {
                       <div className="space-y-1">
                         <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
                           <span className="text-neutral-400">(Optional) </span>I
-                          authorize MLH to send me occasional emails about
+                          authorize MLH + DEV to send me occasional emails about
                           relevant events, career opportunities, and community
-                          announcements
+                          announcements.
                         </FormLabel>
                         <FormMessage />
                       </div>
