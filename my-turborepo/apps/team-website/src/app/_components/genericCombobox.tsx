@@ -44,6 +44,7 @@ interface GenericDropdownProps {
   filter?: boolean;
   required?: boolean;
   allowOther?: boolean;
+  popoverClassName?: string;
 }
 
 const OTHER_VALUE = "__other__";
@@ -58,6 +59,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   defaultOption,
   required,
   allowOther = true,
+  popoverClassName,
 }) => {
   const form = useFormContext<ApplicationSchema>();
   const [searchValue, setSearchValue] = useState("");
@@ -97,115 +99,123 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
 
         const selectedOption = isOther
           ? { value: OTHER_VALUE, label: OTHER_LABEL }
-          : options.find((option) => option.value === fieldValue) ?? null;
+          : (options.find((option) => option.value === fieldValue) ?? null);
 
         return (
-          <FormItem className="flex flex-col">
-            <FormLabel className="text-xl">
-              {label}
-              {required ? <Asterisk /> : ""}
-            </FormLabel>
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <FormControl>
-                  <Button
-                    variant="application"
-                    role="combobox"
-                    className="w-full justify-between overflow-hidden"
-                  >
-                    <span className="truncate">
-                      {isOther
-                        ? otherRaw
-                          ? `Other(${otherRaw})`
-                          : OTHER_LABEL
-                        : selectedOption
-                        ? selectedOption.label
-                        : "Select ..."}
-                    </span>
-                    <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </FormControl>
-              </PopoverTrigger>
-              <PopoverContent className="w-fit max-w-full p-0">
-                <Command>
-                  <CommandInput
-                    placeholder={`Search ${String(name)}...`}
-                    onValueChange={(value) => {
-                      setSearchValue(value);
-                    }}
-                  />
-                  <CommandList>
-                    <CommandEmpty>No results.</CommandEmpty>
-                    <CommandGroup>
-                      {filter20Items.map((option) => (
-                        <CommandItem
-                          key={(option).value}
-                          value={(option).value}
-                          onSelect={(currentValue) => {
-                            form.setValue(name, currentValue, {
-                              shouldDirty: true,
-                              shouldTouch: true,
-                            });
-                            setOpen(false);
-                          }}
-                        >
-                          <AiOutlineCheck
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              fieldValue === (option).value
-                                ? "opacity-100"
-                                : "opacity-0",
-                            )}
-                          />
-                          {(option).label}
-                        </CommandItem>
-                      ))}
-                      {allowOther && (
-                        <CommandItem
-                          key={OTHER_VALUE}
-                          value={OTHER_LABEL}
-                          onSelect={() => {
-                            form.setValue(name, OTHER_VALUE, {
-                              shouldDirty: true,
-                              shouldTouch: true,
-                            });
-                            setOpen(false);
-                          }}
-                        >
-                          <AiOutlineCheck
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              isOther ? "opacity-100" : "opacity-0",
-                            )}
-                          />
-                          {OTHER_LABEL}
-                        </CommandItem>
-                      )}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
-            {isOther && (
-              <div className="mt-2 flex flex-col">
-                <FormControl>
-                  <Input
-                    autoFocus
-                    value={otherRaw}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      form.setValue(
-                        name,
-                        val ? `${OTHER_PREFIX}${val})` : OTHER_VALUE,
-                        { shouldDirty: true },
-                      );
-                    }}
-                    className="border p-2 bg-white text-black"
-                    placeholder="Please specify..."
-                  />
-                </FormControl>
-              </div>
-            )}
+          <FormItem className="flex flex-col" data-application-item>
+            <div
+              className="flex flex-col space-y-2"
+              data-application-field="select"
+            >
+              <FormLabel className="text-xl">
+                {label}
+                {required ? <Asterisk /> : ""}
+              </FormLabel>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="application"
+                      role="combobox"
+                      data-placeholder={!selectedOption}
+                      className="w-full justify-between overflow-hidden"
+                    >
+                      <span className="truncate">
+                        {isOther
+                          ? otherRaw
+                            ? `Other(${otherRaw})`
+                            : OTHER_LABEL
+                          : selectedOption
+                            ? selectedOption.label
+                            : "Select ..."}
+                      </span>
+                      <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent
+                  className={cn("w-fit max-w-full p-0", popoverClassName)}
+                >
+                  <Command>
+                    <CommandInput
+                      placeholder={`Search ${String(name)}...`}
+                      onValueChange={(value) => {
+                        setSearchValue(value);
+                      }}
+                    />
+                    <CommandList>
+                      <CommandEmpty>No results.</CommandEmpty>
+                      <CommandGroup>
+                        {filter20Items.map((option) => (
+                          <CommandItem
+                            key={option.value}
+                            value={option.value}
+                            onSelect={(currentValue) => {
+                              form.setValue(name, currentValue, {
+                                shouldDirty: true,
+                                shouldTouch: true,
+                              });
+                              setOpen(false);
+                            }}
+                          >
+                            <AiOutlineCheck
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                fieldValue === option.value
+                                  ? "opacity-100"
+                                  : "opacity-0",
+                              )}
+                            />
+                            {option.label}
+                          </CommandItem>
+                        ))}
+                        {allowOther && (
+                          <CommandItem
+                            key={OTHER_VALUE}
+                            value={OTHER_LABEL}
+                            onSelect={() => {
+                              form.setValue(name, OTHER_VALUE, {
+                                shouldDirty: true,
+                                shouldTouch: true,
+                              });
+                              setOpen(false);
+                            }}
+                          >
+                            <AiOutlineCheck
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                isOther ? "opacity-100" : "opacity-0",
+                              )}
+                            />
+                            {OTHER_LABEL}
+                          </CommandItem>
+                        )}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              {isOther && (
+                <div className="mt-2 flex flex-col">
+                  <FormControl>
+                    <Input
+                      autoFocus
+                      value={otherRaw}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        form.setValue(
+                          name,
+                          val ? `${OTHER_PREFIX}${val})` : OTHER_VALUE,
+                          { shouldDirty: true },
+                        );
+                      }}
+                      className="border p-2 bg-white text-black"
+                      placeholder="Please specify..."
+                    />
+                  </FormControl>
+                </div>
+              )}
+            </div>
             <FormMessage />
           </FormItem>
         );

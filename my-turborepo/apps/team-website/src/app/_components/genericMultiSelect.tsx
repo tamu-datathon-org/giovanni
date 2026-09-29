@@ -32,7 +32,10 @@ import {
 } from "~/components/ui/popover";
 import { Asterisk } from "../apply/application/application-form";
 
-interface Option { label: string; value: string }
+interface Option {
+  label: string;
+  value: string;
+}
 
 interface ISelectProps {
   name: keyof ApplicationSchema;
@@ -41,6 +44,7 @@ interface ISelectProps {
   placeholder: string;
   options: Option[];
   defaultOption?: string | undefined;
+  popoverClassName?: string;
 }
 
 const GenericMultiSelect = ({
@@ -50,6 +54,7 @@ const GenericMultiSelect = ({
   placeholder,
   options: values,
   defaultOption,
+  popoverClassName,
 }: ISelectProps) => {
   const form = useFormContext<ApplicationSchema>();
   const OTHER_VALUE = "Other";
@@ -58,7 +63,7 @@ const GenericMultiSelect = ({
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    if (defaultOption && (!form.getValues(name))) {
+    if (defaultOption && !form.getValues(name)) {
       form.setValue(name, defaultOption);
     }
   }, [form, defaultOption, name]);
@@ -78,7 +83,10 @@ const GenericMultiSelect = ({
       name={name}
       render={({ field }) => {
         const rawValues = field.value
-          ? String(field.value).split(",").map((s) => s.trim()).filter(Boolean)
+          ? String(field.value)
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean)
           : [];
 
         const otherMatch = rawValues.find((item) => item.startsWith("Other("));
@@ -98,7 +106,10 @@ const GenericMultiSelect = ({
         const handleSelectChange = (value: string) => {
           const updated = new Set(
             field.value
-              ? String(field.value).split(",").map((s) => s.trim()).filter(Boolean)
+              ? String(field.value)
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter(Boolean)
               : [],
           );
 
@@ -106,7 +117,8 @@ const GenericMultiSelect = ({
             if (hasOther) {
               // remove both Other and Other(...)
               [...updated].forEach((v) => {
-                if (v === OTHER_VALUE || v.startsWith("Other(")) updated.delete(v);
+                if (v === OTHER_VALUE || v.startsWith("Other("))
+                  updated.delete(v);
               });
             } else {
               updated.add(OTHER_VALUE);
@@ -129,99 +141,108 @@ const GenericMultiSelect = ({
         };
 
         return (
-          <FormItem className="flex flex-col">
-            <FormLabel className="text-xl">
-              {label}
-              {required ? <Asterisk /> : ""}
-            </FormLabel>
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <FormControl>
-                  <Button
-                    variant="application"
-                    role="combobox"
-                    className="w-full justify-between overflow-hidden"
-                  >
-                    <span className="truncate">
-                      {selectedLabels.length > 0
-                        ? selectedLabels.join(", ")
-                        : placeholder}
-                    </span>
-                    <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </FormControl>
-              </PopoverTrigger>
-              <PopoverContent className="w-fit max-w-full p-0">
-                <Command>
-                  <CommandInput
-                    placeholder={`Search ${String(name)}...`}
-                    onValueChange={(value) => setSearchValue(value)}
-                  />
-                  <CommandList>
-                    <CommandEmpty>No results.</CommandEmpty>
-                    <CommandGroup>
-                      {filteredOptions.map((option) => (
+          <FormItem className="flex flex-col" data-application-item>
+            <div
+              className="flex flex-col space-y-2"
+              data-application-field="select"
+            >
+              <FormLabel className="text-xl">
+                {label}
+                {required ? <Asterisk /> : ""}
+              </FormLabel>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="application"
+                      role="combobox"
+                      data-placeholder={selectedLabels.length === 0}
+                      className="w-full justify-between overflow-hidden"
+                    >
+                      <span className="truncate">
+                        {selectedLabels.length > 0
+                          ? selectedLabels.join(", ")
+                          : placeholder}
+                      </span>
+                      <BsChevronExpand className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent
+                  className={cn("w-fit max-w-full p-0", popoverClassName)}
+                >
+                  <Command>
+                    <CommandInput
+                      placeholder={`Search ${String(name)}...`}
+                      onValueChange={(value) => setSearchValue(value)}
+                    />
+                    <CommandList>
+                      <CommandEmpty>No results.</CommandEmpty>
+                      <CommandGroup>
+                        {filteredOptions.map((option) => (
+                          <CommandItem
+                            key={option.value}
+                            value={option.value}
+                            onSelect={(currentValue) => {
+                              handleSelectChange(currentValue);
+                            }}
+                          >
+                            <AiOutlineCheck
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                isOptionSelected(option.value)
+                                  ? "opacity-100"
+                                  : "opacity-0",
+                              )}
+                            />
+                            {option.label}
+                          </CommandItem>
+                        ))}
+
                         <CommandItem
-                          key={option.value}
-                          value={option.value}
-                          onSelect={(currentValue) => {
-                            handleSelectChange(currentValue);
+                          key={OTHER_VALUE}
+                          value={OTHER_LABEL}
+                          onSelect={() => {
+                            handleSelectChange(OTHER_VALUE);
                           }}
                         >
                           <AiOutlineCheck
                             className={cn(
                               "mr-2 h-4 w-4",
-                              isOptionSelected(option.value)
-                                ? "opacity-100"
-                                : "opacity-0",
+                              hasOther ? "opacity-100" : "opacity-0",
                             )}
                           />
-                          {option.label}
+                          {OTHER_LABEL}
                         </CommandItem>
-                      ))}
-
-                      <CommandItem
-                        key={OTHER_VALUE}
-                        value={OTHER_LABEL}
-                        onSelect={() => {
-                          handleSelectChange(OTHER_VALUE);
-                        }}
-                      >
-                        <AiOutlineCheck
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            hasOther ? "opacity-100" : "opacity-0",
-                          )}
-                        />
-                        {OTHER_LABEL}
-                      </CommandItem>
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
-            {/* Show textbox if Other is selected */}
-            {hasOther && (
-              <div className="mt-2 flex flex-col">
-                <FormControl>
-                  <Input
-                    type="text"
-                    className="border p-2 bg-white text-black"
-                    placeholder="Please specify..."
-                    value={otherRaw}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      const updated = rawValues.filter(
-                        (item) => item !== OTHER_VALUE && !item.startsWith("Other("),
-                      );
-                      if (val) updated.push(`Other(${val})`);
-                      else updated.push(OTHER_VALUE);
-                      field.onChange(updated.join(","));
-                    }}
-                  />
-                </FormControl>
-              </div>
-            )}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              {/* Show textbox if Other is selected */}
+              {hasOther && (
+                <div className="mt-2 flex flex-col">
+                  <FormControl>
+                    <Input
+                      type="text"
+                      className="border p-2 bg-white text-black"
+                      placeholder="Please specify..."
+                      value={otherRaw}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        const updated = rawValues.filter(
+                          (item) =>
+                            item !== OTHER_VALUE && !item.startsWith("Other("),
+                        );
+                        if (val) updated.push(`Other(${val})`);
+                        else updated.push(OTHER_VALUE);
+                        field.onChange(updated.join(","));
+                      }}
+                    />
+                  </FormControl>
+                </div>
+              )}
+            </div>
             <FormMessage />
           </FormItem>
         );
