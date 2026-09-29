@@ -204,11 +204,11 @@ export default function HoverCrossfade({
           className="max-h-[70vh] overflow-y-auto border-b border-[#E3E8EF] p-4 font-mono text-sm md:max-h-[min(70vh,calc(100svh_-_19rem))] md:border-b-0 md:border-r"
         >
           {groups.map((group) => (
-            <div key={group.title} className="mb-5">
-              <h3 className="mb-2 flex items-center gap-1 text-[11px] font-semibold uppercase tracking-widest text-slate-500">
-                <ChevronIcon className="h-3 w-3" />
-                {group.title}
-              </h3>
+            <details key={group.title} className="details-slide mb-2 group/folder" open>
+              <summary className="cursor-pointer mb-2 flex outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-emerald-600 items-center gap-1 text-[11px] font-semibold uppercase tracking-widest text-slate-500">
+                <ChevronIcon className="h-3 w-3 transition-transform duration-200 ease-out group-open/folder:rotate-90 motion-reduce:transition-none" />
+                <h3 className="select-none">{group.title}</h3>
+              </summary>
               <ul className="ml-3 space-y-0.5 border-l border-[#E3E8EF] pl-3">
                 {group.items.map((item) => {
                   const isActive = activeId === item.id;
@@ -258,7 +258,7 @@ export default function HoverCrossfade({
                   );
                 })}
               </ul>
-            </div>
+            </details>
           ))}
         </nav>
 
