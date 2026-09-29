@@ -54,7 +54,7 @@ export function Countdown() {
     <div
       // Sits on the sign's blank orange panel. Padding percentages are of the
       // sign's width: 41 and 36 of its 934 units. Hidden until the power comes on.
-      className="font-righteous absolute left-[28.8%] top-[73.25%] grid h-[26.75%] w-[41.22%] grid-cols-3 grid-rows-[16.5%_60.5%_1fr] gap-x-[5.5%] pl-[4.39%] pr-[3.85%] leading-none group-data-[stage=off]/hero:invisible [@media(scripting:none)]:!visible"
+      className="font-righteous absolute left-[28.8%] top-[71.94%] grid h-[28.06%] w-[41.22%] grid-cols-3 grid-rows-[16.5%_60.5%_1fr] gap-x-[5.5%] pl-[4.39%] pr-[3.85%] leading-none group-data-[stage=off]/hero:invisible [@media(scripting:none)]:!visible"
       role="timer"
       aria-label={
         left

@@ -25,10 +25,10 @@ export const STAGE_BOX =
 
 /**
  * The box every sign layer shares (glow, sign, lights): hero_sign.png at --g
- * px per unit, where the mockup puts it on the stage (x 253, y 26).
+ * px per unit, where the mockup puts it on the stage (x 253, y 60).
  */
 export const SIGN_BOX =
-  "absolute left-[calc(50%_-_467*var(--g))] top-[calc(var(--stage-y)_+_26*var(--g))] h-[calc(729*var(--g))] w-[calc(934*var(--g))]";
+  "absolute left-[calc(50%_-_467*var(--g))] top-[calc(var(--stage-y)_+_60*var(--g))] h-[calc(695*var(--g))] w-[calc(934*var(--g))]";
 
 export const ASSETS = {
   background: "/event_assets/background.png",
@@ -60,46 +60,46 @@ export const POWER_AT = 0.2;
 /** Marquee bulbs on hero_sign.png as [x%, y%], in chase order (down, across, up). */
 export const BULBS: readonly (readonly [number, number])[] = [
   // left column, top → bottom
-  [2.26, 56.94],
-  [2.26, 60.88],
-  [2.29, 64.81],
-  [2.26, 68.72],
-  [2.29, 72.63],
-  [2.26, 76.57],
-  [2.26, 80.75],
+  [2.26, 54.84],
+  [2.27, 58.96],
+  [2.28, 63.08],
+  [2.26, 67.19],
+  [2.28, 71.3],
+  [2.26, 75.42],
+  [2.26, 79.81],
   // bottom row, left of the countdown
-  [5.23, 80.74],
-  [8.19, 80.74],
-  [11.18, 80.73],
-  [14.14, 80.74],
-  [17.1, 80.73],
-  [20.08, 80.74],
-  [23.06, 80.73],
-  [25.8, 80.58],
+  [5.23, 79.79],
+  [8.2, 79.81],
+  [11.18, 79.79],
+  [14.14, 79.81],
+  [17.11, 79.79],
+  [20.08, 79.81],
+  [23.05, 79.79],
+  [25.8, 79.63],
   // bottom row, right of the countdown (the two under the lever knob are skipped)
-  [73.41, 80.77],
-  [76.05, 80.84],
-  [84.19, 80.82],
-  [86.82, 80.81],
-  [89.51, 80.84],
-  [92.2, 80.81],
-  [94.9, 80.85],
+  [73.41, 79.84],
+  [76.05, 79.91],
+  [84.18, 79.88],
+  [86.81, 79.89],
+  [89.5, 79.9],
+  [92.19, 79.88],
+  [94.89, 79.91],
   // right column, bottom → top
-  [97.88, 80.85],
-  [97.87, 76.69],
-  [97.88, 73.12],
-  [97.87, 68.85],
-  [97.9, 65.39],
-  [97.87, 61.11],
-  [97.87, 56.94],
+  [97.87, 79.92],
+  [97.87, 75.54],
+  [97.88, 71.81],
+  [97.87, 67.32],
+  [97.89, 63.7],
+  [97.87, 59.21],
+  [97.87, 54.84],
 ];
 
 /** Centres of the T, A, M, U circles on hero_sign.png as [x%, y%]. */
 export const LETTERS: readonly (readonly [number, number])[] = [
-  [31.48, 49.11],
-  [43.95, 49.11],
-  [56.37, 49.11],
-  [68.52, 49.11],
+  [31.48, 46.62],
+  [43.95, 46.62],
+  [56.37, 46.62],
+  [68.52, 46.62],
 ];
 
 /**
