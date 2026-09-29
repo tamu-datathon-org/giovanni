@@ -264,7 +264,7 @@ export default function HoverCrossfade({
 
         {/* RIGHT: crossfading poster stage */}
         <div className="p-4">
-          <div className="group relative aspect-[1659/1779] max-h-[70vh] w-full overflow-hidden rounded-lg bg-[#F3F3F3] ring-1 ring-[#E3E8EF] md:max-h-[min(70vh,calc(100svh_-_19rem))]">
+          <div className="group relative aspect-[1659/1779] max-h-[70vh] w-full overflow-hidden rounded-xl bg-[#F3F3F3] ring-1 ring-[#E3E8EF] md:max-h-[min(70vh,calc(100svh_-_19rem))]">
             {([0, 1] as const).map((i) => {
               const item = layers[i];
               return (
@@ -283,17 +283,22 @@ export default function HoverCrossfade({
                         alt={item.alt ?? item.caption ?? ""}
                         fill
                         sizes="(max-width: 768px) 100vw, 60vw"
-                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                        className="object-cover transition-transform duration-700 ease-out scale-105 group-hover:scale-[1.1]"
                         priority={i === 0}
                       />
                       {item.caption && (
                         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-5">
-                          <span className="mb-1 block font-mono text-[11px] uppercase tracking-widest text-emerald-400">
+                          <div className="bg-black/30 p-5 rounded-xl size-fit backdrop-blur-md">
+                          <span className="mb-1 block font-mono text-[11px] uppercase tracking-widest text-white">
                             {item.kicker ?? "Event Poster"}
                           </span>
-                          <span className="block font-sans text-2xl font-bold leading-tight text-white">
-                            {item.caption}
+                          <span className="grid font-sans text-2xl font-bold leading-tight text-white">
+                            <span className="invisible row-start-1 col-start-1">
+                              2026 · Spring
+                            </span>
+                            <span className="row-start-1 col-start-1">{item.caption}</span>
                           </span>
+                          </div>
                         </div>
                       )}
                     </>
