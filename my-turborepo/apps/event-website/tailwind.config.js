@@ -95,51 +95,24 @@ export const theme = {
         "50%": { boxShadow: "none", transform: "translateY(-20px)" },
       },
 
-      // Hero ("Marquee Night", src/components/Hero). Per-element timings come
-      // from CSS variables set inline; only transform/opacity animate.
-      "star-in": {
-        "0%": { opacity: "0", scale: "0.2" },
-        "55%": { opacity: "1", scale: "1.35" },
-        "100%": { opacity: "1", scale: "1" },
-      },
-      // Six uneven pulses per loop, so iterations (and their main-thread cost) are rare.
-      twinkle: {
-        "0%, 14%, 29%, 45%, 60%, 76%, 92%, 100%": { opacity: "1", scale: "1" },
-        "7%, 21%, 37%, 52%, 68%, 84%": { opacity: "var(--dim)", scale: "0.82" },
-      },
-      // The same pulses plus a quarter-turn glint (a ✦ looks identical after 90°).
-      "twinkle-glint": {
-        "0%, 14%, 29%, 45%, 60%, 76%, 92%": {
-          opacity: "1",
-          scale: "1",
-          rotate: "0deg",
-        },
-        "7%, 21%, 37%, 52%, 68%, 84%": {
-          opacity: "var(--dim)",
-          scale: "0.82",
-          rotate: "0deg",
-        },
-        "100%": { opacity: "1", scale: "1", rotate: "90deg" },
-      },
+      // Hero (the casino stage, src/components/Hero). Per-element timings
+      // come from CSS variables set inline; only transform/opacity animate.
+      // Chandeliers: a pendulum between --from and --to.
       sway: {
         from: { rotate: "var(--from)" },
         to: { rotate: "var(--to)" },
       },
-      "beam-on": {
-        "0%": { opacity: "0" },
-        "12%": { opacity: "0.9" },
-        "20%": { opacity: "0.1" },
-        "32%, 100%": { opacity: "1" },
+      // The spotlight on the closed curtains: a slight wander (the operator's
+      // hand; each leg eases in and out), and slowly breathing.
+      "spot-drift": {
+        "0%, 100%": { translate: "0 0" },
+        "22%": { translate: "2.5cqmin -1.5cqmin" },
+        "47%": { translate: "-1.5cqmin 2cqmin" },
+        "73%": { translate: "-3cqmin -1cqmin" },
       },
-      // The head leads along the streak's own axis; each streak lasts ~4% of its cycle.
-      shoot: {
-        "0%": { opacity: "0", transform: "rotate(var(--angle)) translateX(0)" },
-        "0.8%": { opacity: "1" },
-        "4%, 100%": {
-          opacity: "0",
-          transform:
-            "rotate(var(--angle)) translateX(calc(-1 * var(--travel) * var(--s)))",
-        },
+      "spot-breathe": {
+        from: { opacity: "0.9", scale: "0.985" },
+        to: { opacity: "1", scale: "1.015" },
       },
       // Neon sputter: spark, blackout, double blink, half power, dropout, dip, on.
       "light-on": {
@@ -187,11 +160,6 @@ export const theme = {
         "4%": { opacity: "1" },
         "12%, 100%": { opacity: "0.55" },
       },
-      "glint-flash": {
-        "0%, 84%": { scale: "0", rotate: "0deg" },
-        "90%": { scale: "1", rotate: "45deg" },
-        "96%, 100%": { scale: "0", rotate: "90deg" },
-      },
       "apply-lights": {
         "0%": { opacity: "1" },
         "15%": { opacity: "0.25" },
@@ -209,19 +177,14 @@ export const theme = {
       float: "floatx 3s ease-in-out infinite",
 
       // Hero
-      "star-in": "star-in 0.9s ease-out var(--delay) forwards",
-      twinkle: "twinkle var(--twinkle) ease-in-out var(--phase) infinite",
-      "twinkle-glint":
-        "twinkle-glint var(--twinkle) ease-in-out var(--phase) infinite",
       sway: "sway var(--period) ease-in-out var(--phase) infinite alternate",
-      "beam-on": "beam-on 0.9s steps(1, end) var(--on-delay) both",
-      shoot: "shoot var(--cycle) linear var(--delay) infinite",
+      "spot-drift": "spot-drift 16s ease-in-out infinite",
+      "spot-breathe": "spot-breathe 4.5s ease-in-out infinite alternate",
       "light-on": "light-on var(--flicker, 1.8s) steps(1, end) both",
       "night-off": "night-off var(--flicker, 1.8s) steps(1, end) both",
       hum: "hum 4s ease-in-out infinite alternate",
       chase: "chase 2.7s steps(1, end) var(--chase) infinite",
       "letter-glow": "letter-glow 7s ease-in-out var(--pop) infinite",
-      "glint-flash": "glint-flash 5s ease-in-out var(--glint) infinite",
       "apply-lights":
         "apply-lights 0.6s steps(1, end) var(--lights-delay, 0s) both",
       "apply-pop": "apply-pop 0.5s ease-out 0.45s",
