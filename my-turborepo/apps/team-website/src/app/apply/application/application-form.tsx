@@ -2,7 +2,7 @@
 
 import type { SubmitHandler } from "react-hook-form";
 import { ZodError, type ZodIssue } from "zod";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,6 +53,7 @@ import GenericMultiSelect from "../../_components/genericMultiSelect";
 import { applicationSchema } from "../validation";
 import { kodeMono } from "~/app/_components/fonts";
 import styles from "./application.module.css";
+import { useApplicationEntrance } from "./useApplicationEntrance";
 
 /*
     First Name
@@ -126,7 +127,14 @@ function StarRow({
   return (
     <div className={className} aria-hidden="true">
       {[0, 1, 2].map((star) => (
-        <Image key={star} src={src} alt="" width={width} height={height} />
+        <Image
+          key={star}
+          src={src}
+          alt=""
+          width={width}
+          height={height}
+          data-star
+        />
       ))}
     </div>
   );
@@ -134,6 +142,7 @@ function StarRow({
 
 export function ApplicationForm() {
   const [disableSubmit, setDisableSubmit] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
   const { session } = useAuthRedirect();
   const router = useRouter();
 
@@ -551,6 +560,8 @@ export function ApplicationForm() {
     label: entry.schoolName,
   }));
 
+  useApplicationEntrance(rootRef, !isLoading);
+
   if (isLoading) {
     return (
       <div className={styles.loading}>
@@ -560,7 +571,7 @@ export function ApplicationForm() {
   }
 
   return (
-    <div className={styles.application}>
+    <div ref={rootRef} className={styles.application}>
       <div className={styles.background} aria-hidden="true" />
       <div className={styles.container}>
         <a href="/apply" className={styles.backLink}>
