@@ -49,13 +49,12 @@ const GenericTextArea: React.FC<GenericTextAreaProps> = ({
               data-application-field="textarea"
               data-stacked="true"
             >
-              <FormLabel className="text-xl">
+              <FormLabel>
                 {label}
                 {required ? <Asterisk /> : ""}
               </FormLabel>
               <FormControl>
                 <textarea
-                  className="bg-white w-full p-2 border rounded text-sm text-black"
                   placeholder={placeholder}
                   {...field}
                   maxLength={150}

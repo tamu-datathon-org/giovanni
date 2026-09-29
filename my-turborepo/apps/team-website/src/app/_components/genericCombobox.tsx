@@ -107,7 +107,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
               className="flex flex-col space-y-2"
               data-application-field="select"
             >
-              <FormLabel className="text-xl">
+              <FormLabel>
                 {label}
                 {required ? <Asterisk /> : ""}
               </FormLabel>
@@ -209,7 +209,6 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                           { shouldDirty: true },
                         );
                       }}
-                      className="border p-2 bg-white text-black"
                       placeholder="Please specify..."
                     />
                   </FormControl>

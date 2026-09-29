@@ -88,7 +88,9 @@ const RESUME_OPTIONAL = true;
 
 const TRAVEL_REIMBURSEMENT_FORM_URL = "" as string;
 
-const eventDescription = "datathon is a 24- hour hackathon for all skill levels";
+const eventDescription = "datathon is a 24-hour hackathon for all skill levels";
+
+const dropdownClassName = `${kodeMono.className} ${styles.dropdown}`;
 
 export function Asterisk() {
   return <span className="text-red-500">*</span>;
@@ -107,6 +109,26 @@ export function SectionCard({
       <h2 className={styles.sectionHeading}>{title}</h2>
       <div className={styles.sectionBody}>{children}</div>
     </section>
+  );
+}
+
+function StarRow({
+  className,
+  src,
+  width,
+  height,
+}: {
+  className: string;
+  src: string;
+  width: number;
+  height: number;
+}) {
+  return (
+    <div className={className} aria-hidden="true">
+      {[0, 1, 2].map((star) => (
+        <Image key={star} src={src} alt="" width={width} height={height} />
+      ))}
+    </div>
   );
 }
 
@@ -548,44 +570,29 @@ export function ApplicationForm() {
         <Form {...form}>
           <form onSubmit={handleFormSubmit} className={styles.form}>
             <header className={styles.header}>
-              <div className={styles.starsLeft} aria-hidden="true">
-                {[0, 1, 2].map((star) => (
-                  <Image
-                    key={star}
-                    src="/images/about-us/star.svg"
-                    alt=""
-                    width={52}
-                    height={52}
-                  />
-                ))}
-              </div>
+              <StarRow
+                className={styles.starsLeft}
+                src="/images/about-us/star.svg"
+                width={52}
+                height={52}
+              />
               <h1 className={styles.title}>hacker application</h1>
               <p className={styles.description}>{eventDescription}</p>
-              <div className={styles.starsRight} aria-hidden="true">
-                {[0, 1, 2].map((star) => (
-                  <Image
-                    key={star}
-                    src="/images/about-us/star.svg"
-                    alt=""
-                    width={52}
-                    height={52}
-                  />
-                ))}
-              </div>
+              <StarRow
+                className={styles.starsRight}
+                src="/images/about-us/star.svg"
+                width={52}
+                height={52}
+              />
             </header>
 
             <div className={styles.panel}>
-              <div className={styles.whiteStars} aria-hidden="true">
-                {[0, 1, 2].map((star) => (
-                  <Image
-                    key={star}
-                    src="/images/application/white-star.svg"
-                    alt=""
-                    width={74}
-                    height={86}
-                  />
-                ))}
-              </div>
+              <StarRow
+                className={styles.whiteStars}
+                src="/images/application/white-star.svg"
+                width={74}
+                height={86}
+              />
               {/* Personal Information Section */}
               <SectionCard title="Personal Information">
                 <div className="grid gap-6 md:grid-cols-2">
@@ -635,7 +642,7 @@ export function ApplicationForm() {
                     placeholder="e.g. 1234567890"
                   />
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"age"}
                     label={"Age"}
                     options={AGE}
@@ -648,7 +655,7 @@ export function ApplicationForm() {
 
                 <div className="mt-6 grid gap-6 md:grid-cols-2">
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"country"}
                     label={"Country of Residence"}
                     options={COUNTRIES}
@@ -658,7 +665,7 @@ export function ApplicationForm() {
                     required={true}
                   />
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"gender"}
                     label={"Gender"}
                     options={GENDER_OPTIONS}
@@ -679,7 +686,7 @@ export function ApplicationForm() {
 
                 <div className="mt-6">
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"race"}
                     label={"What ethnicity do you identify with?"}
                     options={RACE_OPTIONS}
@@ -703,7 +710,7 @@ export function ApplicationForm() {
               <SectionCard title="Education">
                 <div className="mb-6">
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"school"}
                     label={"School"}
                     options={SCHOOL_OPTIONS}
@@ -716,7 +723,7 @@ export function ApplicationForm() {
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"major"}
                     label={"Major"}
                     options={MAJOR}
@@ -734,7 +741,7 @@ export function ApplicationForm() {
                     required={true}
                   />
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"classification"}
                     label={"Level of Study"}
                     options={EDUCATION_LEVELS}
@@ -748,7 +755,7 @@ export function ApplicationForm() {
 
                 <div className="mt-6">
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"gradYear"}
                     label={"Anticipated Graduation Year"}
                     options={GRADUATION_YEARS}
@@ -766,7 +773,7 @@ export function ApplicationForm() {
               <SectionCard title="Experience">
                 <div className="grid gap-6 md:grid-cols-2">
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"hackathonsAttended"}
                     label={"Hackathons Attended"}
                     options={HACKATHON_EXPERIENCE}
@@ -778,7 +785,7 @@ export function ApplicationForm() {
                     required={true}
                   />
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"experience"}
                     label={"Programming Experience Level"}
                     options={PROGRAMMING_SKILL_LEVELS}
@@ -796,7 +803,7 @@ export function ApplicationForm() {
 
                 <div className="mt-6">
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"eventSource"}
                     label={"How did you hear about us?"}
                     options={HEARD_ABOUT_OPTIONS}
@@ -828,12 +835,12 @@ export function ApplicationForm() {
                     name="resume"
                     render={({ field }) => (
                       <FormItem className={styles.upload}>
-                        <FormLabel className="text-lg font-semibold text-gray-200">
+                        <FormLabel>
                           Resume/CV <Asterisk />
                         </FormLabel>
                         {importedValues?.resume && (
                           <div className="my-2 rounded-lg bg-green-900/30 p-3">
-                            <p className="text-sm text-green-200">
+                            <p className="text-sm">
                               ✓ Current resume:{" "}
                               {importedValues.resume.resumeName}
                             </p>
@@ -902,7 +909,7 @@ export function ApplicationForm() {
               <SectionCard title="Additional Details">
                 <div className="mb-6">
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"shirtSize"}
                     label={"T-Shirt Size"}
                     options={SHIRT_SIZES}
@@ -947,7 +954,7 @@ export function ApplicationForm() {
 
                 <div className="mt-6">
                   <GenericMultiSelect
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"dietaryRestriction"}
                     label={"Dietary Restrictions"}
                     placeholder="Select dietary restrictions (if any)"
@@ -974,7 +981,7 @@ export function ApplicationForm() {
               <SectionCard title="Travel Reimbursement">
                 <div className="grid gap-6 md:grid-cols-1">
                   <GenericCombobox
-                    popoverClassName={`${kodeMono.className} ${styles.dropdown}`}
+                    popoverClassName={dropdownClassName}
                     name={"travelReimbursement"}
                     label={"Do you require travel reimbursement?"}
                     options={YES_NO}
@@ -998,7 +1005,7 @@ export function ApplicationForm() {
                         </>
                       }
                     </p>
-                    <p className="text-neutral-300">
+                    <p>
                       If you are applying for reimbursement as a group, only one
                       person needs to submit the reimbursement form. However,
                       every participant must still complete this application.
@@ -1023,7 +1030,7 @@ export function ApplicationForm() {
                           />
                         </FormControl>
                         <div className="space-y-1">
-                          <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
+                          <FormLabel className="font-medium">
                             I have read and agree to the{" "}
                             <a
                               className="text-[#01c0cc] underline hover:text-[#28979b]"
@@ -1053,7 +1060,7 @@ export function ApplicationForm() {
                           />
                         </FormControl>
                         <div className="space-y-1">
-                          <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
+                          <FormLabel className="font-medium">
                             I authorize you to share my application/registration
                             information with Major League Hacking for event
                             administration, ranking, and MLH administration
@@ -1102,10 +1109,8 @@ export function ApplicationForm() {
                           />
                         </FormControl>
                         <div className="space-y-1">
-                          <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
-                            <span className="text-neutral-400">
-                              (Optional){" "}
-                            </span>
+                          <FormLabel className="font-medium">
+                            <span>(Optional) </span>
                             I authorize MLH to send me occasional emails about
                             relevant events, career opportunities, and community
                             announcements

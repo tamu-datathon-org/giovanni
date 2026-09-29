@@ -146,7 +146,7 @@ const GenericMultiSelect = ({
               className="flex flex-col space-y-2"
               data-application-field="select"
             >
-              <FormLabel className="text-xl">
+              <FormLabel>
                 {label}
                 {required ? <Asterisk /> : ""}
               </FormLabel>
@@ -225,7 +225,6 @@ const GenericMultiSelect = ({
                   <FormControl>
                     <Input
                       type="text"
-                      className="border p-2 bg-white text-black"
                       placeholder="Please specify..."
                       value={otherRaw}
                       onChange={(e) => {

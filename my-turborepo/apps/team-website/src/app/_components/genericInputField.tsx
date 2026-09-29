@@ -45,13 +45,12 @@ const GenericInputField: React.FC<GenericInputProps> = ({
             className="flex flex-col space-y-2"
             data-application-field="input"
           >
-            <FormLabel className="text-xl">
+            <FormLabel>
               {label}
               {required ? <Asterisk /> : ""}
             </FormLabel>
             <FormControl>
               <Input
-                className="bg-white text-neutral-900 placeholder-neutral-500"
                 placeholder={placeholder}
                 value={
                   typeof field.value === "string" ||
