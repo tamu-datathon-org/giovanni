@@ -628,7 +628,7 @@ export default function Page() {
 
               <Panel title="account">
                 <ActionButton onClick={signOutHandler}>
-                  change accounts
+                  sign out
                 </ActionButton>
               </Panel>
 
