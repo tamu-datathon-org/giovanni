@@ -520,11 +520,11 @@ export default function Page() {
               {/* info card */}
               <div className="relative pl-[28px] xl:pl-[34px]">
                 <div
-                  className="relative rounded-[20px] border-[5px]"
+                  className="relative min-h-[220px] rounded-[20px] border-[5px] px-6 pb-8 pt-4 xl:min-h-[260px] xl:pt-5"
                   style={{ backgroundColor: INK.card, borderColor: INK.panelBorder }}
                 >
                   <span
-                    className="absolute -top-[5px] left-[18px] rounded-[20px] border-[5px] px-5 py-1 font-kode text-[20px] lowercase tracking-[-0.07em] xl:text-[30px]"
+                    className="inline-block rounded-[20px] border-[5px] px-5 py-1 font-kode text-[20px] lowercase tracking-[-0.07em] xl:text-[30px]"
                     style={{
                       backgroundColor: INK.button,
                       borderColor: INK.cardBorder,
@@ -534,7 +534,7 @@ export default function Page() {
                     info
                   </span>
                   <p
-                    className="min-h-[220px] px-6 pb-8 pt-20 font-kode text-[clamp(28px,4vw,50px)] lowercase leading-none tracking-[-0.07em] xl:min-h-[260px]"
+                    className="mt-8 font-kode text-[clamp(28px,4vw,50px)] lowercase leading-none tracking-[-0.07em]"
                     style={{ color: INK.deep }}
                   >
                     {headline}
@@ -670,14 +670,14 @@ export default function Page() {
                 <div ref={qrRef} className="flex items-start gap-3">
                   <Marker className="mt-4" />
                   <div
-                    className="relative flex-1 rounded-[20px] border-[5px] p-5"
+                    className="relative flex-1 rounded-[20px] border-[5px] px-5 pb-5 pt-4 xl:pt-5"
                     style={{
                       backgroundColor: INK.card,
                       borderColor: INK.panelBorder,
                     }}
                   >
                     <span
-                      className="absolute -top-[5px] left-[18px] rounded-[20px] border-[5px] px-4 py-1 font-kode text-[18px] font-semibold lowercase tracking-[-0.07em] xl:text-[30px]"
+                      className="inline-block rounded-[20px] border-[5px] px-4 py-1 font-kode text-[18px] font-semibold lowercase tracking-[-0.07em] xl:text-[30px]"
                       style={{
                         backgroundColor: INK.button,
                         borderColor: INK.cardBorder,
@@ -686,7 +686,7 @@ export default function Page() {
                     >
                       check in qr code
                     </span>
-                    <div className="flex justify-center pt-14">
+                    <div className="mt-5 flex justify-center">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={qrCode}
