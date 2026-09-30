@@ -1,4 +1,4 @@
-import { Inter, Konkhmer_Sleokchher } from "next/font/google";
+import { Inter, Kode_Mono, Konkhmer_Sleokchher } from "next/font/google";
 import localFont from "next/font/local";
 
 export const w95fa = localFont({
@@ -19,4 +19,10 @@ export const konkhmerSleokchher = Konkhmer_Sleokchher({
   weight: "400",
   display: "swap",
   variable: "--font-konkhmer-sleokchher",
+});
+
+export const kodeMono = Kode_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-kode-mono",
 });
