@@ -55,6 +55,7 @@ export default {
         XPfont: ["var(--font-w95fa)"],
         inter: ["var(--font-inter)"],
         konkhmer: ["var(--font-konkhmer-sleokchher)"],
+        kode: ["var(--font-kode-mono)"],
       },
       borderRadius: {
         lg: "var(--radius)",
