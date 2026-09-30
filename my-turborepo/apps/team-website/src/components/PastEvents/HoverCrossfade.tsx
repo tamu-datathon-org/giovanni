@@ -73,26 +73,6 @@ function FileIcon({ className }: { className?: string }) {
 
 const LIGHT_CLASS = "block h-3 w-3 shrink-0 rounded-full p-0";
 
-// Glyph opacity follows real hover/focus via CSS and the scripted cursor via
-// the --lights-hover var, so the two never fight over an inline opacity.
-function LightGlyph({ d }: { d: string }) {
-  return (
-    <svg
-      viewBox="0 0 12 12"
-      fill="none"
-      aria-hidden="true"
-      className="h-full w-full opacity-[var(--lights-hover,0)] group-focus-within/lights:opacity-100 group-hover/lights:opacity-100"
-    >
-      <path
-        d={d}
-        stroke="rgba(0,0,0,0.55)"
-        strokeWidth="1.3"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 /* ------------------------------------------------------- */
 
 export default function HoverCrossfade({
@@ -166,29 +146,16 @@ export default function HoverCrossfade({
 
   return (
     <div
-      data-genie-window
       className={`shadow-two overflow-hidden rounded-xl border border-[#E3E8EF] bg-white ${
         className ?? ""
       }`}
     >
-      {/* Editor title bar. The lights show their glyphs on hover like macOS;
-          MinimizeToDock drives the same state through --lights-hover. */}
+      {/* Editor title bar in macOS style */}
       <div className="flex items-center gap-2 border-b border-[#E3E8EF] bg-[#F3F3F3] px-4 py-3">
-        <div data-genie-lights className="group/lights flex items-center gap-2">
-          <span className={`${LIGHT_CLASS} bg-red-400/80`}>
-            <LightGlyph d="M4.25 4.25l3.5 3.5M7.75 4.25l-3.5 3.5" />
-          </span>
-          <button
-            type="button"
-            data-genie-minimize
-            aria-label="Minimize window"
-            className={`${LIGHT_CLASS} bg-yellow-400/80 outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-1`}
-          >
-            <LightGlyph d="M3.5 6h5" />
-          </button>
-          <span className={`${LIGHT_CLASS} bg-green-400/80`}>
-            <LightGlyph d="M6 3.5v5M3.5 6h5" />
-          </span>
+        <div className="flex items-center gap-2">
+          <span aria-hidden="true" className={`${LIGHT_CLASS} bg-red-400/80`} />
+          <span aria-hidden="true" className={`${LIGHT_CLASS} bg-yellow-400/80`} />
+          <span aria-hidden="true" className={`${LIGHT_CLASS} bg-green-400/80`} />
         </div>
         <span className="ml-3 font-mono text-xs text-slate-500">
           past_events/
@@ -199,8 +166,6 @@ export default function HoverCrossfade({
         {/* LEFT: file tree */}
         <nav
           aria-label="Past events"
-          // Bounded by 100svh on md+ (MinimizeToDock pins this window inside
-          // one viewport): 19rem covers the heading, title bar and padding.
           className="max-h-[70vh] overflow-y-auto border-b border-[#E3E8EF] p-4 font-mono text-sm md:max-h-[min(70vh,calc(100svh_-_19rem))] md:border-b-0 md:border-r"
         >
           {groups.map((group) => (
