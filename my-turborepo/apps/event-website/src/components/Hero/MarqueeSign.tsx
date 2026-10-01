@@ -42,9 +42,10 @@ export function SignGlow() {
         src={ASSETS.sign}
         alt=""
         fill
+        draggable={false}
         sizes={SIGN_SIZES}
         loading="eager"
-        className="group-data-[stage=on]/hero:animate-hum opacity-50 blur-[calc(16*var(--g))] brightness-110 saturate-[1.6] motion-reduce:!animate-none"
+        className="[-webkit-user-drag:none] [user-drag:none] group-data-[stage=on]/hero:animate-hum opacity-50 blur-[calc(16*var(--g))] brightness-110 saturate-[1.6] motion-reduce:!animate-none"
       />
     </div>
   );
@@ -71,8 +72,10 @@ export function MarqueeSign({
           src={ASSETS.sign}
           alt="TAMU Datathon"
           fill
+          draggable={false}
           sizes={SIGN_SIZES}
           loading="eager"
+          className="[-webkit-user-drag:none] [user-drag:none]"
         />
       </h1>
 
@@ -84,9 +87,10 @@ export function MarqueeSign({
         alt=""
         aria-hidden="true"
         fill
+        draggable={false}
         sizes={SIGN_SIZES}
         loading="eager"
-        className="group-data-[stage=flicker]/hero:animate-night-off brightness-[0.28] saturate-50 group-data-[stage=on]/hero:opacity-0 motion-reduce:transition-opacity motion-reduce:duration-500 [@media(scripting:none)]:!opacity-0"
+        className="[-webkit-user-drag:none] [user-drag:none] group-data-[stage=flicker]/hero:animate-night-off brightness-[0.28] saturate-50 group-data-[stage=on]/hero:opacity-0 motion-reduce:transition-opacity motion-reduce:duration-500 [@media(scripting:none)]:!opacity-0"
       />
 
       <div
