@@ -80,11 +80,16 @@
   max-width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  overflow: auto;
-  overscroll-behavior-x: contain;
-  overscroll-behavior-y: auto;
+  overflow: hidden;
   scrollbar-width: none;
   scroll-behavior: auto;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+}
+
+.stage[data-animated="true"] .field:active {
+  cursor: grabbing;
 }
 
 .stage[data-animated="true"] .field::-webkit-scrollbar {
