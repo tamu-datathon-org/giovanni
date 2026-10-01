@@ -1,167 +1,207 @@
 "use client";
-"use client";
 
+import type { RefObject } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useWindowWidth } from "@/hooks/useWindowWidth";
+
+import { ApplyButton } from "./ApplyButton";
+import { EventDate } from "./EventDate";
+import { MarqueeSign, SignGlow } from "./MarqueeSign";
+import { ASSETS, cssVars, DRIVE_SPAN, SIGN_BOX, TIMING } from "./scene";
+import { SiteNotice } from "./SiteNotice";
+import { SkyLayer } from "./SkyLayer";
+import { Street } from "./Street";
+
+/** off: sign dark · flicker: the power-on sputter · on: fully lit and animated. */
+type Stage = "off" | "flicker" | "on";
+
+const easeInOutCubic = (t: number) =>
+  t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
+
+/** Writes how far the page has scrolled through the hero to --drive / --drive-e, without re-rendering. */
+function useScrollDrive(ref: RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    let top = 0;
+    let frame = 0;
+
+    const measure = () => {
+      top = el.getBoundingClientRect().top + window.scrollY;
+    };
+    const update = () => {
+      frame = 0;
+      // Finish the drive by the bottom of the page if it's too short to scroll the full span.
+      const scrollable =
+        document.documentElement.scrollHeight - window.innerHeight - top;
+      const span = Math.max(
+        1,
+        Math.min(el.offsetHeight * DRIVE_SPAN, scrollable),
+      );
+      const progress = Math.min(1, Math.max(0, (window.scrollY - top) / span));
+      el.style.setProperty("--drive", progress.toFixed(4));
+      el.style.setProperty("--drive-e", easeInOutCubic(progress).toFixed(4));
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    const resize = new ResizeObserver(() => {
+      measure();
+      schedule();
+    });
+    measure();
+    update();
+    resize.observe(el);
+    window.addEventListener("scroll", schedule, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      resize.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [ref]);
+}
+
+/** Flags the hero while it's out of view so its idle loops can pause. */
+function usePauseOffscreen(ref: RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      el.toggleAttribute("data-offscreen", !entry.isIntersecting);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref]);
+}
 
 export default function Hero() {
-    const windowWidth = useWindowWidth();
+  const heroRef = useRef<HTMLElement>(null);
+  const signRef = useRef<HTMLImageElement>(null);
+  const backgroundRef = useRef<HTMLImageElement>(null);
+  const timers = useRef<number[]>([]);
+  const [stage, setStage] = useState<Stage>("off");
 
-    // Breakpoints
-    const isMobile = windowWidth > 0 && windowWidth < 768;
-    const isTablet = windowWidth >= 768 && windowWidth < 1024;
-    const isDesktop = windowWidth >= 1024;
+  useScrollDrive(heroRef);
+  usePauseOffscreen(heroRef);
 
-    // Dynamic image sizes
-    const napkinWidth = isMobile ? 400 : isTablet ? 550 : 696;
-    const napkinHeight = isMobile ? 409 : isTablet ? 562 : 711;
+  const later = useCallback((ms: number, fn: () => void) => {
+    timers.current.push(window.setTimeout(fn, ms));
+  }, []);
 
-    // Dynamic steam positioning
-    const steamLeftPosition = isMobile ? "55%" : "60%";
-    const steamTopPosition = isMobile ? "5%" : "10%";
-    const steamWidth = isMobile ? "50%" : "60%";
+  const clearTimers = useCallback(() => {
+    timers.current.forEach((id) => window.clearTimeout(id));
+    timers.current = [];
+  }, []);
 
-    // Prevent flash of unstyled content
-    if (windowWidth === 0) {
-        return (
-        <section
-            id="hero"
-            className="flex h-screen items-center justify-center bg-[url(/images/background.svg)]"
-        >
-            <div className="animate-pulse text-2xl text-[#966952]">Loading...</div>
-        </section>
-        );
-    }
+  /** Turns the sign on after `delay` ms: a sputter, or a plain fade for reduced motion. */
+  const powerOn = useCallback(
+    (delay: number) => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        later(delay, () => setStage("on"));
+        return;
+      }
+      later(delay, () => {
+        setStage("flicker");
+        later(TIMING.flicker, () => setStage("on"));
+      });
+    },
+    [later],
+  );
 
-    return (
-        <>
-            <section
-                id="hero"
-                className="relative flex min-h-screen flex-col md:flex-row bg-[url(/images/background.svg)]"
-            >
-                {/* CHANGED: w-2/3 → w-3/5 for a better visual balance with the brown panel.
-                    CHANGED: added items-center and md:min-h-screen so the cup is
-                    vertically centered in its column instead of floating at the top. */}
-                <div className="relative flex w-full items-start justify-center md:w-3/5 md:min-h-screen md:justify-start">
-                    <Image
-                        src="/images/group_napcup.svg"
-                        alt="Napkin"
-                        width={napkinWidth}
-                        height={napkinHeight}
-                        priority
-                        sizes="(max-width: 768px) 100vw, (min-width: 769px) 50vw"
-                        // CHANGED: removed lg:w-6/7 → w-full so the image fills
-                        // its container properly without awkward leftover space
-                        className="block h-auto w-full md:max-w-[85%]"
-                    />
-                    <Image
-                        src="/images/steam.gif"
-                        alt="steam.gif"
-                        width={2388}
-                        height={1668}
-                        className="absolute h-auto -translate-x-1/2"
-                        style={{
-                        left: steamLeftPosition,
-                        top: steamTopPosition,
-                        width: steamWidth,
-                        }}
-                        loading="lazy"
-                        sizes="60vw"
-                    />
-                </div>
+  // Hold the sign dark until its art (and the city) can actually be seen, then power on.
+  useEffect(() => {
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      powerOn(TIMING.beat);
+    };
 
-                {/* CHANGED: w-1/3 → w-2/5 to give the panel more breathing room
-                    so text and button don't feel cramped at desktop sizes */}
-                <div
-                    className="
-                        flex w-full flex-col items-center justify-center
-                        bg-[#966952]
-                        px-6 py-10 text-center
-                        md:w-2/5
-                        md:min-h-screen
-
-                    "
-                    >
-                    <p className="text-center font-darumadrop-one text-5xl text-[#FAE19D] sm:text-6xl md:text-6xl lg:text-8xl">
-                        TAMU <br /> Datathon Lite
-                    </p>
-
-                    <p className="mt-6 text-center font-['Chilanka'] text-3xl text-[#FAE19D] sm:text-3xl md:mt-8 md:text-4xl lg:text-6xl">
-                        April 11, 2026 <br />
-                    </p>
-
-                    <p className="mt-6 text-center font-['Chilanka'] text-lg text-[#B4D8EE] sm:text-xl md:mt-8 md:text-2xl lg:text-4xl">
-                        Applications Closed
-                    </p>
-
-                    <div className="w-full border-b-4 border-dashed border-[#FAE19D] my-6" />
-
-
-                    <div className="flex flex-col items-center gap-4 mt-6 md:mt-8 w-full">
-
-                        <a
-                            href="https://td26.ctfd.io/"
-                            className="
-                            w-fit text-center
-                            border-4
-                            border-[#B4D8EE]
-                            rounded-xl
-                            bg-[#F7EEDF]
-                            font-darumadrop-one
-                            text-[#533A24]
-
-                            transition-transform
-                            hover:-translate-y-2
-                            hover:shadow-xl
-                            "
-                            style={{
-                                padding: isMobile
-                                    ? "12px 24px"
-                                    : isTablet
-                                    ? "14px 32px"
-                                    : "18px 40px",
-                                fontSize: isMobile ? "20px" : isTablet ? "22px" : "24px",
-                            }}
-                        >
-                            CHALLENGES
-                        </a>
-
-                        <a
-                            href="https://helpqueue.tamudatathon.com/"
-                            className="
-                            w-fit text-center
-                            border-4
-                            border-[#B4D8EE]
-                            rounded-xl
-                            bg-[#F7EEDF]
-                            font-darumadrop-one
-                            text-[#533A24]
-
-                            transition-transform
-                            hover:-translate-y-2
-                            hover:shadow-xl
-                            "
-                            style={{
-                                padding: isMobile
-                                    ? "12px 24px"
-                                    : isTablet
-                                    ? "14px 32px"
-                                    : "18px 40px",
-                                fontSize: isMobile ? "20px" : isTablet ? "22px" : "24px",
-                            }}
-                        >
-                            HELP QUEUE
-                        </a>
-                    </div>
-
-                    {/* dev mode only - comment out for production (shows current screensize) */}
-                    {/* {process.env.NODE_ENV === "development" && (
-                        <p className="mt-4 text-xs text-[#FAE19D]/50">
-                        {isMobile ? "📱 Mobile" : isTablet ? "📟 Tablet" : "🖥️ Desktop"} ({windowWidth}px)
-                        </p>
-                    )} */}
-                </div>
-            </section>
-        </>
+    const images = [signRef.current, backgroundRef.current].filter(
+      (img): img is HTMLImageElement => img !== null,
     );
+    void Promise.all(
+      images.map((img) => img.decode().catch(() => undefined)),
+    ).then(start);
+    later(TIMING.readyTimeout, start);
+
+    return () => {
+      started = true;
+      clearTimers();
+    };
+  }, [later, clearTimers, powerOn]);
+
+  const flipPower = useCallback(() => {
+    if (stage !== "on") return;
+    setStage("off");
+    powerOn(TIMING.darkHold);
+  }, [stage, powerOn]);
+
+  return (
+    <section
+      ref={heroRef}
+      id="hero"
+      data-stage={stage}
+      // group/hero: children style themselves off data-stage. Idle loops pause while off-screen.
+      className="group/hero relative isolate h-svh min-h-[320px] overflow-hidden bg-[#190148] [container-type:size] [&[data-offscreen]_*]:![animation-play-state:paused]"
+      style={cssVars({
+        "--flicker": `${TIMING.flicker}ms`,
+        // Road-top line: 72% of the height on square and portrait screens, rising to 88% on very wide ones.
+        "--road-y": "clamp(72cqh, 56cqh + 16cqw, 88cqh)",
+        "--gutter": "clamp(12px, 3cqw, 24px)",
+        "--top-gap": "12px",
+        // px per unit of background.png: the scene always covers the width and reaches the top.
+        "--s": "max(100cqw / 1440, var(--road-y) / 950)",
+        // px per unit of hero_sign.png: never beyond the mockup's proportions, the width, or the space above the road.
+        "--g":
+          "min(var(--s), (100cqw - 2 * var(--gutter)) / 921, (var(--road-y) - var(--top-gap)) / 911)",
+        "--car-w": "calc(410 * var(--g))",
+      })}
+    >
+      <div
+        className="absolute left-[calc(50%_-_720*var(--s))] top-[calc(var(--road-y)_-_950*var(--s))] z-0 h-[calc(1394*var(--s))] w-[calc(1440*var(--s))]"
+        // The art's own sky colours, shown while background.png loads.
+        style={{
+          background:
+            "linear-gradient(#190148, #4b2346 14.3%, #713a3f 28.7%, #894438 43%, #8d4536 46%)",
+        }}
+      >
+        <Image
+          ref={backgroundRef}
+          src={ASSETS.background}
+          alt=""
+          fill
+          preload
+          sizes="(max-aspect-ratio: 1/1) 110vh, 100vw"
+        />
+        <SkyLayer />
+      </div>
+
+      <SignGlow />
+      <MarqueeSign
+        signRef={signRef}
+        powered={stage === "on"}
+        onFlipPower={flipPower}
+      />
+      <Street />
+      {/* Same box as the sign, but above the road and the car. */}
+      <div className={`${SIGN_BOX} pointer-events-none z-[5]`}>
+        <EventDate />
+        <ApplyButton />
+      </div>
+      <SiteNotice />
+      {/* MLH member events must link the Code of Conduct. */}
+      <a
+        href="https://mlh.io/code-of-conduct"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute bottom-[max(10px,1.5cqh)] right-[max(12px,1.5cqw)] z-[6] text-[length:clamp(11px,0.9cqw,14px)] tracking-[0.02em] text-[rgb(255_244_220/0.75)] underline underline-offset-[3px] hover:text-[#fff4dc] focus-visible:rounded focus-visible:text-[#fff4dc] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#3edbd3]"
+      >
+        MLH Code of Conduct
+      </a>
+    </section>
+  );
 }

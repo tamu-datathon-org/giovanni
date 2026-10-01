@@ -1,10 +1,20 @@
-import { Inter, Konkhmer_Sleokchher } from "next/font/google";
+import { Inter, Kode_Mono, Konkhmer_Sleokchher } from "next/font/google";
 import localFont from "next/font/local";
 
 export const w95fa = localFont({
   src: "./fonts/w95fa.woff2",
   display: "swap",
   variable: "--font-w95fa",
+});
+
+export const kodeMono = localFont({
+  src: [
+    { path: "./fonts/KodeMono-Regular.ttf", weight: "400", style: "normal" },
+    { path: "./fonts/KodeMono-SemiBold.ttf", weight: "600", style: "normal" },
+    { path: "./fonts/KodeMono-Bold.ttf", weight: "700", style: "normal" },
+  ],
+  display: "swap",
+  fallback: ["monospace"],
 });
 
 export const inter = Inter({
@@ -19,4 +29,10 @@ export const konkhmerSleokchher = Konkhmer_Sleokchher({
   weight: "400",
   display: "swap",
   variable: "--font-konkhmer-sleokchher",
+});
+
+export const kodeMono = Kode_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-kode-mono",
 });
