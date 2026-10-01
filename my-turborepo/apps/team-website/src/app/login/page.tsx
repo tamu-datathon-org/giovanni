@@ -7,7 +7,6 @@ import { FcGoogle } from "react-icons/fc";
 
 import { normalizeCallbackPath } from "@vanni/auth/callback-url";
 
-import { kodeMono, konkhmerSleokchher } from "~/app/_components/fonts";
 import Chevrons from "~/components/Hero/Chevrons";
 import { toast } from "~/hooks/use-toast";
 import LoginButton from "../_components/auth/login_button";
@@ -126,7 +125,7 @@ function LoginContent() {
 
   return (
     <section
-      className={`${kodeMono.variable} ${konkhmerSleokchher.variable} grid-background-blue relative flex min-h-screen w-full items-center justify-center overflow-hidden px-5 pb-16 pt-24 lg:py-20`}
+      className="grid-background-blue relative flex min-h-screen w-full items-center justify-center overflow-hidden px-5 pb-16 pt-24 lg:py-20"
       style={{ backgroundColor: INK.paper }}
     >
       {/* the homepage hero's curved line, kept faint and to the right so it

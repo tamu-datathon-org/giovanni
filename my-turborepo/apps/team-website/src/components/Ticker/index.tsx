@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-import { konkhmerSleokchher } from "~/app/_components/fonts";
 import { Marquee } from "~/components/ui/marquee";
 
 const ROW_1 = [
@@ -55,7 +54,7 @@ function LogoRow({ logos }: { logos: string[] }) {
 export default function SponsorTicker() {
   return (
     <div
-      className={`${konkhmerSleokchher.variable} relative w-full bg-[#e9f6ff] py-10`}
+      className={`relative w-full bg-[#e9f6ff] py-10`}
     >
       {/* Grid background pattern */}
       <div

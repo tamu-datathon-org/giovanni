@@ -51,7 +51,6 @@ import { api } from "~/trpc/react";
 import GenericCombobox from "../../_components/genericCombobox";
 import GenericMultiSelect from "../../_components/genericMultiSelect";
 import { applicationSchema } from "../validation";
-import { kodeMono } from "~/app/_components/fonts";
 import styles from "./application.module.css";
 import { useApplicationEntrance } from "./useApplicationEntrance";
 
@@ -88,9 +87,6 @@ const DRAFT_STORAGE_KEY = "applicationData";
 const RESUME_OPTIONAL = true;
 
 const TRAVEL_REIMBURSEMENT_FORM_URL = "" as string;
-
-
-const dropdownClassName = `${kodeMono.className} ${styles.dropdown}`;
 
 export function Asterisk() {
   return <span className="text-red-500">*</span>;
@@ -596,12 +592,12 @@ export function ApplicationForm() {
             </header>
 
             <div className={styles.panel}>
-              <StarRow
+              {/* <StarRow
                 className={styles.whiteStars}
                 src="/images/application/white-star.svg"
                 width={74}
                 height={86}
-              />
+              /> */}
               {/* Personal Information Section */}
               <SectionCard title="Personal Information">
                 <div className="grid gap-6 md:grid-cols-2">
@@ -651,7 +647,7 @@ export function ApplicationForm() {
                     placeholder="e.g. 1234567890"
                   />
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"age"}
                     label={"Age"}
                     options={AGE}
@@ -664,7 +660,7 @@ export function ApplicationForm() {
 
                 <div className="mt-6 grid gap-6 md:grid-cols-2">
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"country"}
                     label={"Country of Residence"}
                     options={COUNTRIES}
@@ -674,7 +670,7 @@ export function ApplicationForm() {
                     required={true}
                   />
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"gender"}
                     label={"Gender"}
                     options={GENDER_OPTIONS}
@@ -695,7 +691,7 @@ export function ApplicationForm() {
 
                 <div className="mt-6">
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"race"}
                     label={"What ethnicity do you identify with?"}
                     options={RACE_OPTIONS}
@@ -719,7 +715,7 @@ export function ApplicationForm() {
               <SectionCard title="Education">
                 <div className="mb-6">
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"school"}
                     label={"School"}
                     options={SCHOOL_OPTIONS}
@@ -732,7 +728,7 @@ export function ApplicationForm() {
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"major"}
                     label={"Major"}
                     options={MAJOR}
@@ -750,7 +746,7 @@ export function ApplicationForm() {
                     required={true}
                   />
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"classification"}
                     label={"Level of Study"}
                     options={EDUCATION_LEVELS}
@@ -764,7 +760,7 @@ export function ApplicationForm() {
 
                 <div className="mt-6">
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"gradYear"}
                     label={"Anticipated Graduation Year"}
                     options={GRADUATION_YEARS}
@@ -782,7 +778,7 @@ export function ApplicationForm() {
               <SectionCard title="Experience">
                 <div className="grid gap-6 md:grid-cols-2">
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"hackathonsAttended"}
                     label={"Hackathons Attended"}
                     options={HACKATHON_EXPERIENCE}
@@ -794,7 +790,7 @@ export function ApplicationForm() {
                     required={true}
                   />
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"experience"}
                     label={"Programming Experience Level"}
                     options={PROGRAMMING_SKILL_LEVELS}
@@ -812,7 +808,7 @@ export function ApplicationForm() {
 
                 <div className="mt-6">
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"eventSource"}
                     label={"How did you hear about us?"}
                     options={HEARD_ABOUT_OPTIONS}
@@ -918,7 +914,7 @@ export function ApplicationForm() {
               <SectionCard title="Additional Details">
                 <div className="mb-6">
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"shirtSize"}
                     label={"T-Shirt Size"}
                     options={SHIRT_SIZES}
@@ -963,7 +959,7 @@ export function ApplicationForm() {
 
                 <div className="mt-6">
                   <GenericMultiSelect
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"dietaryRestriction"}
                     label={"Dietary Restrictions"}
                     placeholder="Select dietary restrictions (if any)"
@@ -990,7 +986,7 @@ export function ApplicationForm() {
               <SectionCard title="Travel Reimbursement">
                 <div className="grid gap-6 md:grid-cols-1">
                   <GenericCombobox
-                    popoverClassName={dropdownClassName}
+                    popoverClassName={styles.dropdown}
                     name={"travelReimbursement"}
                     label={"Do you require travel reimbursement?"}
                     options={YES_NO}
