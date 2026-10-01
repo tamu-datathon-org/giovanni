@@ -31,8 +31,8 @@ export const konkhmerSleokchher = Konkhmer_Sleokchher({
   variable: "--font-konkhmer-sleokchher",
 });
 
-export const kodeMono = Kode_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-kode-mono",
-});
+// export const kodeMono = Kode_Mono({
+//   subsets: ["latin"],
+//   display: "swap",
+//   variable: "--font-kode-mono",
+// });

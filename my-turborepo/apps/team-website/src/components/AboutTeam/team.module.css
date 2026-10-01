@@ -11,15 +11,11 @@
   font-family: var(--font-inter), sans-serif;
 }
 
-.stage::before {
+.gridBackground {
   position: absolute;
   z-index: -1;
   inset: 0;
-  background: url("/images/team/grid.png") repeat;
-  background-attachment: fixed;
   opacity: 0.1;
-  pointer-events: none;
-  content: "";
 }
 
 .track {

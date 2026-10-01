@@ -29,6 +29,7 @@ import {
   getBubbleBounds,
   projectBubble,
 } from "./bubble-layout";
+import GridBackground from "~/components/GridBackground";
 import styles from "./team.module.css";
 
 const socialIcons = {
@@ -412,6 +413,7 @@ export default function BubbleField({
           } as CSSProperties
         }
       >
+        <GridBackground className={styles.gridBackground} />
         <h2
           ref={headingRef}
           id="team-heading"
