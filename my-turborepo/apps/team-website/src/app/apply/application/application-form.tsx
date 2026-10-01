@@ -1060,16 +1060,16 @@ export function ApplicationForm() {
                     control={form.control}
                     name="mlhPrivacyPolicy"
                     render={({ field }) => (
-                      <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-neutral-700 p-4 transition-all hover:border-[#01c0cc]">
+                      <FormItem className={styles.consent}>
                         <FormControl>
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            className="mt-3 !border-2 !border-white"
+                            className={styles.checkbox}
                           />
                         </FormControl>
                         <div className="space-y-1">
-                          <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
+                          <FormLabel className="font-medium">
                             I authorize you to share my application/registration
                             information with Major League Hacking for event
                             administration, ranking, and administration
@@ -1118,16 +1118,16 @@ export function ApplicationForm() {
                     control={form.control}
                     name="mlhEmailConsent"
                     render={({ field }) => (
-                      <FormItem className="flex items-start space-x-3 rounded-lg border-2 border-neutral-700 p-4 transition-all hover:border-[#01c0cc]">
+                      <FormItem className={styles.consent}>
                         <FormControl>
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            className="mt-3 !border-2 !border-white"
+                            className={styles.checkbox}
                           />
                         </FormControl>
                         <div className="space-y-1">
-                          <FormLabel className="text-base font-medium leading-relaxed text-neutral-100">
+                          <FormLabel className="font-medium">
                             <span className="text-neutral-400">(Optional) </span>I
                             authorize MLH + DEV to send me occasional emails about
                             relevant events, career opportunities, and community
