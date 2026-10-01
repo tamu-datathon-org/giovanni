@@ -6,12 +6,6 @@ html {
   scroll-behavior: smooth;
 }
 
-@layer base {
-  body {
-    font-family: "Inter", sans-serif;
-  }
-}
-
 @layer components {
   input[type="checkbox"]:checked ~ label span svg {
     @apply inline-flex;

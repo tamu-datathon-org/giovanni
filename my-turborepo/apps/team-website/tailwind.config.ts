@@ -52,7 +52,6 @@ export default {
       fontFamily: {
         // Font faces are loaded in src/app/globals.css
         myfont: ["myfont", "sans-serif"],
-        XPfont: ["myfont", "sans-serif"],
         inter: ["Inter", "sans-serif"],
         konkhmer: ['"Konkhmer Sleokchher"', "sans-serif"],
         kode: ['"Kode Mono"', "monospace"],
