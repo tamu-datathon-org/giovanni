@@ -78,7 +78,7 @@ export default function SponsorTicker() {
             <LogoRow logos={ROW_1} />
           </Marquee>
           <Marquee reverse>
-            <LogoRow logos={ROW_1} />
+            <LogoRow logos={ROW_2} />
           </Marquee>
         </div>
       </div>
