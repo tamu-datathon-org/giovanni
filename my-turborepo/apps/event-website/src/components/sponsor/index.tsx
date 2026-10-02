@@ -188,7 +188,7 @@ function Sponsors() {
   };
 
   return (
-    <section id="sponsors" aria-label="Sponsors" className="relative overflow-x-clip bg-[#8F0000]">
+    <section id="sponsors" aria-label="Sponsors" className="relative overflow-x-clip bg-[#6C0204]">
       <SectionGround>
         <div className="flex flex-col items-center px-4 pb-8 pt-14 md:pb-10 md:pt-20">
           <h2 className="font-righteous flex items-center justify-center gap-[0.4em] text-[clamp(42px,7vw,88px)] uppercase leading-none tracking-[0.04em] text-[#FDFBED] [-webkit-text-stroke:0.06em_#FFB24C] [paint-order:stroke_fill]">

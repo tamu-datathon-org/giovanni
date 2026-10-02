@@ -25,58 +25,69 @@ const ART =
 const DECK = { x: 16, y: 8 };
 
 const SPOTS = [
-  { x: 18, y: 32, r: -6 },
-  { x: 39, y: 32, r: -2 },
-  { x: 61, y: 32, r: 2 },
-  { x: 82, y: 32, r: 6 },
-  { x: 22, y: 58, r: -6 },
-  { x: 41, y: 58, r: -2 },
-  { x: 59, y: 58, r: 2 },
-  { x: 78, y: 58, r: 6 },
+  { x: 12, y: 32, r: -7 },
+  { x: 31, y: 32, r: -3 },
+  { x: 50, y: 32, r: 0 },
+  { x: 69, y: 32, r: 3 },
+  { x: 88, y: 32, r: 7 },
+  { x: 12, y: 58, r: -7 },
+  { x: 31, y: 58, r: -3 },
+  { x: 50, y: 58, r: 0 },
+  { x: 69, y: 58, r: 3 },
+  { x: 88, y: 58, r: 7 },
 ];
 
 type FaqItem = { question: string; answer: string };
 
 const ITEMS: FaqItem[] = [
   {
-    question: "What is TAMU Datathon Lite?",
+    question: "What is TAMU Datathon?",
     answer:
-      "TD Lite is a smaller, more **beginner** friendly version of our main event. It's a **one-day event**, but it will have everything Datathon normally has including free food, swag, workshops, and prizes!",
+      "A datathon is where you build your analytical skill set and create data-driven solutions in 24 hours. We provide data science lectures, workshops, challenges, prizes, fun activities, swag, food, and more!",
   },
   {
-    question: "Where is the event?",
+    question: "When is the event?",
     answer:
-      "The event takes place at **Peterson**. Once you enter the building, organizers will be there to guide you to the main room! If you have any questions regarding transportation or parking, please **reach out to us on Discord.**",
+      "November 9-10th, 2024. A complete schedule will be available at tamudatathon.com/schedule at a later date.",
   },
   {
-    question: "Why should I come?",
+    question: "Where is the event & how will I get there?",
     answer:
-      "**It is completely free!** Learn Data Science with interactive challenges and prizes. If you struggle to start to learn, TDLite offers a **beginner-focused** space to compete in. We have mentors to help and **free swag/food.**",
-  },
-  {
-    question: "How do I sign up?",
-    answer:
-      "Head over to https://tamudatathon.org/apply to get started! Admission decisions will be released shortly after registration closes.",
+      "The event will take place at the MSC 2300 Bethancourt Ballroom! Parking will be free at a later disclosed location",
   },
   {
     question: "How much do I need to know?",
     answer:
-      "If you are **new to data science**, TD Lite is the perfect time and place to learn. We will provide **introductory workshops and mentors** to guide you throughout the competition. We are committed to helping you build something you can be proud of!",
+      "If you are new to data science, TAMU Datathon is the perfect time and place to learn. We will provide introductory coursework and mentors to guide you along your journey to complete a data science project. For our more advanced students, our challenges will pique your interest and allow you to put your skills to the test. We are committed to helping you build something you can be proud of!",
+  },
+  {
+    question: "How do I sign up?",
+    answer:
+      "Registration is currently open! Admission decisions will be released soon after the registration ends.",
   },
   {
     question: "Who can attend?",
     answer:
-      "TD Lite is open to **beginner students** currently enrolled at **Texas A&M** who are at least **18 years old**. We welcome students from all majors!",
+      "TAMU Datathon is open to any enrolled undergraduate or graduate student at least 18 years of age and anyone who has graduated within one year of the event. We welcome students from all across the world and from all majors!",
+  },
+  {
+    question: "How much does it cost?",
+    answer:
+      "It is FREE! All you need is a laptop! We will even throw in tons of swag, food, Wi-Fi, workspaces, and caffeine during your stay. ALSO PARKING IS FREE!",
   },
   {
     question: "What should I bring?",
     answer:
-      "All you need is a **laptop and a charger** to get started at TD Lite! You may bring other items such as a pillow or a debugging duck if you wish to. Also make sure to **check the weather** in case you might need an umbrella :D.",
+      "Since the event will last overnight, it is a good idea to bring a pillow and a sleeping bag if you are planning on staying at the venue. Please remember to bring your laptop and charger.",
   },
   {
-    question: "Have another question?",
+    question: "How do teams work?",
     answer:
-      "Send us an email at connect@tamudatathon.com or reach out to us on Discord!",
+      "Teams can have up to 4 people. We encourage working with a team, it's more fun! You do not need to form a team before attending the event. There will be plenty of time to find a team after opening ceremonies.",
+  },
+  {
+    question: "I have another question?",
+    answer: "Send us an email at connect@tamudatathon.com.",
   },
 ];
 
@@ -167,7 +178,7 @@ export default function FAQ() {
       id="faq"
       aria-label="Frequently Asked Questions"
       data-show={inView ? "" : undefined}
-      className="group/faq relative overflow-x-clip bg-[#8F0000]"
+      className="group/faq relative overflow-x-clip bg-[#6C0204]"
     >
       <SectionGround>
         <Image
@@ -179,7 +190,7 @@ export default function FAQ() {
           className={`${ART} block w-full`}
         />
 
-        <div ref={stageRef} className="relative w-full overflow-hidden pb-16 pt-24 md:pb-24 md:pt-80">
+        <div ref={stageRef} className="relative w-full overflow-hidden pb-36 pt-24 md:pb-56 md:pt-80">
           <Image
             src={FAQ_BG}
             alt=""
@@ -240,7 +251,7 @@ export default function FAQ() {
                 width={1300}
                 height={48}
                 draggable={false}
-                className={`${ART} absolute left-1/2 top-full z-0 mt-1 w-[78%] -translate-x-1/2`}
+                className={`${ART} absolute left-1/2 top-full z-0 mt-8 w-[90%] -translate-x-1/2 md:mt-14`}
               />
               <Image
                 src={TABLE}
@@ -319,7 +330,7 @@ export default function FAQ() {
                         top: `${y}%`,
                         zIndex: selected ? 30 : 3,
                         transition: `left 700ms ease-out ${index * 90}ms, top 700ms ease-out ${index * 90}ms, transform 700ms ease-out ${index * 90}ms`,
-                        transform: `translate(-50%, -50%) rotate(${landed ? spot.r : -4}deg) scale(${index >= 4 && landed ? 1.08 : 1})`,
+                        transform: `translate(-50%, -50%) rotate(${landed ? spot.r : -4}deg) scale(${index >= 5 && landed ? 1.08 : 1})`,
                       }}
                     >
                       <span className="block origin-center transition-transform duration-150 ease-out group-hover/card:scale-[1.06] group-focus-visible/card:scale-[1.06]">
