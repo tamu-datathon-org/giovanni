@@ -438,9 +438,9 @@ export function ApplicationForm() {
       // Handle tRPC Zod errors (server-side validation)
       const zodErrorData = (error as any)?.data?.zodError as
         | {
-            fieldErrors?: Record<string, string[]>;
-            formErrors?: string[];
-          }
+          fieldErrors?: Record<string, string[]>;
+          formErrors?: string[];
+        }
         | undefined;
 
       if (zodErrorData?.fieldErrors) {
@@ -515,9 +515,9 @@ export function ApplicationForm() {
           const firstError = Object.values(errors)[0];
           const message =
             typeof firstError === "object" &&
-            firstError &&
-            "message" in firstError &&
-            typeof (firstError as { message?: unknown }).message === "string"
+              firstError &&
+              "message" in firstError &&
+              typeof (firstError as { message?: unknown }).message === "string"
               ? (firstError as { message: string }).message
               : "Please fill in all required fields.";
           toast({
@@ -681,12 +681,12 @@ export function ApplicationForm() {
                     defaultOption={
                       importedValues?.app?.gender
                         ? (GENDER_OPTIONS.find(
-                            (option) =>
-                              option.value === importedValues.app.gender,
-                          ) ?? {
-                            label: "Other (please specify)",
-                            value: importedValues.app.gender || "",
-                          })
+                          (option) =>
+                            option.value === importedValues.app.gender,
+                        ) ?? {
+                          label: "Other (please specify)",
+                          value: importedValues.app.gender || "",
+                        })
                         : undefined
                     }
                     required={true}
@@ -702,12 +702,12 @@ export function ApplicationForm() {
                     defaultOption={
                       importedValues?.app?.race
                         ? (RACE_OPTIONS.find(
-                            (option) =>
-                              option.value === importedValues.app.race,
-                          ) ?? {
-                            label: "Other (please specify)",
-                            value: importedValues.app.race || "",
-                          })
+                          (option) =>
+                            option.value === importedValues.app.race,
+                        ) ?? {
+                          label: "Other (please specify)",
+                          value: importedValues.app.race || "",
+                        })
                         : undefined
                     }
                     required={true}
@@ -739,12 +739,12 @@ export function ApplicationForm() {
                     defaultOption={
                       importedValues?.app?.major
                         ? (MAJOR.find(
-                            (option) =>
-                              option.value === importedValues.app.major,
-                          ) ?? {
-                            label: "Other (please specify)",
-                            value: importedValues.app.major || "",
-                          })
+                          (option) =>
+                            option.value === importedValues.app.major,
+                        ) ?? {
+                          label: "Other (please specify)",
+                          value: importedValues.app.major || "",
+                        })
                         : undefined
                     }
                     required={true}
@@ -801,9 +801,9 @@ export function ApplicationForm() {
                     defaultOption={
                       importedValues?.app?.experience
                         ? PROGRAMMING_SKILL_LEVELS.find(
-                            (option) =>
-                              option.value === importedValues.app.experience,
-                          )
+                          (option) =>
+                            option.value === importedValues.app.experience,
+                        )
                         : undefined
                     }
                     required={true}
@@ -1072,8 +1072,17 @@ export function ApplicationForm() {
                           <FormLabel className="font-medium">
                             I authorize you to share my application/registration
                             information with Major League Hacking for event
-                            administration, ranking, and MLH administration
-                            in-line with the{" "}
+                            administration, ranking, and administration
+                            (including the creation of linked accounts on MLH and
+                            DEV (
+                            <a
+                              className="text-[#01c0cc] underline hover:text-[#28979b]"
+                              href="https://dev.to"
+                              target="_blank"
+                            >
+                              dev.to
+                            </a>
+                            )) in line with the{" "}
                             <a
                               className="text-[#01c0cc] underline hover:text-[#28979b]"
                               href="https://mlh.io/privacy"
@@ -1119,10 +1128,10 @@ export function ApplicationForm() {
                         </FormControl>
                         <div className="space-y-1">
                           <FormLabel className="font-medium">
-                            <span>(Optional) </span>
-                            I authorize MLH to send me occasional emails about
+                            <span className="text-neutral-400">(Optional) </span>I
+                            authorize MLH + DEV to send me occasional emails about
                             relevant events, career opportunities, and community
-                            announcements
+                            announcements.
                           </FormLabel>
                           <FormMessage />
                         </div>
