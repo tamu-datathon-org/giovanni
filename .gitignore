@@ -19,6 +19,7 @@ next-env.d.ts
 .DS_Store
 *.pem
 *.p12
+**/apple-wallet/certificates/
 
 
 # debug
