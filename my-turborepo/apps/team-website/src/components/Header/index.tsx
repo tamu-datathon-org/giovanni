@@ -56,6 +56,8 @@ const TRACKED_IDS = new Set([
   "team",
 ]);
 
+const HOME_LINK = menuData.find((item) => item.path === "/#home")
+
 const Header = ({
   collapsed = false,
   onToggle,
@@ -109,7 +111,11 @@ const Header = ({
         if (!el) continue;
         if (el.getBoundingClientRect().top <= line) current = id;
       }
-      setActiveId(current);
+      //check if user scrolled to the bottom of the web page 
+      const atBottom =
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 1;
+      setActiveId(atBottom ? (ids[ids.length - 1] ?? current) : current);
     };
 
     const onScroll = () => {
@@ -199,8 +205,11 @@ const Header = ({
           </div>
         ) : (
           <>
+          
+            {HOME_LINK && (
             <Link
               href="/"
+              onClick={(e) => handleNavClick(e, HOME_LINK)}
               aria-label="TAMU Datathon home"
               className={variant.logo}
             >
@@ -214,7 +223,7 @@ const Header = ({
                 priority
               />
             </Link>
-
+            )}
             <nav className={variant.nav}>
               <ul>
                 {menuData.map((item) => {
@@ -332,7 +341,11 @@ const Header = ({
           <ul>
             {menuData.map((item) => {
               const id = sectionIdOf(item.path);
-              const isActive = id !== null && id === activeId;
+              const isActive =
+                id !== null
+                  ? id === activeId
+                  : (Boolean(item.path) && pathname.startsWith(item.path!)) ||
+                    (item.path === "/apply" && applyPending);
               return (
                 <li key={item.id}>
                   <Link

@@ -48,6 +48,7 @@ const SOCIALS = [
 
 const SECTION_LINKS = menuData.filter((item) => item.path !== "/apply");
 const APPLY_LINK = menuData.find((item) => item.path === "/apply");
+const HOME_LINK = menuData.find((item) => item.path === "/#home")
 
 const Footer = () => {
   const { toast } = useToast();
@@ -81,14 +82,23 @@ const Footer = () => {
       <div className={styles.container}>
         <div className={styles.top}>
           <div className={styles.brand}>
-            <Image
-              src="/images/td-logos/logo/logoTD26.png"
-              alt="TAMU Datathon logo"
-              width={348}
-              height={242}
-              sizes="48px"
-              className={styles.logo}
-            />
+            {HOME_LINK && (
+              <Link
+                href="/"
+                onClick={(e) => handleNavClick(e, HOME_LINK)}
+                aria-label="TAMU Datathon home"
+              >
+                <Image
+                  src="/images/td-logos/logo/logoTD26.png"
+                  alt="TAMU Datathon logo"
+                  width={348}
+                  height={242}
+                  sizes="48px"
+                  className={styles.logo}
+                />
+              </Link>
+            )}
+
             <div>
               <div className={styles.nameRow}>
                 <span className={styles.name}>tamu datathon</span>

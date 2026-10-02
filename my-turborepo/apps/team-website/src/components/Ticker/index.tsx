@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import GridBackground from "~/components/GridBackground";
 import { Marquee } from "~/components/ui/marquee";
 
 const ROW_1 = [
@@ -56,15 +57,7 @@ export default function SponsorTicker() {
     <div
       className={`relative w-full bg-[#e9f6ff] py-10`}
     >
-      {/* Grid background pattern */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-10"
-        style={{
-          background: "url('/images/team/grid.png') repeat",
-          backgroundAttachment: "fixed",
-        }}
-      />
+      <GridBackground className="opacity-10" />
 
       {/* Content */}
       <div className="relative z-10 flex w-full flex-col items-center justify-center">
