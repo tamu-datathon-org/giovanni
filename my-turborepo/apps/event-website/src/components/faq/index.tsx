@@ -1,12 +1,41 @@
 "use client";
 
-import React, { useId, useState } from "react";
-import { useWindowWidth } from "@/hooks/useWindowWidth";
+import { useEffect, useId, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import Image from "next/image";
-interface FaqItem {
-  question: string;
-  answer: string;
-}
+
+import { SectionGround } from "@/components/SectionGround";
+
+const DIVIDER = "/event_assets/faq/divider.png";
+const FAQ_BG = "/event_assets/faq/faq-bg.png";
+const TABLE = "/event_assets/faq/poker-table-faq.png";
+const BOTTOM = "/event_assets/faq/faq-btm.png";
+const BEAR = "/event_assets/faq/bear-dealer-body.png";
+const HANDS = "/event_assets/faq/bear-hands.png";
+const STACK = "/event_assets/faq/card-stack.png";
+const CARD = "/event_assets/faq/card.png";
+const CHIP_STACK = "/event_assets/faq/chip-stack.png";
+const BUBBLE = "/event_assets/faq/faq-wanna-play.png";
+const STAR = "/event_assets/sponsors/Star.png";
+
+const ART =
+  "pointer-events-none h-auto w-full select-none [-webkit-user-drag:none] [user-drag:none]";
+
+/** Where the deck sits, as a percent of the table. Cards fly out from here. */
+const DECK = { x: 16, y: 8 };
+
+const SPOTS = [
+  { x: 18, y: 32, r: -6 },
+  { x: 39, y: 32, r: -2 },
+  { x: 61, y: 32, r: 2 },
+  { x: 82, y: 32, r: 6 },
+  { x: 22, y: 58, r: -6 },
+  { x: 41, y: 58, r: -2 },
+  { x: 59, y: 58, r: 2 },
+  { x: 78, y: 58, r: 6 },
+];
+
+type FaqItem = { question: string; answer: string };
 
 const ITEMS: FaqItem[] = [
   {
@@ -51,324 +80,12 @@ const ITEMS: FaqItem[] = [
   },
 ];
 
-export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const idBase = useId();
-  const windowWidth = useWindowWidth();
+const linkPattern =
+  /(https:\/\/tamudatathon\.org\/apply|connect@tamudatathon\.com)/g;
 
-  // Breakpoints - matching Prizes component
-  const isMobile = windowWidth > 0 && windowWidth < 768;
-  const isSmallTablet = windowWidth >= 768 && windowWidth < 900;
-  const isMediumTablet = windowWidth >= 900 && windowWidth < 1024;
-  const isSmallDesktop = windowWidth >= 1024 && windowWidth < 1280;
-  const isLargeDesktop = windowWidth >= 1280 && windowWidth < 1536;
-  const isXLDesktop = windowWidth >= 1536;
-
-  // Base unit for scaling - proportional to Prizes component
-  const getBaseUnit = () => {
-    if (isMobile) return Math.min(Math.max(140, windowWidth * 0.38), 280);
-    if (isSmallTablet) return Math.min(Math.max(180, windowWidth * 0.26), 240);
-    if (isMediumTablet) return Math.min(Math.max(200, windowWidth * 0.26), 280);
-    if (isSmallDesktop) return Math.min(Math.max(240, windowWidth * 0.24), 320);
-    if (isLargeDesktop) return Math.min(Math.max(280, windowWidth * 0.22), 360);
-    return Math.min(Math.max(320, windowWidth * 0.2), 400);
-  };
-
-  const baseUnit = getBaseUnit();
-
-  // Dynamic container max width - matches Prizes/Location
-  const getContainerMaxWidth = () => {
-    if (isMobile) return "96vw";
-    if (isSmallTablet) return "680px";
-    if (isMediumTablet) return "780px";
-    if (isSmallDesktop) return "880px";
-    if (isLargeDesktop) return "960px";
-    return "1020px";
-  };
-
-  // Dynamic section padding
-  const getSectionPadding = () => {
-    if (isMobile) return { py: "80px" };
-    if (isSmallTablet) return { py: "72px" };
-    if (isMediumTablet) return { py: "80px" };
-    if (isSmallDesktop) return { py: "88px" };
-    return { py: "96px" };
-  };
-
-  // Dynamic outer card padding
-  const getOuterCardPadding = () => {
-    if (isMobile) return "16px";
-    if (isSmallTablet) return "20px";
-    if (isMediumTablet) return "24px";
-    return "28px";
-  };
-
-  // Dynamic inner card padding
-  const getInnerCardPadding = () => {
-    if (isMobile) return { px: "12px", pt: "14px", pb: "24px" };
-    if (isSmallTablet) return { px: "20px", pt: "16px", pb: "28px" };
-    if (isMediumTablet) return { px: "24px", pt: "18px", pb: "32px" };
-    return { px: "28px", pt: "20px", pb: "36px" };
-  };
-
-  // Dynamic title font size
-  const getTitleFontSize = () => {
-    if (isMobile) return "32px";
-    if (isSmallTablet) return "40px";
-    if (isMediumTablet) return "48px";
-    if (isSmallDesktop) return "52px";
-    return "56px";
-  };
-
-  // Dynamic subtitle font size
-  const getSubtitleFontSize = () => {
-    if (isMobile) return "14px";
-    if (isSmallTablet) return "18px";
-    if (isMediumTablet) return "20px";
-    if (isSmallDesktop) return "22px";
-    return "24px";
-  };
-
-  // Dynamic grid margin top
-  const getGridMarginTop = () => {
-    if (isMobile) return "36px";
-    if (isSmallTablet) return "72px";
-    if (isMediumTablet) return "84px";
-    if (isSmallDesktop) return "96px";
-    return "108px";
-  };
-
-  // Dynamic grid gaps
-  const getGridGaps = () => {
-    if (isMobile) return { x: "16px", y: "32px" };
-    if (isSmallTablet) return { x: "20px", y: "56px" };
-    if (isMediumTablet) return { x: "28px", y: "64px" };
-    if (isSmallDesktop) return { x: "36px", y: "72px" };
-    return { x: "44px", y: "80px" };
-  };
-
-  // Dynamic latte dimensions
-  const getLatteDimensions = () => {
-    if (isMobile) return { wrapperW: "120px", wrapperH: "160px", containerW: "180px", pt: "32px" };
-    if (isSmallTablet) return { wrapperW: "160px", wrapperH: "220px", containerW: "280px", pt: "40px" };
-    if (isMediumTablet) return { wrapperW: "175px", wrapperH: "240px", containerW: "310px", pt: "44px" };
-    if (isSmallDesktop) return { wrapperW: "190px", wrapperH: "260px", containerW: "340px", pt: "48px" };
-    return { wrapperW: "200px", wrapperH: "280px", containerW: "360px", pt: "52px" };
-  };
-
-  // Dynamic question text size
-  const getQuestionFontSize = () => {
-    if (isMobile) return "10px";
-    if (isSmallTablet) return "16px";
-    if (isMediumTablet) return "18px";
-    if (isSmallDesktop) return "19px";
-    return "20px";
-  };
-
-  // Dynamic answer text size
-  const getAnswerFontSize = () => {
-    if (isMobile) return "8px";
-    if (isSmallTablet) return "11px";
-    if (isMediumTablet) return "12px";
-    return "13px";
-  };
-
-  // Dynamic answer container width
-  const getAnswerWidth = () => {
-    if (isMobile) return "38%";
-    if (isSmallTablet) return "36%";
-    return "35%";
-  };
-
-  // Dynamic vine 1 (top-left) styles
-  const getVine1Styles = () => {
-    if (isMobile) return { width: "130px", left: "-16px", top: "-80px", rotate: "-3deg" };
-    if (isSmallTablet) return { width: "220px", left: "-28px", top: "-160px", rotate: "-3deg" };
-    if (isMediumTablet) return { width: "260px", left: "-32px", top: "-190px", rotate: "-3deg" };
-    if (isSmallDesktop) return { width: "290px", left: "-36px", top: "-210px", rotate: "-3deg" };
-    return { width: "320px", left: "-40px", top: "-230px", rotate: "-3deg" };
-  };
-
-  // Dynamic vine 2 (top-right) styles
-  const getVine2Styles = () => {
-    if (isMobile) return { width: "200px", right: "-72px", top: "-40px", rotate: "-14deg" };
-    if (isSmallTablet) return { width: "340px", right: "-160px", top: "-90px", rotate: "-14deg" };
-    if (isMediumTablet) return { width: "400px", right: "-185px", top: "-105px", rotate: "-14deg" };
-    if (isSmallDesktop) return { width: "450px", right: "-200px", top: "-115px", rotate: "-14deg" };
-    return { width: "500px", right: "-210px", top: "-120px", rotate: "-14deg" };
-  };
-
-  // Dynamic button dimensions
-  const getButtonDimensions = () => {
-    if (isMobile) return "120px";
-    if (isSmallTablet) return "160px";
-    if (isMediumTablet) return "175px";
-    if (isSmallDesktop) return "190px";
-    return "200px";
-  };
-
-  // Prevent flash of unstyled content
-  if (windowWidth === 0) {
-    return (
-      <section
-        id="faq"
-        aria-label="Frequently Asked Questions"
-        className="flex min-h-[400px] items-center justify-center bg-[#f0cf91]"
-      >
-        <div className="animate-pulse text-2xl text-[#4c321b]">Loading...</div>
-      </section>
-    );
-  }
-
-  const sectionPadding = getSectionPadding();
-  const innerCardPadding = getInnerCardPadding();
-  const gridGaps = getGridGaps();
-  const latteDims = getLatteDimensions();
-  const vine1 = getVine1Styles();
-  const vine2 = getVine2Styles();
-
-  return (
-    <section
-      aria-label="Frequently Asked Questions"
-      className="relative z-30 w-full overflow-y-visible [overflow-x:clip] bg-[#f0cf91]"
-      id="faq"
-      style={{
-        paddingTop: sectionPadding.py,
-        paddingBottom: sectionPadding.py,
-      }}
-    >
-      {/* outer container */}
-      <div
-        className="mx-auto px-4"
-        style={{ maxWidth: getContainerMaxWidth() }}
-      >
-        <div
-          className="relative overflow-visible rounded-3xl bg-[#966952]"
-          style={{ padding: getOuterCardPadding() }}
-        >
-          {/* vine decorations */}
-          <Image
-            src="/images/faq/vines1.png"
-            alt="Vines decoration"
-            width={320}
-            height={220}
-            className="pointer-events-none absolute z-20 h-auto"
-            style={{
-              width: vine1.width,
-              left: vine1.left,
-              top: vine1.top,
-              transform: `rotate(${vine1.rotate})`,
-            }}
-            priority
-          />
-          <Image
-            src="/images/faq/vines2.png"
-            alt="Vines decoration"
-            width={320}
-            height={220}
-            className="pointer-events-none absolute z-20 h-auto"
-            style={{
-              width: vine2.width,
-              right: vine2.right,
-              top: vine2.top,
-              transform: `rotate(${vine2.rotate})`,
-            }}
-            priority
-          />
-
-          {/* inner dark-brown rectangle */}
-          <div
-            className="relative rounded-2xl bg-[#4C321B]"
-            style={{
-              paddingLeft: innerCardPadding.px,
-              paddingRight: innerCardPadding.px,
-              paddingTop: innerCardPadding.pt,
-              paddingBottom: innerCardPadding.pb,
-            }}
-          >
-            {/* Transparent strip for vines overlap */}
-            <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-10 sm:h-14" />
-
-            {/* title and subtitle */}
-            <div className="text-center">
-              <h2
-                className="font-darumadropone tracking-wide text-[#FFFFFF]"
-                style={{ fontSize: getTitleFontSize() }}
-              >
-                FAQ
-              </h2>
-              <p
-                className="mt-2 font-chilanka tracking-wide text-[#FFFFFF]/90"
-                style={{ fontSize: getSubtitleFontSize() }}
-              >
-                Click on the lattes!
-              </p>
-            </div>
-
-            {/* latte grid */}
-            <div
-              className="grid grid-cols-2 justify-items-center lg:grid-cols-4"
-              style={{
-                marginTop: getGridMarginTop(),
-                columnGap: gridGaps.x,
-                rowGap: gridGaps.y,
-              }}
-            >
-              {ITEMS.map((it, i) => {
-                const panelId = `${idBase}-faq-${i}`;
-                return (
-                  <div key={i}>
-                    <LatteFaqItem
-                      question={it.question}
-                      answer={it.answer}
-                      isOpen={openIndex === i}
-                      panelId={panelId}
-                      onToggle={() => setOpenIndex(openIndex === i ? null : i)}
-                      latteDims={latteDims}
-                      questionFontSize={getQuestionFontSize()}
-                      answerFontSize={getAnswerFontSize()}
-                      answerWidth={getAnswerWidth()}
-                      buttonWidth={getButtonDimensions()}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* screen indicator comment out in production */}
-      {/* {process.env.NODE_ENV === "development" && (
-        <p className="mt-4 text-center text-xs text-[#4c321b]/50">
-          FAQ Base: {Math.round(baseUnit)}px | Width: {windowWidth}px
-        </p>
-      )} */}
-    </section>
-  );
-}
-
-interface LatteFaqItemProps {
-  question: string;
-  answer: string;
-  isOpen: boolean;
-  panelId: string;
-  onToggle: () => void;
-  latteDims: { wrapperW: string; wrapperH: string; containerW: string; pt: string };
-  questionFontSize: string;
-  answerFontSize: string;
-  answerWidth: string;
-  buttonWidth: string;
-}
-
-// Clickable links and **bold**/colored text inside answer strings
-const renderAnswerContent = (text: string): React.ReactNode => {
-  const linkPattern =
-    /(https:\/\/tamudatathon\.org\/apply|connect@tamudatathon\.com)/g;
-  const boldPattern = /(\*\*[^*]+\*\*)/g;
-
-  const renderLinks = (content: string, keyPrefix: string) => {
-    return content.split(linkPattern).map((part, index) => {
+function renderAnswer(text: string): ReactNode {
+  const renderLinks = (content: string, keyPrefix: string) =>
+    content.split(linkPattern).map((part, index) => {
       if (part === "https://tamudatathon.org/apply") {
         return (
           <a
@@ -376,7 +93,7 @@ const renderAnswerContent = (text: string): React.ReactNode => {
             href={part}
             target="_blank"
             rel="noreferrer"
-            className="text-[#FAE19D] underline decoration-[#FAE19D] underline-offset-2"
+            className="underline underline-offset-2"
           >
             {part}
           </a>
@@ -387,147 +104,258 @@ const renderAnswerContent = (text: string): React.ReactNode => {
           <a
             key={`${keyPrefix}-link-${index}`}
             href="mailto:connect@tamudatathon.com"
-            className="text-[#FAE19D] underline decoration-[#FAE19D] underline-offset-2"
+            className="underline underline-offset-2"
           >
             {part}
           </a>
         );
       }
-      return <React.Fragment key={`${keyPrefix}-text-${index}`}>{part}</React.Fragment>;
+      return <span key={`${keyPrefix}-text-${index}`}>{part}</span>;
     });
-  };
 
-  return text.split(boldPattern).map((part, index) => {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
     if (part.startsWith("**") && part.endsWith("**")) {
-      const boldText = part.slice(2, -2);
       return (
-        <strong key={index} className="font-bold text-[#FAE19D]">
-          {renderLinks(boldText, `bold-${index}`)}
+        <strong key={index} className="font-bold text-[#8F0000]">
+          {renderLinks(part.slice(2, -2), `bold-${index}`)}
         </strong>
       );
     }
-    return <React.Fragment key={index}>{renderLinks(part, `plain-${index}`)}</React.Fragment>;
+    return <span key={index}>{renderLinks(part, `plain-${index}`)}</span>;
   });
-};
+}
 
-// React component, one latte
-const LatteFaqItem: React.FC<LatteFaqItemProps> = ({
-  question,
-  answer,
-  isOpen,
-  panelId,
-  onToggle,
-  latteDims,
-  questionFontSize,
-  answerFontSize,
-  answerWidth,
-  buttonWidth,
-}) => {
-  const [mouseDownPos, setMouseDownPos] = React.useState<{ x: number; y: number } | null>(null);
+export default function FAQ() {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+  const [dealt, setDealt] = useState(false);
+  const [landed, setLanded] = useState(false);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const idBase = useId();
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setMouseDownPos({ x: e.clientX, y: e.clientY });
-  };
-
-  const handleClick = (e: React.MouseEvent) => {
-    if (!mouseDownPos) return;
-    const distance = Math.sqrt(
-      Math.pow(e.clientX - mouseDownPos.x, 2) +
-        Math.pow(e.clientY - mouseDownPos.y, 2),
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        setInView(true);
+        observer.disconnect();
+      },
+      { threshold: 0.28 },
     );
-    if (distance < 5) {
-      onToggle();
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, [stageRef]);
+
+  const deal = () => {
+    if (dealt) return;
+    setDealt(true);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setLanded(true);
+      return;
     }
-    setMouseDownPos(null);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setLanded(true));
+    });
   };
+
+  const open = openIndex === null ? null : ITEMS[openIndex];
 
   return (
-    <div
-      className="group relative rounded-2xl font-chilanka"
-      style={{
-        width: latteDims.wrapperW,
-        height: latteDims.wrapperH,
-        paddingTop: latteDims.pt,
-      }}
+    <section
+      id="faq"
+      aria-label="Frequently Asked Questions"
+      data-show={inView ? "" : undefined}
+      className="group/faq relative overflow-x-clip bg-[#8F0000]"
     >
-      <div
-        id={panelId}
-        className="absolute inset-x-0 bottom-0 z-30 flex flex-col items-center transition-opacity duration-300 ease-out"
-      >
-        {/* question text above the latte */}
-        <div className="pointer-events-none relative z-40 mb-2 w-full px-1 sm:mb-3">
-          <div
-            className="mx-auto text-center font-darumadropone leading-snug text-white"
-            style={{ fontSize: questionFontSize }}
-          >
-            {question}
+      <SectionGround>
+        <Image
+          src={DIVIDER}
+          alt=""
+          width={1440}
+          height={234}
+          draggable={false}
+          className={`${ART} block w-full`}
+        />
+
+        <div ref={stageRef} className="relative w-full overflow-hidden pb-16 pt-24 md:pb-24 md:pt-80">
+          <Image
+            src={FAQ_BG}
+            alt=""
+            width={1440}
+            height={1786}
+            draggable={false}
+            className={`${ART} absolute left-0 top-0 w-full max-w-none`}
+          />
+
+          <h2 className="font-righteous relative z-[4] flex items-center justify-center gap-[0.4em] text-[clamp(42px,7vw,88px)] uppercase leading-none tracking-[0.04em] text-[#FFB24C]">
+            <Image
+              src={STAR}
+              alt=""
+              width={47}
+              height={48}
+              draggable={false}
+              className="h-[0.7em] w-auto [-webkit-user-drag:none] [user-drag:none]"
+            />
+            FAQ
+            <Image
+              src={STAR}
+              alt=""
+              width={47}
+              height={48}
+              draggable={false}
+              className="h-[0.7em] w-auto [-webkit-user-drag:none] [user-drag:none]"
+            />
+          </h2>
+
+          {/* Room above the table for the bear to rise into. */}
+          <div className="relative mt-4 w-full pt-[27%] md:mt-0">
+            <div className="pointer-events-none absolute left-[24%] top-0 z-[1] w-[36%] -translate-x-1/2 translate-y-[64%] transition-transform duration-700 ease-out group-data-[show]/faq:translate-y-0 motion-reduce:transition-none [@media(scripting:none)]:translate-y-0">
+              <Image
+                src={BEAR}
+                alt=""
+                width={732}
+                height={909}
+                draggable={false}
+                className={ART}
+              />
+            </div>
+
+            <div className="pointer-events-none absolute left-[48%] top-[6%] z-[5] w-[22%] origin-bottom-left scale-90 opacity-0 transition delay-[1100ms] duration-500 ease-out group-data-[show]/faq:scale-100 group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:scale-100 [@media(scripting:none)]:opacity-100">
+              <Image
+                src={BUBBLE}
+                alt="Have a question? Or do you want to play a game?"
+                width={548}
+                height={326}
+                draggable={false}
+                className={ART}
+              />
+            </div>
+
+            <div className="relative z-[2]">
+              <Image
+                src={BOTTOM}
+                alt=""
+                width={1300}
+                height={48}
+                draggable={false}
+                className={`${ART} absolute left-1/2 top-full z-0 mt-1 w-[78%] -translate-x-1/2`}
+              />
+              <Image
+                src={TABLE}
+                alt=""
+                width={1440}
+                height={1117}
+                draggable={false}
+                className={`${ART} relative z-[1] block`}
+              />
+              <div className="absolute left-[11%] top-[4%] z-[2] w-[10.2%]">
+                <Image
+                  src={STACK}
+                  alt=""
+                  width={998}
+                  height={313}
+                  draggable={false}
+                  className={`${ART} transition-transform duration-500 ${dealt ? "scale-[0.94]" : ""}`}
+                />
+              </div>
+              <div className="pointer-events-none absolute left-[9%] top-[-20%] z-[4] w-[38%] opacity-0 transition-opacity delay-700 duration-500 ease-out group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:opacity-100">
+                <Image
+                  src={HANDS}
+                  alt=""
+                  width={689}
+                  height={375}
+                  draggable={false}
+                  className={ART}
+                />
+              </div>
+
+              <div className="absolute left-1/2 top-[5%] z-20 w-[14%] -translate-x-1/2 sm:w-[11%]">
+                <button
+                  type="button"
+                  onClick={deal}
+                  disabled={dealt}
+                  aria-label={dealt ? "Cards dealt" : "Deal the cards"}
+                  className="group/chip relative w-full origin-center border-0 bg-transparent p-0 enabled:cursor-pointer"
+                >
+                  <Image
+                    src={CHIP_STACK}
+                    alt=""
+                    width={893}
+                    height={911}
+                    draggable={false}
+                    className={`${ART} origin-center transition-transform duration-150 ${
+                      dealt
+                        ? ""
+                        : "animate-chip-blink motion-reduce:animate-none group-hover/chip:scale-[1.07] group-hover/chip:animate-chip-glow-hold group-focus-visible/chip:scale-[1.07] group-focus-visible/chip:animate-chip-glow-hold"
+                    }`}
+                  />
+                </button>
+                {dealt ? null : (
+                  <p className="font-righteous pointer-events-none absolute left-1/2 top-full mt-2 w-max max-w-[90vw] -translate-x-1/2 text-center text-[clamp(13px,1.5vw,22px)] leading-tight tracking-[0.03em] text-[#FDFBED] [text-shadow:0_2px_4px_rgb(0_0_0/0.55)]">
+                    Click on the chips to deal in!
+                  </p>
+                )}
+              </div>
+
+              {dealt &&
+                ITEMS.map((item, index) => {
+                  const spot = SPOTS[index];
+                  const selected = openIndex === index;
+                  const x = landed ? spot.x : DECK.x;
+                  const y = landed ? spot.y : DECK.y;
+                  return (
+                    <button
+                      key={item.question}
+                      type="button"
+                      aria-expanded={selected}
+                      aria-controls={`${idBase}-answer`}
+                      disabled={!landed}
+                      onClick={() => setOpenIndex(selected ? null : index)}
+                      className="group/card absolute z-[3] aspect-square w-[16%] border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED] enabled:cursor-pointer sm:w-[13.5%]"
+                      style={{
+                        left: `${x}%`,
+                        top: `${y}%`,
+                        zIndex: selected ? 30 : 3,
+                        transition: `left 700ms ease-out ${index * 90}ms, top 700ms ease-out ${index * 90}ms, transform 700ms ease-out ${index * 90}ms`,
+                        transform: `translate(-50%, -50%) rotate(${landed ? spot.r : -4}deg) scale(${index >= 4 && landed ? 1.08 : 1})`,
+                      }}
+                    >
+                      <span className="block origin-center transition-transform duration-150 ease-out group-hover/card:scale-[1.06] group-focus-visible/card:scale-[1.06]">
+                        <Image
+                          src={CARD}
+                          alt=""
+                          width={280}
+                          height={280}
+                          draggable={false}
+                          className={`${ART} drop-shadow-[0_6px_4px_rgb(0_0_0/0.35)] ${selected ? "ring-4 ring-[#FFB24C]" : ""}`}
+                        />
+                      </span>
+                      <span className="sr-only">{item.question}</span>
+                    </button>
+                  );
+                })}
+
+              {open && (
+                <div
+                  id={`${idBase}-answer`}
+                  role="region"
+                  aria-label={open.question}
+                  className="absolute left-1/2 top-1/2 z-[40] w-[min(78%,28rem)] -translate-x-1/2 -translate-y-1/2 rounded-[1.25rem] bg-[#FDFBED] px-6 py-5 text-left text-[#3a140c] shadow-[0_12px_24px_rgb(0_0_0/0.45)]"
+                >
+                  <p className="font-righteous text-[clamp(15px,1.7vw,22px)] leading-tight text-[#8F0000]">
+                    {open.question}
+                  </p>
+                  <p className="mt-2 text-[clamp(12px,1.25vw,15px)] leading-snug">
+                    {renderAnswer(open.answer)}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-
-        {/* latte container and images */}
-        <div
-          className="relative aspect-[5/4]"
-          style={{ width: latteDims.containerW }}
-        >
-          <div
-            className={[
-              "absolute left-1/2 top-[48%] z-20 -translate-x-1/2 -translate-y-1/2 text-center leading-snug text-[#F6E7D8]",
-              "transition-opacity duration-300 ease-out",
-              isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
-            ].join(" ")}
-            style={{
-              width: answerWidth,
-              fontSize: answerFontSize,
-            }}
-          >
-            <p
-              className="cursor-text select-text whitespace-normal break-words [overflow-wrap:anywhere]"
-              onMouseDown={(e) => {
-                e.stopPropagation();
-                setMouseDownPos(null);
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {renderAnswerContent(answer)}
-            </p>
-          </div>
-
-          {/* latte images */}
-          <Image
-            src="/images/faq/latte.png"
-            alt="Latte cup"
-            fill
-            sizes="(max-width: 640px) 180px, 360px"
-            className={[
-              "pointer-events-none absolute inset-0 h-full w-full object-contain",
-              "transition-opacity duration-300 ease-out",
-              isOpen ? "opacity-0" : "opacity-100",
-            ].join(" ")}
-          />
-          <Image
-            src="/images/faq/latteoutline.png"
-            alt="Latte outline"
-            fill
-            sizes="(max-width: 640px) 180px, 360px"
-            className={[
-              "pointer-events-none absolute inset-0 h-full w-full object-contain",
-              "transition-opacity duration-300 ease-out",
-              isOpen ? "opacity-100" : "opacity-0",
-            ].join(" ")}
-          />
-
-          {/* clickable button */}
-          <button
-            type="button"
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleClick}
-            aria-expanded={isOpen}
-            aria-controls={panelId}
-            className="absolute left-1/2 top-1/2 h-full -translate-x-1/2 -translate-y-1/2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6E7D8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#4C321B]"
-            style={{ width: buttonWidth }}
-          />
-        </div>
-      </div>
-    </div>
+      </SectionGround>
+    </section>
   );
-};
+}
