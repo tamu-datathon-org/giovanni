@@ -5,8 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { konkhmerSleokchher } from "~/app/_components/fonts";
-
 import menuData from "./menuData";
 import { sectionIdOf, useMenuNavigation } from "./useMenuNavigation";
 
@@ -148,7 +146,7 @@ const Header = ({
     <>
       {/* ---------- DESKTOP: blue sidebar (Figma 36:317 / 13:57) ---------- */}
       <header
-        className={`${konkhmerSleokchher.variable} fixed z-50 hidden flex-col overflow-hidden transition-[width] duration-300 lg:flex ${
+        className={`fixed z-50 hidden flex-col overflow-hidden transition-[width] duration-300 lg:flex ${
           collapsed ? "inset-y-0 left-0 w-[80px]" : variant.panel
         }`}
         style={{ backgroundColor: PANEL_BG }}
@@ -283,7 +281,7 @@ const Header = ({
 
       {/* ---------- MOBILE: top bar + overlay ---------- */}
       <header
-        className={`${konkhmerSleokchher.variable} fixed inset-x-0 top-0 z-50 lg:hidden`}
+        className={`fixed inset-x-0 top-0 z-50 lg:hidden`}
       >
         <div
           className="flex items-center justify-between px-4 py-2.5"
