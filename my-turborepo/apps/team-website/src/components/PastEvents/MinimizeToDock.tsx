@@ -7,7 +7,6 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
-import { inter } from "~/app/_components/fonts";
 import { Noise } from "~/components/shared/Noise";
 import { refreshOnLayoutShift } from "~/lib/scroll-trigger-refresh";
 import folderClosed from "../../../public/assets/images/icons8-mac-folder-96.png";
@@ -507,7 +506,7 @@ export default function MinimizeToDock({
         <p
           ref={hintRef}
           aria-hidden
-          className={`${styles.scrollHint} ${inter.className}`}
+          className={`${styles.scrollHint} font-inter`}
         >
           SCROLL TO CONTINUE
         </p>

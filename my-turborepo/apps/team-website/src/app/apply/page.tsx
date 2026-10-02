@@ -9,7 +9,6 @@ import { toDataURL } from "qrcode";
 import { authClient } from "@vanni/auth/client";
 
 import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
-import { kodeMono } from "~/app/_components/fonts";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
 import { EVENT_NAME } from "./application/application-form";
@@ -446,7 +445,7 @@ export default function Page() {
       {showConfetti && <Confetti />}
 
       <main
-        className={`${kodeMono.variable} relative min-h-screen w-full overflow-hidden`}
+        className="relative min-h-screen w-full overflow-hidden"
         style={{ backgroundColor: INK.page }}
       >
         {/* decorative background */}

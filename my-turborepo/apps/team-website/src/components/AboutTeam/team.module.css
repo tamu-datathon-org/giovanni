@@ -8,7 +8,7 @@
   overflow-x: hidden;
   color: #254c70;
   background: #e9f6ff;
-  font-family: var(--font-inter), sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .gridBackground {
@@ -37,7 +37,7 @@
 .heading {
   margin: 0 0 24px;
   color: #377bb0;
-  font-family: var(--font-konkhmer-sleokchher), sans-serif;
+  font-family: "Konkhmer Sleokchher", sans-serif;
   font-size: clamp(2rem, 5.6vw, 5rem);
   font-weight: 400;
   line-height: 1.2;
@@ -296,7 +296,7 @@
   justify-content: center;
   gap: 10px;
   margin-bottom: 24px;
-  font-family: var(--font-konkhmer-sleokchher), sans-serif;
+  font-family: "Konkhmer Sleokchher", sans-serif;
   font-size: 1.25rem;
 }
 

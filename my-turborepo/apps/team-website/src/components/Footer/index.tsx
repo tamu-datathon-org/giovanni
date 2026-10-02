@@ -11,7 +11,6 @@ import {
 } from "react-icons/fa6";
 import { LuClipboard } from "react-icons/lu";
 
-import { kodeMono } from "~/app/_components/fonts";
 import AboutStars from "~/components/AboutUs/AboutStars";
 import menuData from "~/components/Header/menuData";
 import { useMenuNavigation } from "~/components/Header/useMenuNavigation";
@@ -76,7 +75,7 @@ const Footer = () => {
   };
 
   return (
-    <footer id="contact" className={`${kodeMono.className} ${styles.footer}`}>
+    <footer id="contact" className={`font-kode ${styles.footer}`}>
       <div className={styles.background} aria-hidden />
       <Noise />
 
