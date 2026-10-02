@@ -236,7 +236,8 @@ export default function Hero() {
         <div className={`${STAGE_BOX} pointer-events-none z-[8]`}>
           <ApplyButton />
         </div>
-        <Curtains />
+        {/* Clicking the curtains scrolls them open too. */}
+        <Curtains onOpen={openCurtains} />
         <div data-front className="contents">
           <SiteNotice />
           {/* MLH member events must link the Code of Conduct. */}

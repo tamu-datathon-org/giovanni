@@ -27,33 +27,10 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      {/* <ScrollUp /> */}
-      <div id="menu" className="scroll-mt-24">
-        <Hero />
-      </div>
-      <Sponsors />
-      <FAQ />
-
-      {/* <div id="workshops" className="scroll-mt-24">
-        <Workshops />
-      </div>
-      
-      <div id="find-us" className="scroll-mt-24">
-        <Location />
-      </div>
-   
-      <div id="prizes" className="scroll-mt-24">
-        <Prizes />
-      </div>
-      
-      <div id="schedule" className="scroll-mt-24">
-        <Schedule />
-      </div>
-      
-      <div className="h-[100px] bg-[#f0cf91]" />
-      <div id="baristas-note" className="scroll-mt-24">
-        <FAQ />
-      </div> */}
+      <Hero />
+      {/* Ready Just need  */}
+      {/* <Sponsors />
+      <FAQ /> */} 
     </>
   );
 }
