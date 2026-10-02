@@ -35,7 +35,7 @@
 }
 
 .heading {
-  margin: 0 0 24px;
+  margin: 24px 0;
   color: #377bb0;
   font-family: "Konkhmer Sleokchher", sans-serif;
   font-size: clamp(2rem, 5.6vw, 5rem);
