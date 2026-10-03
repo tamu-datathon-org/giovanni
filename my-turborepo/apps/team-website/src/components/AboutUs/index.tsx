@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import { inter, konkhmerSleokchher } from "~/app/_components/fonts";
 import { Noise } from "~/components/shared/Noise";
 import AboutStars from "./AboutStars";
 import BearShowcase from "./BearShowcase";
@@ -43,7 +42,7 @@ export default function AboutUs() {
   return (
     <section
       id="about-us"
-      className={`relative w-full scroll-mt-20 overflow-visible lg:scroll-mt-0 ${styles.section} ${konkhmerSleokchher.className}`}
+      className={`relative w-full scroll-mt-20 overflow-visible lg:scroll-mt-0 ${styles.section} font-konkhmer`}
       style={{ marginTop: overlap }}
     >
       <div className="relative z-10 w-full leading-[0]">
@@ -90,7 +89,7 @@ export default function AboutUs() {
             <span className="text-[#83EFE8]">About</span>{" "}
             <span className="text-white">us</span>
           </h2>
-          <div className={`${inter.className} ${styles.copy}`}>
+          <div className={`font-inter ${styles.copy}`}>
             <p>
               Founded in 2019, TAMU Datathon is Texas A&M's premier hackathon focused on Data Science, Machine Learning, and AI. 
             </p>

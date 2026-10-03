@@ -2,6 +2,7 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 
 import {
+  FormControl,
   FormDescription,
   FormField,
   FormItem,
@@ -39,30 +40,37 @@ const GenericInputField: React.FC<GenericInputProps> = ({
       name={name}
       defaultValue={defaultValue}
       render={({ field }) => (
-        <FormItem className="flex flex-col">
-          <FormLabel className="text-xl">
-            {label}
-            {required ? <Asterisk /> : ""}
-          </FormLabel>
+        <FormItem className="flex flex-col" data-application-item>
+          <div
+            className="flex flex-col space-y-2"
+            data-application-field="input"
+          >
+            <FormLabel>
+              {label}
+              {required ? <Asterisk /> : ""}
+            </FormLabel>
+            <FormControl>
+              <Input
+                placeholder={placeholder}
+                value={
+                  typeof field.value === "string" ||
+                  typeof field.value === "number"
+                    ? field.value
+                    : ""
+                }
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                name={field.name}
+                disabled={disabled}
+              />
+            </FormControl>
+          </div>
+          <FormMessage />
           {description && (
             <FormDescription className="text-sm text-gray-400">
               {description}
             </FormDescription>
           )}
-          <Input
-            className="bg-white text-neutral-900 placeholder-neutral-500"
-            placeholder={placeholder}
-            value={
-              typeof field.value === "string" || typeof field.value === "number"
-                ? field.value
-                : ""
-            }
-            onChange={field.onChange}
-            onBlur={field.onBlur}
-            name={field.name}
-            disabled={disabled}
-          />
-          <FormMessage />
         </FormItem>
       )}
     />

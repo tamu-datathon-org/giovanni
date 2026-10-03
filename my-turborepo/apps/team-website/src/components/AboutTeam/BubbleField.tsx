@@ -29,6 +29,7 @@ import {
   getBubbleBounds,
   projectBubble,
 } from "./bubble-layout";
+import GridBackground from "~/components/GridBackground";
 import styles from "./team.module.css";
 
 const socialIcons = {
@@ -241,6 +242,16 @@ export default function BubbleField({
   const stageRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+    scrollLeft: number;
+    scrollTop: number;
+    moved: boolean;
+  } | null>(null);
+  const suppressClickRef = useRef(false);
+
   const reducedMotion = useReducedMotion();
   const [geometry, setGeometry] = useState({
     width: 0,
@@ -412,6 +423,7 @@ export default function BubbleField({
           } as CSSProperties
         }
       >
+        <GridBackground className={styles.gridBackground} />
         <h2
           ref={headingRef}
           id="team-heading"
@@ -428,22 +440,90 @@ export default function BubbleField({
             role={animated ? "region" : undefined}
             aria-label={
               animated
-                ? "Team faces. Scroll in any direction to explore; scroll outside this area to move down the page."
+                ? "Team faces. Drag to pan; vertical touch movement scrolls the page."
                 : undefined
             }
             onScroll={() => {
               resetInactivityTimer();
               syncPan();
             }}
+            onPointerDown={(event) => {
+              if (!animated || (event.pointerType === "mouse" && event.button !== 0)) {
+                return;
+              }
+
+              const field = event.currentTarget;
+              dragRef.current = {
+                pointerId: event.pointerId,
+                startX: event.clientX,
+                startY: event.clientY,
+                scrollLeft: field.scrollLeft,
+                scrollTop: field.scrollTop,
+                moved: false,
+              };
+              field.setPointerCapture(event.pointerId);
+            }}
+            onPointerMove={(event) => {
+              const drag = dragRef.current;
+              if (!drag || drag.pointerId !== event.pointerId) return;
+
+              const deltaX = event.clientX - drag.startX;
+              const deltaY = event.clientY - drag.startY;
+              if (Math.hypot(deltaX, deltaY) > 6) {
+                drag.moved = true;
+                resetInactivityTimer();
+                if (selectedRef.current) clearSelection();
+              }
+
+              event.currentTarget.scrollLeft = drag.scrollLeft - deltaX;
+              if (event.pointerType !== "touch") {
+                event.currentTarget.scrollTop = drag.scrollTop - deltaY;
+              }
+            }}
+            onPointerUp={(event) => {
+              const drag = dragRef.current;
+              if (!drag || drag.pointerId !== event.pointerId) return;
+              suppressClickRef.current = drag.moved;
+              if (drag.moved) {
+                window.setTimeout(() => {
+                  suppressClickRef.current = false;
+                }, 0);
+              }
+              dragRef.current = null;
+            }}
+            onPointerCancel={() => {
+              dragRef.current = null;
+            }}
+            onClickCapture={(event) => {
+              if (!suppressClickRef.current) return;
+              suppressClickRef.current = false;
+              event.preventDefault();
+              event.stopPropagation();
+            }}
             onWheelCapture={(event) => {
               resetInactivityTimer();
               if (!event.ctrlKey && selectedRef.current) clearSelection();
             }}
-            onTouchMoveCapture={() => {
-              resetInactivityTimer();
-              if (selectedRef.current) clearSelection();
-            }}
             onKeyDown={(event) => {
+              if (event.target === event.currentTarget) {
+                const step = event.shiftKey ? 120 : 48;
+                const movement: Record<string, [number, number]> = {
+                  ArrowUp: [0, -step],
+                  ArrowDown: [0, step],
+                  ArrowLeft: [-step, 0],
+                  ArrowRight: [step, 0],
+                };
+                const delta = movement[event.key];
+                if (delta) {
+                  event.preventDefault();
+                  event.currentTarget.scrollBy({
+                    left: delta[0],
+                    top: delta[1],
+                    behavior: "instant",
+                  });
+                }
+              }
+
               if (
                 [
                   "ArrowUp",
