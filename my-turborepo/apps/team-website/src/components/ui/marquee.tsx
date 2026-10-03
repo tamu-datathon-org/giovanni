@@ -19,7 +19,7 @@ export function Marquee({
   children,
   className,
   reverse = false,
-  pauseOnHover = false,
+  // pauseOnHover = true,
 }: MarqueeProps) {
   return (
     <div className="overflow-hidden">
@@ -27,7 +27,7 @@ export function Marquee({
         className={cn(
           "flex w-max animate-marquee gap-8",
           reverse && "[animation-direction:reverse]",
-          pauseOnHover && "hover:[animation-play-state:paused]",
+          // pauseOnHover && "hover:[animation-play-state:paused]",
           className,
         )}
       >
