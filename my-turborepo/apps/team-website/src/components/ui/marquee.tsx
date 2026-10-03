@@ -19,7 +19,7 @@ export function Marquee({
   children,
   className,
   reverse = false,
-  pauseOnHover = true,
+  pauseOnHover = false,
 }: MarqueeProps) {
   return (
     <div className="overflow-hidden">
