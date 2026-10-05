@@ -96,7 +96,7 @@ export function Room({
         />
       </div>
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 top-[calc(var(--table-y)_+_519*var(--t))] z-[2] bg-[#14280a]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 top-[calc(var(--table-y)_+_519*var(--t))] z-[2] bg-[#17330d]"
         aria-hidden="true"
       />
       {/* Same layer as the table but before the date line in the page, so it shades the room and not the text. */}
