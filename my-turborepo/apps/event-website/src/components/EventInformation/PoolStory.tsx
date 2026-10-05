@@ -10,7 +10,7 @@ import styles from "./PoolStory.module.css";
 // One right-rail bounce, then a final roll to the left. Coordinates are
 // fractions of the play area, with the information arranged around the path.
 const POINTS = [
-  { x: 0.28, y: 0.1 },
+  { x: 0.28, y: 0.17 },
   { x: 0.9, y: 0.48 },
   { x: 0.12, y: 0.96 },
 ] as const;
@@ -95,7 +95,7 @@ export default function PoolStory({
             { x: 0, duration: 0.035, ease: "power3.in" },
             SHOT_AT - 0.035,
           )
-          .to(cue, { x: -40, opacity: 0, duration: 0.08 }, SHOT_AT + 0.005)
+          .to(cue, { x: -40, duration: 0.08 }, SHOT_AT + 0.005)
           // All the information is fully revealed by the single bounce.
           .to(
             copy,
