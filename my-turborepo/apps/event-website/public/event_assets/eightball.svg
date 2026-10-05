@@ -1,28 +1,19 @@
-<svg width="194" height="229" viewBox="0 0 194 229" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_di_981_1425)">
+<svg width="161" height="161" viewBox="0 0 161 161" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_inner_981_1425)">
 <circle cx="80.5" cy="80.5" r="80.5" fill="url(#paint0_radial_981_1425)"/>
 </g>
 <circle cx="91" cy="71" r="49" fill="#FDFBED"/>
 <circle cx="91" cy="71" r="41" stroke="#FFE367" stroke-opacity="0.38" stroke-width="16"/>
 <path d="M92.352 92.472C90.0053 92.472 87.5733 92.408 85.056 92.28C82.5387 92.152 80.128 91.8533 77.824 91.384C75.52 90.9147 73.4507 90.2107 71.616 89.272C69.7813 88.2907 68.3093 86.968 67.2 85.304C66.1333 83.5973 65.6 81.464 65.6 78.904C65.6 76.1307 66.3253 73.784 67.776 71.864C69.2267 69.944 71.4667 68.3867 74.496 67.192C72.1493 66.2533 70.6347 64.9093 69.952 63.16C69.2693 61.4107 68.928 59.5547 68.928 57.592C68.928 54.9467 69.6107 52.8133 70.976 51.192C72.384 49.528 74.2187 48.2693 76.48 47.416C78.784 46.52 81.3227 45.9227 84.096 45.624C86.8693 45.2827 89.6427 45.112 92.416 45.112C95.1467 45.112 97.8987 45.24 100.672 45.496C103.488 45.7093 106.048 46.2 108.352 46.968C110.699 47.736 112.576 48.9307 113.984 50.552C115.435 52.1307 116.16 54.2853 116.16 57.016C116.16 59.4907 115.691 61.496 114.752 63.032C113.856 64.568 112.405 65.848 110.4 66.872C113.301 67.8107 115.541 69.1973 117.12 71.032C118.699 72.8667 119.488 75.192 119.488 78.008C119.488 80.5253 118.955 82.6587 117.888 84.408C116.821 86.1147 115.371 87.5013 113.536 88.568C111.744 89.6347 109.675 90.4453 107.328 91C105.024 91.5547 102.571 91.9387 99.968 92.152C97.408 92.3653 94.8693 92.472 92.352 92.472ZM92.032 64.44C94.1653 64.44 95.7867 64.0773 96.896 63.352C98.048 62.584 98.624 61.1333 98.624 59C98.624 56.824 98.176 55.224 97.28 54.2C96.384 53.176 94.8693 52.664 92.736 52.664C90.1333 52.664 88.4053 53.24 87.552 54.392C86.7413 55.544 86.336 56.9947 86.336 58.744C86.336 62.5413 88.2347 64.44 92.032 64.44ZM92.032 83.64C94.4213 83.64 96.2133 83.1493 97.408 82.168C98.6453 81.1867 99.264 79.6507 99.264 77.56C99.264 75.0853 98.7733 73.3573 97.792 72.376C96.8107 71.352 95.1467 70.84 92.8 70.84C90.0693 70.84 88.1707 71.3947 87.104 72.504C86.08 73.5707 85.568 75.2133 85.568 77.432C85.568 79.3947 86.08 80.9307 87.104 82.04C88.128 83.1067 89.7707 83.64 92.032 83.64Z" fill="black"/>
 <defs>
-<filter id="filter0_di_981_1425" x="0" y="0" width="194" height="229" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feMorphology radius="19" operator="erode" in="SourceAlpha" result="effect1_dropShadow_981_1425"/>
-<feOffset dx="48" dy="83"/>
-<feGaussianBlur stdDeviation="2"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_981_1425"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_981_1425" result="shape"/>
+<filter id="filter0_inner_981_1425" x="0" y="0" width="161" height="161" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feMorphology radius="4" operator="dilate" in="SourceAlpha" result="effect2_innerShadow_981_1425"/>
 <feOffset dx="57" dy="-75"/>
 <feGaussianBlur stdDeviation="1.55"/>
 <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-<feBlend mode="normal" in2="shape" result="effect2_innerShadow_981_1425"/>
+<feBlend mode="normal" in2="SourceGraphic" result="effect2_innerShadow_981_1425"/>
 </filter>
 <radialGradient id="paint0_radial_981_1425" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(80.5 80.5) rotate(90) scale(80.5)">
 <stop stop-color="#270F0F"/>

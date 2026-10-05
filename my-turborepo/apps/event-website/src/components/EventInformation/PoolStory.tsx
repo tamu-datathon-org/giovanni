@@ -271,16 +271,16 @@ export default function PoolStory({
         ))}
         <div
           data-ball
-          className="absolute left-0 top-0 z-[2] h-[var(--ball-size)] w-[var(--ball-size)] transform will-change-transform"
+          // Cast the shadow from the moving wrapper so only the artwork spins.
+          className="absolute left-0 top-0 z-[2] h-[var(--ball-size)] w-[var(--ball-size)] transform rounded-full shadow-[6px_8px_5px_#00000040] will-change-transform md:shadow-[10px_14px_8px_#00000040]"
         >
           <div data-spin className="h-full w-full origin-center">
-            {/* The face is 161px wide; the rest of the SVG is its shadow. */}
             <Image
               src="/event_assets/eightball.svg"
               alt=""
-              width={194}
-              height={229}
-              className="h-auto w-[120.497%] max-w-none"
+              width={161}
+              height={161}
+              className="h-full w-full"
             />
           </div>
         </div>
