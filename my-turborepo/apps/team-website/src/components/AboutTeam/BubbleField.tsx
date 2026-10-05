@@ -621,7 +621,7 @@ export default function BubbleField({
             </button>
           )}
           <span className={styles.stars} aria-hidden="true">
-            ✱ ✱ ✱
+            ✱ ✱ ✱ 
           </span>
         </div>
       </div>
