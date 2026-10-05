@@ -16,6 +16,7 @@ const POINTS = [
 ] as const;
 
 const PATH = `M ${POINTS.map(({ x, y }) => `${x * 1000} ${y * 1000}`).join(" L ")}`;
+const SHOT_AT = 0.24;
 
 export default function PoolStory({
   titleClassName,
@@ -76,17 +77,25 @@ export default function PoolStory({
           },
         });
 
-        // The cue's right end is its tip. Pull back along its rotated axis,
-        // strike the edge of the ball, then withdraw as the ball rolls away.
+        // A longer draw and a brief hold make the wind-up deliberate. The
+        // ball stays still until the fast strike finishes at SHOT_AT.
         timeline
           .fromTo(
             cue,
             { x: -16 },
-            { x: -90, duration: 0.075, ease: "power1.inOut" },
+            {
+              x: () => -gsap.utils.clamp(128, 240, playArea.clientWidth * 0.2),
+              duration: 0.17,
+              ease: "power2.inOut",
+            },
             0,
           )
-          .to(cue, { x: 0, duration: 0.025, ease: "power3.in" }, 0.075)
-          .to(cue, { x: -30, opacity: 0, duration: 0.08 }, 0.105)
+          .to(
+            cue,
+            { x: 0, duration: 0.035, ease: "power3.in" },
+            SHOT_AT - 0.035,
+          )
+          .to(cue, { x: -40, opacity: 0, duration: 0.08 }, SHOT_AT + 0.005)
           // All the information is fully revealed by the single bounce.
           .to(
             copy,
@@ -105,8 +114,8 @@ export default function PoolStory({
 
         POINTS.slice(1).forEach((point, i) => {
           const previous = POINTS[i]!;
-          const start = previous.y;
-          const duration = point.y - previous.y;
+          const start = i === 0 ? SHOT_AT : previous.y;
+          const duration = point.y - start;
           const ease = i === 0 ? "none" : "power1.out";
           const direction = point.x > previous.x ? 1 : -1;
           const rotation = () => {
