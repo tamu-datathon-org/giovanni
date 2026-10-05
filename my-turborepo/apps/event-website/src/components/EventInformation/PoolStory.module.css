@@ -1,0 +1,163 @@
+.story {
+  --ball-size: clamp(42px, 6vw, 80px);
+  position: relative;
+  max-width: 1440px;
+  height: clamp(1600px, 175vw, 2520px);
+  margin: 48px auto 0;
+  isolation: isolate;
+}
+
+.art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.path {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  color: #ffb24c;
+}
+
+.cueAxis {
+  position: absolute;
+  left: 28%;
+  top: 10%;
+  width: 0;
+  height: 0;
+  transform: rotate(40deg);
+}
+
+.cue {
+  position: absolute;
+  right: calc(var(--ball-size) / 2);
+  width: clamp(280px, 55vw, 790px);
+  transform: translateX(-16px);
+}
+
+.cueImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: translateY(-50%);
+}
+
+.ball {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--ball-size);
+  height: var(--ball-size);
+  transform: translate(0, 0);
+  z-index: 2;
+  will-change: transform;
+}
+
+.spin {
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+}
+
+.ballImage {
+  /* The SVG's circular face is 161px; the remaining viewBox is its shadow. */
+  width: 120.497%;
+  max-width: none;
+  height: auto;
+}
+
+.contact {
+  position: absolute;
+  width: var(--ball-size);
+  height: var(--ball-size);
+  translate: -50% -50%;
+}
+
+.rail {
+  position: absolute;
+  top: -35%;
+  right: -1.5px;
+  width: 3px;
+  height: 170%;
+  border-radius: 100%;
+  background: linear-gradient(transparent, #ffb24c80, transparent);
+}
+
+.contact:nth-of-type(3) .rail {
+  left: -1.5px;
+  right: auto;
+}
+
+.impact {
+  position: absolute;
+  inset: 0;
+  border: 1px solid #ffb24c;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.information {
+  position: absolute;
+  width: 69%;
+  text-align: center;
+  transform: translateY(-50%);
+  z-index: 3;
+}
+
+.about {
+  top: 28%;
+  left: 1%;
+}
+.location {
+  top: 57%;
+  right: 1%;
+}
+.parking {
+  top: 86%;
+  left: 1%;
+}
+
+.title {
+  margin: 0 0 28px;
+  color: #ffb24c;
+  font-size: clamp(20px, 3vw, 44px);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0;
+  text-shadow: 0 0 10px #ffb24c;
+  text-wrap: balance;
+}
+
+.description {
+  margin: 0;
+  color: #fdfbed;
+  font-family: var(--font-righteous), sans-serif;
+  font-size: clamp(24px, 4.45vw, 64px);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0;
+  text-shadow: 0 4px 4px #00000040;
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+  .story {
+    height: auto;
+    margin-top: 80px;
+  }
+  .art {
+    display: none;
+  }
+  .information {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: min(100%, 1000px);
+    margin: 0 auto 96px;
+    transform: none;
+  }
+}

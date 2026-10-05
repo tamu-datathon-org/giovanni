@@ -1,5 +1,5 @@
 import { Sekuya } from "next/font/google";
-import Image from "next/image";
+import PoolStory from "./PoolStory";
 
 const sekuya = Sekuya({
   subsets: ["latin"],
@@ -24,26 +24,7 @@ export default function EventInformation() {
         INFORMATION
       </h2>
 
-      {/* Initial placement until the pool artwork layout is defined. */}
-      <div
-        aria-hidden="true"
-        className="mx-auto mt-16 flex max-w-5xl flex-col items-center gap-8"
-      >
-        <Image
-          src="/event_assets/poolstick.svg"
-          alt=""
-          width={935}
-          height={40}
-          className="h-auto w-full max-w-[935px]"
-        />
-        <Image
-          src="/event_assets/eightball.svg"
-          alt=""
-          width={194}
-          height={229}
-          className="h-auto w-[140px] sm:w-[194px]"
-        />
-      </div>
+      <PoolStory titleClassName={sekuya.className} />
     </section>
   );
 }
