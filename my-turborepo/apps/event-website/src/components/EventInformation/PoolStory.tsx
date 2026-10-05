@@ -5,7 +5,12 @@ import Image from "next/image";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
-import styles from "./PoolStory.module.css";
+const INFORMATION =
+  "absolute z-[3] min-w-0 -translate-y-1/2 text-center motion-reduce:static motion-reduce:mx-auto motion-reduce:!w-[min(100%,800px)] motion-reduce:transform-none [@media(scripting:none)]:static [@media(scripting:none)]:mx-auto [@media(scripting:none)]:!w-[min(100%,800px)] [@media(scripting:none)]:transform-none";
+const TITLE =
+  "mb-3 text-balance text-[clamp(18px,2.35vw,32px)] font-normal not-italic leading-none tracking-normal text-[#ffb24c] [text-shadow:0_0_10px_#ffb24c] md:mb-[18px]";
+const DESCRIPTION =
+  "m-0 font-righteous text-pretty text-[clamp(18px,2.3vw,32px)] font-normal not-italic leading-none tracking-normal text-[#fdfbed] [text-shadow:0_4px_4px_#00000040]";
 
 // One right-rail bounce, then a final roll to the left. Coordinates are
 // fractions of the play area, with the information arranged around the path.
@@ -201,10 +206,17 @@ export default function PoolStory({
   }, []);
 
   return (
-    <div ref={rootRef} className={styles.story}>
-      <div data-play-area className={styles.art} aria-hidden="true">
+    <div
+      ref={rootRef}
+      className="relative isolate mx-auto mt-12 h-[clamp(700px,75vw,1040px)] max-w-[1200px] [--ball-size:clamp(38px,5vw,64px)] motion-reduce:mt-16 motion-reduce:grid motion-reduce:h-auto motion-reduce:gap-12 [@media(scripting:none)]:mt-16 [@media(scripting:none)]:grid [@media(scripting:none)]:h-auto [@media(scripting:none)]:gap-12"
+    >
+      <div
+        data-play-area
+        className="pointer-events-none absolute inset-0 motion-reduce:hidden [@media(scripting:none)]:hidden"
+        aria-hidden="true"
+      >
         <svg
-          className={styles.path}
+          className="absolute h-full w-full text-[#ffb24c]"
           viewBox="0 0 1000 1000"
           preserveAspectRatio="none"
           fill="none"
@@ -227,66 +239,83 @@ export default function PoolStory({
             opacity="0.45"
           />
         </svg>
-        <div data-cue-axis className={styles.cueAxis}>
-          <div data-cue className={styles.cue}>
+        <div
+          data-cue-axis
+          className="absolute left-[28%] top-[17%] h-0 w-0 rotate-[40deg]"
+        >
+          <div
+            data-cue
+            className="absolute right-[calc(var(--ball-size)/2)] w-[clamp(280px,55vw,790px)] -translate-x-4"
+          >
             <Image
               src="/event_assets/poolstick.svg"
               alt=""
               width={935}
               height={40}
-              className={styles.cueImage}
+              className="block h-auto w-full -translate-y-1/2"
             />
           </div>
         </div>
         {POINTS.slice(1, 2).map((point, i) => (
           <div
             key={i}
-            className={styles.contact}
+            className="absolute h-[var(--ball-size)] w-[var(--ball-size)] [translate:-50%_-50%]"
             style={{ left: `${point.x * 100}%`, top: `${point.y * 100}%` }}
           >
-            <span className={styles.rail} />
-            <span data-impact className={styles.impact} />
+            <span className="absolute -right-[1.5px] -top-[35%] h-[170%] w-[3px] rounded-[100%] [background:linear-gradient(transparent,#ffb24c80,transparent)]" />
+            <span
+              data-impact
+              className="absolute inset-0 rounded-full border border-[#ffb24c] opacity-0"
+            />
           </div>
         ))}
-        <div data-ball className={styles.ball}>
-          <div data-spin className={styles.spin}>
+        <div
+          data-ball
+          className="absolute left-0 top-0 z-[2] h-[var(--ball-size)] w-[var(--ball-size)] transform will-change-transform"
+        >
+          <div data-spin className="h-full w-full origin-center">
+            {/* The face is 161px wide; the rest of the SVG is its shadow. */}
             <Image
               src="/event_assets/eightball.svg"
               alt=""
               width={194}
               height={229}
-              className={styles.ballImage}
+              className="h-auto w-[120.497%] max-w-none"
             />
           </div>
         </div>
       </div>
 
-      <article className={`${styles.information} ${styles.about}`}>
+      <article
+        className={`${INFORMATION} left-0 top-[46%] w-[56%] md:top-[45%] md:w-[54%]`}
+      >
         <div data-copy>
-          <h3 className={`${titleClassName} ${styles.title}`}>
-            WHAT IS DATATHON?
-          </h3>
-          <p className={styles.description}>
+          <h3 className={`${titleClassName} ${TITLE}`}>WHAT IS DATATHON?</h3>
+          <p className={DESCRIPTION}>
             We are the largest data science and machine learning focused
             hackathon in Texas located at Texas A&amp;M University in College
             Station.
           </p>
         </div>
       </article>
-      <article className={`${styles.information} ${styles.location}`}>
+      <article
+        className={`${INFORMATION} right-0 top-[15%] w-[54%] md:top-[18%] md:w-[40%]`}
+      >
         <div data-copy>
-          <h3 className={`${titleClassName} ${styles.title}`}>LOCATION</h3>
-          <p className={styles.description}>
+          <h3 className={`${titleClassName} ${TITLE}`}>LOCATION</h3>
+          <p className={DESCRIPTION}>
             Where: MSC 2300
             <br />
             When: November 7-8
           </p>
         </div>
       </article>
-      <article className={`${styles.information} ${styles.parking}`}>
+      <article
+        className={`${INFORMATION} right-0 top-[83%] w-[54%] md:top-[80%] md:w-[44%]`}
+      >
         <div data-copy>
-          <h3 className={`${titleClassName} ${styles.title}`}>PARKING</h3>
-          <p className={styles.description}>
+          <h3 className={`${titleClassName} ${TITLE}`}>PARKING</h3>
+          <p className={DESCRIPTION}>
             Lot 74 is reserved for Datathon participants. Lots 100 and 97 are
             also free on weekends.
           </p>
