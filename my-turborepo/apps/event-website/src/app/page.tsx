@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import EventInformation from "@/components/EventInformation";
 import Hero from "@/components/Hero";
 import Location from "@/components/location";
 import Schedule from "@/components/Schedule";
@@ -27,6 +28,7 @@ export default function Home() {
       <div id="menu" className="scroll-mt-24">
         <Hero />
       </div>
+      <EventInformation />
       
       {/* <div id="workshops" className="scroll-mt-24">
         <Workshops />
