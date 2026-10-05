@@ -1,0 +1,69 @@
+.section {
+  position: relative;
+  isolation: isolate;
+}
+
+.tableBackground {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* Fade into the hero's solid green without bringing back a visible seam. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 180px,
+    black calc(100% - 64px),
+    transparent
+  );
+  background:
+    radial-gradient(ellipse at 50% 30%, #71834320, transparent 65%),
+    linear-gradient(to right, #030a0580, transparent 16% 84%, #030a0580);
+}
+
+.felt {
+  position: absolute;
+  inset: 0;
+  background-image: url("/event_assets/felt-texture.svg");
+  background-size: 180px 180px;
+  opacity: 0.14;
+  mix-blend-mode: soft-light;
+}
+
+.cushions {
+  position: absolute;
+  inset: 96px clamp(8px, 1.7vw, 28px) 28px;
+  border: 1px solid #ffb24c30;
+  border-radius: clamp(28px, 6vw, 88px);
+  box-shadow:
+    inset 0 0 0 6px #08130670,
+    inset 0 0 0 7px #ffb24c16,
+    inset 0 0 32px #030a0538,
+    0 0 24px #030a0538;
+}
+
+.sights {
+  position: absolute;
+  top: 18%;
+  bottom: 14%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 7px;
+}
+
+.leftSights {
+  left: 0;
+}
+.rightSights {
+  right: 0;
+}
+
+.sights span {
+  width: 5px;
+  height: 9px;
+  background: #f9dea078;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  filter: drop-shadow(0 0 3px #ffb24c28);
+}
