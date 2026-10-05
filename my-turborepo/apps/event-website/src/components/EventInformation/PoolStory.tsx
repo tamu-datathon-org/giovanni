@@ -283,7 +283,7 @@ export default function PoolStory() {
       </div>
 
       <article
-        className={`${INFORMATION} left-0 top-[46%] w-[56%] md:top-[45%] md:w-[54%]`}
+        className={`${INFORMATION} right-0 top-[15%] w-[54%] md:top-[18%] md:w-[40%]`}
       >
         <div data-copy>
           <h3 className={TITLE}>WHAT IS DATATHON?</h3>
@@ -295,7 +295,7 @@ export default function PoolStory() {
         </div>
       </article>
       <article
-        className={`${INFORMATION} right-0 top-[15%] w-[54%] md:top-[18%] md:w-[40%]`}
+        className={`${INFORMATION} left-0 top-[48%] w-[56%] md:top-[51%] md:w-[54%]`}
       >
         <div data-copy>
           <h3 className={TITLE}>LOCATION</h3>
@@ -304,6 +304,35 @@ export default function PoolStory() {
             <br />
             When: November 7-8
           </p>
+          <a
+            href="https://maps.app.goo.gl/6FNTTaWyddiWnbCH8"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open 275 Joe Routt Blvd, College Station, TX 77843 in Google Maps (new tab)"
+            className="group/map mx-auto mt-4 block w-full max-w-[400px] overflow-hidden rounded-xl border border-[#ffb24c]/40 bg-[#0c1808] p-1.5 shadow-[0_6px_20px_rgb(0_0_0/0.25)] transition-colors hover:border-[#ffb24c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ffb24c] md:mt-5"
+          >
+            <span className="relative block aspect-video overflow-hidden rounded-lg">
+              <Image
+                src="/event_assets/event-map.png"
+                alt="Campus map marking the Memorial Student Center beside Simpson Drill Field and Joe Routt Boulevard."
+                fill
+                sizes="(min-width: 768px) 400px, 56vw"
+                className="object-cover object-center saturate-[0.85] sepia-[0.15]"
+              />
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-inset ring-[#ffb24c]/20"
+              />
+            </span>
+            <span className="flex items-center justify-center gap-2 px-1 pb-1 pt-2 font-righteous text-[clamp(10px,1vw,13px)] leading-snug text-[#ffcb82] group-hover/map:text-[#ffe0ac]">
+              <span className="text-balance">
+                275 Joe Routt Blvd, College Station, TX 77843
+              </span>
+              <span aria-hidden="true" className="shrink-0">
+                ↗
+              </span>
+            </span>
+          </a>
         </div>
       </article>
       <article
