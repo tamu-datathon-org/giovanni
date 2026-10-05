@@ -97,11 +97,18 @@ function useFollowSpot(ref: RefObject<HTMLElement | null>) {
 }
 
 /** One half of the curtain, with its share of the pelmet. Parts as --open-e goes 0 → 1. */
-function Panel({ side }: { side: "left" | "right" }) {
+function Panel({
+  side,
+  onOpen,
+}: {
+  side: "left" | "right";
+  onOpen: () => void;
+}) {
   const left = side === "left";
   return (
     <div
-      className={`pointer-events-auto absolute inset-y-0 w-1/2 motion-reduce:![translate:none] ${
+      onClick={onOpen}
+      className={`pointer-events-auto absolute inset-y-0 w-1/2 cursor-pointer motion-reduce:![translate:none] ${
         left
           ? "left-0 [translate:calc(var(--open-e,0)*-102%)_0]"
           : "right-0 [translate:calc(var(--open-e,0)*102%)_0]"
@@ -119,9 +126,10 @@ function Panel({ side }: { side: "left" | "right" }) {
           alt=""
           fill
           preload
+          draggable={false}
           sizes="50vw"
           // curtain.png is the right-hand panel; the left one is its mirror image.
-          className={left ? "-scale-x-100" : undefined}
+          className={`[-webkit-user-drag:none] [user-drag:none] ${left ? "-scale-x-100" : ""}`}
         />
       </div>
     </div>
@@ -131,10 +139,11 @@ function Panel({ side }: { side: "left" | "right" }) {
 /**
  * The curtains over the stage, with a spotlight on them that follows the
  * mouse. Scrolling parts them (--open, --open-e from the hero), revealing the
- * room behind; with reduced motion they fade instead. They're hidden once
- * fully open, and without JavaScript altogether.
+ * room behind; with reduced motion they fade instead. Clicking them calls
+ * `onOpen`, for visitors who don't think to scroll. They're hidden once fully
+ * open, and without JavaScript altogether.
  */
-export function Curtains() {
+export function Curtains({ onOpen }: { onOpen: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   useFollowSpot(ref);
 
@@ -147,8 +156,8 @@ export function Curtains() {
     >
       {/* The stage floor under the hem, so nothing behind peeks through the scallops. */}
       <div className="absolute inset-x-0 bottom-0 h-[7cqh] bg-[#17330d] opacity-[calc(1_-_4_*_var(--open,0))]" />
-      <Panel side="left" />
-      <Panel side="right" />
+      <Panel side="left" onOpen={onOpen} />
+      <Panel side="right" onOpen={onOpen} />
 
       {/*
         The spotlight fades as the curtains part. Its shade and its light are
