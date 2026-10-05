@@ -11,11 +11,10 @@ import { Noise } from "~/components/shared/Noise";
 import { refreshOnLayoutShift } from "~/lib/scroll-trigger-refresh";
 import folderClosed from "../../../public/assets/images/icons8-mac-folder-96.png";
 import folderOpen from "../../../public/assets/images/icons8-opened-folder-96.png";
-import styles from "./past-events.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Keep in sync with the media block in past-events.module.css, which makes
+// Keep in sync with the `full-motion` screen in tailwind.config.ts, which makes
 // the frame sticky for exactly this mode.
 const FULL_MOTION =
   "(min-width: 768px) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
@@ -54,8 +53,8 @@ interface MinimizeToDockProps {
  * window shrinks into a folder icon at the bottom-right (which opens to
  * receive it and closes behind it), and the frame fades out to reveal Meet
  * the Team underneath, so the pin releases without a seam. Meet the Team is
- * pulled up under the frame's final stuck position (`.shell` in
- * past-events.module.css), so it is already in place when the fade ends.
+ * pulled up under the frame's final stuck position (the shell's
+ * `full-motion:` classes), so it is already in place when the fade ends.
  *
  * Children are looked up by data attributes (see HoverCrossfade):
  * `data-genie-window`, `data-genie-lights`, `data-genie-minimize`, and
@@ -202,7 +201,7 @@ export default function MinimizeToDock({
           defaults: { ease: "none", immediateRender: false },
           scrollTrigger: {
             // No ScrollTrigger pin: the frame is `position: sticky` inside a
-            // 220svh shell (past-events.module.css), so it sticks for the
+            // 220svh shell (its `full-motion:` classes), so it sticks for the
             // shell's extra 120svh. The browser composites sticky, so the
             // frame can't lag a frame behind the scroll the way a
             // main-thread transform pin does, and it stays in flow, so it
@@ -461,27 +460,30 @@ export default function MinimizeToDock({
   return (
     <main
       ref={shellRef}
-      className={`${className ?? ""} ${styles.shell} relative overflow-x-clip bg-[#e9f6ff]`}
+      // In full motion the frame sticks for one viewport while the shell scrolls
+      // the remaining 120svh past it (the old pin's `end: "+=120%"`); sticky is
+      // composited, so it can't jitter like a main-thread transform pin. The
+      // negative margin pulls Meet the Team up under the frame's final stuck
+      // position so it's already in place when the frame fades out.
+      className={`${className ?? ""} relative overflow-x-clip bg-td-paper full-motion:-mb-[100svh] full-motion:h-[220svh]`}
     >
       {/* Same fixed grid as AboutTeam's stage; faded in as `frame` fades out
           so the hand-off between the two sections has no seam. */}
       <div
         ref={gridRef}
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0"
-        style={{
-          background: "url('/images/team/grid.png') repeat",
-          backgroundAttachment: "fixed",
-        }}
+        className="pointer-events-none absolute inset-0 bg-[url('/images/team/grid.png')] bg-repeat bg-fixed opacity-0"
       />
 
       {/* The sticky, full-bleed frame. z-[2] sits above AboutUs (z-index 1),
           so its own bg/noise/splotch replace what AboutUs would otherwise
-          paint over this area (see about.module.css .splotchesRightShell) —
+          paint over this area (see the right splotch in AboutUs) —
           nothing behind the frame can be seen moving while it's stuck. */}
       <div
         ref={frameRef}
-        className={`${styles.frame} z-[2] overflow-hidden bg-[#377BB0] px-6 pb-16 pt-4 md:flex md:h-svh md:flex-col md:justify-center md:pb-6`}
+        // `@container` lets the splotch's cqw values resolve against this
+        // full-bleed frame, which matches AboutUs's section width.
+        className="relative z-[2] overflow-hidden bg-td-blue px-6 pb-16 pt-4 @container md:flex md:h-svh md:flex-col md:justify-center md:pb-6 full-motion:sticky full-motion:top-0"
       >
         <div
           ref={noiseRef}
@@ -498,7 +500,11 @@ export default function MinimizeToDock({
           aria-hidden
           width={641}
           height={650}
-          className={styles.splotchOverhang}
+          // A frozen copy of AboutUs's right splotch overhang, redrawn here so
+          // it keeps its bridging look without moving while the frame is
+          // pinned. Keep the size and offsets in sync with AboutUs's
+          // right splotch.
+          className="pointer-events-none absolute right-[-22%] top-[calc(22rem-clamp(18rem,48cqw,44rem)*650/641)] z-[1] h-auto w-[clamp(18rem,48cqw,44rem)] max-w-none -scale-x-100"
         />
 
         <div className="relative z-10 mx-auto w-full max-w-5xl">{children}</div>
@@ -506,7 +512,8 @@ export default function MinimizeToDock({
         <p
           ref={hintRef}
           aria-hidden
-          className={`${styles.scrollHint} font-inter`}
+          // Mirrors AboutUs's "DRAG TO ROTATE" hint.
+          className="pointer-events-none absolute inset-x-0 bottom-6 z-20 m-0 hidden text-center font-inter text-[12px] tracking-[0.12em] text-white opacity-75 full-motion:block"
         >
           SCROLL TO CONTINUE
         </p>

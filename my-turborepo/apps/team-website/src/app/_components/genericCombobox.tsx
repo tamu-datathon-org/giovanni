@@ -30,6 +30,15 @@ import {
 } from "~/components/ui/popover";
 import { Input } from "~/components/ui/input";
 import { Asterisk } from "../apply/application/application-form";
+import {
+  FIELD,
+  FIELD_DROPDOWN,
+  FIELD_ITEM,
+  FIELD_LABEL,
+  FIELD_MESSAGE,
+  FIELD_OTHER_INPUT,
+  FIELD_TRIGGER,
+} from "./applicationFieldStyles";
 
 interface DropdownOption {
   value: string;
@@ -44,7 +53,6 @@ interface GenericDropdownProps {
   filter?: boolean;
   required?: boolean;
   allowOther?: boolean;
-  popoverClassName?: string;
 }
 
 const OTHER_VALUE = "__other__";
@@ -59,7 +67,6 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
   defaultOption,
   required,
   allowOther = true,
-  popoverClassName,
 }) => {
   const form = useFormContext<ApplicationSchema>();
   const [searchValue, setSearchValue] = useState("");
@@ -102,12 +109,9 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
           : (options.find((option) => option.value === fieldValue) ?? null);
 
         return (
-          <FormItem className="flex flex-col" data-application-item>
-            <div
-              className="flex flex-col space-y-2"
-              data-application-field="select"
-            >
-              <FormLabel>
+          <FormItem className={FIELD_ITEM}>
+            <div className={FIELD}>
+              <FormLabel className={FIELD_LABEL}>
                 {label}
                 {required ? <Asterisk /> : ""}
               </FormLabel>
@@ -118,9 +122,9 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                       variant="application"
                       role="combobox"
                       data-placeholder={!selectedOption}
-                      className="w-full justify-between overflow-hidden"
+                      className={`${FIELD_TRIGGER} justify-between overflow-hidden`}
                     >
-                      <span className="truncate">
+                      <span className="truncate text-left">
                         {isOther
                           ? otherRaw
                             ? `Other(${otherRaw})`
@@ -134,7 +138,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent
-                  className={cn("w-fit max-w-full p-0", popoverClassName)}
+                  className={cn("w-fit max-w-full p-0", FIELD_DROPDOWN)}
                 >
                   <Command>
                     <CommandInput
@@ -196,9 +200,10 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                 </PopoverContent>
               </Popover>
               {isOther && (
-                <div className="mt-2 flex flex-col">
+                <div className="col-span-full mt-2 flex flex-col">
                   <FormControl>
                     <Input
+                      className={FIELD_OTHER_INPUT}
                       autoFocus
                       value={otherRaw}
                       onChange={(e) => {
@@ -215,7 +220,7 @@ const GenericCombobox: React.FC<GenericDropdownProps> = ({
                 </div>
               )}
             </div>
-            <FormMessage />
+            <FormMessage className={FIELD_MESSAGE} />
           </FormItem>
         );
       }}

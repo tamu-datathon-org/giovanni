@@ -86,8 +86,6 @@
     "react95": "catalog:",
     "remark": "catalog:",
     "remark-html": "catalog:",
-    "sass": "catalog:",
-    "scss": "catalog:",
     "sharp": "catalog:",
     "styled-components": "catalog:",
     "superjson": "catalog:",
@@ -99,6 +97,7 @@
   },
   "devDependencies": {
     "@aws-sdk/types": "catalog:",
+    "@tailwindcss/container-queries": "catalog:",
     "@total-typescript/ts-reset": "catalog:",
     "@types/babel__standalone": "catalog:",
     "@types/jsonwebtoken": "catalog:",

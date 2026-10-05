@@ -59,11 +59,7 @@ export default function SponsorTicker() {
       {/* Grid background pattern */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-10"
-        style={{
-          background: "url('/images/team/grid.png') repeat",
-          backgroundAttachment: "fixed",
-        }}
+        className="pointer-events-none absolute inset-0 bg-[url('/images/team/grid.png')] bg-repeat bg-fixed opacity-10"
       />
 
       {/* Content */}

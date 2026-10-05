@@ -1,7 +1,8 @@
 /*
- * Fonts. Use them through the Tailwind classes in tailwind.config.ts
- * (font-inter, font-konkhmer, font-myfont, font-kode),
- * or by family name in CSS modules.
+ * The app's only stylesheet: Tailwind, fonts, and a few named components.
+ *
+ * Fonts: use them through the Tailwind classes in tailwind.config.ts
+ * (font-inter, font-konkhmer, font-myfont, font-kode).
  */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Konkhmer+Sleokchher&display=swap");
 
@@ -40,81 +41,164 @@
     font-display: swap;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
   }
+
   :root {
     --radius: 0.5rem;
-
-    /* Logo colors */
-    --logo-primary: #6dfdea;
-    --logo-secondary: #01c0cc;
-    --logo-tertiary: #28979b;
-
-    /* Branch colors */
-    --branch-primary: #6dfdea;
-    --branch-secondary: #01c0cc;
-    --branch-tertiary: #28979b;
   }
-  .text-stroke {
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-    -webkit-text-fill-color: white; /* Optional: Sets the inner text color */
-  }
-  /* You can add more sizes/colors as needed */
-  .text-stroke-2 {
-    -webkit-text-stroke-width: 2px;
-  }
+}
 
-  /* Grid backgrounds */
-  .grid-background {
-    background-size: 40px 40px;
-    background-image:
-        linear-gradient(to right, grey 1px, transparent 1px),
-        linear-gradient(to bottom, grey 1px, transparent 1px);
-  }
-
+/*
+ * Named components for the few styles that don't read well as utility
+ * classes. Only emitted when a class is used, and they work with variants.
+ */
+@layer components {
+  /* Light-blue graph paper (Hero, login). */
   .grid-background-blue {
     background-size: 20px 20px;
     background-image:
-        linear-gradient(to right, #DFEBF3 1px, transparent 1px),
-        linear-gradient(to bottom, #DFEBF3 1px, transparent 1px);
+      linear-gradient(to right, #dfebf3 1px, transparent 1px),
+      linear-gradient(to bottom, #dfebf3 1px, transparent 1px);
   }
 
-  .grid-background-sm {
-    background-size: 20px 20px;
+  /* AboutUs squiggle: clips the squiggle to the section's top edge. */
+  .squiggle-clip {
+    -webkit-mask-image: url("/images/about-us/squigly-clip.svg");
+    mask-image: url("/images/about-us/squigly-clip.svg");
+    -webkit-mask-size: 100% auto;
+    mask-size: 100% auto;
+    -webkit-mask-position: top;
+    mask-position: top;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /* AboutUs squiggle: matches the reference's curve origin (590, 198) with
+     slightly taller bends, capped at its design size on wide screens and
+     anchored to the right edge. Must sit inside an `@container`. The colour
+     comes from here; the SVG only supplies the shape. */
+  .squiggle-art {
+    --art-unit: min(calc(100cqw / 1176), 1px);
+    position: absolute;
+    top: calc(100cqw * 198 / 1176 - 160 * var(--art-unit));
+    right: calc(-680 * var(--art-unit));
+    width: calc(1650 * var(--art-unit));
+    aspect-ratio: 1536 / 768;
+    background-color: #91b3e2;
+    -webkit-mask: url("/images/about-us/squigly.svg?v=smooth-bottom") center /
+      100% 100% no-repeat;
+    mask: url("/images/about-us/squigly.svg?v=smooth-bottom") center / 100%
+      100% no-repeat;
+  }
+
+  /* Footer: two dimmed splotches, bottom-left and top-right. */
+  .footer-splotches {
     background-image:
-        linear-gradient(to right, #374151 1px, transparent 1px),
-        linear-gradient(to bottom, #374151 1px, transparent 1px);
+      url("/images/about-us/splotches.svg"), url("/images/about-us/splotches.svg");
+    background-repeat: no-repeat;
+    background-size:
+      420px auto,
+      480px auto;
+    background-position:
+      -160px calc(100% + 200px),
+      calc(100% + 200px) -220px;
+    filter: brightness(0.25);
   }
 
-  .grid-background-sm-light {
-    background-size: 20px 20px;
+  /* Hacker application: two dimmed splotches, top-left and right. */
+  .application-splotches {
     background-image:
-        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
-        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+      url("/images/about-us/splotches.svg"), url("/images/about-us/splotches.svg");
+    background-repeat: no-repeat;
+    background-size:
+      680px auto,
+      760px auto;
+    background-position:
+      -240px -200px,
+      calc(100% + 310px) 40px;
+    filter: brightness(0.25);
   }
-}
 
-#mlh-trust-badge {
-  display: block;
-  max-width: 100px;
-  min-width: 60px;
-  position: fixed;
-  left: 1rem;
-  top: 0;
-  width: 10%;
-  z-index: 10000;
-}
-
-@media (min-width: 768px) {
-  #mlh-trust-badge {
-    left: 50px;
+  /* Orange //// rule under a row of stars. One whole slash per 15px tile;
+     `space` fits only complete tiles so the row never ends on a sliced slash. */
+  .star-hatch::after {
+    content: "";
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(
+        110deg,
+        transparent calc(50% - 2px),
+        #ff9a42 calc(50% - 2px) calc(50% + 2px),
+        transparent calc(50% + 2px)
+      )
+      0 0 / 15px 100% space no-repeat;
+    pointer-events: none;
   }
-}
 
-#mlh-trust-badge img {
-  width: 100%;
+  /* Windows XP window chrome used by the legacy registration/FAQ windows. */
+  .xpBorder {
+    position: relative;
+    border: 1px solid #000;
+    background-image: linear-gradient(to bottom, #b6ddf9, #dfe2e5, #6ba2fe);
+    color: inherit;
+    box-shadow:
+      0 -20px 10px -20px rgba(0, 0, 0, 0.5) inset,
+      20px 0 10px -20px rgba(0, 0, 0, 0.5) inset;
+  }
+
+  /* XP push button: the ::before draws the light/dark bevel, which flips on
+     hover so the button looks pressed. */
+  .compStyling {
+    position: relative;
+    padding: 0.3rem;
+    border: 2px solid black;
+    border-radius: 0%;
+    background-color: #e4e3e4;
+  }
+
+  .compStyling::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #9c9c9c #9c9c9c #fff #fff;
+  }
+
+  .compStyling:hover {
+    background-color: #c2c2c2;
+  }
+
+  .compStyling:hover::before {
+    border-color: #fff #fff #797878 #797878;
+  }
+
+  .submitBtn {
+    box-shadow: rgb(0, 0, 0) -2px 2px 4px -0.5px;
+  }
+
+  .submitBtn:focus {
+    box-shadow: rgba(255, 255, 255, 0.5) 2px 2px 6px 0px;
+    transform: translateX(-2px);
+  }
+
+  .submitBtn:hover {
+    background-image: linear-gradient(
+      to bottom,
+      rgba(182, 221, 249, 0.5),
+      rgba(224, 227, 230, 0.5),
+      rgba(107, 162, 254, 0.5)
+    );
+  }
 }

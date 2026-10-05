@@ -3,7 +3,6 @@ import "~/app/globals.css";
 import ClientLayout from "~/app/ClientLayout";
 import { Noise } from "~/components/shared/Noise";
 
-import "../styles/index.css";
 
 import type { Metadata } from "next";
 

@@ -61,7 +61,7 @@ export default function Hero() {
               fillOpacity="0.30"
               fontFamily="monospace"
               fontSize="10"
-              style={{ whiteSpace: "pre" }}
+              className="whitespace-pre"
             >
               {asciiLines.map((line, i) => (
                 <tspan key={i} x="10" dy={i === 0 ? 0 : 12}>
@@ -78,20 +78,12 @@ export default function Hero() {
         <div className="text-center lg:-ml-8 lg:text-left">
           <h1 className="text-[clamp(4rem,19vw,9rem)] font-extrabold leading-none lg:text-[clamp(5rem,10.5vw,10.5rem)]">
             <span
-              className="block text-[#10AEA4]"
-              style={{
-                WebkitTextStroke: "4px #E9F6FF",
-                paintOrder: "stroke fill",
-              }}
+              className="block text-[#10AEA4] [-webkit-text-stroke:4px_#E9F6FF] [paint-order:stroke_fill]"
             >
               tamu
             </span>
             <span
-              className="block text-[#377BB0]"
-              style={{
-                WebkitTextStroke: "4px #E9F6FF",
-                paintOrder: "stroke fill",
-              }}
+              className="block text-[#377BB0] [-webkit-text-stroke:4px_#E9F6FF] [paint-order:stroke_fill]"
             >
               datathon
             </span>

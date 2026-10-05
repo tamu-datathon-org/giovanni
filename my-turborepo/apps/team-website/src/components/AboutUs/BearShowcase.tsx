@@ -15,7 +15,6 @@ import {
   bearZoom,
   wrapRotation,
 } from "./bear-config";
-import styles from "./bear.module.css";
 
 const BearScene = dynamic(() => import("./BearScene"), { ssr: false });
 gsap.registerPlugin(ScrambleTextPlugin);
@@ -288,17 +287,25 @@ export default function BearShowcase() {
   }
 
   return (
-    <div ref={root} className={styles.showcase}>
+    <div
+      ref={root}
+      className="relative z-[4] mx-auto mt-12 w-full max-w-[1200px] text-white @container"
+    >
       <noscript>
         <style>{`[data-stat] [data-value], [data-stat] [data-label] { opacity: 1; }`}</style>
       </noscript>
-      <div className={styles.composition}>
-        <p className={styles.datathon} aria-hidden>
+      {/* Bear stage height, plus room underneath for DATATHON. Below 640px the
+          stage sits in the top padding and the stats stack under it. */}
+      <div className="relative isolate h-auto pb-[clamp(4rem,14cqw,6rem)] pt-[var(--stage-h)] [--stage-h:clamp(340px,112cqw,540px)] @[640px]:h-[calc(var(--stage-h)+clamp(6rem,13cqw,11rem))] @[640px]:pb-0 @[640px]:pt-0 @[640px]:[--stage-h:clamp(650px,65vw,800px)]">
+        <p
+          className="pointer-events-none absolute bottom-1 left-1/2 top-auto z-0 m-0 -translate-x-1/2 select-none whitespace-nowrap text-[length:clamp(3.25rem,22cqw,5.5rem)] font-normal not-italic leading-none tracking-[-0.07em] text-[#113a5a1a] @[640px]:bottom-auto @[640px]:top-[calc(var(--stage-h)+0.15rem)] @[640px]:text-[length:clamp(4.5rem,16.5cqw,12.5rem)]"
+          aria-hidden
+        >
           DATATHON
         </p>
         <div
           ref={stage}
-          className={styles.stage}
+          className="absolute inset-x-0 top-0 z-[1] h-[var(--stage-h)] cursor-grab touch-pan-y select-none rounded-[12px] [outline:none] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-td-aqua active:cursor-grabbing"
           role="group"
           tabIndex={ready ? 0 : -1}
           aria-label="Interactive snowflake bear"
@@ -347,7 +354,7 @@ export default function BearShowcase() {
           }}
         >
           <img
-            className={styles.backdrop}
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[84%] w-auto max-w-[90%] -translate-x-[46%] -translate-y-[46%] object-contain data-[loaded=true]:opacity-0 @[640px]:max-w-[60%]"
             data-loaded={ready}
             src={BEAR_BACKDROP_URL}
             alt=""
@@ -355,13 +362,13 @@ export default function BearShowcase() {
             draggable={false}
           />
           <img
-            className={styles.poster}
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[80%] w-auto max-w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain [transition:opacity_180ms_ease] data-[loaded=true]:opacity-0 motion-reduce:[transition:none] @[640px]:max-w-[42%]"
             data-loaded={ready}
             src={BEAR_POSTER_URL}
             alt="White snowflake bear with turquoise ears"
             draggable={false}
           />
-          <div className={styles.canvas}>
+          <div className="absolute inset-0">
             {nearby && !failed && (
               <SceneBoundary onError={onError}>
                 <BearScene
@@ -378,7 +385,8 @@ export default function BearShowcase() {
         </div>
         <svg
           ref={overlay}
-          className={styles.connectors}
+          // Matches the stage box so label % positions line up.
+          className="pointer-events-none absolute inset-x-0 top-0 z-[2] hidden h-[var(--stage-h)] w-full overflow-visible @[640px]:inline"
           aria-hidden
           fill="none"
           stroke="white"
@@ -394,12 +402,15 @@ export default function BearShowcase() {
             </g>
           ))}
         </svg>
-        <ul className={styles.stats} aria-label="TAMU Datathon statistics">
+        <ul
+          className="pointer-events-none relative inset-x-0 top-auto z-[2] m-0 grid h-auto list-none gap-[22px] p-0 pt-[30px] text-center @[640px]:absolute @[640px]:top-0 @[640px]:block @[640px]:h-[var(--stage-h)] @[640px]:pt-0 @[640px]:text-start @[640px]:[gap:normal]"
+          aria-label="TAMU Datathon statistics"
+        >
           {BEAR_STATS.map((stat) => (
             <li
               key={stat.id}
               data-stat={stat.id}
-              className={styles.stat}
+              className="group static w-auto @[640px]:absolute @[640px]:w-1/4"
               style={{
                 left: `${stat.labelPosition[0] * 100}%`,
                 top: `${stat.labelPosition[1] * 100}%`,
@@ -408,12 +419,16 @@ export default function BearShowcase() {
               <span className="sr-only">
                 {stat.value} {stat.label}
               </span>
-              <span aria-hidden className={styles.value} data-value={stat.id}>
+              <span
+                aria-hidden
+                className="block text-[length:clamp(52px,16cqw,72px)] leading-[1.05] tracking-[-0.065em] text-td-coral opacity-0 group-data-[revealed=true]:opacity-100 motion-reduce:opacity-100 @[640px]:text-[length:clamp(44px,7.8cqw,94px)]"
+                data-value={stat.id}
+              >
                 {stat.value}
               </span>
               <span
                 aria-hidden
-                className={`${styles.label} font-inter`}
+                className="mt-[2px] block whitespace-nowrap font-inter text-[19px] leading-[1.1] opacity-0 group-data-[revealed=true]:opacity-100 motion-reduce:opacity-100 @[640px]:mt-2 @[640px]:text-[length:clamp(15px,2.55cqw,30px)]"
                 data-label={stat.id}
               >
                 {stat.label}
@@ -423,7 +438,7 @@ export default function BearShowcase() {
         </ul>
         <p
           id="bear-instructions"
-          className={`${styles.hint} font-inter`}
+          className="pointer-events-none static inset-x-0 top-[calc(var(--stage-h)-1.5rem)] z-[2] m-0 pt-[30px] text-center font-inter text-[12px] tracking-[0.12em] opacity-75 @[640px]:absolute @[640px]:pt-0"
         >
           {failed ? "SNOWFLAKE BEAR" : "DRAG TO ROTATE"}
           <span className="sr-only">

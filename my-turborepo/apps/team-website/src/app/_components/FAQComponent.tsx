@@ -5,7 +5,6 @@ import ReactMarkdown from "react-markdown";
 
 import WindowContainer from "./WindowContainer";
 
-import "./customCss.scss";
 
 import Link from "next/link";
 import { Separator } from "@radix-ui/react-select";
@@ -159,7 +158,7 @@ const FAQComponent: React.FC = () => {
             {faqItems.map((item) => (
               <div
                 key={item.id}
-                className="compStyling clickable-box align-center h-full w-full items-center justify-center rounded-lg border border-black bg-[#f5f5f5] p-4  text-center text-black hover:bg-[#e4e3e4] active:bg-[#d3d2d3]"
+                className="compStyling clickable-box align-center h-full w-full items-center justify-center text-center text-black active:bg-[#d3d2d3]"
                 onClick={() => {
                   setSelectedItem(item);
                   setIsPopupOpen(true);

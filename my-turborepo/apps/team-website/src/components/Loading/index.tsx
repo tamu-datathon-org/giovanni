@@ -3,14 +3,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-/** Sidebar blue and active-label teal, Figma 36:317 / 36:320. */
-const PANEL_BG = "#377BB0";
-const ACCENT = "#83EFE8";
-
 /**
- * Full-screen loader shown until the page has finished loading. Self-contained
- * on purpose: it owns its own keyframes rather than adding them to
- * tailwind.config, so it cannot conflict with the other in-progress branches.
+ * Full-screen loader shown until the page has finished loading. Colours are the
+ * sidebar blue and active-label teal (Figma 36:317 / 36:320); the bob and sweep
+ * keyframes live in tailwind.config.
  */
 export default function LoadingScreen() {
   const [done, setDone] = useState(false);
@@ -44,26 +40,10 @@ export default function LoadingScreen() {
       role="status"
       aria-live="polite"
       aria-label="Loading"
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-td-blue transition-opacity duration-500 ${
         done ? "pointer-events-none opacity-0" : "opacity-100"
       }`}
-      style={{ backgroundColor: PANEL_BG }}
     >
-      <style>{`
-        @keyframes td-bob {
-          0%, 100% { transform: translateY(0) }
-          50% { transform: translateY(-10px) }
-        }
-        @keyframes td-sweep {
-          0% { transform: translateX(-100%) }
-          100% { transform: translateX(300%) }
-        }
-        .td-bob { animation: td-bob 1.6s ease-in-out infinite }
-        .td-sweep { animation: td-sweep 1.3s ease-in-out infinite }
-        @media (prefers-reduced-motion: reduce) {
-          .td-bob, .td-sweep { animation: none }
-        }
-      `}</style>
 
       <Image
         src="/images/td-logos/logo/logoTD26.png"
@@ -72,7 +52,7 @@ export default function LoadingScreen() {
         height={242}
         sizes="132px"
         priority
-        className="td-bob h-auto w-[104px] xl:w-[132px]"
+        className="h-auto w-[104px] animate-loader-bob motion-reduce:animate-none xl:w-[132px]"
       />
 
       <p className="mt-7 font-konkhmer text-[16px] uppercase tracking-[0.64px] text-white/85 xl:text-[18px]">
@@ -80,10 +60,7 @@ export default function LoadingScreen() {
       </p>
 
       <div className="mt-4 h-[3px] w-[150px] overflow-hidden rounded-full bg-white/25 xl:w-[180px]">
-        <div
-          className="td-sweep h-full w-1/3 rounded-full"
-          style={{ backgroundColor: ACCENT }}
-        />
+        <div className="h-full w-1/3 animate-loader-sweep rounded-full bg-td-aqua motion-reduce:animate-none" />
       </div>
     </div>
   );

@@ -13,6 +13,14 @@ import {
 import type { ApplicationSchema } from "~/app/apply/validation";
 import { Input } from "~/components/ui/input";
 import { Asterisk } from "../apply/application/application-form";
+import {
+  FIELD,
+  FIELD_CONTROL,
+  FIELD_ITEM,
+  FIELD_LABEL,
+  FIELD_MESSAGE,
+  FIELD_NOTE,
+} from "./applicationFieldStyles";
 
 interface GenericInputProps {
   name: keyof ApplicationSchema;
@@ -40,17 +48,15 @@ const GenericInputField: React.FC<GenericInputProps> = ({
       name={name}
       defaultValue={defaultValue}
       render={({ field }) => (
-        <FormItem className="flex flex-col" data-application-item>
-          <div
-            className="flex flex-col space-y-2"
-            data-application-field="input"
-          >
-            <FormLabel>
+        <FormItem className={FIELD_ITEM}>
+          <div className={FIELD}>
+            <FormLabel className={FIELD_LABEL}>
               {label}
               {required ? <Asterisk /> : ""}
             </FormLabel>
             <FormControl>
               <Input
+                className={FIELD_CONTROL}
                 placeholder={placeholder}
                 value={
                   typeof field.value === "string" ||
@@ -65,9 +71,11 @@ const GenericInputField: React.FC<GenericInputProps> = ({
               />
             </FormControl>
           </div>
-          <FormMessage />
+          <FormMessage className={FIELD_MESSAGE} />
           {description && (
-            <FormDescription className="text-sm text-gray-400">
+            <FormDescription
+              className={`${FIELD_NOTE} !mt-[0.65rem] w-full max-w-none whitespace-normal break-words leading-[1.6] text-[#526777]`}
+            >
               {description}
             </FormDescription>
           )}

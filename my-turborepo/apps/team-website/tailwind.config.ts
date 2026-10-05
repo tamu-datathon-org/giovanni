@@ -2,8 +2,6 @@ import type { Config } from "tailwindcss";
 
 import baseConfig from "@vanni/tailwind-config/web";
 
-const colors = require("tailwindcss/colors");
-
 export default {
   // We need to append the path to the UI package to the content array so that
   // those classes are included correctly.
@@ -18,22 +16,10 @@ export default {
 
     extend: {
       screens: {
-        // Custom height-based breakpoint
-        tabletRange: {
-          raw: "(min-width: 740px) and (max-width: 850px) and (min-height: 600px) and (max-height: 850px)",
+        // Keep in sync with FULL_MOTION in components/PastEvents/MinimizeToDock.tsx.
+        "full-motion": {
+          raw: "(min-width: 768px) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
         },
-        ipadRange: {
-          raw: "(min-width: 740px) and (max-width: 850px) and (min-height: 800px) and (max-height: 1400px)",
-        },
-        ipadproRange: {
-          raw: "(min-width: 900px) and (max-width: 1200px) and (min-height: 1200px) and (max-height: 1500px)",
-        },
-        h700: { raw: "(max-height: 750px) and (max-width: 400px)" },
-        h800: { raw: "(max-height: 800px)" },
-        w800: { raw: "(max-width: 900px)" },
-        xs: "450px",
-        // => @media (min-width: 450px) { ... }
-
         sm: "575px",
         // => @media (min-width: 576px) { ... }
 
@@ -66,77 +52,60 @@ export default {
         transparent: "transparent",
         white: "#FFFFFF",
         black: "#121723",
-        dark: "#1D2430",
         primary: "#4A6CF7",
-        datablue: "#2C41DB",
-        datalightblue: "#6EFEEB",
-        datadarkblue: "#2D69DF",
-        normal: "#f9feff",
-        "bg-color-dark": "#171C28",
         "body-color": {
           DEFAULT: "#212327",
           dark: "#9da7b9",
         },
-        stroke: {
-          stroke: "#E3E8EF",
-          dark: "#353943",
-        },
-        gray: {
-          ...colors.gray,
-          dark: "#1E232E",
-          light: "#F0F2F9",
-        },
-        // Logo colors - automatically switches based on dark mode via CSS variables
-        logo: {
-          primary: "var(--logo-primary)",
-          secondary: "var(--logo-secondary)",
-          tertiary: "var(--logo-tertiary)",
-        },
-        // Branch colors - automatically switches based on dark mode via CSS variables
-        branch: {
-          primary: "var(--branch-primary)",
-          secondary: "var(--branch-secondary)",
-          tertiary: "var(--branch-tertiary)",
+        // TD 2026 palette shared by the homepage sections, footer and application.
+        td: {
+          paper: "#e9f6ff",
+          line: "#91afc2",
+          label: "#bed1df",
+          panel: "#d9d9d9",
+          page: "#2d658e",
+          ink: "#28668e",
+          deep: "#215778",
+          navy: "#174c70",
+          team: "#254c70",
+          blue: "#377bb0",
+          sky: "#5bbff1",
+          aqua: "#83efe8",
+          teal: "#10aea4",
+          orange: "#ff9a42",
+          coral: "#ff8b60",
+          muted: "#71808b",
         },
       },
 
       boxShadow: {
         signUp: "0px 5px 10px rgba(4, 10, 34, 0.2)",
-        one: "0px 2px 3px rgba(7, 7, 77, 0.05)",
         two: "0px 5px 10px rgba(6, 8, 15, 0.1)",
-        three: "0px 5px 15px rgba(6, 8, 15, 0.05)",
-        sticky: "inset 0 -1px 0 0 rgba(0, 0, 0, 0.1)",
-        "sticky-dark": "inset 0 -1px 0 0 rgba(255, 255, 255, 0.1)",
-        "feature-2": "0px 10px 40px rgba(48, 86, 211, 0.12)",
-        submit: "0px 5px 20px rgba(4, 10, 34, 0.1)",
-        "submit-dark": "0px 5px 20px rgba(4, 10, 34, 0.1)",
-        btn: "0px 1px 2px rgba(4, 10, 34, 0.15)",
-        "btn-hover": "0px 1px 2px rgba(0, 0, 0, 0.15)",
-        "btn-light": "0px 1px 2px rgba(0, 0, 0, 0.1)",
-      },
-      dropShadow: {
-        three: "0px 5px 15px rgba(6, 8, 15, 0.05)",
       },
       keyframes: {
-        floatx: {
-          "0%, 100%": { boxShadow: "none", transform: "translateY(0)" },
-          "50%": { boxShadow: "none", transform: "translateY(-20px)" },
-        },
-        bob: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(10px)" },
-        },
         marquee: {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-50%)" },
         },
+        // Loading screen: logo bob and progress-bar sweep.
+        "loader-bob": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "loader-sweep": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(300%)" },
+        },
       },
       animation: {
-        float: "floatx 3s ease-in-out infinite",
-        bob: "bob 2s ease-in-out infinite",
         marquee: "marquee 40s linear infinite",
+        "loader-bob": "loader-bob 1.6s ease-in-out infinite",
+        "loader-sweep": "loader-sweep 1.3s ease-in-out infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/container-queries"),
+  ],
 } satisfies Config;

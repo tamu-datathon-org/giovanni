@@ -31,6 +31,15 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { Asterisk } from "../apply/application/application-form";
+import {
+  FIELD,
+  FIELD_DROPDOWN,
+  FIELD_ITEM,
+  FIELD_LABEL,
+  FIELD_MESSAGE,
+  FIELD_OTHER_INPUT,
+  FIELD_TRIGGER,
+} from "./applicationFieldStyles";
 
 interface Option {
   label: string;
@@ -44,7 +53,6 @@ interface ISelectProps {
   placeholder: string;
   options: Option[];
   defaultOption?: string | undefined;
-  popoverClassName?: string;
 }
 
 const GenericMultiSelect = ({
@@ -54,7 +62,6 @@ const GenericMultiSelect = ({
   placeholder,
   options: values,
   defaultOption,
-  popoverClassName,
 }: ISelectProps) => {
   const form = useFormContext<ApplicationSchema>();
   const OTHER_VALUE = "Other";
@@ -141,12 +148,9 @@ const GenericMultiSelect = ({
         };
 
         return (
-          <FormItem className="flex flex-col" data-application-item>
-            <div
-              className="flex flex-col space-y-2"
-              data-application-field="select"
-            >
-              <FormLabel>
+          <FormItem className={FIELD_ITEM}>
+            <div className={FIELD}>
+              <FormLabel className={FIELD_LABEL}>
                 {label}
                 {required ? <Asterisk /> : ""}
               </FormLabel>
@@ -157,9 +161,9 @@ const GenericMultiSelect = ({
                       variant="application"
                       role="combobox"
                       data-placeholder={selectedLabels.length === 0}
-                      className="w-full justify-between overflow-hidden"
+                      className={`${FIELD_TRIGGER} justify-between overflow-hidden`}
                     >
-                      <span className="truncate">
+                      <span className="truncate text-left">
                         {selectedLabels.length > 0
                           ? selectedLabels.join(", ")
                           : placeholder}
@@ -169,7 +173,7 @@ const GenericMultiSelect = ({
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent
-                  className={cn("w-fit max-w-full p-0", popoverClassName)}
+                  className={cn("w-fit max-w-full p-0", FIELD_DROPDOWN)}
                 >
                   <Command>
                     <CommandInput
@@ -221,9 +225,10 @@ const GenericMultiSelect = ({
               </Popover>
               {/* Show textbox if Other is selected */}
               {hasOther && (
-                <div className="mt-2 flex flex-col">
+                <div className="col-span-full mt-2 flex flex-col">
                   <FormControl>
                     <Input
+                      className={FIELD_OTHER_INPUT}
                       type="text"
                       placeholder="Please specify..."
                       value={otherRaw}
@@ -242,7 +247,7 @@ const GenericMultiSelect = ({
                 </div>
               )}
             </div>
-            <FormMessage />
+            <FormMessage className={FIELD_MESSAGE} />
           </FormItem>
         );
       }}

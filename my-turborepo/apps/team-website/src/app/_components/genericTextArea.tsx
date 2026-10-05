@@ -11,6 +11,14 @@ import {
 
 import type { ApplicationSchema } from "~/app/apply/validation";
 import { Asterisk } from "../apply/application/application-form";
+import {
+  FIELD_ITEM_STACKED,
+  FIELD_LABEL_STACKED,
+  FIELD_MESSAGE,
+  FIELD_NOTE,
+  FIELD_STACKED,
+  FIELD_TEXTAREA,
+} from "./applicationFieldStyles";
 
 interface GenericTextAreaProps {
   name: keyof ApplicationSchema;
@@ -43,18 +51,15 @@ const GenericTextArea: React.FC<GenericTextAreaProps> = ({
         }, [field.value]);
 
         return (
-          <FormItem data-application-item>
-            <div
-              className="space-y-2"
-              data-application-field="textarea"
-              data-stacked="true"
-            >
-              <FormLabel>
+          <FormItem className={FIELD_ITEM_STACKED}>
+            <div className={FIELD_STACKED}>
+              <FormLabel className={FIELD_LABEL_STACKED}>
                 {label}
                 {required ? <Asterisk /> : ""}
               </FormLabel>
               <FormControl>
                 <textarea
+                  className={FIELD_TEXTAREA}
                   placeholder={placeholder}
                   {...field}
                   maxLength={150}
@@ -66,8 +71,8 @@ const GenericTextArea: React.FC<GenericTextAreaProps> = ({
                 />
               </FormControl>
             </div>
-            <FormMessage />
-            <p className="mt-1 text-sm text-gray-500">
+            <FormMessage className={FIELD_MESSAGE} />
+            <p className={`${FIELD_NOTE} text-gray-500`}>
               {charCounter}/150 characters
             </p>
           </FormItem>

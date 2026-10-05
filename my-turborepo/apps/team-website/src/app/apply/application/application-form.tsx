@@ -51,7 +51,6 @@ import { api } from "~/trpc/react";
 import GenericCombobox from "../../_components/genericCombobox";
 import GenericMultiSelect from "../../_components/genericMultiSelect";
 import { applicationSchema } from "../validation";
-import styles from "./application.module.css";
 import { useApplicationEntrance } from "./useApplicationEntrance";
 
 /*
@@ -101,26 +100,39 @@ export function SectionCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className={styles.section}>
-      <h2 className={styles.sectionHeading}>{title}</h2>
-      <div className={styles.sectionBody}>{children}</div>
+    <section className="px-3 py-4 @[541px]:px-6 @[541px]:py-7 [section+&]:border-t [section+&]:border-t-[#afc2ce]">
+      <h2 className="mb-4 mt-0 border-l-4 border-l-td-blue py-[0.15rem] pl-3 pr-0 text-[18px] font-bold lowercase leading-[1.25] tracking-[-0.04em] text-td-deep @[541px]:mb-6 @[541px]:text-[20px]">
+        {title}
+      </h2>
+      <div className="min-w-0">{children}</div>
     </section>
   );
 }
 
+const STAR_ROW =
+  "pointer-events-none absolute flex gap-[clamp(0.5rem,1cqw,0.875rem)]";
+const HEADER_STAR_SIZE =
+  "[&_img]:h-auto [&_img]:w-[clamp(2.5rem,6.4cqw,4.75rem)]";
+
+const LOADING_CLASS =
+  "grid min-h-[70vh] place-items-center p-8 text-td-paper";
+
 function StarRow({
   className,
+  entrance,
   src,
   width,
   height,
 }: {
   className: string;
+  /** Hook for the page-load animation in useApplicationEntrance. */
+  entrance: string;
   src: string;
   width: number;
   height: number;
 }) {
   return (
-    <div className={className} aria-hidden="true">
+    <div className={className} data-entrance={entrance} aria-hidden="true">
       {[0, 1, 2].map((star) => (
         <Image
           key={star}
@@ -559,48 +571,69 @@ export function ApplicationForm() {
 
   if (isLoading) {
     return (
-      <div className={styles.loading}>
+      <div className={LOADING_CLASS}>
         <p>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div ref={rootRef} className={styles.application}>
-      <div className={styles.background} aria-hidden="true" />
-      <div className={styles.container}>
-        <a href="/apply" className={styles.backLink}>
+    <div
+      ref={rootRef}
+      className="relative isolate overflow-clip px-3 pb-12 pt-20 [@media(min-width:641px)]:px-6 [@media(min-width:641px)]:pb-20 [@media(min-width:641px)]:pt-16"
+    >
+      <div
+        className="application-splotches pointer-events-none absolute inset-0 z-[-1]"
+        aria-hidden="true"
+      />
+      <div className="mx-auto max-w-[1000px] @container">
+        <a
+          href="/apply"
+          data-entrance="back-link"
+          className="mb-6 inline-flex items-center gap-2 text-[14px] text-td-paper hover:underline focus-visible:!outline-td-paper"
+        >
           <LucideArrowBigLeft className="h-5 w-5" />
           back to dashboard
         </a>
         <Form {...form}>
-          <form onSubmit={handleFormSubmit} className={styles.form}>
-            <header className={styles.header}>
+          <form onSubmit={handleFormSubmit} className="relative">
+            <header className="relative pb-[6.5rem] pt-14 text-center text-td-paper @[541px]:pb-[7.5rem]">
               <StarRow
-                className={styles.starsLeft}
+                entrance="stars-left"
+                className={`${STAR_ROW} star-hatch bottom-10 left-0 ${HEADER_STAR_SIZE}`}
                 src="/images/about-us/star.svg"
                 width={52}
                 height={52}
               />
-              <h1 className={styles.title}>hacker application</h1>
+              <h1
+                data-entrance="title"
+                className="m-0 whitespace-nowrap text-[length:clamp(24px,9cqw,64px)] font-bold lowercase leading-none tracking-[-0.07em]"
+              >
+                hacker application
+              </h1>
               <StarRow
-                className={styles.starsRight}
+                entrance="stars-right"
+                className={`${STAR_ROW} star-hatch -top-6 right-0 @[541px]:-top-14 ${HEADER_STAR_SIZE}`}
                 src="/images/about-us/star.svg"
                 width={52}
                 height={52}
               />
             </header>
 
-            <div className={styles.panel}>
+            <div
+              data-entrance="panel"
+              className="relative rounded-[22px] border-4 border-td-line bg-td-panel"
+            >
               {/* <StarRow
-                className={styles.whiteStars}
+                entrance="white-stars"
+                className="pointer-events-none absolute -top-16 right-3 flex gap-0 @[541px]:-top-[6.5rem] @[541px]:right-7 [&_img]:h-auto [&_img]:w-[clamp(3.25rem,8cqw,6rem)]"
                 src="/images/application/white-star.svg"
                 width={74}
                 height={86}
               /> */}
               {/* Personal Information Section */}
               <SectionCard title="Personal Information">
-                <div className="grid gap-6 md:grid-cols-2">
+                <div className="grid grid-cols-1 gap-3 @[541px]:gap-6 @[851px]:grid-cols-2">
                   <GenericInputField
                     name="firstName"
                     label="First Name"
@@ -617,7 +650,7 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-3 @[541px]:mt-6">
                   <GenericInputField
                     name="email"
                     label="Primary Email"
@@ -628,7 +661,7 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-3 @[541px]:mt-6">
                   <GenericInputField
                     name="linkedinUrl"
                     label="LinkedIn Profile URL"
@@ -638,7 +671,7 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="mt-6 grid gap-6 md:grid-cols-2">
+                <div className="mt-3 grid grid-cols-1 gap-3 @[541px]:mt-6 @[541px]:gap-6 @[851px]:grid-cols-2">
                   <GenericInputField
                     name="phoneNumber"
                     label="Phone Number"
@@ -647,7 +680,6 @@ export function ApplicationForm() {
                     placeholder="e.g. 1234567890"
                   />
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"age"}
                     label={"Age"}
                     options={AGE}
@@ -658,9 +690,8 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="mt-6 grid gap-6 md:grid-cols-2">
+                <div className="mt-3 grid grid-cols-1 gap-3 @[541px]:mt-6 @[541px]:gap-6 @[851px]:grid-cols-2">
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"country"}
                     label={"Country of Residence"}
                     options={COUNTRIES}
@@ -670,7 +701,6 @@ export function ApplicationForm() {
                     required={true}
                   />
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"gender"}
                     label={"Gender"}
                     options={GENDER_OPTIONS}
@@ -689,9 +719,8 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-3 @[541px]:mt-6">
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"race"}
                     label={"What ethnicity do you identify with?"}
                     options={RACE_OPTIONS}
@@ -713,9 +742,8 @@ export function ApplicationForm() {
 
               {/* Education Section */}
               <SectionCard title="Education">
-                <div className="mb-6">
+                <div className="mb-3 @[541px]:mb-6">
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"school"}
                     label={"School"}
                     options={SCHOOL_OPTIONS}
@@ -726,9 +754,8 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="grid gap-6 md:grid-cols-2">
+                <div className="grid grid-cols-1 gap-3 @[541px]:gap-6 @[851px]:grid-cols-2">
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"major"}
                     label={"Major"}
                     options={MAJOR}
@@ -746,7 +773,6 @@ export function ApplicationForm() {
                     required={true}
                   />
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"classification"}
                     label={"Level of Study"}
                     options={EDUCATION_LEVELS}
@@ -758,9 +784,8 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-3 @[541px]:mt-6">
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"gradYear"}
                     label={"Anticipated Graduation Year"}
                     options={GRADUATION_YEARS}
@@ -776,9 +801,8 @@ export function ApplicationForm() {
 
               {/* Experience Section */}
               <SectionCard title="Experience">
-                <div className="grid gap-6 md:grid-cols-2">
+                <div className="grid grid-cols-1 gap-3 @[541px]:gap-6 @[851px]:grid-cols-2">
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"hackathonsAttended"}
                     label={"Hackathons Attended"}
                     options={HACKATHON_EXPERIENCE}
@@ -790,7 +814,6 @@ export function ApplicationForm() {
                     required={true}
                   />
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"experience"}
                     label={"Programming Experience Level"}
                     options={PROGRAMMING_SKILL_LEVELS}
@@ -806,9 +829,8 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-3 @[541px]:mt-6">
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"eventSource"}
                     label={"How did you hear about us?"}
                     options={HEARD_ABOUT_OPTIONS}
@@ -823,7 +845,7 @@ export function ApplicationForm() {
                 {/* Asked of everyone, not just "From a friend" — someone can find
                   us through a student org or MLH and still have been talked
                   into applying by a person who deserves the credit. */}
-                <div className="mt-6">
+                <div className="mt-3 @[541px]:mt-6">
                   <GenericInputField
                     name="referrerEmail"
                     label="Did someone refer you?"
@@ -834,18 +856,18 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-3 @[541px]:mt-6">
                   <FormField
                     control={form.control}
                     name="resume"
                     render={({ field }) => (
-                      <FormItem className={styles.upload}>
-                        <FormLabel>
+                      <FormItem>
+                        <FormLabel className="block p-2 text-[14px] font-semibold lowercase leading-[1.25] tracking-[-0.07em] text-td-ink @[541px]:py-[0.65rem] @[541px]:pl-0 @[541px]:pr-[0.85rem] @[541px]:text-[18px]">
                           Resume/CV <Asterisk />
                         </FormLabel>
                         {importedValues?.resume && (
                           <div className="my-2 rounded-lg bg-green-900/30 p-3">
-                            <p className="text-sm">
+                            <p className="text-sm text-[#285a43]">
                               ✓ Current resume:{" "}
                               {importedValues.resume.resumeName}
                             </p>
@@ -856,10 +878,10 @@ export function ApplicationForm() {
                             type="file"
                             accept=".pdf,.doc,.docx"
                             onChange={(e) => field.onChange(e.target.files)}
-                            className="cursor-pointer transition-all"
+                            className="h-auto cursor-pointer border-2 border-td-line bg-td-label p-4 text-td-ink transition-all"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-[#a32232]" />
                       </FormItem>
                     )}
                   />
@@ -869,7 +891,7 @@ export function ApplicationForm() {
               {/* Application Questions Section */}
               <SectionCard title="Application Questions">
                 {/* References */}
-                <div className="pt-4">
+                <div className="pt-0 @[541px]:pt-4">
                   <GenericTextArea
                     name="references"
                     defaultValue={importedValues?.app?.references ?? ""}
@@ -879,7 +901,7 @@ export function ApplicationForm() {
                   />
                 </div>
                 {/* What drives your interest in being a part of TAMU Datathon? */}
-                <div className="pt-4">
+                <div className="pt-3 @[541px]:pt-4">
                   <GenericTextArea
                     name="interestOne"
                     defaultValue={importedValues?.app?.interestOne ?? ""}
@@ -889,7 +911,7 @@ export function ApplicationForm() {
                   />
                 </div>
                 {/* What is the one thing you'd build if you had unlimited resources? */}
-                <div className="pt-4">
+                <div className="pt-3 @[541px]:pt-4">
                   <GenericTextArea
                     name="interestTwo"
                     defaultValue={importedValues?.app?.interestTwo ?? ""}
@@ -899,7 +921,7 @@ export function ApplicationForm() {
                   />
                 </div>
                 {/* Tell us your best programming joke. */}
-                <div className="pt-4">
+                <div className="pt-3 @[541px]:pt-4">
                   <GenericTextArea
                     name="interestThree"
                     defaultValue={importedValues?.app?.interestThree ?? ""}
@@ -912,9 +934,8 @@ export function ApplicationForm() {
 
               {/* Additional Details Section */}
               <SectionCard title="Additional Details">
-                <div className="mb-6">
+                <div className="mb-3 @[541px]:mb-6">
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"shirtSize"}
                     label={"T-Shirt Size"}
                     options={SHIRT_SIZES}
@@ -926,7 +947,7 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="mb-6">
+                <div className="mb-3 @[541px]:mb-6">
                   <GenericInputField
                     name="address"
                     label="Street Address"
@@ -936,7 +957,7 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="grid gap-6 md:grid-cols-3">
+                <div className="grid grid-cols-1 gap-3 @[541px]:gap-6 @[851px]:grid-cols-3">
                   <GenericInputField
                     name="city"
                     label="City"
@@ -957,9 +978,8 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-3 @[541px]:mt-6">
                   <GenericMultiSelect
-                    popoverClassName={styles.dropdown}
                     name={"dietaryRestriction"}
                     label={"Dietary Restrictions"}
                     placeholder="Select dietary restrictions (if any)"
@@ -971,7 +991,7 @@ export function ApplicationForm() {
                   />
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-3 @[541px]:mt-6">
                   <GenericTextArea
                     name="extraInfo"
                     label="Any questions for us?"
@@ -984,22 +1004,21 @@ export function ApplicationForm() {
 
               {/* Travel Reimbursement Section */}
               <SectionCard title="Travel Reimbursement">
-                <div className="grid gap-6 md:grid-cols-1">
+                <div className="grid grid-cols-1 gap-3 @[541px]:gap-6">
                   <GenericCombobox
-                    popoverClassName={styles.dropdown}
                     name={"travelReimbursement"}
                     label={"Do you require travel reimbursement?"}
                     options={YES_NO}
                     allowOther={false}
                     required={true}
                   />
-                  <div className={styles.notice}>
+                  <div className="rounded-[16px] border-2 border-td-line p-3 text-[14px] leading-[1.6] text-td-ink @[541px]:p-5">
                     <p className="font-extrabold">
                       {
                         <>
                           To request reimbursement, fill out the{" "}
                           <a
-                            className="text-[#01c0cc] underline hover:text-[#28979b]"
+                            className="text-td-deep underline underline-offset-[3px] hover:text-[#28979b]"
                             href="https://forms.gle/zULt3yVC9Lq7MQGh6"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -1010,7 +1029,7 @@ export function ApplicationForm() {
                         </>
                       }
                     </p>
-                    <p>
+                    <p className="mt-3">
                       If you are applying for reimbursement as a group, only one
                       person needs to submit the reimbursement form. However,
                       every participant must still complete this application.
@@ -1026,19 +1045,19 @@ export function ApplicationForm() {
                     control={form.control}
                     name="liabilityWaiver"
                     render={({ field }) => (
-                      <FormItem className={styles.consent}>
+                      <FormItem className="flex items-start gap-2 rounded-[16px] border-2 border-td-line p-3 text-[14px] leading-[1.6] text-td-ink @[541px]:gap-[0.85rem] @[541px]:p-5">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            className={styles.checkbox}
+                            className="mt-[3px] h-[22px] w-[22px] shrink-0 border-2 border-td-ink bg-td-paper text-td-ink data-[state=checked]:bg-td-sky data-[state=checked]:text-td-ink"
                           />
                         </FormControl>
-                        <div className="space-y-1">
-                          <FormLabel className="font-medium">
+                        <div className="min-w-0 space-y-1">
+                          <FormLabel className="text-[14px] font-medium leading-[1.6] text-td-ink [&_span]:text-td-ink">
                             I have read and agree to the{" "}
                             <a
-                              className="text-[#01c0cc] underline hover:text-[#28979b]"
+                              className="text-td-deep underline underline-offset-[3px] hover:text-[#28979b]"
                               href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf"
                               target="_blank"
                             >
@@ -1046,7 +1065,7 @@ export function ApplicationForm() {
                             </a>
                             <Asterisk />
                           </FormLabel>
-                          <FormMessage />
+                          <FormMessage className="text-[#a32232]" />
                         </div>
                       </FormItem>
                     )}
@@ -1056,22 +1075,22 @@ export function ApplicationForm() {
                     control={form.control}
                     name="mlhPrivacyPolicy"
                     render={({ field }) => (
-                      <FormItem className={styles.consent}>
+                      <FormItem className="flex items-start gap-2 rounded-[16px] border-2 border-td-line p-3 text-[14px] leading-[1.6] text-td-ink @[541px]:gap-[0.85rem] @[541px]:p-5">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            className={styles.checkbox}
+                            className="mt-[3px] h-[22px] w-[22px] shrink-0 border-2 border-td-ink bg-td-paper text-td-ink data-[state=checked]:bg-td-sky data-[state=checked]:text-td-ink"
                           />
                         </FormControl>
-                        <div className="space-y-1">
-                          <FormLabel className="font-medium">
+                        <div className="min-w-0 space-y-1">
+                          <FormLabel className="text-[14px] font-medium leading-[1.6] text-td-ink [&_span]:text-td-ink">
                             I authorize you to share my application/registration
                             information with Major League Hacking for event
                             administration, ranking, and MLH administration
                             in-line with the{" "}
                             <a
-                              className="text-[#01c0cc] underline hover:text-[#28979b]"
+                              className="text-td-deep underline underline-offset-[3px] hover:text-[#28979b]"
                               href="https://mlh.io/privacy"
                               target="_blank"
                             >
@@ -1079,7 +1098,7 @@ export function ApplicationForm() {
                             </a>
                             . I further agree to the terms of both the{" "}
                             <a
-                              className="text-[#01c0cc] underline hover:text-[#28979b]"
+                              className="text-td-deep underline underline-offset-[3px] hover:text-[#28979b]"
                               href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
                               target="_blank"
                             >
@@ -1087,7 +1106,7 @@ export function ApplicationForm() {
                             </a>{" "}
                             and the{" "}
                             <a
-                              className="text-[#01c0cc] underline hover:text-[#28979b]"
+                              className="text-td-deep underline underline-offset-[3px] hover:text-[#28979b]"
                               href="https://mlh.io/privacy"
                               target="_blank"
                             >
@@ -1095,7 +1114,7 @@ export function ApplicationForm() {
                             </a>
                             <Asterisk />
                           </FormLabel>
-                          <FormMessage />
+                          <FormMessage className="text-[#a32232]" />
                         </div>
                       </FormItem>
                     )}
@@ -1105,22 +1124,22 @@ export function ApplicationForm() {
                     control={form.control}
                     name="mlhEmailConsent"
                     render={({ field }) => (
-                      <FormItem className={styles.consent}>
+                      <FormItem className="flex items-start gap-2 rounded-[16px] border-2 border-td-line p-3 text-[14px] leading-[1.6] text-td-ink @[541px]:gap-[0.85rem] @[541px]:p-5">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            className={styles.checkbox}
+                            className="mt-[3px] h-[22px] w-[22px] shrink-0 border-2 border-td-ink bg-td-paper text-td-ink data-[state=checked]:bg-td-sky data-[state=checked]:text-td-ink"
                           />
                         </FormControl>
-                        <div className="space-y-1">
-                          <FormLabel className="font-medium">
+                        <div className="min-w-0 space-y-1">
+                          <FormLabel className="text-[14px] font-medium leading-[1.6] text-td-ink [&_span]:text-td-ink">
                             <span>(Optional) </span>
                             I authorize MLH to send me occasional emails about
                             relevant events, career opportunities, and community
                             announcements
                           </FormLabel>
-                          <FormMessage />
+                          <FormMessage className="text-[#a32232]" />
                         </div>
                       </FormItem>
                     )}
@@ -1129,11 +1148,11 @@ export function ApplicationForm() {
               </SectionCard>
 
               {/* Submit Button */}
-              <div className={styles.submitRow}>
+              <div className="flex justify-center px-3 pb-6 pt-4 @[541px]:px-4 @[541px]:pb-12 @[541px]:pt-6">
                 <Button
                   type="submit"
                   disabled={disableSubmit}
-                  className={styles.submit}
+                  className="h-14 w-[200px] max-w-full rounded-none border-0 border-current bg-transparent bg-[url('/images/application/submit-arrow.svg')] bg-[length:100%_100%] bg-center bg-no-repeat px-7 py-0 text-[30px] font-semibold lowercase leading-5 tracking-[-0.07em] text-td-ink ![box-shadow:none] [transition:filter_150ms_ease] hover:bg-transparent enabled:hover:[filter:brightness(1.08)] disabled:text-[16px]"
                 >
                   {disableSubmit ? (
                     <>

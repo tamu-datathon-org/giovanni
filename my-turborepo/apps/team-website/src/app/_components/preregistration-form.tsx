@@ -1,6 +1,5 @@
 "use client";
 
-import "./customCss.scss";
 
 import type { MouseEventHandler, TouchEventHandler } from "react";
 import type {

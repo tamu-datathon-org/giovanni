@@ -2,8 +2,6 @@ import type { RefObject } from "react";
 import { useLayoutEffect } from "react";
 import gsap from "gsap";
 
-import styles from "./application.module.css";
-
 /**
  * Page-load entrance for the application: header text rises in, the star rows
  * do the same left-to-right flip as the About Us stars, and the panel lifts
@@ -20,6 +18,8 @@ export function useApplicationEntrance(
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const q = gsap.utils.selector(element);
+    // Elements opt in with `data-entrance="<name>"`.
+    const hook = (name: string) => `[data-entrance="${name}"]`;
 
     const context = gsap.context(() => {
       const timeline = gsap.timeline({
@@ -27,28 +27,19 @@ export function useApplicationEntrance(
       });
 
       timeline
-        .from(q(`.${styles.backLink}`), { autoAlpha: 0, x: -16, duration: 0.4 })
-        .from(q(`.${styles.title}`), { autoAlpha: 0, y: 28, duration: 0.6 }, 0.1)
+        .from(q(hook("back-link")), { autoAlpha: 0, x: -16, duration: 0.4 })
+        .from(q(hook("title")), { autoAlpha: 0, y: 28, duration: 0.6 }, 0.1)
         .from(
-          q(`.${styles.description}`),
-          { autoAlpha: 0, y: 18, duration: 0.6 },
-          0.22,
-        )
-        .from(
-          q(`.${styles.starsLeft}, .${styles.starsRight}`),
+          q(`${hook("stars-left")}, ${hook("stars-right")}`),
           { autoAlpha: 0, duration: 0.3 },
           0.2,
         );
 
-      flipStars(timeline, q(`.${styles.starsLeft} [data-star]`), 0.25);
-      flipStars(timeline, q(`.${styles.starsRight} [data-star]`), 0.4);
+      flipStars(timeline, q(`${hook("stars-left")} [data-star]`), 0.25);
+      flipStars(timeline, q(`${hook("stars-right")} [data-star]`), 0.4);
 
-      timeline.from(
-        q(`.${styles.panel}`),
-        { autoAlpha: 0, y: 48, duration: 0.7 },
-        0.35,
-      );
-      flipStars(timeline, q(`.${styles.whiteStars} [data-star]`), 0.8);
+      timeline.from(q(hook("panel")), { autoAlpha: 0, y: 48, duration: 0.7 }, 0.35);
+      flipStars(timeline, q(`${hook("white-stars")} [data-star]`), 0.8);
     }, element);
 
     return () => context.revert();

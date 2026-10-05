@@ -4,12 +4,14 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-import styles from "./about.module.css";
+/** 3D setup the flip needs; callers only pass sizing via `starClassName`. */
+const STAR_BASE =
+  "h-auto origin-center will-change-transform [backface-visibility:visible] [transform-style:preserve-3d]";
 
 /** Left-to-right flip through the three stars, then settle; plays once on scroll-in. */
 export default function AboutStars({
-  className = styles.stars,
-  starClassName = styles.star,
+  className = "mt-[clamp(1.5rem,4cqw,3rem)] flex gap-[clamp(0.5rem,1cqw,0.875rem)]",
+  starClassName = "w-[clamp(2rem,4.76cqw,3.5rem)]",
   src = "/images/about-us/star.svg",
 }: {
   className?: string;
@@ -90,9 +92,9 @@ export default function AboutStars({
 
   return (
     <div ref={root} className={className} aria-hidden>
-      <img src={src} alt="" data-star className={starClassName} />
-      <img src={src} alt="" data-star className={starClassName} />
-      <img src={src} alt="" data-star className={starClassName} />
+      <img src={src} alt="" data-star className={`${STAR_BASE} ${starClassName}`} />
+      <img src={src} alt="" data-star className={`${STAR_BASE} ${starClassName}`} />
+      <img src={src} alt="" data-star className={`${STAR_BASE} ${starClassName}`} />
     </div>
   );
 }
