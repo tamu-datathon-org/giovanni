@@ -96,7 +96,7 @@ export function Room({
         />
       </div>
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 top-[calc(var(--table-y)_+_519*var(--t))] z-[2] bg-[#17330d]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 top-[calc(var(--table-y)_+_519*var(--t))] z-[2] bg-[#14280a]"
         aria-hidden="true"
       />
       {/* Same layer as the table but before the date line in the page, so it shades the room and not the text. */}
@@ -115,6 +115,16 @@ export function Room({
       <div
         className="group-data-[stage=flicker]/hero:animate-light-on pointer-events-none absolute left-1/2 top-[var(--table-y)] z-[4] h-[calc(260*var(--g))] w-[calc(1100*var(--g))] opacity-0 mix-blend-screen [translate:-50%_-30%] group-data-[stage=on]/hero:opacity-100 motion-reduce:transition-opacity motion-reduce:duration-500 [@media(scripting:none)]:!opacity-100"
         style={POOL_STYLE}
+        aria-hidden="true"
+      />
+
+      {/* Keep the section boundary green even while the room lights flicker. */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] h-[clamp(80px,18cqh,180px)]"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgb(20 32 9 / 0), #142009 90%)",
+        }}
         aria-hidden="true"
       />
     </>

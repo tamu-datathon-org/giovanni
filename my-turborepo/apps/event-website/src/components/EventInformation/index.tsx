@@ -12,7 +12,7 @@ export default function EventInformation() {
     <section
       id="event-information"
       aria-labelledby="event-information-heading"
-      className="scroll-mt-24 bg-[#17330D] px-4 py-20 sm:px-8 lg:py-24"
+      className="scroll-mt-24 bg-[#142009] px-4 pb-20 pt-32 sm:px-8 lg:pb-24 lg:pt-40"
     >
       <h2
         id="event-information-heading"
