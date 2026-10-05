@@ -8,7 +8,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 const INFORMATION =
   "absolute z-[3] min-w-0 -translate-y-1/2 text-center motion-reduce:static motion-reduce:mx-auto motion-reduce:!w-[min(100%,800px)] motion-reduce:transform-none [@media(scripting:none)]:static [@media(scripting:none)]:mx-auto [@media(scripting:none)]:!w-[min(100%,800px)] [@media(scripting:none)]:transform-none";
 const TITLE =
-  "mb-3 text-balance text-[clamp(18px,2.35vw,32px)] font-normal not-italic leading-none tracking-normal text-[#ffb24c] [text-shadow:0_0_10px_#ffb24c] md:mb-[18px]";
+  "mb-3 font-sekuya text-balance text-[clamp(18px,2.35vw,32px)] font-normal not-italic leading-none tracking-normal text-[#ffb24c] [text-shadow:0_0_10px_#ffb24c] md:mb-[18px]";
 const DESCRIPTION =
   "m-0 font-righteous text-pretty text-[clamp(18px,2.3vw,32px)] font-normal not-italic leading-none tracking-normal text-[#fdfbed] [text-shadow:0_4px_4px_#00000040]";
 
@@ -23,11 +23,7 @@ const POINTS = [
 const PATH = `M ${POINTS.map(({ x, y }) => `${x * 1000} ${y * 1000}`).join(" L ")}`;
 const SHOT_AT = 0.24;
 
-export default function PoolStory({
-  titleClassName,
-}: {
-  titleClassName: string;
-}) {
+export default function PoolStory() {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -290,7 +286,7 @@ export default function PoolStory({
         className={`${INFORMATION} left-0 top-[46%] w-[56%] md:top-[45%] md:w-[54%]`}
       >
         <div data-copy>
-          <h3 className={`${titleClassName} ${TITLE}`}>WHAT IS DATATHON?</h3>
+          <h3 className={TITLE}>WHAT IS DATATHON?</h3>
           <p className={DESCRIPTION}>
             We are the largest data science and machine learning focused
             hackathon in Texas located at Texas A&amp;M University in College
@@ -302,7 +298,7 @@ export default function PoolStory({
         className={`${INFORMATION} right-0 top-[15%] w-[54%] md:top-[18%] md:w-[40%]`}
       >
         <div data-copy>
-          <h3 className={`${titleClassName} ${TITLE}`}>LOCATION</h3>
+          <h3 className={TITLE}>LOCATION</h3>
           <p className={DESCRIPTION}>
             Where: MSC 2300
             <br />
@@ -314,7 +310,7 @@ export default function PoolStory({
         className={`${INFORMATION} right-0 top-[83%] w-[54%] md:top-[80%] md:w-[44%]`}
       >
         <div data-copy>
-          <h3 className={`${titleClassName} ${TITLE}`}>PARKING</h3>
+          <h3 className={TITLE}>PARKING</h3>
           <p className={DESCRIPTION}>
             Lot 74 is reserved for Datathon participants. Lots 100 and 97 are
             also free on weekends.

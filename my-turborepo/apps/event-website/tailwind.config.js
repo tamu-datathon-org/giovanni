@@ -37,6 +37,7 @@ export const theme = {
       shadowsintolight: ["shadowsintolight", "sans-serif"],
       darumadropone: ["darumadropone", "sans-serif"],
       righteous: ["var(--font-righteous)", "sans-serif"],
+      sekuya: ["var(--font-sekuya)", "sans-serif"],
     },
     colors: {
       current: "currentColor",

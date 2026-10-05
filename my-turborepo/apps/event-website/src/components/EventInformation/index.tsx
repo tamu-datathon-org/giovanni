@@ -1,11 +1,4 @@
-import { Sekuya } from "next/font/google";
 import PoolStory from "./PoolStory";
-
-const sekuya = Sekuya({
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
 
 const SIGHTS =
   "absolute top-[18%] bottom-[14%] flex w-[7px] flex-col items-center justify-between";
@@ -40,14 +33,14 @@ export default function EventInformation() {
       </div>
       <h2
         id="event-information-heading"
-        className={`${sekuya.className} text-center text-[clamp(24px,6.5vw,96px)] font-normal not-italic leading-none tracking-normal text-[#FFB24C] [text-shadow:0_0_10px_#FFB24C]`}
+        className="font-sekuya text-center text-[clamp(24px,6.5vw,96px)] font-normal not-italic leading-none tracking-normal text-[#FFB24C] [text-shadow:0_0_10px_#FFB24C]"
       >
         EVENT
         <br />
         INFORMATION
       </h2>
 
-      <PoolStory titleClassName={sekuya.className} />
+      <PoolStory />
     </section>
   );
 }
