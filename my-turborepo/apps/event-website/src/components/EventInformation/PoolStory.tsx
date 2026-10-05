@@ -7,14 +7,12 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 
 import styles from "./PoolStory.module.css";
 
-// Coordinates are fractions of the responsive play area. Each rail contact
-// shares a timeline position with its information reveal.
+// One right-rail bounce, then a final roll to the left. Coordinates are
+// fractions of the play area, with the information arranged around the path.
 const POINTS = [
   { x: 0.28, y: 0.1 },
-  { x: 0.9, y: 0.28 },
-  { x: 0.1, y: 0.57 },
-  { x: 0.9, y: 0.86 },
-  { x: 0.64, y: 0.96 },
+  { x: 0.9, y: 0.48 },
+  { x: 0.12, y: 0.96 },
 ] as const;
 
 const PATH = `M ${POINTS.map(({ x, y }) => `${x * 1000} ${y * 1000}`).join(" L ")}`;
@@ -36,6 +34,8 @@ export default function PoolStory({
     media.add(
       "(prefers-reduced-motion: no-preference)",
       () => {
+        const playArea =
+          root.querySelector<HTMLDivElement>("[data-play-area]")!;
         const ball = root.querySelector<HTMLDivElement>("[data-ball]")!;
         const spin = root.querySelector<HTMLDivElement>("[data-spin]")!;
         const cueAxis = root.querySelector<HTMLDivElement>("[data-cue-axis]")!;
@@ -44,8 +44,8 @@ export default function PoolStory({
         const copy = gsap.utils.toArray<HTMLElement>("[data-copy]", root);
         const impacts = gsap.utils.toArray<HTMLElement>("[data-impact]", root);
         const position = (index: number) => ({
-          x: POINTS[index]!.x * root.clientWidth,
-          y: POINTS[index]!.y * root.clientHeight,
+          x: POINTS[index]!.x * playArea.clientWidth,
+          y: POINTS[index]!.y * playArea.clientHeight,
         });
         const measureCue = () => {
           const start = position(0);
@@ -68,9 +68,9 @@ export default function PoolStory({
         const timeline = gsap.timeline({
           defaults: { ease: "none" },
           scrollTrigger: {
-            trigger: root,
+            trigger: playArea,
             start: "top 75%",
-            end: "clamp(bottom 75%)",
+            end: "clamp(bottom 45%)",
             scrub: 0.35,
             invalidateOnRefresh: true,
           },
@@ -86,7 +86,13 @@ export default function PoolStory({
             0,
           )
           .to(cue, { x: 0, duration: 0.025, ease: "power3.in" }, 0.075)
-          .to(cue, { x: -30, opacity: 0, duration: 0.08 }, 0.105);
+          .to(cue, { x: -30, opacity: 0, duration: 0.08 }, 0.105)
+          // All the information is fully revealed by the single bounce.
+          .to(
+            copy,
+            { opacity: 1, y: 0, duration: 0.16, ease: "power2.out" },
+            POINTS[1].y - 0.16,
+          );
 
         let distance = 0;
         const segmentLengths = POINTS.slice(1).map((point, i) =>
@@ -101,6 +107,7 @@ export default function PoolStory({
           const previous = POINTS[i]!;
           const start = previous.y;
           const duration = point.y - previous.y;
+          const ease = i === 0 ? "none" : "power1.out";
           const direction = point.x > previous.x ? 1 : -1;
           const rotation = () => {
             const from = position(i);
@@ -122,22 +129,24 @@ export default function PoolStory({
               x: () => position(i + 1).x,
               y: () => position(i + 1).y,
               duration,
+              ease,
               immediateRender: i === 0,
             },
             start,
           );
-          timeline.to(spin, { rotation, duration }, start);
+          timeline.to(spin, { rotation, duration, ease }, start);
           distance += segmentLengths[i]!;
           timeline.to(
             trail,
             {
               attr: { "stroke-dashoffset": 1 - distance / totalLength },
               duration,
+              ease,
             },
             start,
           );
 
-          if (i < 3) {
+          if (i === 0) {
             // A small compression and a ripple make the change of direction
             // read as a cushion bounce. Text remains readable once revealed.
             timeline
@@ -161,17 +170,12 @@ export default function PoolStory({
                   immediateRender: false,
                 },
                 point.y,
-              )
-              .to(
-                copy[i]!,
-                { opacity: 1, y: 0, duration: 0.065, ease: "power2.out" },
-                point.y,
               );
           }
         });
 
-        // Leave a little scroll distance to read the final reveal.
-        timeline.to({}, { duration: 0.04 }, 0.96);
+        // Let the ball settle at the end of the leftward roll.
+        timeline.to({}, { duration: 0.04 }, POINTS[2].y);
         let disposed = false;
         void document.fonts.ready.then(() => {
           if (!disposed) ScrollTrigger.refresh();
@@ -189,7 +193,7 @@ export default function PoolStory({
 
   return (
     <div ref={rootRef} className={styles.story}>
-      <div className={styles.art} aria-hidden="true">
+      <div data-play-area className={styles.art} aria-hidden="true">
         <svg
           className={styles.path}
           viewBox="0 0 1000 1000"
@@ -225,7 +229,7 @@ export default function PoolStory({
             />
           </div>
         </div>
-        {POINTS.slice(1, 4).map((point, i) => (
+        {POINTS.slice(1, 2).map((point, i) => (
           <div
             key={i}
             className={styles.contact}

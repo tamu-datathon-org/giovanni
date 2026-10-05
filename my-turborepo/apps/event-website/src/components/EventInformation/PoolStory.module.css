@@ -1,8 +1,8 @@
 .story {
-  --ball-size: clamp(42px, 6vw, 80px);
+  --ball-size: clamp(38px, 5vw, 64px);
   position: relative;
-  max-width: 1440px;
-  height: clamp(1600px, 175vw, 2520px);
+  max-width: 1200px;
+  height: clamp(700px, 75vw, 1040px);
   margin: 48px auto 0;
   isolation: isolate;
 }
@@ -84,11 +84,6 @@
   background: linear-gradient(transparent, #ffb24c80, transparent);
 }
 
-.contact:nth-of-type(3) .rail {
-  left: -1.5px;
-  right: auto;
-}
-
 .impact {
   position: absolute;
   inset: 0;
@@ -99,29 +94,32 @@
 
 .information {
   position: absolute;
-  width: 69%;
+  min-width: 0;
   text-align: center;
   transform: translateY(-50%);
   z-index: 3;
 }
 
 .about {
-  top: 28%;
-  left: 1%;
+  width: 54%;
+  top: 45%;
+  left: 0;
 }
 .location {
-  top: 57%;
-  right: 1%;
+  width: 40%;
+  top: 18%;
+  right: 0;
 }
 .parking {
-  top: 86%;
-  left: 1%;
+  width: 44%;
+  top: 80%;
+  right: 0;
 }
 
 .title {
-  margin: 0 0 28px;
+  margin: 0 0 18px;
   color: #ffb24c;
-  font-size: clamp(20px, 3vw, 44px);
+  font-size: clamp(18px, 2.35vw, 32px);
   font-weight: 400;
   font-style: normal;
   line-height: 1;
@@ -134,7 +132,7 @@
   margin: 0;
   color: #fdfbed;
   font-family: var(--font-righteous), sans-serif;
-  font-size: clamp(24px, 4.45vw, 64px);
+  font-size: clamp(18px, 2.3vw, 32px);
   font-weight: 400;
   font-style: normal;
   line-height: 1;
@@ -143,21 +141,43 @@
   text-wrap: pretty;
 }
 
+@media (max-width: 767px) {
+  .about {
+    width: 56%;
+    top: 46%;
+  }
+
+  .location {
+    width: 54%;
+    top: 15%;
+  }
+
+  .parking {
+    width: 54%;
+    top: 83%;
+  }
+
+  .title {
+    margin-bottom: 12px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce), (scripting: none) {
   .story {
+    display: grid;
     height: auto;
-    margin-top: 80px;
+    gap: 48px;
+    margin-top: 64px;
   }
+
   .art {
     display: none;
   }
+
   .information {
-    position: relative;
-    top: auto;
-    left: auto;
-    right: auto;
-    width: min(100%, 1000px);
-    margin: 0 auto 96px;
+    position: static;
+    width: min(100%, 800px);
+    margin-inline: auto;
     transform: none;
   }
 }
