@@ -5,13 +5,18 @@ import Location from "@/components/location";
 import Schedule from "@/components/Schedule";
 import Workshops from "@/components/workshops";
 import { ScrollUp } from "@vanni/ui/scroll-up";
+import { Footer } from "@/components/Hero/Footer";
 
 const Prizes = dynamic(() => import("@/components/prizes"), {
   loading: () => <div className="min-h-[400px] py-20" />,
 });
 
+const Sponsors = dynamic(() => import("@/components/sponsor"), {
+  loading: () => <div className="min-h-[640px] bg-[#6C0204]" />,
+});
+
 const FAQ = dynamic(() => import("@/components/faq"), {
-  loading: () => <div className="min-h-[800px] bg-[#f0cf91]" />,
+  loading: () => <div className="min-h-[800px] bg-[#6C0204]" />,
 });
 
 export const metadata: Metadata = {
@@ -23,31 +28,12 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      {/* <ScrollUp /> */}
-      <div id="menu" className="scroll-mt-24">
-        <Hero />
-      </div>
-      
-      {/* <div id="workshops" className="scroll-mt-24">
-        <Workshops />
-      </div>
-      
-      <div id="find-us" className="scroll-mt-24">
-        <Location />
-      </div>
-   
-      <div id="prizes" className="scroll-mt-24">
-        <Prizes />
-      </div>
-      
-      <div id="schedule" className="scroll-mt-24">
-        <Schedule />
-      </div>
-      
-      <div className="h-[100px] bg-[#f0cf91]" />
-      <div id="baristas-note" className="scroll-mt-24">
-        <FAQ />
-      </div> */}
+      <Hero />
+      {/* Ready Just need  */}
+      <Schedule />
+      <Sponsors />
+      <FAQ /> 
+      <Footer/>
     </>
   );
 }

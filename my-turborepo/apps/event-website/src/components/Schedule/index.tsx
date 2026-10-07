@@ -1,181 +1,273 @@
 "use client";
 
-import { useSchedule } from "@/hooks/useSchedule";
-import { useWindowWidth } from "@/hooks/useWindowWidth";
-import { EventCountdown } from "./EventCountdown";
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { Archivo_Black, Barlow_Condensed, Lilita_One } from "next/font/google";
+import { SectionGround } from "@/components/SectionGround";
+import scheduleJson from "./schedule.json";
+import styles from "./Schedule.module.css";
 
-//format the time in accordance to the google sheet
-function formatTime(raw: string): string {
-    if (!raw) return "—";
-    return raw;
+const titleFont = Lilita_One({ weight: "400", subsets: ["latin"], variable: "--font-schedule-title" });
+const voucherFont = Archivo_Black({ weight: "400", subsets: ["latin"], variable: "--font-voucher" });
+const receiptFont = Barlow_Condensed({
+  weight: ["400", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-receipt",
+});
+
+export type ScheduleEvent = {
+  id: string;
+  title: string;
+  startTime: string;
+  endTime: string;
+  category: string;
+  location?: string;
+  featured?: boolean;
+  day?: string;
+};
+
+export type ScheduleData = {
+  timezone: string;
+  events: ScheduleEvent[];
+};
+
+type Day = {
+  key: string;
+  weekday: string;
+  date: string;
+  events: ScheduleEvent[];
+};
+
+function groupByDay(data: ScheduleData): Day[] {
+  const keyFmt = new Intl.DateTimeFormat("en-CA", {
+    timeZone: data.timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const weekdayFmt = new Intl.DateTimeFormat("en-US", { timeZone: "UTC", weekday: "long" });
+  const monthFmt = new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "short" });
+
+  const sorted = [...data.events].sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime));
+  const days = new Map<string, Day>();
+
+  for (const ev of sorted) {
+    const key = ev.day ?? keyFmt.format(new Date(ev.startTime));
+    let day = days.get(key);
+    if (!day) {
+      const noon = new Date(`${key}T12:00:00Z`);
+      const month = monthFmt.format(noon);
+      day = {
+        key,
+        weekday: weekdayFmt.format(noon),
+        date: `${month === "May" ? month : `${month}.`} ${noon.getUTCDate()}`,
+        events: [],
+      };
+      days.set(key, day);
+    }
+    day.events.push(ev);
+  }
+
+  return [...days.values()].sort((a, b) => a.key.localeCompare(b.key));
 }
 
-// if event has passed
-function isEventPassed(endTime: string): boolean {
-    if (!endTime) return false;
-    const eventEnd = new Date(endTime).getTime();
-    const now = Date.now();
-    return now > eventEnd;
+function formatCountdown(ms: number) {
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  return [h, m, s].map((n) => String(n).padStart(2, "0")).join(":");
 }
 
+function useNow() {
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    setNow(Date.now());
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return now;
+}
 
-export default function Schedule() {
-    const { events, loading, error, lastUpdated, getCatColor } = useSchedule();
-    const width    = useWindowWidth();
-    const isMobile = width < 768;
-    const isTablet = width < 1024;
-
-    const maxWidth = isMobile ? "100%" : isTablet ? "500px" : "700px";
-    // re-render every minute to update passed events
-    const [, setTick] = useState(0);
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setTick((t) => t + 1);
-        }, 60_000);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    return (
-
-        <div className="min-h-screen flex items-center justify-center bg-[#f0cf91] p-4">
-            <div className="relative w-full" style={{ maxWidth }}>
-                <EventCountdown events={events}/>
-                {/* contains light brown outer boarder */}
-                <section id="Schedule"
-                    className="relative bg-[#3d2f1f] rounded-xl p-8 md:p-12 w-full border-4 border-[#8D6E5E]"
-                    style={{ maxWidth }}
-                >
-                    {/* inner decorative border (white)*/}
-                    <div className="absolute inset-3 border-2 border-white rounded-xl pointer-events-none" />
-
-                    <div className="relative z-10">
-                        {/* Title */}
-                        <div className="text-center mb-4">
-                            <h1 className="font-bold text-3xl md:text-4xl tracking-widest text-white uppercase font-darumadrop-one">
-                                Schedule
-                            </h1>
-                            <svg className="w-48 h-3 mx-auto mt-2" viewBox="0 0 200 12">
-                                <path
-                                    d="M5 6 Q 30 2, 50 6 T 100 6 T 150 6 T 195 6"
-                                    stroke="white"
-                                    strokeWidth="3"
-                                    fill="none"
-                                    strokeLinecap="round"
-                                />
-                            </svg>
-                        </div>
-
-                        <div className="flex flex-col items-center w-full mb-2">
-                            <a
-                                href="/menu_fn.pdf"
-                                target="_blank"
-                                className="
-                                    w-fit text-center
-                                    border-4
-                                    border-white
-                                    rounded-xl
-                                    bg-[#99B254]
-                                    font-darumadrop-one
-                                    text-white
-                                    transition-transform
-                                    hover:-translate-y-2
-                                    hover:shadow-xl
-                                "
-                                style={{
-                                    padding: isMobile
-                                        ? "8px 16px"
-                                        : isTablet
-                                        ? "10px 20px"
-                                        : "12px 24px",
-                                    fontSize: isMobile ? "20px" : isTablet ? "22px" : "24px",
-                                }}
-                            >
-                                MENU
-                            </a>
-
-                        </div>
-
-                        {/* Loading */}
-                        {loading && (
-                            <div className="flex justify-center">
-                                <div className="h-10 w-10 animate-spin rounded-full border-4 border-white border-t-transparent" />
-                            </div>
-                        )}
-
-                        {/* Error — visible now */}
-                        {!loading && error && (
-                            <p className="text-center text-red-300 text-sm font-['Chilanka']">
-                                ⚠ {error}
-                            </p>
-                        )}
-
-                        {/* Events */}
-                        {!loading && !error && events.length === 0 && (
-                            <p className="text-center text-white/50 text-sm font-['Chilanka']">
-                                No events found.
-                            </p>
-                        )}
-
-                        {!loading && events.length > 0 && (
-                            <div className="space-y-5">
-                                {events.map((item, index) => {
-                                    const passed = isEventPassed(item.endTime);
-
-                                    return (
-                                        <div
-                                            key={item.id ?? index}
-                                            className={`flex items-baseline gap-2 transition-all duration-300 ${
-                                                passed ? "opacity-60" : ""
-                                            }`}
-                                        >
-                                            {/* Event Title to add color cats do getCatColor(item.category) */}
-                                            <span
-                                                style={{
-                                                    color: passed ? "#888888" : getCatColor(item.category),
-                                                }}
-                                                className={`font-darumadrop-one text-md sm:text-lg md:text-2xl lg:text-3xl whitespace-nowrap transition-all duration-300 ${
-                                                    passed ? "line-through decoration-2" : ""
-                                                }`}
-                                            >
-                                                {item.title}
-                                            </span>
-
-                                            {/* Dotted Line */}
-                                            <span
-                                                className={`flex-1 border-b-2 border-dotted mx-1 mb-1 transition-all duration-300 ${
-                                                    passed ? "border-white/30" : "border-white/70"
-                                                }`}
-                                            />
-
-                                            {/* Event Time */}
-                                            <span
-                                                style={{
-                                                    color: passed ? "#888888" : getCatColor(item.category),
-                                                }}
-                                                className={`font-darumadrop-one text-md sm:text-lg md:text-2xl lg:text-3xl whitespace-nowrap transition-all duration-300 ${
-                                                    passed ? "line-through decoration-2" : ""
-                                                }`}
-                                            >
-                                                {formatTime(item.displayStart)}
-                                            </span>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        )}
-
-                        {/* Last updated */}
-                        {/* {lastUpdated && (
-                            <p className="mt-8 text-center text-xs text-white/40">
-                                Last updated: {new Date(lastUpdated).toLocaleTimeString()}
-                            </p>
-                        )} */}
-                    </div>
-                </section>
-            </div>
-        </div>
+function useDispense<T extends Element>() {
+  const ref = useRef<T>(null);
+  const [dispensed, setDispensed] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) {
+      setDispensed(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setDispensed(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -25% 0px" },
     );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return [ref, dispensed] as const;
+}
+
+function Barcode({ seed }: { seed: string }) {
+  const bars = useMemo(() => {
+    let h = 2166136261;
+    for (const c of seed) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+    const out: { x: number; w: number }[] = [];
+    let x = 0;
+    while (x < 200) {
+      h = Math.imul(h ^ (h >>> 15), 2246822507);
+      const w = 1 + ((h >>> 0) % 4);
+      const gap = 1 + ((h >>> 8) % 3);
+      if (x + w > 200) break;
+      out.push({ x, w });
+      x += w + gap;
+    }
+    return out;
+  }, [seed]);
+
+  return (
+    <svg className={styles.barcode} viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
+      {bars.map((b, i) => (
+        <rect key={i} x={b.x} y={0} width={b.w} height={40} />
+      ))}
+    </svg>
+  );
+}
+
+function Voucher({
+  day,
+  index,
+  timezone,
+  now,
+}: {
+  day: Day;
+  index: number;
+  timezone: string;
+  now: number | null;
+}) {
+  const [ref, dispensed] = useDispense<HTMLDivElement>();
+
+  const timeFmt = useMemo(
+    () => new Intl.DateTimeFormat("en-US", { timeZone: timezone, hour: "numeric", minute: "2-digit" }),
+    [timezone],
+  );
+
+  const next = now == null ? undefined : day.events.find((e) => Date.parse(e.startTime) > now);
+  const cashedOut = now != null && !next;
+  const amount = next && now != null ? formatCountdown(Date.parse(next.startTime) - now) : "00:00:00";
+  const label = cashedOut ? "Cashed out" : next ? `Until ${next.title}` : "Until next event";
+
+  return (
+    <div
+      ref={ref}
+      className={`${styles.machine} ${dispensed ? styles.dispensed : ""}`}
+      style={{ "--delay": `${index * 350}ms` } as CSSProperties}
+    >
+      <div className={styles.slot} aria-hidden="true" />
+      <div className={styles.chute}>
+        <article className={styles.ticket} aria-label={`${day.weekday} schedule`}>
+          <p className={styles.org}>TAMU Datathon</p>
+          <p className={styles.city}>College Station, TX</p>
+          <h3 className={styles.heading}>
+            Cashout
+            <br />
+            Voucher
+          </h3>
+          <Barcode seed={day.key} />
+          <p className={styles.date}>
+            <span>{day.weekday}</span>
+            <span aria-hidden="true">✦</span>
+            <span>{day.date}</span>
+          </p>
+          <p className={styles.amount} aria-live="off">
+            ${amount}
+          </p>
+          <p className={styles.until}>{label}</p>
+
+          <hr className={styles.rule} />
+
+          <ol className={styles.list}>
+            {day.events.map((ev) => {
+              const start = Date.parse(ev.startTime);
+              const end = Date.parse(ev.endTime);
+              const past = now != null && end <= now;
+              const live = now != null && start <= now && now < end;
+              const parts = timeFmt.formatToParts(new Date(start));
+              const clock = parts
+                .filter((p) => p.type === "hour" || p.type === "minute" || p.type === "literal")
+                .map((p) => p.value)
+                .join("")
+                .trim();
+              const period = parts.find((p) => p.type === "dayPeriod")?.value;
+              const rowClass = [
+                styles.row,
+                ev.featured ? styles.featured : "",
+                past ? styles.past : "",
+                live ? styles.live : "",
+              ]
+                .filter(Boolean)
+                .join(" ");
+
+              return (
+                <li key={ev.id} className={rowClass} data-category={ev.category}>
+                  <time className={styles.time} dateTime={ev.startTime}>
+                    {clock}
+                    {period && <span className={styles.period}>{period}</span>}
+                  </time>
+                  <span className={styles.leader} aria-hidden="true" />
+                  <span className={styles.name}>
+                    {ev.featured && (
+                      <span className={styles.star} aria-label="Don't miss">
+                        ★
+                      </span>
+                    )}
+                    {ev.title}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
+
+          <footer className={styles.footer}>
+            <span className={styles.legend}>★ = Don&apos;t miss</span>
+            <span>No.{String(index + 1).padStart(2, "0")}</span>
+          </footer>
+        </article>
+      </div>
+    </div>
+  );
+}
+
+export default function Schedule({ data = scheduleJson as ScheduleData }: { data?: ScheduleData }) {
+  const days = useMemo(() => groupByDay(data), [data]);
+  const now = useNow();
+
+  return (
+    <section
+      className={`${styles.section} ${titleFont.variable} ${voucherFont.variable} ${receiptFont.variable}`}
+      aria-labelledby="schedule-title"
+    >
+      <SectionGround align="bottom">
+        <h2 id="schedule-title" className={styles.title}>
+          <span className={styles.sparkle} aria-hidden="true">
+            ✦
+          </span>
+          Schedule
+          <span className={styles.sparkle} aria-hidden="true">
+            ✦
+          </span>
+        </h2>
+        <div className={styles.grid}>
+          {days.map((day, i) => (
+            <Voucher key={day.key} day={day} index={i} timezone={data.timezone} now={now} />
+          ))}
+        </div>
+      </SectionGround>
+    </section>
+  );
 }
