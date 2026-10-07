@@ -6,7 +6,7 @@ export function SiteNotice() {
   return (
     <aside
       aria-label="Site status"
-      className="absolute right-[max(12px,1.5cqw)] top-[max(12px,1.5cqh)] z-[6] w-[min(210px,calc(100cqw_-_172px))] overflow-hidden rounded-xl border-2 border-[#ef8700] bg-[rgb(26_11_36/0.88)] px-3.5 pb-2.5 pt-4 text-[#fff4dc] shadow-[0_8px_24px_rgb(10_4_20/0.45)] lg:w-[240px]"
+      className="absolute right-[max(12px,1.5cqw)] top-[max(12px,1.5cqh)] z-[10] w-[min(210px,calc(100cqw_-_172px))] overflow-hidden rounded-xl border-2 border-[#ef8700] bg-[rgb(26_11_36/0.88)] px-3.5 pb-2.5 pt-4 text-[#fff4dc] shadow-[0_8px_24px_rgb(10_4_20/0.45)] lg:w-[240px]"
     >
       {/* Hazard stripe along the top edge. */}
       <span
