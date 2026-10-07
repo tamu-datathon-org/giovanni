@@ -5,6 +5,7 @@ import Location from "@/components/location";
 import Schedule from "@/components/Schedule";
 import Workshops from "@/components/workshops";
 import { ScrollUp } from "@vanni/ui/scroll-up";
+import { Footer } from "@/components/Hero/Footer";
 
 const Prizes = dynamic(() => import("@/components/prizes"), {
   loading: () => <div className="min-h-[400px] py-20" />,
@@ -29,8 +30,10 @@ export default function Home() {
     <>
       <Hero />
       {/* Ready Just need  */}
-      {/* <Sponsors />
-      <FAQ /> */} 
+      <Schedule />
+      <Sponsors />
+      <FAQ /> 
+      <Footer/>
     </>
   );
 }

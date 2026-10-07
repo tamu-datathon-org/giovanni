@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Archivo_Black, Barlow_Condensed, Lilita_One } from "next/font/google";
+import { SectionGround } from "@/components/SectionGround";
 import scheduleJson from "./schedule.json";
 import styles from "./Schedule.module.css";
 
@@ -251,20 +252,22 @@ export default function Schedule({ data = scheduleJson as ScheduleData }: { data
       className={`${styles.section} ${titleFont.variable} ${voucherFont.variable} ${receiptFont.variable}`}
       aria-labelledby="schedule-title"
     >
-      <h2 id="schedule-title" className={styles.title}>
-        <span className={styles.sparkle} aria-hidden="true">
-          ✦
-        </span>
-        Schedule
-        <span className={styles.sparkle} aria-hidden="true">
-          ✦
-        </span>
-      </h2>
-      <div className={styles.grid}>
-        {days.map((day, i) => (
-          <Voucher key={day.key} day={day} index={i} timezone={data.timezone} now={now} />
-        ))}
-      </div>
+      <SectionGround align="bottom">
+        <h2 id="schedule-title" className={styles.title}>
+          <span className={styles.sparkle} aria-hidden="true">
+            ✦
+          </span>
+          Schedule
+          <span className={styles.sparkle} aria-hidden="true">
+            ✦
+          </span>
+        </h2>
+        <div className={styles.grid}>
+          {days.map((day, i) => (
+            <Voucher key={day.key} day={day} index={i} timezone={data.timezone} now={now} />
+          ))}
+        </div>
+      </SectionGround>
     </section>
   );
 }
