@@ -1,4 +1,4 @@
-/* Google Fonts now loaded via next/font/google in layout.tsx for better performance */
+/* Fonts are self-hosted below. Tailwind maps font-* utilities onto these family names. */
 
 @tailwind base;
 @tailwind components;
@@ -23,6 +23,7 @@
   src: url("/fonts/Chilanka-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -40,10 +41,19 @@
 }
 
 @font-face {
-  font-family: "darumadropone";
+  font-family: "darumadrop-one";
   src: url("/fonts/DarumadropOne-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "righteous";
+  src: url("/fonts/Righteous-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 html {

@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 
 /**
- * Four-point ✦ used for the stars, the sign glints and the APPLY button.
+ * Four-point ✦ used on the APPLY button.
  * Wrapped in a span so animations target an HTML box, which Chrome can run on
  * the compositor (transforms on an <svg> element can't be).
  */
