@@ -1,5 +1,4 @@
 import type { BubbleGrid } from "./bubble-layout";
-import { konkhmerSleokchher } from "~/app/_components/fonts";
 import BubbleField from "./BubbleField";
 import { teams } from "./team-data";
 import styles from "./team.module.css";
@@ -17,7 +16,7 @@ export default function AboutTeam() {
     <section
       id="team"
       aria-labelledby="team-heading"
-      className={`${konkhmerSleokchher.variable} ${styles.section} `}
+      className={styles.section}
     >
       <BubbleField teams={teams} grid={TEAM_GRID} />
     </section>

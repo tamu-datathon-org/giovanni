@@ -1,3 +1,10 @@
+/*
+ * Fonts. Use them through the Tailwind classes in tailwind.config.ts
+ * (font-inter, font-konkhmer, font-myfont, font-kode),
+ * or by family name in CSS modules.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Konkhmer+Sleokchher&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +13,31 @@
   @font-face {
     font-family: "myfont";
     src: url("./assets/w95fa.woff2") format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Kode Mono";
+    src: url("./assets/KodeMono-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Kode Mono";
+    src: url("./assets/KodeMono-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Kode Mono";
+    src: url("./assets/KodeMono-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
   }
 
   body {

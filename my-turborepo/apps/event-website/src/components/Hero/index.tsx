@@ -11,6 +11,9 @@ import { MarqueeSign, SignGlow } from "./MarqueeSign";
 import { Room } from "./Room";
 import { CURTAIN_SPAN, cssVars, POWER_AT, STAGE_BOX, TIMING } from "./scene";
 import { SiteNotice } from "./SiteNotice";
+import { Footer } from "./Footer"
+// import { SkyLayer } from "./SkyLayer";
+// import { Street } from "./Street";
 
 /** off: room and sign dark · flicker: the power-on sputter · on: fully lit and animated. */
 type Stage = "off" | "flicker" | "on";

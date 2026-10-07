@@ -3,11 +3,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-
-import { konkhmerSleokchher } from "~/app/_components/fonts";
+import { usePathname } from "next/navigation";
 
 import menuData from "./menuData";
+import { sectionIdOf, useMenuNavigation } from "./useMenuNavigation";
 
 /**
  * The Figma file draws the sidebar two ways. Flip this to switch:
@@ -57,12 +56,7 @@ const TRACKED_IDS = new Set([
   "team",
 ]);
 
-const resolveTarget = (id: string) =>
-  document.getElementById(id) ? id : null;
-
-/** "/#past-events" -> "past-events"; anything else (e.g. "/apply") -> null. */
-const sectionIdOf = (path?: string) =>
-  path?.startsWith("/#") ? path.slice(2) : null;
+const HOME_LINK = menuData.find((item) => item.path === "/#home")
 
 const Header = ({
   collapsed = false,
@@ -73,10 +67,10 @@ const Header = ({
   onToggle?: () => void;
 }) => {
   const pathname = usePathname();
-  const router = useRouter();
 
   const [activeId, setActiveId] = useState<string | null>(null);
   const [navbarOpen, setNavbarOpen] = useState(false);
+  const handleNavClick = useMenuNavigation(() => setNavbarOpen(false));
   // /apply is auth-gated, so clicking APPLY usually lands on
   // /login?callbackUrl=%2Fapply. Keep APPLY lit through that redirect rather
   // than dropping the highlight mid-flow. Read in an effect, not during
@@ -117,7 +111,11 @@ const Header = ({
         if (!el) continue;
         if (el.getBoundingClientRect().top <= line) current = id;
       }
-      setActiveId(current);
+      //check if user scrolled to the bottom of the web page 
+      const atBottom =
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 1;
+      setActiveId(atBottom ? (ids[ids.length - 1] ?? current) : current);
     };
 
     const onScroll = () => {
@@ -143,39 +141,6 @@ const Header = ({
     };
   }, [pathname]);
 
-  const handleNavClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    item: (typeof menuData)[number],
-  ) => {
-    // Kill ScrollTriggers before routing to /apply, otherwise GSAP tears down
-    // nodes React still owns and throws Node.removeChild.
-    if (pathname === "/" && item.path === "/apply") {
-      e.preventDefault();
-      setNavbarOpen(false);
-      void import("gsap/ScrollTrigger").then(({ default: ScrollTrigger }) => {
-        ScrollTrigger.getAll().forEach((s) => s.kill());
-        router.push("/apply");
-      });
-      return;
-    }
-
-    const sectionId = pathname === "/" ? sectionIdOf(item.path) : null;
-    if (sectionId) {
-      e.preventDefault();
-      const target = resolveTarget(sectionId);
-      if (sectionId === "home") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else if (target) {
-        document.getElementById(target)?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        // Target not in the DOM yet (e.g. a dynamic section still loading) —
-        // fall back to a hash jump instead of silently doing nothing.
-        window.location.hash = sectionId;
-      }
-    }
-    setNavbarOpen(false);
-  };
-
   const labelClass = (isActive: boolean) =>
     `block font-konkhmer uppercase tracking-[0.64px] transition-all duration-300 ${
       isActive
@@ -187,7 +152,7 @@ const Header = ({
     <>
       {/* ---------- DESKTOP: blue sidebar (Figma 36:317 / 13:57) ---------- */}
       <header
-        className={`${konkhmerSleokchher.variable} fixed z-50 hidden flex-col overflow-hidden transition-[width] duration-300 lg:flex ${
+        className={`fixed z-50 hidden flex-col overflow-hidden transition-[width] duration-300 lg:flex ${
           collapsed ? "inset-y-0 left-0 w-[80px]" : variant.panel
         }`}
         style={{ backgroundColor: PANEL_BG }}
@@ -240,8 +205,11 @@ const Header = ({
           </div>
         ) : (
           <>
+          
+            {HOME_LINK && (
             <Link
               href="/"
+              onClick={(e) => handleNavClick(e, HOME_LINK)}
               aria-label="TAMU Datathon home"
               className={variant.logo}
             >
@@ -255,7 +223,7 @@ const Header = ({
                 priority
               />
             </Link>
-
+            )}
             <nav className={variant.nav}>
               <ul>
                 {menuData.map((item) => {
@@ -322,7 +290,7 @@ const Header = ({
 
       {/* ---------- MOBILE: top bar + overlay ---------- */}
       <header
-        className={`${konkhmerSleokchher.variable} fixed inset-x-0 top-0 z-50 lg:hidden`}
+        className={`fixed inset-x-0 top-0 z-50 lg:hidden`}
       >
         <div
           className="flex items-center justify-between px-4 py-2.5"
@@ -373,7 +341,11 @@ const Header = ({
           <ul>
             {menuData.map((item) => {
               const id = sectionIdOf(item.path);
-              const isActive = id !== null && id === activeId;
+              const isActive =
+                id !== null
+                  ? id === activeId
+                  : (Boolean(item.path) && pathname.startsWith(item.path!)) ||
+                    (item.path === "/apply" && applyPending);
               return (
                 <li key={item.id}>
                   <Link
