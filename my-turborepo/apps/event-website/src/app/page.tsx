@@ -30,10 +30,10 @@ export default function Home() {
     <>
       <Hero />
       {/* Ready Just need  */}
-      <Schedule />
+      {/* <Schedule />
       <Sponsors />
       <FAQ /> 
-      <Footer/>
+      <Footer/> */}
     </>
   );
 }
