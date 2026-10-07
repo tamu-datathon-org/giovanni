@@ -318,6 +318,8 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  apps/auth-proxy: {}
+
   apps/event-website:
     dependencies:
       '@floating-ui/react-dom':
@@ -1191,6 +1193,12 @@ importers:
 
   packages/apple-wallet:
     dependencies:
+      '@vanni/db':
+        specifier: workspace:*
+        version: link:../db
+      drizzle-orm:
+        specifier: 'catalog:'
+        version: 0.45.2(@types/pg@8.6.6)(@vercel/postgres@0.8.0)(kysely@0.29.5)
       passkit-generator:
         specifier: ^3.6.1
         version: 3.6.1
@@ -1281,7 +1289,7 @@ importers:
         specifier: 'catalog:'
         version: 10.2.5
       tsx:
-        specifier: ^4.19.3
+        specifier: ^4.21.0
         version: 4.21.0
       zod:
         specifier: 'catalog:'
@@ -1515,7 +1523,7 @@ importers:
         version: link:../typescript
       eslint:
         specifier: 'catalog:'
-        version: 9.39.4(jiti@1.21.7)
+        version: 9.39.4(jiti@2.6.1)
       prettier:
         specifier: 'catalog:'
         version: 3.8.1

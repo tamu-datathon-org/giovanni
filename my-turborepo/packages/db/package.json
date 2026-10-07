@@ -43,7 +43,7 @@
     "drizzle-orm": "catalog:",
     "drizzle-zod": "^0.5.1",
     "minimatch": "catalog:",
-    "tsx": "^4.19.3",
+    "tsx": "^4.21.0",
     "zod": "catalog:"
   },
   "devDependencies": {

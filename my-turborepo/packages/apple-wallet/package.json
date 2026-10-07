@@ -17,6 +17,8 @@
     "test:pass": "tsx --env-file=../../.env test-pass.ts"
   },
   "dependencies": {
+    "@vanni/db": "workspace:*",
+    "drizzle-orm": "catalog:",
     "passkit-generator": "^3.6.1"
   },
   "devDependencies": {
