@@ -1,4 +1,10 @@
-import { Inter, Darumadrop_One, Chilanka, Righteous } from "next/font/google";
+import {
+  Inter,
+  Darumadrop_One,
+  Chilanka,
+  Righteous,
+  Sekuya,
+} from "next/font/google";
 import Header from "@/components/Header";
 import MlhBadge from "@/components/MlhBadge";
 
@@ -35,6 +41,13 @@ const righteous = Righteous({
   display: "swap",
 });
 
+const sekuya = Sekuya({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-sekuya",
+  display: "swap",
+});
+
 interface RootLayoutProps {
   children: React.ReactNode;
 }
@@ -44,7 +57,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="en" className="overflow-x-clip">
-      <body className={`m-0 h-full w-full overflow-x-clip ${inter.variable} ${darumadropOne.variable} ${chilanka.variable} ${righteous.variable}`}>
+      <body className={`m-0 h-full w-full overflow-x-clip ${inter.variable} ${darumadropOne.variable} ${chilanka.variable} ${righteous.variable} ${sekuya.variable}`}>
 
 
         {/* <Header /> */}
