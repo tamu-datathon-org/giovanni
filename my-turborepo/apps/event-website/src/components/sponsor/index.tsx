@@ -6,6 +6,9 @@ import Image from "next/image";
 
 import { SectionGround } from "@/components/SectionGround";
 
+import { TableGuests } from "./TableGuests";
+import styles from "./TableGuests.module.css";
+
 const TABLE = "/event_assets/sponsors/poker-table-sponsors.png";
 const STAR = "/event_assets/sponsors/Star.png";
 const TABLE_W = 1367;
@@ -214,62 +217,63 @@ function Sponsors() {
             Drag the chips around the table
           </p>
 
-          <div
-            ref={tableRef}
-            className="relative mt-8 w-full max-w-[1100px] md:mt-12"
-          >
-            <Image
-              src={TABLE}
-              alt=""
-              width={TABLE_W}
-              height={TABLE_H}
-              draggable={false}
-              priority
-              onLoad={(event) => readTableMask(event.currentTarget)}
-              className="pointer-events-none block h-auto w-full select-none [-webkit-user-drag:none] [user-drag:none]"
-            />
+          <div className={styles.scene}>
+            <div ref={tableRef} className={styles.table}>
+              <Image
+                src={TABLE}
+                alt=""
+                width={TABLE_W}
+                height={TABLE_H}
+                draggable={false}
+                priority
+                onLoad={(event) => readTableMask(event.currentTarget)}
+                className="pointer-events-none block h-auto w-full select-none [-webkit-user-drag:none] [user-drag:none]"
+              />
 
-            {chips.map((chip) => {
-              const dragging = draggingId === chip.id;
-              return (
-                <button
-                  key={chip.id}
-                  type="button"
-                  data-chip={chip.id}
-                  aria-label={`${chip.name} chip. Drag to move it on the table.`}
-                  onPointerDown={(event) => onPointerDown(event, chip.id)}
-                  onPointerMove={onPointerMove}
-                  onPointerUp={endDrag}
-                  onPointerCancel={endDrag}
-                  onKeyDown={(event) => {
-                    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
-                    event.preventDefault();
-                    nudge(chip.id, event.key);
-                  }}
-                  className="group/sc absolute aspect-square touch-none rounded-full border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED]"
-                  style={{
-                    left: `${chip.x * 100}%`,
-                    top: `${chip.y * 100}%`,
-                    width: `${CHIP * 100}%`,
-                    zIndex: chip.z,
-                    cursor: dragging ? "grabbing" : "grab",
-                    transform: `translate(-50%, -50%) rotate(${chip.rotation}deg)${dragging ? " scale(1.06)" : ""}`,
-                    filter: dragging
-                      ? "drop-shadow(0 14px 8px rgb(0 0 0 / 0.45))"
-                      : "drop-shadow(0 5px 3px rgb(0 0 0 / 0.35))",
-                  }}
-                >
-                  <Image
-                    src={chip.src}
-                    alt=""
-                    fill
-                    draggable={false}
-                    sizes="180px"
-                    className={`pointer-events-none select-none object-contain transition-transform duration-200 ease-out [-webkit-user-drag:none] [user-drag:none] ${dragging ? "" : "group-hover/sc:scale-[1.07] group-focus-visible/sc:scale-[1.07]"}`}
-                  />
-                </button>
-              );
-            })}
+              <TableGuests />
+
+              {chips.map((chip) => {
+                const dragging = draggingId === chip.id;
+                return (
+                  <button
+                    key={chip.id}
+                    type="button"
+                    data-chip={chip.id}
+                    aria-label={`${chip.name} chip. Drag to move it on the table.`}
+                    onPointerDown={(event) => onPointerDown(event, chip.id)}
+                    onPointerMove={onPointerMove}
+                    onPointerUp={endDrag}
+                    onPointerCancel={endDrag}
+                    onKeyDown={(event) => {
+                      if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
+                      event.preventDefault();
+                      nudge(chip.id, event.key);
+                    }}
+                    className="group/sc absolute aspect-square touch-none rounded-full border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED]"
+                    style={{
+                      left: `${chip.x * 100}%`,
+                      top: `${chip.y * 100}%`,
+                      width: `${CHIP * 100}%`,
+                      zIndex: chip.z,
+                      cursor: dragging ? "grabbing" : "grab",
+                      transform: `translate(-50%, -50%) rotate(${chip.rotation}deg)${dragging ? " scale(1.06)" : ""}`,
+                      filter: dragging
+                        ? "drop-shadow(0 14px 8px rgb(0 0 0 / 0.45))"
+                        : "drop-shadow(0 5px 3px rgb(0 0 0 / 0.35))",
+                    }}
+                  >
+                    <Image
+                      src={chip.src}
+                      alt=""
+                      fill
+                      draggable={false}
+                      sizes="180px"
+                      className={`pointer-events-none select-none object-contain transition-transform duration-200 ease-out [-webkit-user-drag:none] [user-drag:none] ${dragging ? "" : "group-hover/sc:scale-[1.07] group-focus-visible/sc:scale-[1.07]"}`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </SectionGround>
