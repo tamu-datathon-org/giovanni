@@ -1,3 +1,4 @@
+import type { Ref } from "react";
 import Image from "next/image";
 
 const DIAMOND_XS = [
@@ -10,11 +11,18 @@ const star = (x: number) =>
   `M${x} 93L${x + 6.347} 110.518L${x + 23.5} 117L${x + 6.347} 123.482` +
   `L${x} 141L${x - 6.347} 123.482L${x - 23.5} 117L${x - 6.347} 110.518Z`;
 
-// The rail the eight ball drops behind on its way to the prizes.
-export default function EventInfoBorder() {
+/**
+ * The rail between Event Information and Prizes. The eight ball rolls behind
+ * it, and PoolStory flashes its stars ([data-border-star]) as the ball passes.
+ */
+export function EventInfoBorder({
+  borderRef,
+}: {
+  borderRef: Ref<HTMLDivElement>;
+}) {
   return (
     <div
-      data-event-info-border
+      ref={borderRef}
       className="relative z-10 overflow-hidden"
       aria-hidden="true"
     >
@@ -50,7 +58,7 @@ export default function EventInfoBorder() {
             <feGaussianBlur stdDeviation="8" />
           </filter>
         </defs>
-        <rect y="48" width="1440" height="138" fill="#17330D" />
+        <rect y="48" width="1440" height="138" fill="#17330d" />
         {DIAMOND_XS.map((x) => (
           <rect
             key={x}
@@ -68,21 +76,21 @@ export default function EventInfoBorder() {
               opacity="0"
               filter="url(#event-info-star-glow)"
             >
-              <path d={star(x)} fill="#FFB24C" />
-              <path d={star(x)} fill="#FFB24C" />
+              <path d={star(x)} fill="#ffb24c" />
+              <path d={star(x)} fill="#ffb24c" />
             </g>
-            <path d={star(x)} fill="#FFB24C" />
+            <path d={star(x)} fill="#ffb24c" />
           </g>
         ))}
-        <rect width="1440" height="20" fill="#FFB24C" />
-        <rect y="214" width="1440" height="20" fill="#FFB24C" />
+        <rect width="1440" height="20" fill="#ffb24c" />
+        <rect y="214" width="1440" height="20" fill="#ffb24c" />
         <ellipse
           data-border-flash
           cx="720"
           cy="14"
           rx="180"
           ry="34"
-          fill="#FFE0AC"
+          fill="#ffe0ac"
           opacity="0"
           filter="url(#event-info-border-glow)"
         />

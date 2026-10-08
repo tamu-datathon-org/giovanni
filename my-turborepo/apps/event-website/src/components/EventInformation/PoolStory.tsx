@@ -1,6 +1,7 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import type { RefObject } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -8,9 +9,9 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 const INFORMATION =
   "absolute z-[3] min-w-0 -translate-y-1/2 text-center motion-reduce:static motion-reduce:mx-auto motion-reduce:!w-[min(100%,800px)] motion-reduce:transform-none [@media(scripting:none)]:static [@media(scripting:none)]:mx-auto [@media(scripting:none)]:!w-[min(100%,800px)] [@media(scripting:none)]:transform-none";
 const TITLE =
-  "mb-3 font-sekuya text-balance text-[clamp(22px,2.9vw,40px)] font-normal not-italic leading-none tracking-normal text-[#ffb24c] md:mb-[18px]";
+  "mb-3 font-sekuya text-balance text-[clamp(22px,2.9vw,40px)] leading-none text-[#ffb24c] md:mb-[18px]";
 const DESCRIPTION =
-  "m-0 font-righteous text-pretty text-[clamp(17px,2.1vw,29px)] font-normal not-italic leading-none tracking-normal text-[#fdfbed] [text-shadow:0_4px_4px_#00000040]";
+  "font-righteous text-pretty text-[clamp(17px,2.1vw,29px)] leading-none text-[#fdfbed] [text-shadow:0_4px_4px_#00000040]";
 
 // One right-rail bounce, then a final roll to the left. Coordinates are
 // fractions of the play area, with the information arranged around the path.
@@ -23,31 +24,66 @@ const POINTS = [
 const PATH = `M ${POINTS.map(({ x, y }) => `${x * 1000} ${y * 1000}`).join(" L ")}`;
 const SHOT_AT = 0.24;
 
-export default function PoolStory() {
+/**
+ * The event details laid out around an eight ball's path. Scrolling draws the
+ * cue back and strikes, the ball banks off the right rail as the details fade
+ * in, then rolls on (off the left wall if it reaches it) until it passes
+ * behind `borderRef`, flashing the rail's stars. With reduced motion or no
+ * JavaScript, the details simply stack.
+ */
+export function PoolStory({
+  borderRef,
+}: {
+  borderRef: RefObject<HTMLDivElement | null>;
+}) {
   const rootRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
+  // A passive effect, so the border (rendered after this story) has its ref.
+  useEffect(() => {
     const root = rootRef.current;
-    if (!root) return;
+    const border = borderRef.current;
+    if (!root || !border) return;
 
     gsap.registerPlugin(ScrollTrigger);
     const media = gsap.matchMedia();
 
     media.add(
       "(prefers-reduced-motion: no-preference)",
-      () => {
-        const playArea =
-          root.querySelector<HTMLDivElement>("[data-play-area]")!;
-        const ball = root.querySelector<HTMLDivElement>("[data-ball]")!;
-        const spin = root.querySelector<HTMLDivElement>("[data-spin]")!;
-        const cueAxis = root.querySelector<HTMLDivElement>("[data-cue-axis]")!;
-        const cue = root.querySelector<HTMLDivElement>("[data-cue]")!;
-        const trail = root.querySelector<SVGPathElement>("[data-trail]")!;
+      (_context, contextSafe) => {
+        // Tweens started later from scroll callbacks still belong to this
+        // context, so media.revert() stops and undoes them too.
+        const safe = <T extends () => void>(fn: T) =>
+          contextSafe ? (contextSafe(fn) as T) : fn;
+
+        const playArea = root.querySelector<HTMLDivElement>("[data-play-area]");
+        const ball = root.querySelector<HTMLDivElement>("[data-ball]");
+        const spin = root.querySelector<HTMLDivElement>("[data-spin]");
+        // The exit spins the artwork inside the spin wrapper, so it never
+        // fights the main timeline's rotation of the wrapper itself.
+        const roll = spin?.querySelector("img");
+        const cueAxis = root.querySelector<HTMLDivElement>("[data-cue-axis]");
+        const cue = root.querySelector<HTMLDivElement>("[data-cue]");
+        const trail = root.querySelector<SVGPathElement>("[data-trail]");
+        const flash = border.querySelector<SVGEllipseElement>(
+          "[data-border-flash]",
+        );
+        if (
+          !playArea ||
+          !ball ||
+          !spin ||
+          !roll ||
+          !cueAxis ||
+          !cue ||
+          !trail ||
+          !flash
+        ) {
+          return;
+        }
         const copy = gsap.utils.toArray<HTMLElement>("[data-copy]", root);
         const impacts = gsap.utils.toArray<HTMLElement>("[data-impact]", root);
         const position = (index: number) => ({
-          x: POINTS[index]!.x * playArea.clientWidth,
-          y: POINTS[index]!.y * playArea.clientHeight,
+          x: POINTS[index].x * playArea.clientWidth,
+          y: POINTS[index].y * playArea.clientHeight,
         });
         const measureCue = () => {
           const start = position(0);
@@ -145,7 +181,7 @@ export default function PoolStory() {
           );
 
         POINTS.slice(1).forEach((point, i) => {
-          const previous = POINTS[i]!;
+          const previous = POINTS[i];
           const start = i === 0 ? SHOT_AT : previous.y;
           const duration = point.y - start;
           const direction = point.x > previous.x ? 1 : -1;
@@ -190,7 +226,7 @@ export default function PoolStory() {
                 point.y,
               )
               .fromTo(
-                impacts[i]!,
+                impacts[i],
                 { opacity: 0.65, scale: 0.5 },
                 {
                   opacity: 0,
@@ -206,11 +242,7 @@ export default function PoolStory() {
         // Once the story finishes, the ball keeps rolling along its last
         // diagonal, banking off the left edge if it reaches it, until it
         // passes behind the rail below the section. The rail's stars ripple
-        // outward as it crosses the line. EventInfoBorder renders right after
-        // this story's section.
-        const border = document.querySelector<HTMLElement>(
-          "[data-event-info-border]",
-        )!;
+        // outward as it crosses the line.
         const stars = gsap.utils.toArray<SVGGElement>(
           "[data-border-star]",
           border,
@@ -219,18 +251,15 @@ export default function PoolStory() {
           "[data-border-star-glow]",
           border,
         );
-        const flash =
-          border.querySelector<SVGEllipseElement>("[data-border-flash]")!;
-        const mainTrigger = timeline.scrollTrigger!;
+        // The exit starts where the story's scroll range ends.
+        const mainStart = () => timeline.scrollTrigger?.start ?? 0;
+        const mainEnd = () => timeline.scrollTrigger?.end ?? 0;
         const last = POINTS.length - 1;
         // Offsets from the play area, so they hold at any scroll position.
         const below = (edge: "top" | "bottom") =>
           border.getBoundingClientRect()[edge] -
           playArea.getBoundingClientRect().top;
         const exitY = () => below("bottom") + ball.clientHeight;
-        // The exit spins the artwork inside the spin wrapper, so it never
-        // fights the main timeline's rotation of the wrapper itself.
-        const roll = spin.firstElementChild as HTMLElement;
         // Measured on refresh: the last leg's heading, the left wall for the
         // ball's center, and where along the exit it banks and passes behind
         // the rail.
@@ -256,7 +285,7 @@ export default function PoolStory() {
           lineDistance = (below("top") - path.y) / path.uy;
         };
 
-        const flashRail = () => {
+        const flashRail = safe(() => {
           const rail = border.getBoundingClientRect();
           const ballBox = ball.getBoundingClientRect();
           const ballX = ballBox.left + ballBox.width / 2;
@@ -304,7 +333,16 @@ export default function PoolStory() {
               stagger,
             },
           );
-        };
+        });
+
+        // The squash when the ball banks off the left wall.
+        const squashBall = safe(() => {
+          gsap.fromTo(
+            spin,
+            { scaleX: 0.84, scaleY: 1.12 },
+            { scaleX: 1, scaleY: 1, duration: 0.25, ease: "power2.out" },
+          );
+        });
 
         const placeBall = () => {
           const { traveled } = exitState;
@@ -326,13 +364,7 @@ export default function PoolStory() {
           }
           drawTrail();
 
-          if (pastBank && !banked) {
-            gsap.fromTo(
-              spin,
-              { scaleX: 0.84, scaleY: 1.12 },
-              { scaleX: 1, scaleY: 1, duration: 0.25, ease: "power2.out" },
-            );
-          }
+          if (pastBank && !banked) squashBall();
           banked = pastBank;
 
           const crossedLine = traveled >= lineDistance;
@@ -353,12 +385,12 @@ export default function PoolStory() {
             onUpdate: placeBall,
             scrollTrigger: {
               trigger: border,
-              start: () => mainTrigger.end,
+              start: mainEnd,
               // Match the scroll-to-pixel rate of the main story so the ball
               // carries on at the same speed it arrived with.
               end: () =>
-                mainTrigger.end +
-                ((exitY() - path.y) * (mainTrigger.end - mainTrigger.start)) /
+                mainEnd() +
+                ((exitY() - path.y) * (mainEnd() - mainStart())) /
                   (playArea.clientHeight * timeline.duration()),
               scrub: 0.35,
               invalidateOnRefresh: true,
@@ -380,7 +412,7 @@ export default function PoolStory() {
     );
 
     return () => media.revert();
-  }, []);
+  }, [borderRef]);
 
   return (
     <div
@@ -454,7 +486,7 @@ export default function PoolStory() {
         <div
           data-ball
           // Cast the shadow from the moving wrapper so only the artwork spins.
-          className="absolute left-0 top-0 z-[2] h-[var(--ball-size)] w-[var(--ball-size)] transform rounded-full shadow-[6px_8px_5px_#00000040] will-change-transform md:shadow-[10px_14px_8px_#00000040]"
+          className="absolute left-0 top-0 z-[2] h-[var(--ball-size)] w-[var(--ball-size)] rounded-full shadow-[6px_8px_5px_#00000040] will-change-transform md:shadow-[10px_14px_8px_#00000040]"
         >
           <div data-spin className="h-full w-full origin-center">
             <Image

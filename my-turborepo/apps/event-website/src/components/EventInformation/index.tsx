@@ -1,7 +1,14 @@
-import EventInfoBorder from "./EventInfoBorder";
-import PoolStory from "./PoolStory";
+"use client";
+
+import { useRef } from "react";
+
+import { EventInfoBorder } from "./EventInfoBorder";
+import { PoolStory } from "./PoolStory";
 
 export default function EventInformation() {
+  // The eight ball rolls off the story and behind this rail.
+  const borderRef = useRef<HTMLDivElement>(null);
+
   return (
     <>
       <section
@@ -18,16 +25,16 @@ export default function EventInformation() {
         </div>
         <h2
           id="event-information-heading"
-          className="font-sekuya text-center text-[clamp(24px,6.5vw,96px)] font-normal not-italic leading-none tracking-normal text-[#FFB24C] [text-shadow:0_0_10px_#FFB24C]"
+          className="font-sekuya text-center text-[clamp(24px,6.5vw,96px)] leading-none text-[#ffb24c] [text-shadow:0_0_10px_#ffb24c]"
         >
           EVENT
           <br />
           INFORMATION
         </h2>
 
-        <PoolStory />
+        <PoolStory borderRef={borderRef} />
       </section>
-      <EventInfoBorder />
+      <EventInfoBorder borderRef={borderRef} />
     </>
   );
 }
