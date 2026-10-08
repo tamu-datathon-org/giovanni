@@ -137,14 +137,14 @@ export function MarqueeSign({
       {/* Easter egg: the power lever on the right of the countdown. */}
       <button
         type="button"
-        className="group/lever absolute left-[73.4%] top-[74.62%] h-[15.52%] w-[10.7%] cursor-pointer rounded-[calc(20*var(--g))] border-0 bg-transparent p-0 [-webkit-tap-highlight-color:transparent] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-[#3edbd3] disabled:cursor-default"
+        className="group/lever absolute left-[73.4%] top-[74.62%] h-[15.52%] w-[10.7%] cursor-pointer rounded-[calc(20*var(--g))] border-0 bg-transparent p-0 [-webkit-tap-highlight-color:transparent] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-[#3edbd3] aria-disabled:cursor-default"
         onClick={onFlipPower}
-        disabled={!powered}
+        aria-disabled={!powered}
         aria-label="Flip the power switch"
         title="Flip the power switch"
       >
         <span
-          className="pointer-events-none absolute left-[72%] top-[23.1%] aspect-square w-[110%] rounded-full opacity-0 mix-blend-screen transition-opacity duration-200 [translate:-50%_-50%] group-hover/lever:opacity-100 group-focus-visible/lever:opacity-100 group-disabled/lever:opacity-0"
+          className="pointer-events-none absolute left-[72%] top-[23.1%] aspect-square w-[110%] rounded-full opacity-0 mix-blend-screen transition-opacity duration-200 [translate:-50%_-50%] group-hover/lever:opacity-100 group-focus-visible/lever:opacity-100 group-aria-disabled/lever:opacity-0"
           style={KNOB_GLOW_STYLE}
         />
       </button>

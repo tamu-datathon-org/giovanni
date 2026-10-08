@@ -30,11 +30,12 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {/* Ready Just need  */}
-      {/* <Schedule />
+      <EventInformation />    
+      <Prizes />
+      <Schedule />
       <Sponsors />
-      <FAQ /> 
-      <Footer/> */}
+      <FAQ />
+      <Footer />
     </>
   );
 }
