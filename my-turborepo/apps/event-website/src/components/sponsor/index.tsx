@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import { SectionGround } from "@/components/SectionGround";
 
+import { SponsorChip } from "./SponsorChip";
 import { TableGuests } from "./TableGuests";
 import styles from "./TableGuests.module.css";
 
@@ -14,12 +15,13 @@ const STAR = "/event_assets/sponsors/Star.png";
 const TABLE_W = 1367;
 const TABLE_H = 945;
 /** Chip diameter as a fraction of the table width. */
-const CHIP = 0.16;
+const CHIP = 0.165;
 
 type Chip = {
   id: string;
   name: string;
   src: string;
+  color: string;
   x: number;
   y: number;
   rotation: number;
@@ -27,14 +29,14 @@ type Chip = {
 };
 
 const INITIAL_CHIPS: Chip[] = [
-  { id: "heb", name: "H-E-B", src: "/event_assets/sponsors/heb.png", x: 0.3, y: 0.36, rotation: -14, z: 1 },
-  { id: "databricks", name: "Databricks", src: "/event_assets/sponsors/databricks.png", x: 0.48, y: 0.3, rotation: 8, z: 2 },
-  { id: "qualcomm", name: "Qualcomm", src: "/event_assets/sponsors/qualcomm.png", x: 0.66, y: 0.38, rotation: -6, z: 3 },
-  { id: "hitachi", name: "Hitachi", src: "/event_assets/sponsors/hitachi.png", x: 0.28, y: 0.56, rotation: 11, z: 4 },
-  { id: "sec", name: "SEC", src: "/event_assets/sponsors/sec.png", x: 0.46, y: 0.52, rotation: -18, z: 5 },
-  { id: "conocophillips", name: "ConocoPhillips", src: "/event_assets/sponsors/conocophillips.png", x: 0.64, y: 0.56, rotation: 4, z: 6 },
-  { id: "phillips", name: "Phillips 66", src: "/event_assets/sponsors/phillips.png", x: 0.4, y: 0.7, rotation: 7, z: 7 },
-  { id: "serp", name: "SerpApi", src: "/event_assets/sponsors/serp.png", x: 0.58, y: 0.72, rotation: -9, z: 8 },
+  { id: "heb", name: "H-E-B", src: "/event_assets/sponsors/heb.png", color: "#ff2116", x: 0.23, y: 0.35, rotation: -21, z: 1 },
+  { id: "databricks", name: "Databricks", src: "/event_assets/sponsors/databricks.png", color: "#ff3621", x: 0.735, y: 0.34, rotation: 12, z: 2 },
+  { id: "qualcomm", name: "Qualcomm", src: "/event_assets/sponsors/qualcomm.png", color: "#0063c6", x: 0.455, y: 0.245, rotation: -9, z: 3 },
+  { id: "hitachi", name: "Hitachi", src: "/event_assets/sponsors/hitachi.png", color: "#f51b2c", x: 0.525, y: 0.465, rotation: -16, z: 4 },
+  { id: "sec", name: "SEC", src: "/event_assets/sponsors/sec.png", color: "#242424", x: 0.785, y: 0.625, rotation: 19, z: 5 },
+  { id: "conocophillips", name: "ConocoPhillips", src: "/event_assets/sponsors/conocophillips.png", color: "#ef2525", x: 0.39, y: 0.76, rotation: -12, z: 6 },
+  { id: "phillips", name: "Phillips 66", src: "/event_assets/sponsors/phillips.png", color: "#f52b32", x: 0.655, y: 0.745, rotation: 22, z: 7 },
+  { id: "serp", name: "SerpApi", src: "/event_assets/sponsors/serp.png", color: "#6352ff", x: 0.24, y: 0.62, rotation: 10, z: 8 },
 ];
 
 type TableMask = { data: Uint8ClampedArray; w: number; h: number };
@@ -54,8 +56,8 @@ function chipOnTable(mask: TableMask | null, x: number, y: number) {
 
   const cx = x * mask.w;
   const cy = y * mask.h;
-  // A little larger than the chip so the art stops short of the rim.
-  const radius = (CHIP / 2) * mask.w + 2;
+  // Include the beveled edge below the face so the whole chip stays on the table.
+  const radius = CHIP * 0.55 * mask.w + 2;
   for (let i = 0; i < 32; i++) {
     const angle = (i / 32) * Math.PI * 2;
     if (!sampleOpaque(mask, cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius)) {
@@ -255,17 +257,14 @@ function Sponsors() {
                       cursor: dragging ? "grabbing" : "grab",
                       transform: `translate(-50%, -50%) rotate(${chip.rotation}deg)${dragging ? " scale(1.06)" : ""}`,
                       filter: dragging
-                        ? "drop-shadow(0 14px 8px rgb(0 0 0 / 0.45))"
-                        : "drop-shadow(0 5px 3px rgb(0 0 0 / 0.35))",
+                        ? "drop-shadow(0 18px 10px rgb(0 0 0 / 0.45))"
+                        : "drop-shadow(0 7px 3px rgb(0 0 0 / 0.4)) drop-shadow(0 12px 9px rgb(0 0 0 / 0.18))",
                     }}
                   >
-                    <Image
+                    <SponsorChip
                       src={chip.src}
-                      alt=""
-                      fill
-                      draggable={false}
-                      sizes="180px"
-                      className={`pointer-events-none select-none object-contain transition-transform duration-200 ease-out [-webkit-user-drag:none] [user-drag:none] ${dragging ? "" : "group-hover/sc:scale-[1.07] group-focus-visible/sc:scale-[1.07]"}`}
+                      color={chip.color}
+                      dragging={dragging}
                     />
                   </button>
                 );
