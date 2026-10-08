@@ -15,13 +15,14 @@ const STAR = "/event_assets/sponsors/Star.png";
 const TABLE_W = 1367;
 const TABLE_H = 945;
 /** Chip diameter as a fraction of the table width. */
-const CHIP = 0.165;
+const CHIP = 0.16;
 
 type Chip = {
   id: string;
   name: string;
   src: string;
   color: string;
+  color2?: string;
   x: number;
   y: number;
   rotation: number;
@@ -30,12 +31,12 @@ type Chip = {
 
 const INITIAL_CHIPS: Chip[] = [
   { id: "heb", name: "H-E-B", src: "/event_assets/sponsors/heb.png", color: "#ff2116", x: 0.23, y: 0.35, rotation: -21, z: 1 },
-  { id: "databricks", name: "Databricks", src: "/event_assets/sponsors/databricks.png", color: "#ff3621", x: 0.735, y: 0.34, rotation: 12, z: 2 },
+  { id: "databricks", name: "Databricks", src: "/event_assets/sponsors/databricks.png", color: "#ff3621", color2: "#1b3139", x: 0.735, y: 0.34, rotation: 12, z: 2 },
   { id: "qualcomm", name: "Qualcomm", src: "/event_assets/sponsors/qualcomm.png", color: "#0063c6", x: 0.455, y: 0.245, rotation: -9, z: 3 },
-  { id: "hitachi", name: "Hitachi", src: "/event_assets/sponsors/hitachi.png", color: "#f51b2c", x: 0.525, y: 0.465, rotation: -16, z: 4 },
+  { id: "hitachi", name: "Hitachi", src: "/event_assets/sponsors/hitachi.png", color: "#f51b2c", color2: "#1a1a1a", x: 0.525, y: 0.465, rotation: -16, z: 4 },
   { id: "sec", name: "SEC", src: "/event_assets/sponsors/sec.png", color: "#242424", x: 0.785, y: 0.625, rotation: 19, z: 5 },
-  { id: "conocophillips", name: "ConocoPhillips", src: "/event_assets/sponsors/conocophillips.png", color: "#ef2525", x: 0.39, y: 0.76, rotation: -12, z: 6 },
-  { id: "phillips", name: "Phillips 66", src: "/event_assets/sponsors/phillips.png", color: "#f52b32", x: 0.655, y: 0.745, rotation: 22, z: 7 },
+  { id: "conocophillips", name: "ConocoPhillips", src: "/event_assets/sponsors/conocophillips.png", color: "#ef2525", color2: "#1a1a1a", x: 0.39, y: 0.76, rotation: -12, z: 6 },
+  { id: "phillips", name: "Phillips 66", src: "/event_assets/sponsors/phillips.png", color: "#f52b32", color2: "#1a1a1a", x: 0.645, y: 0.765, rotation: 22, z: 7 },
   { id: "serp", name: "SerpApi", src: "/event_assets/sponsors/serp.png", color: "#6352ff", x: 0.24, y: 0.62, rotation: 10, z: 8 },
 ];
 
@@ -56,8 +57,8 @@ function chipOnTable(mask: TableMask | null, x: number, y: number) {
 
   const cx = x * mask.w;
   const cy = y * mask.h;
-  // Include the beveled edge below the face so the whole chip stays on the table.
-  const radius = CHIP * 0.55 * mask.w + 2;
+  // A little larger than the chip so the art stops short of the rim.
+  const radius = (CHIP / 2) * mask.w + 2;
   for (let i = 0; i < 32; i++) {
     const angle = (i / 32) * Math.PI * 2;
     if (!sampleOpaque(mask, cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius)) {
@@ -229,6 +230,15 @@ function Sponsors() {
                 className="pointer-events-none block h-auto w-full select-none [-webkit-user-drag:none] [user-drag:none]"
               />
 
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/event_assets/sponsors/poker-table-shading.png"
+                alt=""
+                aria-hidden="true"
+                draggable={false}
+                className={styles.shading}
+              />
+
               <TableGuests />
 
               {chips.map((chip) => {
@@ -257,13 +267,14 @@ function Sponsors() {
                       cursor: dragging ? "grabbing" : "grab",
                       transform: `translate(-50%, -50%) rotate(${chip.rotation}deg)${dragging ? " scale(1.06)" : ""}`,
                       filter: dragging
-                        ? "drop-shadow(0 18px 10px rgb(0 0 0 / 0.45))"
-                        : "drop-shadow(0 7px 3px rgb(0 0 0 / 0.4)) drop-shadow(0 12px 9px rgb(0 0 0 / 0.18))",
+                        ? "drop-shadow(0 14px 8px rgb(0 0 0 / 0.45))"
+                        : "drop-shadow(0 5px 3px rgb(0 0 0 / 0.35))",
                     }}
                   >
                     <SponsorChip
                       src={chip.src}
                       color={chip.color}
+                      color2={chip.color2}
                       dragging={dragging}
                     />
                   </button>

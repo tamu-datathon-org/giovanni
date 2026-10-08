@@ -148,12 +148,6 @@ function Guest({ guest, index }: { guest: Guest; index: number }) {
             transform="rotate(-35 -25 43)"
             fill={skin}
           />
-          <path
-            d="M-33 35L-20 36"
-            stroke={skin}
-            strokeWidth="7"
-            strokeLinecap="round"
-          />
         </g>
         <g className={styles.rightArm}>
           <path
@@ -179,7 +173,7 @@ function Guest({ guest, index }: { guest: Guest; index: number }) {
             strokeLinecap="round"
           />
           {/* A tiny fan of playing cards echoes the sponsor chips. */}
-          <g transform="translate(23 45) rotate(-18)">
+          <g transform="translate(31 50) rotate(-10)">
             <rect
               x="-10"
               y="-2"
