@@ -75,7 +75,7 @@ function Guest({ guest, index }: { guest: Guest; index: number }) {
       transform={`translate(${guest.x} ${guest.y}) rotate(${guest.angle}) scale(1.1)`}
       style={{ "--delay": `-${index * 1.7}s` } as CSSProperties}
     >
-      {/* Upholstered chair, brass frame, and shoes remain still. */}
+      {/* Upholstered chair and brass frame remain still. */}
       <ellipse cx="0" cy="-58" rx="78" ry="66" fill="#170f10" opacity="0.2" />
       <path
         d="M-59-95V-18M59-95V-18"
@@ -98,18 +98,6 @@ function Guest({ guest, index }: { guest: Guest; index: number }) {
         d="M-45-102H45"
         stroke="#85515b"
         strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <path
-        d="M-34-18L-45 7M34-18L45 7"
-        stroke="#292936"
-        strokeWidth="25"
-        strokeLinecap="round"
-      />
-      <path
-        d="M-45 4L-46 17M45 4L46 17"
-        stroke="#f3e5cb"
-        strokeWidth="17"
         strokeLinecap="round"
       />
       <g className={styles.body}>
