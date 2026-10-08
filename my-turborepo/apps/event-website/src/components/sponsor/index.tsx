@@ -213,9 +213,6 @@ function Sponsors() {
               className="h-[0.7em] w-auto [-webkit-user-drag:none] [user-drag:none]"
             />
           </h2>
-          <p className="font-righteous mt-4 text-[length:clamp(14px,2vw,22px)] tracking-[0.04em] text-[#FDFBED]">
-            Drag the chips around the table
-          </p>
 
           <div className={styles.scene}>
             <div ref={tableRef} className={styles.table}>
