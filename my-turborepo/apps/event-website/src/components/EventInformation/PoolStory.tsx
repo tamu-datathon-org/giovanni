@@ -8,9 +8,9 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 const INFORMATION =
   "absolute z-[3] min-w-0 -translate-y-1/2 text-center motion-reduce:static motion-reduce:mx-auto motion-reduce:!w-[min(100%,800px)] motion-reduce:transform-none [@media(scripting:none)]:static [@media(scripting:none)]:mx-auto [@media(scripting:none)]:!w-[min(100%,800px)] [@media(scripting:none)]:transform-none";
 const TITLE =
-  "mb-3 font-sekuya text-balance text-[clamp(18px,2.35vw,32px)] font-normal not-italic leading-none tracking-normal text-[#ffb24c] [text-shadow:0_0_10px_#ffb24c] md:mb-[18px]";
+  "mb-3 font-sekuya text-balance text-[clamp(22px,2.9vw,40px)] font-normal not-italic leading-none tracking-normal text-[#ffb24c] md:mb-[18px]";
 const DESCRIPTION =
-  "m-0 font-righteous text-pretty text-[clamp(18px,2.3vw,32px)] font-normal not-italic leading-none tracking-normal text-[#fdfbed] [text-shadow:0_4px_4px_#00000040]";
+  "m-0 font-righteous text-pretty text-[clamp(17px,2.1vw,29px)] font-normal not-italic leading-none tracking-normal text-[#fdfbed] [text-shadow:0_4px_4px_#00000040]";
 
 // One right-rail bounce, then a final roll to the left. Coordinates are
 // fractions of the play area, with the information arranged around the path.
@@ -63,12 +63,52 @@ export default function PoolStory() {
         gsap.set(copy, { opacity: 0, y: 32 });
         gsap.set(ball, { xPercent: -50, yPercent: -50 });
         gsap.set(impacts, { opacity: 0, scale: 0.5 });
-        gsap.set(trail, {
-          attr: { "stroke-dasharray": 1, "stroke-dashoffset": 1 },
-        });
+
+        // The trail is redrawn from the corners the ball has passed to where
+        // the ball actually is, so it never runs ahead or falls behind.
+        // exitCorners is filled in by the roll off to the rail below.
+        let exitCorners: { x: number; y: number }[] = [];
+        const drawTrail = () => {
+          const time = timeline.time();
+          const corners: { x: number; y: number }[] = [];
+          if (time > SHOT_AT) {
+            corners.push(position(0));
+            if (time > POINTS[1].y) corners.push(position(1));
+            corners.push(...exitCorners, {
+              x: gsap.getProperty(ball, "x") as number,
+              y: gsap.getProperty(ball, "y") as number,
+            });
+          }
+
+          // Stop the line a little behind the ball, measured back along the
+          // path so the gap holds around corners.
+          let gap = ball.clientWidth * 2.5;
+          while (corners.length > 1 && gap > 0) {
+            const end = corners[corners.length - 1];
+            const previous = corners[corners.length - 2];
+            const length = Math.hypot(end.x - previous.x, end.y - previous.y);
+            if (length > gap) {
+              const keep = (length - gap) / length;
+              corners[corners.length - 1] = {
+                x: previous.x + (end.x - previous.x) * keep,
+                y: previous.y + (end.y - previous.y) * keep,
+              };
+              break;
+            }
+            corners.pop();
+            gap -= length;
+          }
+          trail.setAttribute(
+            "d",
+            corners.length > 1
+              ? `M ${corners.map(({ x, y }) => `${x} ${y}`).join(" L ")}`
+              : "",
+          );
+        };
 
         const timeline = gsap.timeline({
           defaults: { ease: "none" },
+          onUpdate: drawTrail,
           scrollTrigger: {
             trigger: playArea,
             start: "top 75%",
@@ -104,20 +144,10 @@ export default function PoolStory() {
             POINTS[1].y - 0.16,
           );
 
-        let distance = 0;
-        const segmentLengths = POINTS.slice(1).map((point, i) =>
-          Math.hypot(point.x - POINTS[i]!.x, point.y - POINTS[i]!.y),
-        );
-        const totalLength = segmentLengths.reduce(
-          (sum, length) => sum + length,
-          0,
-        );
-
         POINTS.slice(1).forEach((point, i) => {
           const previous = POINTS[i]!;
           const start = i === 0 ? SHOT_AT : previous.y;
           const duration = point.y - start;
-          const ease = i === 0 ? "none" : "power1.out";
           const direction = point.x > previous.x ? 1 : -1;
           const rotation = () => {
             const from = position(i);
@@ -139,22 +169,11 @@ export default function PoolStory() {
               x: () => position(i + 1).x,
               y: () => position(i + 1).y,
               duration,
-              ease,
               immediateRender: i === 0,
             },
             start,
           );
-          timeline.to(spin, { rotation, duration, ease }, start);
-          distance += segmentLengths[i]!;
-          timeline.to(
-            trail,
-            {
-              attr: { "stroke-dashoffset": 1 - distance / totalLength },
-              duration,
-              ease,
-            },
-            start,
-          );
+          timeline.to(spin, { rotation, duration }, start);
 
           if (i === 0) {
             // A small compression and a ripple make the change of direction
@@ -184,8 +203,169 @@ export default function PoolStory() {
           }
         });
 
-        // Let the ball settle at the end of the leftward roll.
-        timeline.to({}, { duration: 0.04 }, POINTS[2].y);
+        // Once the story finishes, the ball keeps rolling along its last
+        // diagonal, banking off the left edge if it reaches it, until it
+        // passes behind the rail below the section. The rail's stars ripple
+        // outward as it crosses the line. EventInfoBorder renders right after
+        // this story's section.
+        const border = document.querySelector<HTMLElement>(
+          "[data-event-info-border]",
+        )!;
+        const stars = gsap.utils.toArray<SVGGElement>(
+          "[data-border-star]",
+          border,
+        );
+        const glows = gsap.utils.toArray<SVGGElement>(
+          "[data-border-star-glow]",
+          border,
+        );
+        const flash =
+          border.querySelector<SVGEllipseElement>("[data-border-flash]")!;
+        const mainTrigger = timeline.scrollTrigger!;
+        const last = POINTS.length - 1;
+        // Offsets from the play area, so they hold at any scroll position.
+        const below = (edge: "top" | "bottom") =>
+          border.getBoundingClientRect()[edge] -
+          playArea.getBoundingClientRect().top;
+        const exitY = () => below("bottom") + ball.clientHeight;
+        // The exit spins the artwork inside the spin wrapper, so it never
+        // fights the main timeline's rotation of the wrapper itself.
+        const roll = spin.firstElementChild as HTMLElement;
+        // Measured on refresh: the last leg's heading, the left wall for the
+        // ball's center, and where along the exit it banks and passes behind
+        // the rail.
+        const path = { x: 0, y: 0, ux: 0, uy: 1, wall: 0, bank: Infinity };
+        const exitState = { traveled: 0 };
+        let lineDistance = Infinity;
+        let passed = false;
+        let banked = false;
+
+        const measureExit = () => {
+          const from = position(last - 1);
+          const to = position(last);
+          const length = Math.hypot(to.x - from.x, to.y - from.y);
+          path.x = to.x;
+          path.y = to.y;
+          path.ux = (to.x - from.x) / length;
+          path.uy = (to.y - from.y) / length;
+          path.wall =
+            border.getBoundingClientRect().left -
+            playArea.getBoundingClientRect().left +
+            ball.clientWidth / 2;
+          path.bank = path.ux < 0 ? (path.wall - path.x) / path.ux : Infinity;
+          lineDistance = (below("top") - path.y) / path.uy;
+        };
+
+        const flashRail = () => {
+          const rail = border.getBoundingClientRect();
+          const ballBox = ball.getBoundingClientRect();
+          const ballX = ballBox.left + ballBox.width / 2;
+          const offsets = stars.map((star) => {
+            const box = star.getBoundingClientRect();
+            return Math.abs(box.left + box.width / 2 - ballX);
+          });
+          const stagger = {
+            each: 0.06,
+            from: offsets.indexOf(Math.min(...offsets)),
+          };
+
+          gsap.set(flash, {
+            attr: { cx: ((ballX - rail.left) / rail.width) * 1440 },
+          });
+          gsap.fromTo(
+            flash,
+            { opacity: 0.95 },
+            { opacity: 0, duration: 0.9, ease: "power2.out", overwrite: true },
+          );
+          gsap.fromTo(
+            stars,
+            { scale: 1 },
+            {
+              scale: 1.7,
+              transformOrigin: "50% 50%",
+              duration: 0.16,
+              ease: "power2.out",
+              yoyo: true,
+              repeat: 1,
+              overwrite: true,
+              stagger,
+            },
+          );
+          // The glow lingers a little after the pulse before fading out.
+          gsap.fromTo(
+            glows,
+            { opacity: 0 },
+            {
+              keyframes: [
+                { opacity: 1, duration: 0.18, ease: "power2.out" },
+                { opacity: 0, duration: 0.6, ease: "power1.in" },
+              ],
+              overwrite: true,
+              stagger,
+            },
+          );
+        };
+
+        const placeBall = () => {
+          const { traveled } = exitState;
+          const pastBank = traveled > path.bank;
+          const rawX = path.x + path.ux * traveled;
+          const before = Math.min(traveled, path.bank);
+          const after = Math.max(0, traveled - path.bank);
+          // Rolling left spins counterclockwise, and the bank reverses it.
+          const turns = (after - before) / (Math.PI * ball.clientWidth);
+          gsap.set(ball, {
+            x: pastBank ? 2 * path.wall - rawX : rawX,
+            y: path.y + path.uy * traveled,
+          });
+          gsap.set(roll, { rotation: turns * 360 });
+
+          exitCorners = traveled > 0 ? [position(last)] : [];
+          if (pastBank) {
+            exitCorners.push({ x: path.wall, y: path.y + path.uy * path.bank });
+          }
+          drawTrail();
+
+          if (pastBank && !banked) {
+            gsap.fromTo(
+              spin,
+              { scaleX: 0.84, scaleY: 1.12 },
+              { scaleX: 1, scaleY: 1, duration: 0.25, ease: "power2.out" },
+            );
+          }
+          banked = pastBank;
+
+          const crossedLine = traveled >= lineDistance;
+          if (crossedLine && !passed) flashRail();
+          passed = crossedLine;
+        };
+
+        measureExit();
+        ScrollTrigger.addEventListener("refreshInit", measureExit);
+
+        gsap.fromTo(
+          exitState,
+          { traveled: 0 },
+          {
+            traveled: () => (exitY() - path.y) / path.uy,
+            ease: "none",
+            immediateRender: false,
+            onUpdate: placeBall,
+            scrollTrigger: {
+              trigger: border,
+              start: () => mainTrigger.end,
+              // Match the scroll-to-pixel rate of the main story so the ball
+              // carries on at the same speed it arrived with.
+              end: () =>
+                mainTrigger.end +
+                ((exitY() - path.y) * (mainTrigger.end - mainTrigger.start)) /
+                  (playArea.clientHeight * timeline.duration()),
+              scrub: 0.35,
+              invalidateOnRefresh: true,
+            },
+          },
+        );
+
         let disposed = false;
         void document.fonts.ready.then(() => {
           if (!disposed) ScrollTrigger.refresh();
@@ -193,6 +373,7 @@ export default function PoolStory() {
         return () => {
           disposed = true;
           ScrollTrigger.removeEventListener("refreshInit", measureCue);
+          ScrollTrigger.removeEventListener("refreshInit", measureExit);
         };
       },
       root,
@@ -225,13 +406,18 @@ export default function PoolStory() {
             vectorEffect="non-scaling-stroke"
             opacity="0.2"
           />
+        </svg>
+        {/* Play-area pixels, so the trail can follow the ball past the
+            bottom edge down to the rail. */}
+        <svg
+          className="absolute left-0 top-0 h-px w-px overflow-visible text-[#ffb24c]"
+          fill="none"
+        >
           <path
             data-trail
-            d={PATH}
-            pathLength="1"
             stroke="currentColor"
             strokeWidth="1.5"
-            vectorEffect="non-scaling-stroke"
+            strokeLinejoin="round"
             opacity="0.45"
           />
         </svg>
@@ -336,7 +522,7 @@ export default function PoolStory() {
         </div>
       </article>
       <article
-        className={`${INFORMATION} right-0 top-[83%] w-[54%] md:top-[80%] md:w-[44%]`}
+        className={`${INFORMATION} right-0 top-[87%] w-[54%] md:top-[86%] md:w-[44%]`}
       >
         <div data-copy>
           <h3 className={TITLE}>PARKING</h3>
