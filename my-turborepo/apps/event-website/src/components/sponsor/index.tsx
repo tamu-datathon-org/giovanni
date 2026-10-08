@@ -8,7 +8,6 @@ import { SectionGround } from "@/components/SectionGround";
 
 import { SponsorChip } from "./SponsorChip";
 import { TableGuests } from "./TableGuests";
-import styles from "./TableGuests.module.css";
 
 const TABLE = "/event_assets/sponsors/poker-table-sponsors.png";
 const STAR = "/event_assets/sponsors/Star.png";
@@ -217,8 +216,8 @@ function Sponsors() {
             />
           </h2>
 
-          <div className={styles.scene}>
-            <div ref={tableRef} className={styles.table}>
+          <div className="relative mt-[clamp(20px,3vw,44px)] aspect-[1727/1305] w-full max-w-[1380px]">
+            <div ref={tableRef} className="absolute left-[10.4227%] top-[13.7931%] isolate w-[79.1546%] [filter:drop-shadow(0_18px_14px_rgb(0_0_0/0.45))]">
               <Image
                 src={TABLE}
                 alt=""
@@ -236,7 +235,7 @@ function Sponsors() {
                 alt=""
                 aria-hidden="true"
                 draggable={false}
-                className={styles.shading}
+                className="pointer-events-none absolute inset-0 h-full w-full select-none"
               />
 
               <TableGuests />

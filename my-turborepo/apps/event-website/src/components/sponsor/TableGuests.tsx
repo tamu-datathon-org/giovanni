@@ -1,7 +1,5 @@
 import type { CSSProperties } from "react";
 
-import styles from "./TableGuests.module.css";
-
 const GUESTS = [
   {
     x: 365,
@@ -100,7 +98,7 @@ function Guest({ guest, index }: { guest: Guest; index: number }) {
         strokeWidth="3"
         strokeLinecap="round"
       />
-      <g className={styles.body}>
+      <g className="origin-[0_-50px] animate-guest-settle motion-reduce:animate-none">
         <path
           d="M-57-54Q-53-90 0-92Q53-90 57-54L47-11Q0 5-47-11Z"
           fill={shirt}
@@ -117,7 +115,7 @@ function Guest({ guest, index }: { guest: Guest; index: number }) {
           strokeWidth="5"
           strokeLinecap="round"
         />
-        <g className={styles.leftArm}>
+        <g className="origin-[-48px_-40px] animate-guest-gesture motion-reduce:animate-none">
           <path
             d="M-48-43Q-73-26-72 8L-43 32"
             fill="none"
@@ -149,7 +147,7 @@ function Guest({ guest, index }: { guest: Guest; index: number }) {
             fill={skin}
           />
         </g>
-        <g className={styles.rightArm}>
+        <g className="origin-[48px_-40px] animate-guest-gesture-reverse motion-reduce:animate-none">
           <path
             d="M48-43Q73-23 68 10L48 39"
             fill="none"
@@ -195,7 +193,7 @@ function Guest({ guest, index }: { guest: Guest; index: number }) {
             fill={skin}
           />
         </g>
-        <g className={styles.head}>
+        <g className="origin-[0_-65px] animate-guest-glance motion-reduce:animate-none">
           {hairstyle === "bun" && (
             <ellipse cx="0" cy="-75" rx="41" ry="42" fill={hair} />
           )}
@@ -285,7 +283,7 @@ function Guest({ guest, index }: { guest: Guest; index: number }) {
 export function TableGuests() {
   return (
     <svg
-      className={styles.guests}
+      className="pointer-events-none absolute inset-0 h-full w-full overflow-visible [filter:drop-shadow(0_7px_3px_rgb(0_0_0/0.22))]"
       viewBox="0 0 1367 945"
       fill="none"
       aria-hidden="true"

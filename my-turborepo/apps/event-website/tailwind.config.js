@@ -188,6 +188,22 @@ export const theme = {
             "drop-shadow(0 0 6px rgb(255 255 255)) drop-shadow(0 0 14px rgb(255 255 255 / 0.75))",
         },
       },
+
+      // Sponsors table guests (src/components/sponsor/TableGuests). Timings
+      // are offset per guest through the --delay CSS variable.
+      "guest-settle": {
+        "0%, 100%": { transform: "translateY(0)" },
+        "50%": { transform: "translateY(3px)" },
+      },
+      "guest-glance": {
+        "0%, 25%, 70%, 100%": { transform: "rotate(0)" },
+        "38%, 52%": { transform: "rotate(-9deg)" },
+        "82%, 90%": { transform: "rotate(6deg)" },
+      },
+      "guest-gesture": {
+        "0%, 20%, 80%, 100%": { transform: "rotate(0)" },
+        "40%, 60%": { transform: "rotate(-8deg)" },
+      },
     },
     animation: {
       float: "floatx 3s ease-in-out infinite",
@@ -206,6 +222,13 @@ export const theme = {
       "apply-pop": "apply-pop 0.5s ease-out 0.45s",
       "chip-blink": "chip-blink 2.2s ease-in-out infinite",
       "chip-glow-hold": "chip-glow-hold 1s linear infinite",
+
+      // Sponsors table guests
+      "guest-settle": "guest-settle 6s ease-in-out var(--delay) infinite",
+      "guest-glance": "guest-glance 9s ease-in-out var(--delay) infinite",
+      "guest-gesture": "guest-gesture 5.5s ease-in-out var(--delay) infinite",
+      "guest-gesture-reverse":
+        "guest-gesture 7s ease-in-out var(--delay) infinite reverse",
     },
     backgroundImage: {
       sandBox: "url('/sand&rainbow.svg')",
