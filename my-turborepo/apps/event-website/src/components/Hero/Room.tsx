@@ -49,8 +49,10 @@ export function Room({
           src={ASSETS.background}
           alt=""
           fill
+          draggable={false}
           loading="eager"
           sizes="(max-aspect-ratio: 1440/1086) 133vh, 100vw"
+          className="[-webkit-user-drag:none] [user-drag:none]"
         />
       </div>
 

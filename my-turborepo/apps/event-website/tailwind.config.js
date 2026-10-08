@@ -29,10 +29,9 @@ export const theme = {
       inter: ["var(--font-inter)", "sans-serif"],
       kopub: ["var(--font-kopub-batang)", "serif"],
       anonymous: ['"anonymous"'],
-      "darumadrop-one": ["var(--font-darumadrop-one)", "sans-serif"],
-      chilanka: ["var(--font-chilanka)", "sans-serif"],
-      serif: ['"PT Serif"', "Times New Roman", "serif"],
+      "darumadrop-one": ["darumadrop-one", "sans-serif"],
       chilanka: ["chilanka", "sans-serif"],
+      serif: ['"PT Serif"', "Times New Roman", "serif"],
       pixelify: ["pixelify", "sans-serif"],
       shadowsintolight: ["shadowsintolight", "sans-serif"],
       darumadropone: ["darumadropone", "sans-serif"],
@@ -173,6 +172,22 @@ export const theme = {
         "0%, 100%": { scale: "1" },
         "40%": { scale: "1.05" },
       },
+      "chip-blink": {
+        "0%, 100%": {
+          filter:
+            "drop-shadow(0 0 0 rgb(255 255 255 / 0)) drop-shadow(0 0 0 rgb(255 255 255 / 0))",
+        },
+        "50%": {
+          filter:
+            "drop-shadow(0 0 6px rgb(255 255 255)) drop-shadow(0 0 14px rgb(255 255 255 / 0.75))",
+        },
+      },
+      "chip-glow-hold": {
+        "0%, 100%": {
+          filter:
+            "drop-shadow(0 0 6px rgb(255 255 255)) drop-shadow(0 0 14px rgb(255 255 255 / 0.75))",
+        },
+      },
     },
     animation: {
       float: "floatx 3s ease-in-out infinite",
@@ -189,6 +204,8 @@ export const theme = {
       "apply-lights":
         "apply-lights 0.6s steps(1, end) var(--lights-delay, 0s) both",
       "apply-pop": "apply-pop 0.5s ease-out 0.45s",
+      "chip-blink": "chip-blink 2.2s ease-in-out infinite",
+      "chip-glow-hold": "chip-glow-hold 1s linear infinite",
     },
     backgroundImage: {
       sandBox: "url('/sand&rainbow.svg')",

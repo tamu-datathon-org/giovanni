@@ -4,25 +4,33 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  CalendarDays,
-  Download,
-  FileText,
-  Settings,
-  Ticket,
-} from "lucide-react";
 import { toDataURL } from "qrcode";
 
 import { authClient } from "@vanni/auth/client";
-import { Button } from "@vanni/ui/button";
 
 import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
 import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
-import { GradientButton } from "../_components/GradientButton";
 import { EVENT_NAME } from "./application/application-form";
 
 export const appsOpen = true;
+
+const ASSETS = "/images/dashboard";
+
+/** Figma 815:372 — dashboard palette. */
+const INK = {
+  page: "#2E6691",
+  panelBorder: "#E4E4E2",
+  card: "#D9D9D9",
+  cardBorder: "#8FABC1",
+  button: "#BCCFDE",
+  buttonBorder: "#D9D9D9",
+  deep: "#2E6691",
+  decline: "#377BB0",
+  stepActive: "#5BBFF1",
+  stepIdle: "#D9D9D9",
+  hatch: "#FF9A42",
+} as const;
 
 // ---------- Confetti ----------
 function Confetti() {
@@ -37,207 +45,254 @@ function Confetti() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const pieces: {
-      x: number;
-      y: number;
-      w: number;
-      h: number;
-      color: string;
-      rotation: number;
-      speed: number;
-      drift: number;
-    }[] = [];
-
     const colors = [
-      "#ff6b6b",
-      "#ffd93d",
-      "#6bcb77",
-      "#4d96ff",
-      "#ff922b",
-      "#cc5de8",
-      "#f06595",
-      "#74c0fc",
+      "#5BBFF1",
+      "#BCCFDE",
+      "#FF9A42",
+      "#F98861",
+      "#E9F6FF",
+      "#ffffff",
     ];
+    const pieces = Array.from({ length: 140 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * -canvas.height,
+      w: 6 + Math.random() * 6,
+      h: 10 + Math.random() * 8,
+      color: colors[Math.floor(Math.random() * colors.length)]!,
+      rotation: Math.random() * 360,
+      speed: 2 + Math.random() * 3,
+      drift: -1 + Math.random() * 2,
+    }));
 
-    for (let i = 0; i < 160; i++) {
-      pieces.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * -canvas.height,
-        w: Math.random() * 10 + 6,
-        h: Math.random() * 6 + 4,
-        color: colors[Math.floor(Math.random() * colors.length)]!,
-        rotation: Math.random() * 360,
-        speed: Math.random() * 3 + 2,
-        drift: Math.random() * 2 - 1,
-      });
-    }
-
-    let frame: number;
-    let elapsed = 0;
-
-    function draw() {
-      if (!ctx || !canvas) return;
+    let raf = 0;
+    const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      elapsed++;
-
       for (const p of pieces) {
         ctx.save();
-        ctx.translate(p.x + p.w / 2, p.y + p.h / 2);
+        ctx.translate(p.x, p.y);
         ctx.rotate((p.rotation * Math.PI) / 180);
         ctx.fillStyle = p.color;
         ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
         ctx.restore();
-
         p.y += p.speed;
         p.x += p.drift;
-        p.rotation += 2;
-
+        p.rotation += p.speed;
         if (p.y > canvas.height) {
           p.y = -20;
           p.x = Math.random() * canvas.width;
         }
       }
-
-      if (elapsed < 300) {
-        frame = requestAnimationFrame(draw);
-      } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-    }
-
+      raf = requestAnimationFrame(draw);
+    };
     draw();
-    return () => cancelAnimationFrame(frame);
+
+    const onResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
       className="pointer-events-none fixed inset-0 z-50"
+      aria-hidden
     />
   );
 }
 
-// ---------- Decision Banner ----------
-function DecisionBanner({
-  status,
-  isLoading,
-  textColor,
-  foodGroup,
-}: {
-  status?: string;
-  isLoading: boolean;
-  textColor: string;
-  foodGroup?: string | null;
-}) {
-  const statusLabel = isLoading
-    ? "LOADING..."
-    : status
-      ? status.toUpperCase()
-      : "NO APPLICATION FOUND";
+// ---------- Status -> progress step + headline ----------
+const STEPS = ["no application", "applied", "decisions"] as const;
 
-  const statusMessage: Record<string, string> = {
-    accepted: "🎉 Congratulations! You've been accepted!",
-    rejected: "Thank you for applying. Unfortunately you were not selected.",
-    waitlisted: "You're on the waitlist — hang tight!",
-    pending: "Your application is under review.",
-    checkedin: "✅ You're checked in! Welcome to the event.",
-  };
+function statusView(status?: string, isLoading?: boolean) {
+  if (isLoading) return { step: 0, headline: "loading ....." };
+  switch (status) {
+    case "pending":
+      return { step: 1, headline: "application submitted ....." };
+    case "accepted":
+      return { step: 2, headline: "you're in! see you there ....." };
+    case "checkedin":
+      return { step: 2, headline: "checked in ....." };
+    case "waitlisted":
+      return { step: 2, headline: "you're on the waitlist ....." };
+    case "rejected":
+      return { step: 2, headline: "not selected this time ....." };
+    default:
+      return { step: 0, headline: "no application found ....." };
+  }
+}
 
+// ---------- Building blocks ----------
+/** Section marker: the small triangle sitting left of every panel. */
+function Marker({ className = "" }: { className?: string }) {
   return (
-    <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-center shadow-[0_0_40px_rgba(59,130,246,0.08)]">
-      <div className="mb-1 text-sm font-medium uppercase tracking-widest text-white/60">
-        Application Status
-      </div>
+    <Image
+      src={`${ASSETS}/marker.svg`}
+      alt=""
+      width={22}
+      height={35}
+      className={`h-[26px] w-[16px] shrink-0 xl:h-[35px] xl:w-[22px] ${className}`}
+    />
+  );
+}
+
+function Panel({
+  title,
+  children,
+  className = "",
+}: {
+  title: string;
+  children?: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <Marker className="mt-4" />
       <div
-        className={`bg-clip-text text-5xl font-bold md:text-6xl ${textColor}`}
+        className={`flex-1 rounded-[20px] border-[5px] p-4 xl:p-5 ${className}`}
+        style={{ borderColor: INK.panelBorder }}
       >
-        {statusLabel}
+        <h2 className="font-kode text-[22px] font-semibold lowercase tracking-[-0.07em] text-white xl:text-[30px]">
+          {title}
+        </h2>
+        {children}
       </div>
-      {status && (
-        <p className="mt-2 text-sm text-white/70">
-          {statusMessage[status] ?? ""}
-        </p>
-      )}
-      {foodGroup ? (
-        <p className="mx-auto mt-3 w-fit rounded-lg border border-white/10 bg-[#2d69df] px-3 py-2 text-sm text-white">
-          <span className="text-white">Lunch group</span>{" "}
-          <span className="font-semibold text-white">{foodGroup}</span>
-        </p>
-      ) : null}
     </div>
   );
 }
 
-// ---------- QR Code Card ----------
-function QRCard({ qrCode }: { qrCode: string }) {
-  async function handleSave() {
-    try {
-      const res = await fetch(qrCode, { mode: "cors" });
-      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+function ActionButton({
+  children,
+  onClick,
+  href,
+  disabled,
+  tone = "light",
+}: {
+  children: React.ReactNode;
+  onClick?: () => void;
+  href?: string;
+  disabled?: boolean;
+  tone?: "light" | "deep";
+}) {
+  const cls =
+    "mt-3 block w-full rounded-[20px] border-[5px] py-2 text-center font-kode text-[20px] font-bold lowercase tracking-[-0.07em] transition-opacity hover:opacity-90 disabled:opacity-50 xl:text-[30px]";
+  const style =
+    tone === "light"
+      ? { backgroundColor: INK.button, borderColor: INK.buttonBorder, color: INK.deep }
+      : { backgroundColor: INK.decline, borderColor: INK.buttonBorder, color: "#fff" };
 
-      const blob = await res.blob();
-      const type = blob.type || "image/png";
-      const fileName = "Check_In_QR_Code.png";
-      const file = new File([blob], fileName, { type });
-
-      if (!navigator.share || !navigator.canShare) {
-        throw new Error("Web Share API not supported");
-      }
-
-      if (!navigator.canShare({ files: [file] })) {
-        throw new Error("This device/browser cannot share this file");
-      }
-      await navigator.share({
-        files: [file],
-        title: "Check-in QR Code",
-      });
-    } catch (err) {
-      if (err instanceof Error && err.name === "AbortError") return;
-      const message =
-        err instanceof Error ? err.message : "Unable to share QR code";
-
-      try {
-        const a = document.createElement("a");
-        a.href = qrCode;
-        a.download = "check-in-qr.png";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      } catch {
-        toast({
-          title: "Could not save QR code",
-          description: "Please take a screenshot instead",
-          variant: "destructive",
-        });
-      }
-    }
+  if (href) {
+    return (
+      <Link href={href} className={cls} style={style}>
+        {children}
+      </Link>
+    );
   }
-
   return (
-    <div className="flex cursor-pointer flex-col items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg">
-      <div className="text-lg font-semibold text-white">Check-in QR Code</div>
-      <p className="text-sm text-white/60">
-        Click the QR code to save it as an image
-      </p>
-      <button
-        onClick={handleSave}
-        className="group relative mx-auto cursor-pointer overflow-hidden rounded-xl border-4 border-gray-400 p-2 transition-all hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/30"
-        title="Click to save QR code"
-      >
-        <div className="relative h-48 w-48">
-          <Image
-            src={qrCode}
-            alt="Check-in QR Code"
-            layout="fill"
-            className="object-cover"
+    <button type="button" onClick={onClick} disabled={disabled} className={cls} style={style}>
+      {children}
+    </button>
+  );
+}
+
+/** Orange hatch rule flanking the "logged in as" line. */
+function Hatch({ className = "" }: { className?: string }) {
+  return (
+    <span
+      aria-hidden
+      className={`select-none overflow-hidden whitespace-nowrap font-konkhmer text-[24px] uppercase leading-none xl:text-[36px] ${className}`}
+      style={{ color: INK.hatch }}
+    >
+      ////////////////////////////
+    </span>
+  );
+}
+
+/**
+ * Progress chevrons. The exported SVGs carry baked-in fills, so they are used
+ * as masks and coloured from state — the shape stays exactly as designed while
+ * the active step can follow the application status.
+ */
+function StepTrail({ step }: { step: number }) {
+  return (
+    <div className="flex flex-nowrap items-center">
+      {STEPS.map((label, i) => (
+        <div
+          key={label}
+          className={`relative h-[42px] w-[145px] shrink-0 xl:h-[51px] xl:w-[175px] ${
+            i > 0 ? "-ml-[9px] xl:-ml-[11px]" : ""
+          }`}
+        >
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundColor: i === step ? INK.stepActive : INK.stepIdle,
+              maskImage: `url(${ASSETS}/${i === 0 ? "step-chevron-first" : "step-chevron"}.svg)`,
+              WebkitMaskImage: `url(${ASSETS}/${i === 0 ? "step-chevron-first" : "step-chevron"}.svg)`,
+              maskSize: "100% 100%",
+              WebkitMaskSize: "100% 100%",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+            }}
           />
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
-          <span className="flex items-center gap-2 text-sm font-semibold text-white">
-            <Download /> Save Image
+          <span
+            className="absolute inset-0 flex items-center justify-center px-5 pl-7 text-center font-kode text-[14px] font-bold lowercase leading-none tracking-[-0.07em] xl:text-[20px]"
+            style={{ color: INK.deep }}
+          >
+            {label}
           </span>
         </div>
-      </button>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Figma 815:316-325 — three rounded dashes (107 x 5.7, 31px apart) leading
+ * into the Union arrowhead. Not a single stretched arrow.
+ */
+function DashTrail() {
+  return (
+    <div
+      className="flex origin-left scale-90 items-center gap-[31px] xl:scale-100"
+      aria-hidden
+    >
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="h-[6px] w-[107px] shrink-0 rounded-full"
+          style={{ backgroundColor: "#F98861" }}
+        />
+      ))}
+      <Image
+        src={`${ASSETS}/dashes-arrow.svg`}
+        alt=""
+        width={131}
+        height={37}
+        className="h-[37px] w-[131px] shrink-0"
+      />
+    </div>
+  );
+}
+
+function Sparkles({ className = "" }: { className?: string }) {
+  return (
+    <div className={`pointer-events-none flex ${className}`} aria-hidden>
+      {[0, 1, 2].map((i) => (
+        <Image
+          key={i}
+          src={`${ASSETS}/sparkle.svg`}
+          alt=""
+          width={75}
+          height={86}
+          className="-ml-4 h-[60px] w-[52px] first:ml-0 xl:h-[86px] xl:w-[75px]"
+        />
+      ))}
     </div>
   );
 }
@@ -248,6 +303,7 @@ export default function Page() {
   const router = useRouter();
   const [showConfetti, setShowConfetti] = useState(false);
   const confettiShown = useRef(false);
+  const [qrCode, setQrCode] = useState<string>("");
 
   async function signOutHandler() {
     try {
@@ -259,7 +315,7 @@ export default function Page() {
           },
         },
       });
-    } catch (error) {
+    } catch {
       toast({
         title: "Sign-Out Error",
         description: "There was an error signing out. Please try again.",
@@ -270,21 +326,22 @@ export default function Page() {
 
   const generateQR = async (text: string): Promise<string> => {
     try {
-      const parseText = btoa(text);
-      return await toDataURL(parseText);
+      return await toDataURL(btoa(text));
     } catch (err) {
       console.error(err);
       return "";
     }
   };
 
-  const [qrCode, setQrCode] = useState<string>("");
-
   const { data, isLoading, refetch } =
     api.application.getApplicationStatus.useQuery(
       { eventName: EVENT_NAME },
       { enabled: !!EVENT_NAME, retry: 2 },
     );
+
+  const { data: event } = api.event.findByName.useQuery(EVENT_NAME, {
+    enabled: !!EVENT_NAME,
+  });
 
   const updateInvitation = api.application.updateInvitationStatus.useMutation({
     onSuccess: () => {
@@ -306,9 +363,8 @@ export default function Page() {
 
   useEffect(() => {
     const fetchQRCode = async () => {
-      if (data?.status !== "rejected") {
-        const qr = await generateQR(data?.email ?? "");
-        setQrCode(qr);
+      if (data?.status && data.status !== "rejected") {
+        setQrCode(await generateQR(data.email ?? ""));
       }
     };
     void fetchQRCode();
@@ -320,272 +376,330 @@ export default function Page() {
     }
   }, [data]);
 
-  let textColor = "text-blue-400";
-  if (!isLoading) {
-    switch (data?.status) {
-      case "pending":
-        textColor = "text-gray-300";
-        break;
-      case "accepted":
-        textColor = "text-[#2d69df]";
-        break;
-      case "rejected":
-        textColor = "text-red-400";
-        break;
-      case "checkedin":
-        textColor = "text-green-400";
-        break;
-      case "waitlisted":
-        textColor = "text-yellow-400";
-        break;
-    }
-  }
+  const gridRef = useRef<HTMLDivElement>(null);
+  const offerRef = useRef<HTMLDivElement>(null);
+  const qrRef = useRef<HTMLDivElement>(null);
+  const blueRef = useRef<HTMLDivElement>(null);
+  const orangeRef = useRef<HTMLDivElement>(null);
+  const [arrowTop, setArrowTop] = useState<{ blue: number; orange: number }>({
+    blue: -9999,
+    orange: -9999,
+  });
+
+  const { step, headline } = statusView(data?.status, isLoading);
+
+  // The blue arrow points at whatever needs attention: the offer once you are
+  // accepted, then the check-in QR once the event is under way.
+  const eventStarted = event?.startDate
+    ? new Date() >= new Date(event.startDate)
+    : false;
+  const arrowTarget: "offer" | "qr" | null =
+    eventStarted && qrCode
+      ? "qr"
+      : data?.status === "accepted"
+        ? "offer"
+        : null;
+
+  /**
+   * Line each arrow up with the panel it points at. The blue arrowhead sits
+   * 64.6% down its SVG (tip at y=216.5 of 335) and the orange one is centred,
+   * so the tips — not the boxes — are what get aligned.
+   */
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    const place = () => {
+      const g = grid.getBoundingClientRect();
+      const centerOf = (el: HTMLElement | null) => {
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        return r.top + r.height / 2 - g.top;
+      };
+
+      const blueTargetEl = arrowTarget === "offer" ? offerRef.current : qrRef.current;
+      const blueCenter = centerOf(blueTargetEl);
+      const blueH = blueRef.current?.offsetHeight ?? 0;
+
+      const orangeCenter = centerOf(qrRef.current);
+      const orangeH = orangeRef.current?.offsetHeight ?? 0;
+
+      setArrowTop({
+        blue: blueCenter === null ? -9999 : blueCenter - 0.646 * blueH,
+        orange: orangeCenter === null ? -9999 : orangeCenter - orangeH / 2,
+      });
+    };
+
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(grid);
+    window.addEventListener("resize", place);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", place);
+    };
+  }, [arrowTarget, qrCode, data?.status, isLoading]);
 
   return (
     <>
       {showConfetti && <Confetti />}
 
-      <div className="flex min-h-screen w-full justify-center px-4 py-24">
-        <div className="w-full max-w-4xl">
-          <div className="mx-auto flex w-full flex-col gap-6 text-white">
-            {/* Header */}
-            <div className="text-center">
-              <h1 className="text-3xl font-bold md:text-4xl">
-                Applicant Dashboard
-              </h1>
-              <p className="mt-1 text-sm text-white/60">
-                Logged in as{" "}
-                <span className="rounded-full bg-white/10 px-3 py-1 text-white">
-                  {session?.user.email}
-                </span>
-              </p>
+      <main
+        className="relative min-h-screen w-full overflow-hidden"
+        style={{ backgroundColor: INK.page }}
+      >
+        {/* decorative background */}
+        <Image
+          src={`${ASSETS}/noise.png`}
+          alt=""
+          width={650}
+          height={650}
+          aria-hidden
+          className="pointer-events-none absolute -left-40 -top-40 opacity-[0.07] mix-blend-overlay"
+        />
+        <Image
+          src={`${ASSETS}/noise.png`}
+          alt=""
+          width={650}
+          height={650}
+          aria-hidden
+          className="pointer-events-none absolute -right-40 -top-40 opacity-[0.07] mix-blend-overlay"
+        />
+        <Image
+          src={`${ASSETS}/bg-curves.svg`}
+          alt=""
+          width={936}
+          height={776}
+          aria-hidden
+          className="pointer-events-none absolute -left-40 bottom-0 w-[700px] max-w-none opacity-80"
+        />
+
+        <div className="relative mx-auto w-full max-w-[1150px] px-5 py-16 xl:py-20">
+          {/* header */}
+          <h1 className="text-center font-kode text-[clamp(32px,6vw,60px)] font-bold lowercase leading-none tracking-[-0.07em] text-white">
+            application dashboard
+          </h1>
+
+          <div className="mt-6 flex items-center justify-center gap-3">
+            <Hatch className="hidden flex-1 text-right md:block" />
+            <p className="whitespace-nowrap font-kode text-[15px] lowercase tracking-[-0.07em] text-white xl:text-[20px]">
+              logged in as{" "}
+              <span className="underline underline-offset-4">
+                {session?.user.email ?? "_________"}
+              </span>
+            </p>
+            <Hatch className="hidden flex-1 md:block" />
+          </div>
+
+          <div ref={gridRef} className="relative mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {/* ---------- LEFT ---------- */}
+            <div className="flex h-full flex-col gap-4">
+              <div className="flex items-center gap-3">
+                <Image
+                  src={`${ASSETS}/marker-lg.svg`}
+                  alt=""
+                  width={22}
+                  height={35}
+                  className="h-[26px] w-[16px] shrink-0 xl:h-[35px] xl:w-[22px]"
+                />
+                <div
+                  className="flex-1 rounded-[20px] border-[5px] px-5 py-2"
+                  style={{ borderColor: INK.panelBorder }}
+                >
+                  <h2 className="font-kode text-[22px] font-semibold lowercase tracking-[-0.07em] text-white xl:text-[30px]">
+                    application status
+                  </h2>
+                </div>
+              </div>
+
+              <div className="pl-[28px] xl:pl-[34px]">
+                <StepTrail step={step} />
+              </div>
+
+              {/* info card */}
+              <div className="relative pl-[28px] xl:pl-[34px]">
+                <div
+                  className="relative min-h-[220px] rounded-[20px] border-[5px] px-6 pb-8 pt-4 xl:min-h-[260px] xl:pt-5"
+                  style={{ backgroundColor: INK.card, borderColor: INK.panelBorder }}
+                >
+                  <span
+                    className="inline-block rounded-[20px] border-[5px] px-5 py-1 font-kode text-[20px] lowercase tracking-[-0.07em] xl:text-[30px]"
+                    style={{
+                      backgroundColor: INK.button,
+                      borderColor: INK.cardBorder,
+                      color: INK.deep,
+                    }}
+                  >
+                    info
+                  </span>
+                  <p
+                    className="mt-8 font-kode text-[clamp(28px,4vw,50px)] lowercase leading-none tracking-[-0.07em]"
+                    style={{ color: INK.deep }}
+                  >
+                    {headline}
+                  </p>
+                  <Sparkles className="absolute bottom-0 right-4 translate-y-1/3" />
+                </div>
+              </div>
+
             </div>
 
-            {/* Decision Banner */}
-            <DecisionBanner
-              status={data?.status}
-              isLoading={isLoading}
-              textColor={textColor}
-              foodGroup={data?.foodGroup}
-            />
-
-            {/* Main grid */}
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {/* LEFT COLUMN */}
-              <div className="flex h-full flex-col gap-6">
-                {/* QR Code */}
-                {qrCode && <QRCard qrCode={qrCode} />}
-
-                {/* Event Info */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 flex items-center gap-2 text-lg font-semibold">
-                    <CalendarDays /> Event Info
-                  </div>
-                  <div className="space-y-2 text-sm text-white/80">
-                    <div>
-                      <span className="text-white/50">Event:</span> TAMU
-                      Datathon 
-                    </div>
-                    <div>
-                      <span className="text-white/50">Date:</span> November 7-8th,
-                      2026 
-                      
-                    </div>
-                    <div>
-                      <span className="text-white/50">Location:</span> Bethancourt Ballroom - MSC
-                    </div>
-                  </div>
+            {/* arrows float over the left column, aligned to their targets */}
+            {arrowTarget && (
+              <div
+                ref={blueRef}
+                className="pointer-events-none absolute left-0 hidden w-[calc(50%-12px)] lg:block"
+                style={{ top: arrowTop.blue }}
+                aria-hidden
+              >
+                <Image
+                  src={`${ASSETS}/arrow-blue.svg`}
+                  alt=""
+                  width={521}
+                  height={335}
+                  className="ml-6 h-auto w-[calc(100%-24px)] max-w-[521px]"
+                />
+              </div>
+            )}
+            {arrowTarget === "offer" && qrCode && (
+              <div
+                ref={orangeRef}
+                className="pointer-events-none absolute left-0 hidden w-[calc(50%-12px)] lg:block"
+                style={{ top: arrowTop.orange }}
+                aria-hidden
+              >
+                <div className="ml-[15px]">
+                  <DashTrail />
                 </div>
               </div>
+            )}
 
-              {/* RIGHT COLUMN */}
-              <div className="flex h-full flex-col justify-between gap-6">
-                {/* Accept / Decline — only shown when accepted */}
-                {data?.status === "accepted" && (
-                  <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                    <div className="mb-1 flex items-center gap-2 text-lg font-semibold">
-                      <Ticket /> Admission Offer Response
-                    </div>
-                    <p className="mb-4 text-sm text-white/60">
-                      Let us know whether you accept or decline your offer.
-                    </p>
-                    <div className="flex flex-col gap-3">
-                      <button
-                        onClick={() =>
-                          updateInvitation.mutate({
-                            eventName: EVENT_NAME,
-                            email: session?.user.email ?? "",
-                            newStatus: true,
-                          })
-                        }
-                        disabled={updateInvitation.isPending}
-                        className="w-full rounded-xl bg-green-600 py-3 text-sm font-semibold text-white transition hover:bg-green-500 disabled:opacity-50"
-                      >
-                        {updateInvitation.isPending
-                          ? "Saving..."
-                          : "Accept Offer"}
-                      </button>
-                      <button
-                        onClick={() =>
-                          updateInvitation.mutate({
-                            eventName: EVENT_NAME,
-                            email: session?.user.email ?? "",
-                            newStatus: false,
-                          })
-                        }
-                        disabled={updateInvitation.isPending}
-                        className="w-full rounded-xl bg-red-600 py-3 text-sm font-semibold text-white transition hover:bg-red-500 disabled:opacity-50"
-                      >
-                        {updateInvitation.isPending
-                          ? "Saving..."
-                          : "Decline Offer"}
-                      </button>
-                    </div>
-                  </div>
+            {/* ---------- RIGHT ---------- */}
+            <div className="relative flex flex-col gap-4">
+              <div
+                className="pointer-events-none absolute -top-10 right-2 z-10 hidden items-start lg:flex"
+                aria-hidden
+              >
+                <Image
+                  src={`${ASSETS}/sparkle-lg.svg`}
+                  alt=""
+                  width={75}
+                  height={86}
+                  className="h-[86px] w-[75px]"
+                />
+                <Image
+                  src={`${ASSETS}/dot.svg`}
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="mt-1 h-[20px] w-[20px]"
+                />
+              </div>
+
+              <Panel title="event info">
+                <div className="mt-3 space-y-2 font-kode text-[17px] lowercase leading-none tracking-[-0.07em] text-white xl:text-[25px]">
+                  <p>
+                    <span style={{ color: INK.button }}>event:</span> tamu
+                    datathon
+                  </p>
+                  <p>
+                    <span style={{ color: INK.button }}>date:</span> november
+                    7-8th, 2026
+                  </p>
+                  <p>
+                    <span style={{ color: INK.button }}>location:</span>{" "}
+                    bethancourt ballroom- msc
+                  </p>
+                </div>
+              </Panel>
+
+              <Panel title="your application">
+                {appsOpen ? (
+                  <ActionButton href="/apply/application">
+                    {data?.status ? "view / edit application" : "start application"}
+                  </ActionButton>
+                ) : (
+                  <p className="mt-3 font-kode text-[16px] lowercase tracking-[-0.07em] text-white/70">
+                    applications are closed — keep an eye on your email!
+                  </p>
                 )}
-                {/* Your Application */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 flex items-center gap-2 text-lg font-semibold">
-                    <FileText /> Your Application
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    {appsOpen && (
-                      <Button
-                        className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
-                        size="lg"
-                        type="button"
-                      >
-                        <Link
-                          href="/apply/application"
-                          className="w-full text-white"
-                        >
-                          {data?.status
-                            ? "View / Edit Application"
-                            : "Start Application"}
-                        </Link>
-                      </Button>
-                    )}
-                    {!appsOpen && (
-                      <p className="text-sm text-white/60">
-                        Applications are closed. We are reviewing submissions —
-                        keep an eye on your email!
-                      </p>
-                    )}
-                  </div>
-                </div>
+              </Panel>
 
-                {/* Quick Links */}
-                {/* <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                  <div className="mb-3 text-lg font-semibold">
-                    🔗 Quick Links
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <Button
-                      className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
-                      size="sm"
-                      type="button"
-                    >
-                      <Link
-                        href="https://tamudatathon.com/"
-                        target="_blank"
-                        className="w-full text-white"
-                      >
-                        Event Website
-                      </Link>
-                    </Button>
-                    <Button
-                      className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
-                      size="sm"
-                      type="button"
-                    >
-                      <Link
-                        href="https://discord.com/invite/pHsNmjuWSc"
-                        target="_blank"
-                        className="w-full text-white"
-                      >
-                        Discord
-                      </Link>
-                    </Button>
-                    <Button
-                      className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
-                      size="sm"
-                      type="button"
-                    >
-                      <Link
-                        href="https://www.instagram.com/tamudatathon/"
-                        target="_blank"
-                        className="w-full text-white"
-                      >
-                        Instagram
-                      </Link>
-                    </Button>
-                    <Button
-                      className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
-                      size="sm"
-                      type="button"
-                    >
-                      <Link
-                        href="https://www.youtube.com/@tamu-datathon/featured"
-                        target="_blank"
-                        className="w-full text-white"
-                      >
-                        YouTube
-                      </Link>
-                    </Button>
-                  </div>
-                </div> */}
+              <Panel title="account">
+                <ActionButton onClick={signOutHandler}>
+                  sign out
+                </ActionButton>
+              </Panel>
 
-                {/* Account */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm ">
-                  <div className="mb-3 flex items-center gap-2 text-lg font-semibold">
-                    <Settings /> Account
-                  </div>
-                  <Button
-                    onClick={signOutHandler}
-                    className="bg-datadarkblue hover:bg-datadarkblue/70 w-full text-white"
-                    size="lg"
-                    type="button"
+              {data?.status === "accepted" && (
+                <div ref={offerRef}>
+                  <Panel title="admission offer response">
+                  <ActionButton
+                    onClick={() =>
+                      updateInvitation.mutate({
+                        eventName: EVENT_NAME,
+                        email: session?.user.email ?? "",
+                        newStatus: true,
+                      })
+                    }
+                    disabled={updateInvitation.isPending}
                   >
-                    Change Accounts
-                  </Button>
+                    {updateInvitation.isPending ? "saving..." : "accept offer"}
+                  </ActionButton>
+                  <ActionButton
+                    tone="deep"
+                    onClick={() =>
+                      updateInvitation.mutate({
+                        eventName: EVENT_NAME,
+                        email: session?.user.email ?? "",
+                        newStatus: false,
+                      })
+                    }
+                    disabled={updateInvitation.isPending}
+                  >
+                      {updateInvitation.isPending
+                        ? "saving..."
+                        : "decline offer"}
+                    </ActionButton>
+                  </Panel>
                 </div>
-              </div>
+              )}
+
+              {qrCode && (
+                <div ref={qrRef} className="flex items-start gap-3">
+                  <Marker className="mt-4" />
+                  <div
+                    className="relative flex-1 rounded-[20px] border-[5px] px-5 pb-5 pt-4 xl:pt-5"
+                    style={{
+                      backgroundColor: INK.card,
+                      borderColor: INK.panelBorder,
+                    }}
+                  >
+                    <span
+                      className="inline-block rounded-[20px] border-[5px] px-4 py-1 font-kode text-[18px] font-semibold lowercase tracking-[-0.07em] xl:text-[30px]"
+                      style={{
+                        backgroundColor: INK.button,
+                        borderColor: INK.cardBorder,
+                        color: INK.deep,
+                      }}
+                    >
+                      check in qr code
+                    </span>
+                    <div className="mt-5 flex justify-center">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={qrCode}
+                        alt="Your check-in QR code"
+                        className="h-[240px] w-[240px] rounded-[8px] bg-white p-3"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
-  );
-}
-
-function AppsClosedMessage() {
-  return (
-    <div className="text-md">
-      <br />
-      Applications are currently closed.
-      <br />
-      We are currently reviewing applications.
-      <br />
-      Keep an eye out for an email!
-      <br />
-      <br />
-      Feel free to contact{" "}
-      <span className="text-cyan-700">connect@tamudatathon.com</span> for any
-      issues.
-    </div>
-  );
-}
-
-function AppsOpenMessage({ status }: { status?: string }) {
-  return (
-    <GradientButton
-      className="bg-datadarkblue hover:bg-datadarkblue/70 w-fit text-white"
-      size="lg"
-      type="button"
-    >
-      <Link href="/apply/application">
-        {status ? "View/Edit Application" : "Start Application"}
-      </Link>
-    </GradientButton>
   );
 }

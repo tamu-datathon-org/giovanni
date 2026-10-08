@@ -11,6 +11,9 @@ import { MarqueeSign, SignGlow } from "./MarqueeSign";
 import { Room } from "./Room";
 import { CURTAIN_SPAN, cssVars, POWER_AT, STAGE_BOX, TIMING } from "./scene";
 import { SiteNotice } from "./SiteNotice";
+import { Footer } from "./Footer"
+// import { SkyLayer } from "./SkyLayer";
+// import { Street } from "./Street";
 
 /** off: room and sign dark · flicker: the power-on sputter · on: fully lit and animated. */
 type Stage = "off" | "flicker" | "on";
@@ -236,7 +239,8 @@ export default function Hero() {
         <div className={`${STAGE_BOX} pointer-events-none z-[8]`}>
           <ApplyButton />
         </div>
-        <Curtains />
+        {/* Clicking the curtains scrolls them open too. */}
+        <Curtains onOpen={openCurtains} />
         <div data-front className="contents">
           <SiteNotice />
           {/* MLH member events must link the Code of Conduct. */}
