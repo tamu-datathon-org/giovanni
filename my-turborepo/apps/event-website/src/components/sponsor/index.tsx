@@ -1,194 +1,275 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
-import type { PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useRef } from "react";
+import type { CSSProperties } from "react";
 import Image from "next/image";
+
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
 import { SectionGround } from "@/components/SectionGround";
 
-const TABLE = "/event_assets/sponsors/poker-table-sponsors.png";
 const STAR = "/event_assets/sponsors/Star.png";
-const TABLE_W = 1367;
-const TABLE_H = 945;
-/** Chip diameter as a fraction of the table width. */
-const CHIP = 0.16;
+// The visible side of a chip: copies of its outline stepped down the screen.
+const EDGE_DEPTH = 4; // % of the chip's size
+const EDGE_LAYERS = Array.from({ length: 10 }, (_, index) => index + 1);
+const CHIP_PERSPECTIVE = 1200;
 
-type Chip = {
+/**
+ * The SVG's outer-rim stripes (16 segments, white first, clockwise from 3
+ * o'clock). Each side layer only shows a thin sliver at its rim, so stacking
+ * them extends every rim stripe straight down, and because the stripes are
+ * painted on the chip rather than the screen they stay lined up mid-flip.
+ */
+const rimStripes = (color: string) =>
+  `repeating-conic-gradient(from 90deg, #F1F1F1 0 22.5deg, ${color} 22.5deg 45deg)`;
+
+interface Chip {
   id: string;
   name: string;
   src: string;
+  /** Desktop center of the chip, as a percentage of the field's width / height. */
   x: number;
   y: number;
+  /** Mobile center (the field is taller and narrower there). */
+  mx: number;
+  my: number;
+  /** Chip colors, matching the SVG; used for the chip back. */
+  color: string;
+  color2: string;
+  rimColor: string;
+  /** Chip width as a percentage of the field's width (desktop). */
+  size: number;
   rotation: number;
-  z: number;
-};
+}
 
-const INITIAL_CHIPS: Chip[] = [
-  { id: "heb", name: "H-E-B", src: "/event_assets/sponsors/heb.png", x: 0.3, y: 0.36, rotation: -14, z: 1 },
-  { id: "databricks", name: "Databricks", src: "/event_assets/sponsors/databricks.png", x: 0.48, y: 0.3, rotation: 8, z: 2 },
-  { id: "qualcomm", name: "Qualcomm", src: "/event_assets/sponsors/qualcomm.png", x: 0.66, y: 0.38, rotation: -6, z: 3 },
-  { id: "hitachi", name: "Hitachi", src: "/event_assets/sponsors/hitachi.png", x: 0.28, y: 0.56, rotation: 11, z: 4 },
-  { id: "sec", name: "SEC", src: "/event_assets/sponsors/sec.png", x: 0.46, y: 0.52, rotation: -18, z: 5 },
-  { id: "conocophillips", name: "ConocoPhillips", src: "/event_assets/sponsors/conocophillips.png", x: 0.64, y: 0.56, rotation: 4, z: 6 },
-  { id: "phillips", name: "Phillips 66", src: "/event_assets/sponsors/phillips.png", x: 0.4, y: 0.7, rotation: 7, z: 7 },
-  { id: "serp", name: "SerpApi", src: "/event_assets/sponsors/serp.png", x: 0.58, y: 0.72, rotation: -9, z: 8 },
+/** Hand-scattered so the chips look random but never overlap. */
+const CHIPS: Chip[] = [
+  {
+    id: "heb",
+    name: "H-E-B",
+    src: "/event_assets/heb.svg",
+    x: 73,
+    y: 82,
+    mx: 32,
+    my: 86,
+    color: "#E70020",
+    color2: "#E70020",
+    rimColor: "#B10018",
+    size: 22,
+    rotation: -12,
+  },
+  {
+    id: "databricks",
+    name: "Databricks",
+    src: "/event_assets/databricks.svg",
+    x: 36,
+    y: 17,
+    mx: 69,
+    my: 18,
+    color: "#FF3621",
+    color2: "#1B3139",
+    rimColor: "#C4281A",
+    size: 23,
+    rotation: 8,
+  },
+  {
+    id: "qualcomm",
+    name: "Qualcomm",
+    src: "/event_assets/qualcomm.svg",
+    x: 60,
+    y: 38,
+    mx: 31,
+    my: 35,
+    color: "#3253DC",
+    color2: "#3253DC",
+    rimColor: "#233CA0",
+    size: 21,
+    rotation: -6,
+  },
+  {
+    id: "hitachi",
+    name: "Hitachi",
+    src: "/event_assets/hitachi.svg",
+    x: 86,
+    y: 20,
+    mx: 71,
+    my: 43,
+    color: "#E60012",
+    color2: "#E60012",
+    rimColor: "#AE000D",
+    size: 22,
+    rotation: 14,
+  },
+  {
+    id: "sec",
+    name: "SEC",
+    src: "/event_assets/sec.svg",
+    x: 13,
+    y: 30,
+    mx: 30,
+    my: 10,
+    color: "#1F1F1F",
+    color2: "#1F1F1F",
+    rimColor: "#000000",
+    size: 23,
+    rotation: -15,
+  },
+  {
+    id: "conocophillips",
+    name: "ConocoPhillips",
+    src: "/event_assets/conocophillips.svg",
+    x: 47,
+    y: 70,
+    mx: 69,
+    my: 69,
+    color: "#E4002B",
+    color2: "#1A1A1A",
+    rimColor: "#A80020",
+    size: 22,
+    rotation: 6,
+  },
+  {
+    id: "phillips",
+    name: "Phillips 66",
+    src: "/event_assets/phillips.svg",
+    x: 90,
+    y: 56,
+    mx: 71,
+    my: 91,
+    color: "#E31937",
+    color2: "#1A1A1A",
+    rimColor: "#A8122A",
+    size: 21,
+    rotation: -9,
+  },
+  {
+    id: "serp",
+    name: "SerpApi",
+    src: "/event_assets/serp.svg",
+    x: 19,
+    y: 69,
+    mx: 28,
+    my: 61,
+    color: "#3B4BF0",
+    color2: "#161A3A",
+    rimColor: "#2A36AF",
+    size: 22,
+    rotation: 11,
+  },
 ];
 
-type TableMask = { data: Uint8ClampedArray; w: number; h: number };
-
-function sampleOpaque(mask: TableMask, x: number, y: number) {
-  const px = Math.round(x);
-  const py = Math.round(y);
-  if (px < 0 || py < 0 || px >= mask.w || py >= mask.h) return false;
-  return mask.data[(py * mask.w + px) * 4 + 3] > 200;
-}
-
-/** True when the whole chip circle sits on opaque pixels of the table image. */
-function chipOnTable(mask: TableMask | null, x: number, y: number) {
-  if (!mask) {
-    return x >= 0.18 && x <= 0.82 && y >= 0.24 && y <= 0.76;
-  }
-
-  const cx = x * mask.w;
-  const cy = y * mask.h;
-  // A little larger than the chip so the art stops short of the rim.
-  const radius = (CHIP / 2) * mask.w + 2;
-  for (let i = 0; i < 32; i++) {
-    const angle = (i / 32) * Math.PI * 2;
-    if (!sampleOpaque(mask, cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius)) {
-      return false;
-    }
-  }
-  return sampleOpaque(mask, cx, cy);
-}
-
-function approach(from: number, to: number, ok: (value: number) => boolean) {
-  if (!ok(from)) return from;
-  let low = 0;
-  let high = 1;
-  let best = from;
-  for (let i = 0; i < 12; i++) {
-    const mid = (low + high) / 2;
-    const value = from + (to - from) * mid;
-    if (ok(value)) {
-      best = value;
-      low = mid;
-    } else {
-      high = mid;
-    }
-  }
-  return best;
-}
-
-/** Slide along the table edge instead of stopping dead when a drag hits it. */
-function constrain(
-  mask: TableMask | null,
-  from: { x: number; y: number },
-  to: { x: number; y: number },
-) {
-  if (chipOnTable(mask, to.x, to.y)) return to;
-
-  const x = approach(from.x, to.x, (value) => chipOnTable(mask, value, from.y));
-  const y = approach(from.y, to.y, (value) => chipOnTable(mask, x, value));
-  return { x, y };
-}
+/** Distance from the top-right corner (y is scaled to the field's 3:2 shape). */
+const FLIP_ORDER = new Map(
+  [...CHIPS]
+    .sort((p, q) => 100 - p.x + p.y * (2 / 3) - (100 - q.x + q.y * (2 / 3)))
+    .map((chip, index) => [chip.id, index]),
+);
 
 function Sponsors() {
-  const tableRef = useRef<HTMLDivElement>(null);
-  const maskRef = useRef<TableMask | null>(null);
-  const chipsRef = useRef(INITIAL_CHIPS);
-  const dragRef = useRef<{ id: string; dx: number; dy: number } | null>(null);
-  const zRef = useRef(INITIAL_CHIPS.length);
-  const [chips, setChips] = useState(INITIAL_CHIPS);
-  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
-  const commit = useCallback((next: Chip[]) => {
-    chipsRef.current = next;
-    setChips(next);
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const media = gsap.matchMedia();
+    media.add(
+      {
+        desktop: "(min-width: 768px)",
+        mobile: "(max-width: 767px)",
+        reducedMotion: "(prefers-reduced-motion: reduce)",
+      },
+      (context) => {
+        if (context.conditions?.reducedMotion) return;
+
+        const flips = gsap.utils.toArray<HTMLElement>("[data-flip]", list);
+        const desktop = context.conditions?.desktop;
+        const cleanups: (() => void)[] = [];
+
+        // Flip end-over-end around the horizontal axis, then land face-up.
+        flips.forEach((el) => {
+          const button = el.closest("button");
+          // The side layers turn in lockstep with the chip.
+          const targets = [
+            el,
+            ...gsap.utils.toArray<HTMLElement>("[data-flip-layer]", button),
+          ];
+
+          const entrance = gsap.fromTo(
+            targets,
+            { rotationX: -180 },
+            {
+              rotationX: 0,
+              duration: 0.75,
+              delay: desktop ? Number(el.dataset.flip) * 0.08 : 0,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: desktop ? list : el.closest("li"),
+                start: desktop ? "top 75%" : "top 85%",
+                once: true,
+              },
+            },
+          );
+
+          let spin: gsap.core.Timeline | undefined;
+          const onClick = () => {
+            context.add(() => {
+              // Ignore extra taps until the chip lands; never queue up spins.
+              if (spin?.isActive()) return;
+
+              // Clicking during the reveal takes over from the entrance animation.
+              entrance.progress(1).pause();
+              entrance.scrollTrigger?.kill();
+              gsap.set(targets, { rotationX: 0, rotationY: 0, y: 0 });
+              spin = gsap.timeline();
+              spin.to(
+                targets,
+                {
+                  rotationY: 360,
+                  duration: 0.85,
+                  ease: "power2.out",
+                },
+                0,
+              );
+              spin.to(
+                targets,
+                {
+                  y: -24,
+                  duration: 0.3,
+                  ease: "power2.out",
+                },
+                0,
+              );
+              spin.to(
+                targets,
+                {
+                  y: 0,
+                  duration: 0.55,
+                  ease: "bounce.out",
+                },
+                0.3,
+              );
+            });
+          };
+          button?.addEventListener("click", onClick);
+          cleanups.push(() => button?.removeEventListener("click", onClick));
+        });
+
+        return () => cleanups.forEach((cleanup) => cleanup());
+      },
+    );
+
+    return () => media.revert();
   }, []);
 
-  const moveChip = useCallback(
-    (id: string, x: number, y: number) => {
-      const current = chipsRef.current.find((chip) => chip.id === id);
-      if (!current) return;
-      const nextPoint = constrain(maskRef.current, current, { x, y });
-      commit(
-        chipsRef.current.map((chip) =>
-          chip.id === id ? { ...chip, x: nextPoint.x, y: nextPoint.y } : chip,
-        ),
-      );
-    },
-    [commit],
-  );
-
-  const readTableMask = (image: HTMLImageElement) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = image.naturalWidth;
-    canvas.height = image.naturalHeight;
-    const context = canvas.getContext("2d", { willReadFrequently: true });
-    if (!context) return;
-    context.drawImage(image, 0, 0);
-    const { data, width, height } = context.getImageData(0, 0, canvas.width, canvas.height);
-    maskRef.current = { data, w: width, h: height };
-  };
-
-  const onPointerDown = (event: ReactPointerEvent<HTMLButtonElement>, id: string) => {
-    const table = tableRef.current;
-    const chip = chipsRef.current.find((item) => item.id === id);
-    if (!table || !chip) return;
-
-    event.preventDefault();
-    event.currentTarget.setPointerCapture(event.pointerId);
-    const rect = table.getBoundingClientRect();
-    dragRef.current = {
-      id,
-      dx: event.clientX - rect.left - chip.x * rect.width,
-      dy: event.clientY - rect.top - chip.y * rect.height,
-    };
-    zRef.current += 1;
-    const z = zRef.current;
-    commit(chipsRef.current.map((item) => (item.id === id ? { ...item, z } : item)));
-    setDraggingId(id);
-  };
-
-  const onPointerMove = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    const drag = dragRef.current;
-    const table = tableRef.current;
-    if (!drag || !table || event.currentTarget.dataset.chip !== drag.id) return;
-
-    const rect = table.getBoundingClientRect();
-    moveChip(
-      drag.id,
-      (event.clientX - rect.left - drag.dx) / rect.width,
-      (event.clientY - rect.top - drag.dy) / rect.height,
-    );
-  };
-
-  const endDrag = () => {
-    dragRef.current = null;
-    setDraggingId(null);
-  };
-
-  const nudge = (id: string, key: string) => {
-    const chip = chipsRef.current.find((item) => item.id === id);
-    if (!chip) return;
-    const step = 0.02;
-    const delta =
-      key === "ArrowLeft"
-        ? { x: -step, y: 0 }
-        : key === "ArrowRight"
-          ? { x: step, y: 0 }
-          : key === "ArrowUp"
-            ? { x: 0, y: -step }
-            : key === "ArrowDown"
-              ? { x: 0, y: step }
-              : null;
-    if (!delta) return;
-    moveChip(id, chip.x + delta.x, chip.y + delta.y);
-  };
-
   return (
-    <section id="sponsors" aria-label="Sponsors" className="relative overflow-x-clip bg-[#6C0204]">
+    <section
+      id="sponsors"
+      aria-label="Sponsors"
+      className="relative overflow-x-clip bg-[#6C0204]"
+    >
       <SectionGround>
         <div className="flex flex-col items-center px-4 pb-8 pt-14 md:pb-10 md:pt-20">
           <h2 className="font-righteous flex items-center justify-center gap-[0.4em] text-[clamp(42px,7vw,88px)] uppercase leading-none tracking-[0.04em] text-[#FDFBED] [-webkit-text-stroke:0.06em_#FFB24C] [paint-order:stroke_fill]">
@@ -210,67 +291,156 @@ function Sponsors() {
               className="h-[0.7em] w-auto [-webkit-user-drag:none] [user-drag:none]"
             />
           </h2>
-          <p className="font-righteous mt-4 text-[length:clamp(14px,2vw,22px)] tracking-[0.04em] text-[#FDFBED]">
-            Drag the chips around the table
-          </p>
 
-          <div
-            ref={tableRef}
-            className="relative mt-8 w-full max-w-[1100px] md:mt-12"
+          <ul
+            ref={listRef}
+            className="relative mt-8 aspect-[3/4.5] w-full max-w-[1300px] md:mt-12 md:aspect-[3/2]"
           >
-            <Image
-              src={TABLE}
-              alt=""
-              width={TABLE_W}
-              height={TABLE_H}
-              draggable={false}
-              priority
-              onLoad={(event) => readTableMask(event.currentTarget)}
-              className="pointer-events-none block h-auto w-full select-none [-webkit-user-drag:none] [user-drag:none]"
-            />
-
-            {chips.map((chip) => {
-              const dragging = draggingId === chip.id;
-              return (
+            {CHIPS.map((chip) => (
+              <li
+                key={chip.id}
+                // Chips lower on the table sit in front, so a side never covers the chip below it.
+                className="absolute left-[var(--mx)] top-[var(--my)] z-[var(--mz)] aspect-square w-[var(--mobile)] -translate-x-1/2 -translate-y-1/2 md:left-[var(--x)] md:top-[var(--y)] md:z-[var(--z)] md:w-[var(--desktop)]"
+                style={
+                  {
+                    "--x": `${chip.x}%`,
+                    "--y": `${chip.y}%`,
+                    "--mx": `${chip.mx}%`,
+                    "--my": `${chip.my}%`,
+                    "--z": chip.y,
+                    "--mz": chip.my,
+                    "--mobile": `${chip.size * 1.5}%`,
+                    "--desktop": `${chip.size}%`,
+                  } as CSSProperties
+                }
+              >
                 <button
-                  key={chip.id}
                   type="button"
-                  data-chip={chip.id}
-                  aria-label={`${chip.name} chip. Drag to move it on the table.`}
-                  onPointerDown={(event) => onPointerDown(event, chip.id)}
-                  onPointerMove={onPointerMove}
-                  onPointerUp={endDrag}
-                  onPointerCancel={endDrag}
-                  onKeyDown={(event) => {
-                    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
-                    event.preventDefault();
-                    nudge(chip.id, event.key);
-                  }}
-                  className="group/sc absolute aspect-square touch-none rounded-full border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED]"
-                  style={{
-                    left: `${chip.x * 100}%`,
-                    top: `${chip.y * 100}%`,
-                    width: `${CHIP * 100}%`,
-                    zIndex: chip.z,
-                    cursor: dragging ? "grabbing" : "grab",
-                    transform: `translate(-50%, -50%) rotate(${chip.rotation}deg)${dragging ? " scale(1.06)" : ""}`,
-                    filter: dragging
-                      ? "drop-shadow(0 14px 8px rgb(0 0 0 / 0.45))"
-                      : "drop-shadow(0 5px 3px rgb(0 0 0 / 0.35))",
-                  }}
+                  aria-label={`Spin the ${chip.name} sponsor chip`}
+                  className="group relative block h-full w-full cursor-pointer rounded-full border-0 bg-transparent p-0 outline-none focus-visible:ring-4 focus-visible:ring-[#FFB24C] focus-visible:ring-offset-4 focus-visible:ring-offset-[#6C0204]"
                 >
-                  <Image
-                    src={chip.src}
-                    alt=""
-                    fill
-                    draggable={false}
-                    sizes="180px"
-                    className={`pointer-events-none select-none object-contain transition-transform duration-200 ease-out [-webkit-user-drag:none] [user-drag:none] ${dragging ? "" : "group-hover/sc:scale-[1.07] group-focus-visible/sc:scale-[1.07]"}`}
+                  {/* The shadow stays on the table while the chip lifts and flips. */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 rounded-full bg-black/20 blur-[2px]"
+                    style={{ transform: `translateY(calc(${EDGE_DEPTH}% + 4px))` }}
                   />
+                  <span
+                    className="relative block h-full w-full rounded-full transition-transform duration-300 ease-out motion-safe:group-hover:-translate-y-2 motion-safe:group-hover:scale-105 motion-safe:group-focus-visible:-translate-y-2 motion-safe:group-focus-visible:scale-105 motion-reduce:transition-none"
+                    style={{ perspective: CHIP_PERSPECTIVE }}
+                  >
+                    {/*
+                      The chip's side: copies of the chip's outline that flip in step
+                      with it, each pushed straight down the screen. Painted under the
+                      chip, so the thickness only ever shows below it, mid-flip too.
+                    */}
+                    {/* Deepest first, so each layer only peeks out below the one above it. */}
+                    {[...EDGE_LAYERS].reverse().map((layer) => {
+                      const shade = 0.2 + (layer / EDGE_LAYERS.length) * 0.24;
+                      const background = `linear-gradient(rgb(0 0 0 / ${shade}), rgb(0 0 0 / ${shade})), ${rimStripes(chip.color2)}`;
+                      return (
+                        <span
+                          key={layer}
+                          aria-hidden
+                          className="pointer-events-none absolute inset-0"
+                          style={{
+                            transform: `translateY(${(layer / EDGE_LAYERS.length) * EDGE_DEPTH}%)`,
+                            // Same camera as the chip, so mid-flip outlines match exactly.
+                            perspective: CHIP_PERSPECTIVE,
+                          }}
+                        >
+                          <span
+                            className="block h-full w-full [transform-style:preserve-3d]"
+                            style={{ transform: `rotateZ(${chip.rotation}deg)` }}
+                          >
+                            <span
+                              data-flip-layer
+                              className="relative block h-full w-full [--chip-half-depth:8px] [transform-style:preserve-3d]"
+                            >
+                              {/* Front and back, placed exactly like the faces so the stripes match each rim. */}
+                              <span
+                                className="absolute inset-0 rounded-full [backface-visibility:hidden] [transform:translateZ(var(--chip-half-depth))]"
+                                style={{ background }}
+                              />
+                              <span
+                                className="absolute inset-0 rounded-full [backface-visibility:hidden] [transform:rotateY(180deg)_translateZ(var(--chip-half-depth))]"
+                                style={{ background }}
+                              />
+                            </span>
+                          </span>
+                        </span>
+                      );
+                    })}
+                    {/* Keep the resting faces top-down so the logos stay undistorted. */}
+                    <span
+                      className="relative block h-full w-full [transform-style:preserve-3d]"
+                      style={{ transform: `rotateZ(${chip.rotation}deg)` }}
+                    >
+                      <span
+                        data-flip={FLIP_ORDER.get(chip.id)}
+                        className="relative block h-full w-full [--chip-half-depth:8px] [transform-style:preserve-3d]"
+                      >
+                        {/* Match the artwork's rim and rings on the reverse face. */}
+                        <svg
+                          aria-hidden
+                          viewBox="0 0 270 270"
+                          className="absolute inset-0 h-full w-full rounded-full [backface-visibility:hidden] [transform:rotateY(180deg)_translateZ(var(--chip-half-depth))]"
+                        >
+                          <circle cx="135" cy="135" r="135" fill={chip.color} />
+                          <circle
+                            cx="135"
+                            cy="135"
+                            r="117.5"
+                            fill="none"
+                            stroke="#F1F1F1"
+                            strokeWidth="35"
+                            strokeDasharray="46.142142 46.142142"
+                          />
+                          <circle
+                            cx="135"
+                            cy="135"
+                            r="117.5"
+                            fill="none"
+                            stroke={chip.color2}
+                            strokeWidth="35"
+                            strokeDasharray="46.142142 46.142142"
+                            strokeDashoffset="-46.142142"
+                          />
+                          <circle
+                            cx="134.5"
+                            cy="134.5"
+                            r="86"
+                            fill="none"
+                            stroke={chip.rimColor}
+                            strokeWidth="5"
+                          />
+                          <circle
+                            cx="134.5"
+                            cy="134.5"
+                            r="86"
+                            fill="none"
+                            stroke="#F1F1F1"
+                            strokeWidth="5"
+                            strokeDasharray="40 20"
+                          />
+                          <circle cx="135" cy="135" r="74.5" fill="white" />
+                        </svg>
+
+                        <Image
+                          src={chip.src}
+                          alt={chip.name}
+                          width={270}
+                          height={270}
+                          draggable={false}
+                          className="absolute inset-0 h-full w-full select-none rounded-full [backface-visibility:hidden] [transform:translateZ(var(--chip-half-depth))]"
+                        />
+                      </span>
+                    </span>
+                  </span>
                 </button>
-              );
-            })}
-          </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </SectionGround>
     </section>
