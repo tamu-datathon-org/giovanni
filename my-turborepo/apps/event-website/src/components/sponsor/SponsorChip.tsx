@@ -3,17 +3,23 @@ import Image from "next/image";
 const OUTER_DASH = (2 * Math.PI * 116) / 16;
 const INNER_SEGMENT = (2 * Math.PI * 86) / 8;
 
-/** A flat poker chip: a sponsor-colored striped rim around the original logo artwork. */
+export interface ChipColors {
+  /** The chip's face. */
+  body: string;
+  /** The outer rim spots between the white ones (a logo's second color, or `body`). */
+  stripe: string;
+  /** The inner dashed ring, a darker shade of `body`. */
+  ring: string;
+}
+
+/** A flat poker chip: sponsor-colored rims around the original logo artwork. */
 export function SponsorChip({
   src,
-  color,
-  color2,
+  colors,
   dragging,
 }: {
   src: string;
-  color: string;
-  /** Optional second rim color for multi-color logos; alternates with `color`. */
-  color2?: string;
+  colors: ChipColors;
   dragging: boolean;
 }) {
   return (
@@ -26,19 +32,15 @@ export function SponsorChip({
         aria-hidden="true"
         focusable="false"
       >
-        <circle cx="135" cy="135" r="134" fill={color} />
-        {color2 && (
-          <circle
-            cx="135"
-            cy="135"
-            r="116"
-            fill="none"
-            stroke={color2}
-            strokeWidth="36"
-            strokeDasharray={`${OUTER_DASH} ${OUTER_DASH * 3}`}
-            strokeDashoffset={OUTER_DASH * 3.5}
-          />
-        )}
+        <circle cx="135" cy="135" r="134" fill={colors.body} />
+        <circle
+          cx="135"
+          cy="135"
+          r="116"
+          fill="none"
+          stroke={colors.stripe}
+          strokeWidth="36"
+        />
         <circle
           cx="135"
           cy="135"
@@ -48,6 +50,14 @@ export function SponsorChip({
           strokeWidth="36"
           strokeDasharray={`${OUTER_DASH} ${OUTER_DASH}`}
           strokeDashoffset={OUTER_DASH / 2}
+        />
+        <circle
+          cx="135"
+          cy="135"
+          r="86"
+          fill="none"
+          stroke={colors.ring}
+          strokeWidth="4.5"
         />
         <circle
           cx="135"
