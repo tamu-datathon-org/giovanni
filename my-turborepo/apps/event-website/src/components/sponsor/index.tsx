@@ -11,6 +11,8 @@ import { TableGuests } from "./TableGuests";
 
 const TABLE = "/event_assets/sponsors/poker-table-sponsors.png";
 const STAR = "/event_assets/sponsors/Star.png";
+/** The TD logo pre-rendered as grainy felt-green ink (darker where the logo is darker). */
+const LOGO_PRINT = "/event_assets/sponsors/td-logo-print.png";
 const TABLE_W = 1367;
 const TABLE_H = 945;
 /** Chip diameter as a fraction of the table width. */
@@ -227,6 +229,16 @@ function Sponsors() {
                 priority
                 onLoad={(event) => readTableMask(event.currentTarget)}
                 className="pointer-events-none block h-auto w-full select-none [-webkit-user-drag:none] [user-drag:none]"
+              />
+
+              {/* TD logo printed into the felt: a grainy deep-green ink, under the table shading. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={LOGO_PRINT}
+                alt=""
+                aria-hidden="true"
+                draggable={false}
+                className="pointer-events-none absolute left-1/2 top-1/2 w-[44%] -translate-x-1/2 -translate-y-1/2 select-none [-webkit-user-drag:none] [user-drag:none]"
               />
 
               {/* eslint-disable-next-line @next/next/no-img-element */}
