@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import Location from "@/components/location";
 import Schedule from "@/components/Schedule";
+import { CasinoTransition } from "@/components/CasinoTransition";
 import Workshops from "@/components/workshops";
 import { ScrollUp } from "@vanni/ui/scroll-up";
 import { Footer } from "@/components/Hero/Footer";
@@ -31,6 +32,7 @@ export default function Home() {
       <Hero />
       {/* Ready Just need  */}
       <Schedule />
+      <CasinoTransition variant="cards" />
       <Sponsors />
       <FAQ /> 
       <Footer/>
