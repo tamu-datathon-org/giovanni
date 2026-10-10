@@ -53,16 +53,16 @@ function popupSize() {
 }
 
 const SPOTS = [
-  { x: 12, y: 34, r: -7 },
-  { x: 31, y: 34, r: -3 },
-  { x: 50, y: 34, r: 0 },
-  { x: 69, y: 34, r: 3 },
-  { x: 88, y: 34, r: 7 },
-  { x: 12, y: 64, r: -7 },
-  { x: 31, y: 64, r: -3 },
-  { x: 50, y: 64, r: 0 },
-  { x: 69, y: 64, r: 3 },
-  { x: 88, y: 64, r: 7 },
+  { x: 12, y: 34 },
+  { x: 31, y: 34 },
+  { x: 50, y: 34 },
+  { x: 69, y: 34 },
+  { x: 88, y: 34 },
+  { x: 12, y: 64 },
+  { x: 31, y: 64 },
+  { x: 50, y: 64 },
+  { x: 69, y: 64 },
+  { x: 88, y: 64 },
 ];
 
 type FaqItem = { question: string; answer: string };
@@ -172,9 +172,12 @@ export default function FAQ() {
   const [dealSettled, setDealSettled] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [faceReady, setFaceReady] = useState(false);
+  /** Text content follows this index so a closing card can't leave stale copy up. */
+  const [faceIndex, setFaceIndex] = useState<number | null>(null);
   const [flyFrom, setFlyFrom] = useState<CardRect | null>(null);
   const [flyActive, setFlyActive] = useState(false);
   const [dimOn, setDimOn] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const closingRef = useRef(false);
   const closeTimerRef = useRef<number | null>(null);
@@ -215,9 +218,14 @@ export default function FAQ() {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    setFaceReady(reduceMotion);
+    setFaceReady(false);
+    setFaceIndex(null);
     setFlyActive(reduceMotion);
-    setDimOn(reduceMotion);
+    if (reduceMotion) {
+      setDimOn(true);
+      setFaceIndex(openIndex);
+      setFaceReady(true);
+    }
 
     let inner = 0;
     const outer = window.requestAnimationFrame(() => {
@@ -226,10 +234,10 @@ export default function FAQ() {
         setDimOn(true);
       });
     });
-    const faceTimer = window.setTimeout(
-      () => setFaceReady(true),
-      reduceMotion ? 0 : FACE_FADE_DELAY_MS,
-    );
+    const faceTimer = window.setTimeout(() => {
+      setFaceIndex(openIndex);
+      setFaceReady(true);
+    }, reduceMotion ? 0 : FACE_FADE_DELAY_MS);
 
     return () => {
       window.cancelAnimationFrame(outer);
@@ -261,10 +269,20 @@ export default function FAQ() {
   }, []);
 
   const openItem = openIndex === null ? null : ITEMS[openIndex];
+  const faceItem = faceIndex === null ? null : ITEMS[faceIndex];
   const flyTo = typeof window !== "undefined" ? popupSize() : null;
 
   const openCard = (index: number) => {
-    if (closingRef.current) return;
+    if (openIndex === index && !closingRef.current) return;
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    // Keep dim up when interrupting a close mid-fade, or switching while open.
+    const dimStay = closingRef.current || openIndex !== null;
+    closingRef.current = false;
+    setIsClosing(false);
+
     const el = cardRefs.current[index];
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -275,17 +293,20 @@ export default function FAQ() {
       height: rect.height,
     });
     setFlyActive(false);
-    setDimOn(false);
     setFaceReady(false);
+    setFaceIndex(null);
+    setDimOn(dimStay);
     setOpenIndex(index);
   };
 
   const closeCard = () => {
     if (openIndex === null || closingRef.current) return;
     closingRef.current = true;
+    setIsClosing(true);
     setDimOn(false);
     setFlyActive(false);
     setFaceReady(false);
+    setFaceIndex(null);
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -295,6 +316,7 @@ export default function FAQ() {
     closeTimerRef.current = window.setTimeout(() => {
       setOpenIndex(null);
       setFlyFrom(null);
+      setIsClosing(false);
       closingRef.current = false;
       closeTimerRef.current = null;
     }, reduceMotion ? 0 : POPUP_MS);
@@ -472,28 +494,45 @@ export default function FAQ() {
                         style={{
                           opacity: dimOn ? 0.75 : 0,
                           transition: `opacity ${POPUP_MS}ms ${POPUP_EASE}`,
+                          pointerEvents: isClosing ? "none" : "auto",
                         }}
                       />
                       <div
                         role="button"
                         tabIndex={0}
-                        aria-label={`${openItem.question}. Click to close.`}
+                        aria-label={
+                          isClosing
+                            ? `${openItem.question}. Click to reopen.`
+                            : `${openItem.question}. Click to close.`
+                        }
                         onClick={(event) => {
                           if ((event.target as HTMLElement).closest("a")) return;
+                          if (isClosing) {
+                            if (openIndex !== null) openCard(openIndex);
+                            return;
+                          }
                           closeCard();
                         }}
                         onKeyDown={(event) => {
                           if (event.key !== "Enter" && event.key !== " ") return;
                           event.preventDefault();
+                          if (isClosing) {
+                            if (openIndex !== null) openCard(openIndex);
+                            return;
+                          }
                           closeCard();
                         }}
-                        className="fixed z-[80] cursor-pointer border-0 bg-transparent p-0 [perspective:1200px] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED]"
+                        className="fixed z-[80] origin-center cursor-pointer border-0 bg-transparent p-0 [perspective:1200px] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED]"
                         style={{
-                          top: flyActive ? flyTo.top : flyFrom.top,
-                          left: flyActive ? flyTo.left : flyFrom.left,
-                          width: flyActive ? flyTo.width : flyFrom.width,
-                          height: flyActive ? flyTo.height : flyFrom.height,
-                          transition: `top ${POPUP_MS}ms ${POPUP_EASE}, left ${POPUP_MS}ms ${POPUP_EASE}, width ${POPUP_MS}ms ${POPUP_EASE}, height ${POPUP_MS}ms ${POPUP_EASE}`,
+                          // Final layout size is fixed so text never reflows while growing.
+                          top: flyTo.top,
+                          left: flyTo.left,
+                          width: flyTo.width,
+                          height: flyTo.height,
+                          transform: flyActive
+                            ? "translate(0px, 0px) scale(1)"
+                            : `translate(${flyFrom.left + flyFrom.width / 2 - (flyTo.left + flyTo.width / 2)}px, ${flyFrom.top + flyFrom.height / 2 - (flyTo.top + flyTo.height / 2)}px) scale(${flyFrom.width / flyTo.width})`,
+                          transition: `transform ${POPUP_MS}ms ${POPUP_EASE}`,
                         }}
                       >
                         <div
@@ -517,24 +556,33 @@ export default function FAQ() {
                           </div>
                           <div className="absolute inset-0 flex flex-col overflow-hidden bg-white px-[8%] py-[7%] text-left text-[#1F71DD] shadow-[0_16px_32px_rgb(0_0_0/0.45)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
                             <div
+                              key={faceIndex ?? "empty"}
                               className={`flex min-h-0 flex-1 flex-col ${
-                                faceReady ? "opacity-100" : "opacity-0"
+                                faceReady && faceItem && !isClosing
+                                  ? "opacity-100"
+                                  : "opacity-0"
                               }`}
                               style={{
                                 transitionProperty: "opacity",
-                                transitionDuration: `${POPUP_MS}ms`,
+                                transitionDuration: isClosing
+                                  ? "0ms"
+                                  : `${POPUP_MS}ms`,
                                 transitionTimingFunction: POPUP_EASE,
                               }}
                             >
-                              <p className="font-righteous shrink-0 text-[clamp(15px,2.4vw,26px)] leading-tight text-[#1F71DD]">
-                                {openItem.question}
-                              </p>
-                              <div className="mt-2 min-h-0 flex-1 overflow-y-auto text-[clamp(12px,1.7vw,17px)] leading-snug text-[#1F71DD]">
-                                {renderAnswer(openItem.answer)}
-                              </div>
-                              <p className="font-righteous mt-2 shrink-0 text-center text-[clamp(10px,1.2vw,12px)] tracking-[0.04em] text-[#1F71DD]/70">
-                                Click to close
-                              </p>
+                              {faceItem ? (
+                                <>
+                                  <p className="font-righteous shrink-0 text-[clamp(18px,2.8vw,32px)] leading-tight text-[#1F71DD]">
+                                    {faceItem.question}
+                                  </p>
+                                  <div className="mt-3 min-h-0 flex-1 overflow-y-auto text-[clamp(15px,2.1vw,22px)] leading-snug text-[#1F71DD]">
+                                    {renderAnswer(faceItem.answer)}
+                                  </div>
+                                  <p className="font-righteous mt-3 shrink-0 text-center text-[clamp(12px,1.5vw,16px)] tracking-[0.04em] text-[#1F71DD]/70">
+                                    Click to close
+                                  </p>
+                                </>
+                              ) : null}
                             </div>
                           </div>
                         </div>
@@ -550,12 +598,10 @@ export default function FAQ() {
                   const selected = openIndex === index;
                   const x = landed ? spot.x : DECK.x;
                   const y = landed ? spot.y : DECK.y;
-                  const rot = landed ? spot.r : -4;
-                  const scale = index >= 5 && landed ? 1.08 : 1;
                   const dealMs = index * DEAL_STEP_MS;
                   const moveTransition = dealSettled
-                    ? `left ${POPUP_MS}ms ${POPUP_EASE}, top ${POPUP_MS}ms ${POPUP_EASE}, transform ${POPUP_MS}ms ${POPUP_EASE}, opacity 0ms linear`
-                    : `opacity 0ms linear ${dealMs}ms, left ${DEAL_TRAVEL_MS}ms ease-out ${dealMs}ms, top ${DEAL_TRAVEL_MS}ms ease-out ${dealMs}ms, transform ${DEAL_TRAVEL_MS}ms ease-out ${dealMs}ms`;
+                    ? `left ${POPUP_MS}ms ${POPUP_EASE}, top ${POPUP_MS}ms ${POPUP_EASE}, opacity 0ms linear`
+                    : `opacity 0ms linear ${dealMs}ms, left ${DEAL_TRAVEL_MS}ms ease-out ${dealMs}ms, top ${DEAL_TRAVEL_MS}ms ease-out ${dealMs}ms`;
                   return (
                     <div
                       key={item.question}
@@ -564,7 +610,7 @@ export default function FAQ() {
                       }}
                       role="button"
                       tabIndex={landed && !selected ? 0 : -1}
-                      aria-expanded={selected}
+                      aria-expanded={selected && !isClosing}
                       aria-hidden={selected || undefined}
                       aria-label={item.question}
                       onClick={() => {
@@ -577,13 +623,13 @@ export default function FAQ() {
                         event.preventDefault();
                         openCard(index);
                       }}
-                      className="group/card absolute z-[3] aspect-square w-[16%] cursor-pointer border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED] sm:w-[13.5%]"
+                      className="group/card absolute z-[3] aspect-square w-[16%] -translate-x-1/2 -translate-y-1/2 cursor-pointer border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED] sm:w-[13.5%]"
                       style={{
                         left: `${x}%`,
                         top: `${y}%`,
+                        // Stay hidden until the flying card finishes closing.
                         opacity: !landed || selected ? 0 : 1,
                         transition: moveTransition,
-                        transform: `translate(-50%, -50%) rotate(${rot}deg) scale(${scale})`,
                         pointerEvents: selected ? "none" : undefined,
                       }}
                     >
