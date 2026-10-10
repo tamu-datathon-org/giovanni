@@ -8,7 +8,7 @@ import Image from "next/image";
 import { SectionGround } from "@/components/SectionGround";
 
 const DIVIDER = "/event_assets/faq/divider.png";
-const FAQ_BG = "/event_assets/faq/curtains.png";
+const CURTAINS = "/event_assets/faq/curtains.png";
 const TABLE = "/event_assets/faq/poker-table-faq.png";
 const BOTTOM = "/event_assets/faq/faq-btm.png";
 const BEAR = "/event_assets/faq/bear-dealer-body.png";
@@ -349,7 +349,7 @@ export default function FAQ() {
             className="pointer-events-none absolute left-0 top-0 z-0 w-full aspect-[1440/234]"
           >
             <Image
-              src={FAQ_BG}
+              src={CURTAINS}
               alt=""
               width={1440}
               height={1426}
