@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 
 import { SectionGround } from "@/components/SectionGround";
 
 const DIVIDER = "/event_assets/faq/divider.png";
-const FAQ_BG = "/event_assets/faq/faq-bg.png";
+const FAQ_BG = "/event_assets/faq/curtains.png";
 const TABLE = "/event_assets/faq/poker-table-faq.png";
 const BOTTOM = "/event_assets/faq/faq-btm.png";
 const BEAR = "/event_assets/faq/bear-dealer-body.png";
@@ -23,18 +24,45 @@ const ART =
 
 /** Where the deck sits, as a percent of the table. Cards fly out from here. */
 const DECK = { x: 16, y: 8 };
+const DEAL_STEP_MS = 90;
+const DEAL_TRAVEL_MS = 700;
+const POPUP_MS = 550;
+const FACE_FADE_DELAY_MS = POPUP_MS / 2;
+const POPUP_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+type CardRect = {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+};
+
+function popupSize() {
+  const maxW = window.matchMedia("(min-width: 575px)").matches ? 24 * 16 : 26 * 16;
+  const vwCap = window.matchMedia("(min-width: 575px)").matches
+    ? window.innerWidth * 0.48
+    : window.innerWidth * 0.78;
+  const width = Math.min(maxW, vwCap);
+  const height = width * 1.425;
+  return {
+    width,
+    height,
+    top: (window.innerHeight - height) / 2,
+    left: (window.innerWidth - width) / 2,
+  };
+}
 
 const SPOTS = [
-  { x: 12, y: 32, r: -7 },
-  { x: 31, y: 32, r: -3 },
-  { x: 50, y: 32, r: 0 },
-  { x: 69, y: 32, r: 3 },
-  { x: 88, y: 32, r: 7 },
-  { x: 12, y: 58, r: -7 },
-  { x: 31, y: 58, r: -3 },
-  { x: 50, y: 58, r: 0 },
-  { x: 69, y: 58, r: 3 },
-  { x: 88, y: 58, r: 7 },
+  { x: 12, y: 34, r: -7 },
+  { x: 31, y: 34, r: -3 },
+  { x: 50, y: 34, r: 0 },
+  { x: 69, y: 34, r: 3 },
+  { x: 88, y: 34, r: 7 },
+  { x: 12, y: 64, r: -7 },
+  { x: 31, y: 64, r: -3 },
+  { x: 50, y: 64, r: 0 },
+  { x: 69, y: 64, r: 3 },
+  { x: 88, y: 64, r: 7 },
 ];
 
 type FaqItem = { question: string; answer: string };
@@ -127,7 +155,7 @@ function renderAnswer(text: string): ReactNode {
   return text.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
     if (part.startsWith("**") && part.endsWith("**")) {
       return (
-        <strong key={index} className="font-bold text-[#8F0000]">
+        <strong key={index} className="font-bold text-[#1F71DD]">
           {renderLinks(part.slice(2, -2), `bold-${index}`)}
         </strong>
       );
@@ -141,8 +169,15 @@ export default function FAQ() {
   const [inView, setInView] = useState(false);
   const [dealt, setDealt] = useState(false);
   const [landed, setLanded] = useState(false);
+  const [dealSettled, setDealSettled] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const idBase = useId();
+  const [faceReady, setFaceReady] = useState(false);
+  const [flyFrom, setFlyFrom] = useState<CardRect | null>(null);
+  const [flyActive, setFlyActive] = useState(false);
+  const [dimOn, setDimOn] = useState(false);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const closingRef = useRef(false);
+  const closeTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -159,6 +194,112 @@ export default function FAQ() {
     return () => observer.disconnect();
   }, [stageRef]);
 
+  useEffect(() => {
+    if (!landed) {
+      setDealSettled(false);
+      return;
+    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDealSettled(true);
+      return;
+    }
+    const settleMs = DEAL_TRAVEL_MS + (ITEMS.length - 1) * DEAL_STEP_MS + 40;
+    const timer = window.setTimeout(() => setDealSettled(true), settleMs);
+    return () => window.clearTimeout(timer);
+  }, [landed]);
+
+  useEffect(() => {
+    if (openIndex === null || !flyFrom || closingRef.current) {
+      return;
+    }
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    setFaceReady(reduceMotion);
+    setFlyActive(reduceMotion);
+    setDimOn(reduceMotion);
+
+    let inner = 0;
+    const outer = window.requestAnimationFrame(() => {
+      inner = window.requestAnimationFrame(() => {
+        setFlyActive(true);
+        setDimOn(true);
+      });
+    });
+    const faceTimer = window.setTimeout(
+      () => setFaceReady(true),
+      reduceMotion ? 0 : FACE_FADE_DELAY_MS,
+    );
+
+    return () => {
+      window.cancelAnimationFrame(outer);
+      window.cancelAnimationFrame(inner);
+      window.clearTimeout(faceTimer);
+    };
+  }, [openIndex, flyFrom]);
+
+  useEffect(() => {
+    if (openIndex === null) return;
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtml = html.style.overflow;
+    const prevBody = body.style.overflow;
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    return () => {
+      html.style.overflow = prevHtml;
+      body.style.overflow = prevBody;
+    };
+  }, [openIndex]);
+
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current !== null) {
+        window.clearTimeout(closeTimerRef.current);
+      }
+    };
+  }, []);
+
+  const openItem = openIndex === null ? null : ITEMS[openIndex];
+  const flyTo = typeof window !== "undefined" ? popupSize() : null;
+
+  const openCard = (index: number) => {
+    if (closingRef.current) return;
+    const el = cardRefs.current[index];
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    setFlyFrom({
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+    });
+    setFlyActive(false);
+    setDimOn(false);
+    setFaceReady(false);
+    setOpenIndex(index);
+  };
+
+  const closeCard = () => {
+    if (openIndex === null || closingRef.current) return;
+    closingRef.current = true;
+    setDimOn(false);
+    setFlyActive(false);
+    setFaceReady(false);
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+    }
+    closeTimerRef.current = window.setTimeout(() => {
+      setOpenIndex(null);
+      setFlyFrom(null);
+      closingRef.current = false;
+      closeTimerRef.current = null;
+    }, reduceMotion ? 0 : POPUP_MS);
+  };
+
   const deal = () => {
     if (dealt) return;
     setDealt(true);
@@ -171,8 +312,6 @@ export default function FAQ() {
     });
   };
 
-  const open = openIndex === null ? null : ITEMS[openIndex];
-
   return (
     <section
       id="faq"
@@ -181,47 +320,53 @@ export default function FAQ() {
       className="group/faq relative overflow-x-clip bg-[#6C0204]"
     >
       <SectionGround>
-        <Image
-          src={DIVIDER}
-          alt=""
-          width={1440}
-          height={234}
-          draggable={false}
-          className={`${ART} block w-full`}
-        />
-
-        <div ref={stageRef} className="relative w-full overflow-hidden pb-36 pt-24 md:pb-56 md:pt-80">
+        <div className="relative w-full">
+          {/* Anchor height matches the divider so curtains can start at its midpoint. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-0 top-0 z-0 w-full aspect-[1440/234]"
+          >
+            <Image
+              src={FAQ_BG}
+              alt=""
+              width={1440}
+              height={1426}
+              draggable={false}
+              className={`${ART} absolute left-0 top-1/2 w-full max-w-none`}
+            />
+          </div>
           <Image
-            src={FAQ_BG}
+            src={DIVIDER}
             alt=""
             width={1440}
-            height={1786}
+            height={234}
             draggable={false}
-            className={`${ART} absolute left-0 top-0 w-full max-w-none`}
+            className={`${ART} relative z-[1] block w-full`}
           />
 
-          <h2 className="font-righteous relative z-[4] flex items-center justify-center gap-[0.4em] text-[clamp(42px,7vw,88px)] uppercase leading-none tracking-[0.04em] text-[#FFB24C]">
-            <Image
-              src={STAR}
-              alt=""
-              width={47}
-              height={48}
-              draggable={false}
-              className="h-[0.7em] w-auto [-webkit-user-drag:none] [user-drag:none]"
-            />
-            FAQ
-            <Image
-              src={STAR}
-              alt=""
-              width={47}
-              height={48}
-              draggable={false}
-              className="h-[0.7em] w-auto [-webkit-user-drag:none] [user-drag:none]"
-            />
-          </h2>
+          <div ref={stageRef} className="relative z-[1] w-full overflow-hidden pb-36 pt-24 md:pb-56 md:pt-60">
+            <h2 className="font-righteous relative z-[4] flex items-center justify-center gap-[0.4em] text-[clamp(42px,7vw,88px)] uppercase leading-none tracking-[0.04em] text-[#FFB24C] [-webkit-text-stroke:0.06em_#FDFBED] [paint-order:stroke_fill]">
+              <Image
+                src={STAR}
+                alt=""
+                width={47}
+                height={48}
+                draggable={false}
+                className="h-[0.7em] w-auto [-webkit-user-drag:none] [user-drag:none]"
+              />
+              FAQ
+              <Image
+                src={STAR}
+                alt=""
+                width={47}
+                height={48}
+                draggable={false}
+                className="h-[0.7em] w-auto [-webkit-user-drag:none] [user-drag:none]"
+              />
+            </h2>
 
           {/* Room above the table for the bear to rise into. */}
-          <div className="relative mt-4 w-full pt-[27%] md:mt-0">
+          <div className="relative mt-4 w-full pt-[27%] md:mt-20">
             <div className="pointer-events-none absolute left-[24%] top-0 z-[1] w-[36%] -translate-x-1/2 translate-y-[64%] transition-transform duration-700 ease-out group-data-[show]/faq:translate-y-0 motion-reduce:transition-none [@media(scripting:none)]:translate-y-0">
               <Image
                 src={BEAR}
@@ -257,7 +402,7 @@ export default function FAQ() {
                 src={TABLE}
                 alt=""
                 width={1440}
-                height={1117}
+                height={550}
                 draggable={false}
                 className={`${ART} relative z-[1] block`}
               />
@@ -271,7 +416,7 @@ export default function FAQ() {
                   className={`${ART} transition-transform duration-500 ${dealt ? "scale-[0.94]" : ""}`}
                 />
               </div>
-              <div className="pointer-events-none absolute left-[9%] top-[-20%] z-[4] w-[38%] opacity-0 transition-opacity delay-700 duration-500 ease-out group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:opacity-100">
+              <div className="pointer-events-none absolute left-[9%] top-[-32%] z-[4] w-[38%] opacity-0 transition-opacity delay-700 duration-500 ease-out group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:opacity-100">
                 <Image
                   src={HANDS}
                   alt=""
@@ -282,7 +427,7 @@ export default function FAQ() {
                 />
               </div>
 
-              <div className="absolute left-1/2 top-[5%] z-20 w-[14%] -translate-x-1/2 sm:w-[11%]">
+              <div className="absolute left-1/2 top-[0%] z-20 w-[11%] -translate-x-1/2 sm:w-[9%]">
                 <button
                   type="button"
                   onClick={deal}
@@ -310,60 +455,153 @@ export default function FAQ() {
                 )}
               </div>
 
+              {dealt && landed && openIndex === null ? (
+                <p className="font-righteous pointer-events-none absolute left-1/2 top-[80%] z-[5] w-max max-w-[90vw] -translate-x-1/2 text-center text-[clamp(13px,1.5vw,22px)] leading-tight tracking-[0.03em] text-[#FDFBED] [text-shadow:0_2px_4px_rgb(0_0_0/0.55)]">
+                  Click a card to flip it!
+                </p>
+              ) : null}
+
+              {openItem && flyFrom && flyTo
+                ? createPortal(
+                    <>
+                      <button
+                        type="button"
+                        aria-label="Close card"
+                        onClick={closeCard}
+                        className="fixed inset-0 z-[70] border-0 bg-black p-0"
+                        style={{
+                          opacity: dimOn ? 0.75 : 0,
+                          transition: `opacity ${POPUP_MS}ms ${POPUP_EASE}`,
+                        }}
+                      />
+                      <div
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`${openItem.question}. Click to close.`}
+                        onClick={(event) => {
+                          if ((event.target as HTMLElement).closest("a")) return;
+                          closeCard();
+                        }}
+                        onKeyDown={(event) => {
+                          if (event.key !== "Enter" && event.key !== " ") return;
+                          event.preventDefault();
+                          closeCard();
+                        }}
+                        className="fixed z-[80] cursor-pointer border-0 bg-transparent p-0 [perspective:1200px] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED]"
+                        style={{
+                          top: flyActive ? flyTo.top : flyFrom.top,
+                          left: flyActive ? flyTo.left : flyFrom.left,
+                          width: flyActive ? flyTo.width : flyFrom.width,
+                          height: flyActive ? flyTo.height : flyFrom.height,
+                          transition: `top ${POPUP_MS}ms ${POPUP_EASE}, left ${POPUP_MS}ms ${POPUP_EASE}, width ${POPUP_MS}ms ${POPUP_EASE}, height ${POPUP_MS}ms ${POPUP_EASE}`,
+                        }}
+                      >
+                        <div
+                          className="relative h-full w-full [transform-style:preserve-3d]"
+                          style={{
+                            transform: flyActive
+                              ? "rotateY(180deg)"
+                              : "rotateY(0deg)",
+                            transition: `transform ${POPUP_MS}ms ${POPUP_EASE}`,
+                          }}
+                        >
+                          <div className="absolute inset-0 [backface-visibility:hidden]">
+                            <Image
+                              src={CARD}
+                              alt=""
+                              width={280}
+                              height={280}
+                              draggable={false}
+                              className={`${ART} h-full w-full object-contain drop-shadow-[0_6px_4px_rgb(0_0_0/0.35)]`}
+                            />
+                          </div>
+                          <div className="absolute inset-0 flex flex-col overflow-hidden bg-white px-[8%] py-[7%] text-left text-[#1F71DD] shadow-[0_16px_32px_rgb(0_0_0/0.45)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                            <div
+                              className={`flex min-h-0 flex-1 flex-col ${
+                                faceReady ? "opacity-100" : "opacity-0"
+                              }`}
+                              style={{
+                                transitionProperty: "opacity",
+                                transitionDuration: `${POPUP_MS}ms`,
+                                transitionTimingFunction: POPUP_EASE,
+                              }}
+                            >
+                              <p className="font-righteous shrink-0 text-[clamp(15px,2.4vw,26px)] leading-tight text-[#1F71DD]">
+                                {openItem.question}
+                              </p>
+                              <div className="mt-2 min-h-0 flex-1 overflow-y-auto text-[clamp(12px,1.7vw,17px)] leading-snug text-[#1F71DD]">
+                                {renderAnswer(openItem.answer)}
+                              </div>
+                              <p className="font-righteous mt-2 shrink-0 text-center text-[clamp(10px,1.2vw,12px)] tracking-[0.04em] text-[#1F71DD]/70">
+                                Click to close
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>,
+                    document.body,
+                  )
+                : null}
+
               {dealt &&
                 ITEMS.map((item, index) => {
                   const spot = SPOTS[index];
                   const selected = openIndex === index;
                   const x = landed ? spot.x : DECK.x;
                   const y = landed ? spot.y : DECK.y;
+                  const rot = landed ? spot.r : -4;
+                  const scale = index >= 5 && landed ? 1.08 : 1;
+                  const dealMs = index * DEAL_STEP_MS;
+                  const moveTransition = dealSettled
+                    ? `left ${POPUP_MS}ms ${POPUP_EASE}, top ${POPUP_MS}ms ${POPUP_EASE}, transform ${POPUP_MS}ms ${POPUP_EASE}, opacity 0ms linear`
+                    : `opacity 0ms linear ${dealMs}ms, left ${DEAL_TRAVEL_MS}ms ease-out ${dealMs}ms, top ${DEAL_TRAVEL_MS}ms ease-out ${dealMs}ms, transform ${DEAL_TRAVEL_MS}ms ease-out ${dealMs}ms`;
                   return (
-                    <button
+                    <div
                       key={item.question}
-                      type="button"
+                      ref={(node) => {
+                        cardRefs.current[index] = node;
+                      }}
+                      role="button"
+                      tabIndex={landed && !selected ? 0 : -1}
                       aria-expanded={selected}
-                      aria-controls={`${idBase}-answer`}
-                      disabled={!landed}
-                      onClick={() => setOpenIndex(selected ? null : index)}
-                      className="group/card absolute z-[3] aspect-square w-[16%] border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED] enabled:cursor-pointer sm:w-[13.5%]"
+                      aria-hidden={selected || undefined}
+                      aria-label={item.question}
+                      onClick={() => {
+                        if (!landed || selected) return;
+                        openCard(index);
+                      }}
+                      onKeyDown={(event) => {
+                        if (!landed || selected) return;
+                        if (event.key !== "Enter" && event.key !== " ") return;
+                        event.preventDefault();
+                        openCard(index);
+                      }}
+                      className="group/card absolute z-[3] aspect-square w-[16%] cursor-pointer border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED] sm:w-[13.5%]"
                       style={{
                         left: `${x}%`,
                         top: `${y}%`,
-                        zIndex: selected ? 30 : 3,
-                        transition: `left 700ms ease-out ${index * 90}ms, top 700ms ease-out ${index * 90}ms, transform 700ms ease-out ${index * 90}ms`,
-                        transform: `translate(-50%, -50%) rotate(${landed ? spot.r : -4}deg) scale(${index >= 5 && landed ? 1.08 : 1})`,
+                        opacity: !landed || selected ? 0 : 1,
+                        transition: moveTransition,
+                        transform: `translate(-50%, -50%) rotate(${rot}deg) scale(${scale})`,
+                        pointerEvents: selected ? "none" : undefined,
                       }}
                     >
-                      <span className="block origin-center transition-transform duration-150 ease-out group-hover/card:scale-[1.06] group-focus-visible/card:scale-[1.06]">
+                      <div className="relative h-full w-full origin-center transition-transform duration-150 ease-out group-hover/card:scale-[1.06] group-focus-visible/card:scale-[1.06]">
                         <Image
                           src={CARD}
                           alt=""
                           width={280}
                           height={280}
                           draggable={false}
-                          className={`${ART} drop-shadow-[0_6px_4px_rgb(0_0_0/0.35)] ${selected ? "ring-4 ring-[#FFB24C]" : ""}`}
+                          className={`${ART} h-full w-full object-contain drop-shadow-[0_6px_4px_rgb(0_0_0/0.35)]`}
                         />
-                      </span>
-                      <span className="sr-only">{item.question}</span>
-                    </button>
+                      </div>
+                    </div>
                   );
                 })}
-
-              {open && (
-                <div
-                  id={`${idBase}-answer`}
-                  role="region"
-                  aria-label={open.question}
-                  className="absolute left-1/2 top-1/2 z-[40] w-[min(78%,28rem)] -translate-x-1/2 -translate-y-1/2 rounded-[1.25rem] bg-[#FDFBED] px-6 py-5 text-left text-[#3a140c] shadow-[0_12px_24px_rgb(0_0_0/0.45)]"
-                >
-                  <p className="font-righteous text-[clamp(15px,1.7vw,22px)] leading-tight text-[#8F0000]">
-                    {open.question}
-                  </p>
-                  <p className="mt-2 text-[clamp(12px,1.25vw,15px)] leading-snug">
-                    {renderAnswer(open.answer)}
-                  </p>
-                </div>
-              )}
             </div>
+          </div>
           </div>
         </div>
       </SectionGround>
