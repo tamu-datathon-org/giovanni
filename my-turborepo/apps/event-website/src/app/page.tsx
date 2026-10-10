@@ -4,6 +4,7 @@ import EventInformation from "@/components/EventInformation";
 import Hero from "@/components/Hero";
 import Location from "@/components/location";
 import Schedule from "@/components/Schedule";
+import { CasinoTransition } from "@/components/CasinoTransition";
 import Workshops from "@/components/workshops";
 import { ScrollUp } from "@vanni/ui/scroll-up";
 import { Footer } from "@/components/Hero/Footer";
@@ -30,9 +31,13 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <EventInformation />    
-      <Prizes />
+      <EventInformation />
+      <div className="relative isolate z-20">
+        <Prizes />
+        <CasinoTransition variant="coins" />
+      </div>
       <Schedule />
+      <CasinoTransition variant="cards" />
       <Sponsors />
       <FAQ />
       <Footer />
