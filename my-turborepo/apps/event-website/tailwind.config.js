@@ -90,7 +90,7 @@ export const theme = {
       three: "0px 5px 15px rgba(6, 8, 15, 0.05)",
     },
     keyframes: {
-      // Rail stars (shine="view"): a quick swell and return, and a glow that lingers.
+      // Rail stars: a quick swell and return, and a glow that lingers.
       "star-pulse": {
         "0%, 100%": { transform: "scale(1)" },
         "50%": { transform: "scale(1.7)" },

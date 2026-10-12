@@ -23,8 +23,10 @@ export function SponsorChip({
   dragging: boolean;
 }) {
   return (
+    // The hover swell is for real pointers only: a touch leaves the chip "hovered" when the
+    // finger lifts, so on a phone it would play every time a chip is put down.
     <span
-      className={`pointer-events-none absolute inset-0 select-none transition-transform duration-200 ease-out motion-reduce:transition-none ${dragging ? "" : "group-hover/sc:scale-[1.07] group-focus-visible/sc:scale-[1.07]"}`}
+      className={`pointer-events-none absolute inset-0 select-none transition-transform duration-200 ease-out motion-reduce:transition-none ${dragging ? "" : "group-focus-visible/sc:scale-[1.07] [@media(hover:hover)]:group-hover/sc:scale-[1.07]"}`}
     >
       <svg
         viewBox="0 0 270 270"

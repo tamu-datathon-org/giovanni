@@ -1,8 +1,9 @@
+import { memo } from "react";
 import type { CSSProperties } from "react";
 
 const GUESTS = [
   {
-    x: 365,
+    x: 403,
     y: 8,
     angle: 0,
     shirt: "#e7a43e",
@@ -12,7 +13,7 @@ const GUESTS = [
     hairstyle: "swept",
   },
   {
-    x: 990,
+    x: 1228,
     y: 8,
     angle: 0,
     shirt: "#81a995",
@@ -22,7 +23,7 @@ const GUESTS = [
     hairstyle: "bun",
   },
   {
-    x: 1359,
+    x: 1639,
     y: 472,
     angle: 90,
     shirt: "#7799ba",
@@ -32,7 +33,7 @@ const GUESTS = [
     hairstyle: "swept",
   },
   {
-    x: 965,
+    x: 1195,
     y: 937,
     angle: 180,
     shirt: "#d56b51",
@@ -42,7 +43,7 @@ const GUESTS = [
     hairstyle: "curls",
   },
   {
-    x: 390,
+    x: 436,
     y: 937,
     angle: 180,
     shirt: "#b199c3",
@@ -280,11 +281,13 @@ function Guest({ guest, index }: { guest: Guest; index: number }) {
   );
 }
 
-export function TableGuests() {
+/** Memoized: nothing here changes while a chip is dragged, so it need not re-render with it. */
+export const TableGuests = memo(function TableGuests() {
   return (
     <svg
-      className="pointer-events-none absolute inset-0 h-full w-full overflow-visible [filter:drop-shadow(0_7px_3px_rgb(0_0_0/0.22))]"
-      viewBox="0 0 1367 945"
+      // No drop-shadow filter: with the limbs animating it would be redone every frame.
+      className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+      viewBox="0 0 1647 945"
       fill="none"
       aria-hidden="true"
       focusable="false"
@@ -294,4 +297,4 @@ export function TableGuests() {
       ))}
     </svg>
   );
-}
+});
