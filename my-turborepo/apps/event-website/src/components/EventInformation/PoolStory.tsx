@@ -513,8 +513,7 @@ export function PoolStory() {
         <div data-copy>
           <h3 className={TITLE}>PARKING</h3>
           <p className={DESCRIPTION}>
-            Lot 74 is reserved for Datathon participants. Lots 100 and 97 are
-            also free on weekends.
+            Lots 30D, 20, 32, 54, and 100 are available on weekends.
           </p>
         </div>
       </article>

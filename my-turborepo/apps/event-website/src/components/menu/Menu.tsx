@@ -16,8 +16,8 @@ const links: MenuLink[] = [
   // Re-enable once <Prizes /> is rendered in app/page.tsx
   // { label: "PRIZES", href: "#prizes", color: "teal" },
   { label: "INFO", href: "#event-information", color: "green" },
-  { label: "SCHEDULE", href: "#schedule", color: "yellow", textClassName: "text-[10px] sm:text-sm" },
-  { label: "SPONSORS", href: "#sponsors", color: "teal", textClassName: "text-[10px] sm:text-sm" },
+  { label: "SCHEDULE", href: "#schedule", color: "yellow", textClassName: "text-[8px] sm:text-sm" },
+  { label: "SPONSORS", href: "#sponsors", color: "teal", textClassName: "text-[8px] sm:text-sm" },
   { label: "FAQ", href: "#faq", target: "faq-content", color: "blue" },
 ]
 
@@ -67,7 +67,7 @@ export function Menu() {
       onPointerLeave={hoverTo(false)}
       // --peek = how much of each chip shows below MENU when stacked (about half the outer ring)
       // --step = chip size + gap, how far apart the chips are when open (they fan downward)
-      className="fixed right-3 top-3 z-50 grid [--peek:5px] [--step:88px] sm:right-5 sm:top-5 sm:[--peek:8px] sm:[--step:140px]"
+      className="fixed right-3 top-3 z-50 grid [--peek:4px] [--step:72px] sm:right-5 sm:top-5 sm:[--peek:8px] sm:[--step:140px]"
     >
       {links.map((link, i) => (
         <a

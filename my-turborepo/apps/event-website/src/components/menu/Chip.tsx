@@ -24,9 +24,9 @@ export function Chip({
   ...props
 } : ChipProps) {
   return (
-    <div className={cn("relative inline-flex size-20 items-center justify-center drop-shadow-xl sm:size-32", className)} {...props}>
+    <div className={cn("relative inline-flex size-16 items-center justify-center drop-shadow-xl sm:size-32", className)} {...props}>
       <Image src={colors[color]} alt="" draggable="false" fill />
-      <span className={cn("relative font-righteous text-sm text-white select-none sm:text-xl", textClassName)}>
+      <span className={cn("relative font-righteous text-xs text-white select-none sm:text-xl", textClassName)}>
         {children}
       </span>
     </div>
