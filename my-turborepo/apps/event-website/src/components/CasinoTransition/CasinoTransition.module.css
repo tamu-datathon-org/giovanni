@@ -6,32 +6,37 @@
   user-select: none;
 }
 
-.coins {
-  position: absolute;
+/* Above the MLH badge (z-45) and the header menu (z-50): nothing peeks through. */
+.curtain {
+  position: fixed;
   inset: 0;
-  z-index: 20;
+  z-index: 60;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
 }
 
-.coins[data-coin-state="falling"] {
-  overflow: visible;
-}
-
-.coins[data-coin-state="falling"] .token,
-.coins[data-coin-state="falling"] .face {
+/* Parked above the screen until GSAP moves it; coins inside never animate. */
+.sheet {
+  position: absolute;
+  inset: 0 0 auto;
+  transform: translateY(-100%);
   will-change: transform;
 }
 
-.coins[data-coin-state="idle"] .shower {
-  visibility: hidden;
+/* The band that hides the page; matches the section it reveals. */
+.panel {
+  position: absolute;
+  right: 0;
+  left: 0;
+  background: #6c0204;
 }
 
-.coins::after {
+.coin {
   position: absolute;
-  inset: auto 0 0;
-  height: 15px;
-  background: linear-gradient(transparent, #21090080);
-  border-bottom: 2px solid #a76e2e80;
-  content: "";
+  width: var(--size);
+  aspect-ratio: 1;
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
 }
 
 .halo {
@@ -40,35 +45,20 @@
   background: radial-gradient(ellipse at 50% 55%, #ffb24c1c, transparent 65%);
 }
 
-.shower {
-  position: absolute;
-  inset: 0;
-}
-
-.token {
-  position: absolute;
-  bottom: calc(9px + var(--lift));
-  width: var(--size);
-  aspect-ratio: 1;
-  margin-left: calc(var(--size) / -2);
-  transform: scaleY(var(--flatten));
-  transform-origin: 50% 100%;
-}
-
 .face {
   position: relative;
   display: grid;
   width: 100%;
   height: 100%;
   place-items: center;
-  overflow: hidden;
   border-radius: 50%;
   transform: rotate(var(--turn));
   border: 2px solid #e7a342;
+  /* Hard edge only: a blurred shadow per coin is costly to paint, and the
+     back sheet's coins overlap too much for it to show. */
   box-shadow:
     0 3px 0 #925018,
-    0 6px 0 #542a0a,
-    0 12px 14px #0006;
+    0 6px 0 #542a0a;
 }
 
 .gold {
@@ -108,8 +98,7 @@
   );
   box-shadow:
     0 3px 0 var(--chip-edge),
-    0 6px 0 #24130d,
-    0 12px 14px #0006;
+    0 6px 0 #24130d;
 }
 
 .red {
@@ -135,15 +124,33 @@
   text-shadow: 0 2px #0005;
 }
 
-.shine {
+.face::after {
   position: absolute;
   inset: 0;
+  border-radius: 50%;
   background: linear-gradient(
     125deg,
     transparent 20%,
     #fff6 31%,
     transparent 42%
   );
+  content: "";
+}
+
+/* Only the few front coins pay for a blurred drop shadow, for depth. */
+.front .face {
+  box-shadow:
+    0 3px 0 #925018,
+    0 6px 0 #542a0a,
+    0 12px 14px #0006;
+}
+
+.front .red,
+.front .green {
+  box-shadow:
+    0 3px 0 var(--chip-edge),
+    0 6px 0 #24130d,
+    0 12px 14px #0006;
 }
 
 .cards {
@@ -291,20 +298,6 @@
 @media (max-width: 600px) {
   .hand {
     --card-width: clamp(60px, 17vw, 68px);
-  }
-
-  .token {
-    width: calc(var(--size) * 0.72);
-    bottom: calc(9px + var(--lift) * 0.72);
-    margin-left: calc(var(--size) * -0.36);
-  }
-
-  .token:not(:nth-child(3n + 1)) {
-    display: none;
-  }
-
-  .tokenCenter {
-    font-size: calc(var(--size) * 0.25);
   }
 
   .flourish {

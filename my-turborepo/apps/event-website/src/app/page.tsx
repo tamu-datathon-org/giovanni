@@ -31,6 +31,10 @@ export default function Home() {
     <>
       <Hero />
       {/* Ready Just need  */}
+      {/* <EventLocation /> */}
+      <CasinoTransition variant="coins" />
+      <Workshops />
+      <CasinoTransition variant="coins" />
       <Schedule />
       <CasinoTransition variant="cards" />
       <Sponsors />
