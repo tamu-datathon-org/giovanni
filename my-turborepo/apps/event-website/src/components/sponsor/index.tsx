@@ -6,8 +6,14 @@ import Image from "next/image";
 
 import { SectionGround } from "@/components/SectionGround";
 
+import { SponsorChip } from "./SponsorChip";
+import type { ChipColors } from "./SponsorChip";
+import { TableGuests } from "./TableGuests";
+
 const TABLE = "/event_assets/sponsors/poker-table-sponsors.png";
 const STAR = "/event_assets/sponsors/Star.png";
+/** The TD logo pre-rendered as grainy felt-green ink (darker where the logo is darker). */
+const LOGO_PRINT = "/event_assets/sponsors/td-logo-print.png";
 const TABLE_W = 1367;
 const TABLE_H = 945;
 /** Chip diameter as a fraction of the table width. */
@@ -17,6 +23,7 @@ type Chip = {
   id: string;
   name: string;
   src: string;
+  colors: ChipColors;
   x: number;
   y: number;
   rotation: number;
@@ -24,14 +31,14 @@ type Chip = {
 };
 
 const INITIAL_CHIPS: Chip[] = [
-  { id: "heb", name: "H-E-B", src: "/event_assets/sponsors/heb.png", x: 0.3, y: 0.36, rotation: -14, z: 1 },
-  { id: "databricks", name: "Databricks", src: "/event_assets/sponsors/databricks.png", x: 0.48, y: 0.3, rotation: 8, z: 2 },
-  { id: "qualcomm", name: "Qualcomm", src: "/event_assets/sponsors/qualcomm.png", x: 0.66, y: 0.38, rotation: -6, z: 3 },
-  { id: "hitachi", name: "Hitachi", src: "/event_assets/sponsors/hitachi.png", x: 0.28, y: 0.56, rotation: 11, z: 4 },
-  { id: "sec", name: "SEC", src: "/event_assets/sponsors/sec.png", x: 0.46, y: 0.52, rotation: -18, z: 5 },
-  { id: "conocophillips", name: "ConocoPhillips", src: "/event_assets/sponsors/conocophillips.png", x: 0.64, y: 0.56, rotation: 4, z: 6 },
-  { id: "phillips", name: "Phillips 66", src: "/event_assets/sponsors/phillips.png", x: 0.4, y: 0.7, rotation: 7, z: 7 },
-  { id: "serp", name: "SerpApi", src: "/event_assets/sponsors/serp.png", x: 0.58, y: 0.72, rotation: -9, z: 8 },
+  { id: "heb", name: "H-E-B", src: "/event_assets/sponsors/heb.png", colors: { body: "#E70020", stripe: "#E70020", ring: "#B10018" }, x: 0.23, y: 0.35, rotation: -21, z: 1 },
+  { id: "databricks", name: "Databricks", src: "/event_assets/sponsors/databricks.png", colors: { body: "#FF3621", stripe: "#1B3139", ring: "#C4281A" }, x: 0.735, y: 0.34, rotation: 12, z: 2 },
+  { id: "qualcomm", name: "Qualcomm", src: "/event_assets/sponsors/qualcomm.png", colors: { body: "#3253DC", stripe: "#3253DC", ring: "#233CA0" }, x: 0.455, y: 0.245, rotation: -9, z: 3 },
+  { id: "hitachi", name: "Hitachi", src: "/event_assets/sponsors/hitachi.png", colors: { body: "#E60012", stripe: "#E60012", ring: "#AE000D" }, x: 0.525, y: 0.465, rotation: -16, z: 4 },
+  { id: "sec", name: "SEC", src: "/event_assets/sponsors/sec.png", colors: { body: "#1F1F1F", stripe: "#1F1F1F", ring: "#000000" }, x: 0.785, y: 0.625, rotation: 19, z: 5 },
+  { id: "conocophillips", name: "ConocoPhillips", src: "/event_assets/sponsors/conocophillips.png", colors: { body: "#E4002B", stripe: "#1A1A1A", ring: "#A80020" }, x: 0.39, y: 0.76, rotation: -12, z: 6 },
+  { id: "phillips", name: "Phillips 66", src: "/event_assets/sponsors/phillips.png", colors: { body: "#E31937", stripe: "#1A1A1A", ring: "#A8122A" }, x: 0.645, y: 0.765, rotation: 22, z: 7 },
+  { id: "serp", name: "SerpApi", src: "/event_assets/sponsors/serp.png", colors: { body: "#3B4BF0", stripe: "#161A3A", ring: "#2A36AF" }, x: 0.24, y: 0.62, rotation: 10, z: 8 },
 ];
 
 type TableMask = { data: Uint8ClampedArray; w: number; h: number };
@@ -210,66 +217,80 @@ function Sponsors() {
               className="h-[0.7em] w-auto [-webkit-user-drag:none] [user-drag:none]"
             />
           </h2>
-          <p className="font-righteous mt-4 text-[length:clamp(14px,2vw,22px)] tracking-[0.04em] text-[#FDFBED]">
-            Drag the chips around the table
-          </p>
 
-          <div
-            ref={tableRef}
-            className="relative mt-8 w-full max-w-[1100px] md:mt-12"
-          >
-            <Image
-              src={TABLE}
-              alt=""
-              width={TABLE_W}
-              height={TABLE_H}
-              draggable={false}
-              priority
-              onLoad={(event) => readTableMask(event.currentTarget)}
-              className="pointer-events-none block h-auto w-full select-none [-webkit-user-drag:none] [user-drag:none]"
-            />
+          <div className="relative mt-[clamp(20px,3vw,44px)] aspect-[1727/1305] w-full max-w-[1380px]">
+            <div ref={tableRef} className="absolute left-[10.4227%] top-[13.7931%] isolate w-[79.1546%] [filter:drop-shadow(0_18px_14px_rgb(0_0_0/0.45))]">
+              <Image
+                src={TABLE}
+                alt=""
+                width={TABLE_W}
+                height={TABLE_H}
+                draggable={false}
+                priority
+                onLoad={(event) => readTableMask(event.currentTarget)}
+                className="pointer-events-none block h-auto w-full select-none [-webkit-user-drag:none] [user-drag:none]"
+              />
 
-            {chips.map((chip) => {
-              const dragging = draggingId === chip.id;
-              return (
-                <button
-                  key={chip.id}
-                  type="button"
-                  data-chip={chip.id}
-                  aria-label={`${chip.name} chip. Drag to move it on the table.`}
-                  onPointerDown={(event) => onPointerDown(event, chip.id)}
-                  onPointerMove={onPointerMove}
-                  onPointerUp={endDrag}
-                  onPointerCancel={endDrag}
-                  onKeyDown={(event) => {
-                    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
-                    event.preventDefault();
-                    nudge(chip.id, event.key);
-                  }}
-                  className="group/sc absolute aspect-square touch-none rounded-full border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED]"
-                  style={{
-                    left: `${chip.x * 100}%`,
-                    top: `${chip.y * 100}%`,
-                    width: `${CHIP * 100}%`,
-                    zIndex: chip.z,
-                    cursor: dragging ? "grabbing" : "grab",
-                    transform: `translate(-50%, -50%) rotate(${chip.rotation}deg)${dragging ? " scale(1.06)" : ""}`,
-                    filter: dragging
-                      ? "drop-shadow(0 14px 8px rgb(0 0 0 / 0.45))"
-                      : "drop-shadow(0 5px 3px rgb(0 0 0 / 0.35))",
-                  }}
-                >
-                  <Image
-                    src={chip.src}
-                    alt=""
-                    fill
-                    draggable={false}
-                    sizes="180px"
-                    className={`pointer-events-none select-none object-contain transition-transform duration-200 ease-out [-webkit-user-drag:none] [user-drag:none] ${dragging ? "" : "group-hover/sc:scale-[1.07] group-focus-visible/sc:scale-[1.07]"}`}
-                  />
-                </button>
-              );
-            })}
+              {/* TD logo printed into the felt: a grainy deep-green ink, under the table shading. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={LOGO_PRINT}
+                alt=""
+                aria-hidden="true"
+                draggable={false}
+                className="pointer-events-none absolute left-1/2 top-1/2 w-[44%] -translate-x-1/2 -translate-y-1/2 select-none [-webkit-user-drag:none] [user-drag:none]"
+              />
+
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/event_assets/sponsors/poker-table-shading.png"
+                alt=""
+                aria-hidden="true"
+                draggable={false}
+                className="pointer-events-none absolute inset-0 h-full w-full select-none"
+              />
+
+              <TableGuests />
+
+              {chips.map((chip) => {
+                const dragging = draggingId === chip.id;
+                return (
+                  <button
+                    key={chip.id}
+                    type="button"
+                    data-chip={chip.id}
+                    aria-label={`${chip.name} chip. Drag to move it on the table.`}
+                    onPointerDown={(event) => onPointerDown(event, chip.id)}
+                    onPointerMove={onPointerMove}
+                    onPointerUp={endDrag}
+                    onPointerCancel={endDrag}
+                    onKeyDown={(event) => {
+                      if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
+                      event.preventDefault();
+                      nudge(chip.id, event.key);
+                    }}
+                    className="group/sc absolute aspect-square touch-none rounded-full border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED]"
+                    style={{
+                      left: `${chip.x * 100}%`,
+                      top: `${chip.y * 100}%`,
+                      width: `${CHIP * 100}%`,
+                      zIndex: chip.z,
+                      cursor: dragging ? "grabbing" : "grab",
+                      transform: `translate(-50%, -50%) rotate(${chip.rotation}deg)${dragging ? " scale(1.06)" : ""}`,
+                      filter: dragging
+                        ? "drop-shadow(0 14px 8px rgb(0 0 0 / 0.45))"
+                        : "drop-shadow(0 5px 3px rgb(0 0 0 / 0.35))",
+                    }}
+                  >
+                    <SponsorChip
+                      src={chip.src}
+                      colors={chip.colors}
+                      dragging={dragging}
+                    />
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </SectionGround>
