@@ -38,16 +38,16 @@ export function Footer() {
             <a href="https://tamudatathon.org/apply">
               <p className="mb-2 hover:text-white/90">Apply</p>
             </a>
-            <a href="#">
-              <p className="mb-2 hover:text-white/90">About</p>
+            <a href="#schedule">
+              <p className="mb-2 hover:text-white/90">Schedule</p>
             </a>
-            <a href="#">
+            <a href="#event-information">
               <p className="mb-2 hover:text-white/90">Event Information</p>
             </a>
-            <a href="#">
+            <a href="#prizes">
               <p className="mb-2 hover:text-white/90">Prizes</p>
             </a>
-            <a href="#">
+            <a href="#faq">
               <p className="mb-2 hover:text-white/90">FAQ</p>
             </a>
           </div>
