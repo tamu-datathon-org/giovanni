@@ -1,10 +1,11 @@
 "use client";
 
-import type { RefObject } from "react";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+
+import { BORDER_ID } from "@/components/Rail";
 
 const INFORMATION =
   "absolute z-[3] min-w-0 -translate-y-1/2 text-center motion-reduce:static motion-reduce:mx-auto motion-reduce:!w-[min(100%,800px)] motion-reduce:transform-none [@media(scripting:none)]:static [@media(scripting:none)]:mx-auto [@media(scripting:none)]:!w-[min(100%,800px)] [@media(scripting:none)]:transform-none";
@@ -28,20 +29,16 @@ const SHOT_AT = 0.24;
  * The event details laid out around an eight ball's path. Scrolling draws the
  * cue back and strikes, the ball banks off the right rail as the details fade
  * in, then rolls on (off the left wall if it reaches it) until it passes
- * behind `borderRef`, flashing the rail's stars. With reduced motion or no
+ * behind the "ball" `Rail` (found by BORDER_ID), flashing the rail's stars. With reduced motion or no
  * JavaScript, the details simply stack.
  */
-export function PoolStory({
-  borderRef,
-}: {
-  borderRef: RefObject<HTMLDivElement | null>;
-}) {
+export function PoolStory() {
   const rootRef = useRef<HTMLDivElement>(null);
 
-  // A passive effect, so the border (rendered after this story) has its ref.
+  // A passive effect, so the rail (rendered after this story) is in the DOM.
   useEffect(() => {
     const root = rootRef.current;
-    const border = borderRef.current;
+    const border = document.getElementById(BORDER_ID);
     if (!root || !border) return;
 
     gsap.registerPlugin(ScrollTrigger);
@@ -412,7 +409,7 @@ export function PoolStory({
     );
 
     return () => media.revert();
-  }, [borderRef]);
+  }, []);
 
   return (
     <div

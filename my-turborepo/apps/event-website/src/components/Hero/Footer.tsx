@@ -29,7 +29,7 @@ export function Footer() {
                 <p className="text-sm hover:text-white/90">connect@tamudatathon.com</p>
               </a>
             </div>
-            <a href="https://mlh.io/code-of-conduct">
+            <a href="https://mlh.io/code-of-conduct" target="_blank" rel="noopener noreferrer">
               <p className=" hover:text-white/90">Review the MLH Code of Conduct</p>
             </a>
           </div>
@@ -38,15 +38,27 @@ export function Footer() {
             <a href="https://tamudatathon.org/apply">
               <p className="mb-2 hover:text-white/90">Apply</p>
             </a>
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdknd_sg7QjUmu8WRgAZD7Y8AA2FgD6iJ8Y5X21hGYraFasmg/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <p className="mb-2 hover:text-white/90">Travel Reimbursement</p>
+            </a>
+            {/* Re-enable once <Schedule /> is rendered in app/page.tsx
             <a href="#schedule">
               <p className="mb-2 hover:text-white/90">Schedule</p>
-            </a>
+            </a> */}
             <a href="#event-information">
               <p className="mb-2 hover:text-white/90">Event Information</p>
             </a>
+            <a href="#sponsors">
+              <p className="mb-2 hover:text-white/90">Sponsors</p>
+            </a>
+            {/* Re-enable once <Prizes /> is rendered in app/page.tsx
             <a href="#prizes">
               <p className="mb-2 hover:text-white/90">Prizes</p>
-            </a>
+            </a> */}
             <a href="#faq">
               <p className="mb-2 hover:text-white/90">FAQ</p>
             </a>

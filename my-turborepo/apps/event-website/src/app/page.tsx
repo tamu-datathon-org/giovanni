@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import EventInformation from "@/components/EventInformation";
 import Hero from "@/components/Hero";
+import { Rail } from "@/components/Rail";
 import Location from "@/components/location";
 import Schedule from "@/components/Schedule";
 import { CasinoTransition } from "@/components/CasinoTransition";
@@ -34,10 +35,12 @@ export default function Home() {
       <Menu />
       <Hero />
       <EventInformation />
+      <Rail shine="ball" />
       <CasinoTransition variant="coins" />
       {/* <Schedule /> */}
       <Sponsors />
-      <FAQ /> 
+      <Rail shine="view" overlay />
+      <FAQ />
       <Footer/> 
     </>
   );

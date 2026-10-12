@@ -90,6 +90,16 @@ export const theme = {
       three: "0px 5px 15px rgba(6, 8, 15, 0.05)",
     },
     keyframes: {
+      // Rail stars (shine="view"): a quick swell and return, and a glow that lingers.
+      "star-pulse": {
+        "0%, 100%": { transform: "scale(1)" },
+        "50%": { transform: "scale(1.7)" },
+      },
+      "star-glow": {
+        "0%": { opacity: "0" },
+        "23%": { opacity: "1" },
+        "100%": { opacity: "0" },
+      },
       floatx: {
         "0%, 100%": { boxShadow: "none", transform: "translateY(0)" },
         "50%": { boxShadow: "none", transform: "translateY(-20px)" },
@@ -207,6 +217,10 @@ export const theme = {
     },
     animation: {
       float: "floatx 3s ease-in-out infinite",
+
+      // Rail (shine="view")
+      "star-pulse": "star-pulse 0.32s ease-out var(--delay, 0s) both",
+      "star-glow": "star-glow 0.78s ease-out var(--delay, 0s) both",
 
       // Hero
       sway: "sway var(--period) ease-in-out var(--phase) infinite alternate",

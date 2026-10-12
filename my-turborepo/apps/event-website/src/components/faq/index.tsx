@@ -7,7 +7,6 @@ import Image from "next/image";
 
 import { SectionGround } from "@/components/SectionGround";
 
-const DIVIDER = "/event_assets/faq/divider.png";
 const CURTAINS = "/event_assets/faq/curtains.png";
 const TABLE = "/event_assets/faq/poker-table-faq.png";
 const BOTTOM = "/event_assets/faq/faq-btm.png";
@@ -343,10 +342,10 @@ export default function FAQ() {
     >
       <SectionGround>
         <div className="relative w-full">
-          {/* Anchor height matches the divider so curtains can start at its midpoint. */}
+          {/* Leaves room for the overlay Rail (rendered in page.tsx) to hang over; curtains start at its midpoint. */}
           <div
             aria-hidden
-            className="pointer-events-none absolute left-0 top-0 z-0 w-full aspect-[1440/234]"
+            className="pointer-events-none relative z-0 w-full aspect-[1440/234]"
           >
             <Image
               src={CURTAINS}
@@ -357,16 +356,10 @@ export default function FAQ() {
               className={`${ART} absolute left-0 top-1/2 w-full max-w-none`}
             />
           </div>
-          <Image
-            src={DIVIDER}
-            alt=""
-            width={1440}
-            height={234}
-            draggable={false}
-            className={`${ART} relative z-[1] block w-full`}
-          />
 
           <div ref={stageRef} className="relative z-[1] w-full overflow-hidden pb-36 pt-24 md:pb-56 md:pt-60">
+            {/* The menu scrolls to this, not the whole section, to center the heading and table. */}
+            <div id="faq-content">
             <h2 className="font-righteous relative z-[4] flex items-center justify-center gap-[0.4em] text-[clamp(42px,7vw,88px)] uppercase leading-none tracking-[0.04em] text-[#FFB24C] [-webkit-text-stroke:0.06em_#FDFBED] [paint-order:stroke_fill]">
               <Image
                 src={STAR}
@@ -647,6 +640,7 @@ export default function FAQ() {
                   );
                 })}
             </div>
+          </div>
           </div>
           </div>
         </div>
