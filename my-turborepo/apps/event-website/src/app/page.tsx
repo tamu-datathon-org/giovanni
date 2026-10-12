@@ -34,15 +34,11 @@ export default function Home() {
       <Menu />
       <Hero />
       <EventInformation />
-      <div className="relative isolate z-20">
-        <Prizes />
-        <CasinoTransition variant="coins" />
-      </div>
-      <Schedule />
-      <CasinoTransition variant="cards" />
+      <CasinoTransition variant="coins" />
+      {/* <Schedule /> */}
       <Sponsors />
-      <FAQ />
-      <Footer />
+      <FAQ /> 
+      <Footer/> 
     </>
   );
 }
