@@ -13,10 +13,10 @@ type MenuLink = {
 } & Pick<ComponentProps<typeof Chip>, "color" | "textClassName">
 
 const links: MenuLink[] = [
-  // Re-enable once <Prizes /> and <Schedule /> are rendered in app/page.tsx
+  // Re-enable once <Prizes /> is rendered in app/page.tsx
   // { label: "PRIZES", href: "#prizes", color: "teal" },
-  // { label: "SCHEDULE", href: "#schedule", color: "yellow", textClassName: "text-[10px] sm:text-sm" },
   { label: "INFO", href: "#event-information", color: "green" },
+  { label: "SCHEDULE", href: "#schedule", color: "yellow", textClassName: "text-[10px] sm:text-sm" },
   { label: "SPONSORS", href: "#sponsors", color: "teal", textClassName: "text-[10px] sm:text-sm" },
   { label: "FAQ", href: "#faq", target: "faq-content", color: "blue" },
 ]

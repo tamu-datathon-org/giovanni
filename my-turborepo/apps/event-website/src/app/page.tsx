@@ -37,7 +37,7 @@ export default function Home() {
       <EventInformation />
       <Rail shine="ball" />
       <CasinoTransition variant="coins" />
-      {/* <Schedule /> */}
+      <Schedule />
       <Sponsors />
       <Rail shine="view" overlay />
       <FAQ />

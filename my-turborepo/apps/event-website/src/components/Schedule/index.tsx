@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Archivo_Black, Barlow_Condensed, Lilita_One } from "next/font/google";
 import { SectionGround } from "@/components/SectionGround";
+import { categoryColor } from "./categories";
 import scheduleJson from "./schedule.json";
 import styles from "./Schedule.module.css";
 
@@ -213,8 +214,14 @@ function Voucher({
                 .filter(Boolean)
                 .join(" ");
 
+
               return (
-                <li key={ev.id} className={rowClass} data-category={ev.category}>
+                <li
+                  key={ev.id}
+                  className={rowClass}
+                  data-category={ev.category}
+                  style={{ "--cat": categoryColor(ev.category) } as CSSProperties}
+                >
                   <time className={styles.time} dateTime={ev.startTime}>
                     {clock}
                     {period && <span className={styles.period}>{period}</span>}

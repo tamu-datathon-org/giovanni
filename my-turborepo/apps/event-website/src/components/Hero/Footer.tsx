@@ -45,12 +45,11 @@ export function Footer() {
             >
               <p className="mb-2 hover:text-white/90">Travel Reimbursement</p>
             </a>
-            {/* Re-enable once <Schedule /> is rendered in app/page.tsx
-            <a href="#schedule">
-              <p className="mb-2 hover:text-white/90">Schedule</p>
-            </a> */}
             <a href="#event-information">
               <p className="mb-2 hover:text-white/90">Event Information</p>
+            </a>
+            <a href="#schedule">
+              <p className="mb-2 hover:text-white/90">Schedule</p>
             </a>
             <a href="#sponsors">
               <p className="mb-2 hover:text-white/90">Sponsors</p>
