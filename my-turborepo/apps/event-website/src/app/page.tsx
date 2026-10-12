@@ -8,6 +8,7 @@ import { CasinoTransition } from "@/components/CasinoTransition";
 import Workshops from "@/components/workshops";
 import { ScrollUp } from "@vanni/ui/scroll-up";
 import { Footer } from "@/components/Hero/Footer";
+import { Menu } from "@/components/menu/Menu"
 
 const Prizes = dynamic(() => import("@/components/prizes"), {
   loading: () => <div className="min-h-[400px] py-20" />,
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
+      <Menu />
       <Hero />
       <EventInformation />
       <CasinoTransition variant="coins" />

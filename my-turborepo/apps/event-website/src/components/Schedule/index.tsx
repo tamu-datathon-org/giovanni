@@ -249,6 +249,7 @@ export default function Schedule({ data = scheduleJson as ScheduleData }: { data
 
   return (
     <section
+      id="schedule"
       className={`${styles.section} ${titleFont.variable} ${voucherFont.variable} ${receiptFont.variable}`}
       aria-labelledby="schedule-title"
     >
