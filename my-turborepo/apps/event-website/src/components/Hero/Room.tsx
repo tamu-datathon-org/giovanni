@@ -119,6 +119,16 @@ export function Room({
         style={POOL_STYLE}
         aria-hidden="true"
       />
+
+      {/* Keep the section boundary green even while the room lights flicker. */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] h-[clamp(80px,18cqh,180px)]"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgb(20 32 9 / 0), #142009 90%)",
+        }}
+        aria-hidden="true"
+      />
     </>
   );
 }

@@ -38,8 +38,8 @@ interface Coin {
 interface Shower {
   back: Coin[];
   front: Coin[];
-  /** The solid band of the back sheet that hides the screen. */
-  panel: { top: number; height: number };
+  /** The solid band of the back sheet that hides the screen, as a clip path. */
+  panel: { clip: string };
   backHeight: number;
   frontHeight: number;
   /** Sheet y at which the back sheet first hides the whole screen. */
@@ -58,44 +58,79 @@ function makeCoin(x: number, y: number, size: number): Coin {
   };
 }
 
+/** A smooth random curve in [-1, 1]; two sines of unrelated wavelength. */
+function makeWave(gap: number) {
+  const long = gap * (3 + Math.random() * 2);
+  const short = gap * (1.2 + Math.random());
+  const a = Math.random() * Math.PI * 2;
+  const b = Math.random() * Math.PI * 2;
+  return (x: number) =>
+    0.65 * Math.sin((x / long) * Math.PI * 2 + a) +
+    0.35 * Math.sin((x / short) * Math.PI * 2 + b);
+}
+
 /**
  * Two static sheets: only the sheets move, so the shower costs two transforms
  * a frame. The back sheet is a solid band taller than the screen, which is
- * what hides the page while it jumps; coins only dress its edges (two rows
- * leading, a sparser one trailing) plus a few loose ones past each end. The
- * front sheet is a handful of large loose coins that fall faster for depth.
- * Covering the screen with the coins themselves took ~200 overlapping ones.
+ * what hides the page while it jumps. Both of its edges are ragged rather than
+ * straight, and coins are scattered along them and trail off into the screen
+ * (thinning out the farther they get), so it reads as coins falling ahead of
+ * a curtain instead of a row. The front sheet is a handful of large loose
+ * coins that fall faster for depth. Covering the screen with the coins
+ * themselves took ~200 overlapping ones.
  */
 function layoutShower(width: number, height: number): Shower {
   const gap = Math.min(150, Math.max(96, width / 10));
   const cols = Math.ceil(width / gap) + 1;
-  const fringe = gap * 2.5;
-  const panelHeight = height * 1.4;
-  const backHeight = panelHeight + fringe * 2;
+  const fringe = gap * 5;
+  const panelHeight = height * 1.4 + gap * 2;
+  const backHeight = panelHeight + fringe * 2 + gap;
   const bottom = fringe + panelHeight;
-  const jitter = () => (Math.random() - 0.5) * 0.3 * gap;
-  const size = () => gap * (1.2 + Math.random() * 0.3);
+  const spread = (amount: number) => (Math.random() - 0.5) * 2 * amount * gap;
+  const size = () => gap * (0.9 + Math.random() * 0.6);
+
+  // Where the coins sit; the panel's own edge is pulled in so they overhang it.
+  const bottomWave = makeWave(gap);
+  const topWave = makeWave(gap);
+  const bottomEdge = (x: number) => bottom + (0.4 + bottomWave(x)) * gap;
+  const topEdge = (x: number) => fringe + (0.3 + topWave(x) * 0.6) * gap;
+  const pull = gap * 0.35;
 
   const back: Coin[] = [];
   for (let col = 0; col < cols; col++) {
-    const x = (col - 0.25) * gap;
-    back.push(makeCoin(x + jitter(), bottom + jitter(), size()));
-    if (col < cols - 1) {
-      back.push(
-        makeCoin(x + gap / 2 + jitter(), bottom + gap * 0.6 + jitter(), size()),
-      );
+    const x = (col - 0.25) * gap + spread(0.4);
+    if (Math.random() < 0.85) {
+      back.push(makeCoin(x, bottomEdge(x) + spread(0.4), size()));
     }
     if (Math.random() < 0.55) {
-      back.push(makeCoin(x + jitter(), fringe + jitter(), size()));
+      const tx = (col - 0.25) * gap + spread(0.4);
+      back.push(makeCoin(tx, topEdge(tx) + spread(0.4), size()));
     }
   }
-  const loose = (from: number) =>
-    makeCoin(
-      Math.random() * width,
-      from + Math.random() * (fringe - gap * 1.5),
-      size(),
-    );
-  back.push(loose(0), loose(0), loose(bottom + gap * 1.5), loose(bottom + gap * 1.5));
+  // Squaring the random depth bunches the strays near the edge.
+  const trail = (edge: (x: number) => number, sign: 1 | -1, count: number) => {
+    for (let i = 0; i < count; i++) {
+      const x = Math.random() * width;
+      back.push(
+        makeCoin(x, edge(x) + sign * (0.2 + Math.random() ** 2 * 3) * gap, size()),
+      );
+    }
+  };
+  trail(bottomEdge, 1, cols * 2);
+  trail(topEdge, -1, cols);
+
+  const bottomPoints: string[] = [];
+  const topPoints: string[] = [];
+  let shallowest = Infinity;
+  const step = gap / 2;
+  for (let x = 0; ; x = Math.min(x + step, width)) {
+    const lower = bottomEdge(x) - pull;
+    shallowest = Math.min(shallowest, lower);
+    bottomPoints.push(`${x.toFixed(1)}px ${lower.toFixed(1)}px`);
+    topPoints.push(`${x.toFixed(1)}px ${(topEdge(x) + pull).toFixed(1)}px`);
+    if (x >= width) break;
+  }
+  const clip = `polygon(${[...bottomPoints, ...topPoints.reverse()].join(",")})`;
 
   const frontHeight = backHeight * 1.4;
   const front = Array.from({ length: Math.max(5, Math.round(cols * 0.6)) }, () =>
@@ -108,10 +143,10 @@ function layoutShower(width: number, height: number): Shower {
   return {
     back,
     front,
-    panel: { top: fringe, height: panelHeight },
+    panel: { clip },
     backHeight,
     frontHeight,
-    coveredAt: height - fringe - panelHeight,
+    coveredAt: height - shallowest,
   };
 }
 
@@ -149,7 +184,7 @@ function ShowerSheet({
       {panel && (
         <div
           className={styles.panel}
-          style={{ top: panel.top, height: panel.height }}
+          style={{ top: 0, bottom: 0, clipPath: panel.clip }}
         />
       )}
       {coins.map((coin, i) => (

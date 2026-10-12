@@ -1,10 +1,4 @@
-import {
-  Inter,
-  Darumadrop_One,
-  Chilanka,
-  Righteous,
-  Sekuya,
-} from "next/font/google";
+import { Inter, Darumadrop_One, Chilanka, Righteous, Sekuya } from "next/font/google";
 import Header from "@/components/Header";
 import MlhBadge from "@/components/MlhBadge";
 

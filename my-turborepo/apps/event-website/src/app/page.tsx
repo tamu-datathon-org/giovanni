@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import EventInformation from "@/components/EventInformation";
 import Hero from "@/components/Hero";
 import Location from "@/components/location";
 import Schedule from "@/components/Schedule";
@@ -30,16 +31,12 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {/* Ready Just need  */}
-      {/* <EventLocation /> */}
+      <EventInformation />
       <CasinoTransition variant="coins" />
-      <Workshops />
-      <CasinoTransition variant="coins" />
-      <Schedule />
-      <CasinoTransition variant="cards" />
+      {/* <Schedule /> */}
       <Sponsors />
       <FAQ /> 
-      <Footer/>
+      <Footer/> 
     </>
   );
 }
