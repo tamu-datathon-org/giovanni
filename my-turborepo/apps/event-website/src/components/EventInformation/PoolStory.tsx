@@ -24,13 +24,15 @@ const POINTS = [
 
 const PATH = `M ${POINTS.map(({ x, y }) => `${x * 1000} ${y * 1000}`).join(" L ")}`;
 const SHOT_AT = 0.24;
+/** How long the cue's tip rests on the ball before the shot, in timeline time. */
+const CONTACT = 0.008;
 
 /**
  * The event details laid out around an eight ball's path. Scrolling draws the
  * cue back and strikes, the ball banks off the right rail as the details fade
  * in, then rolls on (off the left wall if it reaches it) until it passes
- * behind the "ball" `Rail` (found by BORDER_ID), flashing the rail's stars. With reduced motion or no
- * JavaScript, the details simply stack.
+ * behind the "ball" `Rail` (found by BORDER_ID), setting off the rail's star
+ * ripple. With reduced motion or no JavaScript, the details simply stack.
  */
 export function PoolStory() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -61,9 +63,7 @@ export function PoolStory() {
         const cueAxis = root.querySelector<HTMLDivElement>("[data-cue-axis]");
         const cue = root.querySelector<HTMLDivElement>("[data-cue]");
         const trail = root.querySelector<SVGPathElement>("[data-trail]");
-        const flash = border.querySelector<SVGEllipseElement>(
-          "[data-border-flash]",
-        );
+        const railArt = border.querySelector<SVGSVGElement>("svg");
         if (
           !playArea ||
           !ball ||
@@ -72,7 +72,7 @@ export function PoolStory() {
           !cueAxis ||
           !cue ||
           !trail ||
-          !flash
+          !railArt
         ) {
           return;
         }
@@ -164,12 +164,17 @@ export function PoolStory() {
             },
             0,
           )
+          // The tip lands on the ball a moment before it leaves and rests
+          // there, then follows through behind it. Arriving exactly as the
+          // ball left made contact last a single frame, which a fast scroll
+          // (any touch scroll) skipped, so the cue looked like it fell short.
           .to(
             cue,
-            { x: 0, duration: 0.035, ease: "power3.in" },
-            SHOT_AT - 0.035,
+            { x: 0, duration: 0.03, ease: "power2.in" },
+            SHOT_AT - CONTACT - 0.03,
           )
-          .to(cue, { x: -40, duration: 0.08 }, SHOT_AT + 0.005)
+          .to(cue, { x: 8, duration: 0.02, ease: "power2.out" }, SHOT_AT)
+          .to(cue, { x: -40, duration: 0.08 }, SHOT_AT + 0.02)
           // All the information is fully revealed by the single bounce.
           .to(
             copy,
@@ -240,14 +245,6 @@ export function PoolStory() {
         // diagonal, banking off the left edge if it reaches it, until it
         // passes behind the rail below the section. The rail's stars ripple
         // outward as it crosses the line.
-        const stars = gsap.utils.toArray<SVGGElement>(
-          "[data-border-star]",
-          border,
-        );
-        const glows = gsap.utils.toArray<SVGGElement>(
-          "[data-border-star-glow]",
-          border,
-        );
         // The exit starts where the story's scroll range ends.
         const mainStart = () => timeline.scrollTrigger?.start ?? 0;
         const mainEnd = () => timeline.scrollTrigger?.end ?? 0;
@@ -282,55 +279,14 @@ export function PoolStory() {
           lineDistance = (below("top") - path.y) / path.uy;
         };
 
-        const flashRail = safe(() => {
-          const rail = border.getBoundingClientRect();
-          const ballBox = ball.getBoundingClientRect();
-          const ballX = ballBox.left + ballBox.width / 2;
-          const offsets = stars.map((star) => {
-            const box = star.getBoundingClientRect();
-            return Math.abs(box.left + box.width / 2 - ballX);
-          });
-          const stagger = {
-            each: 0.06,
-            from: offsets.indexOf(Math.min(...offsets)),
-          };
-
-          gsap.set(flash, {
-            attr: { cx: ((ballX - rail.left) / rail.width) * 1440 },
-          });
-          gsap.fromTo(
-            flash,
-            { opacity: 0.95 },
-            { opacity: 0, duration: 0.9, ease: "power2.out", overwrite: true },
-          );
-          gsap.fromTo(
-            stars,
-            { scale: 1 },
-            {
-              scale: 1.7,
-              transformOrigin: "50% 50%",
-              duration: 0.16,
-              ease: "power2.out",
-              yoyo: true,
-              repeat: 1,
-              overwrite: true,
-              stagger,
-            },
-          );
-          // The glow lingers a little after the pulse before fading out.
-          gsap.fromTo(
-            glows,
-            { opacity: 0 },
-            {
-              keyframes: [
-                { opacity: 1, duration: 0.18, ease: "power2.out" },
-                { opacity: 0, duration: 0.6, ease: "power1.in" },
-              ],
-              overwrite: true,
-              stagger,
-            },
-          );
-        });
+        // Restart the rail's own shine: the same CSS ripple from the middle
+        // star that the lower rail plays when it scrolls into view.
+        const shineRail = () => {
+          railArt.removeAttribute("data-shine");
+          // Reading layout between the two makes the animation start over.
+          void railArt.getBoundingClientRect();
+          railArt.setAttribute("data-shine", "");
+        };
 
         // The squash when the ball banks off the left wall.
         const squashBall = safe(() => {
@@ -365,7 +321,7 @@ export function PoolStory() {
           banked = pastBank;
 
           const crossedLine = traveled >= lineDistance;
-          if (crossedLine && !passed) flashRail();
+          if (crossedLine && !passed) shineRail();
           passed = crossedLine;
         };
 
@@ -403,6 +359,7 @@ export function PoolStory() {
           disposed = true;
           ScrollTrigger.removeEventListener("refreshInit", measureCue);
           ScrollTrigger.removeEventListener("refreshInit", measureExit);
+          railArt.removeAttribute("data-shine");
         };
       },
       root,
