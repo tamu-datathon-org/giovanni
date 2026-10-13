@@ -153,6 +153,7 @@ export function ApplicationForm() {
     },
   );
 
+  const utils = api.useUtils();
   const createApplication = api.application.create.useMutation();
   const updateApplication = api.application.update.useMutation();
 
@@ -326,42 +327,44 @@ export function ApplicationForm() {
   }, [watchedValues, importedValues?.app, saveDraft]);
 
   const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
-    const files = form.getValues("resume");
-    let blob_url = importedValues?.resume?.resumeUrl;
-    let blob_name = importedValues?.resume?.resumeName;
+    // Disable first: the resume upload below can take a while, and a second
+    // click during it would send a duplicate submission.
+    setDisableSubmit(true);
 
-    if (files && files?.length > 0) {
-      const file = files[0];
+    try {
+      const files = form.getValues("resume");
+      let blob_url = importedValues?.resume?.resumeUrl;
+      let blob_name = importedValues?.resume?.resumeName;
 
-      if (!file) {
+      if (files && files?.length > 0) {
+        const file = files[0];
+
+        if (!file) {
+          toast({
+            variant: "destructive",
+            title: "File Upload Error",
+            description: "Please select a valid file.",
+          });
+          return;
+        }
+
+        const newBlob = await upload(file.name, file, {
+          access: "public",
+          handleUploadUrl: "/api/resume",
+        });
+
+        blob_url = newBlob.url;
+        blob_name = file.name;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      } else if (!RESUME_OPTIONAL && !importedValues?.resume?.resumeUrl) {
         toast({
           variant: "destructive",
-          title: "File Upload Error",
-          description: "Please select a valid file.",
+          title: "Resume Required",
+          description: "Please upload your resume.",
         });
         return;
       }
 
-      const newBlob = await upload(file.name, file, {
-        access: "public",
-        handleUploadUrl: "/api/resume",
-      });
-
-      blob_url = newBlob.url;
-      blob_name = file.name;
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    } else if (!RESUME_OPTIONAL && !importedValues?.resume?.resumeUrl) {
-      toast({
-        variant: "destructive",
-        title: "Resume Required",
-        description: "Please upload your resume.",
-      });
-      return;
-    }
-
-    setDisableSubmit(true);
-
-    try {
       if (!importedValues?.app) {
         const createApplicationData = {
           resumeUrl: blob_url ?? "",
@@ -375,22 +378,23 @@ export function ApplicationForm() {
           },
         };
 
-        await createApplication.mutateAsync(createApplicationData, {
-          onSuccess: () => {
-            toast({
-              variant: "success",
-              title: "Application submitted successfully!",
-              description:
-                "Your application has been received. You can now update and resubmit.",
-            });
+        await createApplication.mutateAsync(createApplicationData);
 
-            localStorage.removeItem(DRAFT_STORAGE_KEY);
-
-            setTimeout(() => {
-              router.replace("/apply");
-            }, 1500);
-          },
+        toast({
+          variant: "success",
+          title: "Application submitted successfully!",
+          description:
+            "Your application has been received. You can now update and resubmit.",
         });
+
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+        await utils.application.getApplicationByEventName.invalidate({
+          eventName: EVENT_NAME,
+        });
+
+        setTimeout(() => {
+          router.replace("/apply");
+        }, 1500);
       } else {
         const combinedAddress = [
           data.address,
@@ -414,21 +418,39 @@ export function ApplicationForm() {
           },
         };
 
-        await updateApplication.mutateAsync(updateApplicationData, {
-          onSuccess: () => {
-            toast({
-              variant: "success",
-              title: "Application updated successfully!",
-              description: "Your application has been received.",
-            });
+        await updateApplication.mutateAsync(updateApplicationData);
 
-            setTimeout(() => {
-              router.replace("/apply");
-            }, 1500);
-          },
+        toast({
+          variant: "success",
+          title: "Application updated successfully!",
+          description: "Your application has been received.",
         });
+
+        await utils.application.getApplicationByEventName.invalidate({
+          eventName: EVENT_NAME,
+        });
+
+        setTimeout(() => {
+          router.replace("/apply");
+        }, 1500);
       }
     } catch (error: unknown) {
+      // The application already exists (second tab, or a repeat submit). Load
+      // it so the form flips to update mode instead of failing again.
+      if (
+        error instanceof TRPCClientError &&
+        (error.data as { code?: string } | null)?.code === "CONFLICT"
+      ) {
+        toast({
+          variant: "destructive",
+          title: "Application already submitted",
+          description:
+            "We found your existing application and loaded it. Make any changes and press submit to update.",
+        });
+        await refetchApplication();
+        return;
+      }
+
       const messages: string[] = [];
 
       // Handle tRPC Zod errors (server-side validation)
