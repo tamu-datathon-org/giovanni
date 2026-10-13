@@ -27,8 +27,11 @@ const ART =
 const DECK = { x: 16, y: 8 };
 const DEAL_STEP_MS = 90;
 const DEAL_TRAVEL_MS = 700;
-const POPUP_MS = 550;
-const POPUP_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
+const POPUP_OPEN_MS = 550;
+/** Close uses a shorter, less front-loaded ease so it doesn't "sit" after looking done. */
+const POPUP_CLOSE_MS = 320;
+const POPUP_EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
+const POPUP_MS = POPUP_OPEN_MS; // dealSettled / shared fallbacks
 const SCROLL_KEYS = new Set([
   "ArrowUp",
   "ArrowDown",
@@ -186,8 +189,8 @@ function renderAnswer(text: string): ReactNode {
   });
 }
 
-/** Dealt / flip-back: card art with question on a white cross-hatch for contrast. */
-function FaqCardBack({ question }: { question: string }) {
+/** Dealt / flip-back: plain card art (question sits above the card). */
+function FaqCardBack() {
   return (
     <div className="relative h-full w-full overflow-hidden">
       <Image
@@ -198,27 +201,6 @@ function FaqCardBack({ question }: { question: string }) {
         draggable={false}
         className={`${ART} h-full w-full object-contain drop-shadow-[0_6px_4px_rgb(0_0_0/0.35)]`}
       />
-      <div className="pointer-events-none absolute inset-[16%_6%] z-[1] flex items-center justify-center">
-        <div
-          aria-hidden
-          className="absolute inset-[6%_0%]"
-          style={{
-            clipPath: "polygon(10% 14%, 90% 14%, 96% 86%, 4% 86%)",
-            backgroundColor: "rgb(255 255 255 / 0.94)",
-            backgroundImage: `
-              linear-gradient(45deg, rgb(31 113 221 / 0.14) 25%, transparent 25%),
-              linear-gradient(-45deg, rgb(31 113 221 / 0.14) 25%, transparent 25%),
-              linear-gradient(45deg, transparent 75%, rgb(31 113 221 / 0.14) 75%),
-              linear-gradient(-45deg, transparent 75%, rgb(31 113 221 / 0.14) 75%)
-            `,
-            backgroundSize: "7px 7px",
-            backgroundPosition: "0 0, 0 3.5px, 3.5px -3.5px, -3.5px 0",
-          }}
-        />
-        <p className="font-righteous relative z-[1] w-[88%] line-clamp-5 px-[4%] text-center text-[clamp(12px,1.55vw,20px)] leading-tight text-[#1F71DD]">
-          {question}
-        </p>
-      </div>
     </div>
   );
 }
@@ -300,7 +282,11 @@ export default function FAQ() {
   const [dealt, setDealt] = useState(false);
   const [landed, setLanded] = useState(false);
   const [dealSettled, setDealSettled] = useState(false);
+  /** Table question labels — only from sm (575px) up. */
+  const [showTableQuestions, setShowTableQuestions] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  /** Bumped on every open so the portal remounts from the correct card spot. */
+  const [openGen, setOpenGen] = useState(0);
   const [flyFrom, setFlyFrom] = useState<CardRect | null>(null);
   const [flyActive, setFlyActive] = useState(false);
   const [dimOn, setDimOn] = useState(false);
@@ -323,6 +309,14 @@ export default function FAQ() {
     observer.observe(stage);
     return () => observer.disconnect();
   }, [stageRef]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 575px)");
+    const sync = () => setShowTableQuestions(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     if (!landed) {
@@ -410,16 +404,33 @@ export default function FAQ() {
 
     const el = cardRefs.current[index];
     if (!el) return;
+    // If another card is still "selected"/hidden, measure from its spot coords
+    // instead of a mid-flight portal (getBoundingClientRect can be wrong/0).
     const rect = el.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+
+    setFlyActive(false);
     setFlyFrom({
       top: rect.top,
       left: rect.left,
       width: rect.width,
       height: rect.height,
     });
-    setFlyActive(false);
     setDimOn(dimStay);
+    setOpenGen((gen) => gen + 1);
     setOpenIndex(index);
+  };
+
+  const finishClose = () => {
+    if (!closingRef.current) return;
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setOpenIndex(null);
+    setFlyFrom(null);
+    setIsClosing(false);
+    closingRef.current = false;
   };
 
   const closeCard = () => {
@@ -434,13 +445,11 @@ export default function FAQ() {
     if (closeTimerRef.current !== null) {
       window.clearTimeout(closeTimerRef.current);
     }
-    closeTimerRef.current = window.setTimeout(() => {
-      setOpenIndex(null);
-      setFlyFrom(null);
-      setIsClosing(false);
-      closingRef.current = false;
-      closeTimerRef.current = null;
-    }, reduceMotion ? 0 : POPUP_MS);
+    // Fallback if transitionend doesn't fire; primary cleanup is onTransitionEnd.
+    closeTimerRef.current = window.setTimeout(
+      finishClose,
+      reduceMotion ? 0 : POPUP_CLOSE_MS + 40,
+    );
   };
 
   const deal = () => {
@@ -608,11 +617,12 @@ export default function FAQ() {
                         className="fixed inset-0 z-[70] border-0 bg-black p-0"
                         style={{
                           opacity: dimOn ? 0.75 : 0,
-                          transition: `opacity ${POPUP_MS}ms ${POPUP_EASE}`,
+                          transition: `opacity ${isClosing ? POPUP_CLOSE_MS : POPUP_OPEN_MS}ms ${POPUP_EASE}`,
                           pointerEvents: isClosing ? "none" : "auto",
                         }}
                       />
                       <div
+                        key={`${openIndex}-${openGen}`}
                         role="button"
                         tabIndex={0}
                         aria-label={
@@ -652,7 +662,13 @@ export default function FAQ() {
                             transform: flyActive
                               ? "translate(0px, 0px) scale(1)"
                               : `translate(${flyFrom.left + flyFrom.width / 2 - (flyTo.left + flyTo.width / 2)}px, ${flyFrom.top + flyFrom.height / 2 - (flyTo.top + flyTo.height / 2)}px) scale(${restScale})`,
-                            transition: `transform ${POPUP_MS}ms ${POPUP_EASE}`,
+                            transition: `transform ${isClosing ? POPUP_CLOSE_MS : POPUP_OPEN_MS}ms ${POPUP_EASE}`,
+                          }}
+                          onTransitionEnd={(event) => {
+                            if (event.target !== event.currentTarget) return;
+                            if (event.propertyName !== "transform") return;
+                            if (!isClosing) return;
+                            finishClose();
                           }}
                         >
                           <div
@@ -661,32 +677,24 @@ export default function FAQ() {
                               transform: flyActive
                                 ? "rotateY(180deg)"
                                 : "rotateY(0deg)",
-                              transition: `transform ${POPUP_MS}ms ${POPUP_EASE}`,
+                              transition: `transform ${isClosing ? POPUP_CLOSE_MS : POPUP_OPEN_MS}ms ${POPUP_EASE}`,
                             }}
                           >
-                            {/*
-                              Lock the hatch/back to dealt-card pixel size (counter-scale)
-                              so it doesn't grow/shrink while the face scales up.
-                            */}
                             <div
-                              className="absolute"
+                              className="absolute inset-0"
                               aria-hidden={flyActive && !isClosing}
                               style={{
-                                width: flyFrom.width,
-                                height: flyFrom.height,
-                                left: "50%",
-                                top: "50%",
-                                marginLeft: -flyFrom.width / 2,
-                                marginTop: -flyFrom.height / 2,
                                 backfaceVisibility: "hidden",
                                 WebkitBackfaceVisibility: "hidden",
-                                transform: `translateZ(1px) scale(${flyActive ? 1 : 1 / restScale})`,
-                                transition: `transform ${POPUP_MS}ms ${POPUP_EASE}, opacity 0ms linear ${flyActive ? POPUP_MS : 0}ms`,
+                                transform: "translateZ(1px)",
                                 opacity: flyActive && !isClosing ? 0 : 1,
+                                transition: flyActive
+                                  ? `opacity 0ms linear ${POPUP_OPEN_MS}ms`
+                                  : "opacity 0ms linear",
                                 pointerEvents: "none",
                               }}
                             >
-                              <FaqCardBack question={openItem.question} />
+                              <FaqCardBack />
                             </div>
                             <div
                               className="absolute inset-0"
@@ -709,6 +717,36 @@ export default function FAQ() {
                     document.body,
                   )
                 : null}
+
+              {/* Questions at rest spots — fade in after deal; omitted below 575px. */}
+              {showTableQuestions &&
+                dealt &&
+                landed &&
+                ITEMS.map((item, index) => {
+                  const spot = SPOTS[index];
+                  return (
+                    <div
+                      key={`q-${item.question}`}
+                      className="pointer-events-none absolute z-[4] aspect-square w-[13.5%] -translate-x-1/2 -translate-y-1/2"
+                      style={{
+                        left: `${spot.x}%`,
+                        top: `${spot.y}%`,
+                        opacity: dealSettled ? 1 : 0,
+                        transition: `opacity 450ms ease-out ${index * 40}ms`,
+                      }}
+                    >
+                      <p
+                        className="font-righteous absolute bottom-[100%] left-1/2 mb-[0.35em] w-[170%] -translate-x-1/2 text-center leading-[1.15] tracking-[0.02em] text-[#FDFBED] [text-shadow:0_1px_3px_rgb(0_0_0/0.75)]"
+                        style={{
+                          fontSize:
+                            "clamp(9px, calc(9px + (100vw - 575px) * 0.0128), 18px)",
+                        }}
+                      >
+                        <span className="line-clamp-3">{item.question}</span>
+                      </p>
+                    </div>
+                  );
+                })}
 
               {dealt &&
                 ITEMS.map((item, index) => {
@@ -751,7 +789,7 @@ export default function FAQ() {
                       }}
                     >
                       <div className="relative h-full w-full origin-center transition-transform duration-150 ease-out group-hover/card:scale-[1.06] group-focus-visible/card:scale-[1.06]">
-                        <FaqCardBack question={item.question} />
+                        <FaqCardBack />
                       </div>
                     </div>
                   );
