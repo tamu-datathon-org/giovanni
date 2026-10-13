@@ -17,6 +17,8 @@ const CARD = "/event_assets/faq/card.png";
 const CHIP_STACK = "/event_assets/faq/chip-stack.png";
 const BUBBLE = "/event_assets/faq/faq-wanna-play.png";
 const STAR = "/event_assets/sponsors/Star.png";
+const TRAVEL_FORM =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdknd_sg7QjUmu8WRgAZD7Y8AA2FgD6iJ8Y5X21hGYraFasmg/viewform";
 
 const ART =
   "pointer-events-none h-auto w-full select-none [-webkit-user-drag:none] [user-drag:none]";
@@ -26,8 +28,17 @@ const DECK = { x: 16, y: 8 };
 const DEAL_STEP_MS = 90;
 const DEAL_TRAVEL_MS = 700;
 const POPUP_MS = 550;
-const FACE_FADE_DELAY_MS = POPUP_MS / 2;
 const POPUP_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
+const SCROLL_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "PageUp",
+  "PageDown",
+  "Home",
+  "End",
+  " ",
+  "Spacebar",
+]);
 
 type CardRect = {
   top: number;
@@ -52,16 +63,16 @@ function popupSize() {
 }
 
 const SPOTS = [
-  { x: 12, y: 34 },
-  { x: 31, y: 34 },
+  { x: 10, y: 34 },
+  { x: 30, y: 34 },
   { x: 50, y: 34 },
-  { x: 69, y: 34 },
-  { x: 88, y: 34 },
-  { x: 12, y: 64 },
-  { x: 31, y: 64 },
+  { x: 70, y: 34 },
+  { x: 90, y: 34 },
+  { x: 10, y: 64 },
+  { x: 30, y: 64 },
   { x: 50, y: 64 },
-  { x: 69, y: 64 },
-  { x: 88, y: 64 },
+  { x: 70, y: 64 },
+  { x: 90, y: 64 },
 ];
 
 type FaqItem = { question: string; answer: string };
@@ -73,19 +84,14 @@ const ITEMS: FaqItem[] = [
       "A datathon is where you build your analytical skill set and create data-driven solutions in 24 hours. We provide data science lectures, workshops, challenges, prizes, fun activities, swag, food, and more!",
   },
   {
-    question: "When is the event?",
+    question: "When & where is the event?",
     answer:
-      "November 9-10th, 2024. A complete schedule will be available at tamudatathon.com/schedule at a later date.",
-  },
-  {
-    question: "Where is the event & how will I get there?",
-    answer:
-      "The event will take place at the MSC 2300 Bethancourt Ballroom! Parking will be free at a later disclosed location",
+      "November 9-10th, 2024 at the MSC 2300 Bethancourt Ballroom! A complete schedule will be available at tamudatathon.com/schedule at a later date. Parking will be free at a later disclosed location.",
   },
   {
     question: "How much do I need to know?",
     answer:
-      "If you are new to data science, TAMU Datathon is the perfect time and place to learn. We will provide introductory coursework and mentors to guide you along your journey to complete a data science project. For our more advanced students, our challenges will pique your interest and allow you to put your skills to the test. We are committed to helping you build something you can be proud of!",
+      "Not much! We have intro workshops and mentors for beginners, plus tougher challenges if you already have experience.",
   },
   {
     question: "How do I sign up?",
@@ -113,13 +119,17 @@ const ITEMS: FaqItem[] = [
       "Teams can have up to 4 people. We encourage working with a team, it's more fun! You do not need to form a team before attending the event. There will be plenty of time to find a team after opening ceremonies.",
   },
   {
+    question: "Are travel reimbursements available?",
+    answer: `Limited travel reimbursements are available for attendees coming from outside the area. Apply here: ${TRAVEL_FORM}`,
+  },
+  {
     question: "I have another question?",
     answer: "Send us an email at connect@tamudatathon.com.",
   },
 ];
 
 const linkPattern =
-  /(https:\/\/tamudatathon\.org\/apply|connect@tamudatathon\.com)/g;
+  /(https:\/\/tamudatathon\.org\/apply|https:\/\/docs\.google\.com\/forms\/d\/e\/1FAIpQLSdknd_sg7QjUmu8WRgAZD7Y8AA2FgD6iJ8Y5X21hGYraFasmg\/viewform|connect@tamudatathon\.com)/g;
 
 function renderAnswer(text: string): ReactNode {
   const renderLinks = (content: string, keyPrefix: string) =>
@@ -134,6 +144,19 @@ function renderAnswer(text: string): ReactNode {
             className="underline underline-offset-2"
           >
             {part}
+          </a>
+        );
+      }
+      if (part === TRAVEL_FORM) {
+        return (
+          <a
+            key={`${keyPrefix}-link-${index}`}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2"
+          >
+            Travel Reimbursement form
           </a>
         );
       }
@@ -163,6 +186,114 @@ function renderAnswer(text: string): ReactNode {
   });
 }
 
+/** Dealt / flip-back: card art with question on a white cross-hatch for contrast. */
+function FaqCardBack({ question }: { question: string }) {
+  return (
+    <div className="relative h-full w-full overflow-hidden">
+      <Image
+        src={CARD}
+        alt=""
+        width={280}
+        height={280}
+        draggable={false}
+        className={`${ART} h-full w-full object-contain drop-shadow-[0_6px_4px_rgb(0_0_0/0.35)]`}
+      />
+      <div className="pointer-events-none absolute inset-[16%_6%] z-[1] flex items-center justify-center">
+        <div
+          aria-hidden
+          className="absolute inset-[6%_0%]"
+          style={{
+            clipPath: "polygon(10% 14%, 90% 14%, 96% 86%, 4% 86%)",
+            backgroundColor: "rgb(255 255 255 / 0.94)",
+            backgroundImage: `
+              linear-gradient(45deg, rgb(31 113 221 / 0.14) 25%, transparent 25%),
+              linear-gradient(-45deg, rgb(31 113 221 / 0.14) 25%, transparent 25%),
+              linear-gradient(45deg, transparent 75%, rgb(31 113 221 / 0.14) 75%),
+              linear-gradient(-45deg, transparent 75%, rgb(31 113 221 / 0.14) 75%)
+            `,
+            backgroundSize: "7px 7px",
+            backgroundPosition: "0 0, 0 3.5px, 3.5px -3.5px, -3.5px 0",
+          }}
+        />
+        <p className="font-righteous relative z-[1] w-[88%] line-clamp-5 px-[4%] text-center text-[clamp(12px,1.55vw,20px)] leading-tight text-[#1F71DD]">
+          {question}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/** Opened face: L-borders + rank, question/answer, no cross-hatch. */
+function FaqCardFace({
+  number,
+  question,
+  answer,
+}: {
+  number: number;
+  question: string;
+  answer: string;
+}) {
+  return (
+    <div className="relative h-full w-full overflow-hidden bg-white text-[#1F71DD] shadow-[0_16px_32px_rgb(0_0_0/0.45)]">
+      {/* Mirrored L-borders tight to the edges */}
+      <svg
+        aria-hidden
+        className="pointer-events-none absolute inset-[1%] h-[98%] w-[98%]"
+        viewBox="0 0 100 140"
+        fill="none"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M6 18 V134 H82"
+          stroke="#1F71DD"
+          strokeWidth="1.5"
+          strokeLinecap="square"
+          strokeLinejoin="miter"
+          vectorEffect="non-scaling-stroke"
+        />
+        <path
+          d="M94 122 V6 H18"
+          stroke="#1F71DD"
+          strokeWidth="1.5"
+          strokeLinecap="square"
+          strokeLinejoin="miter"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+      <div className="absolute left-[1.5%] top-[1%] z-[1] flex w-[11%] flex-col items-center leading-none">
+        <span className="font-righteous text-[length:clamp(14px,2.2vw,32px)]">
+          {number}
+        </span>
+        <span className="mt-[0.02em] text-[length:clamp(10px,1.4vw,20px)] leading-none">
+          ♠
+        </span>
+      </div>
+      <div className="absolute bottom-[1%] right-[1.5%] z-[1] flex w-[11%] rotate-180 flex-col items-center leading-none">
+        <span className="font-righteous text-[length:clamp(14px,2.2vw,32px)]">
+          {number}
+        </span>
+        <span className="mt-[0.02em] text-[length:clamp(10px,1.4vw,20px)] leading-none">
+          ♠
+        </span>
+      </div>
+      <div className="absolute inset-[12%_10%] flex flex-col overflow-hidden px-[4%] py-[3%]">
+        <p className="font-righteous shrink-0 text-[clamp(16px,2.5vw,28px)] leading-tight text-[#1F71DD]">
+          {question}
+        </p>
+        <div
+          data-faq-scroll
+          className="mt-3 min-h-0 flex-1 overflow-y-auto text-[clamp(14px,1.9vw,20px)] leading-snug text-[#1F71DD]"
+        >
+          {renderAnswer(answer)}
+        </div>
+        <p className="font-righteous mt-3 shrink-0 text-center text-[clamp(11px,1.4vw,15px)] tracking-[0.04em] text-[#1F71DD]/70">
+          Click to close
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function FAQ() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -170,9 +301,6 @@ export default function FAQ() {
   const [landed, setLanded] = useState(false);
   const [dealSettled, setDealSettled] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [faceReady, setFaceReady] = useState(false);
-  /** Text content follows this index so a closing card can't leave stale copy up. */
-  const [faceIndex, setFaceIndex] = useState<number | null>(null);
   const [flyFrom, setFlyFrom] = useState<CardRect | null>(null);
   const [flyActive, setFlyActive] = useState(false);
   const [dimOn, setDimOn] = useState(false);
@@ -217,13 +345,9 @@ export default function FAQ() {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    setFaceReady(false);
-    setFaceIndex(null);
     setFlyActive(reduceMotion);
     if (reduceMotion) {
       setDimOn(true);
-      setFaceIndex(openIndex);
-      setFaceReady(true);
     }
 
     let inner = 0;
@@ -233,30 +357,31 @@ export default function FAQ() {
         setDimOn(true);
       });
     });
-    const faceTimer = window.setTimeout(() => {
-      setFaceIndex(openIndex);
-      setFaceReady(true);
-    }, reduceMotion ? 0 : FACE_FADE_DELAY_MS);
 
     return () => {
       window.cancelAnimationFrame(outer);
       window.cancelAnimationFrame(inner);
-      window.clearTimeout(faceTimer);
     };
   }, [openIndex, flyFrom]);
 
+  // Freeze scroll without hiding the scrollbar (avoids layout shift).
   useEffect(() => {
     if (openIndex === null) return;
-    const html = document.documentElement;
-    const body = document.body;
-    const prevHtml = html.style.overflow;
-    const prevBody = body.style.overflow;
-    html.style.overflow = "hidden";
-    body.style.overflow = "hidden";
-    return () => {
-      html.style.overflow = prevHtml;
-      body.style.overflow = prevBody;
+    const block = (event: Event) => {
+      if (event instanceof KeyboardEvent) {
+        if (SCROLL_KEYS.has(event.key)) event.preventDefault();
+        return;
+      }
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("[data-faq-scroll]")) return;
+      event.preventDefault();
     };
+    const types = ["wheel", "touchmove", "keydown"] as const;
+    types.forEach((type) =>
+      window.addEventListener(type, block, { passive: false }),
+    );
+    return () =>
+      types.forEach((type) => window.removeEventListener(type, block));
   }, [openIndex]);
 
   useEffect(() => {
@@ -268,8 +393,9 @@ export default function FAQ() {
   }, []);
 
   const openItem = openIndex === null ? null : ITEMS[openIndex];
-  const faceItem = faceIndex === null ? null : ITEMS[faceIndex];
   const flyTo = typeof window !== "undefined" ? popupSize() : null;
+  const restScale =
+    flyFrom && flyTo ? flyFrom.width / flyTo.width : 1;
 
   const openCard = (index: number) => {
     if (openIndex === index && !closingRef.current) return;
@@ -292,8 +418,6 @@ export default function FAQ() {
       height: rect.height,
     });
     setFlyActive(false);
-    setFaceReady(false);
-    setFaceIndex(null);
     setDimOn(dimStay);
     setOpenIndex(index);
   };
@@ -304,8 +428,6 @@ export default function FAQ() {
     setIsClosing(true);
     setDimOn(false);
     setFlyActive(false);
-    setFaceReady(false);
-    setFaceIndex(null);
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -476,7 +598,7 @@ export default function FAQ() {
                 </p>
               ) : null}
 
-              {openItem && flyFrom && flyTo
+              {openItem && flyFrom && flyTo && openIndex !== null
                 ? createPortal(
                     <>
                       <button
@@ -501,7 +623,7 @@ export default function FAQ() {
                         onClick={(event) => {
                           if ((event.target as HTMLElement).closest("a")) return;
                           if (isClosing) {
-                            if (openIndex !== null) openCard(openIndex);
+                            openCard(openIndex);
                             return;
                           }
                           closeCard();
@@ -510,72 +632,75 @@ export default function FAQ() {
                           if (event.key !== "Enter" && event.key !== " ") return;
                           event.preventDefault();
                           if (isClosing) {
-                            if (openIndex !== null) openCard(openIndex);
+                            openCard(openIndex);
                             return;
                           }
                           closeCard();
                         }}
-                        className="fixed z-[80] origin-center cursor-pointer border-0 bg-transparent p-0 [perspective:1200px] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED]"
+                        className="fixed z-[80] origin-center cursor-pointer border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED]"
                         style={{
-                          // Final layout size is fixed so text never reflows while growing.
                           top: flyTo.top,
                           left: flyTo.left,
                           width: flyTo.width,
                           height: flyTo.height,
-                          transform: flyActive
-                            ? "translate(0px, 0px) scale(1)"
-                            : `translate(${flyFrom.left + flyFrom.width / 2 - (flyTo.left + flyTo.width / 2)}px, ${flyFrom.top + flyFrom.height / 2 - (flyTo.top + flyTo.height / 2)}px) scale(${flyFrom.width / flyTo.width})`,
-                          transition: `transform ${POPUP_MS}ms ${POPUP_EASE}`,
+                          perspective: "1200px",
                         }}
                       >
                         <div
-                          className="relative h-full w-full [transform-style:preserve-3d]"
+                          className="h-full w-full [transform-style:preserve-3d]"
                           style={{
                             transform: flyActive
-                              ? "rotateY(180deg)"
-                              : "rotateY(0deg)",
+                              ? "translate(0px, 0px) scale(1)"
+                              : `translate(${flyFrom.left + flyFrom.width / 2 - (flyTo.left + flyTo.width / 2)}px, ${flyFrom.top + flyFrom.height / 2 - (flyTo.top + flyTo.height / 2)}px) scale(${restScale})`,
                             transition: `transform ${POPUP_MS}ms ${POPUP_EASE}`,
                           }}
                         >
-                          <div className="absolute inset-0 [backface-visibility:hidden]">
-                            <Image
-                              src={CARD}
-                              alt=""
-                              width={280}
-                              height={280}
-                              draggable={false}
-                              className={`${ART} h-full w-full object-contain drop-shadow-[0_6px_4px_rgb(0_0_0/0.35)]`}
-                            />
-                          </div>
-                          <div className="absolute inset-0 flex flex-col overflow-hidden bg-white px-[8%] py-[7%] text-left text-[#1F71DD] shadow-[0_16px_32px_rgb(0_0_0/0.45)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                          <div
+                            className="relative h-full w-full [transform-style:preserve-3d]"
+                            style={{
+                              transform: flyActive
+                                ? "rotateY(180deg)"
+                                : "rotateY(0deg)",
+                              transition: `transform ${POPUP_MS}ms ${POPUP_EASE}`,
+                            }}
+                          >
+                            {/*
+                              Lock the hatch/back to dealt-card pixel size (counter-scale)
+                              so it doesn't grow/shrink while the face scales up.
+                            */}
                             <div
-                              key={faceIndex ?? "empty"}
-                              className={`flex min-h-0 flex-1 flex-col ${
-                                faceReady && faceItem && !isClosing
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              }`}
+                              className="absolute"
+                              aria-hidden={flyActive && !isClosing}
                               style={{
-                                transitionProperty: "opacity",
-                                transitionDuration: isClosing
-                                  ? "0ms"
-                                  : `${POPUP_MS}ms`,
-                                transitionTimingFunction: POPUP_EASE,
+                                width: flyFrom.width,
+                                height: flyFrom.height,
+                                left: "50%",
+                                top: "50%",
+                                marginLeft: -flyFrom.width / 2,
+                                marginTop: -flyFrom.height / 2,
+                                backfaceVisibility: "hidden",
+                                WebkitBackfaceVisibility: "hidden",
+                                transform: `translateZ(1px) scale(${flyActive ? 1 : 1 / restScale})`,
+                                transition: `transform ${POPUP_MS}ms ${POPUP_EASE}, opacity 0ms linear ${flyActive ? POPUP_MS : 0}ms`,
+                                opacity: flyActive && !isClosing ? 0 : 1,
+                                pointerEvents: "none",
                               }}
                             >
-                              {faceItem ? (
-                                <>
-                                  <p className="font-righteous shrink-0 text-[clamp(18px,2.8vw,32px)] leading-tight text-[#1F71DD]">
-                                    {faceItem.question}
-                                  </p>
-                                  <div className="mt-3 min-h-0 flex-1 overflow-y-auto text-[clamp(15px,2.1vw,22px)] leading-snug text-[#1F71DD]">
-                                    {renderAnswer(faceItem.answer)}
-                                  </div>
-                                  <p className="font-righteous mt-3 shrink-0 text-center text-[clamp(12px,1.5vw,16px)] tracking-[0.04em] text-[#1F71DD]/70">
-                                    Click to close
-                                  </p>
-                                </>
-                              ) : null}
+                              <FaqCardBack question={openItem.question} />
+                            </div>
+                            <div
+                              className="absolute inset-0"
+                              style={{
+                                backfaceVisibility: "hidden",
+                                WebkitBackfaceVisibility: "hidden",
+                                transform: "rotateY(180deg) translateZ(1px)",
+                              }}
+                            >
+                              <FaqCardFace
+                                number={openIndex + 1}
+                                question={openItem.question}
+                                answer={openItem.answer}
+                              />
                             </div>
                           </div>
                         </div>
@@ -620,21 +745,13 @@ export default function FAQ() {
                       style={{
                         left: `${x}%`,
                         top: `${y}%`,
-                        // Stay hidden until the flying card finishes closing.
                         opacity: !landed || selected ? 0 : 1,
                         transition: moveTransition,
                         pointerEvents: selected ? "none" : undefined,
                       }}
                     >
                       <div className="relative h-full w-full origin-center transition-transform duration-150 ease-out group-hover/card:scale-[1.06] group-focus-visible/card:scale-[1.06]">
-                        <Image
-                          src={CARD}
-                          alt=""
-                          width={280}
-                          height={280}
-                          draggable={false}
-                          className={`${ART} h-full w-full object-contain drop-shadow-[0_6px_4px_rgb(0_0_0/0.35)]`}
-                        />
+                        <FaqCardBack question={item.question} />
                       </div>
                     </div>
                   );

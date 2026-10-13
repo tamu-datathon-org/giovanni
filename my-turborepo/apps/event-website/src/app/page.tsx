@@ -41,7 +41,7 @@ export default function Home() {
       <Sponsors />
       <Rail shine="view" overlay />
       <FAQ />
-      <Footer/> 
+      <Footer/>
     </>
   );
 }
