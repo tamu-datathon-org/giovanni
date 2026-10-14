@@ -46,9 +46,9 @@ const EventInfo = {
     venueName: "TODO: venue name", // required by the poster layout
 };
 
-// TODO: Add the poster URL here (a PNG; Apple uses it as the full-bleed poster artwork).
-// Leave it empty to use models/Event.pass/background.png instead, if you put one there.
-const POSTER_URL: string = "";
+// Full-bleed poster artwork: a local path (relative to where the script runs) or an https:// URL.
+// Leave it empty to use models/Event.pass/background.png instead.
+const POSTER: string = "public/wallet_bg_a.png";
 
 
 export async function generateEventPass(a: Attendee): Promise<Buffer>{
@@ -59,6 +59,7 @@ export async function generateEventPass(a: Attendee): Promise<Buffer>{
             teamIdentifier: process.env.APPLE_TEAM_ID!,
             serialNumber: a.id,
             description: `${EventInfo.name} ticket`,
+            logoText: EventInfo.name,
             eventLogoText: EventInfo.name,
             // The poster layout is built from these semantic tags rather than the fields below
             semantics: {
@@ -72,12 +73,32 @@ export async function generateEventPass(a: Attendee): Promise<Buffer>{
         }
     )
 
-    if (POSTER_URL) {
-        const poster = await fetch(POSTER_URL);
-        pass.addBuffer("background.png", Buffer.from(await poster.arrayBuffer()));
+    if (POSTER) {
+        const posterImage = POSTER.startsWith("http")
+            ? Buffer.from(await (await fetch(POSTER)).arrayBuffer())
+            : fs.readFileSync(path.resolve(POSTER));
+        pass.addBuffer("background.png", posterImage);
     }
 
-    // Poster tickets have to be an eventTicket (boardingPass can't use the poster style)
+    // iOS 27+ Poster Generic layout: artwork background, logo + header on top, QR in the middle,
+    // primary fields along the bottom, and a single footer line under them
+    const posterGeneric = new PassType("posterGeneric");
+
+    posterGeneric.headerFields.push(
+        { key: "ticket", label: "TICKET", value: a.id },
+    );
+
+    posterGeneric.primaryFields.push(
+        { key: "hacker", label: "Hacker", value: a.name },
+        { key: "food-group", label: "Food Group", value: a.group, textAlignment: "PKTextAlignmentRight" },
+    );
+
+    // Only the first footer field is shown
+    posterGeneric.footerFields.push(
+        { key: "dates", value: `${EventInfo.startDay} – ${EventInfo.endDay}` },
+    );
+
+    // Fallback for iOS < 27. Poster tickets have to be an eventTicket (boardingPass can't use the poster style)
     const passType = new PassType("eventTicket");
 
     passType.headerFields.push({
@@ -103,9 +124,11 @@ export async function generateEventPass(a: Attendee): Promise<Buffer>{
 
 
 
-    pass.types.push(passType); // add it after the fields are filled in
+    // add them after the fields are filled in; Wallet prefers posterGeneric when it's supported
+    pass.types.push(posterGeneric);
+    pass.types.push(passType);
 
-    // iOS 18+ shows the poster; older iOS falls back to the regular event ticket
+    // iOS 18–26 shows the event poster; older iOS falls back to the regular event ticket
     pass.preferredStyleSchemes = ["posterEventTicket", "eventTicket"];
 
     pass.setBarcodes({
