@@ -1323,6 +1323,25 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  packages/google-wallet:
+    dependencies:
+      jsonwebtoken:
+        specifier: 'catalog:'
+        version: 9.0.3
+    devDependencies:
+      '@types/jsonwebtoken':
+        specifier: 'catalog:'
+        version: 9.0.10
+      '@types/node':
+        specifier: 'catalog:'
+        version: 20.19.37
+      tsx:
+        specifier: ^4.21.0
+        version: 4.21.0
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
   packages/ui:
     dependencies:
       '@hookform/resolvers':
@@ -1523,7 +1542,7 @@ importers:
         version: link:../typescript
       eslint:
         specifier: 'catalog:'
-        version: 9.39.4(jiti@2.6.1)
+        version: 9.39.4(jiti@1.21.7)
       prettier:
         specifier: 'catalog:'
         version: 3.8.1

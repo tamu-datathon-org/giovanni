@@ -43,7 +43,12 @@ const EventInfo = {
     startDate: "2026-11-07T09:00:00-05:00",
     endDate: "2026-11-08T23:59:59-05:00",
     name: "TAMU Datathon",
+    venueName: "TODO: venue name", // required by the poster layout
 };
+
+// TODO: Add the poster URL here (a PNG; Apple uses it as the full-bleed poster artwork).
+// Leave it empty to use models/Event.pass/background.png instead, if you put one there.
+const POSTER_URL: string = "";
 
 
 export async function generateEventPass(a: Attendee): Promise<Buffer>{
@@ -54,11 +59,26 @@ export async function generateEventPass(a: Attendee): Promise<Buffer>{
             teamIdentifier: process.env.APPLE_TEAM_ID!,
             serialNumber: a.id,
             description: `${EventInfo.name} ticket`,
+            eventLogoText: EventInfo.name,
+            // The poster layout is built from these semantic tags rather than the fields below
+            semantics: {
+                eventName: EventInfo.name,
+                eventType: "PKEventTypeConvention",
+                eventStartDate: new Date(EventInfo.startDate).toISOString(),
+                eventEndDate: new Date(EventInfo.endDate).toISOString(),
+                venueName: EventInfo.venueName,
+                attendeeName: a.name,
+            },
         }
     )
-    const passType = new PassType("boardingPass");
-    passType.transitType = "PKTransitTypeGeneric";
-    //pass.types.push(passType);
+
+    if (POSTER_URL) {
+        const poster = await fetch(POSTER_URL);
+        pass.addBuffer("background.png", Buffer.from(await poster.arrayBuffer()));
+    }
+
+    // Poster tickets have to be an eventTicket (boardingPass can't use the poster style)
+    const passType = new PassType("eventTicket");
 
     passType.headerFields.push({
         key: "date",
@@ -84,6 +104,9 @@ export async function generateEventPass(a: Attendee): Promise<Buffer>{
 
 
     pass.types.push(passType); // add it after the fields are filled in
+
+    // iOS 18+ shows the poster; older iOS falls back to the regular event ticket
+    pass.preferredStyleSchemes = ["posterEventTicket", "eventTicket"];
 
     pass.setBarcodes({
         message: a.id,
