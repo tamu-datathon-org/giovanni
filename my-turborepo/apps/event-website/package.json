@@ -78,7 +78,7 @@
     "postcss-custom-media": "^10.0.8",
     "postcss-flexbugs-fixes": "^5.0.2",
     "prettier": "catalog:",
-    "svgo": "^4.0.1",
+    "svgo": "^4.1.0",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
   }
