@@ -75,7 +75,8 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/team-website/.next/standal
 COPY --from=installer --chown=nextjs:nodejs /app/apps/team-website/.next/static ./apps/team-website/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/team-website/public ./apps/team-website/public
 
-# Apple Wallet pass assets
+# Apple Wallet pass assets.
+ENV APPLE_WALLET_DIR=/app
 COPY --from=builder --chown=nextjs:nodejs /app/packages/apple-wallet/models ./models
 COPY --from=builder --chown=nextjs:nodejs /app/packages/apple-wallet/public ./public
 
