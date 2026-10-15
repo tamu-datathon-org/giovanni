@@ -1,13 +1,15 @@
 import {PassType, PKPass} from "passkit-generator";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { promises } from "node:dns";
+import { fileURLToPath } from "node:url";
 import { getAttendees, type Attendee } from "./user-filter";
 
 //const googleSheetUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_URL;
 
 
-const certDir = path.resolve("certificates");
+// Resolve from the package folder, not the cwd, so this also works when imported by a Next app
+const packageDir = process.env.APPLE_WALLET_DIR ?? fileURLToPath(new URL("..", import.meta.url));
+const certDir = path.join(packageDir, "certificates");
 
 export const certificates = {
     wwdr: fs.readFileSync(path.join(certDir, "wwdr.pem")),
@@ -16,7 +18,7 @@ export const certificates = {
     signerKeyPassphrase: process.env.PASS_KEY_PASSPHRASE,
 };
 
-const modelPath = path.resolve("models/Event.pass");
+const modelPath = path.join(packageDir, "models/Event.pass");
 
 // export async function generateAllPasses(eventId: string, outDir = "passes") {
 //   const tickets = await getTickets(eventId);
@@ -29,12 +31,6 @@ const modelPath = path.resolve("models/Event.pass");
 
 //   return tickets.length;
 // }
-
-// const TestTick = {
-//     ticketId: "1093488839",
-//     attendeeName: "John Dough",
-//     foodGroup: "Blue"
-// };
 
 //TODO: Make sure to not hard code this later
 const EventInfo = {
@@ -76,7 +72,7 @@ export async function generateEventPass(a: Attendee): Promise<Buffer>{
     if (POSTER) {
         const posterImage = POSTER.startsWith("http")
             ? Buffer.from(await (await fetch(POSTER)).arrayBuffer())
-            : fs.readFileSync(path.resolve(POSTER));
+            : fs.readFileSync(path.join(packageDir, POSTER));
         pass.addBuffer("background.png", posterImage);
     }
 

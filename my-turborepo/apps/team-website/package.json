@@ -48,6 +48,7 @@
     "@trpc/react-query": "catalog:",
     "@trpc/server": "catalog:",
     "@vanni/api": "workspace:*",
+    "@vanni/apple-wallet": "workspace:*",
     "@vanni/auth": "workspace:*",
     "@vanni/db": "workspace:*",
     "@vanni/ui": "workspace:*",
