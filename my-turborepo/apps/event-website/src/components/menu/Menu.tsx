@@ -67,7 +67,7 @@ export function Menu() {
       onPointerLeave={hoverTo(false)}
       // --peek = how much of each chip shows below MENU when stacked (about half the outer ring)
       // --step = chip size + gap, how far apart the chips are when open (they fan downward)
-      className="fixed right-3 top-3 z-50 grid [--peek:4px] [--step:72px] sm:right-5 sm:top-5 sm:[--peek:8px] sm:[--step:140px]"
+      className="fixed right-3 top-3 z-50 grid [--step:72px] sm:right-5 sm:top-5 sm:[--step:140px]"
     >
       {links.map((link, i) => (
         <a
