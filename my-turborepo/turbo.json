@@ -17,6 +17,7 @@
         ".vercel/output/**",
         "dist/**"
       ],
+      "passThroughEnv": ["SKIP_ENV_VALIDATION"],
       "env": [
         "AUTH_AUTH0_ID",
         "AUTH_AUTH0_SECRET",
