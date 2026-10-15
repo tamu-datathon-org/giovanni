@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { createPassResponse, getAttendeeForUser } from "@vanni/apple-wallet/server";
+import { getAttendeeForUser } from "@vanni/apple-wallet/attendees";
+import { createPassResponse } from "@vanni/apple-wallet/server";
 import { getSession } from "@vanni/auth";
 
 import { env } from "~/env";

@@ -13,6 +13,9 @@ import { toast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
 import { EVENT_NAME } from "./application/application-form";
 
+import { AddToAppleWalletButton } from "@vanni/apple-wallet";
+import { AddToGoogleWalletButton } from "@vanni/google-wallet";
+
 export const appsOpen = true;
 
 const ASSETS = "/images/dashboard";
@@ -595,6 +598,44 @@ export default function Page() {
                   className="mt-1 h-[20px] w-[20px]"
                 />
               </div>
+              {/* Wallet section hopefully */}
+              {qrCode && (
+                <div ref={qrRef} className="flex items-start gap-3">
+                  <Marker className="mt-4" />
+                  <div
+                    className="relative flex-1 rounded-[20px] border-[5px] px-5 pb-5 pt-4 xl:pt-5"
+                    style={{
+                      backgroundColor: INK.card,
+                      borderColor: INK.panelBorder,
+                    }}
+                  >
+                    <span
+                      className="inline-block rounded-[20px] border-[5px] px-4 py-1 font-kode text-[18px] font-semibold lowercase tracking-[-0.07em] xl:text-[30px]"
+                      style={{
+                        backgroundColor: INK.button,
+                        borderColor: INK.cardBorder,
+                        color: INK.deep,
+                      }}
+                    >
+                      check in qr code
+                    </span>
+                    <div className="mt-5 flex justify-center">
+
+                      <img
+                        src={qrCode}
+                        alt="Your check-in QR code"
+                        className="h-[240px] w-[240px] rounded-[8px] bg-white p-3"
+                      />
+                    </div>
+                    <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
+                      <AddToAppleWalletButton href="/api/wallet/apple" />
+                      <AddToGoogleWalletButton href="/api/wallet/google" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+
 
               <Panel title="event info">
                 <div className="mt-3 space-y-2 font-kode text-[17px] lowercase leading-none tracking-[-0.07em] text-white xl:text-[25px]">
@@ -662,38 +703,6 @@ export default function Page() {
                         : "decline offer"}
                     </ActionButton>
                   </Panel>
-                </div>
-              )}
-
-              {qrCode && (
-                <div ref={qrRef} className="flex items-start gap-3">
-                  <Marker className="mt-4" />
-                  <div
-                    className="relative flex-1 rounded-[20px] border-[5px] px-5 pb-5 pt-4 xl:pt-5"
-                    style={{
-                      backgroundColor: INK.card,
-                      borderColor: INK.panelBorder,
-                    }}
-                  >
-                    <span
-                      className="inline-block rounded-[20px] border-[5px] px-4 py-1 font-kode text-[18px] font-semibold lowercase tracking-[-0.07em] xl:text-[30px]"
-                      style={{
-                        backgroundColor: INK.button,
-                        borderColor: INK.cardBorder,
-                        color: INK.deep,
-                      }}
-                    >
-                      check in qr code
-                    </span>
-                    <div className="mt-5 flex justify-center">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={qrCode}
-                        alt="Your check-in QR code"
-                        className="h-[240px] w-[240px] rounded-[8px] bg-white p-3"
-                      />
-                    </div>
-                  </div>
                 </div>
               )}
             </div>

@@ -51,6 +51,7 @@
     "@vanni/apple-wallet": "workspace:*",
     "@vanni/auth": "workspace:*",
     "@vanni/db": "workspace:*",
+    "@vanni/google-wallet": "workspace:*",
     "@vanni/ui": "workspace:*",
     "@vanni/validators": "workspace:*",
     "@vercel/blob": "catalog:",
@@ -121,6 +122,7 @@
     "jsonwebtoken": "catalog:",
     "prettier": "catalog:",
     "tailwindcss": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@vanni/apple-wallet": "workspace:*"
   }
 }

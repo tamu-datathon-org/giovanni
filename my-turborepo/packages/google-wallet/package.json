@@ -5,10 +5,8 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./src/index.js"
-    }
+    ".": "./src/index.tsx",
+    "./server": "./src/server.ts"
   },
   "scripts": {
     "build": "tsc",
@@ -22,7 +20,12 @@
   "devDependencies": {
     "@types/jsonwebtoken": "catalog:",
     "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "react": "catalog:",
     "tsx": "^4.21.0",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:"
   }
 }

@@ -9,6 +9,7 @@ const config = {
     "@vanni/apple-wallet",
     "@vanni/auth",
     "@vanni/db",
+    "@vanni/google-wallet",
     "@vanni/ui",
     "@vanni/validators",
   ],

@@ -39,7 +39,7 @@ const EventInfo = {
     startDate: "2026-11-07T09:00:00-05:00",
     endDate: "2026-11-08T23:59:59-05:00",
     name: "TAMU Datathon",
-    venueName: "TODO: venue name", // required by the poster layout
+    venueName: "Memorial Student Center (Bethancourt)", // required by the poster layout
 };
 
 // Full-bleed poster artwork: a local path (relative to where the script runs) or an https:// URL.
