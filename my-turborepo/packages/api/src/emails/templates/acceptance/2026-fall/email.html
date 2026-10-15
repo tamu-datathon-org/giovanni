@@ -205,11 +205,28 @@
                   Your application truly impressed us, and we can't wait to see
                   what you build.
                 </p>
-                <!-- With NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE=true, confirmation_emails.ts swaps this paragraph for a "You Aren't Done Yet!" confirm-your-spot callout. -->
+                <!-- invitationRequired = NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE is "true". When it is, applicants have to confirm their spot on /apply. -->
+                {{#invitationRequired}}
+                  <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#fff1d6" style="background-color: #fff1d6; border: 1px solid #f6c983; border-radius: 16px; border-collapse: separate;">
+                    <tr>
+                      <td style="padding: 18px 20px">
+                        <p style="margin: 0 0 8px; font-size: 18px; line-height: 26px; font-weight: bold; color: #d50000;"> You Aren't Done Yet! </p>
+                        <p style="margin: 0"> Due to capacity constraints, we need you to <strong>confirm</strong> your spot by accepting the invitation on your <a href="https://tamudatathon.org/apply" target="_blank" style="color: #d50000; font-weight: bold; text-decoration: underline;">applicant dashboard</a>. Spots are <strong>limited!</strong> If you don't confirm your spot before the event date or before we reach capacity, you'll be moved to the <strong>waitlist</strong>. </p>
+                      </td>
+                    </tr>
+                  </table>
+                  <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td height="20" style="height: 20px; font-size: 0; line-height: 0">&nbsp;</td>
+                    </tr>
+                  </table>
+                {{/invitationRequired}}
+                {{^invitationRequired}}
                 <p style="margin: 0 0 20px">
                   There's nothing else you need to do to confirm your spot. Just
                   show up, and we'll see you there!
                 </p>
+                {{/invitationRequired}}
 
                 <!-- Event details callout -->
                 <table
