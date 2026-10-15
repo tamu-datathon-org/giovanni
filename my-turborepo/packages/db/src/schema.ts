@@ -182,7 +182,7 @@ export const Application = pgTable("application", {
   acceptedEmail: boolean("accepted_email").notNull().default(false),
   waitlistEmail: boolean("waitlist_email").notNull().default(false),
   rejectedEmail: boolean("rejected_email").notNull().default(false),
-  invitationStatus: boolean("invitation_status").notNull().default(false), // true = accepted invitation, false = declined invitation
+  invitationStatus: boolean("invitation_status").notNull().default(false),
   foodGroup: varchar("food_group", { length: 255 }),
   checkedIn: boolean("checked_in").notNull().default(false),
 });

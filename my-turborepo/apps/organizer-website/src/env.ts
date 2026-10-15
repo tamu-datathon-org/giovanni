@@ -26,6 +26,7 @@ export const env = createEnv({
     NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string().default(""),
     NEXT_PUBLIC_DRIVE_FOLDER_ID: z.string().default(""),
     NEXT_PUBLIC_DRIVE_FOLDER_NAME: z.string().default(""),
+    NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE: z.string().default("false"),
     // Apps Script /exec endpoint backing /organizer/schedule-manager. Optional
     // so the app still builds and boots without it; the page surfaces its own
     // error state when it is missing.
@@ -40,6 +41,8 @@ export const env = createEnv({
     NEXT_PUBLIC_DRIVE_FOLDER_ID: process.env.NEXT_PUBLIC_DRIVE_FOLDER_ID,
     NEXT_PUBLIC_DRIVE_FOLDER_NAME: process.env.NEXT_PUBLIC_DRIVE_FOLDER_NAME,
     NEXT_PUBLIC_GOOGLE_SHEET_API_URL: process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_URL,
+    NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE:
+      process.env.NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE,
   },
   skipValidation:
     !!process.env.CI ||

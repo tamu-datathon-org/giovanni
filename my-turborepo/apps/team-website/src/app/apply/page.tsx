@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { toDataURL } from "qrcode";
 
 import { authClient } from "@vanni/auth/client";
+import { isInvitationAcceptanceRequired } from "@vanni/validators";
 
 import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
 import { toast } from "~/hooks/use-toast";
@@ -14,6 +15,8 @@ import { api } from "~/trpc/react";
 import { EVENT_NAME } from "./application/application-form";
 
 export const appsOpen = true;
+// When false, being accepted is final and there is no offer to respond to.
+const invitationRequired = isInvitationAcceptanceRequired();
 
 const ASSETS = "/images/dashboard";
 
@@ -389,14 +392,16 @@ export default function Page() {
   const { step, headline } = statusView(data?.status, isLoading);
 
   // The blue arrow points at whatever needs attention: the offer once you are
-  // accepted, then the check-in QR once the event is under way.
+  // accepted (if the event asks for a response), then the check-in QR once the
+  // event is under way.
   const eventStarted = event?.startDate
     ? new Date() >= new Date(event.startDate)
     : false;
+  const awaitingOfferResponse = invitationRequired && data?.status === "accepted";
   const arrowTarget: "offer" | "qr" | null =
     eventStarted && qrCode
       ? "qr"
-      : data?.status === "accepted"
+      : awaitingOfferResponse
         ? "offer"
         : null;
 
@@ -631,7 +636,7 @@ export default function Page() {
                 </ActionButton>
               </Panel>
 
-              {data?.status === "accepted" && (
+              {awaitingOfferResponse && (
                 <div ref={offerRef}>
                   <Panel title="admission offer response">
                   <ActionButton
