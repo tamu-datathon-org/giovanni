@@ -66,16 +66,16 @@ function popupSize() {
 }
 
 const SPOTS = [
-  { x: 10, y: 34 },
-  { x: 30, y: 34 },
+  { x: 18, y: 34 },
+  { x: 34, y: 34 },
   { x: 50, y: 34 },
-  { x: 70, y: 34 },
-  { x: 90, y: 34 },
-  { x: 10, y: 64 },
-  { x: 30, y: 64 },
+  { x: 66, y: 34 },
+  { x: 82, y: 34 },
+  { x: 18, y: 64 },
+  { x: 34, y: 64 },
   { x: 50, y: 64 },
-  { x: 70, y: 64 },
-  { x: 90, y: 64 },
+  { x: 66, y: 64 },
+  { x: 82, y: 64 },
 ];
 
 type FaqItem = { question: string; answer: string };
@@ -89,10 +89,10 @@ const ITEMS: FaqItem[] = [
   {
     question: "When & where is the event?",
     answer:
-      "November 9-10th, 2024 at the MSC 2300 Bethancourt Ballroom! A complete schedule will be available at tamudatathon.com/schedule at a later date. Parking will be free at a later disclosed location.",
+      "November 7-8th, 2026 at the MSC 2300 Bethancourt Ballroom! A complete schedule will be available at tamudatathon.com/schedule at a later date. Parking will be free at a later disclosed location.",
   },
   {
-    question: "How much do I need to know?",
+    question: "How much to know?",
     answer:
       "Not much! We have intro workshops and mentors for beginners, plus tougher challenges if you already have experience.",
   },
@@ -122,7 +122,7 @@ const ITEMS: FaqItem[] = [
       "Teams can have up to 4 people. We encourage working with a team, it's more fun! You do not need to form a team before attending the event. There will be plenty of time to find a team after opening ceremonies.",
   },
   {
-    question: "Are travel reimbursements available?",
+    question: "Travel reimbursements?",
     answer: `Limited travel reimbursements are available for attendees coming from outside the area. Apply here: ${TRAVEL_FORM}`,
   },
   {
@@ -482,7 +482,7 @@ export default function FAQ() {
               src={CURTAINS}
               alt=""
               width={1440}
-              height={1426}
+              height={1131}
               draggable={false}
               className={`${ART} absolute left-0 top-1/2 w-full max-w-none`}
             />
@@ -512,8 +512,8 @@ export default function FAQ() {
             </h2>
 
           {/* Room above the table for the bear to rise into. */}
-          <div className="relative mt-4 w-full pt-[27%] md:mt-20">
-            <div className="pointer-events-none absolute left-[24%] top-0 z-[1] w-[36%] -translate-x-1/2 translate-y-[64%] transition-transform duration-700 ease-out group-data-[show]/faq:translate-y-0 motion-reduce:transition-none [@media(scripting:none)]:translate-y-0">
+          <div className="relative mt-4 w-full pt-[26%] md:mt-12">
+            <div className="pointer-events-none absolute left-[25%] top-[8%] z-[1] w-[28%] -translate-x-1/2 translate-y-[64%] transition-transform duration-700 ease-out group-data-[show]/faq:translate-y-0 motion-reduce:transition-none [@media(scripting:none)]:translate-y-0">
               <Image
                 src={BEAR}
                 alt=""
@@ -524,7 +524,7 @@ export default function FAQ() {
               />
             </div>
 
-            <div className="pointer-events-none absolute left-[48%] top-[6%] z-[5] w-[22%] origin-bottom-left scale-90 opacity-0 transition delay-[1100ms] duration-500 ease-out group-data-[show]/faq:scale-100 group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:scale-100 [@media(scripting:none)]:opacity-100">
+            <div className="pointer-events-none absolute left-[46%] top-[10%] z-[5] w-[17%] origin-bottom-left scale-90 opacity-0 transition delay-[1100ms] duration-500 ease-out group-data-[show]/faq:scale-100 group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:scale-100 [@media(scripting:none)]:opacity-100">
               <Image
                 src={BUBBLE}
                 alt="Have a question? Or do you want to play a game?"
@@ -547,12 +547,12 @@ export default function FAQ() {
               <Image
                 src={TABLE}
                 alt=""
-                width={1440}
-                height={550}
+                width={2140}
+                height={896}
                 draggable={false}
                 className={`${ART} relative z-[1] block`}
               />
-              <div className="absolute left-[11%] top-[4%] z-[2] w-[10.2%]">
+              <div className="absolute left-[14%] top-[8%] z-[2] w-[8%]">
                 <Image
                   src={STACK}
                   alt=""
@@ -562,7 +562,7 @@ export default function FAQ() {
                   className={`${ART} transition-transform duration-500 ${dealt ? "scale-[0.94]" : ""}`}
                 />
               </div>
-              <div className="pointer-events-none absolute left-[9%] top-[-32%] z-[4] w-[38%] opacity-0 transition-opacity delay-700 duration-500 ease-out group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:opacity-100">
+              <div className="pointer-events-none absolute left-[13%] top-[-28%] z-[4] w-[30%] opacity-0 transition-opacity delay-700 duration-500 ease-out group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:opacity-100">
                 <Image
                   src={HANDS}
                   alt=""
@@ -573,7 +573,7 @@ export default function FAQ() {
                 />
               </div>
 
-              <div className="absolute left-1/2 top-[0%] z-20 w-[11%] -translate-x-1/2 sm:w-[9%]">
+              <div className="absolute left-1/2 top-[-4%] z-20 w-[8.5%] -translate-x-1/2 sm:w-[7%]">
                 <button
                   type="button"
                   onClick={deal}
@@ -602,7 +602,7 @@ export default function FAQ() {
               </div>
 
               {dealt && landed && openIndex === null ? (
-                <p className="font-righteous pointer-events-none absolute left-1/2 top-[80%] z-[5] w-max max-w-[90vw] -translate-x-1/2 text-center text-[clamp(13px,1.5vw,22px)] leading-tight tracking-[0.03em] text-[#FDFBED] [text-shadow:0_2px_4px_rgb(0_0_0/0.55)]">
+                <p className="font-righteous pointer-events-none absolute left-1/2 top-[78%] z-[5] w-max max-w-[90vw] -translate-x-1/2 text-center text-[clamp(11px,1.2vw,17px)] leading-tight tracking-[0.03em] text-[#FDFBED] [text-shadow:0_2px_4px_rgb(0_0_0/0.55)]">
                   Click a card to flip it!
                 </p>
               ) : null}
@@ -727,7 +727,7 @@ export default function FAQ() {
                   return (
                     <div
                       key={`q-${item.question}`}
-                      className="pointer-events-none absolute z-[4] aspect-square w-[13.5%] -translate-x-1/2 -translate-y-1/2"
+                      className="pointer-events-none absolute z-[4] aspect-square w-[10.5%] -translate-x-1/2 -translate-y-1/2"
                       style={{
                         left: `${spot.x}%`,
                         top: `${spot.y}%`,
@@ -736,13 +736,13 @@ export default function FAQ() {
                       }}
                     >
                       <p
-                        className="font-righteous absolute bottom-[100%] left-1/2 mb-[0.35em] w-[170%] -translate-x-1/2 text-center leading-[1.15] tracking-[0.02em] text-[#FDFBED] [text-shadow:0_1px_3px_rgb(0_0_0/0.75)]"
+                        className="font-righteous absolute bottom-[100%] left-1/2 mb-[0.6em] w-[160%] -translate-x-1/2 text-center leading-[1.15] tracking-[0.02em] text-[#FDFBED] [text-shadow:0_1px_3px_rgb(0_0_0/0.75)]"
                         style={{
                           fontSize:
-                            "clamp(9px, calc(9px + (100vw - 575px) * 0.0128), 18px)",
+                            "clamp(8px, calc(8px + (100vw - 575px) * 0.0115), 16px)",
                         }}
                       >
-                        <span className="line-clamp-3">{item.question}</span>
+                        <span className="line-clamp-2">{item.question}</span>
                       </p>
                     </div>
                   );
@@ -779,7 +779,7 @@ export default function FAQ() {
                         event.preventDefault();
                         openCard(index);
                       }}
-                      className="group/card absolute z-[3] aspect-square w-[16%] -translate-x-1/2 -translate-y-1/2 cursor-pointer border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED] sm:w-[13.5%]"
+                      className="group/card absolute z-[3] aspect-square w-[12.5%] -translate-x-1/2 -translate-y-1/2 cursor-pointer border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED] sm:w-[10.5%]"
                       style={{
                         left: `${x}%`,
                         top: `${y}%`,
