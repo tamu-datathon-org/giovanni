@@ -21,11 +21,11 @@ export const BORDER_ID = "event-info-border";
 
 /**
  * The gold-banded rail of diamonds and stars between sections. Its stars shine
- * one of two ways:
- * - "ball": PoolStory finds the rail by BORDER_ID and flashes its stars
- *   ([data-border-star]) as the eight ball passes behind it.
- * - "view": the stars ripple out from the middle each time the rail scrolls
- *   into view.
+ * the same way on every rail (a ripple out from the middle while the svg has
+ * [data-shine]); `shine` picks what sets it off:
+ * - "ball": PoolStory finds the rail by BORDER_ID and restarts the shine as the
+ *   eight ball passes behind it.
+ * - "view": each time the rail scrolls into view.
  */
 export function Rail({
   shine,
@@ -92,17 +92,6 @@ export function Rail({
           >
             <feGaussianBlur stdDeviation="8" />
           </filter>
-          {!onView && (
-            <filter
-              id={`${id}-flash-glow`}
-              x="-50%"
-              y="-200%"
-              width="200%"
-              height="500%"
-            >
-              <feGaussianBlur stdDeviation="14" />
-            </filter>
-          )}
         </defs>
         <rect y="48" width="1440" height="138" fill="#17330d" />
         {DIAMOND_XS.map((x) => (
@@ -117,25 +106,17 @@ export function Rail({
         {STAR_XS.map((x, i) => (
           <g
             key={x}
-            data-border-star
             style={
-              onView
-                ? ({
-                    "--delay": `${Math.abs(i - MIDDLE) * RIPPLE_S}s`,
-                  } as React.CSSProperties)
-                : undefined
+              {
+                "--delay": `${Math.abs(i - MIDDLE) * RIPPLE_S}s`,
+              } as React.CSSProperties
             }
           >
             {/* Blurred copies behind the star, faded in for the glow. */}
             <g
-              data-border-star-glow
               opacity="0"
               filter={`url(#${id}-star-glow)`}
-              className={
-                onView
-                  ? "[[data-shine]_&]:animate-star-glow motion-reduce:!animate-none"
-                  : undefined
-              }
+              className="[[data-shine]_&]:animate-star-glow motion-reduce:!animate-none"
             >
               <path d={star(x)} fill={GOLD} />
               <path d={star(x)} fill={GOLD} />
@@ -143,28 +124,12 @@ export function Rail({
             <path
               d={star(x)}
               fill={GOLD}
-              className={
-                onView
-                  ? "[transform-box:fill-box] origin-center [[data-shine]_&]:animate-star-pulse motion-reduce:!animate-none"
-                  : undefined
-              }
+              className="origin-center [transform-box:fill-box] [[data-shine]_&]:animate-star-pulse motion-reduce:!animate-none"
             />
           </g>
         ))}
         <rect width="1440" height="20" fill={GOLD} />
         <rect y="214" width="1440" height="20" fill={GOLD} />
-        {!onView && (
-          <ellipse
-            data-border-flash
-            cx="720"
-            cy="14"
-            rx="180"
-            ry="34"
-            fill="#ffe0ac"
-            opacity="0"
-            filter={`url(#${id}-flash-glow)`}
-          />
-        )}
       </svg>
     </div>
   );
