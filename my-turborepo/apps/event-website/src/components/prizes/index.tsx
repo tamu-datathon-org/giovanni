@@ -1,353 +1,266 @@
 "use client";
 
 import Image from "next/image";
-import { useWindowWidth } from "@/hooks/useWindowWidth";
+import { useState } from "react";
+import { PrizeReel } from "./PrizeReel";
+import { prizes, type Challenge } from "./prizedata";
 
-const PRIZE_FRAME_SVG = "/images/prizes/frame.svg";
-const RIBBON_SVG = "/images/prizes/ribbon.svg";
-const RIBBON_SVG_ALT = "/images/prizes/ribbon-alt.svg";
-const PLANT_SIDE = "/images/prizes/plant-side.png";
+//
+const LEVER_HOTSPOT = {
+  left: "88%",
+  top: "35%",
+  width: "12%",
+  height: "30%",
+};
 
-const prizes = [
-  {
-    category: "First Place",
-    name: "Alienware Gaming Monitor",
-    ribbonRight: true,
-    imageSrc: "/images/prizes/prize1.png",
-  },
-  {
-    category: "Second Place",
-    name: "Keychron Mechanical Keyboard",
-    ribbonRight: false,
-    imageSrc: "/images/prizes/prize2.png",
-  },
-  {
-    category: "Third Place",
-    name: "JBL Bluetooth Speaker",
-    ribbonRight: true,
-    imageSrc: "/images/prizes/prize3.png",
-  },
+const PRIZE_TITLE = ["P", "R", "I", "Z", "E", "S"];
+const CHALLENGE_BUTTONS = [
+  { left: "20.5%", top: "84.1%" },
+  { left: "37.6%", top: "84.1%" },
+  { left: "55.4%", top: "84.1%" },
+  { left: "74.1%", top: "84.1%" },
+  { left: "20.5%", top: "93.6%" },
+  { left: "37.6%", top: "93.6%" },
+  { left: "55.4%", top: "93.6%" },
+  { left: "74.1%", top: "93.6%" },
 ];
 
+const SPIN_CYCLES = 2;
+const DISPLAY_PRIZE_ORDER = [1, 0, 2] as const;
+
 export default function Prizes() {
-  const windowWidth = useWindowWidth();
+  const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(
+    null,
+  );
+  const [rollKey, setRollKey] = useState(0);
 
-  // Breakpoints
-  const isMobile = windowWidth > 0 && windowWidth < 768;
-  const isSmallTablet = windowWidth >= 768 && windowWidth < 900;
-  const isMediumTablet = windowWidth >= 900 && windowWidth < 1024;
-  const isSmallDesktop = windowWidth >= 1024 && windowWidth < 1280;
-  const isLargeDesktop = windowWidth >= 1280 && windowWidth < 1536;
-  const isXLDesktop = windowWidth >= 1536;
-
-  // Dynamic prize base size - mobile stays same, desktop increased
-  const getPrizeBase = () => {
-    if (isMobile) return Math.min(Math.max(140, windowWidth * 0.38), 280);
-    if (isSmallTablet) return Math.min(Math.max(180, windowWidth * 0.26), 240);
-    if (isMediumTablet) return Math.min(Math.max(200, windowWidth * 0.26), 280);
-    if (isSmallDesktop) return Math.min(Math.max(240, windowWidth * 0.24), 320);
-    if (isLargeDesktop) return Math.min(Math.max(280, windowWidth * 0.22), 360);
-    return Math.min(Math.max(320, windowWidth * 0.2), 400); // XL desktop
+  const selectChallenge = (challenge: Challenge) => {
+    setSelectedChallenge(challenge);
+    setRollKey((key) => key + 1);
+  };
+  //Random challenge math
+  const selectRandomChallenge = () => {
+    const challenge = prizes[Math.floor(Math.random() * prizes.length)];
+    if (challenge) selectChallenge(challenge);
   };
 
-  const prizeBase = getPrizeBase();
-
-  // Dynamic heading size
-  const getHeadingSize = () => {
-    if (isMobile) return prizeBase * 0.24;
-    if (isSmallTablet) return prizeBase * 0.22;
-    if (isMediumTablet) return prizeBase * 0.2;
-    if (isSmallDesktop) return prizeBase * 0.18;
-    return prizeBase * 0.16;
-  };
-
-  // Dynamic padding
-  const getPadding = () => {
-    if (isMobile) return { px: "0px", pt: "28px", pb: "12px" };
-    if (isSmallTablet) return { px: "4px", pt: "48px", pb: "28px" };
-    if (isMediumTablet) return { px: "6px", pt: "56px", pb: "32px" };
-    if (isSmallDesktop) return { px: "8px", pt: "64px", pb: "40px" };
-    if (isLargeDesktop) return { px: "8px", pt: "72px", pb: "48px" };
-    return { px: "8px", pt: "80px", pb: "56px" };
-  };
-
-  // Dynamic row shift amount
-  const getRowShift = () => {
-    if (isMobile) return 0;
-    if (isSmallTablet) return prizeBase * 0.2;
-    if (isMediumTablet) return prizeBase * 0.24;
-    if (isSmallDesktop) return prizeBase * 0.28;
-    if (isLargeDesktop) return prizeBase * 0.32;
-    return prizeBase * 0.35;
-  };
-
-  // Dynamic gap between prize and text
-  const getPrizeGap = () => {
-    if (isMobile) return prizeBase * 0.08;
-    if (isSmallTablet) return prizeBase * 0.12;
-    if (isMediumTablet) return prizeBase * 0.14;
-    return prizeBase * 0.16;
-  };
-
-  // Dynamic row gap between prizes
-  const getRowGap = () => {
-    if (isMobile) return prizeBase * 0.06;
-    if (isSmallTablet) return prizeBase * 0.08;
-    if (isMediumTablet) return prizeBase * 0.1;
-    return prizeBase * 0.12;
-  };
-
-  // Dynamic ribbon sizing
-  const getRibbonScale = () => {
-    if (isMobile) return 1.0;
-    if (isSmallTablet) return 1.08;
-    if (isMediumTablet) return 1.12;
-    if (isSmallDesktop) return 1.15;
-    return 1.18;
-  };
-
-  // Dynamic ribbon text offset
-  const getRibbonOffset = () => {
-    if (isMobile) return { top: "2px", left: "-20px" };
-    if (isSmallTablet) return { top: "6px", left: "-32px" };
-    if (isMediumTablet) return { top: "8px", left: "-40px" };
-    if (isSmallDesktop) return { top: "10px", left: "-48px" };
-    if (isLargeDesktop) return { top: "12px", left: "-52px" };
-    return { top: "14px", left: "-56px" };
-  };
-
-  // Dynamic prize name width
-  const getPrizeNameWidth = () => {
-    if (isMobile) return prizeBase * 0.9;
-    if (isSmallTablet) return prizeBase * 1.0;
-    if (isMediumTablet) return prizeBase * 1.05;
-    return prizeBase * 1.1;
-  };
-
-  // Dynamic font size multipliers
-  const getCategoryFontSize = () => {
-    const baseSize = prizeBase * 0.0733;
-    if (isMobile) return baseSize * 1.1;
-    if (isSmallTablet) return baseSize * 1.2;
-    if (isMediumTablet) return baseSize * 1.25;
-    return baseSize * 1.3;
-  };
-
-  const getPrizeNameFontSize = () => {
-    const baseSize = prizeBase * 0.1303;
-    if (isMobile) return baseSize * 1.05;
-    if (isSmallTablet) return baseSize * 1.15;
-    if (isMediumTablet) return baseSize * 1.2;
-    return baseSize * 1.25;
-  };
-
-  // Dynamic plant positioning
-  const getPlantStyles = () => {
-    const scaleFactor = isMobile ? 0 : isSmallTablet ? 0.9 : isMediumTablet ? 1.0 : isSmallDesktop ? 1.1 : isLargeDesktop ? 1.2 : 1.3;
-    const plantWidth = prizeBase * (698 / 491) * scaleFactor;
-    const plantTop = prizeBase * (530 / 491) * scaleFactor * 0.85;
-    const plantLeft = prizeBase * (-440 / 491) * scaleFactor * 0.8;
-
-    return {
-      width: `${plantWidth}px`,
-      top: `${plantTop}px`,
-      left: `${plantLeft}px`,
-    };
-  };
-
-  // Dynamic max width for container
-  const getMaxWidth = () => {
-    if (isMobile) return "100%";
-    if (isSmallTablet) return "720px";
-    if (isMediumTablet) return "850px";
-    if (isSmallDesktop) return "980px";
-    if (isLargeDesktop) return "1100px";
-    return "1200px";
-  };
-
-  // Prevent flash of unstyled content
-  if (windowWidth === 0) {
-    return (
-      <section
-        id="prizes"
-        aria-label="Prizes"
-        className="flex min-h-[400px] items-center justify-center bg-[#f0cf91]"
-      >
-        <div className="animate-pulse text-2xl text-[#4c321b]">Loading...</div>
-      </section>
-    );
-  }
-
-  const padding = getPadding();
-  const rowShift = getRowShift();
-  const ribbonOffset = getRibbonOffset();
-  const ribbonScale = getRibbonScale();
-  const plantStyles = getPlantStyles();
+  const selectedIndex = selectedChallenge
+    ? prizes.findIndex((challenge) => challenge.number === selectedChallenge.number)
+    : -1;
+  const stopIndex = SPIN_CYCLES * prizes.length;
+  const reelOrder =
+    selectedIndex < 0
+      ? prizes
+      : [...prizes.slice(selectedIndex), ...prizes.slice(0, selectedIndex)];
 
   return (
     <section
       id="prizes"
       aria-label="Prizes"
-      className="relative z-10 flex flex-col items-center overflow-visible bg-[#f0cf91]"
-      style={{
-        paddingLeft: padding.px,
-        paddingRight: padding.px,
-        paddingTop: padding.pt,
-        paddingBottom: padding.pb,
-      }}
+      className="relative isolate flex min-h-svh items-center justify-center"
     >
-      {/* Bottom-left hanging basket (half visible) */}
-      {!isMobile && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={PLANT_SIDE}
-          alt=""
-          aria-hidden
-          className="pointer-events-none absolute z-0 h-auto scale-x-[-1] object-contain"
-          style={plantStyles}
+      <Image
+        src="/event_assets/background.png"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
+      <div className="relative z-10 aspect-[433/576] w-[min(75vw,52svh)]">
+        <Image
+          src="/event_assets/slot_machine_prizes.png"
+          alt="Slot machine"
+          fill
+          priority
+          sizes="(max-width: 768px) 75vw, 52svh"
+          className="object-contain"
         />
-      )}
+        <svg
+          aria-label="Prizes"
+          className="pointer-events-none absolute left-[19.5%] top-[8.2%] z-10 h-[14.5%] w-[55%] overflow-visible"
+          role="img"
+          viewBox="0 0 320 70"
+        >
+          <defs>
+            {/*Prize title gradient */}
+            {PRIZE_TITLE.map((_, index) => (
+              <linearGradient
+                key={index}
+                id={`prize-letter-gradient-${index}`}
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop offset="0%" stopColor="#FFB24C" />
+                <stop offset="100%" stopColor="#FF9000" />
+              </linearGradient>
+            ))}
 
-      <h2
-        className="font-darumadrop-one relative z-10 text-center leading-none tracking-wide text-[#4c321b]"
-        style={{ fontSize: `${getHeadingSize()}px` }}
-      >
-        PRIZES
-      </h2>
 
-      <div
-        className="relative z-10 flex w-full flex-col items-center"
-        style={{
-          marginTop: `${prizeBase * 0.1}px`,
-          maxWidth: getMaxWidth(),
-        }}
-      >
-        {prizes.map((prize, i) => {
-          const imageLeft = i % 2 === 0;
-          const ribbonSrc = prize.ribbonRight ? RIBBON_SVG : RIBBON_SVG_ALT;
-          const rowGap = i === 0 ? 0 : getRowGap();
+            <filter
+              height="200%"
 
-          // Calculate row shift
-          const translateX = isMobile
-            ? 0
-            : prize.ribbonRight
-              ? -rowShift
-              : rowShift;
-
-          return (
-            <div
-              key={i}
-              className={`flex w-full items-center ${imageLeft ? "justify-center" : "flex-row-reverse justify-center"}`}
-              style={{
-                marginTop: `${rowGap}px`,
-                gap: `${getPrizeGap()}px`,
-                transform: `translateX(${translateX}px)`,
-              }}
+              id="prize-title-shadow"
+              width="200%"
+              x="-50%"
+              y="-50%"
             >
-              {/* Prize frame with image */}
-              <div
-                className="relative shrink-0"
-                style={{
-                  width: `${prizeBase}px`,
-                  height: `${prizeBase}px`,
-                }}
+              <feDropShadow
+                dx="0"
+                dy="3"
+                floodColor="#750204"
+                stdDeviation="1"
+                result="drop-shadow"
+              />
+              <feGaussianBlur
+                in="SourceAlpha"
+                stdDeviation="3"
+                result="inner-blur"
+              />
+              <feOffset
+                in="inner-blur"
+                dx="0"
+                dy="3"
+                result="inner-offset"
+              />
+              <feComposite
+                in="SourceAlpha"
+                in2="inner-offset"
+                operator="arithmetic"
+                k2="1"
+                k3="-1"
+                result="inner-shadow-alpha"
+              />
+              <feFlood floodColor="#750204" result="inner-shadow-color" />
+              <feComposite
+                in="inner-shadow-color"
+                in2="inner-shadow-alpha"
+                operator="in"
+                result="inner-shadow"
+              />
+              <feMerge>
+                <feMergeNode in="drop-shadow" />
+                <feMergeNode in="inner-shadow" />
+              </feMerge>
+            </filter>
+          </defs>
+          <text
+            x="160"
+            y="51"
+            textAnchor="middle"
+            fontFamily="var(--font-righteous)"
+            fontSize="42"
+            
+            letterSpacing="0"
+            fill="transparent"
+            stroke="#750204"
+            strokeWidth="2"
+            paintOrder="stroke"
+            filter="url(#prize-title-shadow)"
+          >
+            {PRIZE_TITLE.map((letter, index) => (
+              <tspan
+                key={index}
+                fill={`url(#prize-letter-gradient-${index})`}
               >
-                <Image
-                  src={PRIZE_FRAME_SVG}
-                  alt=""
-                  fill
-                  className="relative z-0 object-contain"
-                  unoptimized
-                />
-                <div
-                  className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full"
-                  style={{
-                    width: `${prizeBase * 0.78}px`,
-                    height: `${prizeBase * 0.78}px`,
-                  }}
-                >
-                  <div
-                    className="h-full w-full prize-sway"
-                    style={{ animationDelay: `${i * 0.2}s` }}
-                  >
-                    <Image
-                      src={prize.imageSrc}
-                      alt={prize.name}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Prize info */}
-              <div
-                className={`flex min-w-0 shrink-0 flex-col ${imageLeft ? "items-start" : "items-end"}`}
-                style={{ gap: `${prizeBase * 0.06}px` }}
-              >
-                {/* Ribbon with category */}
-                <div
-                  className="relative shrink-0"
-                  style={{
-                    width: `${prizeBase * 0.8289 * ribbonScale}px`,
-                    height: `${prizeBase * 0.1365 * ribbonScale}px`,
-                  }}
-                >
-                  <Image
-                    src={ribbonSrc}
-                    alt=""
-                    fill
-                    className="object-contain"
-                    unoptimized
+                {letter}
+              </tspan>
+            ))}
+          </text>
+        </svg>
+        <button
+          type="button"
+          aria-label="Pull the slot machine lever"
+          className="absolute cursor-pointer rounded-full border-0 bg-transparent p-0 [-webkit-tap-highlight-color:transparent] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-[#3edbd3]"
+          style={LEVER_HOTSPOT}
+          onClick={selectRandomChallenge}
+        />
+        {prizes.map((challenge, index) => (
+          <button
+            key={challenge.number}
+            type="button"
+            aria-label={`Show ${challenge.challengeName} prizes`}
+            className="absolute z-20 aspect-[49/44] w-[11.5%] -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full border-2 border-transparent bg-transparent transition-colors hover:border-[#fff4dc]/80 hover:bg-[#fff4dc]/20 focus-visible:border-[#3edbd3] focus-visible:outline-none active:bg-[#ffb24c]/40"
+            style={CHALLENGE_BUTTONS[index]}
+            onClick={() => selectChallenge(challenge)}
+          />
+        ))}
+        <div className="absolute left-[10%] top-[20.5%] z-10 h-[8.5%] w-[74%] overflow-hidden">
+          <div
+            aria-live="polite"
+            className="font-sekuya absolute inset-x-[3%] top-[20%] bottom-[20%] flex items-center justify-center overflow-hidden px-[2%] text-center text-[clamp(8px,3cqw,18px)] uppercase leading-none text-[#D50000] [clip-path:inset(0)] [contain:paint]"
+          >
+            {selectedChallenge ? (
+              <PrizeReel
+                key={`challenge-${rollKey}`}
+                entries={Array.from({ length: SPIN_CYCLES + 1 }).flatMap(
+                  (_, cycle) =>
+                      reelOrder.map((challenge) => ({
+                      id: `${cycle}-${challenge.number}`,
+                      label: challenge.challengeName,
+                      imageSrc: "",
+                    })),
+                )}
+                targetIndex={stopIndex}
+                rollKey={rollKey}
+                labelClassName="font-sekuya uppercase text-[#D50000]"
+                centerLabels
+              />
+            ) : (
+              "Select a challenge"
+            )}
+          </div>
+        </div>
+        <ul
+          key={`prizes-${rollKey}`}
+          aria-label={
+            selectedChallenge
+              ? `${selectedChallenge.challengeName} prizes`
+              : "Challenge prizes"
+          }
+          aria-live="polite"
+          className="absolute left-[15.5%] top-[34%] z-10 grid h-[30%] w-[61.5%] grid-cols-3 text-center text-[#4c321b]"
+        >
+          {DISPLAY_PRIZE_ORDER.map((prizeIndex) => (
+            <li
+              key={prizeIndex}
+              className="relative min-w-0 overflow-hidden"
+            >
+              <span className="font-sekuya absolute inset-x-0 top-[5%] z-20 text-center text-[clamp(7px,2.4cqw,13px)] leading-none text-[#D50000] [text-shadow:0_2px_2px_rgb(0_0_0/0.45)]">
+                {["1ST", "2ND", "3RD"][prizeIndex]} 
+              </span>
+              {selectedChallenge ? (
+                <div className="absolute inset-x-0 top-[20%] h-[75%] overflow-hidden">
+                  <PrizeReel
+                    entries={Array.from({ length: SPIN_CYCLES + 1 }).flatMap(
+                      (_, cycle) =>
+                        reelOrder.map((challenge) => {
+                          const prize = challenge.prizes[prizeIndex];
+                          return {
+                            id: `${cycle}-${challenge.number}-${prizeIndex}`,
+                            label:
+                              prize?.name || `Prize ${prizeIndex + 1}`,
+                            imageSrc: prize?.imageSrc ?? "",
+                            split: prize?.split,
+                          };
+                        }),
+                    )}
+                    targetIndex={stopIndex}
+                    rollKey={rollKey}
+                    labelClassName="font-righteous text-[#760000]"
                   />
-                  <span
-                    className="font-chilanka absolute inset-0 flex items-center justify-center whitespace-nowrap px-2 text-center leading-none text-[#4c321b]"
-                    style={{
-                      fontSize: `${getCategoryFontSize()}px`,
-                      top: ribbonOffset.top,
-                      left: ribbonOffset.left,
-                    }}
-                  >
-                    {prize.category}
-                  </span>
                 </div>
-
-                {/* Prize name */}
-                <p
-                  className={`${imageLeft ? "text-left" : "text-right"} font-darumadrop-one leading-[0.95] text-[#4c321b]`}
-                  style={{
-                    fontSize: `${getPrizeNameFontSize()}px`,
-                    width: `${getPrizeNameWidth()}px`,
-                    whiteSpace: "normal",
-                    overflowWrap: "anywhere",
-                  }}
-                >
-                  {prize.name}
-                </p>
-              </div>
-            </div>
-          );
-        })}
+              ) : (
+                <span className="font-righteous absolute inset-x-0 bottom-[3%] text-[clamp(7px,2.5cqw,14px)] leading-tight text-[#760000]">
+                  Prize {prizeIndex + 1}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
-
-      {/* comment out for production */}
-      {/* {process.env.NODE_ENV === "development" && (
-        <p className="mt-4 text-xs text-[#4c321b]/50">
-          Prize Base: {Math.round(prizeBase)}px | Width: {windowWidth}px |
-          {isMobile
-            ? " 📱 Mobile"
-            : isSmallTablet
-              ? " 📟 Small Tablet"
-              : isMediumTablet
-                ? " 📟 Medium Tablet"
-                : isSmallDesktop
-                  ? " 💻 Small Desktop"
-                  : isLargeDesktop
-                    ? " 🖥️ Large Desktop"
-                    : " 🖥️ XL Desktop"}
-        </p>
-      )} */}
     </section>
   );
 }

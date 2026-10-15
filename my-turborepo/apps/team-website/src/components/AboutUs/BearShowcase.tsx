@@ -8,7 +8,6 @@ import gsap from "gsap";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
 import type { BearMotion, ProjectAnchors } from "./bear-config";
-import { inter } from "~/app/_components/fonts";
 import {
   BEAR_BACKDROP_URL,
   BEAR_POSTER_URL,
@@ -414,7 +413,7 @@ export default function BearShowcase() {
               </span>
               <span
                 aria-hidden
-                className={`${styles.label} ${inter.className}`}
+                className={`${styles.label} font-inter`}
                 data-label={stat.id}
               >
                 {stat.label}
@@ -424,7 +423,7 @@ export default function BearShowcase() {
         </ul>
         <p
           id="bear-instructions"
-          className={`${styles.hint} ${inter.className}`}
+          className={`${styles.hint} font-inter`}
         >
           {failed ? "SNOWFLAKE BEAR" : "DRAG TO ROTATE"}
           <span className="sr-only">

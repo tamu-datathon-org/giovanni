@@ -1,6 +1,6 @@
 export const BEAR_MODEL_URL = "/models/about-bear.glb";
 export const BEAR_POSTER_URL = "/images/about-us/bear-poster.webp";
-export const BEAR_BACKDROP_URL = "/images/about-us/bear-dots.png";
+export const BEAR_BACKDROP_URL = "/images/about-us/bear-dots-edited.png";
 
 export const RETURN_DURATION = 800;
 

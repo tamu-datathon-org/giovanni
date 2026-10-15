@@ -43,6 +43,14 @@ export const StatusInformation: React.FC<InformationProps> = ({
           <span className="font-bold">MLH Consent:</span>{" "}
           {application.mlhEmailConsent ? "Yes" : "No"}
         </p>
+        <p>
+          <span className="font-bold">Travel Reimbursement:</span>{" "}
+          {application.travelReimbursement == null
+            ? "—"
+            : application.travelReimbursement
+              ? "Yes"
+              : "No"}
+        </p>
       </CardContent>
     </CardInformation>
   );

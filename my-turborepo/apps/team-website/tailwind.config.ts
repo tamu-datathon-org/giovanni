@@ -50,11 +50,11 @@ export default {
         // => @media (min-width: 1400px) { ... }
       },
       fontFamily: {
-        // The var is defined in a component somewhere
-        // We need this so NextJS does its font optimizations
-        XPfont: ["var(--font-w95fa)"],
-        inter: ["var(--font-inter)"],
-        konkhmer: ["var(--font-konkhmer-sleokchher)"],
+        // Font faces are loaded in src/app/globals.css
+        myfont: ["myfont", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
+        konkhmer: ['"Konkhmer Sleokchher"', "sans-serif"],
+        kode: ['"Kode Mono"', "monospace"],
       },
       borderRadius: {
         lg: "var(--radius)",

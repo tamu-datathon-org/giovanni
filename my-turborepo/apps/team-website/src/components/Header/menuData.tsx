@@ -17,24 +17,30 @@ const menuData: Menu[] = [
   },
   {
     id: 3,
+    title: "Challenges",
+    path: "/#challenges",
+    newTab: false,
+  },
+  {
+    id: 4,
     title: "Past Events",
     path: "/#past-events",
     newTab: false,
   },
   {
-    id: 4,
+    id: 5,
     title: "Team",
     path: "/#team",
     newTab: false,
   },
   {
-    id: 5,
+    id: 6,
     title: "Sponsors",
     path: "/#sponsors",
     newTab: false,
   },
   {
-    id: 6,
+    id: 7,
     title: "Apply",
     path: "/apply",
     newTab: false,

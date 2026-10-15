@@ -1,11 +1,12 @@
 {
-    "cSpell.words": ["gsap", "Poopoo"],
-    "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/.DS_Store": true,
-        "**/Thumbs.db": true
-    },
-    "hide-files.files": []
+	"cSpell.words": ["gsap", "Poopoo"],
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/.jj": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true
+	},
+	"hide-files.files": []
 }

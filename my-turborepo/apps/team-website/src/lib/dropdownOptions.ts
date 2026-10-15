@@ -490,6 +490,11 @@ export const SHIRT_SIZES = [
   { value: "XXL", label: "Unisex XXL" },
 ];
 
+export const YES_NO = [
+  { value: "Yes", label: "Yes" },
+  { value: "No", label: "No" },
+];
+
 export const DIETARY_RESTRICTIONS = [
   { value: "None", label: "No restrictions" },
   { value: "Vegetarian", label: "Vegetarian" },

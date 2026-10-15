@@ -7,7 +7,15 @@ import gsap from "gsap";
 import styles from "./about.module.css";
 
 /** Left-to-right flip through the three stars, then settle; plays once on scroll-in. */
-export default function AboutStars() {
+export default function AboutStars({
+  className = styles.stars,
+  starClassName = styles.star,
+  src = "/images/about-us/star.svg",
+}: {
+  className?: string;
+  starClassName?: string;
+  src?: string;
+} = {}) {
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -81,25 +89,10 @@ export default function AboutStars() {
   }, []);
 
   return (
-    <div ref={root} className={styles.stars} aria-hidden>
-      <img
-        src="/images/about-us/star.svg"
-        alt=""
-        data-star
-        className={styles.star}
-      />
-      <img
-        src="/images/about-us/star.svg"
-        alt=""
-        data-star
-        className={styles.star}
-      />
-      <img
-        src="/images/about-us/star.svg"
-        alt=""
-        data-star
-        className={styles.star}
-      />
+    <div ref={root} className={className} aria-hidden>
+      <img src={src} alt="" data-star className={starClassName} />
+      <img src={src} alt="" data-star className={starClassName} />
+      <img src={src} alt="" data-star className={starClassName} />
     </div>
   );
 }

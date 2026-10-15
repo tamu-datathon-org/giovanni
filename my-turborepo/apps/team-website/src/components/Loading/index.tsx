@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-import { konkhmerSleokchher } from "~/app/_components/fonts";
-
 /** Sidebar blue and active-label teal, Figma 36:317 / 36:320. */
 const PANEL_BG = "#377BB0";
 const ACCENT = "#83EFE8";
@@ -46,7 +44,7 @@ export default function LoadingScreen() {
       role="status"
       aria-live="polite"
       aria-label="Loading"
-      className={`${konkhmerSleokchher.variable} fixed inset-0 z-[100] flex flex-col items-center justify-center transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center transition-opacity duration-500 ${
         done ? "pointer-events-none opacity-0" : "opacity-100"
       }`}
       style={{ backgroundColor: PANEL_BG }}

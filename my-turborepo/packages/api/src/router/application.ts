@@ -281,6 +281,24 @@ export const applicationRouter = {
 
       const event = await getEventData({ ctx, eventName });
 
+      const alreadyApplied = new TRPCError({
+        code: "CONFLICT",
+        message: "You've already submitted an application for this event.",
+      });
+
+      // Catches a stale tab or a repeat submit before anything is written.
+      const existingApplication = await ctx.db.query.Application.findFirst({
+        where: and(
+          eq(Application.eventId, event.id),
+          eq(Application.userId, ctx.session.user.id),
+        ),
+        columns: { id: true },
+      });
+
+      if (existingApplication) {
+        throw alreadyApplied;
+      }
+
       const resume = await db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
       });
@@ -300,22 +318,49 @@ export const applicationRouter = {
         });
       }
 
-      // user roles insertion
-      await ctx.db.insert(UserRole).values({
-        userId: ctx.session.user.id,
-        roleId: role.id,
-      });
+      let response;
+      try {
+        // The role and the application are saved together so a failure on the
+        // application can't leave behind a role that locks the user out of
+        // retrying. The role insert is deliberately not `onConflictDoNothing`:
+        // its primary key is what makes a concurrent duplicate submit roll back.
+        response = await ctx.db.transaction(async (tx) => {
+          await tx.insert(UserRole).values({
+            userId: ctx.session.user.id,
+            roleId: role.id,
+          });
 
-      const response = await db.insert(Application).values({
-        ...applicationData,
-        referrerEmail: normalizeReferrerEmail(applicationData.referrerEmail, [
-          applicationData.email,
-          ctx.session.user.email,
-        ]),
-        userId: ctx.session.user.id,
-        eventId: event.id,
-        status: "pending",
-      });
+          return await tx.insert(Application).values({
+            ...applicationData,
+            referrerEmail: normalizeReferrerEmail(
+              applicationData.referrerEmail,
+              [applicationData.email, ctx.session.user.email],
+            ),
+            userId: ctx.session.user.id,
+            eventId: event.id,
+            status: "pending",
+          });
+        });
+      } catch (err) {
+        if (err instanceof TRPCError) throw err;
+
+        // Drizzle wraps the driver error, so the Postgres code is on `cause`.
+        const pgCode = (err as { cause?: { code?: string } }).cause?.code;
+        if (pgCode === "23505") {
+          throw alreadyApplied;
+        }
+
+        console.error(
+          "Failed to create application:",
+          err,
+          (err as { cause?: unknown }).cause,
+        );
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "We couldn't save your application. Please try again.",
+          cause: err,
+        });
+      }
 
       const loginEmail = ctx.session.user.email;
       const applicationEmail = applicationData.email;

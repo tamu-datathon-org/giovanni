@@ -178,6 +178,7 @@ export const Application = pgTable("application", {
   dietaryRestriction: varchar("dietary_restriction", { length: 255 }),
   extraInfo: varchar("extra_info", { length: 255 }),
   mlhEmailConsent: boolean("mlh_email_consent").notNull().default(false),
+  travelReimbursement: boolean("travel_reimbursement"),
   acceptedEmail: boolean("accepted_email").notNull().default(false),
   waitlistEmail: boolean("waitlist_email").notNull().default(false),
   rejectedEmail: boolean("rejected_email").notNull().default(false),

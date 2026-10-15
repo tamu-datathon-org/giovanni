@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 
-import { konkhmerSleokchher } from "~/app/_components/fonts";
-
 const PHOTOS_SECTION_IMAGES = [
   {
     src: "/images/StatSection/collage.webp",
@@ -75,7 +73,7 @@ export default function PhotosSectionImages({ refs }: PhotosSectionImagesProps) 
             />
             <div className="absolute inset-0 bg-black/50" aria-hidden />
             <span
-              className={`${konkhmerSleokchher.className} absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-center text-5xl font-normal leading-none tracking-[-0.07em] sm:text-6xl lg:text-7xl`}
+              className={`font-konkhmer absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-center text-5xl font-normal leading-none tracking-[-0.07em] sm:text-6xl lg:text-7xl`}
             >
               <span className="text-[#83EFE8]">{accent}</span>{" "}
               <span className="text-white">{label}</span>

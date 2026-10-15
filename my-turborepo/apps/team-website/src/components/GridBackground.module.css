@@ -1,0 +1,15 @@
+.root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.tile {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  background-image: url("/images/team/grid.png");
+  background-repeat: no-repeat;
+  background-size: 360px 360px;
+}
