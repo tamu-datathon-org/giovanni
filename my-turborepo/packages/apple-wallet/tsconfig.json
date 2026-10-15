@@ -1,0 +1,11 @@
+{
+  "extends": "../../tooling/typescript/internal-package.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
+  },
+  "include": ["src", "test-pass.ts"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,9 @@
+{
+  "formatVersion": 1,
+  "description": "Event ticket",
+  "organizationName": "Example Events",
+  "logoText": "Example Events",
+  "foregroundColor": "rgb(255,255,255)",
+  "backgroundColor": "rgb(30,30,60)",
+  "labelColor": "rgb(190,190,230)"
+}
