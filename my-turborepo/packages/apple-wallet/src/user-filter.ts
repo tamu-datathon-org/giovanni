@@ -1,6 +1,6 @@
 import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import { db } from "@vanni/db/client";
-import { Application } from "@vanni/db/schema";
+import { Application, Event } from "@vanni/db/schema";
 
 // ─────────────────────────────────────────────────────────────
 // Config
@@ -143,4 +143,39 @@ export async function getAttendees(eventId: string): Promise<Attendee[]> {
     email: row.email,
     group: row.foodGroup!,
   }));
+}
+
+// Single attendee for the signed-in user, or null if they aren't confirmed / have no food group yet
+export async function getAttendeeForUser(
+  userId: string,
+  eventName: string,
+): Promise<Attendee | null> {
+  const [row] = await db
+    .select({
+      id: Application.id,
+      firstName: Application.firstName,
+      lastName: Application.lastName,
+      email: Application.email,
+      foodGroup: Application.foodGroup,
+    })
+    .from(Application)
+    .innerJoin(Event, eq(Application.eventId, Event.id))
+    .where(
+      and(
+        eq(Application.userId, userId),
+        eq(Event.name, eventName),
+        eq(Application.invitationStatus, true),
+        isNotNull(Application.foodGroup),
+      ),
+    )
+    .limit(1);
+
+  if (!row) return null;
+
+  return {
+    id: row.id,
+    name: `${row.firstName} ${row.lastName}`,
+    email: row.email,
+    group: row.foodGroup!,
+  };
 }
