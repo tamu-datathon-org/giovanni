@@ -23,8 +23,12 @@ const TRAVEL_FORM =
 const ART =
   "pointer-events-none h-auto w-full select-none [-webkit-user-drag:none] [user-drag:none]";
 
+/** Below Tailwind's `md` (768px) the table stands up tall; matches `max-md:` classes. */
+const MOBILE_QUERY = "(max-width: 767.98px)";
+
 /** Where the deck sits, as a percent of the table. Cards fly out from here. */
 const DECK = { x: 16, y: 8 };
+const MOBILE_DECK = { x: 39, y: 3.5 };
 const DEAL_STEP_MS = 90;
 const DEAL_TRAVEL_MS = 700;
 const POPUP_OPEN_MS = 550;
@@ -50,13 +54,16 @@ type CardRect = {
   height: number;
 };
 
+const POPUP_RATIO = 1.425;
+
 function popupSize() {
-  const maxW = window.matchMedia("(min-width: 575px)").matches ? 24 * 16 : 26 * 16;
-  const vwCap = window.matchMedia("(min-width: 575px)").matches
-    ? window.innerWidth * 0.48
-    : window.innerWidth * 0.78;
-  const width = Math.min(maxW, vwCap);
-  const height = width * 1.425;
+  const mobile = window.matchMedia(MOBILE_QUERY).matches;
+  const maxW = mobile ? 26 * 16 : 24 * 16;
+  const vwCap = window.innerWidth * (mobile ? 0.88 : 0.48);
+  // Keep the whole card on screen, e.g. on a phone held sideways.
+  const vhCap = (window.innerHeight * 0.86) / POPUP_RATIO;
+  const width = Math.min(maxW, vwCap, vhCap);
+  const height = width * POPUP_RATIO;
   return {
     width,
     height,
@@ -77,6 +84,12 @@ const SPOTS = [
   { x: 66, y: 64 },
   { x: 82, y: 64 },
 ];
+
+/** Tall phone table: 2 columns × 5 rows. */
+const MOBILE_SPOTS = [20, 36, 52, 68, 84].flatMap((y) => [
+  { x: 29, y },
+  { x: 71, y },
+]);
 
 type FaqItem = { question: string; answer: string };
 
@@ -259,17 +272,18 @@ function FaqCardFace({
         </span>
       </div>
       <div className="absolute inset-[12%_10%] flex flex-col overflow-hidden px-[4%] py-[3%]">
-        <p className="font-righteous shrink-0 text-[clamp(16px,2.5vw,28px)] leading-tight text-[#1F71DD]">
+        <p className="font-righteous shrink-0 text-[clamp(18px,2.5vw,28px)] leading-tight text-[#1F71DD]">
           {question}
         </p>
         <div
           data-faq-scroll
-          className="mt-3 min-h-0 flex-1 overflow-y-auto text-[clamp(14px,1.9vw,20px)] leading-snug text-[#1F71DD]"
+          className="mt-3 min-h-0 flex-1 overflow-y-auto text-[clamp(15px,1.9vw,20px)] leading-snug text-[#1F71DD]"
         >
           {renderAnswer(answer)}
         </div>
-        <p className="font-righteous mt-3 shrink-0 text-center text-[clamp(11px,1.4vw,15px)] tracking-[0.04em] text-[#1F71DD]/70">
-          Click to close
+        <p className="font-righteous mt-3 shrink-0 text-center text-[clamp(12px,1.4vw,15px)] tracking-[0.04em] text-[#1F71DD]/70">
+          <span className="md:hidden">Tap to close</span>
+          <span className="max-md:hidden">Click to close</span>
         </p>
       </div>
     </div>
@@ -282,8 +296,8 @@ export default function FAQ() {
   const [dealt, setDealt] = useState(false);
   const [landed, setLanded] = useState(false);
   const [dealSettled, setDealSettled] = useState(false);
-  /** Table question labels — only from sm (575px) up. */
-  const [showTableQuestions, setShowTableQuestions] = useState(false);
+  /** Phones get the tall 2×5 table; drives dealt-card spots (layout itself is `max-md:` CSS). */
+  const [isMobile, setIsMobile] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   /** Bumped on every open so the portal remounts from the correct card spot. */
   const [openGen, setOpenGen] = useState(0);
@@ -311,8 +325,8 @@ export default function FAQ() {
   }, [stageRef]);
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 575px)");
-    const sync = () => setShowTableQuestions(mq.matches);
+    const mq = window.matchMedia(MOBILE_QUERY);
+    const sync = () => setIsMobile(mq.matches);
     sync();
     mq.addEventListener("change", sync);
     return () => mq.removeEventListener("change", sync);
@@ -386,6 +400,8 @@ export default function FAQ() {
     };
   }, []);
 
+  const deck = isMobile ? MOBILE_DECK : DECK;
+  const spots = isMobile ? MOBILE_SPOTS : SPOTS;
   const openItem = openIndex === null ? null : ITEMS[openIndex];
   const flyTo = typeof window !== "undefined" ? popupSize() : null;
   const restScale =
@@ -511,9 +527,9 @@ export default function FAQ() {
               />
             </h2>
 
-          {/* Room above the table for the bear to rise into. */}
-          <div className="relative mt-4 w-full pt-[26%] md:mt-12">
-            <div className="pointer-events-none absolute left-[25%] top-[8%] z-[1] w-[28%] -translate-x-1/2 translate-y-[64%] transition-transform duration-700 ease-out group-data-[show]/faq:translate-y-0 motion-reduce:transition-none [@media(scripting:none)]:translate-y-0">
+          {/* Room above the table for the bear to rise into. On phones the bear, hands and deck keep their desktop spacing scaled ×1.57 so the paws meet the shoulders. */}
+          <div className="relative mt-4 w-full pt-[26%] max-md:mx-auto max-md:w-[92%] max-md:max-w-[440px] max-md:pt-[min(36.8vw,176px)] md:mt-12">
+            <div className="pointer-events-none absolute left-[25%] top-[8%] z-[1] w-[28%] -translate-x-1/2 max-md:left-[50%] max-md:top-[3.2%] max-md:w-[44%] translate-y-[64%] transition-transform duration-700 ease-out group-data-[show]/faq:translate-y-0 motion-reduce:transition-none [@media(scripting:none)]:translate-y-0">
               <Image
                 src={BEAR}
                 alt=""
@@ -524,7 +540,7 @@ export default function FAQ() {
               />
             </div>
 
-            <div className="pointer-events-none absolute left-[46%] top-[10%] z-[5] w-[17%] origin-bottom-left scale-90 opacity-0 transition delay-[1100ms] duration-500 ease-out group-data-[show]/faq:scale-100 group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:scale-100 [@media(scripting:none)]:opacity-100">
+            <div className="pointer-events-none absolute left-[46%] top-[10%] z-[5] w-[17%] max-md:left-[64%] max-md:top-[1.6%] max-md:w-[33%] origin-bottom-left scale-90 opacity-0 transition delay-[1100ms] duration-500 ease-out group-data-[show]/faq:scale-100 group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:scale-100 [@media(scripting:none)]:opacity-100">
               <Image
                 src={BUBBLE}
                 alt="Have a question? Or do you want to play a game?"
@@ -550,9 +566,16 @@ export default function FAQ() {
                 width={2140}
                 height={896}
                 draggable={false}
-                className={`${ART} relative z-[1] block`}
+                className={`${ART} relative z-[1] block max-md:hidden`}
               />
-              <div className="absolute left-[14%] top-[8%] z-[2] w-[8%]">
+              {/* Phones: the same table stood up tall (CSS, colors sampled from the art). */}
+              <div
+                aria-hidden
+                className="pointer-events-none relative z-[1] aspect-[1/3] w-full rounded-full border-[18px] border-b-[30px] border-[#FFB24C] bg-[#152F0C] md:hidden"
+              >
+                <div className="absolute inset-[3%_5%] rounded-full border-2 border-[#F0C485]" />
+              </div>
+              <div className="absolute left-[14%] top-[8%] z-[2] w-[8%] max-md:left-[32.7%] max-md:top-[2.8%] max-md:w-[12.6%]">
                 <Image
                   src={STACK}
                   alt=""
@@ -562,7 +585,7 @@ export default function FAQ() {
                   className={`${ART} transition-transform duration-500 ${dealt ? "scale-[0.94]" : ""}`}
                 />
               </div>
-              <div className="pointer-events-none absolute left-[13%] top-[-28%] z-[4] w-[30%] opacity-0 transition-opacity delay-700 duration-500 ease-out group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:opacity-100">
+              <div className="pointer-events-none absolute left-[13%] top-[-28%] z-[4] w-[30%] max-md:left-[31.1%] max-md:top-[-5.07%] max-md:w-[47.1%] opacity-0 transition-opacity delay-700 duration-500 ease-out group-data-[show]/faq:opacity-100 motion-reduce:transition-none [@media(scripting:none)]:opacity-100">
                 <Image
                   src={HANDS}
                   alt=""
@@ -573,7 +596,7 @@ export default function FAQ() {
                 />
               </div>
 
-              <div className="absolute left-1/2 top-[-4%] z-20 w-[8.5%] -translate-x-1/2 sm:w-[7%]">
+              <div className="absolute left-1/2 top-[-4%] z-20 w-[7%] -translate-x-1/2 max-md:left-[55%] max-md:top-[3.3%] max-md:w-[16%]">
                 <button
                   type="button"
                   onClick={deal}
@@ -595,15 +618,17 @@ export default function FAQ() {
                   />
                 </button>
                 {dealt ? null : (
-                  <p className="font-righteous pointer-events-none absolute left-1/2 top-full mt-2 w-max max-w-[90vw] -translate-x-1/2 text-center text-[clamp(13px,1.5vw,22px)] leading-tight tracking-[0.03em] text-[#FDFBED] [text-shadow:0_2px_4px_rgb(0_0_0/0.55)]">
-                    Click on the chips to deal in!
+                  <p className="font-righteous pointer-events-none absolute left-1/2 top-full mt-2 w-max max-w-[90vw] -translate-x-1/2 text-center text-[clamp(13px,1.5vw,22px)] leading-tight tracking-[0.03em] text-[#FDFBED] [text-shadow:0_2px_4px_rgb(0_0_0/0.55)] max-md:max-w-[8.5rem] max-md:text-[15px]">
+                    <span className="md:hidden">Tap the chips to deal in!</span>
+                    <span className="max-md:hidden">Click on the chips to deal in!</span>
                   </p>
                 )}
               </div>
 
               {dealt && landed && openIndex === null ? (
-                <p className="font-righteous pointer-events-none absolute left-1/2 top-[78%] z-[5] w-max max-w-[90vw] -translate-x-1/2 text-center text-[clamp(11px,1.2vw,17px)] leading-tight tracking-[0.03em] text-[#FDFBED] [text-shadow:0_2px_4px_rgb(0_0_0/0.55)]">
-                  Click a card to flip it!
+                <p className="font-righteous pointer-events-none absolute left-1/2 top-[78%] z-[5] w-max max-w-[90vw] -translate-x-1/2 text-center text-[clamp(11px,1.2vw,17px)] leading-tight tracking-[0.03em] text-[#FDFBED] [text-shadow:0_2px_4px_rgb(0_0_0/0.55)] max-md:top-[93%] max-md:text-[15px]">
+                  <span className="md:hidden">Tap a card to flip it!</span>
+                  <span className="max-md:hidden">Click a card to flip it!</span>
                 </p>
               ) : null}
 
@@ -718,16 +743,15 @@ export default function FAQ() {
                   )
                 : null}
 
-              {/* Questions at rest spots — fade in after deal; omitted below 575px. */}
-              {showTableQuestions &&
-                dealt &&
+              {/* Questions at rest spots — fade in after deal. */}
+              {dealt &&
                 landed &&
                 ITEMS.map((item, index) => {
-                  const spot = SPOTS[index];
+                  const spot = spots[index];
                   return (
                     <div
                       key={`q-${item.question}`}
-                      className="pointer-events-none absolute z-[4] aspect-square w-[10.5%] -translate-x-1/2 -translate-y-1/2"
+                      className="pointer-events-none absolute z-[4] aspect-square w-[34%] -translate-x-1/2 -translate-y-1/2 md:w-[10.5%]"
                       style={{
                         left: `${spot.x}%`,
                         top: `${spot.y}%`,
@@ -736,10 +760,11 @@ export default function FAQ() {
                       }}
                     >
                       <p
-                        className="font-righteous absolute bottom-[100%] left-1/2 mb-[0.6em] w-[160%] -translate-x-1/2 text-center leading-[1.15] tracking-[0.02em] text-[#FDFBED] [text-shadow:0_1px_3px_rgb(0_0_0/0.75)]"
+                        className="font-righteous absolute bottom-[100%] left-1/2 mb-[0.6em] w-[112%] -translate-x-1/2 text-center leading-[1.15] tracking-[0.02em] text-[#FDFBED] [text-shadow:0_1px_3px_rgb(0_0_0/0.75)] md:w-[160%]"
                         style={{
-                          fontSize:
-                            "clamp(8px, calc(8px + (100vw - 575px) * 0.0115), 16px)",
+                          fontSize: isMobile
+                            ? "15px"
+                            : "clamp(8px, calc(8px + (100vw - 575px) * 0.0115), 16px)",
                         }}
                       >
                         <span className="line-clamp-2">{item.question}</span>
@@ -750,10 +775,10 @@ export default function FAQ() {
 
               {dealt &&
                 ITEMS.map((item, index) => {
-                  const spot = SPOTS[index];
+                  const spot = spots[index];
                   const selected = openIndex === index;
-                  const x = landed ? spot.x : DECK.x;
-                  const y = landed ? spot.y : DECK.y;
+                  const x = landed ? spot.x : deck.x;
+                  const y = landed ? spot.y : deck.y;
                   const dealMs = index * DEAL_STEP_MS;
                   const moveTransition = dealSettled
                     ? `left ${POPUP_MS}ms ${POPUP_EASE}, top ${POPUP_MS}ms ${POPUP_EASE}, opacity 0ms linear`
@@ -779,7 +804,7 @@ export default function FAQ() {
                         event.preventDefault();
                         openCard(index);
                       }}
-                      className="group/card absolute z-[3] aspect-square w-[12.5%] -translate-x-1/2 -translate-y-1/2 cursor-pointer border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED] sm:w-[10.5%]"
+                      className="group/card absolute z-[3] aspect-square w-[34%] -translate-x-1/2 -translate-y-1/2 cursor-pointer border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#FDFBED] md:w-[10.5%]"
                       style={{
                         left: `${x}%`,
                         top: `${y}%`,
