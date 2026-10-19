@@ -748,6 +748,7 @@ export const applicationRouter = {
           status: true,
           email: true,
           foodGroup: true,
+          invitationStatus: true,
         },
         where: and(
           eq(Application.eventId, event.id),

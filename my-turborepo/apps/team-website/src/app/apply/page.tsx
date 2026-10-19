@@ -206,6 +206,32 @@ function ActionButton({
   );
 }
 
+/** Light-blue label pill on the grey status cards ("info", "food group"). */
+function CardTag({
+  children,
+  small = false,
+}: {
+  children: React.ReactNode;
+  small?: boolean;
+}) {
+  return (
+    <span
+      className={`inline-block shrink-0 rounded-[20px] border-[5px] font-kode lowercase tracking-[-0.07em] ${
+        small
+          ? "px-3 py-0.5 text-[16px] md:px-4 md:text-[20px]"
+          : "px-5 py-1 text-[20px] xl:text-[30px]"
+      }`}
+      style={{
+        backgroundColor: INK.button,
+        borderColor: INK.cardBorder,
+        color: INK.deep,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
 /** Orange hatch rule flanking the "logged in as" line. */
 function Hatch({ className = "" }: { className?: string }) {
   return (
@@ -412,6 +438,7 @@ export default function Page() {
   }, [data]);
 
   const gridRef = useRef<HTMLDivElement>(null);
+  const leftColRef = useRef<HTMLDivElement>(null);
   const offerRef = useRef<HTMLDivElement>(null);
   const qrRef = useRef<HTMLDivElement>(null);
   const blueRef = useRef<HTMLDivElement>(null);
@@ -423,10 +450,16 @@ export default function Page() {
 
   const { step, headline } = statusView(data?.status, isLoading);
 
+  // Food group and wallet passes both need a confirmed spot, same check as
+  // /api/wallet/*. The status guard hides them again after a rejection.
+  const isAttending =
+    (data?.status === "accepted" || data?.status === "checkedin") &&
+    data.invitationStatus === true;
+  const foodGroup = isAttending ? data.foodGroup : null;
+
   // Only offer the wallet that matches the phone; desktop gets both.
-  // Same requirement as /api/wallet/*: a confirmed spot with a food group.
   const platform = useDevicePlatform();
-  const walletReady = data?.status === "accepted" && !!data.foodGroup;
+  const walletReady = !!foodGroup;
   const showAppleWallet =
     walletReady && platform !== null && platform !== "android";
   const showGoogleWallet =
@@ -451,6 +484,9 @@ export default function Page() {
    * Line each arrow up with the panel it points at. The blue arrowhead sits
    * 64.6% down its SVG (tip at y=216.5 of 335) and the orange one is centred,
    * so the tips — not the boxes — are what get aligned.
+   * Each arrow also starts at least 16px below the left column's last card
+   * (the food group card pushes that lower), sliding its tip down the target
+   * panel if needed, but never past the panel's bottom.
    */
   useEffect(() => {
     const grid = gridRef.current;
@@ -458,22 +494,34 @@ export default function Page() {
 
     const place = () => {
       const g = grid.getBoundingClientRect();
-      const centerOf = (el: HTMLElement | null) => {
+      const boxOf = (el: Element | null | undefined) => {
         if (!el) return null;
         const r = el.getBoundingClientRect();
-        return r.top + r.height / 2 - g.top;
+        return { top: r.top - g.top, bottom: r.bottom - g.top };
       };
 
-      const blueTargetEl = arrowTarget === "offer" ? offerRef.current : qrRef.current;
-      const blueCenter = centerOf(blueTargetEl);
-      const blueH = blueRef.current?.offsetHeight ?? 0;
+      const leftBottom = boxOf(leftColRef.current?.lastElementChild)?.bottom ?? 0;
+      // tipOffset: distance from the arrow's top edge to the point that aims
+      const topFor = (el: HTMLElement | null, tipOffset: number) => {
+        const box = boxOf(el);
+        if (!box) return -9999;
+        const center = (box.top + box.bottom) / 2;
+        const tip = Math.min(
+          Math.max(center, leftBottom + 16 + tipOffset),
+          box.bottom - 24,
+        );
+        return tip - tipOffset;
+      };
 
-      const orangeCenter = centerOf(qrRef.current);
+      const blueH = blueRef.current?.offsetHeight ?? 0;
       const orangeH = orangeRef.current?.offsetHeight ?? 0;
 
       setArrowTop({
-        blue: blueCenter === null ? -9999 : blueCenter - 0.646 * blueH,
-        orange: orangeCenter === null ? -9999 : orangeCenter - orangeH / 2,
+        blue: topFor(
+          arrowTarget === "offer" ? offerRef.current : qrRef.current,
+          0.646 * blueH,
+        ),
+        orange: topFor(qrRef.current, orangeH / 2),
       });
     };
 
@@ -485,7 +533,7 @@ export default function Page() {
       ro.disconnect();
       window.removeEventListener("resize", place);
     };
-  }, [arrowTarget, qrCode, data?.status, isLoading]);
+  }, [arrowTarget, qrCode, data?.status, foodGroup, isLoading]);
 
   return (
     <>
@@ -541,7 +589,7 @@ export default function Page() {
 
           <div ref={gridRef} className="relative mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* ---------- LEFT ---------- */}
-            <div className="flex h-full flex-col gap-4">
+            <div ref={leftColRef} className="flex h-full flex-col gap-4">
               <div className="flex items-center gap-3">
                 <Image
                   src={`${ASSETS}/marker-lg.svg`}
@@ -570,16 +618,7 @@ export default function Page() {
                   className="relative min-h-[220px] rounded-[20px] border-[5px] px-6 pb-8 pt-4 xl:min-h-[260px] xl:pt-5"
                   style={{ backgroundColor: INK.card, borderColor: INK.panelBorder }}
                 >
-                  <span
-                    className="inline-block rounded-[20px] border-[5px] px-5 py-1 font-kode text-[20px] lowercase tracking-[-0.07em] xl:text-[30px]"
-                    style={{
-                      backgroundColor: INK.button,
-                      borderColor: INK.cardBorder,
-                      color: INK.deep,
-                    }}
-                  >
-                    info
-                  </span>
+                  <CardTag>info</CardTag>
                   <p
                     className="mt-8 font-kode text-[clamp(28px,4vw,50px)] lowercase leading-none tracking-[-0.07em]"
                     style={{ color: INK.deep }}
@@ -590,6 +629,25 @@ export default function Page() {
                 </div>
               </div>
 
+              {/* food group: one-line version of the info card. mt-4 clears the
+                  sparkles hanging off the card above. Wraps only if a long
+                  name can't fit on a very narrow phone. */}
+              {foodGroup && (
+                <div className="mt-4 md:pl-[28px] xl:pl-[34px]">
+                  <div
+                    className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-[20px] border-[5px] px-5 py-3 md:gap-x-4 md:px-6"
+                    style={{ backgroundColor: INK.card, borderColor: INK.panelBorder }}
+                  >
+                    <CardTag small>food group</CardTag>
+                    <p
+                      className="min-w-0 font-kode text-[18px] lowercase leading-none tracking-[-0.07em] md:text-[22px] xl:text-[26px]"
+                      style={{ color: INK.deep }}
+                    >
+                      {foodGroup}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* arrows float over the left column, aligned to their targets */}
@@ -600,12 +658,14 @@ export default function Page() {
                 style={{ top: arrowTop.blue }}
                 aria-hidden
               >
+                {/* Smaller than the artwork, pinned right so the tip still
+                    meets the panel it points at */}
                 <Image
                   src={`${ASSETS}/arrow-blue.svg`}
                   alt=""
                   width={521}
                   height={335}
-                  className="ml-6 h-auto w-[calc(100%-24px)] max-w-[521px]"
+                  className="ml-auto block h-auto w-[80%] max-w-[417px]"
                 />
               </div>
             )}
