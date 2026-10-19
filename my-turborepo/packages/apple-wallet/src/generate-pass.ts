@@ -7,18 +7,26 @@ import { getAttendees, type Attendee } from "./user-filter";
 //const googleSheetUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_URL;
 
 
-// Resolve from the package folder, not the cwd, so this also works when imported by a Next app
-const packageDir = process.env.APPLE_WALLET_DIR ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const certDir = path.join(packageDir, "certificates");
+// Resolve from the package folder, not the cwd, so this also works when imported by a Next app.
+// The Docker image has no package folder, so APPLE_WALLET_DIR points it at /app instead.
+// (Not `new URL("..", import.meta.url)`: Turbopack treats that as a module import and fails the build)
+function getPackageDir() {
+    return process.env.APPLE_WALLET_DIR ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+}
 
-export const certificates = {
-    wwdr: fs.readFileSync(path.join(certDir, "wwdr.pem")),
-    signerCert: fs.readFileSync(path.join(certDir, "pass-cert.pem")),
-    signerKey: fs.readFileSync(path.join(certDir, "wallet-pass-key-unencrypted.pem")),
-    signerKeyPassphrase: process.env.PASS_KEY_PASSPHRASE,
-};
+// Read on first use, not at import: the certs are only mounted at runtime, and `next build` imports this module
+let certificates: {wwdr: Buffer; signerCert: Buffer; signerKey: Buffer; signerKeyPassphrase?: string} | undefined;
 
-const modelPath = path.join(packageDir, "models/Event.pass");
+function getCertificates() {
+    const certDir = path.join(getPackageDir(), "certificates");
+    certificates ??= {
+        wwdr: fs.readFileSync(path.join(certDir, "wwdr.pem")),
+        signerCert: fs.readFileSync(path.join(certDir, "pass-cert.pem")),
+        signerKey: fs.readFileSync(path.join(certDir, "wallet-pass-key-unencrypted.pem")),
+        signerKeyPassphrase: process.env.PASS_KEY_PASSPHRASE,
+    };
+    return certificates;
+}
 
 // export async function generateAllPasses(eventId: string, outDir = "passes") {
 //   const tickets = await getTickets(eventId);
@@ -49,7 +57,7 @@ const POSTER: string = "public/wallet_bg_a.png";
 
 export async function generateEventPass(a: Attendee): Promise<Buffer>{
     const pass = await PKPass.from(
-        {model: modelPath, certificates},
+        {model: path.join(getPackageDir(), "models/Event.pass"), certificates: getCertificates()},
         {
             passTypeIdentifier: process.env.APPLE_PASS_TYPE_ID!,
             teamIdentifier: process.env.APPLE_TEAM_ID!,
@@ -72,7 +80,7 @@ export async function generateEventPass(a: Attendee): Promise<Buffer>{
     if (POSTER) {
         const posterImage = POSTER.startsWith("http")
             ? Buffer.from(await (await fetch(POSTER)).arrayBuffer())
-            : fs.readFileSync(path.join(packageDir, POSTER));
+            : fs.readFileSync(path.join(getPackageDir(), POSTER));
         pass.addBuffer("background.png", posterImage);
     }
 
@@ -127,8 +135,9 @@ export async function generateEventPass(a: Attendee): Promise<Buffer>{
     // iOS 18–26 shows the event poster; older iOS falls back to the regular event ticket
     pass.preferredStyleSchemes = ["posterEventTicket", "eventTicket"];
 
+    // Same value as the QR on /apply (btoa(email)), which is what the check-in scanner decodes
     pass.setBarcodes({
-        message: a.id,
+        message: Buffer.from(a.email).toString("base64"),
         format: "PKBarcodeFormatQR",
         messageEncoding: "iso-8859-1",
     });

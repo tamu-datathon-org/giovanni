@@ -18,6 +18,7 @@ import {
 } from "@vanni/db/schema";
 
 import { User } from "@vanni/db/auth-schema";
+import { isInvitationAcceptanceRequired } from "@vanni/validators";
 
 import type { Context, VerifiedContext } from "../trpc";
 import { organizerProcedure, protectedProcedure } from "../trpc";
@@ -234,6 +235,47 @@ function buildAcceptanceValues(
     opts.currentFoodGroup,
   );
   return foodGroup !== undefined ? { ...base, foodGroup } : base;
+}
+
+// When invitation acceptance isn't required, an organizer's accept is final, so
+// hand out the food group `updateInvitationStatus` would have assigned when the
+// applicant confirmed. Rows that already have a group keep it.
+async function assignMissingFoodGroups(ctx: VerifiedContext, where: SQL | undefined) {
+  const rows = await ctx.db
+    .select({
+      id: Application.id,
+      dietaryRestriction: Application.dietaryRestriction,
+      foodGroup: Application.foodGroup,
+      eventName: Event.name,
+    })
+    .from(Application)
+    .innerJoin(Event, eq(Event.id, Application.eventId))
+    .where(where);
+
+  // Same food group source as `updateInvitationStatus` and the walk-in flow.
+  const foodGroupsByEvent = new Map<string, string[]>();
+  for (const eventName of new Set(rows.map((row) => row.eventName))) {
+    const event = await getEventData({ ctx, eventName });
+    foodGroupsByEvent.set(eventName, event.foodGroups);
+  }
+
+  const idsByFoodGroup = new Map<string, string[]>();
+  for (const row of rows) {
+    const foodGroup = assignFoodGroup(
+      foodGroupsByEvent.get(row.eventName) ?? [],
+      row.dietaryRestriction,
+      row.foodGroup,
+    );
+    if (foodGroup === undefined) continue;
+    idsByFoodGroup.set(foodGroup, [...(idsByFoodGroup.get(foodGroup) ?? []), row.id]);
+  }
+
+  for (const [foodGroup, ids] of idsByFoodGroup) {
+    await ctx.db
+      .update(Application)
+      .set({ foodGroup })
+      .where(inArray(Application.id, ids));
+  }
 }
 
 // the batch requires the page/limit, I need to get all of them in each
@@ -545,6 +587,7 @@ export const applicationRouter = {
         acceptedEmail?: boolean;
         rejectedEmail?: boolean;
         waitlistEmail?: boolean;
+        invitationStatus?: boolean;
       } = {
         status: newStatus as
           | "pending"
@@ -559,17 +602,21 @@ export const applicationRouter = {
       if (statusUpdate.status === "rejected") statusUpdate.rejectedEmail = false;
       if (statusUpdate.status === "waitlisted") statusUpdate.waitlistEmail = false;
 
+      // No confirm step for this event: accepting also accepts the invitation.
+      const autoConfirm =
+        statusUpdate.status === "accepted" && !isInvitationAcceptanceRequired();
+      if (autoConfirm) statusUpdate.invitationStatus = true;
+
       // Query based on email or id
       if (email !== undefined && email !== "") {
+        const where = and(
+          eq(Application.email, email),
+          eq(Application.eventId, event.id),
+        );
         const results = await ctx.db
           .update(Application)
           .set(statusUpdate)
-          .where(
-            and(
-              eq(Application.email, email),
-              eq(Application.eventId, event.id),
-            ),
-          );
+          .where(where);
         if (results.rows.length === 0) {
           throw new TRPCError({
             code: "NOT_FOUND",
@@ -577,12 +624,9 @@ export const applicationRouter = {
           });
         }
 
-        const application = await ctx.db.query.Application.findFirst({
-          where: and(
-            eq(Application.email, email),
-            eq(Application.eventId, event.id),
-          ),
-        });
+        if (autoConfirm) await assignMissingFoodGroups(ctx, where);
+
+        const application = await ctx.db.query.Application.findFirst({ where });
 
         if (!application) {
           throw new TRPCError({
@@ -593,16 +637,15 @@ export const applicationRouter = {
 
         return application;
       } else if (id !== undefined && id !== "") {
-        await ctx.db
-          .update(Application)
-          .set(statusUpdate)
-          .where(
-            and(eq(Application.id, id), eq(Application.eventId, event.id)),
-          );
+        const where = and(
+          eq(Application.id, id),
+          eq(Application.eventId, event.id),
+        );
+        await ctx.db.update(Application).set(statusUpdate).where(where);
 
-        return await ctx.db.query.Application.findFirst({
-          where: and(eq(Application.id, id), eq(Application.eventId, event.id)),
-        });
+        if (autoConfirm) await assignMissingFoodGroups(ctx, where);
+
+        return await ctx.db.query.Application.findFirst({ where });
       }
 
       throw new TRPCError({
@@ -641,6 +684,7 @@ export const applicationRouter = {
         acceptedEmail?: boolean;
         rejectedEmail?: boolean;
         waitlistEmail?: boolean;
+        invitationStatus?: boolean;
       } = { status: finalSql };
 
       // When status changes, allow re-sending the corresponding status email.
@@ -648,7 +692,17 @@ export const applicationRouter = {
       if (newStatus === "rejected") setValues.rejectedEmail = false;
       if (newStatus === "waitlisted") setValues.waitlistEmail = false;
 
-      return await db.update(Application).set(setValues).where(inArray(Application.id, ids));
+      // No confirm step for this event: accepting also accepts the invitation.
+      const autoConfirm =
+        newStatus === "accepted" && !isInvitationAcceptanceRequired();
+      if (autoConfirm) setValues.invitationStatus = true;
+
+      const where = inArray(Application.id, ids);
+      const result = await db.update(Application).set(setValues).where(where);
+
+      if (autoConfirm) await assignMissingFoodGroups(ctx, where);
+
+      return result;
     }),
   updateBatchAccepted: organizerProcedure
     .input(
@@ -848,6 +902,14 @@ export const applicationRouter = {
     }))
     .mutation(async ({ ctx, input }) => {
       const { eventName, email, newStatus } = input;
+
+      // Acceptance already set invitationStatus; don't let a decline undo it.
+      if (!isInvitationAcceptanceRequired()) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "This event doesn't ask applicants to confirm their spot.",
+        });
+      }
 
       if (email.toLowerCase() !== ctx.session.user.email.toLowerCase()) {
         throw new TRPCError({

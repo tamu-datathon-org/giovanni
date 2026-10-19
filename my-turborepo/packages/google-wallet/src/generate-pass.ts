@@ -9,10 +9,18 @@ export type Attendee = {
   group: string;
 };
 
-// Service account key downloaded from Google Cloud (see README.txt)
-const credentials = JSON.parse(
-  fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS!, "utf8"),
-) as { client_email: string; private_key: string };
+type Credentials = { client_email: string; private_key: string };
+
+// Service account key downloaded from Google Cloud (see README.txt).
+// Read on first use, not at import: the key is only there at runtime, and `next build` imports this module
+let credentials: Credentials | undefined;
+
+function getCredentials(): Credentials {
+  credentials ??= JSON.parse(
+    fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS!, "utf8"),
+  ) as Credentials;
+  return credentials;
+}
 
 const issuerId = process.env.GOOGLE_WALLET_ISSUER_ID!;
 
@@ -83,9 +91,10 @@ export async function generateEventPass(a: Attendee): Promise<string> {
             { id: "food-group", header: "Food Group", body: a.group },
         ],
 
+        // Same value as the QR on /apply (btoa(email)), which is what the check-in scanner decodes
         barcode: {
             type: "QR_CODE",
-            value: a.id,
+            value: Buffer.from(a.email).toString("base64"),
         },
 
         // Equivalent of setRelevantDates / setExpirationDate on the Apple pass
@@ -94,6 +103,8 @@ export async function generateEventPass(a: Attendee): Promise<string> {
             end: { date: new Date(EventInfo.endDate).toISOString() },
         },
     };
+
+    const credentials = getCredentials();
 
     // Class + object ride along in the JWT, Google creates them when the pass is saved
     const claims = {
