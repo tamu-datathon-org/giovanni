@@ -139,7 +139,7 @@ function Marker({ className = "" }: { className?: string }) {
       alt=""
       width={22}
       height={35}
-      className={`h-[26px] w-[16px] shrink-0 xl:h-[35px] xl:w-[22px] ${className}`}
+      className={`hidden h-[26px] w-[16px] shrink-0 md:block xl:h-[35px] xl:w-[22px] ${className}`}
     />
   );
 }
@@ -227,7 +227,7 @@ function StepTrail({ step }: { step: number }) {
       {STEPS.map((label, i) => (
         <div
           key={label}
-          className={`relative h-[42px] w-[145px] shrink-0 xl:h-[51px] xl:w-[175px] ${
+          className={`relative h-[42px] min-w-0 flex-1 md:w-[145px] md:flex-none xl:h-[51px] xl:w-[175px] ${
             i > 0 ? "-ml-[9px] xl:-ml-[11px]" : ""
           }`}
         >
@@ -244,7 +244,7 @@ function StepTrail({ step }: { step: number }) {
             }}
           />
           <span
-            className="absolute inset-0 flex items-center justify-center px-5 pl-7 text-center font-kode text-[14px] font-bold lowercase leading-none tracking-[-0.07em] xl:text-[20px]"
+            className="absolute inset-0 flex items-center justify-center pl-6 pr-3 text-center font-kode text-[clamp(10px,3.2vw,14px)] font-bold md:px-5 md:pl-7 lowercase leading-none tracking-[-0.07em] xl:text-[20px]"
             style={{ color: INK.deep }}
           >
             {label}
@@ -324,6 +324,35 @@ export default function Page() {
         description: "There was an error signing out. Please try again.",
         variant: "destructive",
       });
+    }
+  }
+
+  // Share sheet lets iPhone users "Save Image" to Photos; fall back to a download.
+  // Browsers without canShare throw here, which also lands in the fallback.
+  async function saveQR() {
+    try {
+      const blob = await (await fetch(qrCode)).blob();
+      const file = new File([blob], "check-in-qr.png", { type: "image/png" });
+      if (!navigator.canShare({ files: [file] })) {
+        throw new Error("File sharing not supported");
+      }
+      await navigator.share({ files: [file], title: "Check-in QR Code" });
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") return;
+      try {
+        const a = document.createElement("a");
+        a.href = qrCode;
+        a.download = "check-in-qr.png";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch {
+        toast({
+          title: "Could not save QR code",
+          description: "Please take a screenshot instead",
+          variant: "destructive",
+        });
+      }
     }
   }
 
@@ -479,7 +508,8 @@ export default function Page() {
           className="pointer-events-none absolute -left-40 bottom-0 w-[700px] max-w-none opacity-80"
         />
 
-        <div className="relative mx-auto w-full max-w-[1150px] px-5 py-16 xl:py-20">
+        {/* pt-24 on mobile clears the fixed top navbar (same as /login) */}
+        <div className="relative mx-auto w-full max-w-[1150px] px-5 pb-16 pt-24 lg:pt-16 xl:py-20">
           {/* header */}
           <h1 className="text-center font-kode text-[clamp(32px,6vw,60px)] font-bold lowercase leading-none tracking-[-0.07em] text-white">
             application dashboard
@@ -505,7 +535,7 @@ export default function Page() {
                   alt=""
                   width={22}
                   height={35}
-                  className="h-[26px] w-[16px] shrink-0 xl:h-[35px] xl:w-[22px]"
+                  className="hidden h-[26px] w-[16px] shrink-0 md:block xl:h-[35px] xl:w-[22px]"
                 />
                 <div
                   className="flex-1 rounded-[20px] border-[5px] px-5 py-2"
@@ -517,12 +547,12 @@ export default function Page() {
                 </div>
               </div>
 
-              <div className="pl-[28px] xl:pl-[34px]">
+              <div className="md:pl-[28px] xl:pl-[34px]">
                 <StepTrail step={step} />
               </div>
 
               {/* info card */}
-              <div className="relative pl-[28px] xl:pl-[34px]">
+              <div className="relative md:pl-[28px] xl:pl-[34px]">
                 <div
                   className="relative min-h-[220px] rounded-[20px] border-[5px] px-6 pb-8 pt-4 xl:min-h-[260px] xl:pt-5"
                   style={{ backgroundColor: INK.card, borderColor: INK.panelBorder }}
@@ -630,12 +660,6 @@ export default function Page() {
                 )}
               </Panel>
 
-              <Panel title="account">
-                <ActionButton onClick={signOutHandler}>
-                  sign out
-                </ActionButton>
-              </Panel>
-
               {awaitingOfferResponse && (
                 <div ref={offerRef}>
                   <Panel title="admission offer response">
@@ -690,17 +714,34 @@ export default function Page() {
                     >
                       check in qr code
                     </span>
-                    <div className="mt-5 flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => void saveQR()}
+                      title="Save QR code"
+                      className="mx-auto mt-5 block cursor-pointer transition-opacity hover:opacity-90"
+                    >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={qrCode}
-                        alt="Your check-in QR code"
+                        alt="Your check-in QR code — tap to save"
                         className="h-[240px] w-[240px] rounded-[8px] bg-white p-3"
                       />
-                    </div>
+                    </button>
+                    <p
+                      className="mt-3 text-center font-kode text-[14px] lowercase tracking-[-0.07em] xl:text-[18px]"
+                      style={{ color: INK.deep }}
+                    >
+                      tap the qr code to save it
+                    </p>
                   </div>
                 </div>
               )}
+
+              <Panel title="account">
+                <ActionButton onClick={signOutHandler}>
+                  sign out
+                </ActionButton>
+              </Panel>
             </div>
           </div>
         </div>
