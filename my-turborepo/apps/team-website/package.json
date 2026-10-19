@@ -112,6 +112,7 @@
     "@types/react-dom": "catalog:",
     "@types/three": "0.170.0",
     "@typescript-eslint/parser": "catalog:",
+    "@vanni/apple-wallet": "workspace:*",
     "@vanni/eslint-config": "workspace:*",
     "@vanni/prettier-config": "workspace:*",
     "@vanni/tailwind-config": "workspace:*",
@@ -122,7 +123,6 @@
     "jsonwebtoken": "catalog:",
     "prettier": "catalog:",
     "tailwindcss": "catalog:",
-    "typescript": "catalog:",
-    "@vanni/apple-wallet": "workspace:*"
+    "typescript": "catalog:"
   }
 }

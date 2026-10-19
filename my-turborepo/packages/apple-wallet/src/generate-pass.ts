@@ -8,7 +8,7 @@ import { getAttendees, type Attendee } from "./user-filter";
 
 
 // Resolve from the package folder, not the cwd, so this also works when imported by a Next app
-const packageDir = process.env.APPLE_WALLET_DIR ?? fileURLToPath(new URL("..", import.meta.url));
+const packageDir = process.env.APPLE_WALLET_DIR ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const certDir = path.join(packageDir, "certificates");
 
 export const certificates = {
