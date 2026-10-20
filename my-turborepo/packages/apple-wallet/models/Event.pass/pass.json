@@ -1,9 +1,57 @@
 {
   "formatVersion": 1,
-  "description": "Event ticket",
-  "organizationName": "Example Events",
-  "logoText": "Example Events",
+  "passTypeIdentifier": "pass.com.example.posterGeneric",
+  "organizationName": "TAMU Datathon",
+  "description": "TAMU Datathon ticket",
+  "logoText": "TAMU Datathon",
+  "backgroundColor": "rgb(36,80,66)",
   "foregroundColor": "rgb(255,255,255)",
-  "backgroundColor": "rgb(30,30,60)",
-  "labelColor": "rgb(190,190,230)"
+  "labelColor": "rgb(253,246,226)",
+  "suppressHeaderDarkening": false,
+
+  "featuredActions": [
+    {
+      "identifier": "go-to-msc",
+      "type": "place",
+      "placeIdentifier": "ChIJSYHRVJiDRoYRHSLC-CcTMZA"
+    },
+    {
+      "identifier": "view-schedule",
+      "type": "viewSchedule",
+      "url": "https://tamudatathon.com/#schedule"
+    }
+  ],
+
+  "posterGeneric": {
+    "headerFields": [
+      { "key": "date", "label": "Date", "value": "{{dates}}" }
+    ],
+    "primaryFields": [
+      { "key": "memberName", "label": "Name", "value": "{{name}}" },
+      { "key": "foodGroup", "label": "Food Group", "value": "{{group}}" }
+    ],
+    "secondaryFields": [],
+    "auxiliaryFields": [],
+    "footerFields": [],
+    "backFields": [
+      { "key": "foodGroupBack", "label": "Food Group", "value": "{{group}}" },
+      { "key": "ticketBack", "label": "Ticket", "value": "{{id}}" }
+    ]
+  },
+
+  "generic": {
+    "headerFields": [
+      { "key": "dateClassic", "label": "Date", "value": "{{dates}}" }
+    ],
+    "primaryFields": [
+      { "key": "memberNameClassic", "label": "Name", "value": "{{name}}" }
+    ],
+    "secondaryFields": [
+      { "key": "foodGroupClassic", "label": "Food Group", "value": "{{group}}" }
+    ],
+    "auxiliaryFields": [],
+    "backFields": [
+      { "key": "ticketBackClassic", "label": "Ticket", "value": "{{id}}" }
+    ]
+  }
 }

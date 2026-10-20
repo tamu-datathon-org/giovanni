@@ -1,11 +1,8 @@
-import {PassType, PKPass} from "passkit-generator";
+import { PKPass } from "passkit-generator";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { getAttendees, type Attendee } from "./user-filter";
-
-//const googleSheetUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_URL;
-
+import type { Attendee } from "./user-filter";
 
 // Resolve from the package folder, not the cwd, so this also works when imported by a Next app.
 // The Docker image has no package folder, so APPLE_WALLET_DIR points it at /app instead.
@@ -28,112 +25,78 @@ function getCertificates() {
     return certificates;
 }
 
-// export async function generateAllPasses(eventId: string, outDir = "passes") {
-//   const tickets = await getTickets(eventId);
-//   await fs.promises.mkdir(outDir, { recursive: true });
-
-//   for (const ticket of tickets) {
-//     const buffer = await generateEventPass(ticket);
-//     await fs.promises.writeFile(path.join(outDir, `${ticket.ticketId}.pkpass`), buffer);
-//   }
-
-//   return tickets.length;
-// }
-
 //TODO: Make sure to not hard code this later
 const EventInfo = {
-    startDay: "Nov 7",
-    endDay: "Nov 8",
+    dates: "Nov 7–8",
     startDate: "2026-11-07T09:00:00-05:00",
     endDate: "2026-11-08T23:59:59-05:00",
     name: "TAMU Datathon",
-    venueName: "Memorial Student Center (Bethancourt)", // required by the poster layout
+    venueName: "Memorial Student Center (MSC)",
+    latitude: 30.6122578,
+    longitude: -96.3415443,
 };
 
-// Full-bleed poster artwork: a local path (relative to where the script runs) or an https:// URL.
-// Leave it empty to use models/Event.pass/background.png instead.
-const POSTER: string = "public/wallet_bg_a.png";
+// The whole design (colors, fields, featured actions, artwork, logo, icon) lives in models/Event.pass,
+// exported from Pass Designer. Its pass.json has {{placeholders}} that get filled per attendee here.
+// Read once and cached: the model never changes while the server runs.
+let modelFiles: Record<string, Buffer> | undefined;
 
+function getModelFiles() {
+    if (modelFiles) return modelFiles;
+    const modelDir = path.join(getPackageDir(), "models/Event.pass");
+    const files: Record<string, Buffer> = {};
 
-export async function generateEventPass(a: Attendee): Promise<Buffer>{
-    const pass = await PKPass.from(
-        {model: path.join(getPackageDir(), "models/Event.pass"), certificates: getCertificates()},
+    // Recursive so localized folders (en.lproj/...) come along too
+    const walk = (dir: string) => {
+        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+            const full = path.join(dir, entry.name);
+            if (entry.isDirectory()) walk(full);
+            else if (!entry.name.startsWith(".")) {
+                files[path.relative(modelDir, full).split(path.sep).join("/")] = fs.readFileSync(full);
+            }
+        }
+    };
+    walk(modelDir);
+
+    modelFiles = files;
+    return files;
+}
+
+/** Swaps every {{key}} in the template for its value, JSON-escaped so quotes in names can't break the file. */
+function fillTemplate(template: string, values: Record<string, string>) {
+    return template.replace(/\{\{(\w+)\}\}/g, (match, key: string) =>
+        key in values ? JSON.stringify(values[key]).slice(1, -1) : match,
+    );
+}
+
+export async function generateEventPass(a: Attendee): Promise<Buffer> {
+    const { "pass.json": template, ...assets } = getModelFiles();
+    if (!template) throw new Error("models/Event.pass/pass.json is missing");
+
+    const passJson = fillTemplate(template.toString("utf8"), {
+        name: a.name,
+        group: a.group,
+        id: a.id,
+        dates: EventInfo.dates,
+    });
+
+    const pass = new PKPass(
+        { ...assets, "pass.json": Buffer.from(passJson) },
+        getCertificates(),
         {
             passTypeIdentifier: process.env.APPLE_PASS_TYPE_ID!,
             teamIdentifier: process.env.APPLE_TEAM_ID!,
             serialNumber: a.id,
-            description: `${EventInfo.name} ticket`,
-            logoText: EventInfo.name,
-            eventLogoText: EventInfo.name,
-            // The poster layout is built from these semantic tags rather than the fields below
             semantics: {
                 eventName: EventInfo.name,
-                eventType: "PKEventTypeConvention",
                 eventStartDate: new Date(EventInfo.startDate).toISOString(),
                 eventEndDate: new Date(EventInfo.endDate).toISOString(),
                 venueName: EventInfo.venueName,
+                venueLocation: { latitude: EventInfo.latitude, longitude: EventInfo.longitude },
                 attendeeName: a.name,
             },
-        }
-    )
-
-    if (POSTER) {
-        const posterImage = POSTER.startsWith("http")
-            ? Buffer.from(await (await fetch(POSTER)).arrayBuffer())
-            : fs.readFileSync(path.join(getPackageDir(), POSTER));
-        pass.addBuffer("background.png", posterImage);
-    }
-
-    // iOS 27+ Poster Generic layout: artwork background, logo + header on top, QR in the middle,
-    // primary fields along the bottom, and a single footer line under them
-    const posterGeneric = new PassType("posterGeneric");
-
-    posterGeneric.headerFields.push(
-        { key: "ticket", label: "TICKET", value: a.id },
+        },
     );
-
-    posterGeneric.primaryFields.push(
-        { key: "hacker", label: "Hacker", value: a.name },
-        { key: "food-group", label: "Food Group", value: a.group, textAlignment: "PKTextAlignmentRight" },
-    );
-
-    // Only the first footer field is shown
-    posterGeneric.footerFields.push(
-        { key: "dates", value: `${EventInfo.startDay} – ${EventInfo.endDay}` },
-    );
-
-    // Fallback for iOS < 27. Poster tickets have to be an eventTicket (boardingPass can't use the poster style)
-    const passType = new PassType("eventTicket");
-
-    passType.headerFields.push({
-        key: "date",
-        label: "START",
-        value: EventInfo.startDate,
-        dateStyle: "PKDateStyleMedium",
-        timeStyle: "PKDateStyleShort",
-    });
-
-    passType.primaryFields.push(
-        { key: "day-1", label: "Day 1", value: EventInfo.startDay},
-        { key: "day-2", label: "Day 2", value: EventInfo.endDay }
-    );
-
-    passType.auxiliaryFields.push(
-        { key: "hacker", label: "Hacker", value: a.name },
-    );
-
-    passType.secondaryFields.push(
-        { key: "food-group", label: "Food Group", value: a.group}
-    );
-
-
-
-    // add them after the fields are filled in; Wallet prefers posterGeneric when it's supported
-    pass.types.push(posterGeneric);
-    pass.types.push(passType);
-
-    // iOS 18–26 shows the event poster; older iOS falls back to the regular event ticket
-    pass.preferredStyleSchemes = ["posterEventTicket", "eventTicket"];
 
     // Same value as the QR on /apply (btoa(email)), which is what the check-in scanner decodes
     pass.setBarcodes({
@@ -142,27 +105,16 @@ export async function generateEventPass(a: Attendee): Promise<Buffer>{
         messageEncoding: "iso-8859-1",
     });
 
-    // pass.setLocations({
-    //     latitude: t.venueLat,
-    //     longitude: t.venueLng,
-    //     relevantText: "Time to board",
-    // });
+    pass.setLocations({
+        latitude: EventInfo.latitude,
+        longitude: EventInfo.longitude,
+        relevantText: `Welcome to ${EventInfo.name}!`,
+    });
 
     const startDate = new Date(EventInfo.startDate);
     const endDate = new Date(EventInfo.endDate);
-
-    pass.setRelevantDates([
-        {
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
-        }
-    ]);
-
+    pass.setRelevantDates([{ startDate: startDate.toISOString(), endDate: endDate.toISOString() }]);
     pass.setExpirationDate(endDate);
-    //pass.setNFC()
+
     return pass.getAsBuffer();
-
-
 }
-
-
