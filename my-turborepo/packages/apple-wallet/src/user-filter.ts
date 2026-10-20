@@ -1,11 +1,9 @@
-import { and, eq, isNotNull } from "drizzle-orm";
-// import { isNull } from "drizzle-orm"; // only used by assignFoodGroups below
+import { and, eq, inArray, isNotNull } from "drizzle-orm";
 import { db } from "@vanni/db/client";
 import { Application, Event } from "@vanni/db/schema";
 
-// ─────────────────────────────────────────────────────────────
-// Types
-// ─────────────────────────────────────────────────────────────
+// Passes only read the food group saved on the application when it was accepted
+// (see packages/api/src/food-groups.ts). Nothing here assigns groups.
 
 export type Attendee = {
   id: string;
@@ -14,167 +12,56 @@ export type Attendee = {
   group: string;
 };
 
-// ─────────────────────────────────────────────────────────────
-// Random food group assignment — disabled for now.
-// Food groups are assumed to already be set on Application.foodGroup in the DB.
-// ─────────────────────────────────────────────────────────────
+// Same check as `isAttending` on /apply: accepted (or checked in), confirmed, and has a group
+const hasPass = and(
+  inArray(Application.status, ["accepted", "checkedin"]),
+  eq(Application.invitationStatus, true),
+  isNotNull(Application.foodGroup),
+);
 
-// const RESTRICTED_GROUPS = ["Casino Royale", "Monte Carlo", "Flamingo"] as const;
-// const UNRESTRICTED_GROUPS = ["Caesars Palace", "MGM Grand", "The Palazzo"] as const;
-// const NO_RESTRICTION_VALUES = new Set(["", "none", "n/a", "na", "no", "nil", "-", "—"]);
-//
-// function hasRestriction(value: string | null | undefined): boolean {
-//   return !NO_RESTRICTION_VALUES.has((value ?? "").trim().toLowerCase());
-// }
-//
-// /** Returns a shuffled copy (Fisher-Yates, unbiased). */
-// function shuffle<T>(items: T[]): T[] {
-//   const copy = [...items];
-//   for (let i = copy.length - 1; i > 0; i--) {
-//     const j = Math.floor(Math.random() * (i + 1));
-//     [copy[i], copy[j]] = [copy[j]!, copy[i]!];
-//   }
-//   return copy;
-// }
-//
-// /** Shuffles items, then hands out labels in turn so counts stay even. */
-// function dealRoundRobin<T>(items: T[], labels: readonly string[]) {
-//   return shuffle(items).map((item, index) => ({
-//     item,
-//     label: labels[index % labels.length]!,
-//   }));
-// }
-//
-// // assign food groups into the database
-// export async function assignFoodGroups(eventId: string) {
-//   // Only people who don't have a group yet, so re-running never reshuffles anyone
-//   const unassigned = await db
-//     .select({
-//       id: Application.id,
-//       dietaryRestriction: Application.dietaryRestriction,
-//     })
-//     .from(Application)
-//     .where(
-//       and(
-//         eq(Application.eventId, eventId),
-//         eq(Application.invitationStatus, true),
-//         isNull(Application.foodGroup),
-//       ),
-//     );
-//
-//   const restricted = unassigned.filter((a) => hasRestriction(a.dietaryRestriction));
-//   const unrestricted = unassigned.filter((a) => !hasRestriction(a.dietaryRestriction));
-//
-//   const assignments = [
-//     ...dealRoundRobin(restricted, RESTRICTED_GROUPS),
-//     ...dealRoundRobin(unrestricted, UNRESTRICTED_GROUPS),
-//   ];
-//
-//   await db.transaction(async (tx) => {
-//     for (const { item, label } of assignments) {
-//       await tx
-//         .update(Application)
-//         .set({ foodGroup: label })
-//         .where(eq(Application.id, item.id));
-//     }
-//   });
-// }
-//
-// // Preview the food groups before posting them
-// export async function previewFoodGroups(eventId: string) {
-//   const accepted = await db
-//     .select({
-//       id: Application.id,
-//       firstName: Application.firstName,
-//       lastName: Application.lastName,
-//       email: Application.email,
-//       dietaryRestriction: Application.dietaryRestriction,
-//     })
-//     .from(Application)
-//     .where(
-//       and(
-//         eq(Application.eventId, eventId),
-//         eq(Application.status, "accepted"),
-//       ),
-//     );
-//
-//   const toAttendee = (a: (typeof accepted)[number], group: string): Attendee => ({
-//     id: a.id,
-//     name: `${a.firstName} ${a.lastName}`,
-//     email: a.email,
-//     group,
-//   });
-//
-//   const restricted = accepted.filter((a) => hasRestriction(a.dietaryRestriction));
-//   const unrestricted = accepted.filter((a) => !hasRestriction(a.dietaryRestriction));
-//
-//   return [
-//     ...dealRoundRobin(restricted, RESTRICTED_GROUPS).map(({ item, label }) => toAttendee(item, label)),
-//     ...dealRoundRobin(unrestricted, UNRESTRICTED_GROUPS).map(({ item, label }) => toAttendee(item, label)),
-//   ];
-// }
+const attendeeColumns = {
+  id: Application.id,
+  firstName: Application.firstName,
+  lastName: Application.lastName,
+  email: Application.email,
+  foodGroup: Application.foodGroup,
+};
 
-// ─────────────────────────────────────────────────────────────
-// 2. Read attendees back (for pass generation)
-// ─────────────────────────────────────────────────────────────
-
-export async function getAttendees(eventId: string): Promise<Attendee[]> {
-  const rows = await db
-    .select({
-      id: Application.id,
-      firstName: Application.firstName,
-      lastName: Application.lastName,
-      email: Application.email,
-      foodGroup: Application.foodGroup,
-    })
-    .from(Application)
-    .where(
-      and(
-        eq(Application.eventId, eventId),
-        eq(Application.invitationStatus, true),
-        isNotNull(Application.foodGroup),
-      ),
-    );
-
-  return rows.map((row) => ({
-    id: row.id,
-    name: `${row.firstName} ${row.lastName}`,
-    email: row.email,
-    group: row.foodGroup!,
-  }));
-}
-
-// Single attendee for the signed-in user, or null if they aren't confirmed / have no food group yet
-export async function getAttendeeForUser(
-  userId: string,
-  eventName: string,
-): Promise<Attendee | null> {
-  const [row] = await db
-    .select({
-      id: Application.id,
-      firstName: Application.firstName,
-      lastName: Application.lastName,
-      email: Application.email,
-      foodGroup: Application.foodGroup,
-    })
-    .from(Application)
-    .innerJoin(Event, eq(Application.eventId, Event.id))
-    .where(
-      and(
-        eq(Application.userId, userId),
-        eq(Event.name, eventName),
-        eq(Application.invitationStatus, true),
-        isNotNull(Application.foodGroup),
-      ),
-    )
-    .limit(1);
-
-  if (!row) return null;
-
+function toAttendee(row: {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  foodGroup: string | null;
+}): Attendee {
   return {
     id: row.id,
     name: `${row.firstName} ${row.lastName}`,
     email: row.email,
     group: row.foodGroup!,
   };
+}
+
+export async function getAttendees(eventId: string): Promise<Attendee[]> {
+  const rows = await db
+    .select(attendeeColumns)
+    .from(Application)
+    .where(and(eq(Application.eventId, eventId), hasPass));
+
+  return rows.map(toAttendee);
+}
+
+// Single attendee for the signed-in user, or null if they aren't accepted / have no food group yet
+export async function getAttendeeForUser(
+  userId: string,
+  eventName: string,
+): Promise<Attendee | null> {
+  const [row] = await db
+    .select(attendeeColumns)
+    .from(Application)
+    .innerJoin(Event, eq(Application.eventId, Event.id))
+    .where(and(eq(Application.userId, userId), eq(Event.name, eventName), hasPass))
+    .limit(1);
+
+  return row ? toAttendee(row) : null;
 }

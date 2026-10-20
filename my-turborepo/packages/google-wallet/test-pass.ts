@@ -5,7 +5,7 @@ async function main() {
     id: "test-attendee-1",
     name: "John Dough",
     email: "john@example.com",
-    group: "Caesars Palace",
+    group: "Test Group",
   });
   console.log("Save to Google Wallet:", saveUrl);
 }

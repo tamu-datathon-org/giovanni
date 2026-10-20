@@ -26,7 +26,8 @@ export const getEventData = async ({
 }) => {
   const event = await ctx.db.query.Event.findFirst({
     where: eq(Event.name, eventName),
-    columns: SAFE_EVENT_COLUMNS,
+    // Organizers enter food groups by hand on the event row (empty = no groups).
+    columns: { ...SAFE_EVENT_COLUMNS, foodGroups: true },
   });
 
   if (event == undefined) {
@@ -36,8 +37,7 @@ export const getEventData = async ({
     });
   }
 
-  // food_groups may not exist on older DBs; default empty until migrated.
-  return { ...event, foodGroups: [] as string[] };
+  return event;
 };
 
 export const eventRouter = {

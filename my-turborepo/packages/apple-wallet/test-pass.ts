@@ -6,7 +6,7 @@ const fakeAttendee: Attendee = {
   id: "test-0001",              // becomes the serialNumber
   name: "John Dough",           // shown in the "Name" field and semantics.attendeeName
   email: "john@example.com",    // base64-encoded into the QR code
-  group: "Caesars Palace",      // shown in the "Food Group" field
+  group: "Test Group",          // shown in the "Food Group" field
 };
 
 async function main() {

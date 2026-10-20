@@ -21,6 +21,7 @@ import { User } from "@vanni/db/auth-schema";
 import { isInvitationAcceptanceRequired } from "@vanni/validators";
 
 import type { Context, VerifiedContext } from "../trpc";
+import { pickFoodGroup } from "../food-groups";
 import { organizerProcedure, protectedProcedure } from "../trpc";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 import { getEventData } from "./event";
@@ -170,44 +171,15 @@ export async function updateBatchStatus(
   }
 }
 
-function isCoffeeGroupLabel(g: string): boolean {
-  return g.trim().toLowerCase().includes("coffee");
-}
-
-function isDietaryCoffeeEligible(dietaryRestriction: string | null | undefined): boolean {
-  const d = (dietaryRestriction ?? "").toLowerCase();
-  if (!d.trim()) return false;
-  return (
-    d.includes("vegan") ||
-    d.includes("vegetarian") ||
-    d.includes("gluten")
-  );
-}
-
-function coffeeLabelFromEventFoodGroups(foodGroups: string[]): string {
-  const found = foodGroups.find((g) => isCoffeeGroupLabel(g));
-  return found ?? "Coffee";
-}
-
-function pickRandomNonCoffeeGroup(foodGroups: string[]): string | null {
-  const others = foodGroups.filter((g) => !isCoffeeGroupLabel(g));
-  if (others.length === 0) return null;
-  return others[Math.floor(Math.random() * others.length)] ?? null;
-}
-
-// Assign a food group only when one isn't already set, mirroring the logic in
-// `updateInvitationStatus` so walk-ins get a group at acceptance time.
+// Assign a food group only when one isn't already set. Returns undefined (write
+// nothing) when they already have one or the event has no food groups.
 function assignFoodGroup(
   foodGroups: string[],
   dietaryRestriction: string | null | undefined,
   currentFoodGroup: string | null | undefined,
 ): string | undefined {
   if (currentFoodGroup != null && currentFoodGroup !== "") return undefined;
-  if (isDietaryCoffeeEligible(dietaryRestriction)) {
-    return coffeeLabelFromEventFoodGroups(foodGroups);
-  }
-  const pick = pickRandomNonCoffeeGroup(foodGroups);
-  return pick != null && pick !== "" ? pick : undefined;
+  return pickFoodGroup(foodGroups, dietaryRestriction);
 }
 
 // Shared field set for auto-accepting an applicant (walk-in create + accept).
@@ -936,25 +908,18 @@ export const applicationRouter = {
         throw new TRPCError({ code: "NOT_FOUND", message: "Application not found" });
       }
 
-      const foodGroups = event.foodGroups ?? [];
-
       const setValues: {
         invitationStatus: boolean;
-        foodGroup?: string | null;
+        foodGroup?: string;
       } = { invitationStatus: newStatus };
 
-      if (
-        application.status === "accepted" &&
-        (application.foodGroup == null || application.foodGroup === "")
-      ) {
-        if (isDietaryCoffeeEligible(application.dietaryRestriction)) {
-          setValues.foodGroup = coffeeLabelFromEventFoodGroups(foodGroups);
-        } else {
-          const pick = pickRandomNonCoffeeGroup(foodGroups);
-          if (pick != null && pick !== "") {
-            setValues.foodGroup = pick;
-          }
-        }
+      if (application.status === "accepted") {
+        const foodGroup = assignFoodGroup(
+          event.foodGroups,
+          application.dietaryRestriction,
+          application.foodGroup,
+        );
+        if (foodGroup !== undefined) setValues.foodGroup = foodGroup;
       }
 
       const updated = await ctx.db
@@ -1092,7 +1057,7 @@ export const applicationRouter = {
         await ctx.db.insert(UserRole).values({ userId, roleId: role.id });
       }
 
-      const acceptance = buildAcceptanceValues(event.foodGroups ?? [], {
+      const acceptance = buildAcceptanceValues(event.foodGroups, {
         dietaryRestriction: applicationData.dietaryRestriction,
         currentFoodGroup: null,
       });
@@ -1151,7 +1116,7 @@ export const applicationRouter = {
         });
       }
 
-      const acceptance = buildAcceptanceValues(event.foodGroups ?? [], {
+      const acceptance = buildAcceptanceValues(event.foodGroups, {
         dietaryRestriction: application.dietaryRestriction,
         currentFoodGroup: application.foodGroup,
       });
