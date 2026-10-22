@@ -62,6 +62,26 @@ function getModelFiles() {
     return files;
 }
 
+// Per-group thumbnails (shown beside the name on the classic layout) live next to models/Event.pass, not inside it,
+// or every pass would get all of them. Names match the slot machine icons in team-website/public/slot-machine-icons.
+const FOOD_GROUP_ICONS = ["cherry", "bell", "horseshoe", "lemon", "diamond", "seven"];
+const ICON_FILES = ["thumbnail.png", "thumbnail@2x.png", "thumbnail@3x.png"];
+const iconCache = new Map<string, Record<string, Buffer>>();
+
+/** The thumbnail files for a food group, or nothing when the group (free-form, set per event) has no icon. */
+function getFoodGroupIcon(group: string) {
+    const key = group.trim().toLowerCase();
+    if (!FOOD_GROUP_ICONS.includes(key)) return {};
+
+    let files = iconCache.get(key);
+    if (!files) {
+        const dir = path.join(getPackageDir(), "models/food-group-icons", key);
+        files = Object.fromEntries(ICON_FILES.map((name) => [name, fs.readFileSync(path.join(dir, name))]));
+        iconCache.set(key, files);
+    }
+    return files;
+}
+
 /** Swaps every {{key}} in the template for its value, JSON-escaped so quotes in names can't break the file. */
 function fillTemplate(template: string, values: Record<string, string>) {
     return template.replace(/\{\{(\w+)\}\}/g, (match, key: string) =>
@@ -81,7 +101,7 @@ export async function generateEventPass(a: Attendee): Promise<Buffer> {
     });
 
     const pass = new PKPass(
-        { ...assets, "pass.json": Buffer.from(passJson) },
+        { ...assets, ...getFoodGroupIcon(a.group), "pass.json": Buffer.from(passJson) },
         getCertificates(),
         {
             passTypeIdentifier: process.env.APPLE_PASS_TYPE_ID!,

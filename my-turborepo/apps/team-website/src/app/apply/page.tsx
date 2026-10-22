@@ -14,6 +14,7 @@ import { isInvitationAcceptanceRequired } from "@vanni/validators";
 import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
 import { useDevicePlatform } from "~/hooks/use-device-platform";
 import { toast } from "~/hooks/use-toast";
+import { getFoodGroupIcon } from "~/lib/food-group-icons";
 import { api } from "~/trpc/react";
 import { EVENT_NAME } from "./application/application-form";
 
@@ -456,6 +457,7 @@ export default function Page() {
     (data?.status === "accepted" || data?.status === "checkedin") &&
     data.invitationStatus === true;
   const foodGroup = isAttending ? data.foodGroup : null;
+  const foodGroupIcon = getFoodGroupIcon(foodGroup);
 
   // Only offer the wallet that matches the phone; desktop gets both.
   const platform = useDevicePlatform();
@@ -645,6 +647,16 @@ export default function Page() {
                     >
                       {foodGroup}
                     </p>
+                    {foodGroupIcon && (
+                      <Image
+                        src={foodGroupIcon}
+                        alt=""
+                        aria-hidden
+                        width={26}
+                        height={26}
+                        className="size-[18px] shrink-0 md:size-[22px] xl:size-[26px]"
+                      />
+                    )}
                   </div>
                 </div>
               )}

@@ -451,6 +451,7 @@ export default function BubbleField({
               if (!animated || (event.pointerType === "mouse" && event.button !== 0)) {
                 return;
               }
+              if ((event.target as Element).closest("a")) return;
 
               const field = event.currentTarget;
               dragRef.current = {

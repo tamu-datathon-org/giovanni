@@ -33,6 +33,16 @@ const EventInfo = {
     venueName: "Memorial Student Center (MSC)",
     placeId: "ChIJSYHRVJiDRoYRHSLC-CcTMZA",
     scheduleUrl: "https://tamudatathon.com/#schedule",
+    siteUrl: "https://tamudatathon.com",
+};
+
+// Slot machine icons in team-website/public/slot-machine-icons, served from the site root.
+const FOOD_GROUP_ICONS = ["cherry", "bell", "horseshoe", "lemon", "diamond", "seven"];
+
+// Food groups are free-form strings set per event, so a name without an icon just gets no image
+const foodGroupIconUrl = (group: string) => {
+  const key = group.trim().toLowerCase();
+  return FOOD_GROUP_ICONS.includes(key) ? `${EventInfo.siteUrl}/slot-machine-icons/${key}_icon.png` : "";
 };
 
 // Same colors as the Apple pass (rgb(36,80,66))
@@ -83,6 +93,8 @@ const eventClass = {
 export async function generateEventPass(a: Attendee): Promise<string> {
     const objectId = `${issuerId}.${toIdSuffix(a.id)}`;
 
+    const iconUrl = foodGroupIconUrl(a.group);
+
     const genericObject = {
         id: objectId,
         classId,
@@ -105,6 +117,16 @@ export async function generateEventPass(a: Attendee): Promise<string> {
             { id: "venue", header: "Venue", body: EventInfo.venueName },
             { id: "ticket", header: "Ticket", body: a.id },
         ],
+
+        // On the object, not the class, so each attendee gets their own group's icon without bumping CLASS_VERSION
+        ...(iconUrl && {
+            imageModulesData: [
+                {
+                    id: "food-group-icon",
+                    mainImage: { sourceUri: { uri: iconUrl }, contentDescription: text(`${a.group} icon`) },
+                },
+            ],
+        }),
 
         // Same value as the QR on /apply (btoa(email)), which is what the check-in scanner decodes
         barcode: {
