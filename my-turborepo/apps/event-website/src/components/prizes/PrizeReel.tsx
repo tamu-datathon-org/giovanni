@@ -51,7 +51,7 @@ export function PrizeReel({
               alt={entry.label}
               width={64}
               height={64}
-              className="absolute inset-x-[10%] top-[8%] h-[68%] w-[80%] object-contain"
+              className="absolute inset-x-[10%] top-[1%] h-[80%] w-[77%] object-contain"
             />
           )}
           <span
