@@ -69,7 +69,7 @@ export default function Prizes() {
       />
       <div className="relative z-10 aspect-[433/576] w-[min(75vw,52svh)]">
         <Image
-          src="/event_assets/slot_machine_prizes.png"
+          src="/event_assets/slot_machine_rework.png"
           alt="Slot machine"
           fill
           priority
@@ -78,7 +78,7 @@ export default function Prizes() {
         />
         <svg
           aria-label="Prizes"
-          className="pointer-events-none absolute left-[19.5%] top-[8.2%] z-10 h-[14.5%] w-[55%] overflow-visible"
+          className="pointer-events-none absolute left-[19.5%] top-[8.2%] z-10 h-[32%] w-[55%] overflow-visible"
           role="img"
           viewBox="0 0 320 70"
         >
@@ -177,7 +177,7 @@ export default function Prizes() {
           style={LEVER_HOTSPOT}
           onClick={selectRandomChallenge}
         />
-        {prizes.map((challenge, index) => (
+        {/* {prizes.map((challenge, index) => (
           <button
             key={challenge.number}
             type="button"
@@ -186,8 +186,8 @@ export default function Prizes() {
             style={CHALLENGE_BUTTONS[index]}
             onClick={() => selectChallenge(challenge)}
           />
-        ))}
-        <div className="absolute left-[10%] top-[20.5%] z-10 h-[8.5%] w-[74%] overflow-hidden">
+        ))} */}
+        <div className="absolute left-[10%] top-[20.5%] z-10 h-[28%] w-[74%] overflow-hidden">
           <div
             aria-live="polite"
             className="font-sekuya absolute inset-x-[3%] top-[20%] bottom-[20%] flex items-center justify-center overflow-hidden px-[2%] text-center text-[clamp(8px,3cqw,18px)] uppercase leading-none text-[#D50000] [clip-path:inset(0)] [contain:paint]"
@@ -209,7 +209,7 @@ export default function Prizes() {
                 centerLabels
               />
             ) : (
-              "Select a challenge"
+              "Pull the lever"
             )}
           </div>
         </div>
@@ -221,7 +221,7 @@ export default function Prizes() {
               : "Challenge prizes"
           }
           aria-live="polite"
-          className="absolute left-[15.5%] top-[34%] z-10 grid h-[30%] w-[61.5%] grid-cols-3 text-center text-[#4c321b]"
+          className="absolute left-[15.5%] top-[39%] z-10 grid h-[30%] w-[61.5%] grid-cols-3 text-center text-[#4c321b]"
         >
           {DISPLAY_PRIZE_ORDER.map((prizeIndex) => (
             <li
@@ -229,7 +229,8 @@ export default function Prizes() {
               className="relative min-w-0 overflow-hidden"
             >
               <span className="font-sekuya absolute inset-x-0 top-[5%] z-20 text-center text-[clamp(7px,2.4cqw,13px)] leading-none text-[#D50000] [text-shadow:0_2px_2px_rgb(0_0_0/0.45)]">
-                {["1ST", "2ND", "3RD"][prizeIndex]} 
+                {["", "", ""][prizeIndex]} 
+              {/* prize places */}
               </span>
               {selectedChallenge ? (
                 <div className="absolute inset-x-0 top-[20%] h-[75%] overflow-hidden">
@@ -253,8 +254,8 @@ export default function Prizes() {
                   />
                 </div>
               ) : (
-                <span className="font-righteous absolute inset-x-0 bottom-[3%] text-[clamp(7px,2.5cqw,14px)] leading-tight text-[#760000]">
-                  Prize {prizeIndex + 1}
+                <span className="font-righteous absolute inset-x-0 bottom-[0%] text-[clamp(7px,2.5cqw,14px)] leading-tight text-[#760000]">
+                  PRIZE {prizeIndex + 1}
                 </span>
               )}
             </li>
