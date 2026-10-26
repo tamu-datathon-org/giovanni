@@ -84,6 +84,17 @@ function LoginContent() {
   const errorCode = searchParams.get("error") ?? undefined;
 
   useEffect(() => {
+    if (errorCode === "account_not_linked") {
+      toast({
+        title: "Sign-in problem",
+        description:
+          "We found an existing account for this email but couldn't sign you in with this provider. Try the provider you first signed up with, or contact us.",
+        variant: "destructive",
+        duration: 8000,
+      });
+      return;
+    }
+
     if (message === "unauthorized") {
       toast({
         title: "Unauthorized",
