@@ -52,8 +52,15 @@ export default function AllChallengesPage() {
           </div>
         </div>
         <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-          {challenges.map((challenge) => (
-            <ChallengePanel key={challenge.name} challenge={challenge} />
+          {challenges.map((challenge, index) => (
+            <Link
+              key={`${challenge.name}-${index}`}
+              href={`/challenges/${index + 1}`}
+              className="block rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              aria-label={`View ${challenge.name}`}
+            >
+              <ChallengePanel challenge={challenge} />
+            </Link>
           ))}
         </div>
       </div>

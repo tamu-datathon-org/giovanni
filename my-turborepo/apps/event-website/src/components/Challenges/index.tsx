@@ -61,7 +61,7 @@ export default function Challenges() {
       className="relative isolate flex min-h-svh items-center justify-center overflow-hidden bg-[#420807] px-5 py-12 text-white sm:px-8"
     >
       <Image
-        src="/event_assets/background2.png"
+        src="/event_assets/background.png"
         alt=""
         fill
         priority
@@ -69,12 +69,28 @@ export default function Challenges() {
         className="object-cover"
       />
 
-      <h1
-        id="challenges-title"
-        className="absolute left-1/2 top-5 z-20 -translate-x-1/2 whitespace-nowrap text-center font-righteous text-4xl text-[#fff8e8] drop-shadow sm:text-5xl"
-      >
-        CHALLENGES
-      </h1>
+      <div className="absolute left-1/2 top-20 z-20 flex -translate-x-1/2 items-center justify-center gap-3 whitespace-nowrap sm:gap-5">
+        <Image
+          src="/event_assets/Star%203.png"
+          alt=""
+          width={72}
+          height={72}
+          className="h-8 w-8 object-contain sm:h-10 sm:w-10"
+        />
+        <h1
+          id="challenges-title"
+          className="text-center font-righteous text-4xl text-[#fff8e8] drop-shadow sm:text-5xl"
+        >
+          CHALLENGES
+        </h1>
+        <Image
+          src="/event_assets/Star%203.png"
+          alt=""
+          width={72}
+          height={72}
+          className="h-8 w-8 object-contain sm:h-10 sm:w-10"
+        />
+      </div>
 
       <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-8 lg:grid-cols-2 lg:gap-12">
         <div className="flex flex-col items-center gap-5">
