@@ -5,16 +5,18 @@ import type { Challenge } from "./challengeData";
 interface ChallengePanelProps {
   challenge: Challenge;
   showMoreLink?: boolean;
+  panelImage?: string;
 }
 
 export default function ChallengePanel({
   challenge,
   showMoreLink = false,
+  panelImage = "/event_assets/challenge%20panel.png",
 }: ChallengePanelProps) {
   return (
     <article className="relative aspect-[462/446] w-full text-white">
       <Image
-        src="/event_assets/challenge%20panel.png"
+        src={panelImage}
         alt=""
         fill
         sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw"

@@ -8,7 +8,11 @@ interface ChallengeResultProps {
 export default function ChallengeResult({ challenge }: ChallengeResultProps) {
   return (
     <div className="mx-auto w-full max-w-[42rem] lg:mx-0">
-      <ChallengePanel challenge={challenge} showMoreLink />
+      <ChallengePanel
+        challenge={challenge}
+        panelImage="/event_assets/bear_challenge_sign.png"
+        showMoreLink
+      />
     </div>
   );
 }
