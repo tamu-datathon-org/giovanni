@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import { Archivo_Black, Barlow_Condensed } from "next/font/google";
 
@@ -384,17 +384,24 @@ function Voucher({
   );
 }
 
-export default function Schedule({ data = scheduleJson as ScheduleData }: { data?: ScheduleData }) {
+export default function Schedule({
+  data = scheduleJson as ScheduleData,
+  ground = true,
+}: {
+  data?: ScheduleData;
+  /** Draw the section's own patterned background; off when the page puts a shared one behind it. */
+  ground?: boolean;
+}) {
   const days = useMemo(() => groupByDay(data), [data]);
   const now = useNow();
 
   return (
     <section
       id="schedule"
-      className={`${styles.section} ${voucherFont.variable} ${receiptFont.variable}`}
+      className={`${styles.section} ${ground ? "" : styles.bare} ${voucherFont.variable} ${receiptFont.variable}`}
       aria-labelledby="schedule-title"
     >
-      <SectionGround align="bottom">
+      <Ground on={ground}>
         <h2
           id="schedule-title"
           className="font-righteous flex items-center justify-center gap-[0.4em] text-[clamp(42px,7vw,88px)] uppercase leading-none tracking-[0.04em] text-[#FDFBED] [-webkit-text-stroke:0.06em_#FFB24C] [paint-order:stroke_fill]"
@@ -422,7 +429,12 @@ export default function Schedule({ data = scheduleJson as ScheduleData }: { data
             <Voucher key={day.key} day={day} index={i} timezone={data.timezone} now={now} />
           ))}
         </div>
-      </SectionGround>
+      </Ground>
     </section>
   );
+}
+
+/** The section's own background, or nothing when a shared one is behind it. */
+function Ground({ on, children }: { on: boolean; children: ReactNode }) {
+  return on ? <SectionGround align="bottom">{children}</SectionGround> : <>{children}</>;
 }

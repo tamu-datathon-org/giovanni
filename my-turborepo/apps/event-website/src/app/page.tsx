@@ -10,9 +10,11 @@ import Workshops from "@/components/workshops";
 import { ScrollUp } from "@vanni/ui/scroll-up";
 import { Footer } from "@/components/Hero/Footer";
 import { Menu } from "@/components/menu/Menu"
+import { SectionGround } from "@/components/SectionGround";
 
+// Transparent: it sits on the background shared with Schedule below.
 const Prizes = dynamic(() => import("@/components/prizes"), {
-  loading: () => <div className="min-h-[400px] py-20" />,
+  loading: () => <div className="min-h-[1400px]" />,
 });
 
 const Sponsors = dynamic(() => import("@/components/sponsor"), {
@@ -37,7 +39,13 @@ export default function Home() {
       <EventInformation />
       <Rail shine="ball" />
       <CasinoTransition variant="coins" />
-      <Schedule />
+      {/* One background behind both, so the pattern runs on unbroken from Prizes into Schedule. */}
+      <div className="relative bg-[#6C0204]">
+        <SectionGround align="bottom">
+          <Prizes ground={false} />
+          <Schedule ground={false} />
+        </SectionGround>
+      </div>
       <Sponsors />
       <Rail shine="view" overlay />
       <FAQ />

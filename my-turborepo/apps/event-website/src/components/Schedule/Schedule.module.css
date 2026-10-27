@@ -21,6 +21,11 @@
   }
 }
 
+/* When the page draws a shared background behind this section. */
+.bare {
+  background-color: transparent;
+}
+
 .grid {
   display: grid;
   row-gap: 72px;

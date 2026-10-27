@@ -1,267 +1,74 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
-import { PrizeReel } from "./PrizeReel";
-import { prizes, type Challenge } from "./prizedata";
+import type { CSSProperties, ReactNode } from "react";
 
-//
-const LEVER_HOTSPOT = {
-  left: "88%",
-  top: "35%",
-  width: "12%",
-  height: "30%",
-};
+import { SectionGround } from "@/components/SectionGround";
 
-const PRIZE_TITLE = ["P", "R", "I", "Z", "E", "S"];
-const CHALLENGE_BUTTONS = [
-  { left: "20.5%", top: "84.1%" },
-  { left: "37.6%", top: "84.1%" },
-  { left: "55.4%", top: "84.1%" },
-  { left: "74.1%", top: "84.1%" },
-  { left: "20.5%", top: "93.6%" },
-  { left: "37.6%", top: "93.6%" },
-  { left: "55.4%", top: "93.6%" },
-  { left: "74.1%", top: "93.6%" },
-];
+import { CrapsBoard } from "./CrapsBoard";
+import { useInView } from "./hooks";
+import { SlotMachine } from "./SlotMachine";
 
-const SPIN_CYCLES = 2;
-const DISPLAY_PRIZE_ORDER = [1, 0, 2] as const;
+const STAR_COUNT = 15;
+const STAR_MIDDLE = Math.floor(STAR_COUNT / 2);
 
-export default function Prizes() {
-  const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(
-    null,
+/**
+ * The row of dim stars between the slot machine and the board. Like the
+ * Rail's stars, they ripple out from the middle as the row scrolls into view.
+ */
+function StarRow() {
+  const [ref, inView] = useInView<HTMLDivElement>();
+
+  return (
+    <div
+      ref={ref}
+      aria-hidden="true"
+      data-shine={inView ? "" : undefined}
+      className="flex w-full max-w-[760px] justify-between px-[4%]"
+    >
+      {Array.from({ length: STAR_COUNT }, (_, i) => (
+        <svg
+          key={i}
+          viewBox="-24 -24 48 48"
+          className="w-[4.2%] fill-[#9C1A1A] [[data-shine]_&]:animate-star-pulse motion-reduce:!animate-none"
+          style={{ "--delay": `${Math.abs(i - STAR_MIDDLE) * 0.06}s` } as CSSProperties}
+        >
+          <path d="M0 -24L6.5 -6.5L24 0L6.5 6.5L0 24L-6.5 6.5L-24 0L-6.5 -6.5Z" />
+        </svg>
+      ))}
+    </div>
   );
-  const [rollKey, setRollKey] = useState(0);
+}
 
-  const selectChallenge = (challenge: Challenge) => {
-    setSelectedChallenge(challenge);
-    setRollKey((key) => key + 1);
-  };
-  //Random challenge math
-  const selectRandomChallenge = () => {
-    const challenge = prizes[Math.floor(Math.random() * prizes.length)];
-    if (challenge) selectChallenge(challenge);
-  };
-
-  const selectedIndex = selectedChallenge
-    ? prizes.findIndex((challenge) => challenge.number === selectedChallenge.number)
-    : -1;
-  const stopIndex = SPIN_CYCLES * prizes.length;
-  const reelOrder =
-    selectedIndex < 0
-      ? prizes
-      : [...prizes.slice(selectedIndex), ...prizes.slice(0, selectedIndex)];
+export default function Prizes({
+  ground = true,
+}: {
+  /**
+   * Draw the section's own patterned background. The home page turns this off
+   * and puts one background behind Prizes and Schedule together, so the
+   * pattern runs on unbroken from one into the other.
+   */
+  ground?: boolean;
+}) {
+  const content: ReactNode = (
+    <div className="mx-auto flex flex-col items-center gap-[clamp(16px,3vw,32px)] px-4 pb-16 pt-14 md:pb-20 md:pt-20">
+      {/* As large as fits the window height, up to 800px wide. 0.922 is the art's width / height. */}
+      <div className="w-full max-w-[min(800px,calc((100svh_-_48px)*0.922))]">
+        <SlotMachine />
+      </div>
+      <StarRow />
+      <div className="w-full max-w-[760px]">
+        <CrapsBoard />
+      </div>
+    </div>
+  );
 
   return (
     <section
       id="prizes"
-      aria-label="Prizes"
-      className="relative isolate flex min-h-svh items-center justify-center"
+      aria-labelledby="prizes-title"
+      className={`relative overflow-x-clip ${ground ? "bg-[#6C0204]" : ""}`}
     >
-      <Image
-        src="/event_assets/background.png"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover"
-      />
-      <div className="relative z-10 aspect-[433/576] w-[min(75vw,52svh)]">
-        <Image
-          src="/event_assets/slot_machine_rework.png"
-          alt="Slot machine"
-          fill
-          priority
-          sizes="(max-width: 768px) 75vw, 52svh"
-          className="object-contain"
-        />
-        <svg
-          aria-label="Prizes"
-          className="pointer-events-none absolute left-[19.5%] top-[8.2%] z-10 h-[32%] w-[55%] overflow-visible"
-          role="img"
-          viewBox="0 0 320 70"
-        >
-          <defs>
-            {/*Prize title gradient */}
-            {PRIZE_TITLE.map((_, index) => (
-              <linearGradient
-                key={index}
-                id={`prize-letter-gradient-${index}`}
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop offset="0%" stopColor="#FFB24C" />
-                <stop offset="100%" stopColor="#FF9000" />
-              </linearGradient>
-            ))}
-
-
-            <filter
-              height="200%"
-
-              id="prize-title-shadow"
-              width="200%"
-              x="-50%"
-              y="-50%"
-            >
-              <feDropShadow
-                dx="0"
-                dy="3"
-                floodColor="#750204"
-                stdDeviation="1"
-                result="drop-shadow"
-              />
-              <feGaussianBlur
-                in="SourceAlpha"
-                stdDeviation="3"
-                result="inner-blur"
-              />
-              <feOffset
-                in="inner-blur"
-                dx="0"
-                dy="3"
-                result="inner-offset"
-              />
-              <feComposite
-                in="SourceAlpha"
-                in2="inner-offset"
-                operator="arithmetic"
-                k2="1"
-                k3="-1"
-                result="inner-shadow-alpha"
-              />
-              <feFlood floodColor="#750204" result="inner-shadow-color" />
-              <feComposite
-                in="inner-shadow-color"
-                in2="inner-shadow-alpha"
-                operator="in"
-                result="inner-shadow"
-              />
-              <feMerge>
-                <feMergeNode in="drop-shadow" />
-                <feMergeNode in="inner-shadow" />
-              </feMerge>
-            </filter>
-          </defs>
-          <text
-            x="160"
-            y="51"
-            textAnchor="middle"
-            fontFamily="var(--font-righteous)"
-            fontSize="42"
-            
-            letterSpacing="0"
-            fill="transparent"
-            stroke="#750204"
-            strokeWidth="2"
-            paintOrder="stroke"
-            filter="url(#prize-title-shadow)"
-          >
-            {PRIZE_TITLE.map((letter, index) => (
-              <tspan
-                key={index}
-                fill={`url(#prize-letter-gradient-${index})`}
-              >
-                {letter}
-              </tspan>
-            ))}
-          </text>
-        </svg>
-        <button
-          type="button"
-          aria-label="Pull the slot machine lever"
-          className="absolute cursor-pointer rounded-full border-0 bg-transparent p-0 [-webkit-tap-highlight-color:transparent] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-[#3edbd3]"
-          style={LEVER_HOTSPOT}
-          onClick={selectRandomChallenge}
-        />
-        {/* {prizes.map((challenge, index) => (
-          <button
-            key={challenge.number}
-            type="button"
-            aria-label={`Show ${challenge.challengeName} prizes`}
-            className="absolute z-20 aspect-[49/44] w-[11.5%] -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full border-2 border-transparent bg-transparent transition-colors hover:border-[#fff4dc]/80 hover:bg-[#fff4dc]/20 focus-visible:border-[#3edbd3] focus-visible:outline-none active:bg-[#ffb24c]/40"
-            style={CHALLENGE_BUTTONS[index]}
-            onClick={() => selectChallenge(challenge)}
-          />
-        ))} */}
-        <div className="absolute left-[10%] top-[20.5%] z-10 h-[28%] w-[74%] overflow-hidden">
-          <div
-            aria-live="polite"
-            className="font-sekuya absolute inset-x-[3%] top-[20%] bottom-[20%] flex items-center justify-center overflow-hidden px-[2%] text-center text-[clamp(8px,3cqw,18px)] uppercase leading-none text-[#D50000] [clip-path:inset(0)] [contain:paint]"
-          >
-            {selectedChallenge ? (
-              <PrizeReel
-                key={`challenge-${rollKey}`}
-                entries={Array.from({ length: SPIN_CYCLES + 1 }).flatMap(
-                  (_, cycle) =>
-                      reelOrder.map((challenge) => ({
-                      id: `${cycle}-${challenge.number}`,
-                      label: challenge.challengeName,
-                      imageSrc: "",
-                    })),
-                )}
-                targetIndex={stopIndex}
-                rollKey={rollKey}
-                labelClassName="font-sekuya uppercase text-[#D50000]"
-                centerLabels
-              />
-            ) : (
-              "Pull the lever"
-            )}
-          </div>
-        </div>
-        <ul
-          key={`prizes-${rollKey}`}
-          aria-label={
-            selectedChallenge
-              ? `${selectedChallenge.challengeName} prizes`
-              : "Challenge prizes"
-          }
-          aria-live="polite"
-          className="absolute left-[15.5%] top-[39%] z-10 grid h-[30%] w-[61.5%] grid-cols-3 text-center text-[#4c321b]"
-        >
-          {DISPLAY_PRIZE_ORDER.map((prizeIndex) => (
-            <li
-              key={prizeIndex}
-              className="relative min-w-0 overflow-hidden"
-            >
-              <span className="font-sekuya absolute inset-x-0 top-[5%] z-20 text-center text-[clamp(7px,2.4cqw,13px)] leading-none text-[#D50000] [text-shadow:0_2px_2px_rgb(0_0_0/0.45)]">
-                {["", "", ""][prizeIndex]} 
-              {/* prize places */}
-              </span>
-              {selectedChallenge ? (
-                <div className="absolute inset-x-0 top-[20%] h-[75%] overflow-hidden">
-                  <PrizeReel
-                    entries={Array.from({ length: SPIN_CYCLES + 1 }).flatMap(
-                      (_, cycle) =>
-                        reelOrder.map((challenge) => {
-                          const prize = challenge.prizes[prizeIndex];
-                          return {
-                            id: `${cycle}-${challenge.number}-${prizeIndex}`,
-                            label:
-                              prize?.name || `Prize ${prizeIndex + 1}`,
-                            imageSrc: prize?.imageSrc ?? "",
-                            split: prize?.split,
-                          };
-                        }),
-                    )}
-                    targetIndex={stopIndex}
-                    rollKey={rollKey}
-                    labelClassName="font-righteous text-[#760000]"
-                  />
-                </div>
-              ) : (
-                <span className="font-righteous absolute inset-x-0 bottom-[0%] text-[clamp(7px,2.5cqw,14px)] leading-tight text-[#760000]">
-                  PRIZE {prizeIndex + 1}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {ground ? <SectionGround>{content}</SectionGround> : content}
     </section>
   );
 }
