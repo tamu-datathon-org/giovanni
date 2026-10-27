@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import ChallengeResult from "./ChallengeResult";
 import ChallengeWheel from "./ChallengeWheel";
-import { wheelOptions } from "./challengeData";
+import { challenges, wheelOptions } from "./challengeData";
 import { segmentAngle } from "./wheelGeometry";
 
 const spinDuration = 2800;
@@ -14,6 +14,12 @@ export default function Challenges() {
   const [spinning, setSpinning] = useState(false);
   const [ballRotation, setBallRotation] = useState(0);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const initialIndex = Math.floor(Math.random() * challenges.length);
+    setSelectedIndex(initialIndex);
+    setBallRotation((initialIndex + 0.5) * segmentAngle);
+  }, []);
 
   useEffect(
     () => () => {
@@ -26,7 +32,6 @@ export default function Challenges() {
     if (spinning) return;
 
     const fullTurns = Math.floor(Math.random() * 2) + 1;
-    setSelectedIndex(null);
     setSpinning(true);
     setBallRotation((rotation) => {
       const targetAngle = (index + 0.5) * segmentAngle;
@@ -56,14 +61,13 @@ export default function Challenges() {
       className="relative isolate flex min-h-svh items-center justify-center overflow-hidden bg-[#420807] px-5 py-12 text-white sm:px-8"
     >
       <Image
-        src="/event_assets/background.png"
+        src="/event_assets/background2.png"
         alt=""
         fill
         priority
         sizes="100vw"
-        className="object-cover opacity-40"
+        className="object-cover"
       />
-      <div className="absolute inset-0 bg-gradient-to-br from-[#4d0808]/75 via-[#250707]/75 to-[#17120d]/90" />
 
       <h1
         id="challenges-title"
@@ -72,7 +76,7 @@ export default function Challenges() {
         CHALLENGES
       </h1>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(19rem,0.85fr)] lg:gap-14">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-8 lg:grid-cols-2 lg:gap-12">
         <div className="flex flex-col items-center gap-5">
         
 
@@ -80,9 +84,9 @@ export default function Challenges() {
             ballRotation={ballRotation}
             onSelect={rollTo}
             onSpin={spinRandomly}
-            selectedIndex={selectedIndex}
+            selectedIndex={spinning ? null : selectedIndex}
             spinning={spinning}
-            spinDuration={spinDuration}
+            spinDuration={spinning ? spinDuration : 0}
           />
 
           <p className="max-w-md text-center text-sm text-[#fff2d6]/80 sm:text-base">
@@ -92,7 +96,9 @@ export default function Challenges() {
           </p>
         </div>
 
-        <ChallengeResult challenge={selectedChallenge} />
+        {selectedChallenge && (
+          <ChallengeResult challenge={selectedChallenge} />
+        )}
       </div>
     </section>
   );

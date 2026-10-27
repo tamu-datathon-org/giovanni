@@ -33,9 +33,26 @@ export default function ChallengeWheel({
       <svg
         aria-label="Choose a challenge by selecting a wheel triangle"
         className="absolute inset-0 h-full w-full"
-      role="group"
+        role="group"
         viewBox="0 0 660 682"
       >
+        <defs>
+          <mask
+            id="challenge-wheel-colored-sections"
+            maskContentUnits="userSpaceOnUse"
+            maskUnits="userSpaceOnUse"
+            x="0"
+            y="0"
+            width="660"
+            height="682"
+          >
+            <image
+              href="/event_assets/challenge-wheel-highlight-mask.png"
+              width="660"
+              height="682"
+            />
+          </mask>
+        </defs>
 
         {wheelOptions.map((option, index) => (
           //wheel segments rendering
@@ -48,10 +65,7 @@ export default function ChallengeWheel({
             aria-pressed={selectedIndex === index}
     //
             className="cursor-pointer transition-[fill,stroke] duration-200 focus-visible:outline-none"
-            style={{
-              fill: selectedIndex === index ? "#80D51A" : "transparent",
-              fillOpacity: selectedIndex === index ? 1 : 0,
-            }}
+            fill="transparent"
             onClick={() => onSelect(index)}
             onKeyDown={(event) => {
               if (event.key === "Enter" || event.key === " ") {
@@ -64,6 +78,14 @@ export default function ChallengeWheel({
             <title>{option.name}</title>
           </path>
         ))}
+        {selectedIndex !== null && (
+          <path
+            d={getSegmentPath(selectedIndex)}
+            fill="#80D51A"
+            mask="url(#challenge-wheel-colored-sections)"
+            pointerEvents="none"
+          />
+        )}
       </svg>
 
       <div
