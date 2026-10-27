@@ -48,11 +48,12 @@ const foodGroupIconUrl = (group: string) => {
 // Same colors as the Apple pass (rgb(36,80,66))
 const BACKGROUND_COLOR = "#245042";
 
-// Google downloads these itself, so they must be public https URLs (e.g. files in your site's /public).
+// Google downloads these itself, so they must be public https URLs.
+// Files in team-website/public/google-wallet, served from the site root like the slot machine icons.
 // Logo: square, 660x660 px or larger; Google crops it to a circle, so the poker chip fits well.
-const LOGO_URL = process.env.GOOGLE_WALLET_LOGO_URL ?? "";
-// Hero: wide banner under the fields, about 1032x336 px (3:1). The Apple artwork is portrait, so make a wide crop of it.
-const HERO_URL = process.env.GOOGLE_WALLET_HERO_URL ?? "";
+const LOGO_URL = process.env.GOOGLE_WALLET_LOGO_URL ?? `${EventInfo.siteUrl}/google-wallet/logo.png`;
+// Hero: wide banner under the fields, about 1032x336 px (3:1).
+const HERO_URL = process.env.GOOGLE_WALLET_HERO_URL ?? `${EventInfo.siteUrl}/google-wallet/hero.png`;
 
 // Google only allows [a-zA-Z0-9_.-] in the suffix of class/object ids
 const toIdSuffix = (value: string) => value.replace(/[^\w.-]/g, "_");
