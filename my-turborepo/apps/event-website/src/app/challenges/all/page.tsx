@@ -31,9 +31,25 @@ export default function AllChallengesPage() {
               className="h-auto w-10"
             />
           </Link>
-          <h1 className="text-center font-righteous text-4xl text-[#fff8e8] sm:text-5xl">
-            CHALLENGES
-          </h1>
+          <div className="flex items-center justify-center gap-3 sm:gap-5">
+            <Image
+              src="/event_assets/Star%203.png"
+              alt=""
+              width={72}
+              height={72}
+              className="h-8 w-8 object-contain sm:h-10 sm:w-10"
+            />
+            <h1 className="text-center font-righteous text-4xl text-[#fff8e8] sm:text-5xl">
+              CHALLENGES
+            </h1>
+            <Image
+              src="/event_assets/Star%203.png"
+              alt=""
+              width={72}
+              height={72}
+              className="h-8 w-8 object-contain sm:h-10 sm:w-10"
+            />
+          </div>
         </div>
         <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {challenges.map((challenge) => (
