@@ -45,7 +45,7 @@ export default function ChallengePanel({
       {showMoreLink && (
         <Link
           href="/challenges/all"
-          className="absolute bottom-[8%] left-1/2 z-10 flex w-[55%] -translate-x-1/2 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="absolute bottom-[15%] left-1/2 z-10 flex w-[55%] -translate-x-1/2 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
           <Image
             src="/event_assets/seemore.png"
