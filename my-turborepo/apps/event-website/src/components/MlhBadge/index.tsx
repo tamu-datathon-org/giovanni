@@ -17,6 +17,7 @@ export default function MlhBadge() {
         alt="Major League Hacking 2027 Hackathon Season"
         width={100}
         height={175}
+        loading="eager"
         unoptimized
         className="h-auto w-full"
       />
