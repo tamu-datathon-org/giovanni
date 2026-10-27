@@ -1,10 +1,8 @@
 import Image from "next/image";
-import { wheelOptions } from "./challengeData";
 import { getSegmentPath } from "./wheelGeometry";
 
 interface ChallengeWheelProps {
   ballRotation: number;
-  onSelect: (index: number) => void;
   onSpin: () => void;
   selectedIndex: number | null;
   spinning: boolean;
@@ -13,7 +11,6 @@ interface ChallengeWheelProps {
 
 export default function ChallengeWheel({
   ballRotation,
-  onSelect,
   onSpin,
   selectedIndex,
   spinning,
@@ -31,9 +28,8 @@ export default function ChallengeWheel({
       />
 
       <svg
-        aria-label="Choose a challenge by selecting a wheel triangle"
-        className="absolute inset-0 h-full w-full"
-        role="group"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full"
         viewBox="0 0 660 682"
       >
         <defs>
@@ -54,30 +50,6 @@ export default function ChallengeWheel({
           </mask>
         </defs>
 
-        {wheelOptions.map((option, index) => (
-          //wheel segments rendering
-          <path
-            key={option.name}
-            d={getSegmentPath(index)}
-            role="button"
-            tabIndex={spinning ? -1 : 0}
-              aria-label={`Select ${option.name}`}
-            aria-pressed={selectedIndex === index}
-    //
-            className="cursor-pointer transition-[fill,stroke] duration-200 focus-visible:outline-none"
-            fill="transparent"
-            onClick={() => onSelect(index)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                onSelect(index);
-              }
-            }}
-          >
-
-            <title>{option.name}</title>
-          </path>
-        ))}
         {selectedIndex !== null && (
           <path
             d={getSegmentPath(selectedIndex)}
@@ -115,6 +87,7 @@ export default function ChallengeWheel({
         disabled={spinning}
         onClick={onSpin}
         aria-label="Spin the wheel for a random challenge"
+        aria-busy={spinning}
         className="absolute left-[33.8%] top-[33.8%] h-[32.4%] w-[32.4%] rounded-full focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#80D51A] disabled:cursor-wait"
       />
     </div>

@@ -48,7 +48,11 @@ export default function Challenges() {
   };
 
   const spinRandomly = () => {
-    const randomIndex = Math.floor(Math.random() * wheelOptions.length);
+    const availableIndices = wheelOptions
+      .map((_, index) => index)
+      .filter((index) => index !== selectedIndex);
+    const randomIndex =
+      availableIndices[Math.floor(Math.random() * availableIndices.length)] ?? 0;
     rollTo(randomIndex);
   };
 
@@ -98,7 +102,6 @@ export default function Challenges() {
 
           <ChallengeWheel
             ballRotation={ballRotation}
-            onSelect={rollTo}
             onSpin={spinRandomly}
             selectedIndex={spinning ? null : selectedIndex}
             spinning={spinning}
@@ -108,7 +111,7 @@ export default function Challenges() {
           <p className="max-w-md text-center text-sm text-[#fff2d6]/80 sm:text-base">
             {spinning
               ? "The ball is rolling..."
-              : "Click the center to spin, or choose a triangle."}
+              : "Press the center to spin."}
           </p>
         </div>
 
