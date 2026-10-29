@@ -80,14 +80,27 @@ function LoginContent() {
   const callbackUrl = normalizeCallbackPath(searchParams.get("callbackUrl"));
   const message = searchParams.get("message") ?? undefined;
   const errorDescription = searchParams.get("error_description") ?? undefined;
+  // Better Auth puts the failure reason here (e.g. account_not_linked)
+  const errorCode = searchParams.get("error") ?? undefined;
 
   useEffect(() => {
+    if (errorCode === "account_not_linked") {
+      toast({
+        title: "Sign-in problem",
+        description:
+          "We found an existing account for this email but couldn't sign you in with this provider. Try the provider you first signed up with, or contact us.",
+        variant: "destructive",
+        duration: 8000,
+      });
+      return;
+    }
+
     if (message === "unauthorized") {
       toast({
         title: "Unauthorized",
-        description: "You do not have access to that page. Try signing in with a different account.",
+        description: `You do not have access to that page. Try signing in with a different account.${errorCode ? ` (code: ${errorCode})` : ""}`,
         variant: "destructive",
-        duration: 3000,
+        duration: errorCode ? 6000 : 3000,
       });
       return;
     }
@@ -121,7 +134,7 @@ function LoginContent() {
         duration: 4000,
       });
     }
-  }, [errorDescription, message]);
+  }, [errorCode, errorDescription, message]);
 
   return (
     <section
