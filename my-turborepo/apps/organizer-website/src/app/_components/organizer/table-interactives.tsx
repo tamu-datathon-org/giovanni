@@ -1,6 +1,20 @@
-import React from "react";
+"use client";
 
+import type { Table } from "@tanstack/react-table";
+import React, { useMemo, useState } from "react";
+import { Loader2 } from "lucide-react";
+
+import type { TableData } from "./schema";
+import type { ApplicationStatus } from "./use-application-filters";
 import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import {
   Select,
@@ -12,136 +26,100 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { toast } from "~/hooks/use-toast";
+import { api } from "~/trpc/react";
+import { STATUS_LABELS } from "./applications-toolbar";
 
-interface SelectStatusProps {
-  name: string;
-  id: string;
-  currStatus: string;
-  eventName: string;
-  mutation: any;
-  setData: React.Dispatch<React.SetStateAction<any>>;
-  setPendingCount: React.Dispatch<React.SetStateAction<number>>;
-  setAcceptedCount: React.Dispatch<React.SetStateAction<number>>;
+type SetTableData = React.Dispatch<React.SetStateAction<TableData[]>>;
+
+const STATUS_ORDER: ApplicationStatus[] = [
+  "pending",
+  "accepted",
+  "rejected",
+  "checkedin",
+  "waitlisted",
+];
+
+function fullName(application: Pick<TableData, "firstName" | "lastName">) {
+  const name = `${application.firstName} ${application.lastName}`;
+  return name.trim() || "Unnamed applicant";
 }
 
-const SelectStatus: React.FC<SelectStatusProps> = ({
-  name,
-  id,
-  currStatus,
-  eventName,
-  mutation,
-  setData,
-  setPendingCount,
-  setAcceptedCount,
-}) => {
-  if (mutation.isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <Select
-      defaultValue={currStatus}
-      onValueChange={(value) => {
-        mutation.mutateAsync(
-          {
-            eventName,
-            id: id,
-            newStatus: value,
-          },
-          {
-            onSuccess: () => {
-              // Update the table
-              setData((prevData: any) => {
-                return prevData.map((item: any) => {
-                  if (item.id === id) {
-                    return { ...item, status: value };
-                  }
-                  return item;
-                });
-              });
-
-              // Update the status counter
-              if (currStatus === "pending" && value !== "pending") {
-                setPendingCount((prevCount: number) => prevCount - 1);
-              } else if (currStatus !== "pending" && value === "pending") {
-                setPendingCount((prevCount: number) => prevCount + 1);
-              }
-
-              if (currStatus === "accepted" && value !== "accepted") {
-                setAcceptedCount((prevCount: number) => prevCount - 1);
-              } else if (currStatus !== "accepted" && value === "accepted") {
-                setAcceptedCount((prevCount: number) => prevCount + 1);
-              }
-
-              toast({
-                variant: "success",
-                title: "Status of " + name + "has been updated",
-                description: `The status has been successfully updated to ${value}.`,
-              });
-            },
-            onError: (error: any) => {
-              toast({
-                variant: "destructive",
-                title: "Error updating status",
-                description: `There was an error updating the status: ${error.message}`,
-              });
-            },
-          },
-        );
-      }}
-    >
-      <SelectTrigger>
-        <SelectValue placeholder="Select a status" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Status</SelectLabel>
-          <SelectItem value="pending">Pending</SelectItem>
-          <SelectItem value="accepted">Accepted</SelectItem>
-          <SelectItem value="rejected">Rejected</SelectItem>
-          <SelectItem value="checkedin">Checked In</SelectItem>
-          <SelectItem value="waitlisted">Waitlisted</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+/** Marks the given applications with a new status in the loaded table data. */
+function applyStatus(
+  setData: SetTableData,
+  ids: readonly string[],
+  status: ApplicationStatus,
+) {
+  const idSet = new Set(ids);
+  setData((prev) =>
+    prev.map((item) => (idSet.has(item.id) ? { ...item, status } : item)),
   );
-};
+}
 
 export const SelectStatusCell: React.FC<{
-  row: any;
+  application: TableData;
   eventName: string;
-  mutation: any;
-  setData: React.Dispatch<React.SetStateAction<any>>;
-  setPendingCount: React.Dispatch<React.SetStateAction<number>>;
-  setAcceptedCount: React.Dispatch<React.SetStateAction<number>>;
-}> = ({
-  row,
-  eventName,
-  mutation,
-  setData,
-  setPendingCount,
-  setAcceptedCount,
-}) => {
+  setData: SetTableData;
+}> = ({ application, eventName, setData }) => {
+  // Each row owns its mutation, so only the row being saved shows as busy.
+  const mutation = api.application.updateStatus.useMutation({
+    onSuccess: (_result, variables) => {
+      const status = variables.newStatus as ApplicationStatus;
+      applyStatus(setData, [application.id], status);
+      toast({
+        variant: "success",
+        title: `${fullName(application)} is now ${STATUS_LABELS[status].toLowerCase()}`,
+        description: "The status has been saved.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Error updating status",
+        description: `There was an error updating the status: ${error.message}`,
+      });
+    },
+  });
+
   return (
     <td>
-      <div className="rounded bg-white">
-        <SelectStatus
-          name={row.original.firstName + " " + row.original.lastName}
-          id={row.original.id}
-          currStatus={row.original.status}
-          eventName={eventName}
-          mutation={mutation}
-          setData={setData}
-          setPendingCount={setPendingCount}
-          setAcceptedCount={setAcceptedCount}
-        />
+      <div className="flex items-center gap-2 rounded bg-white px-1">
+        <Select
+          value={application.status}
+          disabled={mutation.isPending}
+          onValueChange={(value) =>
+            mutation.mutate({ eventName, id: application.id, newStatus: value })
+          }
+        >
+          <SelectTrigger aria-label={`Status for ${fullName(application)}`}>
+            <SelectValue placeholder="Select a status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Status</SelectLabel>
+              {STATUS_ORDER.map((status) => (
+                <SelectItem key={status} value={status}>
+                  {STATUS_LABELS[status]}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        {mutation.isPending && (
+          <Loader2
+            aria-label="Saving"
+            className="h-4 w-4 shrink-0 animate-spin text-neutral-500"
+          />
+        )}
       </div>
     </td>
   );
 };
 
-export const Pagination: React.FC<{ table: any }> = ({ table }) => {
-  const [pageInput, setPageInput] = React.useState("");
+export const Pagination: React.FC<{ table: Table<TableData> }> = ({
+  table,
+}) => {
+  const [pageInput, setPageInput] = useState("");
 
   const handlePageChange = () => {
     const pageNumber = Number(pageInput);
@@ -155,7 +133,7 @@ export const Pagination: React.FC<{ table: any }> = ({ table }) => {
   };
 
   return (
-    <div className="flex flex-row space-x-2">
+    <div className="flex flex-row items-center space-x-2">
       <Button
         variant="outline"
         size="sm"
@@ -164,9 +142,9 @@ export const Pagination: React.FC<{ table: any }> = ({ table }) => {
       >
         Previous
       </Button>
-      <span>
+      <span className="tabular-nums">
         Page {table.getState().pagination.pageIndex + 1} of{" "}
-        {table.getPageCount()}
+        {Math.max(table.getPageCount(), 1)}
       </span>
       <Button
         variant="outline"
@@ -181,7 +159,11 @@ export const Pagination: React.FC<{ table: any }> = ({ table }) => {
           type="number"
           value={pageInput}
           onChange={(e) => setPageInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handlePageChange();
+          }}
           placeholder="Page number"
+          aria-label="Go to page"
           className="w-20 bg-white"
         />
         <Button variant="outline" size="sm" onClick={handlePageChange}>
@@ -192,83 +174,156 @@ export const Pagination: React.FC<{ table: any }> = ({ table }) => {
   );
 };
 
-export const BatchAcceptPage: React.FC<{
-  table: any;
-  mutation: any;
-  setPendingCount: React.Dispatch<React.SetStateAction<number>>;
-  setData: React.Dispatch<React.SetStateAction<any>>;
-  setAcceptedCount: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ table, mutation, setData, setPendingCount, setAcceptedCount }) => {
-  const updateBatchStatus = () => {
-    const ids = table.getRowModel().rows.map((row: any) => row.original.id);
-    mutation.mutateAsync(
-      {
-        ids: ids,
-        newStatus: "accepted",
-      },
-      {
-        onSuccess: () => {
-          setData((prevData: any) => {
-            return prevData.map((item: any) => {
-              if (
-                table
-                  .getRowModel()
-                  .rows.some((row: any) => row.original.id === item.id)
-              ) {
-                return { ...item, status: "accepted" };
-              }
-              return item;
-            });
-          });
+/**
+ * Selection summary plus "Accept selected", which lists every chosen
+ * applicant by name and asks for confirmation before anything changes.
+ */
+export const BatchStatusActions: React.FC<{
+  table: Table<TableData>;
+  eventName: string;
+  setData: SetTableData;
+}> = ({ table, eventName, setData }) => {
+  const [confirming, setConfirming] = useState(false);
 
-          setPendingCount((prevCount: number) => {
-            const pendingCount = table
-              .getRowModel()
-              .rows.filter(
-                (row: any) => row.original.status === "pending",
-              ).length;
-            return prevCount - pendingCount;
-          });
+  const selectedRows = table.getSelectedRowModel().rows;
+  const selected = useMemo(
+    () =>
+      selectedRows
+        .map((row) => row.original)
+        .sort((a, b) => fullName(a).localeCompare(fullName(b))),
+    [selectedRows],
+  );
+  const selectedCount = selected.length;
+  const alreadyAccepted = selected.filter(
+    (application) => application.status === "accepted",
+  ).length;
+  const toAccept = selectedCount - alreadyAccepted;
 
-          setAcceptedCount((prevCount: number) => {
-            const notAcceptedCount = table
-              .getRowModel()
-              .rows.filter(
-                (row: any) => row.original.status !== "accepted",
-              ).length;
-            return prevCount + notAcceptedCount;
-          });
+  const mutation = api.application.updateBatchStatus.useMutation({
+    onSuccess: (result) => {
+      applyStatus(setData, result.updatedIds, "accepted");
+      table.resetRowSelection();
+      setConfirming(false);
 
-          toast({
-            variant: "success",
-            title: "Batch Status Updated",
-            description: "All applications on page updated",
-          });
-        },
-        onError: () => {
-          toast({
-            variant: "destructive",
-            title: "Error Batch Updating Status",
-            description: "There was an error updating the status",
-          });
-        },
-      },
-    );
-  };
-
-  if (mutation.isLoading) {
-    return <div>Loading...</div>;
-  }
+      const accepted = result.updatedIds.length;
+      const skipped = result.skippedIds.length;
+      toast({
+        variant: "success",
+        title: `Accepted ${accepted} applicant${accepted === 1 ? "" : "s"}`,
+        description:
+          skipped > 0
+            ? `${skipped} selected application${skipped === 1 ? " was" : "s were"} skipped because ${skipped === 1 ? "it doesn't" : "they don't"} belong to ${eventName}.`
+            : "Their status is now accepted.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Error accepting applications",
+        description: error.message,
+      });
+    },
+  });
 
   return (
-    <div>
-      <Button
-        variant="default"
-        className="bg-green-500"
-        onClick={updateBatchStatus}
+    <div className="flex flex-wrap items-center gap-2">
+      <span
+        className="text-sm tabular-nums text-neutral-900"
+        aria-live="polite"
       >
-        Accept All on Page
+        {selectedCount === 0
+          ? "No applications selected"
+          : `${selectedCount} selected`}
+      </span>
+      {selectedCount > 0 && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="bg-white"
+          onClick={() => table.resetRowSelection()}
+        >
+          Clear selection
+        </Button>
+      )}
+      <Button
+        type="button"
+        size="sm"
+        className="bg-emerald-600 text-white hover:bg-emerald-700"
+        disabled={selectedCount === 0}
+        onClick={() => setConfirming(true)}
+      >
+        Accept selected{selectedCount > 0 ? ` (${selectedCount})` : ""}
       </Button>
+
+      <Dialog
+        open={confirming}
+        onOpenChange={(open) => {
+          if (!mutation.isPending) setConfirming(open);
+        }}
+      >
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>
+              Accept {selectedCount} applicant{selectedCount === 1 ? "" : "s"}?
+            </DialogTitle>
+            <DialogDescription>
+              {alreadyAccepted > 0
+                ? `${toAccept} will change to accepted. ${alreadyAccepted} ${alreadyAccepted === 1 ? "is" : "are"} already accepted and will stay that way.`
+                : "Their status will change to accepted. You can change any of them back individually afterwards."}
+            </DialogDescription>
+          </DialogHeader>
+          <ul className="max-h-64 divide-y overflow-y-auto rounded-md border text-sm">
+            {selected.map((application) => (
+              <li
+                key={application.id}
+                className="flex items-center justify-between gap-3 px-3 py-1.5"
+              >
+                <span className="truncate">
+                  {fullName(application)}
+                  <span className="ml-2 text-neutral-500">
+                    {application.email}
+                  </span>
+                </span>
+                <span className="shrink-0 text-xs text-neutral-500">
+                  {STATUS_LABELS[application.status]}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setConfirming(false)}
+              disabled={mutation.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              className="bg-emerald-600 text-white hover:bg-emerald-700"
+              disabled={mutation.isPending || selectedCount === 0}
+              onClick={() =>
+                mutation.mutate({
+                  eventName,
+                  ids: selected.map((application) => application.id),
+                  newStatus: "accepted",
+                })
+              }
+            >
+              {mutation.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Accepting…
+                </>
+              ) : (
+                `Accept ${selectedCount}`
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -568,42 +568,57 @@ export const applicationRouter = {
   updateBatchStatus: organizerProcedure
     .input(
       z.object({
-        ids: z.array(z.string()),
-        newStatus: z.string(),
+        eventName: z.string(),
+        ids: z.array(z.string()).max(1000),
+        newStatus: z.enum([
+          "pending",
+          "accepted",
+          "checkedin",
+          "rejected",
+          "waitlisted",
+        ]),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const { ids, newStatus } = input;
 
-      if (ids.length == 0) {
-        return {
-          status: 200,
-          message: "No applications selected",
-        };
+      if (ids.length === 0) {
+        return { updatedIds: [] as string[], skippedIds: [] as string[] };
       }
 
-      const sqlChunks: SQL[] = [];
-      sqlChunks.push(sql`(case`);
-      for (const id of ids) {
-        sqlChunks.push(sql`when ${Application.id} = ${id} then ${newStatus}`);
-      }
-      sqlChunks.push(sql`end)`);
-
-      const finalSql: SQL = sql.join(sqlChunks, sql.raw(" "));
+      const event = await getEventData({ ctx, eventName: input.eventName });
 
       const setValues: {
-        status: SQL;
+        status: typeof newStatus;
         acceptedEmail?: boolean;
         rejectedEmail?: boolean;
         waitlistEmail?: boolean;
-      } = { status: finalSql };
+      } = { status: newStatus };
 
       // When status changes, allow re-sending the corresponding status email.
       if (newStatus === "accepted") setValues.acceptedEmail = false;
       if (newStatus === "rejected") setValues.rejectedEmail = false;
       if (newStatus === "waitlisted") setValues.waitlistEmail = false;
 
-      return await db.update(Application).set(setValues).where(inArray(Application.id, ids));
+      // Only touch applications that belong to the selected event, so a stale
+      // or mistyped id can never flip someone in a different event.
+      const updated = await ctx.db
+        .update(Application)
+        .set(setValues)
+        .where(
+          and(
+            inArray(Application.id, ids),
+            eq(Application.eventId, event.id),
+          ),
+        )
+        .returning({ id: Application.id });
+
+      const updatedIds = updated.map((row) => row.id);
+      const updatedSet = new Set(updatedIds);
+      return {
+        updatedIds,
+        skippedIds: ids.filter((id) => !updatedSet.has(id)),
+      };
     }),
   updateBatchAccepted: organizerProcedure
     .input(
