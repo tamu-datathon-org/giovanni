@@ -20,12 +20,13 @@
     <meta name="x-apple-disable-message-reformatting" />
     <meta name="color-scheme" content="light only" />
     <meta name="supported-color-schemes" content="light only" />
-    <title>Join Us for a Prompt Engineering Workshop</title>
+    <title>TAMU Datathon x Google Gemini Prompt Engineering Workshop</title>
 
-    <!-- Righteous is the site's display font (event-website layout.tsx). Outlook skips web fonts. -->
+    <!-- Righteous is the site's display font (event-website layout.tsx); Google Sans is
+         Gemini's typeface, used only for the Gemini lockup. Outlook skips web fonts. -->
     <!--[if !mso]><!-->
     <link
-      href="https://fonts.googleapis.com/css2?family=Righteous&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Righteous&family=Google+Sans:wght@500&display=swap"
       rel="stylesheet"
     />
     <!--<![endif]-->
@@ -69,9 +70,29 @@
         line-height: inherit !important;
       }
 
+      /* Gradient text is progressive enhancement. Clients without support
+         (Gmail, Outlook) keep the solid inline color fallback. */
+      @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+        .grad-text {
+          background-image: linear-gradient(
+            90deg,
+            #4285f4 0%,
+            #9b72cb 55%,
+            #d96570 100%
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+      }
+
       @media screen and (max-width: 620px) {
         .card-pad {
           padding: 24px 20px !important;
+        }
+        .title {
+          font-size: 23px !important;
+          line-height: 30px !important;
         }
         .stack {
           display: block !important;
@@ -107,8 +128,9 @@
         mso-hide: all;
       "
     >
-      Prompt Engineering Workshop: Tuesday, Nov 3rd, 7&ndash;8 PM in Peterson
-      120. Learn prompting techniques to get more out of
+      TAMU Datathon x Google Gemini Prompt Engineering Workshop: Tuesday, Nov
+      3rd, 7&ndash;8 PM in Peterson 120. Learn prompting techniques to get more
+      out of
       AI.&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;
     </div>
 
@@ -159,7 +181,7 @@
                   color: #3b2a24;
                 "
               >
-                <!-- Wordmark (event_assets/curtain_title.png) -->
+                <!-- TAMU Datathon wordmark (event_assets/curtain_title.png) -->
                 <a
                   href="https://tamudatathon.com"
                   target="_blank"
@@ -184,10 +206,116 @@
                   />
                 </a>
 
+                <!-- x Google Gemini badge. The sparkle PNG has an opaque white
+                     background, so it sits inside a white pill. -->
+                <table
+                  role="presentation"
+                  align="center"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="margin: 12px auto 0"
+                >
+                  <tr>
+                    <td
+                      class="display"
+                      valign="middle"
+                      style="
+                        padding-right: 10px;
+                        font-family: 'Righteous', 'Arial Black', Arial,
+                          sans-serif;
+                        font-size: 24px;
+                        line-height: 30px;
+                        color: #ef8700;
+                      "
+                    >
+                      &times;
+                    </td>
+                    <td valign="middle">
+                      <table
+                        role="presentation"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        bgcolor="#ffffff"
+                        style="
+                          background-color: #ffffff;
+                          border: 1px solid #f6c983;
+                          border-radius: 999px;
+                          border-collapse: separate;
+                        "
+                      >
+                        <tr>
+                          <td valign="middle" style="padding: 6px 0 6px 12px">
+                            <img
+                              src="https://tamudatathon.com/event_assets/workshop/gemini-sparkle.png"
+                              width="26"
+                              height="26"
+                              alt=""
+                              style="display: block; width: 26px; height: 26px"
+                            />
+                          </td>
+                          <td
+                            valign="middle"
+                            style="
+                              padding: 6px 18px 6px 8px;
+                              font-family: 'Google Sans', 'Product Sans',
+                                Roboto, Arial, sans-serif;
+                              font-size: 20px;
+                              line-height: 26px;
+                              font-weight: 500;
+                              color: #444746;
+                              white-space: nowrap;
+                            "
+                          >
+                            Google
+                            <span class="grad-text" style="color: #4285f4"
+                              >Gemini</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Gemini gradient divider (solid fallback for Outlook) -->
+                <table
+                  role="presentation"
+                  align="center"
+                  width="96"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="margin: 20px auto 0"
+                >
+                  <tr>
+                    <td
+                      height="4"
+                      bgcolor="#9b72cb"
+                      style="
+                        height: 4px;
+                        font-size: 0;
+                        line-height: 0;
+                        background-color: #9b72cb;
+                        background-image: linear-gradient(
+                          90deg,
+                          #4285f4,
+                          #9b72cb,
+                          #d96570
+                        );
+                        border-radius: 999px;
+                      "
+                    >
+                      &nbsp;
+                    </td>
+                  </tr>
+                </table>
+
                 <h1
-                  class="display"
+                  class="display title"
                   style="
-                    margin: 20px 0 20px;
+                    margin: 18px 0 20px;
                     font-family: 'Righteous', 'Arial Black', Arial, sans-serif;
                     font-size: 26px;
                     font-weight: normal;
@@ -196,18 +324,18 @@
                     text-align: center;
                   "
                 >
-                  Howdy!
+                  Prompt Engineering Workshop
                 </h1>
 
                 <p style="margin: 0 0 16px">
-                  TAMU Datathon is hosting a
-                  <strong>Prompt Engineering Workshop</strong>, and we'd love
-                  for you to join us!
+                  <strong>Howdy!</strong> We're hosting a workshop on prompt
+                  engineering, and we'd love for you to join us!
                 </p>
                 <p style="margin: 0 0 16px">
                   As AI gets better, we have to get better at using it. Join us
-                  on <strong>Tuesday, November 3rd</strong> for a workshop where you'll learn
-                  prompting techniques to improve your AI utilization!
+                  on <strong>Tuesday, November 3rd</strong> for a workshop
+                  where you'll learn prompting techniques to improve your AI
+                  utilization!
                 </p>
                 <p style="margin: 0 0 20px">
                   It's also a great way to get ready for
@@ -243,8 +371,8 @@
                         Workshop Details
                       </p>
                       <p style="margin: 0">
-                        <strong>When:</strong> Tuesday, November 3rd, 7:00&ndash;8:00
-                        PM
+                        <strong>When:</strong> Tuesday, November 3rd,
+                        7:00&ndash;8:00 PM
                       </p>
                       <p style="margin: 0">
                         <strong>Where:</strong> Peterson 120
@@ -252,7 +380,7 @@
                       <!-- Google Calendar template link: Nov 3, 7–8 PM Central -->
                       <p style="margin: 12px 0 0">
                         <a
-                          href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Prompt%20Engineering%20Workshop%20%28TAMU%20Datathon%29&amp;dates=20261103T190000%2F20261103T200000&amp;ctz=America%2FChicago&amp;location=Peterson%20120%2C%20Texas%20A%26M%20University%2C%20College%20Station%2C%20TX&amp;details=Learn%20prompting%20techniques%20to%20improve%20your%20AI%20utilization%2C%20hosted%20by%20TAMU%20Datathon.%0A%0Ahttps%3A%2F%2Ftamudatathon.com"
+                          href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=TAMU%20Datathon%20x%20Google%20Gemini%20Prompt%20Engineering%20Workshop&amp;dates=20261103T190000%2F20261103T200000&amp;ctz=America%2FChicago&amp;location=Peterson%20120%2C%20Texas%20A%26M%20University%2C%20College%20Station%2C%20TX&amp;details=Learn%20prompting%20techniques%20to%20improve%20your%20AI%20utilization%2C%20hosted%20by%20TAMU%20Datathon%20and%20Google%20Gemini.%0A%0Ahttps%3A%2F%2Ftamudatathon.com"
                           target="_blank"
                           style="
                             color: #d50000;
