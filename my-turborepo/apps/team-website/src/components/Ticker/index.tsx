@@ -1,131 +1,94 @@
-"use client";
-
-import { useRef } from "react";
 import Image from "next/image";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
 
-import { SectionTitle } from "@vanni/ui/section-title";
+import GridBackground from "~/components/GridBackground";
+import { Marquee } from "~/components/ui/marquee";
 
-//TODO: will need to change out the all black logos with white or something if sticking with the dark theme
+interface Logo {
+  src: string;
+  /** Used as the image's alt text. */
+  name: string;
+}
+
+const logo = (file: string, name: string): Logo => ({
+  src: `/images/sponsor-logo/${file}.webp`,
+  name,
+});
+
+// Alphabetical by name, split across the two scrolling rows.
+const ROW_1: Logo[] = [
+  logo("amd", "AMD"),
+  logo("amex", "American Express"),
+  logo("bp", "bp"),
+  // logo("cbre", "CBRE"),
+  // logo("celonis", "Celonis"),
+  logo("conocophillips", "ConocoPhillips"),
+  logo("databricks", "Databricks"),
+  logo("dell", "Dell Technologies"),
+  logo("facebook", "Facebook"),
+  logo("gm", "General Motors"),
+  logo("goldman", "Goldman Sachs"),
+  logo("heb", "H-E-B"),
+  logo("HPE", "Hewlett Packard Enterprise"),
+];
+
+const ROW_2: Logo[] = [
+  logo("hitachi-digital", "Hitachi Digital"),
+  logo("johnson", "Johnson & Johnson"),
+  // logo("mathworks", "MathWorks"),
+  // logo("msy", "MSY"),
+  logo("p66", "Phillips 66"),
+  // logo("pure", "Pure Storage"),
+  logo("qualcomm", "Qualcomm"),
+  logo("serpapi", "SerpApi"),
+  logo("shell", "Shell"),
+  // logo("sparx", "Sparx"),
+  logo("splunk", "Splunk"),
+  logo("tableau", "Tableau"),
+  logo("sec", "Texas A&M Student Engineers' Council"),
+  logo("walmart", "Walmart"),
+];
+
+function LogoRow({ logos }: { logos: Logo[] }) {
+  return (
+    <>
+      {logos.map(({ src, name }) => (
+        <div
+          key={src}
+          className="relative h-12 w-28 shrink-0 sm:h-16 sm:w-36 lg:h-20 lg:w-44"
+        >
+          <Image
+            src={src}
+            alt={name}
+            sizes="(max-width: 640px) 112px, (max-width: 1024px) 144px, 176px"
+            fill
+            className="object-contain"
+          />
+        </div>
+      ))}
+    </>
+  );
+}
 
 export default function SponsorTicker() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<gsap.core.Tween | null>(null);
-
-  const logos = [
-    "/images/sponsor-logo/amd.webp",
-    "/images/sponsor-logo/amex.webp",
-    "/images/sponsor-logo/bp.webp",
-    // "/images/sponsor-logo/cbre.webp",
-    // "/images/sponsor-logo/celonis.webp",
-    "/images/sponsor-logo/dell.webp",
-    "/images/sponsor-logo/facebook.webp",
-    "/images/sponsor-logo/gm.webp",
-    "/images/sponsor-logo/goldman.webp",
-    "/images/sponsor-logo/heb.webp",
-    "/images/sponsor-logo/hewlett.webp",
-    "/images/sponsor-logo/johnson.webp",
-    // "/images/sponsor-logo/mathworks.webp",
-    // "/images/sponsor-logo/msy.webp",
-    "/images/sponsor-logo/p66.webp",
-    // "/images/sponsor-logo/pure.webp",
-    "/images/sponsor-logo/qualcomm.webp",
-    "/images/sponsor-logo/shell.webp",
-    // "/images/sponsor-logo/sparx.webp",
-    "/images/sponsor-logo/splunk.webp",
-    "/images/sponsor-logo/tableau.webp",
-    "/images/sponsor-logo/walmart.webp",
-  ];
-
-  // Duplicate logos for seamless infinite loop (2 sets)
-  const duplicatedLogos = [...logos, ...logos];
-
-  useGSAP(() => {
-    if (!containerRef.current) return;
-
-    let killAnimation: (() => void) | null = null;
-
-    const runAnimation = () => {
-      if (!containerRef.current) return;
-      // Read actual logo width from DOM after layout (matches responsive w-24 sm:w-32)
-      const firstLogo = containerRef.current.querySelector(".ticker-logo");
-      const logoWidth =
-        firstLogo instanceof HTMLElement ? firstLogo.offsetWidth : 128;
-      const gap = logoWidth < 100 ? 24 : 32; // Tighter: 24px on mobile, 32px on desktop
-      const logoSpacing = logoWidth + gap;
-      const singleSetWidth = logos.length * logoSpacing;
-
-      const logoElements =
-        containerRef.current.querySelectorAll(".ticker-logo");
-      gsap.set(logoElements, {
-        x: (i) => i * logoSpacing,
-        top: "50%",
-        yPercent: -50,
-      });
-
-      // Infinite carousel: animate left, wrap position when first set scrolls off
-      // so the duplicate set is in view and the loop is seamless
-      const animation = gsap.to(containerRef.current, {
-        x: -singleSetWidth,
-        duration: 40,
-        ease: "none",
-        repeat: -1,
-        modifiers: {
-          x: (x: string) => {
-            const num = parseFloat(x);
-            // Wrap back so icons "come back around" seamlessly (2 identical sets)
-            if (num <= -singleSetWidth) {
-              return `${num + singleSetWidth}px`;
-            }
-            return x;
-          },
-        },
-      });
-
-      animationRef.current = animation;
-
-      killAnimation = () => {
-        animationRef.current = null;
-        animation.kill();
-      };
-    };
-
-    const rafId = requestAnimationFrame(() => {
-      runAnimation();
-    });
-    return () => {
-      cancelAnimationFrame(rafId);
-      if (killAnimation) killAnimation();
-    };
-  }, []);
-
   return (
-    <div className="flex w-full flex-col items-center justify-center bg-[#121723] cursor-pointer">
-      <SectionTitle title="Past Sponsors" paragraph={""} center mb="-40px" />
+    <div
+      className={`relative w-full bg-[#e9f6ff] py-10`}
+    >
+      <GridBackground className="opacity-10" />
 
-      <div
-        className="relative h-28 w-full overflow-hidden sm:h-40"
-        onMouseEnter={() => animationRef.current?.pause()}
-        onMouseLeave={() => animationRef.current?.resume()}
-      >
-        <div
-          ref={containerRef}
-          className="absolute left-0 top-0 h-full whitespace-nowrap"
-        >
-          {duplicatedLogos.map((logo, i) => (
-            <div
-              key={i}
-              className="ticker-logo absolute h-10 w-24 sm:h-16 sm:w-32"
-            >
-              <Image
-                src={logo}
-                alt={`Sponsor logo ${(i % logos.length) + 1}`}
-                fill
-                className="object-contain"
-              />
-            </div>
-          ))}
+      {/* Content */}
+      <div className="relative z-10 flex w-full flex-col items-center justify-center">
+        <h2 className="mb-4 font-konkhmer text-5xl font-normal text-[#377BB0] sm:mb-6 sm:text-6xl md:text-7xl">
+          SPONSORS
+        </h2>
+
+        <div className="flex w-full flex-col gap-6 sm:gap-8">
+          <Marquee className="![animation-duration:55s]">
+            <LogoRow logos={ROW_1} />
+          </Marquee>
+          <Marquee reverse className="![animation-duration:50s]">
+            <LogoRow logos={ROW_2} />
+          </Marquee>
         </div>
       </div>
     </div>

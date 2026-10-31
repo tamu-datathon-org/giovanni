@@ -1,29 +1,5 @@
 {
-  "name": "@vanni/auth-proxy",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "nitro build",
-    "clean": "rm -rf .turbo node_modules",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
-    "typecheck": "tsc --noEmit"
-  },
-  "prettier": "@vanni/prettier-config",
-  "dependencies": {
-    "@auth/core": "0.31.0",
-    "nodemailer": "^9.0.1"
-  },
-  "devDependencies": {
-    "@types/node": "^20.19.24",
-    "@vanni/eslint-config": "workspace:*",
-    "@vanni/prettier-config": "workspace:*",
-    "@vanni/tailwind-config": "workspace:*",
-    "@vanni/tsconfig": "workspace:*",
-    "eslint": "^9.39.1",
-    "h3": "^1.15.9",
-    "nitropack": "^2.13.4",
-    "prettier": "^3.6.2",
-    "typescript": "^5.9.3"
-  }
+  "name": "auth-proxy",
+  "version": "0.0.0",
+  "private": true
 }

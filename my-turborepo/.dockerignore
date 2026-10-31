@@ -1,0 +1,43 @@
+# Docker reads .dockerignore from the build context root. Since the organizer
+# image builds with the monorepo root as its context, this is the file that
+# actually applies.
+
+# Dependencies -- reinstalled inside the image from the pruned lockfile
+**/node_modules
+
+# Build output / caches
+**/.next
+**/.turbo
+**/.vercel
+**/.expo
+**/dist
+**/.output
+**/out
+**/*.tsbuildinfo
+
+# Secrets -- these must never enter the build context
+.env
+.env.*
+**/.env
+**/.env.local
+**/.env.*.local
+!**/.env.example
+!**/.env.local.example
+
+# VCS / editor / OS
+.git
+.github
+.gitignore
+.vscode
+.idea
+**/.DS_Store
+Thumbs.db
+
+# Docs and local-only tooling
+**/*.log
+README.md
+LICENSE
+**/plan.md
+Dockerfile
+**/Dockerfile
+.dockerignore

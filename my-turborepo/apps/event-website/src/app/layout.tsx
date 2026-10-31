@@ -1,12 +1,13 @@
-import { Inter, Darumadrop_One, Chilanka } from "next/font/google";
+import { Inter, Darumadrop_One, Chilanka, Righteous, Sekuya } from "next/font/google";
 import Header from "@/components/Header";
+import MlhBadge from "@/components/MlhBadge";
+import HelpQueueButton from "@/components/HelpQueueButton";
 
 import ScrollToTop from "@vanni/ui/scroll-to-top";
 
 import "../styles/index.css";
 import Footer from "@/components/Footer";
 
-// Optimize font loading with next/font/google
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -27,6 +28,20 @@ const chilanka = Chilanka({
   display: "swap",
 });
 
+const righteous = Righteous({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-righteous",
+  display: "swap",
+});
+
+const sekuya = Sekuya({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-sekuya",
+  display: "swap",
+});
+
 interface RootLayoutProps {
   children: React.ReactNode;
 }
@@ -36,13 +51,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="en" className="overflow-x-clip">
-      <body className={`m-0 h-full w-full overflow-x-clip ${inter.variable} ${darumadropOne.variable} ${chilanka.variable}`}>
+      <body className={`m-0 h-full w-full overflow-x-clip ${inter.variable} ${darumadropOne.variable} ${chilanka.variable} ${righteous.variable} ${sekuya.variable}`}>
 
 
-        <Header />
+        {/* <Header /> */}
+        <MlhBadge />
+        <HelpQueueButton />
         {children}
-        <Footer />
-        <ScrollToTop />
+        {/* <Footer /> */}
+        {/* Lifted above the help bear in the bottom-right corner. */}
+        <ScrollToTop className="bottom-28 right-7 md:bottom-40 md:right-14" />
       </body>
     </html>
   );

@@ -17,13 +17,16 @@
         ".vercel/output/**",
         "dist/**"
       ],
+      "passThroughEnv": ["SKIP_ENV_VALIDATION"],
       "env": [
         "AUTH_AUTH0_ID",
         "AUTH_AUTH0_SECRET",
         "AUTH_AUTH0_DOMAIN",
         "BETTER_AUTH_URL",
         "AUTH_SECRET",
-        "NEXT_PUBLIC_EVENT_NAME"
+        "NEXT_PUBLIC_EVENT_NAME",
+        "NEXT_PUBLIC_ALLOW_NON_TAMU_APPLICANTS",
+        "NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE"
       ]
     },
     "dev": {

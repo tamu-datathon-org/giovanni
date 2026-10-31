@@ -5,7 +5,6 @@ import baseConfig from "@vanni/tailwind-config/web";
 const colors = require("tailwindcss/colors");
 
 export default {
-  darkMode: ["class"],
   // We need to append the path to the UI package to the content array so that
   // those classes are included correctly.
   content: [...baseConfig.content, "../../packages/ui/src/**/*.{ts,tsx}"],
@@ -51,9 +50,11 @@ export default {
         // => @media (min-width: 1400px) { ... }
       },
       fontFamily: {
-        // The var is defined in a component somewhere
-        // We need this so NextJS does its font optimizations
-        XPfont: ["var(--font-w95fa)"],
+        // Font faces are loaded in src/app/globals.css
+        myfont: ["myfont", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
+        konkhmer: ['"Konkhmer Sleokchher"', "sans-serif"],
+        kode: ['"Kode Mono"', "monospace"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -67,7 +68,6 @@ export default {
         black: "#121723",
         dark: "#1D2430",
         primary: "#4A6CF7",
-        yellow: "#FBB040",
         datablue: "#2C41DB",
         datalightblue: "#6EFEEB",
         datadarkblue: "#2D69DF",
@@ -126,10 +126,15 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(10px)" },
         },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         float: "floatx 3s ease-in-out infinite",
         bob: "bob 2s ease-in-out infinite",
+        marquee: "marquee 40s linear infinite",
       },
     },
   },

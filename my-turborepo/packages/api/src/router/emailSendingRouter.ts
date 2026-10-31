@@ -8,11 +8,18 @@ import type { VerifiedContext } from "../trpc";
 import { adminProcedure, protectedProcedure } from "../trpc";
 import { getBatchStatus, updateBatchStatus } from "./application";
 import { getEmailsByLabelList } from "./email";
+import {
+  isEmailTemplateId,
+  listEmailTemplates,
+  renderEmailTemplate,
+} from "../emails";
 import sendConfirmationEmails, {
   accepted_content,
   accepted_title,
   rejected_content,
   rejected_title,
+  waitlisted_content,
+  waitlisted_title,
 } from "./emailHelpers/confirmation_emails";
 import { queueBulkEmail } from "./emailHelpers/queue_bulk";
 
@@ -29,11 +36,12 @@ async function checkStatusEmails(
   const successfulEmails: string[] = emailList.filter(
     (email) => !failedSet.has(email),
   );
-  let ids: string[] = [];
-  ids = ids.concat(
-    successfulEmails
-      .map((email) => statusMap.get(email))
-      .filter((id): id is string => id !== undefined),
+  const ids = Array.from(
+    new Set(
+      successfulEmails
+        .map((email) => statusMap.get(email))
+        .filter((id): id is string => id !== undefined),
+    ),
   );
 
   // Update all the batch status
@@ -55,6 +63,22 @@ export const emailSendingRouter = {
     .input(z.object({ emails: z.array(z.string()) }))
     .mutation(({ input }) => {
       sendConfirmationEmails(input.emails);
+    }),
+
+  // Template browser on /admin/jankury: every src/emails/templates file, and
+  // one at a time rendered exactly as it would be sent.
+  listEmailTemplates: adminProcedure.query(() => listEmailTemplates()),
+
+  getEmailTemplate: adminProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ input }) => {
+      if (!isEmailTemplateId(input.id)) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `No email template "${input.id}"`,
+        });
+      }
+      return { id: input.id, ...renderEmailTemplate(input.id) };
     }),
 
   sendBulkEmails: adminProcedure
@@ -141,30 +165,42 @@ export const emailSendingRouter = {
         );
         const emailMap = new Map<string, string>();
 
-        const waitlistEmails = [];
-        const acceptedEmails = [];
-        const rejectedEmails = [];
+        const waitlistEmailSet = new Set<string>();
+        const acceptedEmailSet = new Set<string>();
+        const rejectedEmailSet = new Set<string>();
 
-        // // Filter by status
+        //filter by status
         for (const application of batch) {
           if (!emailMap.has(application.email)) {
             emailMap.set(application.email, application.id);
           }
+          if (application.userEmail && application.userEmail !== application.email) {
+            if (!emailMap.has(application.userEmail)) {
+              emailMap.set(application.userEmail, application.id);
+            }
+          }
 
           if (application.status === "waitlisted") {
-            waitlistEmails.push(application.email);
-            if (application.userEmail !== application.email && application.userEmail != null)
-              waitlistEmails.push(application.userEmail);
+            waitlistEmailSet.add(application.email);
+            if (application.userEmail != null && application.userEmail !== application.email) {
+              waitlistEmailSet.add(application.userEmail);
+            }
           } else if (application.status === "accepted") {
-            acceptedEmails.push(application.email);
-            if (application.userEmail !== application.email && application.userEmail != null)
-              acceptedEmails.push(application.userEmail);
+            acceptedEmailSet.add(application.email);
+            if (application.userEmail != null && application.userEmail !== application.email) {
+              acceptedEmailSet.add(application.userEmail);
+            }
           } else if (application.status === "rejected") {
-            rejectedEmails.push(application.email);
-            if (application.userEmail !== application.email && application.userEmail != null)
-              rejectedEmails.push(application.userEmail);
+            rejectedEmailSet.add(application.email);
+            if (application.userEmail != null && application.userEmail !== application.email) {
+              rejectedEmailSet.add(application.userEmail);
+            }
           }
         }
+
+        const waitlistEmails = Array.from(waitlistEmailSet);
+        const acceptedEmails = Array.from(acceptedEmailSet);
+        const rejectedEmails = Array.from(rejectedEmailSet);
 
         // Rejection Emails
         if (sendRejected && rejectedEmails.length > 0) {
@@ -190,8 +226,8 @@ export const emailSendingRouter = {
         if (sendWaitlisted && waitlistEmails.length > 0) {
           const failedWaitlist = await queueBulkEmail(
             waitlistEmails,
-            "TODO REPLACE WAITLIST HERE",
-            "TODO REPLACE CONTENTS HERE",
+            waitlisted_title,
+            waitlisted_content,
             emailBatchSize,
           );
 

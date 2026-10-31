@@ -6,16 +6,18 @@ const config = {
   transpilePackages: [
     "@monaco-editor/react",
     "@vanni/api",
+    "@vanni/apple-wallet",
     "@vanni/auth",
     "@vanni/db",
+    "@vanni/google-wallet",
     "@vanni/ui",
     "@vanni/validators",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */
-  eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
   output: "standalone",
+  allowedDevOrigins: ['*']
 };
 
 export default config;

@@ -1,9 +1,7 @@
 import "~/app/globals.css";
 
-import { Inter } from "next/font/google";
-
-import { w95fa } from "~/app/_components/fonts";
 import ClientLayout from "~/app/ClientLayout";
+import { Noise } from "~/components/shared/Noise";
 
 import "../styles/index.css";
 
@@ -26,14 +24,17 @@ export const metadata: Metadata = {
   },
 };
 
-const inter = Inter({ subsets: ["latin"] });
-
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={w95fa.className}>
+    <html lang="en" className="font-myfont">
       <head />
-      <body className={`bg-[#121723] text-white ${inter.className}`}>
-        <ClientLayout>{props.children}</ClientLayout>
+      <body className="relative bg-[#377BB0] font-inter text-[#121723]">
+        <div className="pointer-events-none absolute inset-0">
+          <Noise />
+        </div>
+        <div className="relative z-10">
+          <ClientLayout>{props.children}</ClientLayout>
+        </div>
       </body>
     </html>
   );

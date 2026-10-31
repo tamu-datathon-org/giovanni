@@ -5,7 +5,17 @@ import { eq } from "@vanni/db";
 import { Event } from "@vanni/db/schema";
 
 import type { VerifiedContext } from "../trpc";
-import { protectedProcedure, publicProcedure } from "../trpc";
+import { organizerProcedure, protectedProcedure, publicProcedure } from "../trpc";
+
+/** Columns that exist on older DBs (no capacity / food_groups yet). */
+const SAFE_EVENT_COLUMNS = {
+  id: true,
+  name: true,
+  startDate: true,
+  endDate: true,
+  appDeadline: true,
+  extendedDeadline: true,
+} as const;
 
 export const getEventData = async ({
   ctx,
@@ -16,6 +26,8 @@ export const getEventData = async ({
 }) => {
   const event = await ctx.db.query.Event.findFirst({
     where: eq(Event.name, eventName),
+    // Organizers enter food groups by hand on the event row (empty = no groups).
+    columns: { ...SAFE_EVENT_COLUMNS, foodGroups: true },
   });
 
   if (event == undefined) {
@@ -44,6 +56,15 @@ export const eventRouter = {
     .query(async ({ ctx, input }) => {
       return ctx.db.query.Event.findFirst({
         where: eq(Event.name, input),
+        columns: SAFE_EVENT_COLUMNS,
       });
     }),
+
+  /** All events for the organizer event picker (newest first). */
+  listAll: organizerProcedure.query(async ({ ctx }) => {
+    return ctx.db.query.Event.findMany({
+      columns: { id: true, name: true, startDate: true, endDate: true },
+      orderBy: (t, { asc, desc }) => [desc(t.startDate), asc(t.name)],
+    });
+  }),
 };

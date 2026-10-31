@@ -23,7 +23,7 @@ const StaticWindowContainer: React.FC<StaticWindowContainerProps> = ({
   };
 
   return (
-    <div className={`font-XPfont unhidden w-fit font-bold`}>
+    <div className={`font-myfont unhidden w-fit font-bold`}>
       <div className="flex flex-col items-center justify-center">
         <div
           className="xpBorder flex w-fit flex-col items-center p-3 text-center text-lg"

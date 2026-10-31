@@ -19,7 +19,7 @@ const FormContainer: React.FC<FormContainerProps> = ({
   children,
 }) => {
   return (
-    <div className="font-XPfont font-bold">
+    <div className="font-myfont font-bold">
       <div className="flex h-screen flex-col items-center justify-center">
         <form
           onSubmit={onSubmit}

@@ -1,7 +1,7 @@
 import type { SQL } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { del } from "@vercel/blob";
-import { inArray, or, sql } from "drizzle-orm";
+import { asc, inArray, isNotNull, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { and, eq } from "@vanni/db";
@@ -18,8 +18,10 @@ import {
 } from "@vanni/db/schema";
 
 import { User } from "@vanni/db/auth-schema";
+import { isInvitationAcceptanceRequired } from "@vanni/validators";
 
 import type { Context, VerifiedContext } from "../trpc";
+import { pickFoodGroup } from "../food-groups";
 import { organizerProcedure, protectedProcedure } from "../trpc";
 import sendConfirmationEmail from "./emailHelpers/confirmation_emails";
 import { getEventData } from "./event";
@@ -169,35 +171,114 @@ export async function updateBatchStatus(
   }
 }
 
-function isCoffeeGroupLabel(g: string): boolean {
-  return g.trim().toLowerCase().includes("coffee");
+// Assign a food group only when one isn't already set. Returns undefined (write
+// nothing) when they already have one or the event has no food groups.
+function assignFoodGroup(
+  foodGroups: string[],
+  dietaryRestriction: string | null | undefined,
+  currentFoodGroup: string | null | undefined,
+): string | undefined {
+  if (currentFoodGroup != null && currentFoodGroup !== "") return undefined;
+  return pickFoodGroup(foodGroups, dietaryRestriction);
 }
 
-function isDietaryCoffeeEligible(dietaryRestriction: string | null | undefined): boolean {
-  const d = (dietaryRestriction ?? "").toLowerCase();
-  if (!d.trim()) return false;
-  return (
-    d.includes("vegan") ||
-    d.includes("vegetarian") ||
-    d.includes("gluten")
+// Shared field set for auto-accepting an applicant (walk-in create + accept).
+// `invitationStatus: true` lets them skip the accept-offer step on /apply.
+function buildAcceptanceValues(
+  foodGroups: string[],
+  opts: {
+    dietaryRestriction?: string | null;
+    currentFoodGroup?: string | null;
+  },
+): {
+  status: "accepted";
+  invitationStatus: true;
+  acceptedEmail: false;
+  foodGroup?: string;
+} {
+  const base = {
+    status: "accepted" as const,
+    invitationStatus: true as const,
+    acceptedEmail: false as const,
+  };
+  const foodGroup = assignFoodGroup(
+    foodGroups,
+    opts.dietaryRestriction,
+    opts.currentFoodGroup,
   );
+  return foodGroup !== undefined ? { ...base, foodGroup } : base;
 }
 
-function coffeeLabelFromEventFoodGroups(foodGroups: string[]): string {
-  const found = foodGroups.find((g) => isCoffeeGroupLabel(g));
-  return found ?? "Coffee";
-}
+// When invitation acceptance isn't required, an organizer's accept is final, so
+// hand out the food group `updateInvitationStatus` would have assigned when the
+// applicant confirmed. Rows that already have a group keep it.
+async function assignMissingFoodGroups(ctx: VerifiedContext, where: SQL | undefined) {
+  const rows = await ctx.db
+    .select({
+      id: Application.id,
+      dietaryRestriction: Application.dietaryRestriction,
+      foodGroup: Application.foodGroup,
+      eventName: Event.name,
+    })
+    .from(Application)
+    .innerJoin(Event, eq(Event.id, Application.eventId))
+    .where(where);
 
-function pickRandomNonCoffeeGroup(foodGroups: string[]): string | null {
-  const others = foodGroups.filter((g) => !isCoffeeGroupLabel(g));
-  if (others.length === 0) return null;
-  return others[Math.floor(Math.random() * others.length)] ?? null;
+  // Same food group source as `updateInvitationStatus` and the walk-in flow.
+  const foodGroupsByEvent = new Map<string, string[]>();
+  for (const eventName of new Set(rows.map((row) => row.eventName))) {
+    const event = await getEventData({ ctx, eventName });
+    foodGroupsByEvent.set(eventName, event.foodGroups);
+  }
+
+  const idsByFoodGroup = new Map<string, string[]>();
+  for (const row of rows) {
+    const foodGroup = assignFoodGroup(
+      foodGroupsByEvent.get(row.eventName) ?? [],
+      row.dietaryRestriction,
+      row.foodGroup,
+    );
+    if (foodGroup === undefined) continue;
+    idsByFoodGroup.set(foodGroup, [...(idsByFoodGroup.get(foodGroup) ?? []), row.id]);
+  }
+
+  for (const [foodGroup, ids] of idsByFoodGroup) {
+    await ctx.db
+      .update(Application)
+      .set({ foodGroup })
+      .where(inArray(Application.id, ids));
+  }
 }
 
 // the batch requires the page/limit, I need to get all of them in each
 // Get batch status gives all applications -> filter the status to 3 categories -> send it to the email router
 // the email router will send the emails based on the status one at a time but all at the same time
 // email router needs the batch and trickles it down
+
+/**
+ * Referral points are keyed by email, so normalise it: "john@tamu.edu " and
+ * "John@tamu.edu" have to count as the same person. Returns null when the
+ * referral can't count — left blank, or they named themselves.
+ *
+ * `ownEmails` are the addresses belonging to the applicant. On a self-submitted
+ * application that is their application email plus the email they logged in
+ * with; on a walk-in the session belongs to the *organizer* taking the
+ * registration, so only the participant's own addresses go in — otherwise an
+ * organizer could never be credited for a walk-in they brought to the door.
+ */
+function normalizeReferrerEmail(
+  referrerEmail: string | null | undefined,
+  ownEmails: (string | null | undefined)[],
+) {
+  const referrer = referrerEmail?.trim().toLowerCase();
+  if (!referrer) {
+    return null;
+  }
+  const owned = ownEmails.flatMap((email) =>
+    email ? [email.trim().toLowerCase()] : [],
+  );
+  return owned.includes(referrer) ? null : referrer;
+}
 
 export const applicationRouter = {
   create: protectedProcedure
@@ -213,6 +294,24 @@ export const applicationRouter = {
       const { eventName, applicationData, resumeUrl, resumeName } = input;
 
       const event = await getEventData({ ctx, eventName });
+
+      const alreadyApplied = new TRPCError({
+        code: "CONFLICT",
+        message: "You've already submitted an application for this event.",
+      });
+
+      // Catches a stale tab or a repeat submit before anything is written.
+      const existingApplication = await ctx.db.query.Application.findFirst({
+        where: and(
+          eq(Application.eventId, event.id),
+          eq(Application.userId, ctx.session.user.id),
+        ),
+        columns: { id: true },
+      });
+
+      if (existingApplication) {
+        throw alreadyApplied;
+      }
 
       const resume = await db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
@@ -233,18 +332,49 @@ export const applicationRouter = {
         });
       }
 
-      // user roles insertion
-      await ctx.db.insert(UserRole).values({
-        userId: ctx.session.user.id,
-        roleId: role.id,
-      });
+      let response;
+      try {
+        // The role and the application are saved together so a failure on the
+        // application can't leave behind a role that locks the user out of
+        // retrying. The role insert is deliberately not `onConflictDoNothing`:
+        // its primary key is what makes a concurrent duplicate submit roll back.
+        response = await ctx.db.transaction(async (tx) => {
+          await tx.insert(UserRole).values({
+            userId: ctx.session.user.id,
+            roleId: role.id,
+          });
 
-      const response = await db.insert(Application).values({
-        ...applicationData,
-        userId: ctx.session.user.id,
-        eventId: event.id,
-        status: "pending",
-      });
+          return await tx.insert(Application).values({
+            ...applicationData,
+            referrerEmail: normalizeReferrerEmail(
+              applicationData.referrerEmail,
+              [applicationData.email, ctx.session.user.email],
+            ),
+            userId: ctx.session.user.id,
+            eventId: event.id,
+            status: "pending",
+          });
+        });
+      } catch (err) {
+        if (err instanceof TRPCError) throw err;
+
+        // Drizzle wraps the driver error, so the Postgres code is on `cause`.
+        const pgCode = (err as { cause?: { code?: string } }).cause?.code;
+        if (pgCode === "23505") {
+          throw alreadyApplied;
+        }
+
+        console.error(
+          "Failed to create application:",
+          err,
+          (err as { cause?: unknown }).cause,
+        );
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "We couldn't save your application. Please try again.",
+          cause: err,
+        });
+      }
 
       const loginEmail = ctx.session.user.email;
       const applicationEmail = applicationData.email;
@@ -323,7 +453,13 @@ export const applicationRouter = {
 
       const response = await db
         .update(Application)
-        .set(application)
+        .set({
+          ...application,
+          referrerEmail: normalizeReferrerEmail(application.referrerEmail, [
+            application.email,
+            ctx.session.user.email,
+          ]),
+        })
         .where(eq(Application.id, id));
 
       const loginEmail = ctx.session.user.email;
@@ -413,24 +549,46 @@ export const applicationRouter = {
       const event = await getEventData({ ctx, eventName: input.eventName });
 
       console.log(email);
+      const statusUpdate: {
+        status:
+          | "pending"
+          | "accepted"
+          | "checkedin"
+          | "rejected"
+          | "waitlisted";
+        acceptedEmail?: boolean;
+        rejectedEmail?: boolean;
+        waitlistEmail?: boolean;
+        invitationStatus?: boolean;
+      } = {
+        status: newStatus as
+          | "pending"
+          | "accepted"
+          | "checkedin"
+          | "rejected"
+          | "waitlisted",
+      };
+
+      // When status changes, allow re-sending the corresponding status email.
+      if (statusUpdate.status === "accepted") statusUpdate.acceptedEmail = false;
+      if (statusUpdate.status === "rejected") statusUpdate.rejectedEmail = false;
+      if (statusUpdate.status === "waitlisted") statusUpdate.waitlistEmail = false;
+
+      // No confirm step for this event: accepting also accepts the invitation.
+      const autoConfirm =
+        statusUpdate.status === "accepted" && !isInvitationAcceptanceRequired();
+      if (autoConfirm) statusUpdate.invitationStatus = true;
+
       // Query based on email or id
       if (email !== undefined && email !== "") {
+        const where = and(
+          eq(Application.email, email),
+          eq(Application.eventId, event.id),
+        );
         const results = await ctx.db
           .update(Application)
-          .set({
-            status: newStatus as
-              | "pending"
-              | "accepted"
-              | "checkedin"
-              | "rejected"
-              | "waitlisted",
-          })
-          .where(
-            and(
-              eq(Application.email, email),
-              eq(Application.eventId, event.id),
-            ),
-          );
+          .set(statusUpdate)
+          .where(where);
         if (results.rows.length === 0) {
           throw new TRPCError({
             code: "NOT_FOUND",
@@ -438,12 +596,9 @@ export const applicationRouter = {
           });
         }
 
-        const application = await ctx.db.query.Application.findFirst({
-          where: and(
-            eq(Application.email, email),
-            eq(Application.eventId, event.id),
-          ),
-        });
+        if (autoConfirm) await assignMissingFoodGroups(ctx, where);
+
+        const application = await ctx.db.query.Application.findFirst({ where });
 
         if (!application) {
           throw new TRPCError({
@@ -454,23 +609,15 @@ export const applicationRouter = {
 
         return application;
       } else if (id !== undefined && id !== "") {
-        await ctx.db
-          .update(Application)
-          .set({
-            status: newStatus as
-              | "pending"
-              | "accepted"
-              | "checkedin"
-              | "rejected"
-              | "waitlisted",
-          })
-          .where(
-            and(eq(Application.id, id), eq(Application.eventId, event.id)),
-          );
+        const where = and(
+          eq(Application.id, id),
+          eq(Application.eventId, event.id),
+        );
+        await ctx.db.update(Application).set(statusUpdate).where(where);
 
-        return await ctx.db.query.Application.findFirst({
-          where: and(eq(Application.id, id), eq(Application.eventId, event.id)),
-        });
+        if (autoConfirm) await assignMissingFoodGroups(ctx, where);
+
+        return await ctx.db.query.Application.findFirst({ where });
       }
 
       throw new TRPCError({
@@ -504,10 +651,30 @@ export const applicationRouter = {
 
       const finalSql: SQL = sql.join(sqlChunks, sql.raw(" "));
 
-      return await db
-        .update(Application)
-        .set({ status: finalSql })
-        .where(inArray(Application.id, ids));
+      const setValues: {
+        status: SQL;
+        acceptedEmail?: boolean;
+        rejectedEmail?: boolean;
+        waitlistEmail?: boolean;
+        invitationStatus?: boolean;
+      } = { status: finalSql };
+
+      // When status changes, allow re-sending the corresponding status email.
+      if (newStatus === "accepted") setValues.acceptedEmail = false;
+      if (newStatus === "rejected") setValues.rejectedEmail = false;
+      if (newStatus === "waitlisted") setValues.waitlistEmail = false;
+
+      // No confirm step for this event: accepting also accepts the invitation.
+      const autoConfirm =
+        newStatus === "accepted" && !isInvitationAcceptanceRequired();
+      if (autoConfirm) setValues.invitationStatus = true;
+
+      const where = inArray(Application.id, ids);
+      const result = await db.update(Application).set(setValues).where(where);
+
+      if (autoConfirm) await assignMissingFoodGroups(ctx, where);
+
+      return result;
     }),
   updateBatchAccepted: organizerProcedure
     .input(
@@ -553,6 +720,7 @@ export const applicationRouter = {
           status: true,
           email: true,
           foodGroup: true,
+          invitationStatus: true,
         },
         where: and(
           eq(Application.eventId, event.id),
@@ -708,6 +876,14 @@ export const applicationRouter = {
     .mutation(async ({ ctx, input }) => {
       const { eventName, email, newStatus } = input;
 
+      // Acceptance already set invitationStatus; don't let a decline undo it.
+      if (!isInvitationAcceptanceRequired()) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "This event doesn't ask applicants to confirm their spot.",
+        });
+      }
+
       if (email.toLowerCase() !== ctx.session.user.email.toLowerCase()) {
         throw new TRPCError({
           code: "FORBIDDEN",
@@ -732,25 +908,18 @@ export const applicationRouter = {
         throw new TRPCError({ code: "NOT_FOUND", message: "Application not found" });
       }
 
-      const foodGroups = event.foodGroups ?? [];
-
       const setValues: {
         invitationStatus: boolean;
-        foodGroup?: string | null;
+        foodGroup?: string;
       } = { invitationStatus: newStatus };
 
-      if (
-        application.status === "accepted" &&
-        (application.foodGroup == null || application.foodGroup === "")
-      ) {
-        if (isDietaryCoffeeEligible(application.dietaryRestriction)) {
-          setValues.foodGroup = coffeeLabelFromEventFoodGroups(foodGroups);
-        } else {
-          const pick = pickRandomNonCoffeeGroup(foodGroups);
-          if (pick != null && pick !== "") {
-            setValues.foodGroup = pick;
-          }
-        }
+      if (application.status === "accepted") {
+        const foodGroup = assignFoodGroup(
+          event.foodGroups,
+          application.dietaryRestriction,
+          application.foodGroup,
+        );
+        if (foodGroup !== undefined) setValues.foodGroup = foodGroup;
       }
 
       const updated = await ctx.db
@@ -760,6 +929,205 @@ export const applicationRouter = {
         .returning({
           id: Application.id,
           invitationStatus: Application.invitationStatus,
+          foodGroup: Application.foodGroup,
+        });
+
+      return updated[0];
+    }),
+
+  // Step 1 of the walk-in wizard: check whether an account exists for the email
+  // and surface any existing application (with its status) for this event.
+  lookupWalkIn: organizerProcedure
+    .input(z.object({ eventName: z.string(), email: z.string().email() }))
+    .query(async ({ ctx, input }) => {
+      const event = await getEventData({ ctx, eventName: input.eventName });
+      const email = input.email.trim();
+
+      // Multiple auth User rows can share an email (e.g. applicant vs organizer).
+      const users = await ctx.db
+        .select({ id: User.id })
+        .from(User)
+        .where(eq(User.email, email));
+
+      const userIds = users.map((u) => u.id);
+
+      const application = await ctx.db.query.Application.findFirst({
+        where: and(
+          eq(Application.eventId, event.id),
+          userIds.length > 0
+            ? or(
+                eq(Application.email, email),
+                inArray(Application.userId, userIds),
+              )
+            : eq(Application.email, email),
+        ),
+        columns: {
+          id: true,
+          status: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          userId: true,
+        },
+      });
+
+      return {
+        accountExists: users.length > 0,
+        // Prefer the user tied to the existing application, else the first match.
+        userId: application?.userId ?? userIds[0] ?? null,
+        application: application
+          ? {
+              id: application.id,
+              status: application.status,
+              firstName: application.firstName,
+              lastName: application.lastName,
+              email: application.email,
+            }
+          : null,
+      };
+    }),
+
+  // Step 2 of the walk-in wizard: create a new, auto-accepted application for an
+  // existing account. Skips resume handling and the confirmation email.
+  createWalkIn: organizerProcedure
+    .input(
+      z.object({
+        eventName: z.string(),
+        email: z.string().email(),
+        applicationData: CreateApplicationSchema,
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { eventName, applicationData } = input;
+      const email = input.email.trim();
+
+      const event = await getEventData({ ctx, eventName });
+
+      const users = await ctx.db
+        .select({ id: User.id })
+        .from(User)
+        .where(eq(User.email, email));
+
+      if (users.length === 0) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "No account found for this email. Have the participant sign in first.",
+        });
+      }
+
+      const userIds = users.map((u) => u.id);
+
+      const existing = await ctx.db.query.Application.findFirst({
+        where: and(
+          eq(Application.eventId, event.id),
+          or(eq(Application.email, email), inArray(Application.userId, userIds)),
+        ),
+        columns: { id: true },
+      });
+
+      if (existing) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message:
+            "An application already exists for this participant. Use the accept option instead.",
+        });
+      }
+
+      const userId = userIds[0]!;
+
+      // Mirror `create`: ensure the participant has the Applicant role.
+      const role = await ctx.db.query.Role.findFirst({
+        where: and(eq(Role.eventId, event.id), eq(Role.name, "Applicant")),
+      });
+
+      if (role == undefined) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message:
+            "Role query was not successful. Contact a datathon officer.",
+        });
+      }
+
+      const existingRole = await ctx.db.query.UserRole.findFirst({
+        where: and(eq(UserRole.userId, userId), eq(UserRole.roleId, role.id)),
+      });
+
+      if (!existingRole) {
+        await ctx.db.insert(UserRole).values({ userId, roleId: role.id });
+      }
+
+      const acceptance = buildAcceptanceValues(event.foodGroups, {
+        dietaryRestriction: applicationData.dietaryRestriction,
+        currentFoodGroup: null,
+      });
+
+      await ctx.db.insert(Application).values({
+        ...applicationData,
+        // `email` here is the participant's, not the organizer's — the session
+        // on this procedure belongs to whoever is running the walk-in desk.
+        referrerEmail: normalizeReferrerEmail(applicationData.referrerEmail, [
+          applicationData.email,
+          email,
+        ]),
+        userId,
+        eventId: event.id,
+        ...acceptance,
+      });
+
+      return { foodGroup: acceptance.foodGroup ?? null };
+    }),
+
+  // Existing-application branch of the wizard: flip status to accepted (plus
+  // invitation/food group) without overwriting any of their data.
+  acceptWalkIn: organizerProcedure
+    .input(z.object({ eventName: z.string(), email: z.string().email() }))
+    .mutation(async ({ ctx, input }) => {
+      const email = input.email.trim();
+      const event = await getEventData({ ctx, eventName: input.eventName });
+
+      const users = await ctx.db
+        .select({ id: User.id })
+        .from(User)
+        .where(eq(User.email, email));
+      const userIds = users.map((u) => u.id);
+
+      const application = await ctx.db.query.Application.findFirst({
+        where: and(
+          eq(Application.eventId, event.id),
+          userIds.length > 0
+            ? or(
+                eq(Application.email, email),
+                inArray(Application.userId, userIds),
+              )
+            : eq(Application.email, email),
+        ),
+        columns: {
+          id: true,
+          dietaryRestriction: true,
+          foodGroup: true,
+        },
+      });
+
+      if (!application) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Application not found for this participant.",
+        });
+      }
+
+      const acceptance = buildAcceptanceValues(event.foodGroups, {
+        dietaryRestriction: application.dietaryRestriction,
+        currentFoodGroup: application.foodGroup,
+      });
+
+      const updated = await ctx.db
+        .update(Application)
+        .set(acceptance)
+        .where(eq(Application.id, application.id))
+        .returning({
+          id: Application.id,
+          status: Application.status,
           foodGroup: Application.foodGroup,
         });
 

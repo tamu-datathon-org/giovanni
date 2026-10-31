@@ -1,4 +1,5 @@
 import { accountRouter } from "./router/account";
+import { analyticsRouter } from "./router/analytics";
 import { applicationRouter } from "./router/application";
 import { authRouter } from "./router/auth";
 import { emailRouter } from "./router/email";
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
   post: postRouter,
   event: eventRouter,
   application: applicationRouter,
+  analytics: analyticsRouter,
   preregistration: preregistrationRouter,
   account: accountRouter,
   email: emailRouter,

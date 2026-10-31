@@ -1,3 +1,10 @@
+/*
+ * Fonts. Use them through the Tailwind classes in tailwind.config.ts
+ * (font-inter, font-konkhmer, font-myfont, font-kode),
+ * or by family name in CSS modules.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Konkhmer+Sleokchher&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +13,31 @@
   @font-face {
     font-family: "myfont";
     src: url("./assets/w95fa.woff2") format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Kode Mono";
+    src: url("./assets/KodeMono-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Kode Mono";
+    src: url("./assets/KodeMono-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Kode Mono";
+    src: url("./assets/KodeMono-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
   }
 
   body {
@@ -16,27 +48,15 @@
   :root {
     --radius: 0.5rem;
 
-    /* Logo colors - light mode */
+    /* Logo colors */
     --logo-primary: #6dfdea;
     --logo-secondary: #01c0cc;
     --logo-tertiary: #28979b;
 
-    /* Branch colors - light mode */
+    /* Branch colors */
     --branch-primary: #6dfdea;
     --branch-secondary: #01c0cc;
     --branch-tertiary: #28979b;
-  }
-
-  .dark {
-    /* Logo colors - dark mode */
-    --logo-primary: #66cae0;
-    --logo-secondary: #2b67e1;
-    --logo-tertiary: #2a42d3;
-
-    /* Branch colors - dark mode */
-    --branch-primary: #66cae0;
-    --branch-secondary: #2b67e1;
-    --branch-tertiary: #2a42d3;
   }
   .text-stroke {
     -webkit-text-stroke-width: 1px;
@@ -46,6 +66,35 @@
   /* You can add more sizes/colors as needed */
   .text-stroke-2 {
     -webkit-text-stroke-width: 2px;
+  }
+
+  /* Grid backgrounds */
+  .grid-background {
+    background-size: 40px 40px;
+    background-image:
+        linear-gradient(to right, grey 1px, transparent 1px),
+        linear-gradient(to bottom, grey 1px, transparent 1px);
+  }
+
+  .grid-background-blue {
+    background-size: 20px 20px;
+    background-image:
+        linear-gradient(to right, #DFEBF3 1px, transparent 1px),
+        linear-gradient(to bottom, #DFEBF3 1px, transparent 1px);
+  }
+
+  .grid-background-sm {
+    background-size: 20px 20px;
+    background-image:
+        linear-gradient(to right, #374151 1px, transparent 1px),
+        linear-gradient(to bottom, #374151 1px, transparent 1px);
+  }
+
+  .grid-background-sm-light {
+    background-size: 20px 20px;
+    background-image:
+        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
   }
 }
 

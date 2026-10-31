@@ -29,13 +29,14 @@ export const theme = {
       inter: ["var(--font-inter)", "sans-serif"],
       kopub: ["var(--font-kopub-batang)", "serif"],
       anonymous: ['"anonymous"'],
-      "darumadrop-one": ["var(--font-darumadrop-one)", "sans-serif"],
-      chilanka: ["var(--font-chilanka)", "sans-serif"],
-      serif: ['"PT Serif"', "Times New Roman", "serif"],
+      "darumadrop-one": ["darumadrop-one", "sans-serif"],
       chilanka: ["chilanka", "sans-serif"],
+      serif: ['"PT Serif"', "Times New Roman", "serif"],
       pixelify: ["pixelify", "sans-serif"],
       shadowsintolight: ["shadowsintolight", "sans-serif"],
       darumadropone: ["darumadropone", "sans-serif"],
+      righteous: ["var(--font-righteous)", "sans-serif"],
+      sekuya: ["var(--font-sekuya)", "sans-serif"],
     },
     colors: {
       current: "currentColor",
@@ -44,7 +45,6 @@ export const theme = {
       black: "#121723",
       dark: "#1D2430",
       primary: "#4A6CF7",
-      yellow: "#FBB040",
       datablue: "#2C41DB",
       dalgonabase: "#EBAD5C",
       dalgonatext: "#B86B28",
@@ -90,19 +90,163 @@ export const theme = {
       three: "0px 5px 15px rgba(6, 8, 15, 0.05)",
     },
     keyframes: {
+      // Rail stars: a quick swell and return, and a glow that lingers.
+      "star-pulse": {
+        "0%, 100%": { transform: "scale(1)" },
+        "50%": { transform: "scale(1.7)" },
+      },
+      "star-glow": {
+        "0%": { opacity: "0" },
+        "23%": { opacity: "1" },
+        "100%": { opacity: "0" },
+      },
       floatx: {
         "0%, 100%": { boxShadow: "none", transform: "translateY(0)" },
         "50%": { boxShadow: "none", transform: "translateY(-20px)" },
       },
+
+      // Hero (the casino stage, src/components/Hero). Per-element timings
+      // come from CSS variables set inline; only transform/opacity animate.
+      // Chandeliers: a pendulum between --from and --to.
+      sway: {
+        from: { rotate: "var(--from)" },
+        to: { rotate: "var(--to)" },
+      },
+      // The spotlight on the closed curtains: a slight wander (the operator's
+      // hand; each leg eases in and out), and slowly breathing.
+      "spot-drift": {
+        "0%, 100%": { translate: "0 0" },
+        "22%": { translate: "2.5cqmin -1.5cqmin" },
+        "47%": { translate: "-1.5cqmin 2cqmin" },
+        "73%": { translate: "-3cqmin -1cqmin" },
+      },
+      "spot-breathe": {
+        from: { opacity: "0.9", scale: "0.985" },
+        to: { opacity: "1", scale: "1.015" },
+      },
+      // Neon sputter: spark, blackout, double blink, half power, dropout, dip, on.
+      "light-on": {
+        "0%": { opacity: "0" },
+        "6%": { opacity: "0.8" },
+        "10%": { opacity: "0" },
+        "20%": { opacity: "0.65" },
+        "23%": { opacity: "0" },
+        "27%": { opacity: "0.85" },
+        "33%": { opacity: "0.45" },
+        "45%": { opacity: "0" },
+        "52%": { opacity: "0.9" },
+        "66%": { opacity: "0.6" },
+        "69%": { opacity: "0.95" },
+        "76%": { opacity: "0.75" },
+        "79%, 100%": { opacity: "1" },
+      },
+      // Exact inverse of light-on, for the dimmed copy of the sign on top.
+      "night-off": {
+        "0%": { opacity: "1" },
+        "6%": { opacity: "0.2" },
+        "10%": { opacity: "1" },
+        "20%": { opacity: "0.35" },
+        "23%": { opacity: "1" },
+        "27%": { opacity: "0.15" },
+        "33%": { opacity: "0.55" },
+        "45%": { opacity: "1" },
+        "52%": { opacity: "0.1" },
+        "66%": { opacity: "0.4" },
+        "69%": { opacity: "0.05" },
+        "76%": { opacity: "0.25" },
+        "79%, 100%": { opacity: "0" },
+      },
+      hum: {
+        from: { opacity: "0.5" },
+        to: { opacity: "0.6" },
+      },
+      // Classic 3-phase theater chase: 0.3s on, 0.6s off, three cycles per loop.
+      chase: {
+        "0%, 33.33%, 66.67%": { opacity: "1" },
+        "11.11%, 44.44%, 77.78%, 100%": { opacity: "0.25" },
+      },
+      "letter-glow": {
+        "0%": { opacity: "0.55" },
+        "4%": { opacity: "1" },
+        "12%, 100%": { opacity: "0.55" },
+      },
+      "apply-lights": {
+        "0%": { opacity: "1" },
+        "15%": { opacity: "0.25" },
+        "25%": { opacity: "1" },
+        "42%": { opacity: "0" },
+        "52%": { opacity: "0.55" },
+        "62%, 100%": { opacity: "0" },
+      },
+      "apply-pop": {
+        "0%, 100%": { scale: "1" },
+        "40%": { scale: "1.05" },
+      },
+      "chip-blink": {
+        "0%, 100%": {
+          filter:
+            "drop-shadow(0 0 0 rgb(255 255 255 / 0)) drop-shadow(0 0 0 rgb(255 255 255 / 0))",
+        },
+        "50%": {
+          filter:
+            "drop-shadow(0 0 6px rgb(255 255 255)) drop-shadow(0 0 14px rgb(255 255 255 / 0.75))",
+        },
+      },
+      "chip-glow-hold": {
+        "0%, 100%": {
+          filter:
+            "drop-shadow(0 0 6px rgb(255 255 255)) drop-shadow(0 0 14px rgb(255 255 255 / 0.75))",
+        },
+      },
+
+      // Sponsors table guests (src/components/sponsor/TableGuests). Timings
+      // are offset per guest through the --delay CSS variable.
+      "guest-settle": {
+        "0%, 100%": { transform: "translateY(0)" },
+        "50%": { transform: "translateY(3px)" },
+      },
+      "guest-glance": {
+        "0%, 25%, 70%, 100%": { transform: "rotate(0)" },
+        "38%, 52%": { transform: "rotate(-9deg)" },
+        "82%, 90%": { transform: "rotate(6deg)" },
+      },
+      "guest-gesture": {
+        "0%, 20%, 80%, 100%": { transform: "rotate(0)" },
+        "40%, 60%": { transform: "rotate(-8deg)" },
+      },
     },
     animation: {
       float: "floatx 3s ease-in-out infinite",
+
+      // Rail (shine="view")
+      "star-pulse": "star-pulse 0.32s ease-out var(--delay, 0s) both",
+      "star-glow": "star-glow 0.78s ease-out var(--delay, 0s) both",
+
+      // Hero
+      sway: "sway var(--period) ease-in-out var(--phase) infinite alternate",
+      "spot-drift": "spot-drift 16s ease-in-out infinite",
+      "spot-breathe": "spot-breathe 4.5s ease-in-out infinite alternate",
+      "light-on": "light-on var(--flicker, 1.8s) steps(1, end) both",
+      "night-off": "night-off var(--flicker, 1.8s) steps(1, end) both",
+      hum: "hum 4s ease-in-out infinite alternate",
+      chase: "chase 2.7s steps(1, end) var(--chase) infinite",
+      "letter-glow": "letter-glow 7s ease-in-out var(--pop) infinite",
+      "apply-lights":
+        "apply-lights 0.6s steps(1, end) var(--lights-delay, 0s) both",
+      "apply-pop": "apply-pop 0.5s ease-out 0.45s",
+      "chip-blink": "chip-blink 2.2s ease-in-out infinite",
+      "chip-glow-hold": "chip-glow-hold 1s linear infinite",
+
+      // Sponsors table guests
+      "guest-settle": "guest-settle 6s ease-in-out var(--delay) infinite",
+      "guest-glance": "guest-glance 9s ease-in-out var(--delay) infinite",
+      "guest-gesture": "guest-gesture 5.5s ease-in-out var(--delay) infinite",
+      "guest-gesture-reverse":
+        "guest-gesture 7s ease-in-out var(--delay) infinite reverse",
     },
     backgroundImage: {
       sandBox: "url('/sand&rainbow.svg')",
     },
   },
 };
-export const plugins = [
-  require("@tailwindcss/typography"),
-];
+export const plugins = [require("@tailwindcss/typography")];

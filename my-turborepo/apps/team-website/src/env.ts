@@ -12,8 +12,6 @@ export const env = createEnv({
     JWT_SECRET: z.string(),
     JWT_EXPIRES_IN: z.string(),
 
-    AWS_ACCESS_KEY_ID: z.string(),
-    AWS_SECRET_ACCESS_KEY: z.string(),
     AWS_EMAIL_USER: z.string(),
     AWS_SQS_MAIL_URL: z.string().url(),
     AWS_REGION: z.string(),
@@ -27,6 +25,8 @@ export const env = createEnv({
       (v) => (v === "" || v == null ? undefined : v),
       z.string().min(1).default("Datathon"),
     ),
+    NEXT_PUBLIC_ALLOW_NON_TAMU_APPLICANTS: z.string().default("false"),
+    NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE: z.string().default("false"),
     NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string().default(""),
     NEXT_PUBLIC_DRIVE_FOLDER_ID: z.string().default(""),
     NEXT_PUBLIC_DRIVE_FOLDER_NAME: z.string().default(""),
@@ -36,6 +36,10 @@ export const env = createEnv({
    */
   experimental__runtimeEnv: {
     NEXT_PUBLIC_EVENT_NAME: process.env.NEXT_PUBLIC_EVENT_NAME,
+    NEXT_PUBLIC_ALLOW_NON_TAMU_APPLICANTS:
+      process.env.NEXT_PUBLIC_ALLOW_NON_TAMU_APPLICANTS,
+    NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE:
+      process.env.NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE,
     NEXT_PUBLIC_GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
     NEXT_PUBLIC_DRIVE_FOLDER_ID: process.env.NEXT_PUBLIC_DRIVE_FOLDER_ID,
     NEXT_PUBLIC_DRIVE_FOLDER_NAME: process.env.NEXT_PUBLIC_DRIVE_FOLDER_NAME,

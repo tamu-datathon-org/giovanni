@@ -16,6 +16,9 @@ export const applicationSchema = CreateApplicationSchema.merge(
       .refine((value) => value, "Please accept the privacy policy"),
     mlhEmailConsent: z.boolean(),
     gradYear: z.string().min(1, "Please select a graduation year"),
+    travelReimbursement: z
+      .string()
+      .min(1, "Please let us know if you need travel reimbursement"),
     city: z.string().min(1, "City is required").max(100),
     region: z.string().min(1, "State/Region is required").max(100),
     zipCode: z.string().min(1, "Zip code is required").max(20),

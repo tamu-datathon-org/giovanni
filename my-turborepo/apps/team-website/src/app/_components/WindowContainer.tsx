@@ -30,7 +30,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
 
   return (
     isOpen && (
-      <div className={`font-XPfont w-fit scale-75 font-bold sm:scale-100`}>
+      <div className={`font-myfont w-fit scale-75 font-bold sm:scale-100`}>
         <div className="flex flex-col items-center justify-center">
           <div
             className="xpBorder flex w-fit flex-col items-center p-3 text-center text-lg"
