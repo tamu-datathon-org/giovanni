@@ -51,6 +51,7 @@ const DOT_IDLE_PX = 18;
 const TRACKED_IDS = new Set([
   "home",
   "about-us",
+  "challenges",
   "past-events",
   "sponsors",
   "team",

@@ -6,14 +6,21 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toDataURL } from "qrcode";
 
+import { AddToAppleWalletButton } from "@vanni/apple-wallet";
 import { authClient } from "@vanni/auth/client";
+import { AddToGoogleWalletButton } from "@vanni/google-wallet";
+import { isInvitationAcceptanceRequired } from "@vanni/validators";
 
 import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
+import { useDevicePlatform } from "~/hooks/use-device-platform";
 import { toast } from "~/hooks/use-toast";
+import { getFoodGroupIcon } from "~/lib/food-group-icons";
 import { api } from "~/trpc/react";
 import { EVENT_NAME } from "./application/application-form";
 
 export const appsOpen = true;
+// When false, being accepted is final and there is no offer to respond to.
+const invitationRequired = isInvitationAcceptanceRequired();
 
 const ASSETS = "/images/dashboard";
 
@@ -136,7 +143,7 @@ function Marker({ className = "" }: { className?: string }) {
       alt=""
       width={22}
       height={35}
-      className={`h-[26px] w-[16px] shrink-0 xl:h-[35px] xl:w-[22px] ${className}`}
+      className={`hidden h-[26px] w-[16px] shrink-0 md:block xl:h-[35px] xl:w-[22px] ${className}`}
     />
   );
 }
@@ -200,6 +207,32 @@ function ActionButton({
   );
 }
 
+/** Light-blue label pill on the grey status cards ("info", "food group"). */
+function CardTag({
+  children,
+  small = false,
+}: {
+  children: React.ReactNode;
+  small?: boolean;
+}) {
+  return (
+    <span
+      className={`inline-block shrink-0 rounded-[20px] border-[5px] font-kode lowercase tracking-[-0.07em] ${
+        small
+          ? "px-3 py-0.5 text-[16px] md:px-4 md:text-[20px]"
+          : "px-5 py-1 text-[20px] xl:text-[30px]"
+      }`}
+      style={{
+        backgroundColor: INK.button,
+        borderColor: INK.cardBorder,
+        color: INK.deep,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
 /** Orange hatch rule flanking the "logged in as" line. */
 function Hatch({ className = "" }: { className?: string }) {
   return (
@@ -224,7 +257,7 @@ function StepTrail({ step }: { step: number }) {
       {STEPS.map((label, i) => (
         <div
           key={label}
-          className={`relative h-[42px] w-[145px] shrink-0 xl:h-[51px] xl:w-[175px] ${
+          className={`relative h-[42px] min-w-0 flex-1 md:w-[145px] md:flex-none xl:h-[51px] xl:w-[175px] ${
             i > 0 ? "-ml-[9px] xl:-ml-[11px]" : ""
           }`}
         >
@@ -241,7 +274,7 @@ function StepTrail({ step }: { step: number }) {
             }}
           />
           <span
-            className="absolute inset-0 flex items-center justify-center px-5 pl-7 text-center font-kode text-[14px] font-bold lowercase leading-none tracking-[-0.07em] xl:text-[20px]"
+            className="absolute inset-0 flex items-center justify-center pl-6 pr-3 text-center font-kode text-[clamp(10px,3.2vw,14px)] font-bold md:px-5 md:pl-7 lowercase leading-none tracking-[-0.07em] xl:text-[20px]"
             style={{ color: INK.deep }}
           >
             {label}
@@ -324,6 +357,35 @@ export default function Page() {
     }
   }
 
+  // Share sheet lets iPhone users "Save Image" to Photos; fall back to a download.
+  // Browsers without canShare throw here, which also lands in the fallback.
+  async function saveQR() {
+    try {
+      const blob = await (await fetch(qrCode)).blob();
+      const file = new File([blob], "check-in-qr.png", { type: "image/png" });
+      if (!navigator.canShare({ files: [file] })) {
+        throw new Error("File sharing not supported");
+      }
+      await navigator.share({ files: [file], title: "Check-in QR Code" });
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") return;
+      try {
+        const a = document.createElement("a");
+        a.href = qrCode;
+        a.download = "check-in-qr.png";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch {
+        toast({
+          title: "Could not save QR code",
+          description: "Please take a screenshot instead",
+          variant: "destructive",
+        });
+      }
+    }
+  }
+
   const generateQR = async (text: string): Promise<string> => {
     try {
       return await toDataURL(btoa(text));
@@ -362,9 +424,16 @@ export default function Page() {
   });
 
   useEffect(() => {
+    // Only accepted/waitlisted (or already checked-in) applicants get a QR.
     const fetchQRCode = async () => {
-      if (data?.status && data.status !== "rejected") {
+      if (
+        data?.status === "accepted" ||
+        data?.status === "waitlisted" ||
+        data?.status === "checkedin"
+      ) {
         setQrCode(await generateQR(data.email ?? ""));
+      } else {
+        setQrCode("");
       }
     };
     void fetchQRCode();
@@ -377,6 +446,7 @@ export default function Page() {
   }, [data]);
 
   const gridRef = useRef<HTMLDivElement>(null);
+  const leftColRef = useRef<HTMLDivElement>(null);
   const offerRef = useRef<HTMLDivElement>(null);
   const qrRef = useRef<HTMLDivElement>(null);
   const blueRef = useRef<HTMLDivElement>(null);
@@ -388,15 +458,34 @@ export default function Page() {
 
   const { step, headline } = statusView(data?.status, isLoading);
 
+  // Food group and wallet passes both need a confirmed spot, same check as
+  // /api/wallet/*. The status guard hides them again after a rejection.
+  const isAttending =
+    (data?.status === "accepted" || data?.status === "checkedin") &&
+    data.invitationStatus === true;
+  const foodGroup = isAttending ? data.foodGroup : null;
+  const foodGroupIcon = getFoodGroupIcon(foodGroup);
+
+  // Only offer the wallet that matches the phone; desktop gets both.
+  const platform = useDevicePlatform();
+  const walletReady = !!foodGroup;
+  const showAppleWallet =
+    walletReady && platform !== null && platform !== "android";
+  const showGoogleWallet =
+    walletReady && platform !== null && platform !== "ios";
+  const showWallet = showAppleWallet || showGoogleWallet;
+
   // The blue arrow points at whatever needs attention: the offer once you are
-  // accepted, then the check-in QR once the event is under way.
+  // accepted (if the event asks for a response), then the check-in QR once the
+  // event is under way.
   const eventStarted = event?.startDate
     ? new Date() >= new Date(event.startDate)
     : false;
+  const awaitingOfferResponse = invitationRequired && data?.status === "accepted";
   const arrowTarget: "offer" | "qr" | null =
     eventStarted && qrCode
       ? "qr"
-      : data?.status === "accepted"
+      : awaitingOfferResponse
         ? "offer"
         : null;
 
@@ -404,6 +493,9 @@ export default function Page() {
    * Line each arrow up with the panel it points at. The blue arrowhead sits
    * 64.6% down its SVG (tip at y=216.5 of 335) and the orange one is centred,
    * so the tips — not the boxes — are what get aligned.
+   * Each arrow also starts at least 16px below the left column's last card
+   * (the food group card pushes that lower), sliding its tip down the target
+   * panel if needed, but never past the panel's bottom.
    */
   useEffect(() => {
     const grid = gridRef.current;
@@ -411,22 +503,34 @@ export default function Page() {
 
     const place = () => {
       const g = grid.getBoundingClientRect();
-      const centerOf = (el: HTMLElement | null) => {
+      const boxOf = (el: Element | null | undefined) => {
         if (!el) return null;
         const r = el.getBoundingClientRect();
-        return r.top + r.height / 2 - g.top;
+        return { top: r.top - g.top, bottom: r.bottom - g.top };
       };
 
-      const blueTargetEl = arrowTarget === "offer" ? offerRef.current : qrRef.current;
-      const blueCenter = centerOf(blueTargetEl);
-      const blueH = blueRef.current?.offsetHeight ?? 0;
+      const leftBottom = boxOf(leftColRef.current?.lastElementChild)?.bottom ?? 0;
+      // tipOffset: distance from the arrow's top edge to the point that aims
+      const topFor = (el: HTMLElement | null, tipOffset: number) => {
+        const box = boxOf(el);
+        if (!box) return -9999;
+        const center = (box.top + box.bottom) / 2;
+        const tip = Math.min(
+          Math.max(center, leftBottom + 16 + tipOffset),
+          box.bottom - 24,
+        );
+        return tip - tipOffset;
+      };
 
-      const orangeCenter = centerOf(qrRef.current);
+      const blueH = blueRef.current?.offsetHeight ?? 0;
       const orangeH = orangeRef.current?.offsetHeight ?? 0;
 
       setArrowTop({
-        blue: blueCenter === null ? -9999 : blueCenter - 0.646 * blueH,
-        orange: orangeCenter === null ? -9999 : orangeCenter - orangeH / 2,
+        blue: topFor(
+          arrowTarget === "offer" ? offerRef.current : qrRef.current,
+          0.646 * blueH,
+        ),
+        orange: topFor(qrRef.current, orangeH / 2),
       });
     };
 
@@ -438,7 +542,7 @@ export default function Page() {
       ro.disconnect();
       window.removeEventListener("resize", place);
     };
-  }, [arrowTarget, qrCode, data?.status, isLoading]);
+  }, [arrowTarget, qrCode, data?.status, foodGroup, isLoading]);
 
   return (
     <>
@@ -474,7 +578,8 @@ export default function Page() {
           className="pointer-events-none absolute -left-40 bottom-0 w-[700px] max-w-none opacity-80"
         />
 
-        <div className="relative mx-auto w-full max-w-[1150px] px-5 py-16 xl:py-20">
+        {/* pt-24 on mobile clears the fixed top navbar (same as /login) */}
+        <div className="relative mx-auto w-full max-w-[1150px] px-5 pb-16 pt-24 lg:pt-16 xl:py-20">
           {/* header */}
           <h1 className="text-center font-kode text-[clamp(32px,6vw,60px)] font-bold lowercase leading-none tracking-[-0.07em] text-white">
             application dashboard
@@ -493,14 +598,14 @@ export default function Page() {
 
           <div ref={gridRef} className="relative mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* ---------- LEFT ---------- */}
-            <div className="flex h-full flex-col gap-4">
+            <div ref={leftColRef} className="flex h-full flex-col gap-4">
               <div className="flex items-center gap-3">
                 <Image
                   src={`${ASSETS}/marker-lg.svg`}
                   alt=""
                   width={22}
                   height={35}
-                  className="h-[26px] w-[16px] shrink-0 xl:h-[35px] xl:w-[22px]"
+                  className="hidden h-[26px] w-[16px] shrink-0 md:block xl:h-[35px] xl:w-[22px]"
                 />
                 <div
                   className="flex-1 rounded-[20px] border-[5px] px-5 py-2"
@@ -512,26 +617,17 @@ export default function Page() {
                 </div>
               </div>
 
-              <div className="pl-[28px] xl:pl-[34px]">
+              <div className="md:pl-[28px] xl:pl-[34px]">
                 <StepTrail step={step} />
               </div>
 
               {/* info card */}
-              <div className="relative pl-[28px] xl:pl-[34px]">
+              <div className="relative md:pl-[28px] xl:pl-[34px]">
                 <div
                   className="relative min-h-[220px] rounded-[20px] border-[5px] px-6 pb-8 pt-4 xl:min-h-[260px] xl:pt-5"
                   style={{ backgroundColor: INK.card, borderColor: INK.panelBorder }}
                 >
-                  <span
-                    className="inline-block rounded-[20px] border-[5px] px-5 py-1 font-kode text-[20px] lowercase tracking-[-0.07em] xl:text-[30px]"
-                    style={{
-                      backgroundColor: INK.button,
-                      borderColor: INK.cardBorder,
-                      color: INK.deep,
-                    }}
-                  >
-                    info
-                  </span>
+                  <CardTag>info</CardTag>
                   <p
                     className="mt-8 font-kode text-[clamp(28px,4vw,50px)] lowercase leading-none tracking-[-0.07em]"
                     style={{ color: INK.deep }}
@@ -542,6 +638,35 @@ export default function Page() {
                 </div>
               </div>
 
+              {/* food group: one-line version of the info card. mt-4 clears the
+                  sparkles hanging off the card above. Wraps only if a long
+                  name can't fit on a very narrow phone. */}
+              {foodGroup && (
+                <div className="mt-4 md:pl-[28px] xl:pl-[34px]">
+                  <div
+                    className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-[20px] border-[5px] px-5 py-3 md:gap-x-4 md:px-6"
+                    style={{ backgroundColor: INK.card, borderColor: INK.panelBorder }}
+                  >
+                    <CardTag small>food group</CardTag>
+                    <p
+                      className="min-w-0 font-kode text-[18px] lowercase leading-none tracking-[-0.07em] md:text-[22px] xl:text-[26px]"
+                      style={{ color: INK.deep }}
+                    >
+                      {foodGroup}
+                    </p>
+                    {foodGroupIcon && (
+                      <Image
+                        src={foodGroupIcon}
+                        alt=""
+                        aria-hidden
+                        width={26}
+                        height={26}
+                        className="size-[18px] shrink-0 md:size-[22px] xl:size-[26px]"
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* arrows float over the left column, aligned to their targets */}
@@ -552,12 +677,14 @@ export default function Page() {
                 style={{ top: arrowTop.blue }}
                 aria-hidden
               >
+                {/* Smaller than the artwork, pinned right so the tip still
+                    meets the panel it points at */}
                 <Image
                   src={`${ASSETS}/arrow-blue.svg`}
                   alt=""
                   width={521}
                   height={335}
-                  className="ml-6 h-auto w-[calc(100%-24px)] max-w-[521px]"
+                  className="ml-auto block h-auto w-[80%] max-w-[417px]"
                 />
               </div>
             )}
@@ -625,13 +752,7 @@ export default function Page() {
                 )}
               </Panel>
 
-              <Panel title="account">
-                <ActionButton onClick={signOutHandler}>
-                  sign out
-                </ActionButton>
-              </Panel>
-
-              {data?.status === "accepted" && (
+              {awaitingOfferResponse && (
                 <div ref={offerRef}>
                   <Panel title="admission offer response">
                   <ActionButton
@@ -685,17 +806,46 @@ export default function Page() {
                     >
                       check in qr code
                     </span>
-                    <div className="mt-5 flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => void saveQR()}
+                      title="Save QR code"
+                      className="mx-auto mt-5 block cursor-pointer transition-opacity hover:opacity-90"
+                    >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={qrCode}
-                        alt="Your check-in QR code"
+                        alt="Your check-in QR code — tap to save"
                         className="h-[240px] w-[240px] rounded-[8px] bg-white p-3"
                       />
-                    </div>
+                    </button>
+                    <p
+                      className="mt-3 text-center font-kode text-[14px] lowercase tracking-[-0.07em] xl:text-[18px]"
+                      style={{ color: INK.deep }}
+                    >
+                      {showWallet
+                        ? "tap the qr code to save it, or add it to your wallet"
+                        : "tap the qr code to save it"}
+                    </p>
+                    {showWallet && (
+                      <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
+                        {showAppleWallet && (
+                          <AddToAppleWalletButton href="/api/wallet/apple" />
+                        )}
+                        {showGoogleWallet && (
+                          <AddToGoogleWalletButton href="/api/wallet/google" />
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
+
+              <Panel title="account">
+                <ActionButton onClick={signOutHandler}>
+                  sign out
+                </ActionButton>
+              </Panel>
             </div>
           </div>
         </div>

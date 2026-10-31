@@ -50,6 +50,7 @@ ARG NEXT_PUBLIC_DRIVE_FOLDER_ID=""
 ARG NEXT_PUBLIC_DRIVE_FOLDER_NAME=""
 ARG NEXT_PUBLIC_GOOGLE_SHEET_API_URL=""
 ARG NEXT_PUBLIC_ENV="production"
+ARG NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE="false"
 
 # The package's `build` script is `dotenv -e ../../.env -- next build`, so a
 # root .env must exist. Server-side secrets are NOT baked in: they are read from
@@ -64,6 +65,7 @@ RUN printf '%s\n' \
       "NEXT_PUBLIC_DRIVE_FOLDER_NAME=\"${NEXT_PUBLIC_DRIVE_FOLDER_NAME}\"" \
       "NEXT_PUBLIC_GOOGLE_SHEET_API_URL=\"${NEXT_PUBLIC_GOOGLE_SHEET_API_URL}\"" \
       "NEXT_PUBLIC_ENV=\"${NEXT_PUBLIC_ENV}\"" \
+      "NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE=\"${NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE}\"" \
       > .env \
  && pnpm turbo run build --filter=@vanni/organizer-website \
  && rm -f .env

@@ -248,36 +248,91 @@ function classifyDietaryRestriction(
   return DIETARY_CATEGORY_ORDER.filter((c) => found.has(c));
 }
 
+/** Name of the Passport phase that means "arrived at the event". */
+const CHECK_IN_PHASE = "check-in";
+
+/**
+ * "checkedin" is a leftover status the current flow never writes, but the
+ * status dropdown still offers it and it plainly means accepted. Every
+ * "accepted" number on this page goes through here so they can't disagree.
+ */
+const ACCEPTED_STATUSES = ["accepted", "checkedin"] as const;
+
+function isAcceptedStatus(status: string) {
+  return (ACCEPTED_STATUSES as readonly string[]).includes(status);
+}
+
+/**
+ * Which slice of applicants the page is describing: everyone who applied, the
+ * ones that got in, the ones that also confirmed their spot, or the ones that
+ * actually turned up.
+ */
+const CohortSchema = z.enum(["all", "accepted", "confirmed", "checkedIn"]);
+type Cohort = z.infer<typeof CohortSchema>;
+
+function inCohort(
+  app: { id: string; status: string; invitationStatus: boolean },
+  cohort: Cohort,
+  checkedInIds: Set<string>,
+) {
+  switch (cohort) {
+    case "all":
+      return true;
+    case "accepted":
+      return isAcceptedStatus(app.status);
+    case "confirmed":
+      return isAcceptedStatus(app.status) && app.invitationStatus;
+    case "checkedIn":
+      return checkedInIds.has(app.id);
+  }
+}
+
 type CheckInResolution = {
   ids: Set<string>;
   source: "attendance" | "application";
+  /** Event has phases, but none is named CHECK_IN_PHASE. */
+  checkInPhaseMissing: boolean;
 };
 
 /**
- * Prefer Passport attendance; fall back to legacy application.checked_in when
- * no phases/attendance exist (older events). Shared so the KPI tile and the
- * referrer leaderboard's "checked in" filter can never disagree.
+ * Check-ins are `attendance` rows on the event's "check-in" phase. The legacy
+ * application.checked_in flag is only consulted for old events that never had
+ * any phases; once an event has phases a count of 0 really is 0 (nobody has
+ * been scanned yet), not a cue to fall back to a column nothing writes anymore.
+ * Shared so the KPI tile and the referrer leaderboard's "checked in" filter can
+ * never disagree. `attendanceRows` must already be limited to checked_in = true.
  */
 function pickCheckedInAppIds(
   applications: { id: string; checkedIn: boolean }[],
   phases: { id: string; name: string }[],
   attendanceRows: { applicationId: string; eventPhaseId: string }[],
 ): CheckInResolution {
-  const checkInPhase = phases.find((p) => p.name === "check-in");
-  const attendanceCheckInIds = new Set(
-    attendanceRows
-      .filter((r) => checkInPhase && r.eventPhaseId === checkInPhase.id)
-      .map((r) => r.applicationId),
-  );
-
-  if (!checkInPhase || attendanceCheckInIds.size === 0) {
+  if (phases.length === 0) {
     return {
       ids: new Set(applications.filter((a) => a.checkedIn).map((a) => a.id)),
       source: "application",
+      checkInPhaseMissing: false,
     };
   }
 
-  return { ids: attendanceCheckInIds, source: "attendance" };
+  const checkInPhase = phases.find((p) => p.name === CHECK_IN_PHASE);
+  if (!checkInPhase) {
+    return {
+      ids: new Set(),
+      source: "attendance",
+      checkInPhaseMissing: true,
+    };
+  }
+
+  return {
+    ids: new Set(
+      attendanceRows
+        .filter((r) => r.eventPhaseId === checkInPhase.id)
+        .map((r) => r.applicationId),
+    ),
+    source: "attendance",
+    checkInPhaseMissing: false,
+  };
 }
 
 /** Same resolution, for callers that haven't already loaded the rows. */
@@ -306,11 +361,103 @@ async function resolveCheckedInAppIds(
   return pickCheckedInAppIds(applications, phases, attendanceRows);
 }
 
+/**
+ * Applications are bucketed by the calendar day they were submitted in the
+ * event's time zone. In UTC an 8pm submission would land on the next day.
+ */
+const EVENT_TIME_ZONE = "America/Chicago";
+
+const eventDayFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: EVENT_TIME_ZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+/** "YYYY-MM-DD" for the calendar day `date` falls on in the event's time zone. */
+function toEventDay(date: Date) {
+  let year = "";
+  let month = "";
+  let day = "";
+  for (const part of eventDayFormatter.formatToParts(date)) {
+    if (part.type === "year") year = part.value;
+    else if (part.type === "month") month = part.value;
+    else if (part.type === "day") day = part.value;
+  }
+  return `${year}-${month}-${day}`;
+}
+
+/** Pure calendar arithmetic on "YYYY-MM-DD" strings; no time zone involved. */
+function addDays(day: string, n: number) {
+  const [y = 0, m = 1, d = 1] = day.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d + n)).toISOString().slice(0, 10);
+}
+
+/**
+ * One point per day from the first application to the last (or to a deadline
+ * that has already passed), zeros included, so quiet stretches show as gaps.
+ * The axis is built from *every* application and only the counts come from the
+ * cohort, so switching cohorts never moves the axis or the deadline markers,
+ * and the final running total equals the cohort size.
+ */
+function buildApplicationsPerDay(
+  allCreatedAt: Date[],
+  cohortCreatedAt: Date[],
+  deadlines: { label: string; at: Date }[],
+  now: Date,
+) {
+  const allDays = allCreatedAt.map(toEventDay).sort();
+  const start = allDays[0];
+  const lastApplicationDay = allDays[allDays.length - 1];
+  if (!start || !lastApplicationDay) {
+    return { applicationsPerDay: [], deadlines: [] };
+  }
+
+  const deadlineDays = deadlines.map((d) => ({
+    label: d.label,
+    date: toEventDay(d.at),
+    passed: d.at <= now,
+  }));
+
+  // Applications can stop before the deadline does; keep the quiet days up to
+  // any deadline that has already gone by.
+  let end = lastApplicationDay;
+  for (const d of deadlineDays) {
+    if (d.passed && d.date > end) end = d.date;
+  }
+
+  const perDay = new Map<string, number>();
+  for (const createdAt of cohortCreatedAt) {
+    const day = toEventDay(createdAt);
+    perDay.set(day, (perDay.get(day) ?? 0) + 1);
+  }
+
+  const applicationsPerDay: { date: string; count: number; cumulative: number }[] =
+    [];
+  let cumulative = 0;
+  for (let day = start; day <= end; day = addDays(day, 1)) {
+    const count = perDay.get(day) ?? 0;
+    cumulative += count;
+    applicationsPerDay.push({ date: day, count, cumulative });
+  }
+
+  // Only markers that land inside the plotted range, and one per day (the
+  // extended deadline is often the same as the original).
+  const markers: { label: string; date: string }[] = [];
+  for (const d of deadlineDays) {
+    if (d.date < start || d.date > end) continue;
+    if (markers.some((m) => m.date === d.date)) continue;
+    markers.push({ label: d.label, date: d.date });
+  }
+
+  return { applicationsPerDay, deadlines: markers };
+}
+
 const EventNameInput = z.object({ eventName: z.string().min(1) });
 
 export const analyticsRouter = {
   getDashboard: organizerProcedure
-    .input(EventNameInput)
+    .input(EventNameInput.extend({ cohort: CohortSchema.default("accepted") }))
     .query(async ({ ctx, input }) => {
       const eventId = await getEventId(ctx, input.eventName);
 
@@ -319,6 +466,8 @@ export const analyticsRouter = {
         columns: {
           id: true,
           status: true,
+          invitationStatus: true,
+          createdAt: true,
           school: true,
           major: true,
           classification: true,
@@ -328,6 +477,12 @@ export const analyticsRouter = {
           dietaryRestriction: true,
           checkedIn: true,
         },
+      });
+
+      // Same column-limited lookup as getEventId: only the two deadline columns.
+      const eventDates = await ctx.db.query.Event.findFirst({
+        where: eq(Event.id, eventId),
+        columns: { appDeadline: true, extendedDeadline: true },
       });
 
       const phases = await ctx.db.query.EventPhase.findMany({
@@ -348,22 +503,29 @@ export const analyticsRouter = {
         },
       });
 
-      const { ids: checkedInAppIds, source: checkInSource } =
-        pickCheckedInAppIds(applications, phases, attendanceRows);
+      const {
+        ids: checkedInAppIds,
+        source: checkInSource,
+        checkInPhaseMissing,
+      } = pickCheckedInAppIds(applications, phases, attendanceRows);
 
-      const statusCounts = {
-        pending: 0,
-        accepted: 0,
-        waitlisted: 0,
-        rejected: 0,
-        checkedin: 0,
-      };
+      const statusCounts = { pending: 0, waitlisted: 0, rejected: 0 };
+      let acceptedCount = 0;
+      let confirmedCount = 0;
 
       for (const app of applications) {
-        if (app.status in statusCounts) {
+        if (isAcceptedStatus(app.status)) {
+          acceptedCount += 1;
+          if (app.invitationStatus) confirmedCount += 1;
+        } else if (app.status in statusCounts) {
           statusCounts[app.status as keyof typeof statusCounts] += 1;
         }
       }
+
+      // Everything below the KPI row describes this slice of applicants.
+      const cohortApps = applications.filter((a) =>
+        inCohort(a, input.cohort, checkedInAppIds),
+      );
 
       let phaseAttendance = phases.map((phase) => ({
         name: phase.name,
@@ -381,88 +543,80 @@ export const analyticsRouter = {
         ];
       }
 
-      const acceptedApps = applications.filter((a) => a.status === "accepted");
       type DietaryEntry = {
         tag: string;
-        acceptedCount: number;
-        checkedInCount: number;
-        rawAnswers: Map<
-          string,
-          { text: string; acceptedCount: number; checkedInCount: number }
-        >;
+        count: number;
+        rawAnswers: Map<string, { text: string; count: number }>;
       };
       const dietaryMap = new Map<string, DietaryEntry>();
 
-      for (const app of applications) {
+      for (const app of cohortApps) {
         const raw = app.dietaryRestriction?.trim() || "";
         if (!raw) continue;
         const tags = classifyDietaryRestriction(raw);
-        const isAccepted = app.status === "accepted";
-        const isCheckedIn = checkedInAppIds.has(app.id);
         for (const tag of tags) {
           let entry = dietaryMap.get(tag);
           if (!entry) {
-            entry = {
-              tag,
-              acceptedCount: 0,
-              checkedInCount: 0,
-              rawAnswers: new Map(),
-            };
+            entry = { tag, count: 0, rawAnswers: new Map() };
             dietaryMap.set(tag, entry);
           }
-          if (isAccepted) entry.acceptedCount += 1;
-          if (isCheckedIn) entry.checkedInCount += 1;
+          entry.count += 1;
 
-          const rawKey = raw;
-          const rawEntry = entry.rawAnswers.get(rawKey) ?? {
-            text: rawKey,
-            acceptedCount: 0,
-            checkedInCount: 0,
-          };
-          if (isAccepted) rawEntry.acceptedCount += 1;
-          if (isCheckedIn) rawEntry.checkedInCount += 1;
-          entry.rawAnswers.set(rawKey, rawEntry);
+          const rawEntry = entry.rawAnswers.get(raw) ?? { text: raw, count: 0 };
+          rawEntry.count += 1;
+          entry.rawAnswers.set(raw, rawEntry);
         }
       }
 
       const dietary = DIETARY_CATEGORY_ORDER.map((tag) => {
         const entry = dietaryMap.get(tag);
         if (!entry) return null;
-        if (entry.acceptedCount === 0 && entry.checkedInCount === 0) {
-          return null;
-        }
         return {
           tag,
-          acceptedCount: entry.acceptedCount,
-          checkedInCount: entry.checkedInCount,
+          count: entry.count,
           rawAnswers: [...entry.rawAnswers.values()].sort(
-            (a, b) =>
-              b.acceptedCount - a.acceptedCount ||
-              b.checkedInCount - a.checkedInCount ||
-              a.text.localeCompare(b.text),
+            (a, b) => b.count - a.count || a.text.localeCompare(b.text),
           ),
         };
       }).filter((row): row is NonNullable<typeof row> => row != null);
 
+      const { applicationsPerDay, deadlines } = buildApplicationsPerDay(
+        applications.map((a) => a.createdAt),
+        cohortApps.map((a) => a.createdAt),
+        eventDates
+          ? [
+              { label: "Deadline", at: eventDates.appDeadline },
+              { label: "Extended deadline", at: eventDates.extendedDeadline },
+            ]
+          : [],
+        new Date(),
+      );
+
       return {
         eventName: input.eventName,
+        cohort: input.cohort,
+        cohortSize: cohortApps.length,
         checkInSource,
+        checkInPhaseMissing,
         kpis: {
           applied: applications.length,
-          accepted: statusCounts.accepted,
+          accepted: acceptedCount,
+          confirmed: confirmedCount,
           waitlisted: statusCounts.waitlisted,
           rejected: statusCounts.rejected,
           pending: statusCounts.pending,
           checkedIn: checkedInAppIds.size,
         },
+        applicationsPerDay,
+        deadlines,
         phaseAttendance,
         distributions: {
-          school: countBy(acceptedApps, (a) => a.school),
-          classification: countBy(acceptedApps, (a) => a.classification),
-          gradYear: countBy(acceptedApps, (a) => a.gradYear),
-          major: countBy(acceptedApps, (a) => a.major),
-          gender: countBy(acceptedApps, (a) => a.gender),
-          eventSource: countBy(acceptedApps, (a) => a.eventSource),
+          school: countBy(cohortApps, (a) => a.school),
+          classification: countBy(cohortApps, (a) => a.classification),
+          gradYear: countBy(cohortApps, (a) => a.gradYear),
+          major: countBy(cohortApps, (a) => a.major),
+          gender: countBy(cohortApps, (a) => a.gender),
+          eventSource: countBy(cohortApps, (a) => a.eventSource),
         },
         dietary,
       };
@@ -473,25 +627,26 @@ export const analyticsRouter = {
       EventNameInput.extend({
         limit: z.number().int().min(1).max(50).default(10),
         // Which applications a referral point is worth: every one of them, only
-        // the ones that got in, or only the ones that actually turned up.
-        filter: z.enum(["all", "accepted", "checkedIn"]).default("all"),
+        // the ones that got in, the ones that also confirmed, or only the ones
+        // that actually turned up. Same cohorts as the dashboard.
+        cohort: CohortSchema.default("all"),
       }),
     )
     .query(async ({ ctx, input }) => {
       const eventId = await getEventId(ctx, input.eventName);
 
       let filterCondition: SQL | undefined;
-      if (input.filter === "accepted") {
-        // "checkedin" is a leftover status the current flow never writes, but
-        // the status dropdown still offers it and it plainly means accepted.
-        filterCondition = inArray(Application.status, [
-          "accepted",
-          "checkedin",
-        ]);
-      } else if (input.filter === "checkedIn") {
-        // Same resolution the KPI tile uses, so the two can't disagree — on an
-        // event that never got Passport attendance rows this falls back to
-        // legacy application.checked_in instead of erroring out.
+      if (input.cohort === "accepted") {
+        filterCondition = inArray(Application.status, [...ACCEPTED_STATUSES]);
+      } else if (input.cohort === "confirmed") {
+        filterCondition = and(
+          inArray(Application.status, [...ACCEPTED_STATUSES]),
+          eq(Application.invitationStatus, true),
+        );
+      } else if (input.cohort === "checkedIn") {
+        // Same resolution the KPI tile uses, so the two can't disagree. Only an
+        // old event with no phases at all falls back to the legacy
+        // application.checked_in flag.
         const { ids, source } = await resolveCheckedInAppIds(ctx, eventId);
         if (source === "application") {
           // Equivalent to the resolved id set, but as a plain column predicate

@@ -1,3 +1,4 @@
+import { HouseRules } from "./HouseRules";
 import { PoolStory } from "./PoolStory";
 
 export default function EventInformation() {
@@ -23,6 +24,7 @@ export default function EventInformation() {
         INFORMATION
       </h2>
 
+      <HouseRules />
       <PoolStory />
     </section>
   );

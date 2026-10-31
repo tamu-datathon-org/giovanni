@@ -22,6 +22,15 @@ const AboutUs = dynamic(() => import("~/components/AboutUs"), {
   ),
 });
 
+const Challenges = dynamic(() => import("~/components/Challenges"), {
+  ssr: true,
+  loading: () => (
+    <section className="bg-[#377BB0] px-4 py-16">
+      <div className="mx-auto max-w-4xl animate-pulse rounded-2xl bg-white/10 py-24" />
+    </section>
+  ),
+});
+
 const AboutTeam = dynamic(() => import("~/components/AboutTeam"), {
   ssr: true,
   loading: () => (
@@ -48,6 +57,7 @@ export default function HomePage() {
         <Hero />
       </div>
       <AboutUs />
+      <Challenges />
       <div id="past-events" className="scroll-mt-20 lg:scroll-mt-0">
         <PastEventsSection />
       </div>

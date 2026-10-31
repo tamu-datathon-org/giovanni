@@ -11,12 +11,14 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "pnpm emails && tsc",
     "clean": "rm -rf .turbo node_modules",
     "dev": "tsc --watch",
+    "emails": "node scripts/build-email-templates.mjs",
+    "emails:watch": "node scripts/build-email-templates.mjs --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "typecheck": "pnpm emails && tsc --noEmit --emitDeclarationOnly false"
   },
   "prettier": "@vanni/prettier-config",
   "dependencies": {
