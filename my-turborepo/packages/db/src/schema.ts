@@ -345,12 +345,7 @@ export const CreateApplicationSchema = createInsertSchema(Application, {
     .string()
     .min(1, "Address is missing")
     .max(500, "Address is too long"),
-  references: z
-    .string()
-    .min(1, "References is missing")
-    .max(150)
-    .optional()
-    .default(""),
+  references: z.string().max(150).optional().default(""),
   linkedinUrl: z
     .string()
     .max(255, "Linkedin URL is too long")
