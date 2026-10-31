@@ -94,7 +94,7 @@ export function PrizeModal({
     >
       {prize && (
         // Dressed like the slot machine: gold body, dark red bezel, cream screen.
-        <div className="prize-modal-panel rounded-[26px] bg-gradient-to-b from-[#FFC46B] to-[#F29B2E] p-2.5 shadow-[0_24px_60px_rgb(0_0_0/0.55)] sm:p-3.5">
+        <div className="prize-modal-panel rounded-[26px] bg-[#FFC46B] bg-[image:linear-gradient(to_bottom,#FFC46B,#F29B2E)] p-2.5 shadow-[0_24px_60px_rgb(0_0_0/0.55)] sm:p-3.5">
           <div className="rounded-[18px] bg-[#750204] p-2 sm:p-3">
             <div className="flex items-center justify-between gap-3 rounded-[12px] bg-[#FDFBED] py-2 pl-4 pr-2 sm:py-2.5 sm:pl-6 sm:pr-3">
               <div className="min-w-0">

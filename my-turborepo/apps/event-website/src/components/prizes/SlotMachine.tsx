@@ -124,7 +124,7 @@ export function SlotMachine() {
                   <ExpandIcon className="h-[55%] w-[55%]" />
                 </span>
                 {/* The prize's name, shown when you point at or tab to it. */}
-                <span className="font-righteous pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgb(117_2_4/0.85)] to-transparent px-[6%] pb-[4%] pt-[10%] text-center text-[length:max(10px,2.2cqw)] leading-tight text-[#FDFBED] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
+                <span className="font-righteous pointer-events-none absolute inset-x-0 bottom-0 bg-[rgb(117_2_4/0.6)] bg-[image:linear-gradient(to_top,rgb(117_2_4/0.85),transparent)] px-[6%] pb-[4%] pt-[10%] text-center text-[length:max(10px,2.2cqw)] leading-tight text-[#FDFBED] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
                   {prize.name}
                 </span>
               </button>

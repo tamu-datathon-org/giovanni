@@ -59,7 +59,7 @@ interface Table {
 
 /** The orange-framed card both sides of every spot share. */
 const CARD_FRAME =
-  "absolute inset-0 block rounded-[3.2cqw] bg-gradient-to-b from-[#FFB24C] to-[#D9822B] p-[1.3cqw] shadow-[0_0.8cqw_1.6cqw_rgb(0_0_0/0.45)] [backface-visibility:hidden]";
+  "absolute inset-0 block rounded-[3.2cqw] bg-[#FFB24C] bg-[image:linear-gradient(to_bottom,#FFB24C,#D9822B)] p-[1.3cqw] shadow-[0_0.8cqw_1.6cqw_rgb(0_0_0/0.45)] [backface-visibility:hidden]";
 
 /** Fills a spot the prize list doesn't reach, on the last roll. */
 function MorePrizesCard({ up, back }: { up: boolean; back: boolean }) {
