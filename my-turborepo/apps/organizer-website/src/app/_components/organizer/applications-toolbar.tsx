@@ -215,7 +215,7 @@ export function ApplicationsToolbar({
             aria-label={`Sorted by application date, ${
               newestFirst ? "newest" : "oldest"
             } first. Click to reverse.`}
-            className="bg-white"
+            className="border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-100 hover:text-neutral-900"
           >
             {newestFirst ? (
               <ArrowDownWideNarrow className="mr-2 h-4 w-4" />

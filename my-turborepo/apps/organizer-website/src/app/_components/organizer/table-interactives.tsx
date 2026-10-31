@@ -240,7 +240,7 @@ export const BatchStatusActions: React.FC<{
           type="button"
           variant="outline"
           size="sm"
-          className="bg-white"
+          className="border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-100 hover:text-neutral-900"
           onClick={() => table.resetRowSelection()}
         >
           Clear selection

@@ -348,7 +348,11 @@ export function VettingTable() {
       >
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="bg-white">
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-100 hover:text-neutral-900"
+            >
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
