@@ -1,0 +1,3 @@
+{
+  "subject": "{{#invitationRequired}}[ACTION NEEDED] {{/invitationRequired}}Congratulations on being accepted to TAMU Datathon {{eventSeason}} {{eventYear}}!"
+}

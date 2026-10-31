@@ -6,8 +6,10 @@ const config = {
   transpilePackages: [
     "@monaco-editor/react",
     "@vanni/api",
+    "@vanni/apple-wallet",
     "@vanni/auth",
     "@vanni/db",
+    "@vanni/google-wallet",
     "@vanni/ui",
     "@vanni/validators",
   ],

@@ -14,3 +14,13 @@ export function isAllowedApplicantEmail(email: unknown): boolean {
   }
   return TAMU_EMAIL_REGEX.test(email);
 }
+
+/**
+ * Whether accepted applicants must confirm their spot (accept/decline on
+ * /apply) before they count as attending. Off by default: an organizer's
+ * acceptance is final. Set NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE=true on
+ * both the team and organizer sites to bring the confirm step back.
+ */
+export function isInvitationAcceptanceRequired(): boolean {
+  return process.env.NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE === "true";
+}

@@ -34,6 +34,8 @@ build
 # misc
 .DS_Store
 *.pem
+# Google Wallet service account key (see packages/google-wallet/README.txt)
+packages/google-wallet/credentials/
 
 # debug
 npm-debug.log*

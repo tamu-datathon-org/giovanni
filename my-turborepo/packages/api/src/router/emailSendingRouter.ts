@@ -8,11 +8,18 @@ import type { VerifiedContext } from "../trpc";
 import { adminProcedure, protectedProcedure } from "../trpc";
 import { getBatchStatus, updateBatchStatus } from "./application";
 import { getEmailsByLabelList } from "./email";
+import {
+  isEmailTemplateId,
+  listEmailTemplates,
+  renderEmailTemplate,
+} from "../emails";
 import sendConfirmationEmails, {
   accepted_content,
   accepted_title,
   rejected_content,
   rejected_title,
+  waitlisted_content,
+  waitlisted_title,
 } from "./emailHelpers/confirmation_emails";
 import { queueBulkEmail } from "./emailHelpers/queue_bulk";
 
@@ -56,6 +63,22 @@ export const emailSendingRouter = {
     .input(z.object({ emails: z.array(z.string()) }))
     .mutation(({ input }) => {
       sendConfirmationEmails(input.emails);
+    }),
+
+  // Template browser on /admin/jankury: every src/emails/templates file, and
+  // one at a time rendered exactly as it would be sent.
+  listEmailTemplates: adminProcedure.query(() => listEmailTemplates()),
+
+  getEmailTemplate: adminProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ input }) => {
+      if (!isEmailTemplateId(input.id)) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `No email template "${input.id}"`,
+        });
+      }
+      return { id: input.id, ...renderEmailTemplate(input.id) };
     }),
 
   sendBulkEmails: adminProcedure
@@ -203,8 +226,8 @@ export const emailSendingRouter = {
         if (sendWaitlisted && waitlistEmails.length > 0) {
           const failedWaitlist = await queueBulkEmail(
             waitlistEmails,
-            "TODO REPLACE WAITLIST HERE",
-            "TODO REPLACE CONTENTS HERE",
+            waitlisted_title,
+            waitlisted_content,
             emailBatchSize,
           );
 
