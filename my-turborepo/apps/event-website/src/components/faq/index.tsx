@@ -127,7 +127,7 @@ const ITEMS: FaqItem[] = [
   {
     question: "What should I bring?",
     answer:
-      "Since the event will last overnight, it is a good idea to bring a pillow and a sleeping bag if you are planning on staying at the venue. Please remember to bring your laptop and charger.",
+      "Since the event will last overnight, it is a good idea to bring a pillow and a sleeping bag if you are planning on staying at the venue (air mattresses are not allowed). Doors lock at midnight and reopen at 7 AM on Sunday, so you can't leave and come back in between, and food delivery (UberEats, DoorDash) isn't allowed after that time. Please remember to bring your laptop and charger.",
   },
   {
     question: "How do teams work?",
