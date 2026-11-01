@@ -7,7 +7,7 @@ import type { CSSProperties, FocusEvent } from "react";
 import { DieFace } from "./DieFace";
 import { useInView, usePrefersReducedMotion } from "./hooks";
 import { MarqueeTitle } from "./MarqueeTitle";
-import { PRIZE_DIR, prizeLinkProps, prizes } from "./prizedata";
+import { PRIZE_DIR, prizes } from "./prizedata";
 import type { Prize } from "./prizedata";
 
 /** The board art split in two so the dice can move: the board without its dice, and the dice on their own. */
@@ -86,11 +86,9 @@ function MorePrizesCard({ up, back }: { up: boolean; back: boolean }) {
 
 function PrizeCard({ prize, up, back }: { prize: Prize; up: boolean; back: boolean }) {
   return (
-    <a
-      {...prizeLinkProps(prize.href)}
+    <div
       aria-hidden={up ? undefined : true}
-      tabIndex={up ? undefined : -1}
-      className={`group outline-none focus-visible:ring-[0.6cqw] focus-visible:ring-[#3edbd3] ${CARD_FRAME}`}
+      className={`group ${CARD_FRAME}`}
       style={back ? { transform: "rotateY(180deg)" } : undefined}
     >
       <span className="relative flex h-full w-full flex-col items-center overflow-hidden rounded-[2.2cqw] bg-[#1B3E1B] shadow-[inset_0_0.4cqw_1.2cqw_rgb(0_0_0/0.5)]">
@@ -107,7 +105,7 @@ function PrizeCard({ prize, up, back }: { prize: Prize; up: boolean; back: boole
           {prize.name}
         </span>
       </span>
-    </a>
+    </div>
   );
 }
 
