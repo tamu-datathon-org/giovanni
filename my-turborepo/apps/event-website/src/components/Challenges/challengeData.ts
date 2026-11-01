@@ -6,18 +6,18 @@ export interface Challenge {
 
 export const challenges: Challenge[] = [
   {
-    name: "Challenge 1",
+    name: "C1",
     description:
       "When you miss the train I'm on, and you hear the whistle blow",
     prize: "First: ABC · Second: XYZ · Third: 123",
   },
   {
-    name: "Challenge 2",
+    name: "C2",
     description: "Tell me why ain't nothing but a heartache",
     prize: "First: Scooter · Second: Monitor · Third: Echo Dot",
   },
   {
-    name: "Yo",
+    name: "3",
     description:
       "Laughing while she hit her pen and coughed, and coughed. Then she came up to my knees, begging baby would you please",
     prize:

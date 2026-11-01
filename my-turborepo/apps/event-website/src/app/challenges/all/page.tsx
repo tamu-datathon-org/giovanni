@@ -1,11 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
+import { cardBulbs } from "@/components/Challenges/ChallengeLights";
 import ChallengePanel from "@/components/Challenges/ChallengePanel";
+import ChallengesHeading, {
+  challengesPageTop,
+} from "@/components/Challenges/ChallengesHeading";
 import { challenges } from "@/components/Challenges/challengeData";
 
 export default function AllChallengesPage() {
   return (
-    <main className="relative min-h-svh bg-[#420807] px-5 py-20 text-white sm:px-8">
+    <main className={`relative min-h-svh bg-[#420807] px-5 pb-20 text-white sm:px-8 ${challengesPageTop}`}>
       <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0">
         <Image
           src="/event_assets/background-challenges.png"
@@ -17,7 +21,7 @@ export default function AllChallengesPage() {
         />
       </div>
       <div className="relative z-10 mx-auto w-full max-w-7xl">
-        <div className="relative mb-8 flex items-center justify-center sm:mb-12">
+        <ChallengesHeading>
           <Link
             href="/challenges"
             aria-label="Back to the challenge wheel"
@@ -31,26 +35,10 @@ export default function AllChallengesPage() {
               className="h-auto w-10"
             />
           </Link>
-          <div className="flex items-center justify-center gap-3 sm:gap-5">
-            <Image
-              src="/event_assets/Star%203.png"
-              alt=""
-              width={72}
-              height={72}
-              className="h-8 w-8 object-contain sm:h-10 sm:w-10"
-            />
-            <h1 className="text-center font-righteous text-4xl text-[#fff8e8] sm:text-5xl">
-              CHALLENGES
-            </h1>
-            <Image
-              src="/event_assets/Star%203.png"
-              alt=""
-              width={72}
-              height={72}
-              className="h-8 w-8 object-contain sm:h-10 sm:w-10"
-            />
-          </div>
-        </div>
+        </ChallengesHeading>
+        <p className="mb-8 mt-3 text-center font-righteous text-sm text-[#fff2d6]/80 sm:mb-12 sm:text-base">
+          Click on each description to see more information
+        </p>
         <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {challenges.map((challenge, index) => (
             <Link
@@ -59,7 +47,7 @@ export default function AllChallengesPage() {
               className="block rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
               aria-label={`View ${challenge.name}`}
             >
-              <ChallengePanel challenge={challenge} />
+              <ChallengePanel challenge={challenge} lights={cardBulbs} />
             </Link>
           ))}
         </div>

@@ -59,6 +59,11 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Keeps the scrollbar space constant so the heading can't shift between challenge pages. */
+html:has(.challenges-heading) {
+  overflow-y: scroll;
+}
 /*
 @layer base {
   body {
@@ -169,6 +174,7 @@ html {
   transform-origin: 50% 50%;
   will-change: transform;
 }
+
 
 @keyframes prize-reel-spin {
   0% {

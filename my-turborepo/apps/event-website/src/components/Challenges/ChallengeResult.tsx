@@ -1,8 +1,9 @@
+import { signBulbs } from "./ChallengeLights";
 import ChallengePanel from "./ChallengePanel";
 import type { Challenge } from "./challengeData";
 
 interface ChallengeResultProps {
-  challenge: Challenge;
+  challenge: Challenge | null;
 }
 
 export default function ChallengeResult({ challenge }: ChallengeResultProps) {
@@ -12,6 +13,7 @@ export default function ChallengeResult({ challenge }: ChallengeResultProps) {
         challenge={challenge}
         panelImage="/event_assets/bear_challenge_sign.png"
         showMoreLink
+        lights={signBulbs}
       />
     </div>
   );
