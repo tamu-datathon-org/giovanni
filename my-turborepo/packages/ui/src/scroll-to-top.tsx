@@ -1,7 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export default function ScrollToTop() {
+interface ScrollToTopProps {
+  /** Where the button sits; override to dodge another fixed element in the corner. */
+  className?: string;
+}
+
+export default function ScrollToTop({
+  className = "bottom-8 right-8",
+}: ScrollToTopProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   // Top: 0 takes us all the way back to the top of the page
@@ -38,7 +45,7 @@ export default function ScrollToTop() {
   }, []);
 
   return (
-    <div className="fixed bottom-8 right-8 z-[99]">
+    <div className={`fixed z-[99] ${className}`}>
       {isVisible && (
         <div
           onClick={scrollToTop}

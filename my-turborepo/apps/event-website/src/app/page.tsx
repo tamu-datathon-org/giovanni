@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import EventInformation from "@/components/EventInformation";
 import Hero from "@/components/Hero";
+import { Rail } from "@/components/Rail";
 import Location from "@/components/location";
 import Schedule from "@/components/Schedule";
+import { CasinoTransition } from "@/components/CasinoTransition";
 import Workshops from "@/components/workshops";
 import { ScrollUp } from "@vanni/ui/scroll-up";
 import { Footer } from "@/components/Hero/Footer";
+import { Menu } from "@/components/menu/Menu"
+import { SectionGround } from "@/components/SectionGround";
 
+// Transparent: it sits on the background shared with Schedule below.
 const Prizes = dynamic(() => import("@/components/prizes"), {
-  loading: () => <div className="min-h-[400px] py-20" />,
+  loading: () => <div className="min-h-[1400px]" />,
 });
 
 const Sponsors = dynamic(() => import("@/components/sponsor"), {
@@ -28,11 +34,21 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
+      <Menu />
       <Hero />
-      {/* Ready Just need  */}
-      <Schedule />
+      <EventInformation />
+      <Rail shine="ball" />
+      <CasinoTransition variant="coins" />
+      {/* One background behind both, so the pattern runs on unbroken from Prizes into Schedule. */}
+      <div className="relative bg-[#6C0204]">
+        <SectionGround align="bottom">
+          <Prizes ground={false} />
+          <Schedule ground={false} />
+        </SectionGround>
+      </div>
       <Sponsors />
-      <FAQ /> 
+      <Rail shine="view" overlay />
+      <FAQ />
       <Footer/>
     </>
   );

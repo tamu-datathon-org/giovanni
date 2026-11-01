@@ -424,9 +424,16 @@ export default function Page() {
   });
 
   useEffect(() => {
+    // Only accepted/waitlisted (or already checked-in) applicants get a QR.
     const fetchQRCode = async () => {
-      if (data?.status && data.status !== "rejected") {
+      if (
+        data?.status === "accepted" ||
+        data?.status === "waitlisted" ||
+        data?.status === "checkedin"
+      ) {
         setQrCode(await generateQR(data.email ?? ""));
+      } else {
+        setQrCode("");
       }
     };
     void fetchQRCode();

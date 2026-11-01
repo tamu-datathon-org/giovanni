@@ -10,8 +10,6 @@ import { EventDate } from "./EventDate";
 import { MarqueeSign, SignGlow } from "./MarqueeSign";
 import { Room } from "./Room";
 import { CURTAIN_SPAN, cssVars, POWER_AT, STAGE_BOX, TIMING } from "./scene";
-import { SiteNotice } from "./SiteNotice";
-import { Footer } from "./Footer"
 // import { SkyLayer } from "./SkyLayer";
 // import { Street } from "./Street";
 
@@ -208,10 +206,8 @@ export default function Hero() {
         ref={stageRef}
         // Idle loops pause while off-screen.
         className="sticky top-0 isolate h-svh min-h-[320px] overflow-hidden [container-type:size] [&[data-offscreen]_*]:![animation-play-state:paused]"
-        // Tabbing to anything behind the curtains (not in [data-front]) opens them.
-        onFocus={(event) => {
-          if (!event.target.closest("[data-front]")) openCurtains();
-        }}
+        // Tabbing to anything behind the curtains opens them.
+        onFocus={openCurtains}
         style={cssVars({
           "--gutter": "clamp(12px, 3cqw, 24px)",
           // px per unit of background.png: the room always covers the screen, from the ceiling down.
@@ -220,7 +216,10 @@ export default function Hero() {
           "--g":
             "min(1.25px, 100cqh / 1086, (100cqw - 2 * var(--gutter)) / 934)",
           "--stage-y": "max(0px, (100cqh - 1086 * var(--g)) / 2)",
-          "--table-y": "calc(var(--stage-y) + 566 * var(--g))",
+          // The table's lowest cards and shadow end ~455 units into poker_table.png,
+          // so on short screens the table rides up to keep them above the stage's bottom edge.
+          "--table-y":
+            "min(calc(var(--stage-y) + 566 * var(--g)), calc(100cqh - 462 * var(--t)))",
           // px per unit of poker_table.png: the stage's scale, but always the screen's full width.
           "--t": "max(100cqw / 1440, var(--g))",
         })}
@@ -241,18 +240,6 @@ export default function Hero() {
         </div>
         {/* Clicking the curtains scrolls them open too. */}
         <Curtains onOpen={openCurtains} />
-        <div data-front className="contents">
-          <SiteNotice />
-          {/* MLH member events must link the Code of Conduct. */}
-          <a
-            href="https://mlh.io/code-of-conduct"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute bottom-[max(10px,1.5cqh)] right-[max(12px,1.5cqw)] z-[10] text-[length:clamp(11px,0.9cqw,14px)] tracking-[0.02em] text-[rgb(255_244_220/0.75)] underline underline-offset-[3px] hover:text-[#fff4dc] focus-visible:rounded focus-visible:text-[#fff4dc] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#3edbd3]"
-          >
-            MLH Code of Conduct
-          </a>
-        </div>
       </div>
     </section>
   );

@@ -69,7 +69,7 @@ export function Countdown() {
           <span
             key={unit}
             aria-hidden="true"
-            className={`row-start-2 grid place-items-center rounded-[calc(12*var(--g))] bg-gradient-to-b from-[#fffdf5] to-[#fbecd0] text-[#1b1414] ${text.length > 2 ? "text-[length:calc(46*var(--g))]" : "text-[length:calc(64*var(--g))]"}`}
+            className={`row-start-2 grid place-items-center rounded-[calc(12*var(--g))] bg-[#fffdf5] bg-[image:linear-gradient(to_bottom,#fffdf5,#fbecd0)] text-[#1b1414] ${text.length > 2 ? "text-[length:calc(46*var(--g))]" : "text-[length:calc(64*var(--g))]"}`}
             style={TILE_STYLE}
           >
             {text}

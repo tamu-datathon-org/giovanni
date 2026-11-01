@@ -1,12 +1,7 @@
-import {
-  Inter,
-  Darumadrop_One,
-  Chilanka,
-  Righteous,
-  Sekuya,
-} from "next/font/google";
+import { Inter, Darumadrop_One, Chilanka, Righteous, Sekuya } from "next/font/google";
 import Header from "@/components/Header";
 import MlhBadge from "@/components/MlhBadge";
+// import HelpQueueButton from "@/components/HelpQueueButton";
 
 import ScrollToTop from "@vanni/ui/scroll-to-top";
 
@@ -59,11 +54,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className={`m-0 h-full w-full overflow-x-clip ${inter.variable} ${darumadropOne.variable} ${chilanka.variable} ${righteous.variable} ${sekuya.variable}`}>
 
 
-        {/* <Header /> */}
         <MlhBadge />
+        {/* <HelpQueueButton /> */}
         {children}
-        {/* <Footer /> */}
-        <ScrollToTop />
       </body>
     </html>
   );

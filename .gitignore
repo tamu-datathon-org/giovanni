@@ -45,3 +45,5 @@ yarn-error.log*
 # CMake
 cmake-build-*/
 .vscode
+
+my-turborepo/packages/google-wallet/credentials/
