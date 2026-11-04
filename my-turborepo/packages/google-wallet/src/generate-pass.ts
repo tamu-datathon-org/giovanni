@@ -32,28 +32,30 @@ const EventInfo = {
     name: "TAMU Datathon",
     venueName: "Memorial Student Center (MSC)",
     placeId: "ChIJSYHRVJiDRoYRHSLC-CcTMZA",
+    // Schedule lives on the event site (.com)
     scheduleUrl: "https://tamudatathon.com/#schedule",
-    siteUrl: "https://tamudatathon.com",
+    // Pass images are in team-website/public, which is served from .org (they 404 on .com)
+    assetsUrl: "https://tamudatathon.org",
 };
 
-// Slot machine icons in team-website/public/slot-machine-icons, served from the site root.
+// Slot machine icons in team-website/public/slot-machine-icons.
 const FOOD_GROUP_ICONS = ["cherry", "bell", "horseshoe", "lemon", "diamond", "seven"];
 
 // Food groups are free-form strings set per event, so a name without an icon just gets no image
 const foodGroupIconUrl = (group: string) => {
   const key = group.trim().toLowerCase();
-  return FOOD_GROUP_ICONS.includes(key) ? `${EventInfo.siteUrl}/slot-machine-icons/${key}_icon.png` : "";
+  return FOOD_GROUP_ICONS.includes(key) ? `${EventInfo.assetsUrl}/slot-machine-icons/${key}_icon.png` : "";
 };
 
 // Same colors as the Apple pass (rgb(36,80,66))
 const BACKGROUND_COLOR = "#245042";
 
 // Google downloads these itself, so they must be public https URLs.
-// Files in team-website/public/google-wallet, served from the site root like the slot machine icons.
+// Files in team-website/public/google-wallet, served from .org like the slot machine icons.
 // Logo: square, 660x660 px or larger; Google crops it to a circle, so the poker chip fits well.
-const LOGO_URL = process.env.GOOGLE_WALLET_LOGO_URL ?? `${EventInfo.siteUrl}/google-wallet/logo.png`;
+const LOGO_URL = process.env.GOOGLE_WALLET_LOGO_URL ?? `${EventInfo.assetsUrl}/google-wallet/logo.png`;
 // Hero: wide banner under the fields, about 1032x336 px (3:1).
-const HERO_URL = process.env.GOOGLE_WALLET_HERO_URL ?? `${EventInfo.siteUrl}/google-wallet/hero.png`;
+const HERO_URL = process.env.GOOGLE_WALLET_HERO_URL ?? `${EventInfo.assetsUrl}/google-wallet/hero.png`;
 
 // Google only allows [a-zA-Z0-9_.-] in the suffix of class/object ids
 const toIdSuffix = (value: string) => value.replace(/[^\w.-]/g, "_");
