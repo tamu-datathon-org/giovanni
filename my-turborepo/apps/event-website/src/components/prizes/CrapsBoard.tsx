@@ -7,7 +7,7 @@ import type { CSSProperties, FocusEvent } from "react";
 import { DieFace } from "./DieFace";
 import { useInView, usePrefersReducedMotion } from "./hooks";
 import { MarqueeTitle } from "./MarqueeTitle";
-import { PRIZE_DIR, prizeLinkProps, prizes } from "./prizedata";
+import { PRIZE_DIR, prizes } from "./prizedata";
 import type { Prize } from "./prizedata";
 
 /** The board art split in two so the dice can move: the board without its dice, and the dice on their own. */
@@ -59,7 +59,7 @@ interface Table {
 
 /** The orange-framed card both sides of every spot share. */
 const CARD_FRAME =
-  "absolute inset-0 block rounded-[3.2cqw] bg-gradient-to-b from-[#FFB24C] to-[#D9822B] p-[1.3cqw] shadow-[0_0.8cqw_1.6cqw_rgb(0_0_0/0.45)] [backface-visibility:hidden]";
+  "absolute inset-0 block rounded-[3.2cqw] bg-[#FFB24C] bg-[image:linear-gradient(to_bottom,#FFB24C,#D9822B)] p-[1.3cqw] shadow-[0_0.8cqw_1.6cqw_rgb(0_0_0/0.45)] [backface-visibility:hidden]";
 
 /** Fills a spot the prize list doesn't reach, on the last roll. */
 function MorePrizesCard({ up, back }: { up: boolean; back: boolean }) {
@@ -86,11 +86,9 @@ function MorePrizesCard({ up, back }: { up: boolean; back: boolean }) {
 
 function PrizeCard({ prize, up, back }: { prize: Prize; up: boolean; back: boolean }) {
   return (
-    <a
-      {...prizeLinkProps(prize.href)}
+    <div
       aria-hidden={up ? undefined : true}
-      tabIndex={up ? undefined : -1}
-      className={`group outline-none focus-visible:ring-[0.6cqw] focus-visible:ring-[#3edbd3] ${CARD_FRAME}`}
+      className={`group ${CARD_FRAME}`}
       style={back ? { transform: "rotateY(180deg)" } : undefined}
     >
       <span className="relative flex h-full w-full flex-col items-center overflow-hidden rounded-[2.2cqw] bg-[#1B3E1B] shadow-[inset_0_0.4cqw_1.2cqw_rgb(0_0_0/0.5)]">
@@ -107,7 +105,7 @@ function PrizeCard({ prize, up, back }: { prize: Prize; up: boolean; back: boole
           {prize.name}
         </span>
       </span>
-    </a>
+    </div>
   );
 }
 

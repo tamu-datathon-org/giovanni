@@ -46,8 +46,8 @@ function ChalkLedge() {
     >
       <div className="relative mx-auto h-7 rounded-b-lg bg-[#8d6e5e] shadow-[0_6px_14px_rgba(0,0,0,0.12)] sm:h-8">
         <div className="absolute right-[10%] top-0 z-10 flex -translate-y-2.5 items-end gap-2 sm:right-[12%] md:right-[14%]">
-          <div className="-mb-px h-2 w-[3.25rem] rounded-[2px] bg-gradient-to-b from-[#c4a882] to-[#6b4a32] shadow-[0_2px_4px_rgba(0,0,0,0.25)]" />
-          <div className="mb-px h-2 w-9 rounded-[2px] translate-y-0.5 bg-gradient-to-b from-[#d2ecf7] to-[#6fa8c4] shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />
+          <div className="-mb-px h-2 w-[3.25rem] rounded-[2px] bg-[#c4a882] bg-[image:linear-gradient(to_bottom,#c4a882,#6b4a32)] shadow-[0_2px_4px_rgba(0,0,0,0.25)]" />
+          <div className="mb-px h-2 w-9 rounded-[2px] translate-y-0.5 bg-[#d2ecf7] bg-[image:linear-gradient(to_bottom,#d2ecf7,#6fa8c4)] shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />
         </div>
       </div>
     </div>
@@ -88,7 +88,7 @@ export default function Workshops() {
                     i % 2 === 0 ? "-rotate-1 md:-rotate-1" : "rotate-1 md:rotate-1"
                   }`}
                 >
-                  <div className="overflow-hidden rounded-2xl border-[3px] border-[#4C321B]/20 bg-gradient-to-b from-[#fffefb] to-[#f7efe4] shadow-[0_8px_24px_rgba(76,50,27,0.1)]">
+                  <div className="overflow-hidden rounded-2xl border-[3px] border-[#4C321B]/20 bg-[#fffefb] bg-[image:linear-gradient(to_bottom,#fffefb,#f7efe4)] shadow-[0_8px_24px_rgba(76,50,27,0.1)]">
                     <div className="relative bg-[#966952]/90 px-4 py-3 sm:px-5 sm:py-3.5">
                       <div className="flex items-baseline justify-between gap-3">
                         <span className="font-darumadrop-one text-xl tracking-wide text-[#fae19d] sm:text-2xl">
