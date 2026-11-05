@@ -103,6 +103,7 @@ interface genericAuth0Config {
     userInfoUrl: string;
     scopes: string[];
     prompt: "none" | "login" | "consent" | "select_account" | undefined;
+    mapProfileToUser: typeof fitProfileImage;
 }
 
 function genericAuth0Config(provider: "none" | "google-oauth2" | "windowslive" | "github"): genericAuth0Config {
@@ -114,6 +115,19 @@ function genericAuth0Config(provider: "none" | "google-oauth2" | "windowslive" |
         tokenUrl: `${env.AUTH_AUTH0_DOMAIN}/oauth/token`,
         userInfoUrl: `${env.AUTH_AUTH0_DOMAIN}/userinfo`,
         scopes: ["openid", "profile", "email"],
-        prompt: "login"
+        prompt: "login",
+        mapProfileToUser: fitProfileImage,
+    };
+}
+
+/**
+ * user.image is varchar(255), and some Google Workspace photo URLs run past
+ * 1,000 characters, which made sign-up fail. Drop those (photos aren't shown
+ * anywhere); everything else comes from the profile as usual.
+ */
+function fitProfileImage(profile: Record<string, unknown>) {
+    const image = profile.image ?? profile.picture;
+    return {
+        image: typeof image === "string" && image.length <= 255 ? image : undefined,
     };
 }
