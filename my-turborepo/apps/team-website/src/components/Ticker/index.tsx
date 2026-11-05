@@ -44,6 +44,7 @@ const ROW_2: Logo[] = [
   // logo("sparx", "Sparx"),
   logo("splunk", "Splunk"),
   logo("tableau", "Tableau"),
+  logo("tamids", "Texas A&M Institute of Data Science"),
   logo("sec", "Texas A&M Student Engineers' Council"),
   logo("walmart", "Walmart"),
 ];

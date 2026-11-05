@@ -57,9 +57,10 @@ const INITIAL_CHIPS: Chip[] = [
   { id: "qualcomm", name: "Qualcomm", src: "/event_assets/sponsors/qualcomm.png", colors: { body: "#3253DC", stripe: "#3253DC", ring: "#233CA0" }, h: { x: 0.436, y: 0.245 }, v: { x: 0.316, y: 0.265 }, rotation: -9, z: 3 },
   { id: "hitachi", name: "Hitachi Digital", src: "/event_assets/sponsors/hitachi-digital.png", colors: { body: "#E60012", stripe: "#E60012", ring: "#AE000D" }, h: { x: 0.541, y: 0.465 }, v: { x: 0.528, y: 0.751 }, rotation: -16, z: 4 },
   { id: "sec", name: "SEC", src: "/event_assets/sponsors/sec.png", colors: { body: "#1F1F1F", stripe: "#1F1F1F", ring: "#000000" }, h: { x: 0.812, y: 0.625 }, v: { x: 0.662, y: 0.286 }, rotation: 19, z: 5 },
-  { id: "conocophillips", name: "ConocoPhillips", src: "/event_assets/sponsors/conocophillips.png", colors: { body: "#E4002B", stripe: "#1A1A1A", ring: "#A80020" }, h: { x: 0.379, y: 0.76 }, v: { x: 0.704, y: 0.635 }, rotation: -12, z: 6 },
+  { id: "conocophillips", name: "ConocoPhillips", src: "/event_assets/sponsors/conocophillips.png", colors: { body: "#E4002B", stripe: "#1A1A1A", ring: "#A80020" }, h: { x: 0.379, y: 0.76 }, v: { x: 0.692, y: 0.635 }, rotation: -12, z: 6 },
   { id: "phillips", name: "Phillips 66", src: "/event_assets/sponsors/phillips.png", colors: { body: "#E31937", stripe: "#1A1A1A", ring: "#A8122A" }, h: { x: 0.659, y: 0.765 }, v: { x: 0.841, y: 0.418 }, rotation: 22, z: 7 },
   { id: "serp", name: "SerpApi", src: "/event_assets/sponsors/serp.png", colors: { body: "#3B4BF0", stripe: "#161A3A", ring: "#2A36AF" }, h: { x: 0.215, y: 0.62 }, v: { x: 0.34, y: 0.698 }, rotation: 10, z: 8 },
+  { id: "tamids", name: "Texas A&M Institute of Data Science", src: "/event_assets/sponsors/tamids.png", colors: { body: "#500000", stripe: "#500000", ring: "#330000" }, h: { x: 0.355, y: 0.485 }, v: { x: 0.855, y: 0.73 }, rotation: -6, z: 9 },
 ];
 
 /** Which layout is on screen. The query is Tailwind's `md`, where the classes below switch. */
