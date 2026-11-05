@@ -30,7 +30,6 @@ import schoolsJson from "~/app/apply/application/application-data/schools.json";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
-import { env } from "~/env";
 import { toast } from "~/hooks/use-toast";
 import {
   AGE,
@@ -47,6 +46,7 @@ import {
   SHIRT_SIZES,
   YES_NO,
 } from "~/lib/dropdownOptions";
+import { EVENT_NAME } from "~/lib/event-name";
 import { api } from "~/trpc/react";
 import GenericCombobox from "../../_components/genericCombobox";
 import GenericMultiSelect from "../../_components/genericMultiSelect";
@@ -77,8 +77,6 @@ import { useApplicationEntrance } from "./useApplicationEntrance";
     Extra Information (textarea)
     Liability Waiver (checkbox)
 */
-
-export const EVENT_NAME = env.NEXT_PUBLIC_EVENT_NAME ?? "Datathon";
 
 const ADDRESS_DELIMITER = "|";
 
@@ -135,7 +133,11 @@ function StarRow({
   );
 }
 
-export function ApplicationForm() {
+/**
+ * `readOnly` is set once applications close: the applicant can look at what
+ * they submitted but every field is locked and there is no submit button.
+ */
+export function ApplicationForm({ readOnly = false }: { readOnly?: boolean }) {
   const [disableSubmit, setDisableSubmit] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const { session } = useAuthRedirect();
@@ -254,8 +256,10 @@ export function ApplicationForm() {
             : importedValues.app.travelReimbursement
               ? "Yes"
               : "No",
-        liabilityWaiver: false,
-        mlhPrivacyPolicy: false,
+        // Unticked so people re-agree when they edit. In the read-only view
+        // they show ticked, since agreeing was required to submit.
+        liabilityWaiver: readOnly,
+        mlhPrivacyPolicy: readOnly,
         mlhEmailConsent: importedValues.app.mlhEmailConsent ?? false,
       });
 
@@ -277,7 +281,7 @@ export function ApplicationForm() {
       }
       form.setValue("email", session.user.email);
     }
-  }, [importedValues, session, isLoading, form]);
+  }, [importedValues, session, isLoading, form, readOnly]);
 
   // Scroll to first error on validation failure
   useEffect(() => {
@@ -321,12 +325,14 @@ export function ApplicationForm() {
   const watchedValues = form.watch();
 
   useEffect(() => {
-    if (importedValues?.app) return;
+    if (importedValues?.app || readOnly) return;
     const timeout = setTimeout(saveDraft, 600);
     return () => clearTimeout(timeout);
-  }, [watchedValues, importedValues?.app, saveDraft]);
+  }, [watchedValues, importedValues?.app, readOnly, saveDraft]);
 
   const onSubmit: SubmitHandler<ApplicationSchema> = async (data) => {
+    if (readOnly) return;
+
     // Disable first: the resume upload below can take a while, and a second
     // click during it would send a duplicate submission.
     setDisableSubmit(true);
@@ -595,6 +601,11 @@ export function ApplicationForm() {
           <LucideArrowBigLeft className="h-5 w-5" />
           back to dashboard
         </a>
+        {readOnly && (
+          <p className={styles.closedNotice} role="status">
+            applications are closed — this is the application you submitted.
+          </p>
+        )}
         <Form {...form}>
           <form onSubmit={handleFormSubmit} className={styles.form}>
             <header className={styles.header}>
@@ -613,7 +624,9 @@ export function ApplicationForm() {
               />
             </header>
 
-            <div className={styles.panel}>
+            {/* A disabled fieldset locks every input, checkbox and dropdown
+                inside it, which is how the read-only view works. */}
+            <fieldset className={styles.panel} disabled={readOnly}>
               {/* <StarRow
                 className={styles.whiteStars}
                 src="/images/application/white-star.svg"
@@ -873,14 +886,16 @@ export function ApplicationForm() {
                             </p>
                           </div>
                         )}
-                        <FormControl>
-                          <Input
-                            type="file"
-                            accept=".pdf,.doc,.docx"
-                            onChange={(e) => field.onChange(e.target.files)}
-                            className="cursor-pointer transition-all"
-                          />
-                        </FormControl>
+                        {!readOnly && (
+                          <FormControl>
+                            <Input
+                              type="file"
+                              accept=".pdf,.doc,.docx"
+                              onChange={(e) => field.onChange(e.target.files)}
+                              className="cursor-pointer transition-all"
+                            />
+                          </FormControl>
+                        )}
                         <FormMessage />
                       </FormItem>
                     )}
@@ -1160,23 +1175,25 @@ export function ApplicationForm() {
               </SectionCard>
 
               {/* Submit Button */}
-              <div className={styles.submitRow}>
-                <Button
-                  type="submit"
-                  disabled={disableSubmit}
-                  className={styles.submit}
-                >
-                  {disableSubmit ? (
-                    <>
-                      <ReloadIcon className="mr-2 h-5 w-5 animate-spin" />
-                      Submitting...
-                    </>
-                  ) : (
-                    "submit"
-                  )}
-                </Button>
-              </div>
-            </div>
+              {!readOnly && (
+                <div className={styles.submitRow}>
+                  <Button
+                    type="submit"
+                    disabled={disableSubmit}
+                    className={styles.submit}
+                  >
+                    {disableSubmit ? (
+                      <>
+                        <ReloadIcon className="mr-2 h-5 w-5 animate-spin" />
+                        Submitting...
+                      </>
+                    ) : (
+                      "submit"
+                    )}
+                  </Button>
+                </div>
+              )}
+            </fieldset>
           </form>
         </Form>
       </div>

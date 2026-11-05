@@ -18,7 +18,10 @@ import {
 } from "@vanni/db/schema";
 
 import { User } from "@vanni/db/auth-schema";
-import { isInvitationAcceptanceRequired } from "@vanni/validators";
+import {
+  areApplicationsOpen,
+  isInvitationAcceptanceRequired,
+} from "@vanni/validators";
 
 import type { Context, VerifiedContext } from "../trpc";
 import { pickFoodGroup } from "../food-groups";
@@ -37,6 +40,19 @@ async function getEventPhase(ctx: VerifiedContext, eventId: string, phaseName: s
 }
 
 const RESUME_OPTIONAL = false;
+
+/**
+ * Applicants can't create or edit applications once the extended deadline has
+ * passed. Organizer flows (walk-ins, status changes) don't go through this.
+ */
+function assertApplicationsOpen(event: { extendedDeadline: Date }) {
+  if (!areApplicationsOpen(event.extendedDeadline)) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Applications for this event are closed.",
+    });
+  }
+}
 
 const resumeHandler = async (
   input: { resumeUrl: string; resumeName: string },
@@ -294,6 +310,7 @@ export const applicationRouter = {
       const { eventName, applicationData, resumeUrl, resumeName } = input;
 
       const event = await getEventData({ ctx, eventName });
+      assertApplicationsOpen(event);
 
       const alreadyApplied = new TRPCError({
         code: "CONFLICT",
@@ -416,8 +433,7 @@ export const applicationRouter = {
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { id, userId, resumeName, resumeUrl, eventName, application } =
-        input;
+      const { id, userId, resumeName, resumeUrl, application } = input;
 
       if (userId !== ctx.session.user.id) {
         throw new TRPCError({
@@ -426,7 +442,39 @@ export const applicationRouter = {
         });
       }
 
-      const event = await getEventData({ ctx, eventName });
+      // Only the caller's own application can be updated.
+      const ownApplication = and(
+        eq(Application.id, id),
+        eq(Application.userId, ctx.session.user.id),
+      );
+
+      const existing = await ctx.db.query.Application.findFirst({
+        where: ownApplication,
+        columns: { eventId: true },
+      });
+
+      if (!existing) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Application not found",
+        });
+      }
+
+      // Check the deadline of the application's own event, not the event name
+      // the client sent.
+      const event = await ctx.db.query.Event.findFirst({
+        where: eq(Event.id, existing.eventId),
+        columns: { extendedDeadline: true },
+      });
+
+      if (!event) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Event not found",
+        });
+      }
+
+      assertApplicationsOpen(event);
 
       const resume = await db.query.UserResume.findFirst({
         where: eq(UserResume.userId, ctx.session.user.id),
@@ -460,7 +508,7 @@ export const applicationRouter = {
             ctx.session.user.email,
           ]),
         })
-        .where(eq(Application.id, id));
+        .where(ownApplication);
 
       const loginEmail = ctx.session.user.email;
       const applicationEmail = application.email;

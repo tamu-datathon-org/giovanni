@@ -24,3 +24,14 @@ export function isAllowedApplicantEmail(email: unknown): boolean {
 export function isInvitationAcceptanceRequired(): boolean {
   return process.env.NEXT_PUBLIC_REQUIRE_INVITATION_ACCEPTANCE === "true";
 }
+
+/**
+ * Whether applicants can still create or edit applications. Applications stay
+ * open until the event's extended deadline passes.
+ */
+export function areApplicationsOpen(
+  extendedDeadline: Date | string,
+  now: Date = new Date(),
+): boolean {
+  return now < new Date(extendedDeadline);
+}

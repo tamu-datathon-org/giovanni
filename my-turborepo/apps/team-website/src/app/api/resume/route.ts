@@ -3,6 +3,12 @@ import { NextResponse } from "next/server";
 import { handleUpload } from "@vercel/blob/client";
 
 import { getSession } from "@vanni/auth";
+import { eq } from "@vanni/db";
+import { db } from "@vanni/db/client";
+import { Event } from "@vanni/db/schema";
+import { areApplicationsOpen } from "@vanni/validators";
+
+import { EVENT_NAME } from "~/lib/event-name";
 
 export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
@@ -18,6 +24,16 @@ export async function POST(request: Request): Promise<NextResponse> {
         const session = await getSession();
         if (!session) {
           throw new Error("User not signed in");
+        }
+
+        // Resumes are only uploaded as part of an application, so stop
+        // handing out upload tokens once applications close.
+        const event = await db.query.Event.findFirst({
+          where: eq(Event.name, EVENT_NAME),
+          columns: { extendedDeadline: true },
+        });
+        if (!event || !areApplicationsOpen(event.extendedDeadline)) {
+          throw new Error("Applications are closed");
         }
 
         return {

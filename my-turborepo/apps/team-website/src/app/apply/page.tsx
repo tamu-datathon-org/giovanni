@@ -9,16 +9,18 @@ import { toDataURL } from "qrcode";
 import { AddToAppleWalletButton } from "@vanni/apple-wallet";
 import { authClient } from "@vanni/auth/client";
 import { AddToGoogleWalletButton } from "@vanni/google-wallet";
-import { isInvitationAcceptanceRequired } from "@vanni/validators";
+import {
+  areApplicationsOpen,
+  isInvitationAcceptanceRequired,
+} from "@vanni/validators";
 
 import { useAuthRedirect } from "~/app/_components/auth/useAuthRedirect";
 import { useDevicePlatform } from "~/hooks/use-device-platform";
 import { toast } from "~/hooks/use-toast";
+import { EVENT_NAME } from "~/lib/event-name";
 import { getFoodGroupIcon } from "~/lib/food-group-icons";
 import { api } from "~/trpc/react";
-import { EVENT_NAME } from "./application/application-form";
 
-export const appsOpen = true;
 // When false, being accepted is final and there is no offer to respond to.
 const invitationRequired = isInvitationAcceptanceRequired();
 
@@ -481,6 +483,12 @@ export default function Page() {
   const eventStarted = event?.startDate
     ? new Date() >= new Date(event.startDate)
     : false;
+
+  // Undefined until the event loads, so the panel doesn't flash the wrong
+  // button. The server enforces the same deadline on submit.
+  const appsOpen = event
+    ? areApplicationsOpen(event.extendedDeadline)
+    : undefined;
   const awaitingOfferResponse = invitationRequired && data?.status === "accepted";
   const arrowTarget: "offer" | "qr" | null =
     eventStarted && qrCode
@@ -741,13 +749,23 @@ export default function Page() {
               </Panel>
 
               <Panel title="your application">
-                {appsOpen ? (
+                {appsOpen === undefined || isLoading ? null : appsOpen ? (
                   <ActionButton href="/apply/application">
                     {data?.status ? "view / edit application" : "start application"}
                   </ActionButton>
+                ) : data?.status ? (
+                  <>
+                    <ActionButton href="/apply/application">
+                      view submitted application
+                    </ActionButton>
+                    <p className="mt-3 font-kode text-[16px] lowercase tracking-[-0.07em] text-white/70">
+                      applications are closed
+                    </p>
+                  </>
                 ) : (
                   <p className="mt-3 font-kode text-[16px] lowercase tracking-[-0.07em] text-white/70">
-                    applications are closed — keep an eye on your email!
+                    applications are closed. you can still join the day-of
+                    waitlist at check-in.
                   </p>
                 )}
               </Panel>

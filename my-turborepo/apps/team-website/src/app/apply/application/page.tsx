@@ -1,13 +1,24 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 
-import { ApplicationForm } from "~/app/apply/application/application-form";
-import styles from "./application.module.css";
-import { appsOpen } from "../page";
+import { areApplicationsOpen } from "@vanni/validators";
 
-export default function Page() {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!appsOpen) {
+import { ApplicationForm } from "~/app/apply/application/application-form";
+import { EVENT_NAME } from "~/lib/event-name";
+import { api } from "~/trpc/server";
+import styles from "./application.module.css";
+
+export default async function Page() {
+  const [event, application] = await Promise.all([
+    api.event.findByName(EVENT_NAME),
+    api.application.getApplicationStatus({ eventName: EVENT_NAME }),
+  ]);
+
+  const open = event ? areApplicationsOpen(event.extendedDeadline) : false;
+
+  // Once applications close there is nothing to fill in, only something to
+  // look at, so people who never applied go back to the dashboard.
+  if (!open && !application) {
     redirect("/apply");
   }
 
@@ -17,7 +28,7 @@ export default function Page() {
         <Suspense
           fallback={<p className={styles.loading}>Loading... please wait</p>}
         >
-          <ApplicationForm />
+          <ApplicationForm readOnly={!open} />
         </Suspense>
       </div>
     </>
