@@ -88,6 +88,7 @@ export default function Challenges() {
 
   return (
     <section
+      id="challenges"
       aria-labelledby="challenges-title"
       className={`relative isolate flex min-h-svh flex-col items-center gap-8 overflow-hidden bg-[#420807] px-5 pb-12 text-white sm:px-8 ${challengesPageTop}`}
     >

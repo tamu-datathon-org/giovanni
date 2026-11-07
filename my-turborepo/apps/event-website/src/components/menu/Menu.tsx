@@ -13,12 +13,14 @@ type MenuLink = {
 } & Pick<ComponentProps<typeof Chip>, "color" | "textClassName">
 
 const links: MenuLink[] = [
+  // Re-enable once <Prizes /> is rendered in app/page.tsx
+  // { label: "PRIZES", href: "#prizes", color: "teal" },
   { label: "INFO", href: "#event-information", color: "green" },
-  { label: "PRIZES", href: "#prizes", color: "teal" },
-  { label: "SCHEDULE", href: "#schedule", color: "yellow", textClassName: "text-[8px] sm:text-sm" },
-  { label: "FOOD", href: "#menu", color: "green" },
-  { label: "SPONSORS", href: "#sponsors", color: "teal", textClassName: "text-[8px] sm:text-sm" },
+  { label: "SCHEDULE", href: "#schedule", color: "yellow", textClassName: "text-[11cqw]" },
+   { label: "CHALLENGES", href: "#challenges", color: "black", textClassName: "text-[9cqw]" },
+  { label: "SPONSORS", href: "#sponsors", color: "teal", textClassName: "text-[11cqw]" },
   { label: "FAQ", href: "#faq", target: "faq-content", color: "blue" },
+ 
 ]
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -66,9 +68,9 @@ export function Menu() {
       onPointerEnter={hoverTo(true)}
       onPointerLeave={hoverTo(false)}
       // --peek = how much of each chip shows below MENU when stacked (about half the outer ring)
+      // --chip = chip size, scales with the viewport (width, and height so the open fan still fits)
       // --step = chip size + gap, how far apart the chips are when open (they fan downward)
-      // sm --step shrinks on short screens so all six chips still fit when fanned out
-      className="fixed right-3 top-3 z-50 grid [--step:72px] sm:right-5 sm:top-5 sm:[--step:min(140px,calc((100dvh-10rem)/6))]"
+      className="fixed right-3 top-3 z-50 grid [--chip:clamp(56px,min(10vw,13vh),128px)] [--step:calc(var(--chip)*1.1)] sm:right-5 sm:top-5"
     >
       {links.map((link, i) => (
         <a
@@ -82,7 +84,7 @@ export function Menu() {
           // first link sits closest to MENU; nearer chips stack on top of farther ones
           style={{ "--i": i + 1, zIndex: -i } as CSSProperties}
           className={cn(
-            "col-start-1 row-start-1 cursor-pointer pt-2 transition-transform duration-300 ease-out sm:pt-3",
+            "col-start-1 row-start-1 cursor-pointer pt-[calc(var(--chip)*0.1)] transition-transform duration-300 ease-out",
             open
               ? "translate-y-[calc(var(--i)*var(--step))]"
               : "pointer-events-none translate-y-[calc(var(--i)*var(--peek))]",

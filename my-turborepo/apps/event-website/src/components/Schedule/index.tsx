@@ -321,7 +321,10 @@ function Voucher({
             <p className={styles.amount} aria-live="off">
               {amount}
             </p>
-            <p className={styles.until}>{label}</p>
+            <p className={styles.until}>
+              {label}
+              {next?.location && <span className={styles.room}>{next.location}</span>}
+            </p>
 
             <hr className={styles.rule} />
 
