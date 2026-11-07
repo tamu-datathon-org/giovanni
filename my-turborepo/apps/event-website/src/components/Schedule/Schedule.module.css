@@ -288,6 +288,18 @@
   margin-right: 0.15em;
 }
 
+.menuLink {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.menuLink:hover,
+.menuLink:focus-visible {
+  text-decoration-style: solid;
+}
+
 .featured {
   color: var(--sched-accent);
 }

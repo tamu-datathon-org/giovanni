@@ -1,0 +1,102 @@
+/* Cream banner with swallowtail ends. The notch is ~0.8× the banner's height, as in the Figma ribbons. */
+.ribbon {
+  --notch: 1.2em;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - var(--notch)) 52%,
+    100% 100%,
+    0 100%,
+    var(--notch) 52%
+  );
+}
+
+/* ENTRÉES / SIDES: orange letters, cream outline, hard drop shadow. */
+.heading {
+  -webkit-text-stroke: 0.16em #fdfbed;
+  paint-order: stroke fill;
+  text-shadow: 0.216em 0.232em 0 rgb(0 0 0 / 0.25);
+}
+
+.signText {
+  fill: #fdfbed;
+  stroke: #f99b1f;
+  stroke-width: 18px;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 4px 4px rgb(0 0 0 / 0.25));
+}
+
+/* The panel's slanted left edge; --slant is set on the panel. */
+.slanted {
+  clip-path: polygon(var(--slant) 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.rise {
+  animation: rise 520ms cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i, 0) * 55ms) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.flicker {
+  animation: flicker 7s linear infinite;
+}
+
+@keyframes flicker {
+  0%,
+  88%,
+  89.5%,
+  92%,
+  100% {
+    opacity: 1;
+  }
+  88.8%,
+  91% {
+    opacity: 0.3;
+  }
+}
+
+/* SVG children need fill-box to spin around their own center. */
+.twinkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: twinkle 3.6s ease-in-out var(--d, 0s) infinite;
+}
+
+.twinkleBox {
+  animation: twinkle 3.6s ease-in-out var(--d, 0s) infinite;
+}
+
+@keyframes twinkle {
+  50% {
+    transform: scale(0.86) rotate(6deg);
+  }
+}
+
+.pulse {
+  animation: pulse 1.6s ease-out infinite;
+}
+
+@keyframes pulse {
+  from {
+    box-shadow: 0 0 0 0 rgb(85 169 110 / 0.7);
+  }
+  to {
+    box-shadow: 0 0 0 0.6em rgb(85 169 110 / 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .flicker,
+  .twinkle,
+  .twinkleBox,
+  .pulse {
+    animation: none;
+  }
+}

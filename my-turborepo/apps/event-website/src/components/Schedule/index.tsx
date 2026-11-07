@@ -365,7 +365,14 @@ function Voucher({
                           ★
                         </span>
                       )}
-                      {ev.title}
+                      {ev.category === "food" ? (
+                        // FoodMenu opens the meal whose id follows "#menu-"
+                        <a href={`#menu-${ev.id}`} className={styles.menuLink} aria-label={`${ev.title} menu`}>
+                          {ev.title}
+                        </a>
+                      ) : (
+                        ev.title
+                      )}
                     </span>
                   </li>
                 );

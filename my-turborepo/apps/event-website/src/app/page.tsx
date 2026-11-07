@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import { Rail } from "@/components/Rail";
 import Location from "@/components/location";
 import Schedule from "@/components/Schedule";
+import FoodMenu from "@/components/FoodMenu";
 import { CasinoTransition } from "@/components/CasinoTransition";
 import Workshops from "@/components/workshops";
 import { ScrollUp } from "@vanni/ui/scroll-up";
@@ -44,6 +45,7 @@ export default function Home() {
         <SectionGround align="bottom">
           <Prizes ground={false} />
           <Schedule ground={false} />
+          <FoodMenu />
         </SectionGround>
       </div>
       <Sponsors />

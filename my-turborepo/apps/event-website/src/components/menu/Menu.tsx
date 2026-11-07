@@ -16,6 +16,7 @@ const links: MenuLink[] = [
   { label: "INFO", href: "#event-information", color: "green" },
   { label: "PRIZES", href: "#prizes", color: "teal" },
   { label: "SCHEDULE", href: "#schedule", color: "yellow", textClassName: "text-[8px] sm:text-sm" },
+  { label: "FOOD", href: "#menu", color: "green" },
   { label: "SPONSORS", href: "#sponsors", color: "teal", textClassName: "text-[8px] sm:text-sm" },
   { label: "FAQ", href: "#faq", target: "faq-content", color: "blue" },
 ]
@@ -66,7 +67,8 @@ export function Menu() {
       onPointerLeave={hoverTo(false)}
       // --peek = how much of each chip shows below MENU when stacked (about half the outer ring)
       // --step = chip size + gap, how far apart the chips are when open (they fan downward)
-      className="fixed right-3 top-3 z-50 grid [--step:72px] sm:right-5 sm:top-5 sm:[--step:140px]"
+      // sm --step shrinks on short screens so all six chips still fit when fanned out
+      className="fixed right-3 top-3 z-50 grid [--step:72px] sm:right-5 sm:top-5 sm:[--step:min(140px,calc((100dvh-10rem)/6))]"
     >
       {links.map((link, i) => (
         <a
