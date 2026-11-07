@@ -233,6 +233,35 @@
   text-transform: uppercase;
 }
 
+.untilRoom {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.8em;
+  font-weight: 400;
+}
+
+/* What's on right now, printed above the countdown. */
+.current {
+  margin: 0 0 14px;
+}
+
+.nowList {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--sched-receipt);
+  font-size: clamp(1.05rem, 4.8cqw, 1.3rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.nowRoom {
+  font-weight: 400;
+}
+
 .rule {
   margin: 0 0 10px;
   border: 0;

@@ -7,7 +7,7 @@
     { "id": "hacking-start", "title": "Hacking Begins", "startTime": "2026-11-07T11:00:00-06:00", "endTime": "2026-11-07T11:15:00-06:00", "location": "MSC 2300", "category": "milestone" },
     { "id": "mini-event-1", "title": "Mini Event #1", "startTime": "2026-11-07T11:00:00-06:00", "endTime": "2026-11-07T11:30:00-06:00", "location": "MSC 2300", "category": "activity" },
     { "id": "hitachi-ws-1", "title": "Hitachi Workshop #1", "startTime": "2026-11-07T11:30:00-06:00", "endTime": "2026-11-07T12:15:00-06:00", "location": "MSC 2406A", "category": "workshop" },
-    { "id": "td-ws-1", "title": "Intro to Git, Docker, & CLI Workshop", "startTime": "2026-11-07T12:45:00-06:00", "endTime": "2026-11-07T13:15:00-06:00", "location": "MSC 2406B", "category": "workshop" },
+    { "id": "td-ws-1", "title": "Intro to Git, Docker, & CLI Workshop", "startTime": "2026-11-07T12:15:00-06:00", "endTime": "2026-11-07T12:45:00-06:00", "location": "MSC 2406B", "category": "workshop" },
     { "id": "lunch-sat", "title": "Lunch", "startTime": "2026-11-07T12:45:00-06:00", "endTime": "2026-11-07T13:45:00-06:00", "location": "Hallway", "category": "food" },
     { "id": "databricks-ws", "title": "Databricks Workshop", "startTime": "2026-11-07T14:00:00-06:00", "endTime": "2026-11-07T15:00:00-06:00", "location": "MSC 2406A", "category": "workshop" },
     { "id": "hitachi-ws-2", "title": "Hitachi Workshop #2", "startTime": "2026-11-07T15:15:00-06:00", "endTime": "2026-11-07T16:00:00-06:00", "location": "MSC 2406B", "category": "workshop" },
