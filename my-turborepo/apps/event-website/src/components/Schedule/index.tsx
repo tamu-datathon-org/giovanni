@@ -166,6 +166,11 @@ function groupByDay(data: ScheduleData): Day[] {
   return [...days.values()].sort((a, b) => a.key.localeCompare(b.key));
 }
 
+/** The room to print, or nothing while it's still TBD. */
+function roomOf(ev: ScheduleEvent) {
+  return ev.location && ev.location.trim().toUpperCase() !== "TBD" ? ev.location : undefined;
+}
+
 function formatCountdown(ms: number) {
   const total = Math.max(0, Math.floor(ms / 1000));
   const h = Math.floor(total / 3600);
@@ -291,6 +296,9 @@ function Voucher({
   const cashedOut = now != null && !next;
   const amount = next && now != null ? formatCountdown(Date.parse(next.startTime) - now) : "00:00:00";
   const label = cashedOut ? "Cashed out" : next ? next.title : "Next event";
+  const nextRoom = next && roomOf(next);
+  const current =
+    now == null ? [] : day.events.filter((e) => Date.parse(e.startTime) <= now && now < Date.parse(e.endTime));
 
   return (
     <div
@@ -317,11 +325,30 @@ function Voucher({
               </span>
               <span>{day.date}</span>
             </p>
-            <p className={styles.valid}>Valid until</p>
+            {current.length > 0 && (
+              <div className={styles.current}>
+                <p className={styles.valid}>Currently</p>
+                <ul className={styles.nowList}>
+                  {current.map((ev) => {
+                    const room = roomOf(ev);
+                    return (
+                      <li key={ev.id}>
+                        {ev.title}
+                        {room && <span className={styles.nowRoom}> · {room}</span>}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+            <p className={styles.valid}>Up next</p>
             <p className={styles.amount} aria-live="off">
               {amount}
             </p>
-            <p className={styles.until}>{label}</p>
+            <p className={styles.until}>
+              {label}
+              {nextRoom && <span className={styles.untilRoom}>{nextRoom}</span>}
+            </p>
 
             <hr className={styles.rule} />
 
