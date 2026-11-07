@@ -3,7 +3,7 @@
   "events": [
     { "id": "checkin", "title": "Check-in", "startTime": "2026-11-07T09:00:00-06:00", "endTime": "2026-11-07T10:30:00-06:00", "location": "TBD", "category": "logistics", "featured": true },
     { "id": "opening", "title": "Opening Ceremony", "startTime": "2026-11-07T10:30:00-06:00", "endTime": "2026-11-07T11:00:00-06:00", "location": "MSC 2300", "category": "ceremony", "featured": true },
-    { "id": "opening", "title": "Team Matching Mini Event", "startTime": "2026-11-07T11:00:00-06:00", "endTime": "2026-11-07T11:00:00-06:00", "location": "MSC 2300", "category": "activity"},
+    { "id": "team-matching", "title": "Team Matching Mini Event", "startTime": "2026-11-07T11:00:00-06:00", "endTime": "2026-11-07T11:00:00-06:00", "location": "MSC 2300", "category": "activity"},
     { "id": "hacking-start", "title": "Hacking Begins", "startTime": "2026-11-07T11:00:00-06:00", "endTime": "2026-11-07T11:15:00-06:00", "location": "MSC 2300", "category": "milestone" },
     { "id": "mini-event-1", "title": "Mini Event #1", "startTime": "2026-11-07T11:00:00-06:00", "endTime": "2026-11-07T11:30:00-06:00", "location": "MSC 2300", "category": "activity" },
     { "id": "hitachi-ws-1", "title": "Hitachi Workshop #1", "startTime": "2026-11-07T11:15:00-06:00", "endTime": "2026-11-07T12:00:00-06:00", "location": "MSC 2406A", "category": "workshop" },
@@ -14,7 +14,7 @@
     { "id": "mlh-ws-1", "title": "MLH Workshop #1", "startTime": "2026-11-07T15:30:00-06:00", "endTime": "2026-11-07T16:00:00-06:00", "location": "MSC 2406A", "category": "workshop" },
     { "id": "heb-ws", "title": "H-E-B Workshop", "startTime": "2026-11-07T16:15:00-06:00", "endTime": "2026-11-07T16:45:00-06:00", "location": "MSC 2406A", "category": "workshop" },
     { "id": "mlh-ws-2", "title": "MLH Workshop #2", "startTime": "2026-11-07T17:00:00-06:00", "endTime": "2026-11-07T17:30:00-06:00", "location": "MSC 2406A", "category": "workshop" },
-    { "id": "td-ws-2", "title": "Intro to Reinforment Learning Workshop", "startTime": "2026-11-07T17:45:00-06:00", "endTime": "2026-11-07T18:15:00-06:00", "location": "MSC 2406B", "category": "workshop" },
+    { "id": "td-ws-2", "title": "Intro to Reinforcement Learning Workshop", "startTime": "2026-11-07T17:45:00-06:00", "endTime": "2026-11-07T18:15:00-06:00", "location": "MSC 2406B", "category": "workshop" },
     { "id": "dinner-sat", "title": "Dinner", "startTime": "2026-11-07T18:40:00-06:00", "endTime": "2026-11-07T19:40:00-06:00", "location": "Hallway", "category": "food" },
     { "id": "mini-event-2", "title": "Mini Event #2", "startTime": "2026-11-07T20:00:00-06:00", "endTime": "2026-11-07T21:00:00-06:00", "location": "MSC 2406A", "category": "activity" },
     { "id": "overnight-leave", "title": "Overnight Departures (Doors Lock at Midnight)", "startTime": "2026-11-07T23:00:00-06:00", "endTime": "2026-11-07T23:59:00-06:00", "location": "TBD", "category": "logistics" },
