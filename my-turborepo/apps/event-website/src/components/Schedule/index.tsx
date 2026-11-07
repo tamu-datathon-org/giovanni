@@ -373,6 +373,9 @@ function Voucher({
                       ) : (
                         ev.title
                       )}
+                      {(ev.category === "workshop" || ev.category === "activity") && ev.location && (
+                        <span className={styles.room}>{ev.location}</span>
+                      )}
                     </span>
                   </li>
                 );

@@ -284,6 +284,15 @@
   color: var(--cat);
 }
 
+.room {
+  display: block;
+  font-size: 0.75em;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: var(--sched-ink);
+}
+
 .star {
   margin-right: 0.15em;
 }
