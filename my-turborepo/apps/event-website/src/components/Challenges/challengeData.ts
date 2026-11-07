@@ -52,9 +52,9 @@ export const challenges: Challenge[] = [
     },
   },
   {
-    name: "Build Your Own Dataset",
-    wheelName: "BYO Dataset",
-    description: "Full rules and setup are in the challenge guide.",
+    name: "Build-A-Dataset",
+    description:
+      "Leave the screen and collect your own original dataset during the event by observing, measuring, counting, photographing or surveying something in the real world. Then turn it into an interactive app, like a map, game or tool, that your data actually powers, because a small, carefully collected dataset can beat a huge, low-quality one.",
     prizes: [
       "Amazon Fire TV Soundbars",
       "Amazon Fire TV Sticks 4K",

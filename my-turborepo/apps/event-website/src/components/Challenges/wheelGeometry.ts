@@ -48,17 +48,22 @@ function baselines(font: number) {
 const fits = (line: string, radius: number, font: number) =>
   line.length * charWidth * font <= radius * labelSpan;
 
-/** One line if it fits, otherwise two, broken where the longer line is shortest. */
+/**
+ * One line if it fits, otherwise two, broken where the longer line is shortest.
+ * Lines can break at a space or after a hyphen ("BUILD-A-" / "DATASET").
+ */
 function splitLabel(name: string, font: number): string[] {
-  const words = name.toUpperCase().split(/\s+/);
-  const whole = words.join(" ");
+  // Each word keeps the space or hyphen after it.
+  const words = name.toUpperCase().trim().split(/(?<=\s)|(?<=\w-)(?=\w)/);
+  const join = (parts: string[]) => parts.join("").trim();
+  const whole = join(words);
   if (words.length < 2 || fits(whole, baselines(font).single, font)) {
     return [whole];
   }
 
   const splits = words
     .slice(1)
-    .map((_, i) => [words.slice(0, i + 1).join(" "), words.slice(i + 1).join(" ")]);
+    .map((_, i) => [join(words.slice(0, i + 1)), join(words.slice(i + 1))]);
   const longest = (lines: string[]) => Math.max(...lines.map((line) => line.length));
   return splits.reduce((best, lines) => (longest(lines) < longest(best) ? lines : best));
 }
