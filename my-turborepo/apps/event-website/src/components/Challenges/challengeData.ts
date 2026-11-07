@@ -1,61 +1,141 @@
-export interface Challenge {
+import type { ChipColors } from "@/components/sponsor/SponsorChip";
+
+export interface ChallengeSponsor {
   name: string;
-  description: string;
-  prize: string;
+  logo: string;
+  /** Same chip colors as the sponsors section. */
+  colors: ChipColors;
 }
 
+export interface ChallengeLink {
+  label: string;
+  href: string;
+  /** Downloads the file instead of opening it in a new tab. */
+  download?: boolean;
+}
+
+export interface Challenge {
+  name: string;
+  /** Shorter name for the wheel's slice, when the full one is too long. */
+  wheelName?: string;
+  description: string;
+  /** 1st, 2nd and 3rd place, in that order. */
+  prizes: string[];
+  link?: ChallengeLink;
+  /** Getting-started steps for challenges with no link. */
+  howToStart?: string;
+  /** The company running the challenge, shown as a chip on its page. */
+  sponsor?: ChallengeSponsor;
+}
+
+// Easy to hard, then the sponsor challenges.
 export const challenges: Challenge[] = [
   {
-    name: "C1",
+    name: "Rev's Casino",
     description:
-      "When you miss the train I'm on, and you hear the whistle blow",
-    prize: "First: ABC · Second: XYZ · Third: 123",
+      'Beat all the levels of Rev\'s Casino in the least amount of tokens to win the Golden Reveille and beat this challenge. Beating a level requires "tricking" an LLM into doing something that it\'s been prompted not to do. Each level gets more difficult.',
+    prizes: ["Echo Dots", "Pickleball Set", "Amazon Gift Card"],
+    link: { label: "Play Now", href: "https://td-revs.vercel.app/" },
   },
   {
-    name: "C2",
-    description: "Tell me why ain't nothing but a heartache",
-    prize: "First: Scooter · Second: Monitor · Third: Echo Dot",
+    name: "Dashboard Royale",
+    description:
+      "You're the new floor analytics lead at The Gilded Ace, a fictional 300-machine Las Vegas casino, and the manager wants to replace the 10 slot machines that earned the least. Build an interactive dashboard that finds out whether those machines are truly underperforming or just unlucky, badly placed, or often broken: luck, location, or a leak?",
+    prizes: [
+      "Keychron V1 Mechanical Keyboard",
+      "Logitech G703 Lightspeed Wireless Gaming Mouse",
+      "Owalas",
+    ],
+    link: {
+      label: "Open Guide",
+      href: "https://github.com/tamu-datathon-org/dashboard-royale/blob/main/GUIDE.md",
+    },
   },
   {
-    name: "3",
-    description:
-      "Laughing while she hit her pen and coughed, and coughed. Then she came up to my knees, begging baby would you please",
-    prize:
-      "First: Power Bank · Second: $10 Amazon gift card · Third: Apple AirTag",
+    name: "Build Your Own Dataset",
+    wheelName: "BYO Dataset",
+    description: "Full rules and setup are in the challenge guide.",
+    prizes: [
+      "Amazon Fire TV Soundbars",
+      "Amazon Fire TV Sticks 4K",
+      "MSY Voucher + Tray of Mac and Cheese",
+    ],
+    link: {
+      label: "Open Guide",
+      href: "https://docs.google.com/document/d/1LjwC2ZwxrLQzuy14MjoHLTnhe4Wmq6eEUBKs1PHoUjc/edit?usp=sharing",
+    },
   },
   {
-    name: "Yay",
+    name: "House Edge",
     description:
-      "I tried to put it out for you to get, Couldve should've but you never did. Wish you wanted it.",
-    prize:
-      "First: yy · Second: p2 · Third: p3",
+      "Use slot-machine gameplay logs to predict the odds of each machine's next payout (0×, 1×, 2×, 5× or 20×), and submit a CSV of probabilities along with the code that recreates it. You're scored on how close your probabilities are to the simulator's true odds, with a second round of new data opening Saturday at 9 PM.",
+    prizes: ["Meta Ray-Bans", "AirPods 4", "Mini Projector"],
+    link: {
+      label: "Open Guide",
+      href: "https://docs.google.com/document/d/1CqNLjCiojRxKkZopoxBeilkke6Y4yCuz7FYSuefvCMo/edit?tab=t.0#heading=h.jzifo8u42bx",
+    },
   },
   {
-    name: "er",
+    name: "Heads Up – Poker Bot Tournament",
+    wheelName: "Poker Bot",
     description:
-      "Where have you been, do you know if you are coming back? We were too close to the stars, I never knew somebofy like you.",
-    prize: "First: JBL Speaker · Second: uwu · Third: Echo Dot",
+      "Write a Python bot that plays heads-up Short Deck 5-Card Pot-Limit Omaha, then face every other team's bot in a round-robin tournament of 2,000 hands per match. Both bots get the same cards in each match, so the best strategy wins, not the luckiest deal, and no poker experience is needed.",
+    prizes: ["MacBook Neos in Silver", "Gaming Monitor", "Digital Cameras"],
+    link: {
+      label: "Open Guide",
+      href: "https://docs.google.com/document/d/1D1ruabeQ25scYg97ehBMnzA9fqaEWWsnFDfOmrLme4E/edit?tab=t.0",
+    },
   },
   {
-    name: "YYY",
+    name: "Hitachi: Hack the Highway",
+    wheelName: "Hitachi",
     description:
-      "The middle of the night, when things aren't black and whire, enter trubedadd, remember 24",
-    prize:
-      "First: Power Bank · Second: $10 Amazon gift card · Third: Apple AirTag",
+      "Build a team of AI agents that runs the control tower of a just-in-time automaker, handling supplier delays, plant outages and quality holds. The starter package has the data, tools and full brief.",
+    prizes: [
+      "$50 Amazon Gift Card",
+      "$30 Amazon Gift Card",
+      "$20 Amazon Gift Card",
+    ],
+    link: {
+      label: "Download Package",
+      href: "/downloads/hack_the_highway_student_package.zip",
+      download: true,
+    },
+    sponsor: {
+      name: "Hitachi Digital",
+      logo: "/event_assets/sponsors/hitachi-digital.png",
+      colors: { body: "#E60012", stripe: "#E60012", ring: "#AE000D" },
+    },
   },
   {
-    name: "hmm",
+    name: "HEB Challenge",
+    wheelName: "HEB",
+    description: "HEB shares the details of this challenge in person.",
+    prizes: ["Nintendo Switch Lite", "Powerbeats Pro 2", "H-E-B Gift Package"],
+    howToStart:
+      "Go to the HEB table in the MSC Ballroom and talk to their team to get access.",
+    sponsor: {
+      name: "H-E-B",
+      logo: "/event_assets/sponsors/heb.png",
+      colors: { body: "#E70020", stripe: "#E70020", ring: "#B10018" },
+    },
+  },
+  {
+    name: "Best Use of Databricks",
+    wheelName: "Databricks",
     description:
-      "And when I'm back in Chicago I feel it another version of me,nI wasn't it",
-    prize: "First: JBL Speaker · Second: uwu · Third: Echo Dot",
-  }, {
-    name: "HI",
-    description:
-      "hello please help me, are you alvie?",
-    prize: "First: AirPods Pro · Second: Keyboard · Third: Gift cards",
+      "Build a project that creatively uses Databricks for data engineering, analytics, machine learning or AI, either on its own or as part of your solution to another TAMU Datathon challenge. Judges look at creativity, technical implementation, and how meaningfully Databricks improves your solution.",
+    prizes: [
+      "Databricks Lululemon Backpack + Owala Water Bottle",
+      "Databricks Lululemon Backpack",
+      "Owala Water Bottle",
+    ],
+    sponsor: {
+      name: "Databricks",
+      logo: "/event_assets/sponsors/databricks.png",
+      colors: { body: "#FF3621", stripe: "#1B3139", ring: "#C4281A" },
+    },
   },
 ];
 
-export const wheelOptions: Challenge[] = [
-  ...challenges,
-];
+export const wheelOptions: Challenge[] = [...challenges];

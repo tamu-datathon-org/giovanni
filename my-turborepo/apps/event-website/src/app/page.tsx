@@ -12,6 +12,7 @@ import { ScrollUp } from "@vanni/ui/scroll-up";
 import { Footer } from "@/components/Hero/Footer";
 import { Menu } from "@/components/menu/Menu"
 import { SectionGround } from "@/components/SectionGround";
+import Challenges from "@/components/Challenges";
 
 // Transparent: it sits on the background shared with Schedule below.
 const Prizes = dynamic(() => import("@/components/prizes"), {
@@ -38,8 +39,9 @@ export default function Home() {
       <Menu />
       <Hero />
       <EventInformation />
+      <Challenges/>
       <Rail shine="ball" />
-      <CasinoTransition variant="coins" />
+      {/* <CasinoTransition variant="coins" /> */}
       {/* One background behind both, so the pattern runs on unbroken from Prizes into Schedule. */}
       <div className="relative bg-[#6C0204]">
         <SectionGround align="bottom">

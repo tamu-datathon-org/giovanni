@@ -1,5 +1,10 @@
 import Image from "next/image";
-import { getSegmentPath } from "./wheelGeometry";
+import {
+  getLabelArc,
+  getSegmentPath,
+  wheelLabelFont,
+  wheelLabels,
+} from "./wheelGeometry";
 
 interface ChallengeWheelProps {
   ballDuration: number;
@@ -71,6 +76,15 @@ export default function ChallengeWheel({
                 height="682"
               />
             </mask>
+            {wheelLabels.map((lines, index) =>
+              lines.map(({ radius }, row) => (
+                <path
+                  key={`${index}-${row}`}
+                  id={`challenge-wheel-label-${index}-${row}`}
+                  d={getLabelArc(index, radius)}
+                />
+              )),
+            )}
           </defs>
 
           {selectedIndex !== null && (
@@ -82,13 +96,26 @@ export default function ChallengeWheel({
             />
           )}
 
-          <image
-            href="/event_assets/Challenge%20text.png"
-            x="-43"
-            y="-38"
-            width="746"
-            height="761"
-          />
+          {/* Each slice's challenge name, curved along its outer band. */}
+          <g
+            className="font-righteous"
+            fill="#fff"
+            fontSize={wheelLabelFont}
+            textAnchor="middle"
+          >
+            {wheelLabels.map((lines, index) =>
+              lines.map(({ text }, row) => (
+                <text key={`${index}-${row}`}>
+                  <textPath
+                    href={`#challenge-wheel-label-${index}-${row}`}
+                    startOffset="50%"
+                  >
+                    {text}
+                  </textPath>
+                </text>
+              )),
+            )}
+          </g>
         </svg>
 
         {/* The ball lives in the wheel's frame, so once it lands it rides the wheel to a stop. */}

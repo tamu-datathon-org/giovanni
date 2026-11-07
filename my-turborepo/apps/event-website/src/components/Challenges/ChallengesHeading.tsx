@@ -15,8 +15,15 @@ export default function ChallengesHeading({
   id,
   title = "CHALLENGES",
 }: ChallengesHeadingProps) {
+  // Long challenge names wrap instead of truncating, padded clear of the back arrow.
+  const long = title.length > 12;
+
   return (
-    <div className="challenges-heading relative z-20 flex h-12 w-full shrink-0 items-center justify-center gap-3 whitespace-nowrap sm:gap-5">
+    <div
+      className={`challenges-heading relative z-20 flex w-full shrink-0 items-center justify-center gap-3 sm:gap-5 ${
+        long ? "min-h-12 px-12" : "h-12 whitespace-nowrap"
+      }`}
+    >
       {children}
       <Image
         src="/event_assets/Star%203.png"
@@ -27,7 +34,11 @@ export default function ChallengesHeading({
       />
       <h1
         id={id}
-        className="min-w-0 truncate text-center font-righteous text-4xl uppercase text-[#fff8e8] drop-shadow sm:text-5xl"
+        className={`min-w-0 text-center font-righteous uppercase text-[#fff8e8] drop-shadow ${
+          long
+            ? "text-balance text-2xl leading-tight sm:text-4xl lg:text-5xl"
+            : "truncate text-4xl sm:text-5xl"
+        }`}
       >
         {title}
       </h1>

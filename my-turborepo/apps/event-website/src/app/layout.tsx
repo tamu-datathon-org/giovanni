@@ -1,7 +1,7 @@
 import { Inter, Darumadrop_One, Chilanka, Righteous, Sekuya } from "next/font/google";
 import Header from "@/components/Header";
 import MlhBadge from "@/components/MlhBadge";
-// import HelpQueueButton from "@/components/HelpQueueButton";
+import HelpQueueButton from "@/components/HelpQueueButton";
 
 import ScrollToTop from "@vanni/ui/scroll-to-top";
 
@@ -55,7 +55,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
 
         <MlhBadge />
-        {/* <HelpQueueButton /> */}
+        <HelpQueueButton />
         {children}
       </body>
     </html>

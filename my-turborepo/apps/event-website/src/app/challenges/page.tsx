@@ -1,4 +1,4 @@
-import Challenges from "@/components/Challenges";
+import AllChallenges from "@/components/Challenges/AllChallenges";
 
 // "use client";
 
@@ -208,5 +208,5 @@ import Challenges from "@/components/Challenges";
 // }
 
 export default function ChallengesPage() {
-  return <Challenges />;
+  return <AllChallenges />;
 }
